@@ -10,70 +10,52 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <!-- GLOBAL MAINLY STYLES-->
+    <link href="{{asset('/css/bootstrap.min.css')}}" rel="stylesheet" />
+    <link href="{{asset('/css/font-awesome.min.css')}}" rel="stylesheet" />
+    <link href="{{asset('/css/line-awesome.min.css')}}" rel="stylesheet" />
+    <link href="{{asset('/css/themify-icons.css')}}" rel="stylesheet" />
+    <link href="{{asset('/css/line-awesome.min.css')}}" rel="stylesheet" />
+    <link href="{{asset('/css/animate.min.css')}}" rel="stylesheet" />
+    <link href="{{asset('/css/bootstrap-select.min.css')}}" rel="stylesheet" />
+    <!-- PLUGINS STYLES-->
+    <!-- THEME STYLES-->
+    <link href="{{asset('/css/main.min.css')}}" rel="stylesheet" />
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
 
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<body class="fixed-navbar">
+  <div class="page-wrapper">
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
+    @include('layouts.header')
+    @yield('sidebar')
 
-                    </ul>
+    <div class="wrapper content-wrapper">
+      <div class="page-content fade-in-up" >
+        @yield('content')
+      </div>
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                            </li>
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <main class="py-4">
-            @yield('content')
-        </main>
     </div>
+  </div>
+
+  <!-- CORE PLUGINS-->
+  <script src="{{asset('/js/jquery.min.js')}}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.5/umd/popper.min.js"></script>
+  <script src="{{asset('/js/bootstrap.min.js')}}"></script>
+  <script src="{{asset('/js/idle-timer.min.js')}}"></script>
+  <script src="{{asset('/js/jquery.slimscroll.min.js')}}"></script>
+  <script src="{{asset('/js/toastr.min.js')}}"></script>
+  <script src="{{asset('/js/jquery.validate.min.js')}}"></script>
+  <script src="{{asset('/js/bootstrap-select.min.js')}}"></script>
+  <!-- PAGE LEVEL PLUGINS-->
+
+  <!-- CORE SCRIPTS-->
+  <script src="{{asset('/js/app.min.js')}}"></script>
+  <!-- PAGE LEVEL SCRIPTS-->
+
 </body>
+
 </html>
