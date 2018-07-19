@@ -16,3 +16,6 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+Route::resource('students', 'StudentController'); //CRUDS students
+
+Route::get('/blocks', 'HomeController@blocks')->name('bills.validates'); //validar recibo

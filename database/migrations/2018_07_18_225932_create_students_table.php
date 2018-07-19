@@ -18,6 +18,10 @@ class CreateStudentsTable extends Migration
             $table->integer('rut');
             $table->string('first_name');
             $table->string('last_name');
+            $table->string('email');
+            $table->string('plan');
+            $table->string('status');
+            $table->string('avatar');
             $table->timestamps();
         });
     }

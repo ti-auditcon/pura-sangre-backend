@@ -2,19 +2,19 @@
 <nav class="page-sidebar" id="sidebar">
     <div id="sidebar-collapse">
         <ul class="side-menu">
-          <li @if($page=="marketplace") class="active" @endif>
-              <a href="index.html"><i class="sidebar-item-icon ti-home"></i>
+          <li @if($page=="home") class="active" @endif>
+              <a href="{{url('/')}}"><i class="sidebar-item-icon ti-home"></i>
                   <span class="nav-label">Inicio</span>
               </a>
           </li>
-          <li @if($page=="users") class="active" @endif>
-              <a href="productores.html"><i class="sidebar-item-icon ti-world"></i>
-                  <span class="nav-label">Clases</span>
+          <li @if($page=="students") class="active" @endif>
+              <a href="{{url('/students')}}"><i class="sidebar-item-icon ti-id-badge"></i>
+                  <span class="nav-label">Alumnos</span>
               </a>
           </li>
-          <li @if($page=="logistica") class="active" @endif>
-              <a href="logistica.html"><i class="sidebar-item-icon ti-truck"></i>
-                  <span class="nav-label">Alumnos</span>
+          <li @if($page=="blocks") class="active" @endif>
+              <a href="{{url('/blocks')}}"><i class="sidebar-item-icon ti-clipboard"></i>
+                  <span class="nav-label">Clases</span>
               </a>
           </li>
           <li @if($page=="mercados") class="active" @endif>
