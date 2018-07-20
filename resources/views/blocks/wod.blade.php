@@ -49,7 +49,7 @@
   $(document).ready(function() {
     $('#calendar').fullCalendar({
       header: {
-          left: 'prev,next today',
+          left: 'prev,next',
           center: 'title',
       },
       minTime: "07:00:00",
@@ -60,10 +60,7 @@
       // allDaySlot: false,
       slotDuration: '00:30:00',
       slotLabelFormat: 'h(:mm)a',
-      hiddenDays: [0],
-      eventClick: function(calEvent, jsEvent, view) {
-        window.location.href = "{{url('/blocks/1')}}";
-      }
+      hiddenDays: [0]
     });
   });
   </script>

@@ -25,6 +25,8 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+
     public function blocks()
     {
       $events = [
@@ -116,5 +118,9 @@ class HomeController extends Controller
 
 
         return view('blocks.index')->with('events',json_encode($events));
+    }
+    public function blocksshow()
+    {
+      return view('blocks.show');
     }
 }

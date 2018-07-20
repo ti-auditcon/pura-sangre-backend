@@ -19,3 +19,4 @@ Auth::routes();
 Route::resource('students', 'StudentController'); //CRUDS students
 
 Route::get('/blocks', 'HomeController@blocks')->name('bills.validates'); //validar recibo
+Route::get('/blocks/1', 'HomeController@blocksshow')->name('blocks.show'); //validar recibo
