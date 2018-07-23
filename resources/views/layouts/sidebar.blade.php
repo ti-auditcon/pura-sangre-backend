@@ -17,21 +17,42 @@
                   <span class="nav-label">Clases</span>
               </a>
           </li>
-          <li @if($page=="mercados") class="active" @endif>
-              <a href="mercado.html"><i class="sidebar-item-icon ti-credit-card"></i>
+          <li @if($page=="payments") class="active" @endif>
+              <a href="{{url('/payments')}}"><i class="sidebar-item-icon ti-credit-card"></i>
                   <span class="nav-label">Pagos</span>
               </a>
           </li>
-          <li @if($page=="mercados") class="active" @endif>
+          {{-- <li @if($page=="mercados") class="active" @endif>
               <a href="mercado.html"><i class="sidebar-item-icon ti-clipboard"></i>
                   <span class="nav-label">Planes</span>
+              </a>
+          </li> --}}
+
+          <li @if($page=="messages") class="active" @endif>
+              <a href="{{url('/messages')}}"><i class="sidebar-item-icon ti-email"></i>
+                  <span class="nav-label">Mensajeria</span>
               </a>
           </li>
 
           <li @if($page=="config") class="active" @endif>
-              <a href="configuracion.html"><i class="sidebar-item-icon ti-settings"></i>
-                  <span class="nav-label">Configuracion</span>
+              <a href="javascript:;"><i class="sidebar-item-icon ti-settings"></i>
+                  <span class="nav-label">Configuracion<br /> del box</span>
               </a>
+              <div class="nav-2-level">
+                            <ul>
+
+                                <li>
+                                    <a href="form_layouts.html">Centro deportivo</a>
+                                </li>
+                                <li>
+                                    <a href="form_advanced.html">Roles y usuarios</a>
+                                </li>
+                                <li>
+                                    <a href="form_masks.html">Planes</a>
+                                </li>
+
+                            </ul>
+                        </div>
           </li>
         </ul>
     </div>

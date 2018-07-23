@@ -9,9 +9,7 @@
       <div class="ibox">
           <div class="ibox-head">
               <div class="ibox-title">CALENDAR</div>
-              <button class="btn btn-primary btn-rounded btn-air my-3" data-toggle="modal" data-target="#new-event-modal">
-                  <span class="btn-icon"><i class="la la-plus"></i>Nueva clase</span>
-              </button>
+
           </div>
           <div class="ibox-body">
               <div id="calendar"></div>
