@@ -16,11 +16,7 @@
                     <span class="icon-bar"></span>
                 </a>
             </li>
-            <li>
-                <a class="nav-link search-toggler js-search-toggler" href="javascript:;"><i class="ti-search"></i>
-                    <span>Buscar...</span>
-                </a>
-            </li>
+
         </ul>
         <!-- END TOP-LEFT TOOLBAR-->
         <!-- START TOP-RIGHT TOOLBAR-->
@@ -105,11 +101,7 @@
                     </div>
                 </div>
             </li>
-            <li>
-                <a class="nav-link quick-sidebar-toggler">
-                    <span class="ti-align-right"></span>
-                </a>
-            </li>
+
         </ul>
         <!-- END TOP-RIGHT TOOLBAR-->
     </div>

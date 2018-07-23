@@ -4,108 +4,146 @@
 @endsection
 
 @section('content')
-  <div class="row justify-content-center">
-      <div class="col-md-12">
-        <div class="ibox ibox-fullheight">
-              <div class="ibox-head">
-                  <div class="ibox-title">Alumnos</div>
-                  <div class="ibox-tools">
+  <div class="ibox flex-1">
+      <div class="ibox-body">
+          <div class="flexbox">
+              <div class="flexbox-b">
+                  <div class="ml-5 mr-5">
+                      <img class="img-circle" src="{{url('/img/users/'.$student->avatar)}}" alt="image" width="110">
+                  </div>
+                  <div>
+                      <h4>{{$student->first_name}} {{$student->last_name}}</h4>
+                      <div class="text-muted font-13 mb-3">
+                          <span class="mr-3"><i class="mr-2"></i>PLAN FULL</span>
+                          <span class="badge badge-success badge-pills">ACTIVO</span>
+
+                      </div>
 
                   </div>
               </div>
-              <div class="ibox-body">
-                  <div class="flexbox mb-4">
-                      <div class="flexbox">
-                          <span class="flexbox mr-3">
-                              <span class="mr-2 text-muted">Activos</span>
-                              <span class="h3 mb-0 text-primary font-strong">310</span>
-                          </span>
-                          <span class="flexbox">
-                              <span class="mr-2 text-muted">Inactivos</span>
-                              <span class="h3 mb-0 text-pink font-strong">105</span>
-                          </span>
-                          <span class="flexbox">
-                              <span class="mr-2 text-muted">Deudores</span>
-                              <span class="h3 mb-0 text-yellow font-strong">11</span>
-                          </span>
-                      </div>
+              <div class="d-inline-flex">
+                  <div class="px-4 text-center">
+                      <div class="text-muted font-13">Clases asistidas</div>
+                      <div class="h2 mt-2">134</div>
                   </div>
-                  <div class="ibox-fullwidth-block">
-                      <table id="students-table" class="table table-hover">
-                          <thead class="thead-default thead-lg">
-                              <tr>
-
-                                  <th width="30%">Alumno</th>
-                                  <th width="20%">Email</th>
-                                  <th width="20%">Plan</th>
-                                  <th width="10%">Status</th>
-                                  <th width="20%" style="width:91px;" >Date</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                            @foreach (App\Models\Student::all() as $student)
-                              <tr>
-
-                                  <td>
-                                    <a class="media-img" href="javascript:;">
-                                            <img class="img-circle" src="{{url('/img/users/'.$student->avatar)}}" alt="image" width="54" style="padding-right:20px;">
-                                            {{$student->first_name}} {{$student->last_name}}
-                                        </a>
-
-                                  </td>
-                                  <td>{{$student->email}}</td>
-                                  <td>{{$student->plan}}</td>
-                                  @if($student->status=='ACTIVO')
-                                    <td><span class="badge badge-success badge-pills">ACTIVO</span> </td>
-                                  @elseif($student->status=='INACTIVO')
-                                    <td><span class="badge badge-danger badge-pills">INACTIVO</span> </td>
-                                  @elseif($student->status=='DEUDA')
-                                    <td><span class="badge badge-warning badge-pills">DEUDA</span> </td>
-                                  @endif
-                                  <td class="pr-4" style="width:91px;">{{$student->created_at}}</td>
-                              </tr>
-                             @endforeach
-
-                          </tbody>
-                      </table>
+                  <div class="px-4 text-center">
+                      <div class="text-muted font-13">Clases disponibles</div>
+                      <div class="h2 mt-2 text-warning">7</div>
                   </div>
               </div>
           </div>
       </div>
+
   </div>
+  <div class="row justify-content-center">
+    <div class="col-4">
+      <div class="ibox">
+          <div class="ibox-head">
+              <div class="ibox-title">DETALLES</div>
+              <div class="ibox-tools">
+                    <a><i class="ti-pencil"></i></a>
+
+                </div>
+          </div>
+          <div class="ibox-body">
+
+            <div class="card mb-4">
+                <div class="card-body ">
+                  <div class="row mb-2">
+                      <div class="col-12 text-muted">RUT:</div>
+                      <div class="col-12">{{$student->rut}}</div>
+                  </div>
+                  <div class="row mb-2">
+                      <div class="col-12 text-muted">EMAIL:</div>
+                      <div class="col-12">{{$student->email}}</div>
+                  </div>
+                  <div class="row mb-2">
+                      <div class="col-12 text-muted">Fecha de nacimiento:</div>
+                      <div class="col-12">22-07-1985</div>
+                  </div>
+                  <div class="row mb-2">
+                      <div class="col-12 text-muted">Direcccion:</div>
+                      <div class="col-12">bla bla bla</div>
+                  </div>
+                </div>
+
+              </div>
+          </div>
+      </div>
+    </div>
+    <div class="col-8">
+      <div class="ibox ibox-fullheight">
+            <div class="ibox-head">
+                <div class="ibox-title">Pagos</div>
+                <div class="ibox-tools">
+                      <button class="btn btn-default">Realizar pago</button>
+
+                  </div>
+            </div>
+            <div class="ibox-body">
+              <div class="flexbox mb-4">
+                  <div class="flexbox">
+                      <span class="flexbox mr-3">
+                          <span class="mr-2 text-muted">Dia de pago</span>
+                          <span class="h3 mb-0 text-primary font-strong">08</span>
+                      </span>
+                      <span class="flexbox mr-3">
+                          <span class="mr-2 text-muted">Dias disponibles</span>
+                          <span class="h3 mb-0 text-primary font-strong">9</span>
+                      </span>
+                  </div>
+              </div>
+                <div class="ibox-fullwidth-block">
+                    <table id="students-table" class="table table-hover">
+                        <thead class="thead-default thead-lg">
+                            <tr>
+
+                                <th width="20%">Plan</th>
+                                <th width="30%">Periodo</th>
+                                <th width="15%">total</th>
+                                <th width="20%">Medio de pago</th>
+                                <th width="15%" >Día de pago</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                              <td >Plan Full</td>
+                              <td >08-07-2018 al 08-08-2018</td>
+                              <td >$30.000</td>
+                              <td >Transferencia</td>
+                              <td  >05-07-2018</td>
+                          </tr>
+                          <tr>
+                              <td >Plan Full</td>
+                              <td >08-06-2018 al 08-07-2018</td>
+                              <td >$30.000</td>
+                              <td >Transferencia</td>
+                              <td  >05-06-2018</td>
+                          </tr>
+                          <tr>
+                              <td >Plan AM</td>
+                              <td >08-05-2018 al 08-06-2018</td>
+                              <td >$20.000</td>
+                              <td >Transferencia</td>
+                              <td  >05-05-2018</td>
+                          </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
 
-
+  </div>
 @endsection
 
 
 @section('css') {{-- stylesheet para esta vista --}}
-	<link href="{{asset('css/datatables.min.css')}}" rel="stylesheet" />
 @endsection
 
 
 
 @section('scripts') {{-- scripts para esta vista --}}
-	{{--  datatable --}}
-	<script src="{{ asset('js/datatables.min.js') }}"></script>
-	<script>
-		$(document).ready(function() {
-				$('#students-table').DataTable({
-					"paging": true,
-					"ordering": true,
-					"language": {
-								"lengthMenu": "Mostrar _MENU_ elementos",
-								"zeroRecords": "Sin resultados",
-								"info": "Mostrando pagina _PAGE_ de _PAGES_",
-								"infoEmpty": "Sin resultados",
-								"infoFiltered": "(filtered from _MAX_ total records)",
-								"search": "Filtrar:"
-					}
-
-				});
-			});
-
-	</script>
-	{{--  End datatable --}}
-
 @endsection

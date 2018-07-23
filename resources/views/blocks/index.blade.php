@@ -21,6 +21,58 @@
 
   </div>
 
+  <div class="modal fade show" id="wod-modal" tabindex="-1" role="dialog" >
+  			  <div class="modal-dialog" role="document">
+  			    <div class="modal-content">
+
+  			      <div class="modal-header">
+  			        <h5 class="modal-title">Actualizar wod</h5>
+  			      </div>
+  			      <div class="modal-body">
+                <div class="ibox shadow-wide">
+                                        <div class="ibox-body text-center">
+                                            <h3 class="font-strong">Warm up</h3>
+
+                                            <div class="py-1">
+                                              <textarea class="form-control" rows="5">
+5 HS Push Ups
+15 Pull Ups
+25 Push Ups
+25 Push Ups
+                                              </textarea>
+                                            </div>
+                                            <h3 class="font-strong">Skills</h3>
+
+                                            <div class="py-1">
+                                              <textarea class="form-control" rows="5">
+5 HS Push Ups
+15 Pull Ups
+25 Push Ups
+25 Push Ups
+                                              </textarea>
+                                            </div>
+                                            <h3 class="font-strong">WOD</h3>
+
+                                            <div class="py-1">
+                                              <textarea class="form-control" rows="5">
+5 HS Push Ups
+15 Pull Ups
+25 Push Ups
+25 Push Ups
+                                              </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+  			      </div>
+
+  			      <div class="modal-footer">
+  			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+  			        <button type="button" class="btn btn-primary" onclick="this.form.submit();">Actualizar wood</button>
+  			      </div>
+  						</form>
+  			    </div>
+  			  </div>
+  			</div>
 
 
 @endsection
@@ -62,7 +114,14 @@
       slotLabelFormat: 'h(:mm)a',
       hiddenDays: [0],
       eventClick: function(calEvent, jsEvent, view) {
-        window.location.href = "{{url('/blocks/1')}}";
+
+        if(!calEvent.allDay){
+          window.location.href = "{{url('/blocks/1')}}";
+        }
+        else{
+          $('#wod-modal').modal('show');
+        }
+
       }
     });
   });

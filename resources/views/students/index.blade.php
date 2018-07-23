@@ -39,7 +39,8 @@
                                   <th width="20%">Email</th>
                                   <th width="20%">Plan</th>
                                   <th width="10%">Status</th>
-                                  <th width="20%" style="width:91px;" >Date</th>
+                                  <th width="10%">Ultimo pago</th>
+                                  <th width="5%">Días disponibles</th>
                               </tr>
                           </thead>
                           <tbody>
@@ -47,7 +48,7 @@
                               <tr>
 
                                   <td>
-                                    <a class="media-img" href="javascript:;">
+                                    <a class="media-img" href="{{url('/students/'.$student->id)}}">
                                             <img class="img-circle" src="{{url('/img/users/'.$student->avatar)}}" alt="image" width="54" style="padding-right:20px;">
                                             {{$student->first_name}} {{$student->last_name}}
                                         </a>
@@ -62,7 +63,8 @@
                                   @elseif($student->status=='DEUDA')
                                     <td><span class="badge badge-warning badge-pills">DEUDA</span> </td>
                                   @endif
-                                  <td class="pr-4" style="width:91px;">{{$student->created_at}}</td>
+                                  <td>{{$student->created_at->format('Y-m-d')}}</td>
+                                  <td>{{rand(-7,45)}}</td>
                               </tr>
                              @endforeach
 

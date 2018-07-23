@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Student;
+
 
 class HomeController extends Controller
 {
@@ -121,6 +123,8 @@ class HomeController extends Controller
     }
     public function blocksshow()
     {
-      return view('blocks.show');
+      $students = Student::all();
+
+      return view('blocks.show')->with('students',$students);
     }
 }

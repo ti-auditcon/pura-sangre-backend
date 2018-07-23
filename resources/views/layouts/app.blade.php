@@ -18,6 +18,8 @@
     <link href="{{asset('/css/line-awesome.min.css')}}" rel="stylesheet" />
     <link href="{{asset('/css/animate.min.css')}}" rel="stylesheet" />
     <link href="{{asset('/css/bootstrap-select.min.css')}}" rel="stylesheet" />
+    <link href="{{asset('/css/jquery-jvectormap-2.0.3.css')}}" rel="stylesheet" />
+
     <!-- PLUGINS STYLES-->
     <!-- THEME STYLES-->
     <link href="{{asset('/css/main.min.css')}}" rel="stylesheet" />
@@ -53,12 +55,24 @@
   <script src="{{asset('/js/toastr.min.js')}}"></script>
   <script src="{{asset('/js/jquery.validate.min.js')}}"></script>
   <script src="{{asset('/js/bootstrap-select.min.js')}}"></script>
+  <script src="{{asset('/js/jquery.easypiechart.min.js')}}"></script>
+
   <!-- PAGE LEVEL PLUGINS-->
 
   <!-- CORE SCRIPTS-->
   <script src="{{asset('/js/app.min.js')}}"></script>
   <!-- PAGE LEVEL SCRIPTS-->
+  <script>
+    $(document).ready(function() {
+      $('.easypie').each(function(){
+          $(this).easyPieChart({
+            trackColor: $(this).attr('data-trackColor') || '#f2f2f2',
+            scaleColor: false,
+          });
+      });
+    });
 
+  </script>
   <!-- PAGE SCRIPT-->
    @yield('scripts')
 
