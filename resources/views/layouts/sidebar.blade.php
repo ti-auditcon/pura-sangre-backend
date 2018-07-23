@@ -13,15 +13,21 @@
               </a>
           </li>
           <li @if($page=="blocks") class="active" @endif>
-              <a href="{{url('/blocks')}}"><i class="sidebar-item-icon ti-clipboard"></i>
+              <a href="{{url('/blocks')}}"><i class="sidebar-item-icon  ti-calendar "></i>
                   <span class="nav-label">Clases</span>
               </a>
           </li>
           <li @if($page=="mercados") class="active" @endif>
-              <a href="mercado.html"><i class="sidebar-item-icon ti-stats-up"></i>
+              <a href="mercado.html"><i class="sidebar-item-icon ti-credit-card"></i>
+                  <span class="nav-label">Pagos</span>
+              </a>
+          </li>
+          <li @if($page=="mercados") class="active" @endif>
+              <a href="mercado.html"><i class="sidebar-item-icon ti-clipboard"></i>
                   <span class="nav-label">Planes</span>
               </a>
           </li>
+
           <li @if($page=="config") class="active" @endif>
               <a href="configuracion.html"><i class="sidebar-item-icon ti-settings"></i>
                   <span class="nav-label">Configuracion</span>

@@ -34,7 +34,7 @@
     <div class="col-6">
       <div class="ibox">
           <div class="ibox-head">
-              <div class="ibox-title">RESERVAS</div>
+              <div class="ibox-title">Alumnos</div>
               <div class="ibox-tools">
                   <a class="dropdown-toggle" data-toggle="dropdown"><i class="ti-user"></i></a>
                   <div class="dropdown-menu dropdown-menu-right">
@@ -45,16 +45,16 @@
               </div>
           </div>
           <div class="ibox-body">
-              <div class="slimScrollDiv" >
+              <div class="" >
                 <ul class="media-list media-list-divider mr-2 scroller" data-height="580px" style="overflow: hidden; width: auto; height: 580px;">
-                  @foreach (App\models\student::all() as $student)
+                  @foreach (App\models\student::all()->take(15) as $student)
                     <li class="media align-items-center">
                         <a class="media-img" href="javascript:;">
                             <img class="img-circle" src="{{url('/img/users/'.$student->avatar)}}" alt="image" width="54">
                         </a>
                         <div class="media-body d-flex align-items-center">
                             <div class="flex-1">
-                                <div class="media-heading">{{$student->fist_name}} {{$student->last_name}}</div>
+                                <div class="media-heading">{{$student->fist_name}} {{$student->last_name}} <span class="badge badge-success badge-pill ml-2">Confirmado</span></div>
                                 <small class="text-muted">{{$student->email}} </small></div>
                             <button class="btn btn-sm btn-outline-secondary btn-rounded">remover</button>
                         </div>

@@ -66,13 +66,13 @@
             <li class="dropdown dropdown-user">
                 <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
                     <span>Super User</span>
-                    <img src="./assets/img/users/admin-image.png" alt="image" />
+                    <img src="{{url('/img/users/admin-image.png')}}" alt="image" />
                 </a>
                 <div class="dropdown-menu dropdown-arrow dropdown-menu-right admin-dropdown-menu">
                     <div class="dropdown-arrow"></div>
                     <div class="dropdown-header">
                         <div class="admin-avatar">
-                            <img src="./assets/img/users/admin-image.png" alt="image" />
+                            <img src="{{url('/img/users/admin-image.png')}}" alt="image" />
                         </div>
                         <div>
                             <h5 class="font-strong text-white">Super User</h5>

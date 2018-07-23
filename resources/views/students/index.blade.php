@@ -20,12 +20,15 @@
                               <span class="mr-2 text-muted">Activos</span>
                               <span class="h3 mb-0 text-primary font-strong">310</span>
                           </span>
-                          <span class="flexbox">
+                          <span class="flexbox mr-3" >
                               <span class="mr-2 text-muted">Inactivos</span>
                               <span class="h3 mb-0 text-pink font-strong">105</span>
                           </span>
+                          <span class="flexbox mr-3">
+                              <span class="mr-2 text-muted">Deudores</span>
+                              <span class="h3 mb-0 text-warning font-strong">11</span>
+                          </span>
                       </div>
-                      <a class="flexbox" href="ecommerce_orders_list.html" target="_blank">VIEW ALL<i class="ti-arrow-circle-right ml-2 font-18"></i></a>
                   </div>
                   <div class="ibox-fullwidth-block">
                       <table id="students-table" class="table table-hover">
