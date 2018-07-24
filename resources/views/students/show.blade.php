@@ -41,8 +41,7 @@
           <div class="ibox-head">
               <div class="ibox-title">DETALLES</div>
               <div class="ibox-tools">
-                    <a><i class="ti-pencil"></i></a>
-
+                    <a class="btn btn-success text-white">Editar</a>
                 </div>
           </div>
           <div class="ibox-body">
@@ -70,13 +69,46 @@
               </div>
           </div>
       </div>
+      <div class="ibox">
+          <div class="ibox-head">
+              <div class="ibox-title">Planes</div>
+              <div class="ibox-tools">
+                    <a class="btn btn-success text-white">Nuevo Plan</a>
+                </div>
+          </div>
+          <div class="ibox-body">
+            <table id="plans-table" class="table table-hover">
+                <thead class="thead-default thead-lg">
+                    <tr>
+
+                        <th width="30%">Plan</th>
+                        <th width="30%">Ultimo pago</th>
+                        {{-- <th width="20%">ultimo pago</th> --}}
+                        <th width="20%"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>PLAN FULL</td>
+                    <td>05-07-2018</td>
+                    <td><span class="badge badge-success">activo</span></td>
+                  </tr>
+                  <tr>
+                    <td>PLAN AM</td>
+                    <td>05-05-2018</td>
+                    <td><span class="badge badge-danger">inactivo</span></td>
+                  </tr>
+                </tbody>
+            </table>
+          </div>
+      </div>
     </div>
     <div class="col-8">
       <div class="ibox ibox-fullheight">
             <div class="ibox-head">
                 <div class="ibox-title">Pagos</div>
                 <div class="ibox-tools">
-                      <button class="btn btn-default">Realizar pago</button>
+                      <button class="btn btn-success">Realizar pago</button>
 
                   </div>
             </div>

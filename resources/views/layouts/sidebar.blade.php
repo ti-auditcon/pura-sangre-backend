@@ -18,8 +18,8 @@
               </a>
           </li>
           <li @if($page=="payments") class="active" @endif>
-              <a href="{{url('/payments')}}"><i class="sidebar-item-icon ti-credit-card"></i>
-                  <span class="nav-label">Pagos</span>
+              <a href="{{url('/reports')}}"><i class="sidebar-item-icon ti-bar-chart"></i>
+                  <span class="nav-label">Reportes</span>
               </a>
           </li>
           {{-- <li @if($page=="mercados") class="active" @endif>
@@ -50,7 +50,9 @@
                                 <li>
                                     <a href="form_masks.html">Planes</a>
                                 </li>
-
+                                <li>
+                                    <a href="form_masks.html">Facturacion</a>
+                                </li>
                             </ul>
                         </div>
           </li>

@@ -22,8 +22,8 @@ Route::resource('students', 'StudentController'); //CRUDS students
 Route::get('/blocks', 'HomeController@blocks')->name('bills.validates'); //validar recibo
 Route::get('/blocks/1', 'HomeController@blocksshow')->name('blocks.show'); //validar recibo
 
-Route::get('/payments', function () {
-    return view('payments');
+Route::get('/reports', function () {
+    return view('reports');
 });
 
 Route::get('/messages', function () {

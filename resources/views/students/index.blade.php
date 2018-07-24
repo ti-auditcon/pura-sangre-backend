@@ -10,7 +10,7 @@
               <div class="ibox-head">
                   <div class="ibox-title">Alumnos</div>
                   <div class="ibox-tools">
-
+                    <a class="btn btn-success text-white" href="{{ url('/students/create')}}">Nuevo alumno</a>
                   </div>
               </div>
               <div class="ibox-body">

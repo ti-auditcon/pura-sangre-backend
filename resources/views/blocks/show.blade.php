@@ -28,6 +28,8 @@
                               <div class="col-12 text-muted">Coach:</div>
                               <div class="col-12">Max Maximo</div>
                           </div>
+                          <br />
+
 
                         </div>
                     </div>
@@ -35,12 +37,16 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="card mb-4">
                         <div class="card-body flexbox-b">
-                            <div class="easypie mr-4" data-percent="42" data-bar-color="#5c6bc0" data-size="80" data-line-width="8">
-                                <span class="easypie-data font-26 text-primary"><i class="ti-user"></i></span>
+                            <div class="row ">
+                              <div class="easypie mr-4" data-percent="42" data-bar-color="#5c6bc0" data-size="80" data-line-width="8">
+                                  <span class="easypie-data font-26 text-primary"><i class="ti-user"></i></span>
+                              </div>
+
+                              <h3 class="font-strong text-primary">15/25</h3>
+                              <div class="text-muted">Cupos confirmados</div>
                             </div>
-                            <div>
-                                <h3 class="font-strong text-primary">15/25</h3>
-                                <div class="text-muted">Cupos confirmados</div>
+                            <div class="row ">
+                              <button type="button" name="button" class="btn btn-danger">Deshabilitar clase</button>
                             </div>
                         </div>
                     </div>
