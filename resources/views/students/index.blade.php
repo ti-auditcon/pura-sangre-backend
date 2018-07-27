@@ -16,17 +16,30 @@
               <div class="ibox-body">
                   <div class="flexbox mb-4">
                       <div class="flexbox">
+
                           <span class="flexbox mr-3">
-                              <span class="mr-2 text-muted">Activos</span>
-                              <span class="h3 mb-0 text-primary font-strong">310</span>
+                            <div class="btn-group">
+                                <button class="btn btn-outline-success">
+                                    <span class="btn-icon">ACTIVOS</span>
+                                </button>
+                                <span class="btn-label-out btn-label-out-right btn-label-out-success pointing">340</span>
+                            </div>
                           </span>
                           <span class="flexbox mr-3" >
-                              <span class="mr-2 text-muted">Inactivos</span>
-                              <span class="h3 mb-0 text-pink font-strong">105</span>
+                            <div class="btn-group">
+                                <button class="btn btn-outline-danger">
+                                    <span class="btn-icon">INACTIVOS</span>
+                                </button>
+                                <span class="btn-label-out btn-label-out-right btn-label-out-danger pointing">120</span>
+                            </div>
                           </span>
                           <span class="flexbox mr-3">
-                              <span class="mr-2 text-muted">Deudores</span>
-                              <span class="h3 mb-0 text-warning font-strong">11</span>
+                            <div class="btn-group">
+                                <button class="btn btn-outline-warning">
+                                    <span class="btn-icon">PRUEBA</span>
+                                </button>
+                                <span class="btn-label-out btn-label-out-right btn-label-out-warning pointing">13</span>
+                            </div>
                           </span>
                       </div>
                   </div>
@@ -36,11 +49,13 @@
                               <tr>
 
                                   <th width="30%">Alumno</th>
-                                  <th width="20%">Email</th>
                                   <th width="20%">Plan</th>
-                                  <th width="10%">Status</th>
-                                  <th width="10%">Ultimo pago</th>
-                                  <th width="5%">Días disponibles</th>
+                                  <th width="10%">Dia de Pago</th>
+                                  <th width="10%">Vencimiento</th>
+                                  <th width="20%">Periodo</th>
+                                  <th>
+                                    acciones
+                                  </th>
                               </tr>
                           </thead>
                           <tbody>
@@ -48,23 +63,25 @@
                               <tr>
 
                                   <td>
-                                    <a class="media-img" href="{{url('/students/'.$student->id)}}">
+                                    <span class="badge-success badge-point"></span>
+                                    <a class="media-img " href="{{url('/students/'.$student->id)}}">
                                             <img class="img-circle" src="{{url('/img/users/'.$student->avatar)}}" alt="image" width="54" style="padding-right:20px;">
                                             {{$student->first_name}} {{$student->last_name}}
                                         </a>
 
+
                                   </td>
-                                  <td>{{$student->email}}</td>
+                                  {{-- <td>{{$student->email}}</td> --}}
                                   <td>{{$student->plan}}</td>
-                                  @if($student->status=='ACTIVO')
-                                    <td><span class="badge badge-success badge-pills">ACTIVO</span> </td>
-                                  @elseif($student->status=='INACTIVO')
-                                    <td><span class="badge badge-danger badge-pills">INACTIVO</span> </td>
-                                  @elseif($student->status=='DEUDA')
-                                    <td><span class="badge badge-warning badge-pills">DEUDA</span> </td>
-                                  @endif
-                                  <td>{{$student->created_at->format('Y-m-d')}}</td>
-                                  <td>{{rand(-7,45)}}</td>
+                                  <td>03</td>
+                                  <td>6 dias</td>
+                                  <td>09-07-2018 al 09-08-2018</td>
+
+                                  <td>
+                                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-credit-card"></i></button>
+                                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-send"></i></button>
+                                  </td>
+
                               </tr>
                              @endforeach
 

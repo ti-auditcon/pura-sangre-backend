@@ -11,9 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
+
+Route::get('/', 'HomeController@index');
 
 Auth::routes();
 Route::resource('students', 'StudentController'); //CRUDS students

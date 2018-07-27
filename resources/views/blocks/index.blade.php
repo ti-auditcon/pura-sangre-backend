@@ -101,6 +101,7 @@
       header: {
           left: 'prev,next today',
           center: 'title',
+          right:  'agendaDay agendaWeek',
       },
       minTime: "07:00:00",
       maxTime: "21:00:00",
