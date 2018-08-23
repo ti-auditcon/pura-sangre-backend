@@ -9,6 +9,10 @@ class StatusUser extends Model
 {
   protected $fillable = ['status_user'];
 
+  /**
+   * [users description]
+   * @return [type] [description]
+   */
   public function users()
   {
     return $this->hasMany(User::class);
