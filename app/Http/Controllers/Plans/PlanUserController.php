@@ -38,7 +38,10 @@ class PlanUserController extends Controller
      */
     public function store(Request $request, PlanUser $planuser)
     {
-
+      dd($request->all());
+      $planuser = PlanUser::create($request->all());
+      Session::flash('success','El plan ha sido asignado correctamente');
+      return view('users.show')->with('user', $user);
     }
 
     /**

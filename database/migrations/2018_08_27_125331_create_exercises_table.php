@@ -79,12 +79,12 @@ class CreateExercisesTable extends Migration
      */
     public function down()
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('exercises');
-        Schema::dropIfExists('stages');
-        Schema::dropIfExists('clase_stage');
-        Schema::dropIfExists('exercise_stages');
-        Schema::dropIfExists('statistics');
-        Schema::dropIfExists('reservation_statistic_stages');
+      Schema::disableForeignKeyConstraints();
+      Schema::dropIfExists('exercises');
+      Schema::dropIfExists('stages');
+      Schema::dropIfExists('clase_stage');
+      Schema::dropIfExists('exercise_stages');
+      Schema::dropIfExists('statistics');
+      Schema::dropIfExists('reservation_statistic_stages');
     }
 }
