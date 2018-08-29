@@ -2,8 +2,7 @@
 <header class="header">
     <div class="page-brand">
         <a href="">
-            <span class="brand align-items-center">Pura Sangre</span>
-
+          <span class="brand align-items-center">Pura Sangre</span>
         </a>
     </div>
     <div class="d-flex justify-content-between align-items-center flex-1">
@@ -96,7 +95,7 @@
                         </div>
                         <div class="d-flex justify-content-between mt-2">
                             <a class="text-muted" href="javascript:;">Earnings history</a>
-                            <a class="d-flex align-items-center" href="javascript:;">Logout<i class="ti-shift-right ml-2 font-20"></i></a>
+                            <a class="d-flex align-items-center" href="{{ route('logout') }}" onclick="event.preventDefault()">Logout<i class="ti-shift-right ml-2 font-20"></i></a>
                         </div>
                     </div>
                 </div>

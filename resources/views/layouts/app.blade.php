@@ -12,14 +12,15 @@
 
     <!-- GLOBAL MAINLY STYLES-->
     <link href="{{asset('/css/bootstrap.min.css')}}" rel="stylesheet" />
-    <link href="{{asset('/css/font-awesome.min.css')}}" rel="stylesheet" />
-    <link href="{{asset('/css/line-awesome.min.css')}}" rel="stylesheet" />
-    <link href="{{asset('/css/themify-icons.css')}}" rel="stylesheet" />
-    <link href="{{asset('/css/line-awesome.min.css')}}" rel="stylesheet" />
     <link href="{{asset('/css/animate.min.css')}}" rel="stylesheet" />
     <link href="{{asset('/css/bootstrap-select.min.css')}}" rel="stylesheet" />
+    <link href="{{asset('/css/font-awesome.min.css')}}" rel="stylesheet" />
     <link href="{{asset('/css/jquery-jvectormap-2.0.3.css')}}" rel="stylesheet" />
-
+    <link href="{{asset('/css/line-awesome.min.css')}}" rel="stylesheet" />
+    <link href="{{asset('/css/sweetalert.css')}}" rel="stylesheet" />
+    <link href="{{asset('/css/themify-icons.css')}}" rel="stylesheet" />
+    <link href="{{asset('/css/toastr.min.css')}}" rel="stylesheet" />
+    <link href="{{asset('/css/bootstrap-datepicker.min.css')}}" rel="stylesheet" />
     <!-- PLUGINS STYLES-->
     <!-- THEME STYLES-->
     <link href="{{asset('/css/main.min.css')}}" rel="stylesheet" />
@@ -39,7 +40,7 @@
     @yield('sidebar')
 
     <div class="wrapper content-wrapper">
-      <div class="page-content fade-in-up" >
+      <div class="page-content " >
         @yield('content')
       </div>
 
@@ -47,15 +48,17 @@
   </div>
 
   <!-- CORE PLUGINS-->
-  <script src="{{asset('/js/jquery.min.js')}}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.5/umd/popper.min.js"></script>
+  <script src="{{asset('/js/jquery.min.js')}}"></script>
   <script src="{{asset('/js/bootstrap.min.js')}}"></script>
-  <script src="{{asset('/js/idle-timer.min.js')}}"></script>
-  <script src="{{asset('/js/jquery.slimscroll.min.js')}}"></script>
-  <script src="{{asset('/js/toastr.min.js')}}"></script>
-  <script src="{{asset('/js/jquery.validate.min.js')}}"></script>
   <script src="{{asset('/js/bootstrap-select.min.js')}}"></script>
+  <script src="{{asset('/js/idle-timer.min.js')}}"></script>
   <script src="{{asset('/js/jquery.easypiechart.min.js')}}"></script>
+  <script src="{{asset('/js/jquery.slimscroll.min.js')}}"></script>
+  <script src="{{asset('/js/jquery.validate.min.js')}}"></script>
+  <script src="{{ asset('js/sweetalert.min.js') }}"></script>
+  <script src="{{asset('/js/bootstrap-datepicker.min.js')}}"></script>
+  <script src="{{asset('/js/toastr.min.js')}}"></script>
 
   <!-- PAGE LEVEL PLUGINS-->
 
@@ -75,6 +78,8 @@
   </script>
   <!-- PAGE SCRIPT-->
    @yield('scripts')
+
+   @include('layouts.alert')
 
 </body>
 

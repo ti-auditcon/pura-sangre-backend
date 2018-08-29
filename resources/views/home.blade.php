@@ -11,8 +11,15 @@
             <div class="ibox-head">
                 <div class="ibox-title">Clases de hoy</div>
 
+
             </div>
             <div class="ibox-body" >
+              @guest()
+                <p>hola no estoy logueado</p>
+              @endguest
+              @auth
+                  <p>wiiii</p>
+              @endauth
                 <div id="calendar"></div>
             </div>
         </div>
@@ -138,7 +145,7 @@
   <script src="{{ asset('js/moment.min.js') }}"></script>
 	<script src="{{ asset('js/fullcalendar.min.js') }}"></script>
 
-  <script>
+  {{-- <script>
   $(document).ready(function() {
     $('#calendar').fullCalendar({
       header: {
@@ -166,7 +173,7 @@
       }
     });
   });
-  </script>
+  </script> --}}
 
 
 @endsection

@@ -5,69 +5,69 @@
 
 @section('content')
   <div class="ibox flex-1">
-      <div class="ibox-body">
-          <div class="flexbox">
-              <div class="flexbox-b">
-                  <div class="ml-5 mr-5">
-                      <img class="img-circle" src="{{url('/img/users/'.$student->avatar)}}" alt="image" width="110">
-                  </div>
-                  <div>
-                      <h4>{{$student->first_name}} {{$student->last_name}}</h4>
-                      <div class="text-muted font-13 mb-3">
-                          <span class="mr-3"><i class="mr-2"></i>PLAN FULL</span>
-                          <span class="badge badge-success badge-pills">ACTIVO</span>
-
-                      </div>
-
-                  </div>
-              </div>
-              <div class="d-inline-flex">
-                  <div class="px-4 text-center">
-                      <div class="text-muted font-13">Clases asistidas</div>
-                      <div class="h2 mt-2">134</div>
-                  </div>
-                  <div class="px-4 text-center">
-                      <div class="text-muted font-13">Clases disponibles</div>
-                      <div class="h2 mt-2 text-warning">7</div>
-                  </div>
-              </div>
+    <div class="ibox-body">
+      <div class="flexbox">
+        <div class="flexbox-b">
+          <div class="ml-5 mr-5">
+            {{-- <img class="img-circle" src="{{url('/img/users/'.$student->avatar)}}" alt="image" width="110"> --}}
           </div>
+          <div>
+            <h4>{{$user->first_name}} {{$user->last_name}}</h4>
+            <div class="text-muted font-13 mb-3">
+              <span class="mr-3"><i class="mr-2"></i>PLAN FULL</span>
+              <span class="badge badge-success badge-pills">ACTIVO</span>
+            </div>
+          </div>
+        </div>
+        <div class="d-inline-flex">
+          <div class="px-4 text-center">
+            <div class="text-muted font-13">Clases asistidas</div>
+            <div class="h2 mt-2">134</div>
+          </div>
+          <div class="px-4 text-center">
+            <div class="text-muted font-13">Clases disponibles</div>
+            <div class="h2 mt-2 text-warning">7</div>
+          </div>
+        </div>
       </div>
-
+    </div>
   </div>
   <div class="row justify-content-center">
     <div class="col-4">
       <div class="ibox">
-          <div class="ibox-head">
-              <div class="ibox-title">DETALLES</div>
-              <div class="ibox-tools">
-                    <a class="btn btn-success text-white">Editar</a>
-                </div>
+        <div class="ibox-head">
+          <div class="ibox-title">DETALLES</div>
+          <div class="ibox-tools">
+            <a class="btn btn-success text-white" href="{{ route('users.edit', $user->id) }}">Editar</a>
+            {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'delete', 'class' => 'user-delete']) !!}
+            {!! Form::close() !!}
+            <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick sweet-user-delete"
+            data-id="{{$user->id}}" data-name="{{$user->first_name}} {{$user->last_name}}"><i class="la la-trash"></i></button>
+
           </div>
-          <div class="ibox-body">
-
-            <div class="card mb-4">
-                <div class="card-body ">
-                  <div class="row mb-2">
-                      <div class="col-12 text-muted">RUT:</div>
-                      <div class="col-12">{{$student->rut}}</div>
-                  </div>
-                  <div class="row mb-2">
-                      <div class="col-12 text-muted">EMAIL:</div>
-                      <div class="col-12">{{$student->email}}</div>
-                  </div>
-                  <div class="row mb-2">
-                      <div class="col-12 text-muted">Fecha de nacimiento:</div>
-                      <div class="col-12">22-07-1985</div>
-                  </div>
-                  <div class="row mb-2">
-                      <div class="col-12 text-muted">Direcccion:</div>
-                      <div class="col-12">bla bla bla</div>
-                  </div>
-                </div>
-
+        </div>
+        <div class="ibox-body">
+          <div class="card mb-4">
+            <div class="card-body ">
+              <div class="row mb-2">
+                <div class="col-12 text-muted">RUT:</div>
+                {{-- <div class="col-12">{{$user->phone}}</div> --}}
               </div>
+              <div class="row mb-2">
+                <div class="col-12 text-muted">EMAIL:</div>
+                <div class="col-12">{{$user->email}}</div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-12 text-muted">Fecha de nacimiento:</div>
+                <div class="col-12">22-07-1985</div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-12 text-muted">Direcccion:</div>
+                <div class="col-12">bla bla bla</div>
+              </div>
+            </div>
           </div>
+        </div>
       </div>
       <div class="ibox">
           <div class="ibox-head">
@@ -178,4 +178,28 @@
 
 
 @section('scripts') {{-- scripts para esta vista --}}
+  
+  <script>
+	$('.sweet-user-delete').click(function(e){
+	  var id = $(this).data('id');
+		//alert(id);
+			swal({
+					title: "Desea eliminar al usuario: "+$(this).data('name')+"?",
+					text: "(Se borrarán todas las cuotas o planes futuros, manteniendo los ya consumidos)",
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonClass: 'btn-danger',
+					cancelButtonText: 'Cancelar',
+					confirmButtonText: 'Eliminar',
+					closeOnConfirm: false,
+			},function(){
+				//redirección para eliminar usuario
+         $('form.user-delete').submit();
+			});
+	});
+	</script>
+
+
+
+
 @endsection

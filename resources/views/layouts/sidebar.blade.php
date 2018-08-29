@@ -7,8 +7,8 @@
                   <span class="nav-label">Inicio</span>
               </a>
           </li>
-          <li @if($page=="students") class="active" @endif>
-              <a href="{{url('/students')}}"><i class="sidebar-item-icon ti-id-badge"></i>
+          <li @if($page=="users") class="active" @endif>
+              <a href="{{ route('users.index') }}"><i class="sidebar-item-icon ti-id-badge"></i>
                   <span class="nav-label">Alumnos</span>
               </a>
           </li>
