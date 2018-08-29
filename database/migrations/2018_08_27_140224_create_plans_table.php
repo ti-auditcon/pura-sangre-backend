@@ -19,6 +19,7 @@ class CreatePlansTable extends Migration
         Schema::create('plans', function (Blueprint $table) {
             $table->increments('id');
             $table->string('plan');
+            $table->string('period')->nullable();
             $table->integer('class_numbers');
             $table->timestamps();
         });
@@ -44,6 +45,18 @@ class CreatePlansTable extends Migration
             $table->foreign('plan_id')->references('id')->on('plans')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
+
+        Schema::create('counters', function (Blueprint $table) {
+          $table->increments('id');
+          $table->unsignedInteger('plan_user_id')->nullable();
+          $table->string('start_date');
+          $table->string('finish_date');
+          $table->string('lessons');
+          $table->string('state_counter');
+          $table->timestamps();
+
+          $table->foreign('plan_user_id')->references('id')->on('plan_user')->onDelete('cascade');
+        });
     }
 
     /**
@@ -57,5 +70,6 @@ class CreatePlansTable extends Migration
         Schema::dropIfExists('plans');
         Schema::dropIfExists('discounts');
         Schema::dropIfExists('plan_user');
+        Schema::dropIfExists('counters');
     }
 }
