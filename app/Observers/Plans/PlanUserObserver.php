@@ -75,32 +75,3 @@ class PlanUserObserver
         //
     }
 }
-
-
-// switch ($clientService->type->name){
-//       //cuota unica
-//       case "Unico":
-//         $fee  = new ClientServiceFee;
-//         $fee->client_service_id = $clientService->id;
-//         $fee->client_service_fee_state_id = 1;
-//         $fee->month = $clientService->month;
-//         $fee->amount = $clientService->amount;
-//         $fee->expiration_date = Carbon::create($clientService->year, $clientService->month+1 , 20);
-//         $fee->save();
-//         break;
-//       //cuota mensual
-//       case "Mensual":
-//         for ($i=$clientService->month; $i <= 12 ; $i++) {
-//           $fee  = new ClientServiceFee;
-//           $fee->client_service_id = $clientService->id;
-//           $fee->client_service_fee_state_id = 1;
-//           $fee->month = $i;
-//           $fee->amount = $clientService->amount;
-//           $fee->expiration_date = Carbon::create($clientService->year, $i+1 , 20);
-//           $fee->save();
-//         }
-//         break;
-//
-//     }
-//     Session::flash('success','El Servicio ha sido creado satisfactoriamente');
-//     //End
