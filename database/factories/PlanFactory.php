@@ -16,6 +16,7 @@ $factory->define(PlanUser::class, function (Faker $faker) {
     return [
       'start_date' => $faker->date($format = 'm-d-Y', $max = 'now'),
       'finish_date' => $faker->date($format = 'm-d-Y', $max = 'now'),
+      'amount' => $faker->randomElement($array = array ('40000', '50000', '160000', '23000', '80000')),
       // 'discount_id' => $faker->numberBetween($min = 1, $max = 3),
       'plan_id' => Plan::all()->random()->id,
       'user_id' => User::all()->random()->id,

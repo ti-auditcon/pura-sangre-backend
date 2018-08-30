@@ -20,7 +20,9 @@ class CreatePlansTable extends Migration
             $table->increments('id');
             $table->string('plan');
             $table->string('period')->nullable();
+            $table->integer('period_number')->nullable();
             $table->integer('class_numbers');
+            $table->integer('amount')->nullable();
             $table->timestamps();
         });
 
@@ -35,6 +37,9 @@ class CreatePlansTable extends Migration
             $table->increments('id');
             $table->string('start_date');
             $table->string('finish_date');
+            $table->integer('amount');
+            $table->integer('counter')->nullable();
+            $table->string('plan_state')->nullable();
             $table->unsignedInteger('discount_id')->nullable();
             $table->unsignedInteger('plan_id')->nullable();
             $table->unsignedInteger('user_id')->nullable();
@@ -44,18 +49,6 @@ class CreatePlansTable extends Migration
             $table->foreign('discount_id')->references('id')->on('discounts')->onDelete('cascade');
             $table->foreign('plan_id')->references('id')->on('plans')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-        });
-
-        Schema::create('counters', function (Blueprint $table) {
-          $table->increments('id');
-          $table->unsignedInteger('plan_user_id')->nullable();
-          $table->string('start_date');
-          $table->string('finish_date');
-          $table->string('lessons');
-          $table->string('state_counter');
-          $table->timestamps();
-
-          $table->foreign('plan_user_id')->references('id')->on('plan_user')->onDelete('cascade');
         });
     }
 
@@ -70,6 +63,5 @@ class CreatePlansTable extends Migration
         Schema::dropIfExists('plans');
         Schema::dropIfExists('discounts');
         Schema::dropIfExists('plan_user');
-        Schema::dropIfExists('counters');
     }
 }

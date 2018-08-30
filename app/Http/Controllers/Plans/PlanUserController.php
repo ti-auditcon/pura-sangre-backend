@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Plans;
 
+use Session;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
 use App\Models\Plans\PlanUser;
@@ -34,11 +35,11 @@ class PlanUserController extends Controller
      * [store description]
      * @param  Request  $request  [description]
      * @param  PlanUser $planuser [description]
+     * @param  User     $user     [description]
      * @return [type]             [description]
      */
-    public function store(Request $request, PlanUser $planuser)
+    public function store(Request $request, PlanUser $planuser, User $user)
     {
-      dd($request->all());
       $planuser = PlanUser::create($request->all());
       Session::flash('success','El plan ha sido asignado correctamente');
       return view('users.show')->with('user', $user);

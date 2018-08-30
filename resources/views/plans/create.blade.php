@@ -8,13 +8,14 @@
     <div class="col-6">
       <div class="ibox">
         <div class="ibox-head">
-          <div class="ibox-title">Agregar plan a: {{$user->first_name}} {{$user->first_name}}</div>
+          <div class="ibox-title">Agregar plan a: {{$user->first_name}} {{$user->last_name}}</div>
           <div class="ibox-tools">
             {{-- <a class="btn btn-success text-white" href="{{ route('users.create')}}">Nuevo alumno</a> --}}
           </div>
         </div>
         {!! Form::open(['route' => ['users.plans.store', $user->id]]) !!}
         <div class="ibox-body">
+          <input class="form-control" name="user_id" type="hidden" value="{{ $user->id }}" hidden>
           <div class="row">
             <div class="col-sm-6 form-group mb-4">
             <div class="form-group">
@@ -22,7 +23,7 @@
               <select class="selectpicker form-control"  name="plan_id" required>
                <option value="">Asignar plan...</option>
                @foreach (App\Models\Plans\Plan::all() as $plan)
-               <option value="{{$plan->id}}">{{$plan->plan}}</option>
+               <option value="{{$plan->id}}">{{$plan->plan}} - {{$plan->period}}</option>
                @endforeach
               </select>
             </div>

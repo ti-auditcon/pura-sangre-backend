@@ -72,33 +72,33 @@
       <div class="ibox">
           <div class="ibox-head">
             <div class="ibox-title">Planes</div>
+
             <div class="ibox-tools">
-              <a class="btn btn-success text-white" href="{{ route('users.plans.create', $user->id) }}">Nuevo Plan</a>
+              <a class="btn btn-success text-white" href="{{ route('users.plans.create', $user->id) }}">Asignar Plan</a>
             </div>
           </div>
           <div class="ibox-body">
             <table id="plans-table" class="table table-hover">
-                <thead class="thead-default thead-lg">
-                    <tr>
-
-                        <th width="30%">Plan</th>
-                        <th width="30%">Ultimo pago</th>
-                        {{-- <th width="20%">ultimo pago</th> --}}
-                        <th width="20%"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>PLAN FULL</td>
-                    <td>05-07-2018</td>
-                    <td><span class="badge badge-success">activo</span></td>
-                  </tr>
-                  <tr>
-                    <td>PLAN AM</td>
-                    <td>05-05-2018</td>
-                    <td><span class="badge badge-danger">inactivo</span></td>
-                  </tr>
-                </tbody>
+              <thead class="thead-default thead-lg">
+                <tr>
+                  <th width="30%">Plan</th>
+                  <th width="30%">Ultimo pago</th>
+                  {{-- <th width="20%">ultimo pago</th> --}}
+                  <th width="20%"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>PLAN FULL</td>
+                  <td>05-07-2018</td>
+                  <td><span class="badge badge-success">activo</span></td>
+                </tr>
+                <tr>
+                  <td>PLAN AM</td>
+                  <td>05-05-2018</td>
+                  <td><span class="badge badge-danger">inactivo</span></td>
+                </tr>
+              </tbody>
             </table>
           </div>
       </div>
