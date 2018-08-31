@@ -70,37 +70,34 @@
         </div>
       </div>
       <div class="ibox">
-          <div class="ibox-head">
-            <div class="ibox-title">Planes</div>
-
-            <div class="ibox-tools">
-              <a class="btn btn-success text-white" href="{{ route('users.plans.create', $user->id) }}">Asignar Plan</a>
-            </div>
+        <div class="ibox-head">
+          <div class="ibox-title">Planes</div>
+          <div class="ibox-tools">
+            <a class="btn btn-success text-white"
+            href="{{ route('users.plans.create', $user->id) }}">Asignar Plan</a>
           </div>
-          <div class="ibox-body">
-            <table id="plans-table" class="table table-hover">
-              <thead class="thead-default thead-lg">
+        </div>
+        <div class="ibox-body">
+          <table id="plans-table" class="table table-hover">
+            <thead class="thead-default thead-lg">
+              <tr>
+                <th width="30%">Plan</th>
+                <th width="30%">Termina el</th>
+                <th width="20%"></th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach ($user->plan_users as $plan_user)
                 <tr>
-                  <th width="30%">Plan</th>
-                  <th width="30%">Ultimo pago</th>
-                  {{-- <th width="20%">ultimo pago</th> --}}
-                  <th width="20%"></th>
+                  <td>{{$plan_user->plan->plan}}</td>
+                {{-- {{dd($user->plan_users)}} --}}
+                  <td>{{$plan_user->finish_date}}</td>
+                  <td><span class="badge badge-success">{{$plan_user->plan_state}}</span></td>
                 </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>PLAN FULL</td>
-                  <td>05-07-2018</td>
-                  <td><span class="badge badge-success">activo</span></td>
-                </tr>
-                <tr>
-                  <td>PLAN AM</td>
-                  <td>05-05-2018</td>
-                  <td><span class="badge badge-danger">inactivo</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
     <div class="col-8">

@@ -6,7 +6,6 @@ use App\Models\Plans\Plan;
 use App\Models\Users\User;
 use App\Models\Plans\Discount;
 use App\Models\Bills\Installment;
-// use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
@@ -19,6 +18,17 @@ class PlanUser extends Pivot
   protected $dates = ['deleted_at'];
   protected $fillable = ['start_date', 'finish_date', 'amount',
   'counter', 'plan_state', 'discount_id', 'plan_id', 'user_id'];
+
+  /**
+   * [setStartDateAtribute description]
+   * @param [type] $value [description]
+   */
+  // public function setStartDateAtribute($value)
+  // {
+  //   // dd(strtotime($value)->setDateTime());
+  //   dd('hola');
+  //   $this->attributes['start_date'] = strtotime($value)->toDate();
+  // }
 
   /**
   * [discount description]

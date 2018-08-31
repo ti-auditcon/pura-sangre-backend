@@ -100,7 +100,7 @@ class User extends Authenticatable
     */
     public function plan_users()
     {
-      return $this->hasOne(PlanUser::class);
+      return $this->hasMany(PlanUser::class)->orderBy('finish_date');
     }
 
     /**

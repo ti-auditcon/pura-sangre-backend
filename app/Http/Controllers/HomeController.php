@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Student;
+use Illuminate\Http\Request;
 
-
+/**
+ * [HomeController description]
+ */
 class HomeController extends Controller
 {
     /**

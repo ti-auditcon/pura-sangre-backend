@@ -6,9 +6,9 @@
 @section('content')
   <div class="row justify-content-center">
     <div class="col-6">
-      <div class="ibox">
+      <div class="ibox form-control-air">
         <div class="ibox-head">
-          <div class="ibox-title">Agregar plan a: {{$user->first_name}} {{$user->last_name}}</div>
+          <div class="ibox-title">Agregar plan a:  {{$user->first_name}} {{$user->last_name}}</div>
           <div class="ibox-tools">
             {{-- <a class="btn btn-success text-white" href="{{ route('users.create')}}">Nuevo alumno</a> --}}
           </div>
@@ -20,7 +20,7 @@
             <div class="col-sm-6 form-group mb-4">
             <div class="form-group">
               <label class="form-control-label">Planes*</label>
-              <select class="selectpicker form-control"  name="plan_id" required>
+              <select class="selectpicker form-control form-control-air" name="plan_id" required>
                <option value="">Asignar plan...</option>
                @foreach (App\Models\Plans\Plan::all() as $plan)
                <option value="{{$plan->id}}">{{$plan->plan}} - {{$plan->period}}</option>
@@ -33,18 +33,29 @@
               <label class="font-normal">Fecha inicio del plan</label>
               <div class="input-group date">
                 <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
-                <input class="form-control" name="start_date" type="text" value="{{ date('m/d/Y') }}">
+                <input class="form-control form-control-air" name="fecha_inicio" type="text" value="{{ date('m/d/Y') }}">
               </div>
             </div>
           </div>
         </div>
-        <button class="btn btn-primary" type="submit">Asignar Plan</button>
+
+        <div class="form-group mb-4">
+          <label>Total</label>
+          <div class="input-group-icon input-group-icon-left">
+            <span class="input-icon input-icon-left"><i class="la la-dollar"></i></span>
+            <input class="form-control form-control-air"
+            name="amount" type="text" placeholder="solo números" required/>
+          </div>
         </div>
+        <br>
+        <div class="ibox-footer">
+        <button class="btn btn-primary btn-air" type="submit">ASIGNAR PLAN</button>
+        </div>
+      </div>
         {!! Form::close() !!}
       </div>
     </div>
   </div>
-
 
 @endsection
 
@@ -66,4 +77,17 @@ $('#start_date .input-group.date').datepicker({
   autoclose: true
 });
 </script>
+
+{{-- AGREGAR PUNTOS PARA MONTO DEL PLAN --}}
+{{-- <script>
+function oneDot(input) {
+    var value = input.value,
+        value = value.split('.').join('');
+    if (value.length > 3) {
+      value = value.substring(0, value.length - 3) + '.' + value.substring(value.length - 3, value.length);
+    }
+    input.value = value;
+  }
+</script> --}}
+
 @endsection
