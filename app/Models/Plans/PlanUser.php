@@ -20,6 +20,14 @@ class PlanUser extends Pivot
   'counter', 'plan_state', 'discount_id', 'plan_id', 'user_id'];
 
   /**
+   * [boot description]
+   * @return [model] [description]
+   */
+  public static function boot()
+  {
+  }
+
+  /**
    * [setStartDateAtribute description]
    * @param [type] $value [description]
    */

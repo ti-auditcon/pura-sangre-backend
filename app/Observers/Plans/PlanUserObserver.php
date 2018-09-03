@@ -10,6 +10,16 @@ use App\Models\Plans\PlanUser;
 class PlanUserObserver
 {
     /**
+     * [creating description]
+     * @param  PlanUser $planUser [description]
+     * @return [type]             [description]
+     */
+    public function creating(PlanUser $planUser)
+    {
+      //
+    }
+
+    /**
      * Handle the plan user "created" event.
      *
      * @param  \App\Models\Plans\PlanUser  $planUser
@@ -17,29 +27,7 @@ class PlanUserObserver
      */
     public function created(PlanUser $planUser)
     {
-      $plan = $planUser->plan;
-      $periodo = $plan->number;
-      if($periodo!=null){
-        for ($i=0; $i < $periodo ; $i++) {
-          PlanUser::create($request->all());
-          //crear contador
-          //agre
-          ////dejarlo adentro de plan user el counter------
-          ////
-        }
-      }
-    }
-
-
-    /**
-     * Handle the plan user "updated" event.
-     *
-     * @param  \App\Models\Plans\PlanUser  $planUser
-     * @return void
-     */
-    public function updated(PlanUser $planUser)
-    {
-        //
+      //
     }
 
     /**

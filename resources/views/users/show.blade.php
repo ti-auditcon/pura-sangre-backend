@@ -82,19 +82,21 @@
             <thead class="thead-default thead-lg">
               <tr>
                 <th width="30%">Plan</th>
-                <th width="30%">Termina el</th>
-                <th width="20%"></th>
+                <th width="30%">Período</th>
+                <th width="20%">Desde</th>
+                <th width="20%">Hasta</th>
               </tr>
             </thead>
             <tbody>
-              @foreach ($user->plan_users as $plan_user)
-                <tr>
-                  <td>{{$plan_user->plan->plan}}</td>
-                {{-- {{dd($user->plan_users)}} --}}
-                  <td>{{$plan_user->finish_date}}</td>
-                  <td><span class="badge badge-success">{{$plan_user->plan_state}}</span></td>
-                </tr>
-              @endforeach
+            @foreach ($user->plan_users as $plan_user)
+              <tr>
+                <td>{{$plan_user->plan->plan}}</td>
+                <td>{{$plan_user->plan->period}}</td>
+                <td>{{Carbon\Carbon::parse($plan_user->start_date)->format('d-m-Y')}}</td>
+                <td>{{Carbon\Carbon::parse($plan_user->finish_date)->format('d-m-Y')}}</td>
+                {{-- <td><span class="badge badge-success">{{$plan_user->plan_state}}</span></td> --}}
+              </tr>
+            @endforeach
             </tbody>
           </table>
         </div>
@@ -126,7 +128,6 @@
                     <table id="students-table" class="table table-hover">
                         <thead class="thead-default thead-lg">
                             <tr>
-
                                 <th width="20%">Plan</th>
                                 <th width="30%">Periodo</th>
                                 <th width="15%">total</th>
@@ -141,21 +142,6 @@
                               <td >$30.000</td>
                               <td >Transferencia</td>
                               <td  >05-07-2018</td>
-                          </tr>
-                          <tr>
-                              <td >Plan Full</td>
-                              <td >08-06-2018 al 08-07-2018</td>
-                              <td >$30.000</td>
-                              <td >Transferencia</td>
-                              <td  >05-06-2018</td>
-                          </tr>
-                          <tr>
-                              <td >Plan AM</td>
-                              <td >08-05-2018 al 08-06-2018</td>
-                              <td >$20.000</td>
-                              <td >Transferencia</td>
-                              <td  >05-05-2018</td>
-                          </tr>
                         </tbody>
                     </table>
                 </div>

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Plan extends Model
 {
-  protected $fillable = ['plan', 'class_numbers', 'period', 'period_number'];
+  protected $fillable = ['plan', 'period', 'period_number', 'class_numbers', 'amount'];
 
   /**
    * [installments description]

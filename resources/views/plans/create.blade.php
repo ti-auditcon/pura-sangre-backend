@@ -23,7 +23,9 @@
               <select class="selectpicker form-control form-control-air" name="plan_id" required>
                <option value="">Asignar plan...</option>
                @foreach (App\Models\Plans\Plan::all() as $plan)
-               <option value="{{$plan->id}}">{{$plan->plan}} - {{$plan->period}}</option>
+               <option value="{{$plan->id}}" @if(old('plan_id')==$plan->id) selected @endif>
+                 {{$plan->plan}} - {{$plan->period}}
+               </option>
                @endforeach
               </select>
             </div>

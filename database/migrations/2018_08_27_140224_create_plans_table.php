@@ -16,14 +16,22 @@ class CreatePlansTable extends Migration
      */
     public function up()
     {
-        Schema::create('plans', function (Blueprint $table) {
+        Schema::create('plan_periods', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('plan');
             $table->string('period')->nullable();
             $table->integer('period_number')->nullable();
-            $table->integer('class_numbers');
-            $table->integer('amount')->nullable();
             $table->timestamps();
+        });
+
+        Schema::create('plans', function (Blueprint $table) {
+          $table->increments('id');
+          $table->string('plan');
+          $table->unsignedInteger('plan_period_id')->nullable();
+          $table->integer('class_numbers');
+          $table->integer('amount')->nullable();
+          $table->timestamps();
+
+          $table->foreign('plan_period_id')->references('id')->on('plan_periods')->onDelete('cascade');
         });
 
         Schema::create('discounts', function (Blueprint $table) {

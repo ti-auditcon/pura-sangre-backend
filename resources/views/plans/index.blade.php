@@ -5,74 +5,39 @@
 
 @section('content')
   <div class="row justify-content-center">
-    <div class="col-md-12">
+    <div class="col-md-8">
       <div class="ibox ibox-fullheight">
         <div class="ibox-head">
-          <div class="ibox-title">Alumnos</div>
+          <div class="ibox-title">PLANES</div>
           <div class="ibox-tools">
-            <a class="btn btn-success text-white" href="{{ route('users.create')}}">Nuevo alumno</a>
+            <a class="btn btn-success btn-air text-white" href="{{ route('plans.create')}}">CREAR PLAN</a>
           </div>
         </div>
         <div class="ibox-body">
-          <div class="flexbox mb-4">
-            <div class="flexbox">
-              <span class="flexbox mr-3">
-                <div class="btn-group">
-                  <button class="btn btn-outline-success">
-                    <span class="btn-icon">ACTIVOS</span>
-                  </button>
-                  <span class="btn-label-out btn-label-out-right btn-label-out-success pointing">340</span>
-                </div>
-              </span>
-              <span class="flexbox mr-3" >
-                <div class="btn-group">
-                  <button class="btn btn-outline-danger">
-                    <span class="btn-icon">INACTIVOS</span>
-                  </button>
-                  <span class="btn-label-out btn-label-out-right btn-label-out-danger pointing">120</span>
-                </div>
-              </span>
-              <span class="flexbox mr-3">
-                <div class="btn-group">
-                  <button class="btn btn-outline-warning">
-                    <span class="btn-icon">PRUEBA</span>
-                  </button>
-                  <span class="btn-label-out btn-label-out-right btn-label-out-warning pointing">13</span>
-                </div>
-              </span>
-            </div>
-          </div>
           <div class="ibox-fullwidth-block">
             <table id="students-table" class="table table-hover">
               <thead class="thead-default thead-lg">
                 <tr>
-                  <th width="30%">Alumno</th>
-                  <th width="20%">Plan</th>
-                  <th width="10%">Dia de Pago</th>
-                  <th width="10%">Vencimiento</th>
-                  <th width="20%">Periodo</th>
-                  <th>acciones</th>
+                  <th width="30%">Nombre</th>
+                  <th width="20%">Período</th>
+                  <th width="10%">Numero de Clases</th>
+                  <th width="10%">Acciones</th>
                 </tr>
               </thead>
               <tbody>
-                @foreach ($users as $user)
+                @foreach ($plans as $plan)
                 <tr>
                   <td>
                     <span class="badge-success badge-point"></span>
-                    <a class="media-img " href="{{url('/users/'.$user->id)}}">
-                      {{-- <img class="img-circle" src="{{url('/img/users/'.$use4->avatar)}}" alt="image" width="54" style="padding-right:20px;"> --}}
-                      {{$user->first_name}} {{$user->last_name}}
+                    <a class="media-img" href="{{url('/plans/'.$plan->id)}}">
+                      {{$plan->plan}}
                     </a>
                   </td>
-                    {{-- <td>{{$student->email}}</td> --}}
-                  {{-- <td>{{$user->plans->plan}}</td> --}}
-                  <td></td>
-                  <td>03</td>
-                  <td>6 dias</td>
-                  <td>09-07-2018 al 09-08-2018</td>
+                  <td>  {{$plan->period}} </td>
+                  <td>  {{$plan->class_numbers}} </td>
                   <td>
-                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-credit-card"></i></button>
-                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-send"></i></button>
+                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-edit" href="{{url('/plans/'.$plan->id)}}"></i></button>
+                    {{-- <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-send"></i></button> --}}
                   </td>
                 </tr>
                 @endforeach

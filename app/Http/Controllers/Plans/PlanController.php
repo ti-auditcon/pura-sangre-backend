@@ -6,6 +6,7 @@ use App\Models\Plans\Plan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+/** [PlanController description] */
 class PlanController extends Controller
 {
 
@@ -14,7 +15,7 @@ class PlanController extends Controller
      */
     // public function __construct()
     // {
-    //     $this->middleware('client.credentials')->only(['index', 'show']);
+    //     $this->middleware('plan.credentials')->only(['index', 'show']);
     //     $this->middleware('auth:api')->except(['index', 'show']);
     // }
 
@@ -25,29 +26,32 @@ class PlanController extends Controller
      */
     public function index()
     {
-      $plans = Plans::all();
+      $plans = Plan::all();
       return view('plans.index')->with('plans', $plans);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * [create description]
+     * @param  Plan   $plan [description]
+     * @return [type]       [description]
      */
-    public function create()
+    public function create(Plan $plan)
     {
-        //
+      return view('plans.create_plan')->with('plan', $plan);
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * [store description]
+     * @param  Request $request [description]
+     * @param  Plan    $plan    [description]
+     * @return [type]           [description]
      */
-    public function store(Request $request)
+    public function store(Request $request, Plan $plan)
     {
-        //
+      list($number, $string) = $this->getPeriod($request);
+      $plan = Plan::create(array_merge($request->all(), [ 'period' => $string, 'period_number', $number]));
+      // dd($plan);
+      return redirect()->route('plans.show', $plan->id)->with('success', 'El plan ha sido creado correctamente');
     }
 
     /**
@@ -58,7 +62,7 @@ class PlanController extends Controller
      */
     public function show(Plan $plan)
     {
-        //
+      return view('plans.show')->with('plan', $plan);
     }
 
     /**
@@ -69,7 +73,7 @@ class PlanController extends Controller
      */
     public function edit(Plan $plan)
     {
-        //
+      return view('plans.edit')->with('plan', $plan);
     }
 
     /**
@@ -93,5 +97,18 @@ class PlanController extends Controller
     public function destroy(Plan $plan)
     {
         //
+    }
+
+    /**
+     * [getPeriod split period, to number and string and return both]
+     * @param  [type] $request [description]
+     * @return [array]          [description]
+     */
+    protected function getPeriod($request)
+    {
+      $periodo = $request->period;
+      $string = substr($periodo,0, strpos( $periodo, '-'));
+      $number = substr($periodo, strpos( $periodo, '-')+1, strlen($periodo));
+      return array($number, $string);
     }
 }

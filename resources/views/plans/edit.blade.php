@@ -6,54 +6,56 @@
 @section('content')
   <div class="row justify-content-center">
     <div class="col-6">
-      <div class="ibox">
-        {!! Form::open(['route' => ['users.update', $user->id], 'method' => 'put']) !!}
+      <div class="ibox form-control-air">
+        <div class="ibox-head">
+          <div class="ibox-title">EDITAR PLAN: {{strtoupper($plan->plan)}}</div>
+        </div>
+        {{-- {!! Form::open(['route' => 'plans.update']) !!} --}}
         <div class="ibox-body">
-          <div class="form-group inline @if($errors->has('first_name')) has-warning  @endif">
-            <label class="col-form-label">Nombre</label>
-            <input class="form-control " name="first_name" value="{{ $user->first_name }}" required>
+          <div class="row">
+            <div class="col-sm-6 form-group mb-4">
+              <div class="form-group inline @if($errors->has('plan')) has-warning  @endif">
+                <label class="col-form-label">Nombre del Plan*</label>
+                <input class="form-control form-control-air" name="plan" value="{{$plan->plan}}" placeholder="Ejemplo: 12 sesiones" required>
+              </div>
+            </div>
+            <div class="col-sm-6 form-group mb-4">
+              <label class="col-form-label">Período*</label>
+              <select class="selectpicker form-control form-control-air"  name="period" required>
+               <option value="">Elegir período...</option>
+                 <option value="Mensual-1">Mensual</option>
+                 <option value="Trimestral-3">Trimestral</option>
+                 <option value="Semestral-6">Semestral</option>
+                 <option value="Anual-12">Anual</option>
+              </select>
+            </div>
           </div>
-
-          <div class="form-group inline @if($errors->has('last_name')) has-warning  @endif">
-            <label class="col-form-label">Apellido</label>
-            <input class="form-control " name="last_name" value="{{ $user->last_name }}" required>
-          </div>
-
-          <div class="form-group inline @if($errors->has('phone')) has-warning  @endif">
-            <label class="col-form-label">Numero de Celular</label>
-            <div class="input-group mb-3">
-              <span class="input-group-addon">+56 9</span>
-              <input class="form-control " name="phone" value="{{ $user->phone }}" type="tel">
+          <div class="row">
+            <div class="col-sm-6 form-group mb-4">
+                <label class="col-form-label">Valor del Plan</label>
+              <div class="input-group-icon input-group-icon-left">
+                <span class="input-icon input-icon-left"><i class="la la-dollar"></i></span>
+                <input class="form-control form-control-air"value="{{$plan->amount}}"
+                name="amount" type="text" placeholder="solo números" required/>
+              </div>
+            </div>
+            <div class="col-sm-6 form-group mb-4">
+              <div class="form-group inline @if($errors->has('class_numbers')) has-warning  @endif">
+                <label class="col-form-label">Numero de Clases</label>
+                <input class="form-control form-control-air" type="number"value="{{$plan->class_numbers}}" name="class_numbers" placeholder="0" required>
+              </div>
             </div>
           </div>
 
-          <div class="form-group inline @if($errors->has('email')) has-warning  @endif">
-            <label class="col-form-label">email</label>
-            <input class="form-control " name="email" value="{{ $user->email }}" required>
-          </div>
 
-					<div class="form-group @if($errors->has('contact_name')) has-warning  @endif">
-	          <label class="col-form-label">Contacto de Emergencia</label>
-	          <input class="form-control" name="contact_name" type="text" value="{{ old($user->emergency->contact_name) }}" required>
-		      </div>
-
-					<div class="form-group @if($errors->has('contact_phone')) has-warning  @endif">
-	          <label class="col-form-label">Telefono de Contacto de Emergencia</label>
-	          <input class="form-control" name="contact_phone" type="text" value="{{ old($user->emergency->contact_phone) }}" required>
-		      </div>
-
-          <div class="form-group  @if($errors->has('status_user_id')) has-warning  @endif">
-            <label class="form-control-label">Estado del Usuario*</label>
-            <select class="selectpicker form-control"  name="status_user_id" data-live-search="true" required>
-             <option value="">Seleccionar estado...</option>
-             @foreach (App\Models\Users\StatusUser::all() as $status_user)
-             <option value="{{$status_user->id}}" @if($user->status_user_id == $status_user->id) selected @endif >{{$status_user->status_user}}</option>
-             @endforeach
-            </select>
-          </div>
-          <button class="btn btn-primary" type="submit">Actualizar datos</button>
+        <br>
+        <div class="ibox-footer">
+        <button class="btn btn-primary btn-air" type="submit">Crear Plan</button>
+        {{-- <button class="" href="" type="btn btn-secondary"></button> --}}
+        <a class="btn btn-secondary" href="{{ route('plans.index') }}">Volver</a>
         </div>
-        {!! Form::close() !!}
+      </div>
+      {{-- {!! Form::close() !!} --}}
       </div>
     </div>
   </div>

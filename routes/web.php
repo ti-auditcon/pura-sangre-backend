@@ -37,6 +37,7 @@ Route::get('/messages', function () {
  * Users Routes (alumnos)
  */
 Route::middleware(['auth'])->prefix('/')->group(function () {
+  Route::resource('plans', 'Plans\PlanController');
   Route::resource('users', 'Users\UserController');
   Route::resource('users.plans', 'Plans\PlanUserController');
   // Route::resource('users.plans.installments', 'Bills\InstallmentController');

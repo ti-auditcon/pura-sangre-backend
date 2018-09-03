@@ -64,11 +64,19 @@
 
 {{-- alerta error --}}
 @if(Session::has('error'))
+  {{-- <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{ Session::get('error') }}
+    </div> --}}
   <script defer>
+
   $(function ()
   {
     window.onload = function()
     {
+       //Command: toastr["error"]("Clear itself?<br /><br /><button type="button" class="btn clear">Yes</button>")
       toastr.options =
       {
         "closeButton": true,
@@ -78,15 +86,16 @@
         "positionClass": "toast-bottom-right",
         "preventDuplicates": false,
         "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "500",
-        "timeOut": "8000",
-        "extendedTimeOut": "1000",
+        "showDuration": "0",
+        "hideDuration": "0",
+        "timeOut": "0",
+        "extendedTimeOut": "0",
         "showEasing": "swing",
         "hideEasing": "linear",
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
       }
+      toastr.options.escapeHtml = false;
       toastr.error("{!! Session::get('error') !!}");
     };
   });
