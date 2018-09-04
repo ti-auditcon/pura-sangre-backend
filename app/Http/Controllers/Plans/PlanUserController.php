@@ -41,16 +41,14 @@ class PlanUserController extends Controller
      */
     public function store(Request $request, User $user)
     {
-      $response = $this->uniquePlan($user, $request);
+      list($response, $fecha_inicio, $fecha_termino, $plan) = $this->uniquePlan($user, $request);
+      // dd($response);
       if ($response != null) {
         return back()->with('error', $response);
       }else {
-        $plan = Plan::findOrFail($request->plan_id);
-        $start_date = Carbon::parse($request->fecha_inicio);
-        $finish_date = Carbon::parse($request->fecha_inicio)->addMonths($plan->period_number);
         $planuser = PlanUser::create(array_merge($request->all(), [
-          'start_date' => $start_date,
-          'finish_date' => $finish_date,
+          'start_date' => $fecha_inicio,
+          'finish_date' => $fecha_termino,
           'counter' => $plan->class_numbers
         ]));
         return redirect()->route('users.show', $user->id)->with('success', 'El plan ha sido asignado correctamente');
@@ -103,26 +101,30 @@ class PlanUserController extends Controller
     }
 
   /**
-   * [uniquePlan description]
+   * [uniquePlan si la fecha a no esta entre c y d y la fecha b tampoco entonces que pase, ademas
+   * si $fecha_inicio es menor que $plan_user->start_date y $fecha_termino es mayor que $plan_user->finish_date que no pase]
+   * si la fecha a no esta entre c y d y la fecha b tampoco entonces que pase
    * @param  [type] $user    [description]
    * @param  [type] $request [description]
    * @return [type]          [description]
    */
   protected function uniquePlan($user, $request)
   {
+    $plan = Plan::findOrFail($request->plan_id);
+    $fecha_inicio = Carbon::parse($request->fecha_inicio);
+    $fecha_termino = Carbon::parse($request->fecha_inicio)->addMonths($plan->period_number);
+    // dd($fecha_inicio, $fecha_termino);
     $response = '';
     foreach ($user->plan_users as $plan_user) {
-      if (Carbon::parse($request->fecha_inicio)->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date))) {
-        $response = 'El usuario tiene un plan '.$plan_user->plan->plan.', que topa con la fecha seleccionada de inicio del plan';
-      }
-      elseif ($plan_user->plan_state == 'activo') {
+      // dd($fecha_termino->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date)));
+      if (($fecha_inicio->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date))) || ($fecha_termino->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date)))) {
+        $response = 'El usuario tiene un plan activo que choca con la fecha de inicio y el período seleccionados';
+      }elseif (($fecha_inicio->lt(Carbon::parse($plan_user->start_date))) && ($fecha_termino->gt(Carbon::parse($plan_user->start_date)))) {
         $response = 'El usuario tiene un plan activo que choca con la fecha de inicio seleccionada';
       }
-      else {
-        $response = null;
-      }
     }
-    return $response;
+    // dd($response);
+    return array($response, $fecha_inicio, $fecha_termino, $plan);
   }
 
 }
