@@ -47,10 +47,10 @@
               <thead class="thead-default thead-lg">
                 <tr>
                   <th width="30%">Alumno</th>
-                  <th width="20%">Plan</th>
-                  <th width="10%">Dia de Pago</th>
+                  <th width="20%">Plan Activo</th>
+                  {{-- <th width="10%">Dia de Pago</th> --}}
                   <th width="10%">Vencimiento</th>
-                  <th width="20%">Periodo</th>
+                  <th width="20%">Período</th>
                   <th>acciones</th>
                 </tr>
               </thead>
@@ -64,12 +64,9 @@
                       {{$user->first_name}} {{$user->last_name}}
                     </a>
                   </td>
-                    {{-- <td>{{$student->email}}</td> --}}
-                  {{-- <td>{{$user->plans->plan}}</td> --}}
-                  <td></td>
-                  <td>03</td>
+                  <td>{{$user->active_plan->first()->plan->plan ?? 'sin plan'}}</td>
                   <td>6 dias</td>
-                  <td>09-07-2018 al 09-08-2018</td>
+                  <td>{{$user->active_plan->first()->start_date}} a {{$user->active_plan->first()->finish_date}}</td>
                   <td>
                     <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-credit-card"></i></button>
                     <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-send"></i></button>

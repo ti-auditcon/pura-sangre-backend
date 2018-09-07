@@ -71,5 +71,6 @@ class CreatePlansTable extends Migration
         Schema::dropIfExists('plans');
         Schema::dropIfExists('discounts');
         Schema::dropIfExists('plan_user');
+        Schema::dropIfExists('plan_periods');
     }
 }

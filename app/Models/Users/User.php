@@ -95,6 +95,15 @@ class User extends Authenticatable
     }
 
     /**
+    * [plans description]
+    * @return [type] [description]
+    */
+    public function active_plan()
+    {
+      return $this->hasMany(PlanUser::class)->where('plan_state', 'activo');
+    }
+
+    /**
     * [status_user description]
     * @return [model] [description]
     */
@@ -102,6 +111,17 @@ class User extends Authenticatable
     {
       return $this->hasMany(PlanUser::class)->orderBy('finish_date', 'desc');
     }
+
+    // /**
+    //  * [active_plan description]
+    //  * @return [type] [description]
+    //  */
+    // public function active_plan()
+    // {
+    //     return $this->belongsToMany(Plan::class)->wherePivot('plan_state', 'activo');
+    // }
+
+
 
     /**
     * [reservations description]
@@ -131,5 +151,4 @@ class User extends Authenticatable
     {
     return User::all()->where('admin', 'false')->orderBy('name');
     }
-
 }

@@ -10,7 +10,7 @@
         <div class="ibox-head">
           <div class="ibox-title">EDITAR PLAN: {{strtoupper($plan->plan)}}</div>
         </div>
-        {{-- {!! Form::open(['route' => 'plans.update']) !!} --}}
+        {!! Form::open(['route' => ['plans.update', $plan->id], 'method' => 'put']) !!}
         <div class="ibox-body">
           <div class="row">
             <div class="col-sm-6 form-group mb-4">
@@ -19,14 +19,13 @@
                 <input class="form-control form-control-air" name="plan" value="{{$plan->plan}}" placeholder="Ejemplo: 12 sesiones" required>
               </div>
             </div>
-            <div class="col-sm-6 form-group mb-4">
+            <div class="col-sm-6 form-group mb-4 @if($errors->has('plan_period_id')) has-warning  @endif">
               <label class="col-form-label">Período*</label>
-              <select class="selectpicker form-control form-control-air"  name="period" required>
+              <select class="selectpicker form-control form-control-air"  name="plan_period_id" required>
                <option value="">Elegir período...</option>
-                 <option value="Mensual-1">Mensual</option>
-                 <option value="Trimestral-3">Trimestral</option>
-                 <option value="Semestral-6">Semestral</option>
-                 <option value="Anual-12">Anual</option>
+               @foreach (App\Models\Plans\PlanPeriod::all() as $plan_period)
+               <option value="{{$plan_period->id}}" @if(old('plan_period_id')!=null) @if(old('plan_period_id')==$plan_period->id) selected @endif @else @if($plan_period->id==$plan->plan_period_id) selected @endif @endif >{{$plan_period->period}}</option>
+               @endforeach
               </select>
             </div>
           </div>
@@ -41,21 +40,20 @@
             </div>
             <div class="col-sm-6 form-group mb-4">
               <div class="form-group inline @if($errors->has('class_numbers')) has-warning  @endif">
-                <label class="col-form-label">Numero de Clases</label>
+                <label class="col-form-label">Número de Clases</label>
                 <input class="form-control form-control-air" type="number"value="{{$plan->class_numbers}}" name="class_numbers" placeholder="0" required>
               </div>
             </div>
           </div>
 
-
         <br>
         <div class="ibox-footer">
-        <button class="btn btn-primary btn-air" type="submit">Crear Plan</button>
+        <button class="btn btn-primary btn-air" type="submit">Actualizar Plan</button>
         {{-- <button class="" href="" type="btn btn-secondary"></button> --}}
         <a class="btn btn-secondary" href="{{ route('plans.index') }}">Volver</a>
         </div>
       </div>
-      {{-- {!! Form::close() !!} --}}
+      {!! Form::close() !!}
       </div>
     </div>
   </div>

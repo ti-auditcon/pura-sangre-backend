@@ -95,7 +95,7 @@
                         </div>
                         <div class="d-flex justify-content-between mt-2">
                             <a class="text-muted" href="javascript:;">Earnings history</a>
-                            <a class="d-flex align-items-center" href="{{ route('logout') }}" onclick="event.preventDefault()">Logout<i class="ti-shift-right ml-2 font-20"></i></a>
+                            <a class="d-flex align-items-center" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Cerrar Sesión<i class="ti-shift-right ml-2 font-20"></i></a>
                         </div>
                     </div>
                 </div>

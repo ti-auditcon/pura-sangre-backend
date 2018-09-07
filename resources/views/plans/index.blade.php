@@ -29,15 +29,13 @@
                 <tr>
                   <td>
                     <span class="badge-success badge-point"></span>
-                    <a class="media-img" href="{{url('/plans/'.$plan->id)}}">
-                      {{$plan->plan}}
-                    </a>
+                    <a class="media-img" href="{{url('/plans/'.$plan->id)}}">{{$plan->plan}}</a>
                   </td>
-                  <td>  {{$plan->period}} </td>
-                  <td>  {{$plan->class_numbers}} </td>
+                  <td>{{$plan->plan_period->period}}</td>
+                  <td> {{$plan->class_numbers}}</td>
                   <td>
-                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-edit" href="{{url('/plans/'.$plan->id)}}"></i></button>
-                    {{-- <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-send"></i></button> --}}
+                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><a class="la la-eye" href="{{url('/plans/'.$plan->id)}}"></a></button>
+                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><a class="la la-pencil" href="{{route('plans.edit', $plan->id)}}"></a></button>
                   </td>
                 </tr>
                 @endforeach

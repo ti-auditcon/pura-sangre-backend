@@ -30,7 +30,7 @@
               </div>
               <div class="row mb-2">
                 <div class="col-12 text-muted">Periodo</div>
-                <div class="col-12">{{$plan->period}}</div>
+                <div class="col-12">{{$plan->plan_period->period}}</div>
               </div>
               <div class="row mb-2">
                 <div class="col-12 text-muted">Número de clases</div>

@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 @section('sidebar')
   @include('layouts.sidebar',['page'=>'student'])
@@ -19,20 +20,20 @@
               <input class="form-control form-control-air" name="plan" placeholder="Ejemplo: 12 sesiones" required>
             </div>
           </div>
-          <div class="col-sm-6 form-group mb-4">
+          <div class="col-sm-6 form-group mb-4 @if($errors->has('plan_period_id')) has-warning  @endif">
             <label class="col-form-label">Período*</label>
-            <select class="selectpicker form-control form-control-air"  name="period" required>
+            <select class="selectpicker form-control form-control-air"  name="plan_period_id" required>
              <option value="">Elegir período...</option>
-               <option value="Mensual-1">Mensual</option>
-               <option value="Trimestral-3">Trimestral</option>
-               <option value="Semestral-6">Semestral</option>
-               <option value="Anual-12">Anual</option>
+             @foreach (App\Models\Plans\PlanPeriod::all() as $plan_period)
+             <option value="{{$plan_period->id}}" @if(old('plan_period_id')==$plan_period->id) selected @endif >{{$plan_period->period}}</option>
+             @endforeach
             </select>
           </div>
         </div>
+
         <div class="row">
           <div class="col-sm-6 form-group mb-4">
-              <label class="col-form-label">Valor del Plan</label>
+            <label class="col-form-label">Valor del Plan</label>
             <div class="input-group-icon input-group-icon-left">
               <span class="input-icon input-icon-left"><i class="la la-dollar"></i></span>
               <input class="form-control form-control-air"

@@ -4,6 +4,7 @@ namespace App\Models\Plans;
 
 use App\Models\Users\User;
 use App\Models\Plans\PlanUser;
+use App\Models\Plans\PlanPeriod;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -11,7 +12,16 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Plan extends Model
 {
-  protected $fillable = ['plan', 'period', 'period_number', 'class_numbers', 'amount'];
+  protected $fillable = ['plan', 'plan_period_id', 'class_numbers', 'amount'];
+
+  /**
+   * [plan_period description]
+   * @return [type] [description]
+   */
+  public function plan_period()
+  {
+      return $this->belongsTo(PlanPeriod::class);
+  }
 
   /**
    * [installments description]

@@ -11,9 +11,9 @@ use App\Models\Users\Millestone;
 use App\Models\Bills\Installment;
 use App\Models\Bills\PaymentType;
 use App\Models\Exercises\Exercise;
+use App\Models\Clases\Reservation;
 use App\Models\Exercises\Statistic;
 use App\Models\Bills\PaymentStatus;
-use App\Models\Clases\Reservation;
 use App\Models\Exercises\ExerciseStage;
 use App\Models\Clases\ReservationStatus;
 use App\Models\Clases\ReservationStatisticStage;
@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
     {
       $this->call(StatusUsersTableSeeder::class);
       $this->call(StagesTableSeeder::class);
+      $this->call(PlanPeriodsTableSeeder::class);
       $this->call(PlansTableSeeder::class);
 
       $user = User::create([
@@ -48,7 +49,6 @@ class DatabaseSeeder extends Seeder
               ]);
 
         factory(Emergency::class, 60)->create();
-        // factory(StatusUser::class, 4)->create();
         factory(Millestone::class, 40)->create();
         factory(User::class, 50)->create();
 
@@ -68,7 +68,7 @@ class DatabaseSeeder extends Seeder
           function ($class) {
             $stages = Stage::all()->random(mt_rand(1, 3))->pluck('id');
             $class->stages()->attach($stages);
-          });
+    });
         factory(ReservationStatus::class, 3)->create();
         factory(Reservation::class, 300)->create();
         factory(ReservationStatisticStage::class, 400)->create();

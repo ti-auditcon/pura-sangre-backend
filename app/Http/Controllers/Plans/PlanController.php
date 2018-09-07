@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Plans;
 
+use Session;
 use App\Models\Plans\Plan;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -48,9 +49,7 @@ class PlanController extends Controller
      */
     public function store(Request $request, Plan $plan)
     {
-      list($number, $string) = $this->getPeriod($request);
-      $plan = Plan::create(array_merge($request->all(), [ 'period' => $string, 'period_number', $number]));
-      // dd($plan);
+      $plan = Plan::create($request->all());
       return redirect()->route('plans.show', $plan->id)->with('success', 'El plan ha sido creado correctamente');
     }
 
@@ -85,7 +84,9 @@ class PlanController extends Controller
      */
     public function update(Request $request, Plan $plan)
     {
-        //
+      $plan->update($request->all());
+      Session::flash('success','Los datos del plan han sido actualizados correctamente');
+      return view('plans.show')->with('plan', $plan);
     }
 
     /**
@@ -96,19 +97,9 @@ class PlanController extends Controller
      */
     public function destroy(Plan $plan)
     {
-        //
+       $plan->delete();
+       Session::flash('success','El plan ha sido eliminado correctamente');
+       return redirect('/plans');
     }
 
-    /**
-     * [getPeriod split period, to number and string and return both]
-     * @param  [type] $request [description]
-     * @return [array]          [description]
-     */
-    protected function getPeriod($request)
-    {
-      $periodo = $request->period;
-      $string = substr($periodo,0, strpos( $periodo, '-'));
-      $number = substr($periodo, strpos( $periodo, '-')+1, strlen($periodo));
-      return array($number, $string);
-    }
 }
