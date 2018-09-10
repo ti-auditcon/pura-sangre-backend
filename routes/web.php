@@ -51,3 +51,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 //   Route::resource('plans', 'Plans\PlanController');
 //
 // });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
