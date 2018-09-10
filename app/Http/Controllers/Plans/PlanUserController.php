@@ -30,7 +30,7 @@ class PlanUserController extends Controller
      */
     public function create(User $user)
     {
-        return view('plans.create')->with('user', $user);
+        return view('userplans.create')->with('user', $user);
     }
 
     /**
@@ -55,48 +55,52 @@ class PlanUserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Plans\PlanUser  $planUser
-     * @return \Illuminate\Http\Response
+     * [show description]
+     * @param  User     $user [description]
+     * @param  PlanUser $plan [description]
+     * @return [type]         [description]
      */
-    public function show(PlanUser $planUser)
+    public function show(User $user, PlanUser $plan)
     {
-        //
+      return view('userplans.show')->with('plan_user', $plan)->with('user', $user);
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Plans\PlanUser  $planUser
-     * @return \Illuminate\Http\Response
+     * [edit description]
+     * @param  User     $user [description]
+     * @param  PlanUser $plan [description]
+     * @return [type]         [description]
      */
-    public function edit(PlanUser $planUser)
+    public function edit(User $user, PlanUser $plan)
     {
-        //
+        return view('userplans.edit')->with('user', $user);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Plans\PlanUser  $planUser
-     * @return \Illuminate\Http\Response
+     * [update description]
+     * @param  Request  $request [description]
+     * @param  User     $user    [description]
+     * @param  PlanUser $plan    [description]
+     * @return [type]            [description]
      */
-    public function update(Request $request, PlanUser $planUser)
+    public function update(Request $request, User $user, PlanUser $plan)
     {
-        //
+      $plan->update($request->all());
+      return redirect()->route('userplans.show', $user->id)->with('success', 'Se actualizo correctamente');
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Plans\PlanUser  $planUser
-     * @return \Illuminate\Http\Response
+     * [destroy description]
+     * @param  User     $user [description]
+     * @param  PlanUser $plan [description]
+     * @return [type]         [description]
      */
-    public function destroy(PlanUser $planUser)
+    public function destroy(User $user, PlanUser $plan)
     {
-        //
+      // dd($plan);
+      $plan->delete();
+      // return redirect('/users/'.$user->id)->with('succes', 'Se eliminó correctamente');
+      return redirect()->route('users.show', $user->id)->with('success', 'Se eliminó correctamente');
     }
 
   /**
@@ -111,7 +115,7 @@ class PlanUserController extends Controller
   {
     $plan = Plan::findOrFail($request->plan_id);
     $fecha_inicio = Carbon::parse($request->fecha_inicio);
-    $fecha_termino = Carbon::parse($request->fecha_inicio)->addMonths($plan->period_number);
+    $fecha_termino = Carbon::parse($request->fecha_inicio)->addMonths($plan->plan_period->period_number);
     $response = '';
     foreach ($user->plan_users as $plan_user) {
       if (($fecha_inicio->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date))) || ($fecha_termino->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date)))) {

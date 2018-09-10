@@ -24,7 +24,7 @@
                <option value="">Asignar plan...</option>
                @foreach (App\Models\Plans\Plan::all() as $plan)
                <option value="{{$plan->id}}" @if(old('plan_id')==$plan->id) selected @endif>
-                 {{$plan->plan}} - {{$plan->period}}
+                 {{$plan->plan}} - {{$plan->plan_period->period}}
                </option>
                @endforeach
               </select>

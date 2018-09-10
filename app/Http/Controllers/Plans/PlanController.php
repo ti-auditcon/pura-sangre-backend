@@ -98,8 +98,7 @@ class PlanController extends Controller
     public function destroy(Plan $plan)
     {
        $plan->delete();
-       Session::flash('success','El plan ha sido eliminado correctamente');
-       return redirect('/plans');
+       return redirect('/plans')->with('success','El plan ha sido eliminado correctamente');
     }
 
 }

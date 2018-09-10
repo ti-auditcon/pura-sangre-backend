@@ -57,20 +57,38 @@
               <tbody>
                 @foreach ($users as $user)
                 <tr>
-                  <td>
-                    <span class="badge-success badge-point"></span>
-                    <a class="media-img " href="{{url('/users/'.$user->id)}}">
-                      {{-- <img class="img-circle" src="{{url('/img/users/'.$use4->avatar)}}" alt="image" width="54" style="padding-right:20px;"> --}}
-                      {{$user->first_name}} {{$user->last_name}}
-                    </a>
-                  </td>
-                  <td>{{$user->active_plan->first()->plan->plan ?? 'sin plan'}}</td>
-                  <td>6 dias</td>
-                  <td>{{$user->active_plan->first()->start_date}} a {{$user->active_plan->first()->finish_date}}</td>
-                  <td>
-                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-credit-card"></i></button>
-                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-send"></i></button>
-                  </td>
+                  {{-- {{dd()}} --}}
+                  @if ($user->plan_users->isNotEmpty())
+                    <td>
+                      <span class="badge-success badge-point"></span>
+                      <a class="media-img " href="{{url('/users/'.$user->id)}}">
+                        {{-- <img class="img-circle" src="" alt="image" width="54" style="padding-right:20px;"> --}}
+                        {{$user->first_name}} {{$user->last_name}}
+                      </a>
+                    </td>
+                    <td>{{$user->plan_users->first()->plan->plan}}</td>
+                    <td>{{'Quedan '}}{{$user->plan_users->first()->finish_date->diffInDays(Carbon\Carbon::now())}}{{' días'}}</td>
+                    <td>{{$user->plan_users->first()->start_date->format('d-m-Y')}} a {{$user->plan_users->first()->finish_date->format('d-m-Y')}}</td>
+                    <td>
+                      <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-credit-card"></i></button>
+                      <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-send"></i></button>
+                    </td>
+                  @else
+                    <td>
+                      <span class="badge-success badge-point"></span>
+                      <a class="media-img " href="{{url('/users/'.$user->id)}}">
+                        {{$user->first_name}} {{$user->last_name}}
+                      </a>
+                    </td>
+                    <td>{{'Sin plan'}}</td>
+                    <td>{{'No aplica'}}</td>
+                    <td>{{'No aplica'}}</td>
+                    <td>
+                      <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-credit-card"></i></button>
+                      <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-send"></i></button>
+                    </td>
+                  @endif
+
                 </tr>
                 @endforeach
               </tbody>

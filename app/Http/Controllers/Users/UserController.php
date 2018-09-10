@@ -100,7 +100,6 @@ class UserController extends Controller
     public function destroy(Request $request, User $user)
     {
       $user->delete();
-      Session::flash('success','El usuario ha sido borrado correctamente');
-      return redirect('/users');
+      return redirect('/users')->with('success', 'El usuario ha sido borrado correctamente');
     }
 }

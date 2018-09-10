@@ -90,8 +90,12 @@
             <tbody>
             @foreach ($user->plan_users as $plan_user)
               <tr>
-                <td>{{$plan_user->plan->plan}}</td>
-                <td>{{$plan_user->plan->period}}</td>
+                <td>
+                  {{-- {{dd($user->id, $plan_user->id)}} --}}
+                <a class="media-img" href="{{route('users.plans.show', ['user' => $user->id, 'plan' => $plan_user->id])}}">
+                  {{$plan_user->plan->plan}}</a>
+                </td>
+                <td>{{$plan_user->plan->plan_period->period}}</td>
                 <td>{{Carbon\Carbon::parse($plan_user->start_date)->format('d-m-Y')}}</td>
                 <td>{{Carbon\Carbon::parse($plan_user->finish_date)->format('d-m-Y')}}</td>
                 {{-- <td><span class="badge badge-success">{{$plan_user->plan_state}}</span></td> --}}

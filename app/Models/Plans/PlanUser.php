@@ -2,6 +2,7 @@
 
 namespace App\Models\Plans;
 
+use Carbon\Carbon;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
 use App\Models\Plans\Discount;
@@ -25,18 +26,28 @@ class PlanUser extends Pivot
    */
   public static function boot()
   {
+    parent::boot();
   }
 
   /**
-   * [setStartDateAtribute description]
-   * @param [type] $value [description]
+   * [getStartDateAttribute description]
+   * @param  [type] $value [description]
+   * @return [type]        [description]
    */
-  // public function setStartDateAtribute($value)
-  // {
-  //   // dd(strtotime($value)->setDateTime());
-  //   dd('hola');
-  //   $this->attributes['start_date'] = strtotime($value)->toDate();
-  // }
+  public function getStartDateAttribute($value)
+  {
+    return Carbon::parse($value);
+  }
+
+  /**
+   * [getFinishDateAttribute description]
+   * @param  [type] $value [description]
+   * @return [type]        [description]
+   */
+  public function getFinishDateAttribute($value)
+  {
+    return Carbon::parse($value);
+  }
 
   /**
   * [discount description]
