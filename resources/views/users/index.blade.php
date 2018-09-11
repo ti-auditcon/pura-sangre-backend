@@ -145,7 +145,7 @@
 
 
   $('button.user-filter').on("click", function(){
-      table.columns( 5 ).search( $(this).data('status') ).draw();
+      table.columns( 6 ).search( $(this).data('status') ).draw();
 
     });
 
