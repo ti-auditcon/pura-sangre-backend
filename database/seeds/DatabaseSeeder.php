@@ -51,7 +51,10 @@ class DatabaseSeeder extends Seeder
 
         factory(Emergency::class, 60)->create();
         factory(Millestone::class, 40)->create();
-        factory(User::class, 50)->create();
+        factory(User::class, 50)->create()->each(function ($u)
+        {
+          factory(PlanUser::class, 1)->create(['user_id' => $u->id ]);
+        });
 
         factory(PaymentType::class, 4)->create();
         factory(Bill::class, 100)->create();
@@ -62,7 +65,7 @@ class DatabaseSeeder extends Seeder
         factory(ExerciseStage::class, 40)->create();
         factory(Statistic::class, 5)->create();
 
-        factory(PlanUser::class, 500)->create();
+        // factory(PlanUser::class, 500)->create();
 
         factory(Clase::class, 5)->create();
         factory(Clase::class, 100)->create()->each(

@@ -72,7 +72,7 @@ class User extends Authenticatable
      */
     public function emergency()
     {
-      return $this->belongsTo(Emergency::class);
+      return $this->belongsTo(Emergency::class)->withDefault();
     }
 
     /**

@@ -36,6 +36,7 @@ $factory->define(User::class, function (Faker $faker) {
       'gender' => $faker->randomElement($array = array ('male','female')),
       'password' => bcrypt('123123'), // secret
       'phone' => $faker->numberBetween($min = 40000000, $max = 99876599),
+      'address' => $faker->streetAddress,
       'emergency_id' => Emergency::all()->random()->id,
       'status_user_id' => StatusUser::all()->random()->id,
       'remember_token' => str_random(10),

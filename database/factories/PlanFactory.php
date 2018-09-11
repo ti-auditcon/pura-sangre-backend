@@ -27,6 +27,6 @@ $ends_at= Carbon::createFromFormat("Y-n-j G:i:s", $starts_at)->addMonths($faker-
       'plan_state' => $faker->randomElement($array = array ('activo', 'inactivo', 'pendiente', 'completado', 'cancelado')),
       // 'discount_id' => $faker->numberBetween($min = 1, $max = 3),
       'plan_id' => Plan::all()->random()->id,
-      'user_id' => User::all()->random()->id,
+      // 'user_id' => User::all()->random()->id,
     ];
 });

@@ -47,9 +47,9 @@
               <thead class="thead-default thead-lg">
                 <tr>
                   <th width="30%">Alumno</th>
-                  <th width="20%">Plan Activo</th>
-
-                  <th width="10%">Vencimiento</th>
+                  <th width="10%">RUN</th>
+                  <th width="10%">Plan Activo</th>
+                  <th width="15%">Vencimiento</th>
                   <th width="20%">Período</th>
                   <th width="10%">acciones</th>
                   <th width="10%">status</th>
@@ -70,6 +70,8 @@
                       {{$user->first_name}} {{$user->last_name}}
                     </a>
                   </td>
+
+                  <td>{{Rut::set($user->rut)->fix()->format()}}</td>
 
                   @if ($user->plan_users->isNotEmpty() && $user->plan_users->where('plan_state', 'activo'))
 
@@ -125,15 +127,15 @@
 				"language": {
 					"lengthMenu": "Mostrar _MENU_ elementos",
 					"zeroRecords": "Sin resultados",
-					"info": "Mostrando pagina _PAGE_ de _PAGES_",
+					"info": "Mostrando página _PAGE_ de _PAGES_",
 					"infoEmpty": "Sin resultados",
-					"infoFiltered": "(filtered from _MAX_ total records)",
+					"infoFiltered": "(filtrado de _MAX_ registros totales)",
 					"search": "Filtrar:"
 
 				},
         "columnDefs": [
           {
-              "targets": [ 5 ],
+              "targets": [ 6 ],
               "visible": false,
               "searchable": true
           }

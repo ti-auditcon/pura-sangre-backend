@@ -48,10 +48,10 @@
         </div>
         <div class="ibox-body">
           <div class="card mb-4">
-            <div class="card-body ">
+            <div class="card-body">
               <div class="row mb-2">
                 <div class="col-12 text-muted">RUT:</div>
-                {{-- <div class="col-12">{{$user->phone}}</div> --}}
+                <div class="col-12">{{Rut::set($user->rut)->fix()->format()}}</div>
               </div>
               <div class="row mb-2">
                 <div class="col-12 text-muted">EMAIL:</div>
@@ -62,8 +62,16 @@
                 <div class="col-12">22-07-1985</div>
               </div>
               <div class="row mb-2">
-                <div class="col-12 text-muted">Direcccion:</div>
-                <div class="col-12">bla bla bla</div>
+                <div class="col-12 text-muted">Teléfono</div>
+                <div class="col-12">{{$user->phone}}</div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-12 text-muted">Direccción:</div>
+                <div class="col-12">{{$user->address}}</div>
+              </div>
+              <div class="row mb-2">
+                <div class="col-12 text-muted">Contacto de emergencia</div>
+                <div class="col-12">{{$user->emergency->contact_name}}, {{$user->emergency->contact_phone}}</div>
               </div>
             </div>
           </div>
