@@ -15,21 +15,35 @@
         <div class="ibox-body">
           <div class="row">
             <div class="col-sm-6 form-group mb-4">
-              <div class="form-group inline @if($errors->has('plan')) has-warning  @endif">
-                <label class="col-form-label">Nombre del Plan*</label>
-                <input class="form-control form-control-air" name="plan" value="{{$plan_user->plan->plan}}" placeholder="Ejemplo: 12 sesiones" required>
+              <div class="form-group">
+                <label class="col-form-label">Planes*</label>
+                <select class="selectpicker form-control form-control-air" name="plan_id" required>
+                 <option value="">Asignar plan...</option>
+                 @foreach (App\Models\Plans\Plan::all() as $plan)
+                 <option value="{{$plan->id}}" @if(old('plan_id')==$plan->id) selected
+                    @elseif ($plan->id == $plan_user->plan_id) selected @endif>
+                    {{$plan->plan}} - {{$plan->plan_period->period}}
+                  </option>
+                 @endforeach
+                </select>
               </div>
             </div>
-            <div class="col-sm-6 form-group mb-4 @if($errors->has('plan_period_id')) has-warning  @endif">
-              <label class="col-form-label">Período*</label>
-              <select class="selectpicker form-control form-control-air"  name="plan_period_id" required>
-               <option value="">Elegir período...</option>
-               @foreach (App\Models\Plans\PlanPeriod::all() as $plan_period)
-               <option value="{{$plan_period->id}}" @if(old('plan_period_id')!=null) @if(old('plan_period_id')==$plan_period->id) selected @endif @else @if($plan_period->id==$plan_user->plan->plan_period_id) selected @endif @endif >{{$plan_period->period}}</option>
-               @endforeach
-              </select>
+            <div class="col-sm-6 form-group mb-4">
+              <div class="form-group" id="start_date">
+                <label class="col-form-label">Fecha inicio del plan</label>
+                <div class="input-group date">
+                  <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
+                  <input class="form-control form-control-air" name="fecha_inicio" type="text" value="{{ date('m/d/Y') }}">
+                </div>
+              </div>
             </div>
           </div>
+
+          <div class="row">
+
+        </div>
+
+
           <div class="row">
             <div class="col-sm-6 form-group mb-4">
                 <label class="col-form-label">Valor del Plan</label>
@@ -72,5 +86,16 @@
 
 @section('scripts') {{-- scripts para esta vista --}}
 
+
+  {{-- // BOOTSTRAP DATEPICKER // --}}
+  <script defer>
+  $('#start_date .input-group.date').datepicker({
+    todayBtn: "linked",
+    keyboardNavigation: false,
+    forceParse: false,
+    calendarWeeks: true,
+    autoclose: true
+  });
+  </script>
 
 @endsection

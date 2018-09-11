@@ -85,9 +85,10 @@ class PlanUserController extends Controller
      */
     public function update(Request $request, User $user, PlanUser $plan)
     {
-      // dd();
+      // dd($plan);
       $plan->update($request->all());
-      return redirect()->route('users.plans.show', $user->id)->with('success', 'Se actualizo correctamente');
+      Session::flash('success','Se actualizó correctamente');
+      return view('userplans.show')->with(['user' => $user, 'plan_user' => $plan]);
     }
 
     /**

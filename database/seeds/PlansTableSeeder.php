@@ -33,7 +33,7 @@ class PlansTableSeeder extends Seeder
             array (
                 'id' => 2,
                 'plan' => 'Full',
-                'plan_period_id' => 1,
+                'plan_period_id' => 3,
                 'class_numbers' => 0,
                 'amount' => 60000,
                 'created_at' => '2018-08-28 20:59:34',
@@ -43,7 +43,7 @@ class PlansTableSeeder extends Seeder
             array (
                 'id' => 3,
                 'plan' => 'Full',
-                'plan_period_id' => 1,
+                'plan_period_id' => 5,
                 'class_numbers' => 0,
                 'amount' => 100000,
                 'created_at' => '2018-08-28 20:59:34',
@@ -53,7 +53,7 @@ class PlansTableSeeder extends Seeder
             array (
                 'id' => 4,
                 'plan' => 'Full',
-                'plan_period_id' => 1,
+                'plan_period_id' => 6,
                 'class_numbers' => 0,
                 'amount' => 195000,
                 'created_at' => '2018-08-28 20:59:34',
@@ -73,7 +73,7 @@ class PlansTableSeeder extends Seeder
             array (
                 'id' => 6,
                 'plan' => '12 clases',
-                'plan_period_id' => 1,
+                'plan_period_id' => 3,
                 'class_numbers' => 12,
                 'amount' => 60000,
                 'created_at' => '2018-08-28 20:59:34',
@@ -83,7 +83,7 @@ class PlansTableSeeder extends Seeder
             array (
                 'id' => 7,
                 'plan' => '12 clases',
-                'plan_period_id' => 1,
+                'plan_period_id' => 5,
                 'class_numbers' => 12,
                 'amount' => 115000,
                 'created_at' => '2018-08-28 20:59:34',
@@ -93,7 +93,7 @@ class PlansTableSeeder extends Seeder
             array (
                 'id' => 8,
                 'plan' => '12 clases',
-                'plan_period_id' => 1,
+                'plan_period_id' => 6,
                 'class_numbers' => 12,
                 'amount' => 220000,
                 'created_at' => '2018-08-28 20:59:34',
