@@ -18,7 +18,7 @@
             <div class="flexbox">
               <span class="flexbox mr-3">
                 <div class="btn-group">
-                  <button class="btn btn-outline-success">
+                  <button class="btn btn-outline-success user-filter" data-status="1">
                     <span class="btn-icon">ACTIVOS</span>
                   </button>
                   <span class="btn-label-out btn-label-out-right btn-label-out-success pointing">340</span>
@@ -26,7 +26,7 @@
               </span>
               <span class="flexbox mr-3" >
                 <div class="btn-group">
-                  <button class="btn btn-outline-danger">
+                  <button class="btn btn-outline-danger user-filter" data-status="2">
                     <span class="btn-icon">INACTIVOS</span>
                   </button>
                   <span class="btn-label-out btn-label-out-right btn-label-out-danger pointing">120</span>
@@ -34,7 +34,7 @@
               </span>
               <span class="flexbox mr-3">
                 <div class="btn-group">
-                  <button class="btn btn-outline-warning">
+                  <button class="btn btn-outline-warning user-filter" data-status="3">
                     <span class="btn-icon">PRUEBA</span>
                   </button>
                   <span class="btn-label-out btn-label-out-right btn-label-out-warning pointing">13</span>
@@ -51,23 +51,30 @@
                   {{-- <th width="10%">Dia de Pago</th> --}}
                   <th width="10%">Vencimiento</th>
                   <th width="20%">Período</th>
-                  <th>acciones</th>
+                  <th width="10%">acciones</th>
+                  <th width="10%">status</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ($users as $user)
                 <tr>
-                  {{-- {{dd()}} --}}
-                  @if ($user->plan_users->isNotEmpty() && $user->plan_users->where('plan_state', 'activo'))
-                    <td>
+                  <td>
+                    @if($user->status_user_id == 1 )
                       <span class="badge-success badge-point"></span>
-                      <a class="media-img " href="{{url('/users/'.$user->id)}}">
-                        {{-- <img class="img-circle" src="" alt="image" width="54" style="padding-right:20px;"> --}}
-                        {{$user->first_name}} {{$user->last_name}}
-                      </a>
-                    </td>
+                    @elseif($user->status_user_id == 2 )
+                      <span class="badge-danger badge-point"></span>
+                    @elseif($user->status_user_id == 3 )
+                      <span class="badge-warning badge-point"></span>
+                    @endif
+                    <a href="{{url('/users/'.$user->id)}}">
+                      {{$user->first_name}} {{$user->last_name}}
+                    </a>
+                  </td>
+
+                  @if ($user->plan_users->isNotEmpty() && $user->plan_users->where('plan_state', 'activo'))
+
                     <td>{{$user->plan_users->first()->plan->plan}}</td>
-                    {{-- {{dd($user->plan_users->first()->finish_date)}} --}}
+
                     @if ($user->plan_users->first()->finish_date >= (Carbon\Carbon::today()))
                       <td>{{'Quedan '}}{{$user->plan_users->first()->finish_date->diffInDays(Carbon\Carbon::now())}}{{' días'}}</td>
                     @else
@@ -79,12 +86,6 @@
                       <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-send"></i></button>
                     </td>
                   @else
-                    <td>
-                      <span class="badge-success badge-point"></span>
-                      <a class="media-img " href="{{url('/users/'.$user->id)}}">
-                        {{$user->first_name}} {{$user->last_name}}
-                      </a>
-                    </td>
                     <td>{{'Sin plan'}}</td>
                     <td>{{'No aplica'}}</td>
                     <td>{{'No aplica'}}</td>
@@ -93,6 +94,7 @@
                       <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-send"></i></button>
                     </td>
                   @endif
+                  <td>{{$user->status_user_id}}</td>
 
                 </tr>
                 @endforeach
@@ -118,9 +120,9 @@
 @section('scripts') {{-- scripts para esta vista --}}
 	{{--  datatable --}}
 	<script src="{{ asset('js/datatables.min.js') }}"></script>
-	<script>
+	<script defer>
 		$(document).ready(function() {
-			$('#students-table').DataTable({
+			table = $('#students-table').DataTable({
 				"paging": true,
 				"ordering": true,
 				"language": {
@@ -130,9 +132,23 @@
 					"infoEmpty": "Sin resultados",
 					"infoFiltered": "(filtered from _MAX_ total records)",
 					"search": "Filtrar:"
-				}
+
+				},
+        "columnDefs": [
+          {
+              "targets": [ 5 ],
+              "visible": false,
+              "searchable": true
+          }
+        ],
 			});
 		});
+
+
+  $('button.user-filter').on("click", function(){
+      table.columns( 5 ).search( $(this).data('status') ).draw();
+
+    });
 
 	</script>
 	{{--  End datatable --}}
