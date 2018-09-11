@@ -48,7 +48,7 @@
                 <tr>
                   <th width="30%">Alumno</th>
                   <th width="20%">Plan Activo</th>
-                  {{-- <th width="10%">Dia de Pago</th> --}}
+
                   <th width="10%">Vencimiento</th>
                   <th width="20%">Período</th>
                   <th width="10%">acciones</th>
@@ -81,19 +81,16 @@
                       <td>{{'--'}}</td>
                     @endif
                     <td>{{$user->plan_users->first()->start_date->format('d-m-Y')}} a {{$user->plan_users->first()->finish_date->format('d-m-Y')}}</td>
-                    <td>
-                      <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-credit-card"></i></button>
-                      <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-send"></i></button>
-                    </td>
+
                   @else
                     <td>{{'Sin plan'}}</td>
                     <td>{{'No aplica'}}</td>
                     <td>{{'No aplica'}}</td>
-                    <td>
-                      <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-credit-card"></i></button>
-                      <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-send"></i></button>
-                    </td>
                   @endif
+                  <td>
+                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-credit-card"></i></button>
+                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-send"></i></button>
+                  </td>
                   <td>{{$user->status_user_id}}</td>
 
                 </tr>
@@ -120,7 +117,7 @@
 @section('scripts') {{-- scripts para esta vista --}}
 	{{--  datatable --}}
 	<script src="{{ asset('js/datatables.min.js') }}"></script>
-	<script defer>
+	<script >
 		$(document).ready(function() {
 			table = $('#students-table').DataTable({
 				"paging": true,
