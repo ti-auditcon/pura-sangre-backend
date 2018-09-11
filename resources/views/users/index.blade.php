@@ -47,17 +47,16 @@
               <thead class="thead-default thead-lg">
                 <tr>
                   <th width="30%">Alumno</th>
+                  <th width="10%">RUN</th>
                   <th width="20%">Plan Activo</th>
-                  {{-- <th width="10%">Dia de Pago</th> --}}
                   <th width="10%">Vencimiento</th>
                   <th width="20%">Período</th>
-                  <th>acciones</th>
+                  <th width="20%">Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ($users as $user)
                 <tr>
-                  {{-- {{dd()}} --}}
                   @if ($user->plan_users->isNotEmpty() && $user->plan_users->where('plan_state', 'activo'))
                     <td>
                       <span class="badge-success badge-point"></span>
@@ -66,8 +65,8 @@
                         {{$user->first_name}} {{$user->last_name}}
                       </a>
                     </td>
+                    <td>{{$user->rut}}</td>
                     <td>{{$user->plan_users->first()->plan->plan}}</td>
-                    {{-- {{dd($user->plan_users->first()->finish_date)}} --}}
                     @if ($user->plan_users->first()->finish_date >= (Carbon\Carbon::today()))
                       <td>{{'Quedan '}}{{$user->plan_users->first()->finish_date->diffInDays(Carbon\Carbon::now())}}{{' días'}}</td>
                     @else
@@ -103,7 +102,6 @@
       </div>
     </div>
   </div>
-
 
 
 @endsection
