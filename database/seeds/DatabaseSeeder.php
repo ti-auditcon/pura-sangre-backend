@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
       $this->call(PlansTableSeeder::class);
 
       $user = User::create([
+              'rut' => 11111111,
               'first_name' => 'Audito',
               'last_name' => 'Asomic',
               'birthdate' => '1985-01-01',
@@ -61,7 +62,7 @@ class DatabaseSeeder extends Seeder
         factory(ExerciseStage::class, 40)->create();
         factory(Statistic::class, 5)->create();
 
-        factory(PlanUser::class, 100)->create();
+        factory(PlanUser::class, 500)->create();
 
         factory(Clase::class, 5)->create();
         factory(Clase::class, 100)->create()->each(

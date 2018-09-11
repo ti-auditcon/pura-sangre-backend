@@ -99,6 +99,7 @@ class UserController extends Controller
      */
     public function destroy(Request $request, User $user)
     {
+      $user->plan_users()->delete();
       $user->delete();
       return redirect('/users')->with('success', 'El usuario ha sido borrado correctamente');
     }

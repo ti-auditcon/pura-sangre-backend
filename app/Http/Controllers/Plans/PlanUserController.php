@@ -73,7 +73,7 @@ class PlanUserController extends Controller
      */
     public function edit(User $user, PlanUser $plan)
     {
-        return view('userplans.edit')->with('user', $user);
+      return view('userplans.edit')->with('user', $user)->with('plan_user', $plan);
     }
 
     /**
@@ -85,8 +85,9 @@ class PlanUserController extends Controller
      */
     public function update(Request $request, User $user, PlanUser $plan)
     {
+      // dd();
       $plan->update($request->all());
-      return redirect()->route('userplans.show', $user->id)->with('success', 'Se actualizo correctamente');
+      return redirect()->route('users.plans.show', $user->id)->with('success', 'Se actualizo correctamente');
     }
 
     /**

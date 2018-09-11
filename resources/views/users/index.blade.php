@@ -58,7 +58,7 @@
                 @foreach ($users as $user)
                 <tr>
                   {{-- {{dd()}} --}}
-                  @if ($user->plan_users->isNotEmpty())
+                  @if ($user->plan_users->isNotEmpty() && $user->plan_users->where('plan_state', 'activo'))
                     <td>
                       <span class="badge-success badge-point"></span>
                       <a class="media-img " href="{{url('/users/'.$user->id)}}">
@@ -67,7 +67,12 @@
                       </a>
                     </td>
                     <td>{{$user->plan_users->first()->plan->plan}}</td>
-                    <td>{{'Quedan '}}{{$user->plan_users->first()->finish_date->diffInDays(Carbon\Carbon::now())}}{{' días'}}</td>
+                    {{-- {{dd($user->plan_users->first()->finish_date)}} --}}
+                    @if ($user->plan_users->first()->finish_date >= (Carbon\Carbon::today()))
+                      <td>{{'Quedan '}}{{$user->plan_users->first()->finish_date->diffInDays(Carbon\Carbon::now())}}{{' días'}}</td>
+                    @else
+                      <td>{{'--'}}</td>
+                    @endif
                     <td>{{$user->plan_users->first()->start_date->format('d-m-Y')}} a {{$user->plan_users->first()->finish_date->format('d-m-Y')}}</td>
                     <td>
                       <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-credit-card"></i></button>
