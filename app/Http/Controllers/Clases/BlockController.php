@@ -15,7 +15,7 @@ class BlockController extends Controller
      */
     public function index()
     {
-      return 'hola';
+      return view('blocks.index');
     }
 
     /**

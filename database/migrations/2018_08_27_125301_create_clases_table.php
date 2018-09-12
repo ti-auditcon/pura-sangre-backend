@@ -47,6 +47,14 @@ class CreateClasesTable extends Migration
         ->onDelete('cascade');
         $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
       });
+
+      Schema::create('blocks', function (Blueprint $table) {
+          $table->increments('id');
+          $table->string('start');
+          $table->string('end');
+          $table->unsignedInteger('day');
+          $table->timestamps();
+      });
 }
     /**
      * Reverse the migrations.
@@ -59,5 +67,6 @@ class CreateClasesTable extends Migration
         Schema::dropIfExists('clases');
         Schema::dropIfExists('reservation_statuses');
         Schema::dropIfExists('reservations');
+        Schema::dropIfExists('blocks');
     }
 }
