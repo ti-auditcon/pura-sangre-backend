@@ -18,12 +18,12 @@
 
 Auth::routes();
 
-Route::get('/home', function () {return view('home');})->middleware('auth');
+Route::get('/', function () {return view('home');})->middleware('auth');
 
 
 
 Route::get('/blocks', 'HomeController@blocks')->name('bills.validates'); //validar recibo
-Route::get('/blocks/1', 'HomeController@blocksshow')->name('blocks.show'); //validar recibo
+Route::get('/blocks/config', 'HomeController@blocksshow')->name('blocks.show'); //validar recibo
 
 Route::get('/reports', function () {
     return view('reports');
@@ -53,5 +53,3 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 // });
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

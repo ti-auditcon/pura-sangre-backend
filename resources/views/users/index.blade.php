@@ -53,6 +53,7 @@
                   <th width="20%">Período</th>
                   <th width="10%">acciones</th>
                   <th width="10%">status</th>
+
                 </tr>
               </thead>
               <tbody>
@@ -95,6 +96,7 @@
                   </td>
                   <td>{{$user->status_user_id}}</td>
 
+
                 </tr>
                 @endforeach
               </tbody>
@@ -124,6 +126,7 @@
 			table = $('#students-table').DataTable({
 				"paging": true,
 				"ordering": true,
+        "order": [[ 3, "asc" ]],
 				"language": {
 					"lengthMenu": "Mostrar _MENU_ elementos",
 					"zeroRecords": "Sin resultados",
@@ -146,7 +149,6 @@
 
   $('button.user-filter').on("click", function(){
       table.columns( 6 ).search( $(this).data('status') ).draw();
-
     });
 
 	</script>

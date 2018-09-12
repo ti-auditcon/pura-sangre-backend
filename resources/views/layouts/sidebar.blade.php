@@ -48,7 +48,10 @@
                                     <a href="form_advanced.html">Roles y usuarios</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('plans.index') }}">Planes</a>
+                                    <a href="{{ route('blocks.index') }}">Planes</a>
+                                </li>
+                                <li>
+                                    <a href="form_masks.html">Horarios</a>
                                 </li>
                                 <li>
                                     <a href="form_masks.html">Facturacion</a>

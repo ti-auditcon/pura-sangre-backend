@@ -13,13 +13,17 @@
           </div>
           <div>
             <h4>{{$user->first_name}} {{$user->last_name}}</h4>
+
             <div class="text-muted font-13 mb-3">
-              <span class="mr-3"><i class="mr-2"></i>PLAN FULL</span>
-              <span class="badge badge-success badge-pills">ACTIVO</span>
+              <span class="mr-3"><i class="mr-2"></i>{{$user->active_plan()->plan ?? 'sin plan'}}</span>
             </div>
           </div>
         </div>
         <div class="d-inline-flex">
+
+            <div class="px-4 text-center">
+                <span class="badge badge-success badge-pills">ACTIVO</span>
+            </div>
           <div class="px-4 text-center">
             <div class="text-muted font-13">Clases asistidas</div>
             <div class="h2 mt-2">134</div>
