@@ -8,7 +8,7 @@
     <div class="col-12">
       <div class="ibox">
           <div class="ibox-head">
-              <div class="ibox-title">CALENDAR</div>
+              <div class="ibox-title">Horarios</div>
 
           </div>
           <div class="ibox-body">
@@ -99,29 +99,29 @@
   $(document).ready(function() {
     $('#calendar').fullCalendar({
       header: {
-          left: 'prev,next today',
+          left: 'prev,next',
           center: 'title',
-          right:  'agendaDay agendaWeek',
+          right:  'agendaWeek',
       },
       minTime: "07:00:00",
       maxTime: "21:00:00",
-      events:{!!$events!!},
+    //  events:,
       editable: false,
       defaultView: 'agendaWeek',
       // allDaySlot: false,
-      slotDuration: '00:30:00',
+      slotDuration: '01:00:00',
       slotLabelFormat: 'h(:mm)a',
       hiddenDays: [0],
-      eventClick: function(calEvent, jsEvent, view) {
-
-        if(!calEvent.allDay){
-          window.location.href = "{{url('/blocks/1')}}";
-        }
-        else{
-          $('#wod-modal').modal('show');
-        }
-
-      }
+      // eventClick: function(calEvent, jsEvent, view) {
+      //
+      //   if(!calEvent.allDay){
+      //     window.location.href = "";
+      //   }
+      //   else{
+      //     $('#wod-modal').modal('show');
+      //   }
+      //
+      // }
     });
   });
   </script>
