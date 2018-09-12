@@ -86,7 +86,7 @@
               <div class="modal-body">
                 <div class="form-group">
                   <div class="input-group clockpicker">
-                      <label>Inicio:</label>
+                      <label class="col-sm-2 col-form-label">Inicio:</label>
                       <input type="text" class="form-control" value="" name="start">
                       <span class="input-group-addon">
                           <span class="la la-clock-o"></span>
@@ -96,20 +96,42 @@
 
                 <div class="form-group">
                   <div class="input-group clockpicker">
-                      <label>Termino:</label>
-                      <input type="text" class="form-control" value="" name="start">
+                      <label class="col-sm-2 col-form-label">Termino:</label>
+                      <input type="text" class="form-control" value="" name="end">
                       <span class="input-group-addon">
                           <span class="la la-clock-o"></span>
                       </span>
                   </div>
                 </div>
-
-
+                <div class="form-group" id="daycheckbox">
+                    <div class="mb-2">
+                        <label class="checkbox checkbox-inline">
+                            <input type="checkbox" name="day[]" value="1">
+                            <span class="input-span"></span>Lunes</label>
+                        <label class="checkbox checkbox-inline">
+                            <input type="checkbox" name="day[]" value="2">
+                            <span class="input-span"></span>Martes</label>
+                        <label class="checkbox checkbox-inline">
+                            <input type="checkbox" name="day[]" value="3">
+                            <span class="input-span"></span>Miercoles</label>
+                        <label class="checkbox checkbox-inline">
+                            <input type="checkbox" name="day[]" value="4">
+                            <span class="input-span"></span>Jueves</label>
+                        <label class="checkbox checkbox-inline">
+                            <input type="checkbox" name="day[]" value="5">
+                            <input type="checkbox" >
+                            <span class="input-span"></span>Viernes</label>
+                        <label class="checkbox checkbox-inline">
+                            <input type="checkbox" name="day[]" value="6">
+                            <input type="checkbox" >
+                            <span class="input-span"></span>Sabado</label>
+                    </div>
+                </div>
 
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save changes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Guardar horario</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
               </div>
             </div>
             {{Form::close()}}
@@ -134,7 +156,7 @@
 
 
 @section('scripts') {{-- scripts para esta vista --}}
-	{{--  datatable --}}
+	{{--  full caslendar --}}
   <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
   <script src="{{ asset('js/moment.min.js') }}"></script>
 	<script src="{{ asset('js/fullcalendar.min.js') }}"></script>
@@ -161,8 +183,12 @@
       },
       dayClick: function(date, jsEvent, view) {
         console.log('dayClick:'+date.format());
-
+        $('#blockadd input[name="start"]').val(date.format('H:mm'));
+        $('#blockadd input[name="end"]').val(date.add(1, 'hours').format('H:mm'));
+        $('#daycheckbox input').prop('checked', false);
+        $('#daycheckbox input[value="'+date.day()+'"]').prop('checked', true);
         $('#blockadd').modal();
+        console.log('dow:'+date.day());
       },
 
 
