@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Clases;
 use App\Models\Clases\Block;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Redirect;
 
 class BlockController extends Controller
 {
@@ -16,6 +17,7 @@ class BlockController extends Controller
     public function index()
     {
       $blocks = Block::all()->toArray();
+
       return view('blocks.index')->with('blocks',json_encode($blocks));
     }
 
@@ -37,7 +39,12 @@ class BlockController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+      foreach ($request->day as $day) {
+        $block = Block::create(['start'=>$request->start,'end'=>$request->end,'dow'=>$day]);
+        $block->plans()->sync($request->plans);
+      }
+      return Redirect::back();
     }
 
     /**

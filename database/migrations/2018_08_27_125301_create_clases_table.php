@@ -55,6 +55,13 @@ class CreateClasesTable extends Migration
           $table->unsignedInteger('dow');
           $table->timestamps();
       });
+
+      Schema::create('block_plan', function (Blueprint $table) {
+          $table->increments('id');
+          $table->unsignedInteger('block_id');
+          $table->unsignedInteger('plan_id');
+          $table->timestamps();
+      });
 }
     /**
      * Reverse the migrations.
@@ -68,5 +75,6 @@ class CreateClasesTable extends Migration
         Schema::dropIfExists('reservation_statuses');
         Schema::dropIfExists('reservations');
         Schema::dropIfExists('blocks');
+        Schema::dropIfExists('block_plan');
     }
 }

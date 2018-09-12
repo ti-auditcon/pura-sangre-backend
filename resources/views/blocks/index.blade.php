@@ -75,7 +75,7 @@
 {{-- modal para agrergar horario  --}}
         <div class="modal fade" id="blockadd" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
           <div class="modal-dialog ">
-            {{Form::open([])}}
+            {{Form::open(['route'=>'blocks.store'])}}
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title">Nuevo horario</h5>
@@ -127,14 +127,41 @@
                             <span class="input-span"></span>Sabado</label>
                     </div>
                 </div>
+                <div class="form-group mb-4">
+
+                    <select multiple="multiple" id="plan-select-add" name="plans[]">
+                      @foreach (App\Models\Plans\Plan::all() as $plan)
+                        <option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period}}</option>
+                      @endforeach
+                    </select>
+                </div>
 
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Guardar horario</button>
+                <button type="submit" class="btn btn-primary">Guardar horario</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
               </div>
             </div>
             {{Form::close()}}
+          </div>
+        </div>
+
+        <div class="modal fade" id="blockedit" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog ">
+
+            <div class="modal-content">
+              <div class="modal-body">
+                <div class="form-group mb-4">
+
+                    <select multiple="multiple" id="plan-select-edit" name="plans[]">
+                      @foreach (App\Models\Plans\Plan::all() as $plan)
+                        <option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period}}</option>
+                      @endforeach
+                    </select>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -145,6 +172,7 @@
   <link href="{{asset('css/bootstrap-datepicker.min.css')}}" rel="stylesheet" />
 	<link href="{{asset('css/fullcalendar.min.css')}}" rel="stylesheet" />
   <link href="{{asset('css/bootstrap-clockpicker.min.css')}}" rel="stylesheet" />
+  <link href="{{asset('css/multi-select.css')}}" rel="stylesheet" />
   <style>
     .fc-axis.fc-widget-header{width:59px !important;}
     .fc-axis.fc-widget-content{width:51px !important;}
@@ -161,10 +189,16 @@
   <script src="{{ asset('js/moment.min.js') }}"></script>
 	<script src="{{ asset('js/fullcalendar.min.js') }}"></script>
   <script src="{{ asset('js/bootstrap-clockpicker.min.js') }}"></script>
+  <script src="{{ asset('js/jquery.multi-select.js') }}"></script>
 
   <script defer>
   $(document).ready(function() {
     $('.clockpicker').clockpicker({autoclose: true});
+
+    $('#plan-select-add').multiSelect();
+    $('#plan-select-edit').multiSelect();
+
+
     $('#calendar').fullCalendar({
       header: {
           right:  'agendaWeek',
@@ -179,10 +213,18 @@
       slotLabelFormat: 'h(:mm)a',
       hiddenDays: [0],
       eventClick: function(calEvent, jsEvent, view) {
-        console.log('eventClick');
+
+
+        ids = Object.values(calEvent.plans_id);
+        console.log(Object.values(calEvent.plans_id));
+        $('#plan-select-edit').multiSelect('deselect_all');
+        $('#plan-select-edit').multiSelect('select',ids.map(String));
+        $('#blockedit').modal();
       },
       dayClick: function(date, jsEvent, view) {
+
         console.log('dayClick:'+date.format());
+        $('#plan-select-add').multiSelect('deselect_all');
         $('#blockadd input[name="start"]').val(date.format('H:mm'));
         $('#blockadd input[name="end"]').val(date.add(1, 'hours').format('H:mm'));
         $('#daycheckbox input').prop('checked', false);
