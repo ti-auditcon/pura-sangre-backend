@@ -21,7 +21,7 @@
                   <button class="btn btn-outline-success user-filter" data-status="1">
                     <span class="btn-icon">ACTIVOS</span>
                   </button>
-                  <span class="btn-label-out btn-label-out-right btn-label-out-success pointing">340</span>
+                  <span class="btn-label-out btn-label-out-right btn-label-out-success pointing">{{$users->where('status_user_id', 1)->count()}}</span>
                 </div>
               </span>
               <span class="flexbox mr-3" >
@@ -29,7 +29,7 @@
                   <button class="btn btn-outline-danger user-filter" data-status="2">
                     <span class="btn-icon">INACTIVOS</span>
                   </button>
-                  <span class="btn-label-out btn-label-out-right btn-label-out-danger pointing">120</span>
+                  <span class="btn-label-out btn-label-out-right btn-label-out-danger pointing">{{$users->where('status_user_id', 2)->count()}}</span>
                 </div>
               </span>
               <span class="flexbox mr-3">
@@ -37,7 +37,7 @@
                   <button class="btn btn-outline-warning user-filter" data-status="3">
                     <span class="btn-icon">PRUEBA</span>
                   </button>
-                  <span class="btn-label-out btn-label-out-right btn-label-out-warning pointing">13</span>
+                  <span class="btn-label-out btn-label-out-right btn-label-out-warning pointing">{{$users->where('status_user_id', 3)->count()}}</span>
                 </div>
               </span>
             </div>
