@@ -52,7 +52,7 @@ class CreateClasesTable extends Migration
           $table->increments('id');
           $table->string('start');
           $table->string('end');
-          $table->unsignedInteger('day');
+          $table->unsignedInteger('dow');
           $table->timestamps();
       });
 }
