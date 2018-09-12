@@ -72,24 +72,47 @@
   			  </div>
   			</div>
 
-
+{{-- modal para agrergar horario  --}}
         <div class="modal fade" id="blockadd" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-sm">
+          <div class="modal-dialog ">
+            {{Form::open([])}}
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
+                <h5 class="modal-title">Nuevo horario</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
-                <p>Modal body text goes here.</p>
+                <div class="form-group">
+                  <div class="input-group clockpicker">
+                      <label>Inicio:</label>
+                      <input type="text" class="form-control" value="" name="start">
+                      <span class="input-group-addon">
+                          <span class="la la-clock-o"></span>
+                      </span>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group clockpicker">
+                      <label>Termino:</label>
+                      <input type="text" class="form-control" value="" name="start">
+                      <span class="input-group-addon">
+                          <span class="la la-clock-o"></span>
+                      </span>
+                  </div>
+                </div>
+
+
+
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-primary">Save changes</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
               </div>
             </div>
+            {{Form::close()}}
           </div>
         </div>
 
@@ -99,6 +122,7 @@
 @section('css') {{-- stylesheet para esta vista --}}
   <link href="{{asset('css/bootstrap-datepicker.min.css')}}" rel="stylesheet" />
 	<link href="{{asset('css/fullcalendar.min.css')}}" rel="stylesheet" />
+  <link href="{{asset('css/bootstrap-clockpicker.min.css')}}" rel="stylesheet" />
   <style>
     .fc-axis.fc-widget-header{width:59px !important;}
     .fc-axis.fc-widget-content{width:51px !important;}
@@ -114,9 +138,11 @@
   <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
   <script src="{{ asset('js/moment.min.js') }}"></script>
 	<script src="{{ asset('js/fullcalendar.min.js') }}"></script>
+  <script src="{{ asset('js/bootstrap-clockpicker.min.js') }}"></script>
 
-  <script>
+  <script defer>
   $(document).ready(function() {
+    $('.clockpicker').clockpicker({autoclose: true});
     $('#calendar').fullCalendar({
       header: {
           right:  'agendaWeek',
@@ -134,8 +160,8 @@
         console.log('eventClick');
       },
       dayClick: function(date, jsEvent, view) {
-        console.log('dayClick');
-        $('#blockadd .modal-body').append(date.format());
+        console.log('dayClick:'+date.format());
+
         $('#blockadd').modal();
       },
 

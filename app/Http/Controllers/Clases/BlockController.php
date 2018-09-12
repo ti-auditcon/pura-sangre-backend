@@ -16,7 +16,7 @@ class BlockController extends Controller
     public function index()
     {
       $blocks = Block::all()->toArray();
-      return view('blocks.index')->with('blocks',json_encode($blocks))->with('events',json_encode($events));
+      return view('blocks.index')->with('blocks',json_encode($blocks));
     }
 
     /**
