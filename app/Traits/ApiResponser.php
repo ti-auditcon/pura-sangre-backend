@@ -1,18 +1,17 @@
-<?php
+<?php namespace App\Traits;
 
-namespace App\Traits;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 // use Illuminate\Support\Facades\Cache;
 // use Illuminate\Support\Facades\Validator;
 // use Illuminate\Pagination\LengthAwarePaginator;
 
-  /**
-   * [trait description]
-   * @var [type]
-   */
-  trait ApiResponser
-  {
+/**
+ * [trait description]
+ * @var [type]
+ */
+trait ApiResponser {
+
     /**
      * [succesResponse Respuesta exitosa]
      * @param  [type] $data [description]
@@ -48,7 +47,7 @@ use Illuminate\Database\Eloquent\Model;
         return $this->succesResponse(['data' => $collection], $code);
       }
 
-      $transformer = $collection->first()->transformer;
+      // $transformer = $collection->first()->transformer;
 
       // $collection = $this->filtrarDatos($collection, $transformer);
       //
@@ -71,9 +70,9 @@ use Illuminate\Database\Eloquent\Model;
      */
     protected function showOne(Model $instance, $code)
     {
-      $transformer = $instance->transformer;
-
-      $instance = $this->transformData($instance, $transformer);
+      // $transformer = $instance->transformer;
+      //
+      // $instance = $this->transformData($instance, $transformer);
 
       return $this->succesResponse($instance, $code);
 
@@ -143,9 +142,9 @@ use Illuminate\Database\Eloquent\Model;
     //
     //   return $paginated->appends(request()->all());
 
-// new LengthAwarePaginator($items, $total, $perPage [, $currentPage, $options])
+  // new LengthAwarePaginator($items, $total, $perPage [, $currentPage, $options])
 
-    }
+}
 
     // /**
     //  * [transformData Función protegida que transforma los índices de los datos entregados]

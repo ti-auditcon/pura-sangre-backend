@@ -4,14 +4,15 @@ namespace App\Http\Controllers\API\Users;
 
 use App\Models\Users\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ApiController;
 
-class UserController extends Controller
+class UserController extends ApiController
 {
     /** [__construct description] */
     public function __construct()
     {
         parent::__construct();
+        $this->middleware('auth:api');
     }
 
     /**
@@ -20,6 +21,7 @@ class UserController extends Controller
      */
     public function index()
     {
+      dd('entre');
       $users = User::all();
       return $this->showAll($users);
     }
@@ -32,7 +34,11 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      // $campos = $request->all();
+      // $campos['verified'] = User::USUARIO_NO_VERIFICADO;
+      // $campos['verification_token'] = User::generarVerificationToken();
+      // $user = User::create($campos);
+      // return $this->showOne($user, 201);
     }
 
     /**
@@ -55,7 +61,28 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+      // if ($request->has('name'))
+      // {
+      //   $user->name = $request->name;
+      // }
+      // if ($request->has('email') && $user->email != $request->email)
+      // {
+      //   $user->verified = User::USUARIO_NO_VERIFICADO;
+      //   $user->verification_token = User::generarVerificationToken();
+      //   $user->email = $request->email;
+      // }
+      // if ($request->has('password'))
+      // {
+      //   $user->password = $request->password;
+      // }
+      // if (!$user->isDirty())
+      // {
+      //   return $this->errorResponse('Debe ingresar al menos un valor a cambiar', 422);
+      // }
+      // if ($user->save())
+      // {
+      //   return $this->showOne($user, 200);
+      // }
     }
 
     /**

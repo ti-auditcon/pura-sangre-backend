@@ -52,6 +52,6 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 //
 // });
 
-Auth::routes();
+
 
 Route::get('/home', 'HomeController@index')->name('home');
