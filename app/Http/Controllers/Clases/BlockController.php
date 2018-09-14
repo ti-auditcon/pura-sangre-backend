@@ -78,7 +78,7 @@ class BlockController extends Controller
      */
     public function update(Request $request, Block $block)
     {
-        //
+      dd('hola');
     }
 
     /**

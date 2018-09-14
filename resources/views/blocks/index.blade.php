@@ -150,6 +150,13 @@
           <div class="modal-dialog ">
 
             <div class="modal-content">
+              {{Form::open(['route' => ['blocks.update', 1 ],'method' => 'put'])}}
+              <div class="modal-header">
+                <h5 class="modal-title">Editars horario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
               <div class="modal-body">
                 <div class="form-group mb-4">
 
@@ -160,6 +167,11 @@
                     </select>
                 </div>
               </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Guardar horario</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              </div>
+              {{Form::close()}}
             </div>
 
           </div>
@@ -209,7 +221,7 @@
       editable: false,
       defaultView: 'agendaWeek',
       // allDaySlot: false,
-      slotDuration: '01:00:00',
+      slotDuration: '00:30:00',
       slotLabelFormat: 'h(:mm)a',
       hiddenDays: [0],
       eventClick: function(calEvent, jsEvent, view) {
@@ -219,6 +231,10 @@
         console.log(Object.values(calEvent.plans_id));
         $('#plan-select-edit').multiSelect('deselect_all');
         $('#plan-select-edit').multiSelect('select',ids.map(String));
+        //console.log( );
+        url = $('#blockedit form').attr('action');
+        newurl = url.replace(/[0-9]/g, calEvent.id);
+        $('#blockedit form').attr('action',newurl)
         $('#blockedit').modal();
       },
       dayClick: function(date, jsEvent, view) {
