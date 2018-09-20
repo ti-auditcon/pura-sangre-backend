@@ -7,6 +7,7 @@ use App\Models\Plans\Plan;
 use App\Models\Users\User;
 use App\Models\Plans\Discount;
 use App\Models\Bills\Installment;
+use App\Observers\Plans\PlanUserObserver;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
@@ -27,6 +28,7 @@ class PlanUser extends Pivot
   public static function boot()
   {
     parent::boot();
+    PlanUser::observe(PlanUserObserver::class);
   }
 
   /**
