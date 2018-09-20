@@ -60,28 +60,8 @@ class UserController extends ApiController
      */
     public function update(Request $request, User $user)
     {
-      // if ($request->has('name'))
-      // {
-      //   $user->name = $request->name;
-      // }
-      // if ($request->has('email') && $user->email != $request->email)
-      // {
-      //   $user->verified = User::USUARIO_NO_VERIFICADO;
-      //   $user->verification_token = User::generarVerificationToken();
-      //   $user->email = $request->email;
-      // }
-      // if ($request->has('password'))
-      // {
-      //   $user->password = $request->password;
-      // }
-      // if (!$user->isDirty())
-      // {
-      //   return $this->errorResponse('Debe ingresar al menos un valor a cambiar', 422);
-      // }
-      // if ($user->save())
-      // {
-      //   return $this->showOne($user, 200);
-      // }
+      $user->update($request->all());
+      return $this->showOne($user, 200);
     }
 
     // /**
