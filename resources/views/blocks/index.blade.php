@@ -138,7 +138,7 @@
 
               </div>
               <div class="modal-footer">
-                <button type="submit" class="btn btn-primary"  onClick="this.disabled=true; this.value='Guardando…';">Guardar horario</button>
+                <button type="submit" class="btn btn-primary"  onClick="this.disabled=true; this.value='Guardando…';this.form.submit();">Guardar horario</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
               </div>
             </div>
@@ -165,13 +165,13 @@
                         <option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period}}</option>
                       @endforeach
                     </select>
-                    <button type="submit" class="btn btn-primary" onClick="this.disabled=true; this.value='Editando…';">Editar planes</button>
+                    <button type="submit" class="btn btn-primary" onClick="this.disabled=true; this.value='Editando…';this.form.submit(); ">Editar planes</button>
                   {{Form::close()}}
                 </div>
                 <div class="form-group mb-4">
                   {{Form::open(['route' => ['blocks.destroy', 1 ],'method' => 'delete' , 'id' => 'block-delete'])}}
                     Eliminar la clase? </br>
-                    <button  class ="btn btn-danger" onClick="this.disabled=true; this.value='Eliminando…';" >Eliminar</button>
+                    <button  class ="btn btn-danger" onClick="this.disabled=true; this.value='Eliminando…';this.form.submit();" >Eliminar</button>
                   {{Form::close()}}
                 </div>
               </div>
