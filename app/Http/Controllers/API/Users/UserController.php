@@ -11,8 +11,8 @@ class UserController extends ApiController
     /** [__construct description] */
     public function __construct()
     {
-        parent::__construct();
-        $this->middleware('auth:api');
+        // parent::__construct();
+        // $this->middleware('auth:api');
     }
 
     /**
@@ -21,7 +21,6 @@ class UserController extends ApiController
      */
     public function index()
     {
-      dd('entre');
       $users = User::all();
       return $this->showAll($users);
     }
@@ -85,15 +84,15 @@ class UserController extends ApiController
       // }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Users\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(User $user)
-    {
-      $user->delete();
-      return $this->showOne($user, 200);
-    }
+    // /**
+    //  * Remove the specified resource from storage.
+    //  *
+    //  * @param  \App\Models\Users\User  $user
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function destroy(User $user)
+    // {
+    //   $user->delete();
+    //   return $this->showOne($user, 200);
+    // }
 }
