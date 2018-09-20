@@ -19,7 +19,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes, HasApiTokens;
+    use HasApiTokens, Notifiable, SoftDeletes;
 
     /**
      * [getRouteKeyName obtener nombre]

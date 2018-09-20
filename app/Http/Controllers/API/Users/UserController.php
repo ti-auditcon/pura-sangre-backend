@@ -11,8 +11,9 @@ class UserController extends ApiController
     /** [__construct description] */
     public function __construct()
     {
-        // parent::__construct();
-        // $this->middleware('auth:api');
+        parent::__construct();
+        $this->middleware('can:view,user')->only('show');
+        $this->middleware('can:update,user')->only('update');
     }
 
     /**
