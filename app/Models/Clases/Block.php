@@ -10,6 +10,8 @@ class Block extends Model
   protected $fillable = ['start', 'end','dow'];
   protected $appends = ['plans_id'];
   // protected $with = array('plans');
+
+
   //transformamos el valor de dow a un arraglo para fullcalendar
   public function getDowAttribute($value)
   {

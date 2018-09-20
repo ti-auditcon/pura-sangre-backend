@@ -19,8 +19,9 @@ class CreateClasesTable extends Migration
       Schema::create('clases', function (Blueprint $table) {
           $table->increments('id');
           $table->string('date');
-          $table->string('start_at');
-          $table->string('finish_at');
+          $table->string('start_at')->nullable();
+          $table->string('finish_at')->nullable();
+          $table->string('block_id')->nullable();
           $table->integer('room')->nullable();
           $table->integer('profesor_id');
           $table->integer('quota');

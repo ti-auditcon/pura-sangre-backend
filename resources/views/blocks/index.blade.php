@@ -138,7 +138,7 @@
 
               </div>
               <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Guardar horario</button>
+                <button type="submit" class="btn btn-primary"  onClick="this.disabled=true; this.value='Guardando…';">Guardar horario</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
               </div>
             </div>
@@ -150,7 +150,7 @@
           <div class="modal-dialog ">
 
             <div class="modal-content">
-              {{Form::open(['route' => ['blocks.update', 1 ],'method' => 'put'])}}
+
               <div class="modal-header">
                 <h5 class="modal-title">Editars horario</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -159,19 +159,26 @@
               </div>
               <div class="modal-body">
                 <div class="form-group mb-4">
-
+                  {{Form::open(['route' => ['blocks.update', 1 ],'method' => 'put', 'id' => 'block-update'])}}
                     <select multiple="multiple" id="plan-select-edit" name="plans[]">
                       @foreach (App\Models\Plans\Plan::all() as $plan)
                         <option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period}}</option>
                       @endforeach
                     </select>
+                    <button type="submit" class="btn btn-primary" onClick="this.disabled=true; this.value='Editando…';">Editar planes</button>
+                  {{Form::close()}}
+                </div>
+                <div class="form-group mb-4">
+                  {{Form::open(['route' => ['blocks.destroy', 1 ],'method' => 'delete' , 'id' => 'block-delete'])}}
+                    Eliminar la clase? </br>
+                    <button  class ="btn btn-danger" onClick="this.disabled=true; this.value='Eliminando…';" >Eliminar</button>
+                  {{Form::close()}}
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Guardar horario</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
               </div>
-              {{Form::close()}}
+
             </div>
 
           </div>
@@ -224,17 +231,27 @@
       slotDuration: '00:30:00',
       slotLabelFormat: 'h(:mm)a',
       hiddenDays: [0],
+      eventColor: '#4c6c8b',
       eventClick: function(calEvent, jsEvent, view) {
 
 
         ids = Object.values(calEvent.plans_id);
         console.log(Object.values(calEvent.plans_id));
+        console.log(calEvent.id);
         $('#plan-select-edit').multiSelect('deselect_all');
         $('#plan-select-edit').multiSelect('select',ids.map(String));
         //console.log( );
-        url = $('#blockedit form').attr('action');
-        newurl = url.replace(/[0-9]/g, calEvent.id);
-        $('#blockedit form').attr('action',newurl)
+        update_url = $('#blockedit #block-update').attr('action');
+
+        update_newurl = update_url.replace(/[0-9]/g, calEvent.id);
+        console.log(update_newurl);
+        $('#blockedit #block-update').attr('action',update_newurl);
+
+        delete_url = $('#blockedit #block-delete').attr('action');
+        delete_newurl = delete_url.replace(/[0-9]/g, calEvent.id);
+
+        console.log(delete_newurl);
+        $('#blockedit #block-delete').attr('action',delete_newurl);
         $('#blockedit').modal();
       },
       dayClick: function(date, jsEvent, view) {

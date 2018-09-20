@@ -78,7 +78,8 @@ class BlockController extends Controller
      */
     public function update(Request $request, Block $block)
     {
-      dd('hola');
+      $block->plans()->sync($request->plans);
+      return Redirect::back();
     }
 
     /**
@@ -89,7 +90,9 @@ class BlockController extends Controller
      */
     public function destroy(Block $block)
     {
-        //
+        $block->plans()->detach();
+        $block->delete();
+        return Redirect::back();
     }
 
 }
