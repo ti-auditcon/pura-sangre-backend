@@ -21,7 +21,7 @@
                   <button class="btn btn-outline-success user-filter" data-status="1">
                     <span class="btn-icon">ACTIVOS</span>
                   </button>
-                  <span class="btn-label-out btn-label-out-right btn-label-out-success pointing">340</span>
+                  <span class="btn-label-out btn-label-out-right btn-label-out-success pointing">{{$users->where('status_user_id', 1)->count()}}</span>
                 </div>
               </span>
               <span class="flexbox mr-3" >
@@ -29,7 +29,7 @@
                   <button class="btn btn-outline-danger user-filter" data-status="2">
                     <span class="btn-icon">INACTIVOS</span>
                   </button>
-                  <span class="btn-label-out btn-label-out-right btn-label-out-danger pointing">120</span>
+                  <span class="btn-label-out btn-label-out-right btn-label-out-danger pointing">{{$users->where('status_user_id', 2)->count()}}</span>
                 </div>
               </span>
               <span class="flexbox mr-3">
@@ -37,7 +37,7 @@
                   <button class="btn btn-outline-warning user-filter" data-status="3">
                     <span class="btn-icon">PRUEBA</span>
                   </button>
-                  <span class="btn-label-out btn-label-out-right btn-label-out-warning pointing">13</span>
+                  <span class="btn-label-out btn-label-out-right btn-label-out-warning pointing">{{$users->where('status_user_id', 3)->count()}}</span>
                 </div>
               </span>
             </div>
@@ -53,6 +53,7 @@
                   <th width="20%">Período</th>
                   <th width="10%">acciones</th>
                   <th width="10%">status</th>
+
                 </tr>
               </thead>
               <tbody>
@@ -95,6 +96,7 @@
                   </td>
                   <td>{{$user->status_user_id}}</td>
 
+
                 </tr>
                 @endforeach
               </tbody>
@@ -124,6 +126,7 @@
 			table = $('#students-table').DataTable({
 				"paging": true,
 				"ordering": true,
+        "order": [[ 3, "asc" ]],
 				"language": {
 					"lengthMenu": "Mostrar _MENU_ elementos",
 					"zeroRecords": "Sin resultados",
@@ -146,7 +149,6 @@
 
   $('button.user-filter').on("click", function(){
       table.columns( 6 ).search( $(this).data('status') ).draw();
-
     });
 
 	</script>

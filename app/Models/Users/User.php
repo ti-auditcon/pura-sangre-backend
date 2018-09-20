@@ -95,6 +95,15 @@ class User extends Authenticatable
     }
 
     /**
+    * metodo  para obtener el plan activo del usuario
+    * @return [type] [description]
+    */
+    public function active_plan()
+    {
+      return $this->belongsToMany(Plan::class)->using(PlanUser::class)->first();
+    }
+
+    /**
     * [status_user description]
     * @return [model] [description]
     */

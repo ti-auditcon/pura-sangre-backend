@@ -72,7 +72,7 @@ class DatabaseSeeder extends Seeder
           function ($class) {
             $stages = Stage::all()->random(mt_rand(1, 3))->pluck('id');
             $class->stages()->attach($stages);
-    });
+          });
         factory(ReservationStatus::class, 3)->create();
         factory(Reservation::class, 300)->create();
         factory(ReservationStatisticStage::class, 400)->create();

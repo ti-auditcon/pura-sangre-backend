@@ -51,6 +51,9 @@
                                     <a href="{{ route('plans.index') }}">Planes</a>
                                 </li>
                                 <li>
+                                    <a href="{{ route('blocks.index') }}">Horarios</a>
+                                </li>
+                                <li>
                                     <a href="form_masks.html">Facturacion</a>
                                 </li>
                             </ul>

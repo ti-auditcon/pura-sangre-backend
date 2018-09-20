@@ -2,21 +2,13 @@
 
 namespace App\Http\Controllers\Clases;
 
-use App\Models\Clases\Clase;
+use App\Models\Clases\Block;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Redirect;
 
-/** [ClaseController description] */
-class ClaseController extends Controller
+class BlockController extends Controller
 {
-    /**
-     * [__construct description]
-     */
-    // public function __construct()
-    // {
-    //     parent::__construct();
-    // }
-
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +16,9 @@ class ClaseController extends Controller
      */
     public function index()
     {
-        //
+      $blocks = Block::all()->toArray();
+
+      return view('blocks.index')->with('blocks',json_encode($blocks));
     }
 
     /**
@@ -45,16 +39,21 @@ class ClaseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+      foreach ($request->day as $day) {
+        $block = Block::create(['start'=>$request->start,'end'=>$request->end,'dow'=>$day]);
+        $block->plans()->sync($request->plans);
+      }
+      return Redirect::back();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Clases\Clase  $clase
+     * @param  \App\Models\Clases\Block  $block
      * @return \Illuminate\Http\Response
      */
-    public function show(Clase $clase)
+    public function show(Block $block)
     {
         //
     }
@@ -62,10 +61,10 @@ class ClaseController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Clases\Clase  $clase
+     * @param  \App\Models\Clases\Block  $block
      * @return \Illuminate\Http\Response
      */
-    public function edit(Clase $clase)
+    public function edit(Block $block)
     {
         //
     }
@@ -74,22 +73,26 @@ class ClaseController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Clases\Clase  $clase
+     * @param  \App\Models\Clases\Block  $block
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Clase $clase)
+    public function update(Request $request, Block $block)
     {
-        //
+      $block->plans()->sync($request->plans);
+      return Redirect::back();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Clases\Clase  $clase
+     * @param  \App\Models\Clases\Block  $block
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Clase $clase)
+    public function destroy(Block $block)
     {
-        //
+        $block->plans()->detach();
+        $block->delete();
+        return Redirect::back();
     }
+
 }
