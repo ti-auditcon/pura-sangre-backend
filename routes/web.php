@@ -41,6 +41,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
   Route::resource('users', 'Users\UserController');
   Route::resource('users.plans', 'Plans\PlanUserController');
   Route::resource('blocks', 'Clases\BlockController');
+  Route::resource('clases', 'Clases\ClaseController');
   ///holas
   // Route::resource('users.plans.installments', 'Bills\InstallmentController');
 });
