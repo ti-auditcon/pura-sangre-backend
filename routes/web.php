@@ -21,7 +21,7 @@ Auth::routes();
 Route::get('/', function () {return view('home');})->middleware('auth');
 
 
-// 
+//
 // Route::get('/blocks', 'HomeController@blocks')->name('bills.validates'); //validar recibo
 // Route::get('/blocks/config', 'Controller@blocksshow')->name('blocks.config'); //configurar horario
 
@@ -41,6 +41,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
   Route::resource('users', 'Users\UserController');
   Route::resource('users.plans', 'Plans\PlanUserController');
   Route::resource('blocks', 'Clases\BlockController');
+  ///holas
   // Route::resource('users.plans.installments', 'Bills\InstallmentController');
 });
 
