@@ -58,6 +58,23 @@ class CreatePlansTable extends Migration
             $table->foreign('plan_id')->references('id')->on('plans')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
+
+        Schema::create('installments', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('bill_id');
+            $table->unsignedInteger('payment_status_id');
+            $table->unsignedInteger('plan_user_id');
+            $table->string('commitment_date')->nullable();
+            $table->string('payment_date')->nullable();
+            $table->string('expiration_date');
+            $table->integer('amount');
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('bill_id')->references('id')->on('bills')->onDelete('cascade');
+            $table->foreign('payment_status_id')->references('id')->on('payment_statuses')->onDelete('cascade');
+            $table->foreign('plan_user_id')->references('id')->on('plan_user')->onDelete('cascade');
+        });
     }
 
     /**
@@ -67,10 +84,11 @@ class CreatePlansTable extends Migration
      */
     public function down()
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('plans');
-        Schema::dropIfExists('discounts');
-        Schema::dropIfExists('plan_user');
-        Schema::dropIfExists('plan_periods');
+      Schema::disableForeignKeyConstraints();
+      Schema::dropIfExists('plans');
+      Schema::dropIfExists('discounts');
+      Schema::dropIfExists('plan_user');
+      Schema::dropIfExists('plan_periods');
+      Schema::dropIfExists('installments');
     }
 }
