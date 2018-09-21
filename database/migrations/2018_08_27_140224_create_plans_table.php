@@ -64,9 +64,9 @@ class CreatePlansTable extends Migration
             $table->unsignedInteger('bill_id');
             $table->unsignedInteger('payment_status_id');
             $table->unsignedInteger('plan_user_id');
-            $table->string('commitment_date')->nullable();
-            $table->string('payment_date')->nullable();
-            $table->string('expiration_date');
+            $table->date('commitment_date')->nullable();
+            $table->date('payment_date')->nullable();
+            $table->date('expiration_date');
             $table->integer('amount');
             $table->timestamps();
             $table->softDeletes();

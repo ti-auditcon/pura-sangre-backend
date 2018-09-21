@@ -8,6 +8,7 @@ use App\Models\Plans\PlanUser;
 use App\Models\Users\Emergency;
 use App\Models\Users\Millestone;
 use App\Models\Users\StatusUser;
+use App\Models\Bills\Installment;
 use App\Models\Clases\Reservation;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -76,6 +77,16 @@ class User extends Authenticatable
     }
 
     /**
+    * [status_user description]
+    * @method status_user
+    * @return [Model]      [description]
+    */
+    public function status_user()
+    {
+      return $this->belongsTo(StatusUser::class);
+    }
+
+    /**
     * [millestones description]
     * @method millestones
     * @return [Model]      [description]
@@ -123,13 +134,17 @@ class User extends Authenticatable
     }
 
     /**
-     * [status_user description]
-     * @method status_user
-     * @return [Model]      [description]
+     * [installments description]
+     * @return [type] [description]
      */
-    public function status_user()
+    public function installments()
     {
-      return $this->belongsTo(StatusUser::class);
+        return $this->hasManyThrough(
+            Installment::class,
+            PlanUser::class,
+            'user_id',
+            'plan_user_id'
+        );
     }
 
     /**

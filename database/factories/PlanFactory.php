@@ -33,9 +33,9 @@ $factory->define(Installment::class, function (Faker $faker) {
     return [
         'bill_id' => Bill::all()->random()->id,
         'payment_status_id' => PaymentStatus::all()->random()->id,
-        'commitment_date' => $faker->date($format = 'm-d-Y', $max = 'now'),
-        'payment_date' => $faker->date($format = 'm-d-Y', $max = 'now'),
-        'expiration_date' => $faker->date($format = 'm-d-Y', $max = 'now'),
+        'commitment_date' => $faker->date($format = 'Y-n-j G:i:s', $max = 'now'),
+        'payment_date' => $faker->date($format = 'Y-n-j G:i:s', $max = 'now'),
+        'expiration_date' => $faker->date($format = 'Y-n-j G:i:s', $max = 'now'),
         'amount' => $faker->randomNumber($nbDigits = 7, $strict = false),
     ];
 });

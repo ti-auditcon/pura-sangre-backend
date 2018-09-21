@@ -120,54 +120,56 @@
     </div>
     <div class="col-8">
       <div class="ibox ibox-fullheight">
-            <div class="ibox-head">
-                <div class="ibox-title">Pagos</div>
-                <div class="ibox-tools">
-                      <button class="btn btn-success">Realizar pago</button>
-
-                  </div>
-            </div>
-            <div class="ibox-body">
-              <div class="flexbox mb-4">
-                  <div class="flexbox">
-                      <span class="flexbox mr-3">
-                          <span class="mr-2 text-muted">Dia de pago</span>
-                          <span class="h3 mb-0 text-primary font-strong">08</span>
-                      </span>
-                      <span class="flexbox mr-3">
-                          <span class="mr-2 text-muted">Dias disponibles</span>
-                          <span class="h3 mb-0 text-primary font-strong">9</span>
-                      </span>
-                  </div>
-              </div>
-                <div class="ibox-fullwidth-block">
-                    <table id="students-table" class="table table-hover">
-                        <thead class="thead-default thead-lg">
-                            <tr>
-                                <th width="20%">Plan</th>
-                                <th width="30%">Periodo</th>
-                                <th width="15%">total</th>
-                                <th width="20%">Medio de pago</th>
-                                <th width="15%" >Día de pago</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                              <td >Plan Full</td>
-                              <td >08-07-2018 al 08-08-2018</td>
-                              <td >$30.000</td>
-                              <td >Transferencia</td>
-                              <td  >05-07-2018</td>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="ibox-head">
+          <div class="ibox-title">Pagos</div>
+          <div class="ibox-tools">
+            <button class="btn btn-success">Realizar pago</button>
+          </div>
         </div>
-
+        <div class="ibox-body">
+          <div class="flexbox mb-4">
+            <div class="flexbox">
+              <span class="flexbox mr-3">
+                <span class="mr-2 text-muted">Dia de pago</span>
+                <span class="h3 mb-0 text-primary font-strong">08</span>
+              </span>
+              <span class="flexbox mr-3">
+                <span class="mr-2 text-muted">Dias disponibles</span>
+                <span class="h3 mb-0 text-primary font-strong">9</span>
+              </span>
+            </div>
+          </div>
+          <div class="ibox-fullwidth-block">
+            <table id="students-table" class="table table-hover">
+              <thead class="thead-default thead-lg">
+                <tr>
+                  <th width="20%">Plan</th>
+                  <th width="30%">Periodo</th>
+                  <th width="15%">total</th>
+                  <th width="20%">Medio de pago</th>
+                  <th width="15%">Día de pago</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach ($user->installments as $fee)
+                  {{-- {{dd($fee)}} --}}
+                    <tr>
+                      <td>{{Carbon\Carbon::parse($fee->commitment_date)->format('d-m-Y')}}</td>
+                      <td>{{Carbon\Carbon::parse($fee->payment_date)->format('d-m-Y')}}</td>
+                      <td>{{Carbon\Carbon::parse($fee->expiration_date)->format('d-m-Y')}}</td>
+                      <td>{{$fee->amount}}</td>
+                      <td></td>
+                    </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
 
-
   </div>
+
 @endsection
 
 
