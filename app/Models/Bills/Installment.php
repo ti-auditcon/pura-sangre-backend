@@ -39,7 +39,7 @@ class Installment extends Model
    */
   public function payment_status()
   {
-    return $this->hasOne(PaymentStatus::class);
+    return $this->belongsTo(PaymentStatus::class);
   }
 
   /**

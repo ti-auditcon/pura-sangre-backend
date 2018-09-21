@@ -143,20 +143,24 @@
             <table id="students-table" class="table table-hover">
               <thead class="thead-default thead-lg">
                 <tr>
-                  <th width="20%">Plan</th>
-                  <th width="30%">Periodo</th>
-                  <th width="15%">total</th>
-                  <th width="20%">Medio de pago</th>
-                  <th width="15%">Día de pago</th>
+                  <th width="15%">Plan</th>
+                  <th width="15%">Fecha Compromiso</th>
+                  <th width="15%">Fecha de Pago</th>
+                  <th width="15%">Fecha expiración</th>
+                  <th width="15%">Estado del pago</th>
+                  <th width="15%">Monto</th>
+                  <th width="10%">Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 @foreach ($user->installments as $fee)
                   {{-- {{dd($fee)}} --}}
                     <tr>
+                      <td>{{$fee->plan_user->plan->plan}}</td>
                       <td>{{Carbon\Carbon::parse($fee->commitment_date)->format('d-m-Y')}}</td>
                       <td>{{Carbon\Carbon::parse($fee->payment_date)->format('d-m-Y')}}</td>
                       <td>{{Carbon\Carbon::parse($fee->expiration_date)->format('d-m-Y')}}</td>
+                      <td>{{$fee->payment_status->payment_status}}</td>
                       <td>{{$fee->amount}}</td>
                       <td></td>
                     </tr>
