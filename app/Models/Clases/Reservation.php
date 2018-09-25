@@ -5,6 +5,7 @@ namespace App\Models\Clases;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Clases\ReservationStatisticStage;
+use App\Models\Users\User;
 
 /**
  * [Reservation description]
@@ -31,6 +32,11 @@ class Reservation extends Model
   public function reservation_statistic_stages()
   {
     return $this->hasMany(ReservationStatisticStage::class);
+  }
+
+  public function user()
+  {
+    return $this->belongsTo(User::class);
   }
 
 }

@@ -24,7 +24,10 @@ class ClaseController extends Controller
      */
     public function index()
     {
-        //
+        $clases = Clase::all()->toArray();
+
+
+        return view('clases.index')->with('clases',json_encode($clases));
     }
 
     /**
@@ -56,7 +59,7 @@ class ClaseController extends Controller
      */
     public function show(Clase $clase)
     {
-        //
+        return view('clases.show')->with('clase',$clase);
     }
 
     /**

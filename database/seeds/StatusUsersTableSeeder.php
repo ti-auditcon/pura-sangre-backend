@@ -12,41 +12,41 @@ class StatusUsersTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('status_users')->delete();
-        
+
         \DB::table('status_users')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 1,
                 'status_user' => 'Activo',
                 'created_at' => '2018-08-28 20:59:28',
                 'updated_at' => '2018-08-28 20:59:28',
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 2,
                 'status_user' => 'Inactivo',
                 'created_at' => '2018-08-28 20:59:28',
                 'updated_at' => '2018-08-28 20:59:28',
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 3,
                 'status_user' => 'Prueba',
                 'created_at' => '2018-08-28 20:59:28',
                 'updated_at' => '2018-08-28 20:59:28',
             ),
-            3 => 
-            array (
-                'id' => 4,
-                'status_user' => 'Nuevo',
-                'created_at' => '2018-08-28 20:59:28',
-                'updated_at' => '2018-08-28 20:59:28',
-            ),
+            // 3 => 
+            // array (
+            //     'id' => 4,
+            //     'status_user' => 'Nuevo',
+            //     'created_at' => '2018-08-28 20:59:28',
+            //     'updated_at' => '2018-08-28 20:59:28',
+            // ),
         ));
-        
-        
+
+
     }
 }
