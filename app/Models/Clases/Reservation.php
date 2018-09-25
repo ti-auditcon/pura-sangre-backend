@@ -33,4 +33,6 @@ class Reservation extends Model
     return $this->hasMany(ReservationStatisticStage::class);
   }
 
+
+
 }

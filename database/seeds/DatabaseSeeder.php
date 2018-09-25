@@ -66,13 +66,8 @@ class DatabaseSeeder extends Seeder
         factory(Statistic::class, 5)->create();
 
         // factory(PlanUser::class, 500)->create();
-
-        //factory(Clase::class, 5)->create();
-        factory(Clase::class, 10)->create()->each(
-          function ($class) {
-            $stages = Stage::all()->random(mt_rand(1, 3))->pluck('id');
-            $class->stages()->attach($stages);
-          });
+        // factory(Clase::class, 5)->create();
+        $this->call(BlockTableSeeder::class);
         factory(ReservationStatus::class, 3)->create();
         factory(Reservation::class, 300)->create();
         factory(ReservationStatisticStage::class, 400)->create();

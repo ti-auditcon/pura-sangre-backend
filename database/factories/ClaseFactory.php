@@ -10,13 +10,13 @@ use App\Models\Exercises\ExerciseStage;
 use App\Models\Clases\ReservationStatus;
 use App\Models\Clases\ReservationStatisticStage;
 
-$factory->define(Clase::class, function (Faker $faker) {
-    return [
-      'date' => $faker->date($format = 'Y-m-d', $max = 'now'),
-      'profesor_id' => User::all()->random()->id,
-      'quota' => $faker->numberBetween($min = 22, $max = 24),
-    ];
-});
+// $factory->define(Clase::class, function (Faker $faker) {
+//     return [
+//       'date' => $faker->date($format = 'Y-m-d', $max = 'now'),
+//       'profesor_id' => User::all()->random()->id,
+//       'quota' => $faker->numberBetween($min = 22, $max = 24),
+//     ];
+// });
 
 
 $factory->define(ReservationStatus::class, function (Faker $faker) {
