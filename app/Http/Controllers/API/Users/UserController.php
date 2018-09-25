@@ -13,7 +13,7 @@ class UserController extends ApiController
     {
         parent::__construct();
         $this->middleware('can:view,user')->only('show');
-        $this->middleware('can:update,user')->only('update');
+        // $this->middleware('can:update,user')->only('update');
     }
 
     /**
@@ -27,21 +27,6 @@ class UserController extends ApiController
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-      // $campos = $request->all();
-      // $campos['verified'] = User::USUARIO_NO_VERIFICADO;
-      // $campos['verification_token'] = User::generarVerificationToken();
-      // $user = User::create($campos);
-      // return $this->showOne($user, 201);
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  \App\Models\Users\User  $user
@@ -49,6 +34,7 @@ class UserController extends ApiController
      */
     public function show(User $user)
     {
+      // $this->authorize('view', $user);
       return $this->showOne($user, 200);
     }
 
@@ -64,16 +50,31 @@ class UserController extends ApiController
       $user->update($request->all());
       return $this->showOne($user, 200);
     }
-
-    // /**
-    //  * Remove the specified resource from storage.
-    //  *
-    //  * @param  \App\Models\Users\User  $user
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function destroy(User $user)
-    // {
-    //   $user->delete();
-    //   return $this->showOne($user, 200);
-    // }
 }
+
+// /**
+//  * Remove the specified resource from storage.
+//  *
+//  * @param  \App\Models\Users\User  $user
+//  * @return \Illuminate\Http\Response
+//  */
+// public function destroy(User $user)
+// {
+//   $user->delete();
+//   return $this->showOne($user, 200);
+// }
+
+// /**
+//  * Store a newly created resource in storage.
+//  *
+//  * @param  \Illuminate\Http\Request  $request
+//  * @return \Illuminate\Http\Response
+//  */
+// public function store(Request $request)
+// {
+//   // $campos = $request->all();
+//   // $campos['verified'] = User::USUARIO_NO_VERIFICADO;
+//   // $campos['verification_token'] = User::generarVerificationToken();
+//   // $user = User::create($campos);
+//   // return $this->showOne($user, 201);
+// }
