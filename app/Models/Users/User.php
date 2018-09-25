@@ -6,6 +6,7 @@ use App\Models\Plans\Plan;
 use App\Models\Clases\Clase;
 use App\Models\Plans\PlanUser;
 use App\Models\Users\Emergency;
+use Freshwork\ChileanBundle\Rut;
 use App\Models\Users\Millestone;
 use App\Models\Users\StatusUser;
 use App\Models\Bills\Installment;
@@ -23,16 +24,6 @@ class User extends Authenticatable
     use HasApiTokens, Notifiable, SoftDeletes;
 
     /**
-     * [getRouteKeyName obtener nombre]
-     * @method getRouteKeyName
-     * @return string  [allow to search the route by "name", instead of "id"]
-     */
-    // public function getRouteKeyName()
-    // {
-    //     return 'name';
-    // }
-
-    /**
      * [USUARIO_ADMINISTRADOR description]
      * @var string
      */
@@ -44,10 +35,35 @@ class User extends Authenticatable
      */
     const USUARIO_REGULAR = 'false';
 
-    protected $fillable = ['first_name', 'last_name', 'email', 'password', 'phone', 'emergency_id', 'status_user_id', 'admin'];
+    protected $fillable = [
+      'rut', 'first_name', 'last_name',
+      'birthdate', 'gender', 'email',
+      'address', 'password', 'phone',
+      'emergency_id', 'status_user_id', 'admin'
+    ];
+
     protected $hidden = ['password', 'remember_token'];
     protected $dates = ['deleted_at'];
     protected $appends = ['full_name'];
+
+    // /**
+    //  * [getRutAttribute description]
+    //  * @param  [type] $value [description]
+    //  * @return [type]        [description]
+    //  */
+    // public function getRutAttribute($value)
+    // {
+    //   return Rut::set($value)->fix()->format();
+    // }
+
+    /**
+     * [setRutAttribute description]
+     * @param [type] $value [description]
+     */
+    public function setRutAttribute($value)
+    {
+      $this->attributes['rut'] = Rut::parse($value)->number();
+    }
 
     /**
      * [esAdministrador description]
@@ -157,11 +173,19 @@ class User extends Authenticatable
       return User::all()->where('admin', 'false')->orderBy('name');
     }
 
+    /**
+     * [active_users description]
+     * @return [type] [description]
+     */
     public function active_users()
     {
       return $this->where('status_user_id', 1);
     }
 
+    /**
+     * [getFullNameAttribute description]
+     * @return [type] [description]
+     */
     public function getFullNameAttribute()
     {
       return $this->first_name.' '.$this->last_name;
@@ -175,4 +199,14 @@ class User extends Authenticatable
 // public function active_plan()
 // {
 //     return $this->belongsToMany(Plan::class)->wherePivot('plan_state', 'activo');
+// }
+
+/**
+* [getRouteKeyName obtener nombre]
+* @method getRouteKeyName
+* @return string  [allow to search the route by "name", instead of "id"]
+*/
+// public function getRouteKeyName()
+// {
+//     return 'name';
 // }

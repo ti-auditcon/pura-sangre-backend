@@ -4,72 +4,86 @@
 @endsection
 
 @section('content')
-  <div class="row justify-content-center">
-    <div class="col-6">
-      <div class="ibox">
-          <div class="ibox-head">
-              <div class="ibox-title">CLASE</div>
-
-          </div>
-          <div class="ibox-body">
-            <div class="row mb-4">
-                <div class="col-lg-6 col-md-6">
-                    <div class="card mb-4">
-                        <div class="card-body ">
-                          <div class="row mb-2">
-                              <div class="col-12 text-muted">Fecha:</div>
-                              <div class="col-12">23-12-2018</div>
-                          </div>
-                          <div class="row mb-2">
-                              <div class="col-12 text-muted">Horario:</div>
-                              <div class="col-12">09:00-10:00</div>
-                          </div>
-                          <div class="row mb-2">
-                              <div class="col-12 text-muted">Coach:</div>
-                              <div class="col-12">Max Maximo</div>
-                          </div>
-                          <br />
-
-
-                        </div>
-                    </div>
+<div class="row justify-content-center">
+  <div class="col-6">
+    <div class="ibox">
+      <div class="ibox-head">
+        <div class="ibox-title">CLASE</div>
+      </div>
+      <div class="ibox-body">
+        <div class="row mb-4">
+          <div class="col-lg-6 col-md-6">
+            <div class="card mb-4">
+              <div class="card-body ">
+                <div class="row mb-2">
+                  <div class="col-12 text-muted">Fecha:</div>
+                  <div class="col-12">23-12-2018</div>
                 </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="card mb-4">
-                        <div class="card-body flexbox-b">
-                            <div class="row ">
-                              <div class="easypie mr-4" data-percent="42" data-bar-color="#5c6bc0" data-size="80" data-line-width="8">
-                                  <span class="easypie-data font-26 text-primary"><i class="ti-user"></i></span>
-                              </div>
-
-                              <h3 class="font-strong text-primary">15/25</h3>
-                              <div class="text-muted">Cupos confirmados</div>
-                            </div>
-                            <div class="row ">
-                              <button type="button" name="button" class="btn btn-danger">Deshabilitar clase</button>
-                            </div>
-                        </div>
-                    </div>
+                <div class="row mb-2">
+                  <div class="col-12 text-muted">Horario:</div>
+                  <div class="col-12">09:00-10:00</div>
                 </div>
-
+                <div class="row mb-2">
+                  <div class="col-12 text-muted">Coach:</div>
+                  <div class="col-12">Max Maximo</div>
+                </div>
+                <br />
+              </div>
             </div>
           </div>
-      </div>
-      <div class="ibox">
-          <div class="ibox-head">
-              <div class="ibox-title">WOD</div>
-              <div class="ibox-tools">
-                  <a ><i class="ti-pencil"></i></a>
-
+          <div class="col-lg-6 col-md-6">
+            <div class="card mb-4">
+              <div class="card-body flexbox-b">
+                <div class="row ">
+                  <div class="easypie mr-4" data-percent="80" data-bar-color="#5c6bc0" data-size="80" data-line-width="8">
+                    <span class="easypie-data font-26 text-primary"><i class="ti-user"></i></span>
+                  </div>
+                  <h3 class="font-strong text-primary">20/25</h3>
+                  <div class="text-muted">Cupos confirmados</div>
+                </div>
+                <div class="row">
+                  {!! Form::open(['route' => ['clases.destroy', $clase->id], 'method' => 'delete', 'class' => 'clase-delete']) !!}
+                  {!! Form::close() !!}
+                  <button class="btn btn-danger sweet-clase-delete" data-id="{{$clase->id}}" data-name="{{$clase->date}}"><i>
+                  </i>Deshabilitar clase</button>
+                </div>
               </div>
-
+            </div>
           </div>
-          <div class="ibox-body">
-            <div class="row">
+        </div>
+      </div>
+    </div>
+    <div class="ibox">
+        <div class="ibox-head">
+            <div class="ibox-title">WOD</div>
+            <div class="ibox-tools">
+                <a ><i class="ti-pencil"></i></a>
+
+            </div>
+
+        </div>
+        <div class="ibox-body">
+          <div class="row">
+            <div class="col-md-4">
+                  <div class="ibox shadow-wide">
+                      <div class="ibox-body text-center">
+                          <h3 class="font-strong">Warm up</h3>
+
+                          <div class="py-5">
+                              <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
+                              <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 15 Pull Ups</div>
+                              <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
+                              <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
+
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
               <div class="col-md-4">
                     <div class="ibox shadow-wide">
                         <div class="ibox-body text-center">
-                            <h3 class="font-strong">Warm up</h3>
+                            <h3 class="font-strong">Skills</h3>
 
                             <div class="py-5">
                                 <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
@@ -85,7 +99,7 @@
                 <div class="col-md-4">
                       <div class="ibox shadow-wide">
                           <div class="ibox-body text-center">
-                              <h3 class="font-strong">Skills</h3>
+                              <h3 class="font-strong">Wod</h3>
 
                               <div class="py-5">
                                   <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
@@ -98,75 +112,59 @@
                           </div>
                       </div>
                   </div>
-                  <div class="col-md-4">
-                        <div class="ibox shadow-wide">
-                            <div class="ibox-body text-center">
-                                <h3 class="font-strong">Wod</h3>
-
-                                <div class="py-5">
-                                    <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
-                                    <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 15 Pull Ups</div>
-                                    <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
-                                    <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
-
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-            </div>
-
-
-
-
           </div>
-      </div>
+
+
+
+
+        </div>
     </div>
-    <div class="col-6">
+  </div>
+  <div class="col-6">
 
-      <div class="ibox">
-          <div class="ibox-head">
-              <div class="ibox-title">Alumnos </div>
-              <button class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
+    <div class="ibox">
+        <div class="ibox-head">
+            <div class="ibox-title">Alumnos </div>
+            <button class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
 
+        </div>
+        <div class="ibox-body">
+          <div class="ibox-fullwidth-block">
+            <table id="students-table" class="table table-hover">
+              <thead class="thead-default thead-lg">
+                <tr>
+                  <th width="30%">Alumno</th>
+
+
+                </tr>
+              </thead>
+              <tbody>
+                @foreach ($clase->reservations as $reservation)
+                <tr>
+                  <td>
+                    @if($reservation->user->status_user_id == 1 )
+                      <span class="badge-success badge-point"></span>
+                    @elseif($reservation->user->status_user_id == 2 )
+                      <span class="badge-danger badge-point"></span>
+                    @elseif($reservation->user->status_user_id == 3 )
+                      <span class="badge-warning badge-point"></span>
+                    @endif
+                    <a href="{{url('/users/'.$reservation->user->id)}}">
+                      {{$reservation->user->first_name}} {{$reservation->user->last_name}}
+                    </a>
+                  </td>
+
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
           </div>
-          <div class="ibox-body">
-            <div class="ibox-fullwidth-block">
-              <table id="students-table" class="table table-hover">
-                <thead class="thead-default thead-lg">
-                  <tr>
-                    <th width="30%">Alumno</th>
-
-
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach ($clase->reservations as $reservation)
-                  <tr>
-                    <td>
-                      @if($reservation->user->status_user_id == 1 )
-                        <span class="badge-success badge-point"></span>
-                      @elseif($reservation->user->status_user_id == 2 )
-                        <span class="badge-danger badge-point"></span>
-                      @elseif($reservation->user->status_user_id == 3 )
-                        <span class="badge-warning badge-point"></span>
-                      @endif
-                      <a href="{{url('/users/'.$reservation->user->id)}}">
-                        {{$reservation->user->first_name}} {{$reservation->user->last_name}}
-                      </a>
-                    </td>
-
-                  </tr>
-                  @endforeach
-                </tbody>
-              </table>
-            </div>
-          </div>
-      </div>
-
+        </div>
     </div>
 
   </div>
+
+</div>
 
   <!-- Modal -->
   <div class="modal fade" id="user-assign" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -277,5 +275,25 @@
 
 	</script>
 	{{--  End datatable --}}
+
+  <script>
+	$('.sweet-clase-delete').click(function(e){
+	  var id = $(this).data('id');
+		//alert(id);
+			swal({
+					title: "Desea eliminar la clase: "+$(this).data('name')+"?",
+					text: "(Se sacarán a todos los usuarios ya inscritos a esta clase)",
+					type: 'warning',
+					showCancelButton: true,
+					confirmButtonClass: 'btn-danger',
+					cancelButtonText: 'Cancelar',
+					confirmButtonText: 'Eliminar',
+					closeOnConfirm: false,
+			},function(){
+				//redirección para eliminar clase
+         $('form.clase-delete').submit();
+			});
+	});
+	</script>
 
 @endsection

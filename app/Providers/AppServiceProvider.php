@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
-use App\Models\Plans\PlanUser;
+use App\Models\Clases\Clase;
 use App\Models\Clases\Block;
+use App\Models\Plans\PlanUser;
+use App\Observers\Clases\ClaseObserver;
+use App\Observers\Clases\BlockObserver;
 use Illuminate\Support\ServiceProvider;
 use App\Observers\Plans\PlanUserObserver;
-use App\Observers\Clases\BlockObserver;
 
 /** [AppServiceProvider description]*/
 class AppServiceProvider extends ServiceProvider
@@ -20,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
     {
       PlanUser::observe(PlanUserObserver::class);
       Block::observe(BlockObserver::class);
+      Clase::observe(ClaseObserver::class);
     }
 
     /**

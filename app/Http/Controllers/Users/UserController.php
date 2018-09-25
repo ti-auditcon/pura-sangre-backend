@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Users;
 
 use Session;
 use App\Models\Users\User;
+use App\Models\Users\Emergency;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\UserRequest;
@@ -42,8 +43,8 @@ class UserController extends Controller
      */
     public function store(UserRequest $request, User $user)
     {
-      // $emergency = Emergency::create($request->all());
-      $user = User::create(array_add($request->all(), 'password', bcrypt('purasangre')));
+      $emergency = Emergency::create($request->all());
+      $user = User::create(array_merge($request->all(), ['password' => bcrypt('purasangre'), 'emergency_id' => $emergency->id]));
       Session::flash('success','El usuario ha sido creado correctamente');
       return view('users.show')->with('user', $user);
     }

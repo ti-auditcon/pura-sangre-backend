@@ -4,8 +4,8 @@ namespace App\Models\Clases;
 
 use App\Models\Users\User;
 use App\Models\Exercises\Stage;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Clases\Reservation;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * [Clase description]

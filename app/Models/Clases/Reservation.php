@@ -34,6 +34,10 @@ class Reservation extends Model
     return $this->hasMany(ReservationStatisticStage::class);
   }
 
+  /**
+   * [user description]
+   * @return [type] [description]
+   */
   public function user()
   {
     return $this->belongsTo(User::class);
