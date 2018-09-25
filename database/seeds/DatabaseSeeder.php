@@ -67,8 +67,8 @@ class DatabaseSeeder extends Seeder
 
         // factory(PlanUser::class, 500)->create();
 
-        factory(Clase::class, 5)->create();
-        factory(Clase::class, 100)->create()->each(
+        //factory(Clase::class, 5)->create();
+        factory(Clase::class, 10)->create()->each(
           function ($class) {
             $stages = Stage::all()->random(mt_rand(1, 3))->pluck('id');
             $class->stages()->attach($stages);

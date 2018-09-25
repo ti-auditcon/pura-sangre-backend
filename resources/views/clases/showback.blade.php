@@ -123,43 +123,64 @@
       </div>
     </div>
     <div class="col-6">
+      {{-- <div class="ibox">
+          <div class="ibox-head">
+              <div class="ibox-title">Agregar alumno</div>
+          </div>
+          <div class="ibox-body">
+            <div class="form-group m-4">
 
+                <input class="form-control" type="text" id="addStudent" placeholder="Estudiantes">
+                </br>
+                    <span class="input-group-btn">
+                                              <button class="btn btn-outline-secondary">Go!</button>
+                    </span>
+
+            </div>
+          </div>
+      </div> --}}
       <div class="ibox">
           <div class="ibox-head">
               <div class="ibox-title">Alumnos </div>
-
+              <div class="ibox-tools">
+                  <a class="dropdown-toggle" data-toggle="dropdown"><i class="ti-user"></i></a>
+                  <div class="dropdown-menu dropdown-menu-right">
+                      <a class="dropdown-item"><i class="ti-pencil mr-2"></i>Create</a>
+                      <a class="dropdown-item"><i class="ti-pencil-alt mr-2"></i>Edit</a>
+                      <a class="dropdown-item"><i class="ti-close mr-2"></i>Remove</a>
+                  </div>
+              </div>
           </div>
           <div class="ibox-body">
-            <div class="ibox-fullwidth-block">
-              <table id="students-table" class="table table-hover">
-                <thead class="thead-default thead-lg">
-                  <tr>
-                    <th width="30%">Alumno</th>
+            <div class="form-group m-4">
 
+                <input class="form-control" type="text" id="addStudent" placeholder="Estudiantes">
+                </br>
+                    <span class="input-group-btn">
+                                              <button class="btn btn-outline-secondary">Agregar a la clase</button>
+                    </span>
 
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach (App\Models\Users\User::where('status_user_id', 1)->get() as $user)
-                  <tr>
-                    <td>
-                      @if($user->status_user_id == 1 )
-                        <span class="badge-success badge-point"></span>
-                      @elseif($user->status_user_id == 2 )
-                        <span class="badge-danger badge-point"></span>
-                      @elseif($user->status_user_id == 3 )
-                        <span class="badge-warning badge-point"></span>
-                      @endif
-                      <a href="{{url('/users/'.$user->id)}}">
-                        {{$user->first_name}} {{$user->last_name}}
-                      </a>
-                    </td>
-
-                  </tr>
-                  @endforeach
-                </tbody>
-              </table>
             </div>
+              <div class="" >
+                <ul class="media-list media-list-divider mr-2 scroller" data-height="580px" style="overflow: hidden; width: auto; height: 580px;">
+                  @foreach (App\models\student::all()->take(15) as $student)
+                    <li class="media align-items-center">
+
+                        <a class="media-img" href="{{url('students/1')}}">
+                            <img class="img-circle" src="{{url('/img/users/'.$student->avatar)}}" alt="image" width="54">
+                        </a>
+                        <div class="media-body d-flex align-items-center">
+                            <div class="flex-1">
+                                <div class="media-heading">{{$student->fist_name}} {{$student->last_name}} <span class="badge badge-success badge-pill ml-2">Confirmado</span></div>
+                                <small class="text-muted">{{$student->email}} </small></div>
+                            <button class="btn btn-sm btn-outline-secondary btn-rounded">remover</button>
+                        </div>
+
+
+                    </li>
+                  @endforeach
+
+              </ul>
           </div>
       </div>
 
@@ -171,42 +192,61 @@
 
 @endsection
 
+
 @section('css') {{-- stylesheet para esta vista --}}
-	<link href="{{asset('css/datatables.min.css')}}" rel="stylesheet" />
+
 @endsection
 
 
 
 @section('scripts') {{-- scripts para esta vista --}}
-	{{--  datatable --}}
-	<script src="{{ asset('js/datatables.min.js') }}"></script>
-	<script >
-		$(document).ready(function() {
-			table = $('#students-table').DataTable({
-				"paging": true,
-				"ordering": true,
-        "pageLength": 3,
-        "bLengthChange" : false, //thought this line could hide the LengthMenu
-        "bpageLength": false,
-        "bPaginate": false,
-				"language": {
-					"lengthMenu": "Mostrar _MENU_ elementos",
-					"zeroRecords": "Sin resultados",
-					"info": "Mostrando página _PAGE_ de _PAGES_",
-					"infoEmpty": "Sin resultados",
-					"infoFiltered": "(filtrado de _MAX_ registros totales)",
-					"search": "Filtrar:"
+  <script src="{{ asset('js/typeahead.bundle.min.js') }}"></script>
 
-				},
-			});
-		});
-  //
-  //
-  // $('button.user-filter').on("click", function(){
-  //     table.columns( 6 ).search( $(this).data('status') ).draw();
-  //   });
+  <script>
+  $(document).ready(function() {
+    // Basic demo
 
-	</script>
-	{{--  End datatable --}}
+    var substringMatcher = function(strs) {
+      return function findMatches(q, cb) {
+        var matches, substringRegex;
+
+        // an array that will be populated with substring matches
+        matches = [];
+
+        // regex used to determine if a string contains the substring `q`
+        substrRegex = new RegExp(q, 'i');
+
+        // iterate through the pool of strings and for any string that
+        // contains the substring `q`, add it to the `matches` array
+        $.each(strs, function(i, str) {
+          if (substrRegex.test(str)) {
+            matches.push(str);
+          }
+        });
+
+        cb(matches);
+      };
+    };
+
+    var states = {!!App\Models\Users\User::all()->get(['id', 'first_name', 'last_name'])->toJson()!!};
+
+    $('#addStudent2').typeahead({
+      hint: true,
+      highlight: true,
+      minLength: 1
+    },
+    {
+      name: 'states',
+      source: substringMatcher(states),
+      templates: {
+        suggestion: function (data) {
+             return '<a  class="list-group-item">'+data.first_name+'</a>'
+        }
+      }
+    });
+
+  });
+  </script>
+
 
 @endsection
