@@ -26,6 +26,7 @@ class ClaseController extends Controller
     {
         $clases = Clase::all()->toArray();
 
+
         return view('clases.index')->with('clases',json_encode($clases));
     }
 

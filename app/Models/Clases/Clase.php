@@ -14,7 +14,7 @@ class Clase extends Model
 {
     protected $table = 'clases';
     protected $fillable = ['date', 'start_at', 'finish_at', 'room', 'profesor_id', 'quota' ,'block_id'];
-    protected $appends = ['start','end','url'];
+    protected $appends = ['start','end','url','reservation_count'];
 
     /**
      * [reservations description]
@@ -61,5 +61,10 @@ class Clase extends Model
     public function getUrlAttribute()
     {
       return url('clases/'.$this->id);
+    }
+
+    public function getReservationCountAttribute()
+    {
+      return $this->hasMany(Reservation::class)->count();
     }
 }

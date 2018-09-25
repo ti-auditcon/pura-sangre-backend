@@ -127,6 +127,7 @@
       <div class="ibox">
           <div class="ibox-head">
               <div class="ibox-title">Alumnos </div>
+              <button class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
 
           </div>
           <div class="ibox-body">
@@ -140,18 +141,18 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach (App\Models\Users\User::where('status_user_id', 1)->get() as $user)
+                  @foreach ($clase->reservations as $reservation)
                   <tr>
                     <td>
-                      @if($user->status_user_id == 1 )
+                      @if($reservation->user->status_user_id == 1 )
                         <span class="badge-success badge-point"></span>
-                      @elseif($user->status_user_id == 2 )
+                      @elseif($reservation->user->status_user_id == 2 )
                         <span class="badge-danger badge-point"></span>
-                      @elseif($user->status_user_id == 3 )
+                      @elseif($reservation->user->status_user_id == 3 )
                         <span class="badge-warning badge-point"></span>
                       @endif
-                      <a href="{{url('/users/'.$user->id)}}">
-                        {{$user->first_name}} {{$user->last_name}}
+                      <a href="{{url('/users/'.$reservation->user->id)}}">
+                        {{$reservation->user->first_name}} {{$reservation->user->last_name}}
                       </a>
                     </td>
 
@@ -167,6 +168,57 @@
 
   </div>
 
+  <!-- Modal -->
+  <div class="modal fade" id="user-assign" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <table id="students-table-search" class="table table-hover">
+            <thead class="thead-default thead-lg">
+              <tr>
+                <th width="80%">Alumnos</th>
+                <th width="20%">Accion</th>
+
+
+              </tr>
+            </thead>
+            <tbody>
+              @foreach (App\Models\Users\User::all() as $user)
+              <tr>
+                <td>
+                  @if($user->status_user_id == 1 )
+                    <span class="badge-success badge-point"></span>
+                  @elseif($user->status_user_id == 2 )
+                    <span class="badge-danger badge-point"></span>
+                  @elseif($user->status_user_id == 3 )
+                    <span class="badge-warning badge-point"></span>
+                  @endif
+                  <a href="{{url('/users/'.$user->id)}}">
+                    {{$user->first_name}} {{$user->last_name}}
+                  </a>
+                </td>
+                <td>
+                  <button class="btn btn-success">agregar</button>
+                </td>
+
+              </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 @endsection
@@ -185,7 +237,7 @@
 			table = $('#students-table').DataTable({
 				"paging": true,
 				"ordering": true,
-        "pageLength": 3,
+        "pageLength": 10,
         "bLengthChange" : false, //thought this line could hide the LengthMenu
         "bpageLength": false,
         "bPaginate": false,
@@ -199,6 +251,23 @@
 
 				},
 			});
+      table_search = $('#students-table-search').DataTable({
+          "paging": true,
+          "ordering": true,
+          "pageLength": 3,
+          "bLengthChange" : false, //thought this line could hide the LengthMenu
+          "bpageLength": false,
+          "bPaginate": false,
+          "language": {
+            "lengthMenu": "Mostrar _MENU_ elementos",
+            "zeroRecords": "Sin resultados",
+            "info": "Mostrando página _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin resultados",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Buscar Alumno:"
+
+          },
+        });
 		});
   //
   //

@@ -19,44 +19,6 @@
 
   </div>
 
-  {{-- <div class="modal fade" id="clase-resume" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog ">
-
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Clase</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="container">
-            <div class="row">
-              <h4>Reservas</h4>
-              <div class="easypie" data-percent="84" data-bar-color="#5c6bc0" data-size="80" data-line-width="8">
-                 <span class="easypie-data h4 font-strong">20/25</span>
-
-              </div>
-            </div>
-            <div class="row">
-              <a href="" class="btn btn-info" >Ver clase</a>
-            </div>
-
-            <div class="row">
-              <h4>Alumnos</h4>
-            </div>
-
-          </div>
-
-
-
-
-
-        </div>
-
-      </div>
-    </div>
-  </div> --}}
 
 @endsection
 
@@ -102,9 +64,12 @@
           slotLabelFormat: 'h(:mm)a',
           hiddenDays: [0],
           eventColor: '#4c6c8b',
-          eventClick: function(calEvent, jsEvent, view) {
-            $('#clase-resume').modal();
+          eventRender: function( event, element, view ) {
+            element.find('.fc-content').append('<span >'+event.reservation_count+'/25</span> ');
           },
+          // eventClick: function(calEvent, jsEvent, view) {
+          //   $('#clase-resume').modal();
+          // },
 
         });
 
