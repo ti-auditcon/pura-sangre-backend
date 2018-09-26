@@ -2,10 +2,6 @@
 
 namespace App\Traits;
 
-/**
- * [trait description]
- * @var [type]
- */
 trait AdminActions
 {
 	/**
