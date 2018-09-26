@@ -1,0 +1,281 @@
+@extends('layouts.app')
+@section('sidebar')
+  @include('layouts.sidebar',['page'=>'student'])
+@endsection
+
+@section('content')
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <div class="ibox">
+          <div class="ibox-head">
+              <div class="ibox-title">CLASE</div>
+
+          </div>
+          <div class="ibox-body">
+            <div class="row mb-4">
+                <div class="col-lg-6 col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-body ">
+                          <div class="row mb-2">
+                              <div class="col-12 text-muted">Fecha:</div>
+                              <div class="col-12">23-12-2018</div>
+                          </div>
+                          <div class="row mb-2">
+                              <div class="col-12 text-muted">Horario:</div>
+                              <div class="col-12">09:00-10:00</div>
+                          </div>
+                          <div class="row mb-2">
+                              <div class="col-12 text-muted">Coach:</div>
+                              <div class="col-12">Max Maximo</div>
+                          </div>
+                          <br />
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-body flexbox-b">
+                            <div class="row ">
+                              <div class="easypie mr-4" data-percent="42" data-bar-color="#5c6bc0" data-size="80" data-line-width="8">
+                                  <span class="easypie-data font-26 text-primary"><i class="ti-user"></i></span>
+                              </div>
+
+                              <h3 class="font-strong text-primary">15/25</h3>
+                              <div class="text-muted">Cupos confirmados</div>
+                            </div>
+                            <div class="row ">
+                              <button type="button" name="button" class="btn btn-danger">Deshabilitar clase</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+          </div>
+      </div>
+      <div class="ibox">
+          <div class="ibox-head">
+              <div class="ibox-title">WOD</div>
+              <div class="ibox-tools">
+                  <a ><i class="ti-pencil"></i></a>
+
+              </div>
+
+          </div>
+          <div class="ibox-body">
+            <div class="row">
+              <div class="col-md-4">
+                    <div class="ibox shadow-wide">
+                        <div class="ibox-body text-center">
+                            <h3 class="font-strong">Warm up</h3>
+
+                            <div class="py-5">
+                                <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
+                                <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 15 Pull Ups</div>
+                                <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
+                                <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                      <div class="ibox shadow-wide">
+                          <div class="ibox-body text-center">
+                              <h3 class="font-strong">Skills</h3>
+
+                              <div class="py-5">
+                                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
+                                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 15 Pull Ups</div>
+                                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
+                                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
+
+                              </div>
+
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-4">
+                        <div class="ibox shadow-wide">
+                            <div class="ibox-body text-center">
+                                <h3 class="font-strong">Wod</h3>
+
+                                <div class="py-5">
+                                    <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
+                                    <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 15 Pull Ups</div>
+                                    <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
+                                    <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+            </div>
+
+
+
+
+          </div>
+      </div>
+    </div>
+    <div class="col-6">
+
+      <div class="ibox">
+          <div class="ibox-head">
+              <div class="ibox-title">Alumnos </div>
+              <button class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
+
+          </div>
+          <div class="ibox-body">
+            <div class="ibox-fullwidth-block">
+              <table id="students-table" class="table table-hover">
+                <thead class="thead-default thead-lg">
+                  <tr>
+                    <th width="30%">Alumno</th>
+
+
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach ($clase->reservations as $reservation)
+                  <tr>
+                    <td>
+                      @if($reservation->user->status_user_id == 1 )
+                        <span class="badge-success badge-point"></span>
+                      @elseif($reservation->user->status_user_id == 2 )
+                        <span class="badge-danger badge-point"></span>
+                      @elseif($reservation->user->status_user_id == 3 )
+                        <span class="badge-warning badge-point"></span>
+                      @endif
+                      <a href="{{url('/users/'.$reservation->user->id)}}">
+                        {{$reservation->user->first_name}} {{$reservation->user->last_name}}
+                      </a>
+                    </td>
+
+                  </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+          </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="user-assign" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <table id="students-table-search" class="table table-hover">
+            <thead class="thead-default thead-lg">
+              <tr>
+                <th width="80%">Alumnos</th>
+                <th width="20%">Accion</th>
+
+
+              </tr>
+            </thead>
+            <tbody>
+              @foreach (App\Models\Users\User::all() as $user)
+              <tr>
+                <td>
+                  @if($user->status_user_id == 1 )
+                    <span class="badge-success badge-point"></span>
+                  @elseif($user->status_user_id == 2 )
+                    <span class="badge-danger badge-point"></span>
+                  @elseif($user->status_user_id == 3 )
+                    <span class="badge-warning badge-point"></span>
+                  @endif
+                  <a href="{{url('/users/'.$user->id)}}">
+                    {{$user->first_name}} {{$user->last_name}}
+                  </a>
+                </td>
+                <td>
+                  <button class="btn btn-success">agregar</button>
+                </td>
+
+              </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+@endsection
+
+@section('css') {{-- stylesheet para esta vista --}}
+	<link href="{{asset('css/datatables.min.css')}}" rel="stylesheet" />
+@endsection
+
+
+
+@section('scripts') {{-- scripts para esta vista --}}
+	{{--  datatable --}}
+	<script src="{{ asset('js/datatables.min.js') }}"></script>
+	<script >
+		$(document).ready(function() {
+			table = $('#students-table').DataTable({
+				"paging": true,
+				"ordering": true,
+        "pageLength": 10,
+        "bLengthChange" : false, //thought this line could hide the LengthMenu
+        "bpageLength": false,
+        "bPaginate": false,
+				"language": {
+					"lengthMenu": "Mostrar _MENU_ elementos",
+					"zeroRecords": "Sin resultados",
+					"info": "Mostrando página _PAGE_ de _PAGES_",
+					"infoEmpty": "Sin resultados",
+					"infoFiltered": "(filtrado de _MAX_ registros totales)",
+					"search": "Filtrar:"
+
+				},
+			});
+      table_search = $('#students-table-search').DataTable({
+          "paging": true,
+          "ordering": true,
+          "pageLength": 3,
+          "bLengthChange" : false, //thought this line could hide the LengthMenu
+          "bpageLength": false,
+          "bPaginate": false,
+          "language": {
+            "lengthMenu": "Mostrar _MENU_ elementos",
+            "zeroRecords": "Sin resultados",
+            "info": "Mostrando página _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin resultados",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Buscar Alumno:"
+
+          },
+        });
+		});
+  //
+  //
+  // $('button.user-filter').on("click", function(){
+  //     table.columns( 6 ).search( $(this).data('status') ).draw();
+  //   });
+
+	</script>
+	{{--  End datatable --}}
+
+@endsection
