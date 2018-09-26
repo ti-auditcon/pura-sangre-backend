@@ -13,6 +13,8 @@ class AuthController extends Controller
 {
   public function login(Request $request)
   {
+    
+
       if (Auth::attempt($request->only('email', 'password'))) {
           $user = Auth::user();
           $token =  $user->createToken('FromApp')->accessToken;
@@ -21,10 +23,9 @@ class AuthController extends Controller
               'user' => $user
           ], 200);
       } else {
-          return response()->json(['error' => 'Unauthorised'], 401);
+          return response()->json(['error' => 'no entre'], 401);
       }
   }
-<<<<<<< HEAD
   public function logout()
   {
     if (Auth::check()) {
@@ -34,6 +35,4 @@ class AuthController extends Controller
         return response()->json(['error' =>'api.something_went_wrong'], 500);
     }
   }
-=======
->>>>>>> dev
 }
