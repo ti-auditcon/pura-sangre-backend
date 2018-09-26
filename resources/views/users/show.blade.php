@@ -161,7 +161,7 @@
                       <td>{{Carbon\Carbon::parse($fee->payment_date)->format('d-m-Y')}}</td>
                       <td>{{Carbon\Carbon::parse($fee->expiration_date)->format('d-m-Y')}}</td>
                       <td>{{$fee->payment_status->payment_status}}</td>
-                      <td>$ {{$fee->amount}}</td>
+                      <td>{{$fee->amount}}</td>
                       <td></td>
                     </tr>
                 @endforeach
