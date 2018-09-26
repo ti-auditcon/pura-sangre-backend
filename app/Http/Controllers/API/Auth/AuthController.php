@@ -24,6 +24,7 @@ class AuthController extends Controller
           return response()->json(['error' => 'Unauthorised'], 401);
       }
   }
+<<<<<<< HEAD
   public function logout()
   {
     if (Auth::check()) {
@@ -33,4 +34,6 @@ class AuthController extends Controller
         return response()->json(['error' =>'api.something_went_wrong'], 500);
     }
   }
+=======
+>>>>>>> dev
 }

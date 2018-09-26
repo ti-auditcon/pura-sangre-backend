@@ -14,14 +14,6 @@ use App\Http\Requests\Users\UserRequest;
 class UserController extends Controller
 {
     /**
-     * [__construct description]
-     */
-    // public function __construct()
-    // {
-    //     parent::__construct();
-    // }
-
-    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

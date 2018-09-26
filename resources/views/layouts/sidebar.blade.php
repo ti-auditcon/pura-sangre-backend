@@ -13,7 +13,7 @@
               </a>
           </li>
           <li @if($page=="blocks") class="active" @endif>
-              <a href="{{url('/blocks')}}"><i class="sidebar-item-icon  ti-calendar "></i>
+              <a href="{{url('/clases')}}"><i class="sidebar-item-icon  ti-calendar "></i>
                   <span class="nav-label">Clases</span>
               </a>
           </li>

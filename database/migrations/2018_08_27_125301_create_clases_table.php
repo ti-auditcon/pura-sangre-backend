@@ -18,13 +18,13 @@ class CreateClasesTable extends Migration
 
       Schema::create('clases', function (Blueprint $table) {
           $table->increments('id');
-          $table->string('date');
+          $table->date('date');
           $table->string('start_at')->nullable();
           $table->string('finish_at')->nullable();
           $table->string('block_id')->nullable();
           $table->integer('room')->nullable();
-          $table->integer('profesor_id');
-          $table->integer('quota');
+          $table->integer('profesor_id')->nullable();
+          $table->integer('quota')->nullable();
           $table->timestamps();
           // $table->softDeletes();
       });
@@ -53,7 +53,7 @@ class CreateClasesTable extends Migration
           $table->increments('id');
           $table->string('start');
           $table->string('end');
-          $table->unsignedInteger('dow');
+          $table->unsignedInteger('dow')->nullable();
           $table->timestamps();
       });
 

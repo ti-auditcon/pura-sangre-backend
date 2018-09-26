@@ -13,7 +13,8 @@ use App\Models\Clases\Reservation;
 class Clase extends Model
 {
     protected $table = 'clases';
-    protected $fillable = ['date', 'start_at', 'finish_at', 'room', 'profesor_id', 'quota'];
+    protected $fillable = ['date', 'start_at', 'finish_at', 'room', 'profesor_id', 'quota' ,'block_id'];
+    protected $appends = ['start','end','url','reservation_count'];
 
     /**
      * [reservations description]
@@ -40,5 +41,30 @@ class Clase extends Model
     public function users()
     {
     return $this->belongsToMany(User::Class)->using(Reservation::class);
+    }
+
+    public function block()
+    {
+      return $this->belongsTo(Block::class);
+    }
+
+    public function getStartAttribute()
+    {
+      return $this->date.' '.$this->block->start;
+    }
+
+    public function getEndAttribute()
+    {
+      return $this->date.' '.$this->block->end;
+    }
+
+    public function getUrlAttribute()
+    {
+      return url('clases/'.$this->id);
+    }
+
+    public function getReservationCountAttribute()
+    {
+      return $this->hasMany(Reservation::class)->count();
     }
 }
