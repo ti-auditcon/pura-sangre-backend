@@ -37,19 +37,19 @@ class DatabaseSeeder extends Seeder
       $this->call(PaymentStatusesTableSeeder::class);
 
       $user = User::create([
-              'rut' => 11111111,
-              'first_name' => 'Audito',
-              'last_name' => 'Asomic',
-              'birthdate' => '1985-01-01',
-              'gender' => 'male',
-              'email' => 'sa@auditcon.cl',
-              'password' => bcrypt('123123'),
-              'phone' => '87654321',
-              'address' => 'Estado, Esquina Membrillar, Oficina 208',
-              'emergency_id' => 1,
-              'status_user_id' => 1,
-              'admin' => 'true',
-              ]);
+          'rut' => 11111111,
+          'first_name' => 'Audito',
+          'last_name' => 'Asomic',
+          'birthdate' => '1985-01-01',
+          'gender' => 'male',
+          'email' => 'sa@auditcon.cl',
+          'password' => bcrypt('123123'),
+          'phone' => '87654321',
+          'address' => 'Estado, Esquina Membrillar, Oficina 208',
+          // 'emergency_id' => 1,
+          'status_user_id' => 1,
+          'admin' => 'true',
+      ]);
 
         factory(Emergency::class, 60)->create();
         factory(Millestone::class, 40)->create();

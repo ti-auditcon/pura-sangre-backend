@@ -30,6 +30,7 @@ Route::get('/reports', function () {
 });
 
 Route::get('/messages', function () {
+	Article::where('sd');
     return view('messages');
 });
 

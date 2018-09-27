@@ -17,11 +17,11 @@
               <div class="card-body ">
                 <div class="row mb-2">
                   <div class="col-12 text-muted">Fecha:</div>
-                  <div class="col-12">23-12-2018</div>
+                  <div class="col-12">{{Carbon\Carbon::parse($clase->date)->format('d-m-Y')}}</div>
                 </div>
                 <div class="row mb-2">
                   <div class="col-12 text-muted">Horario:</div>
-                  <div class="col-12">09:00-10:00</div>
+                  <div class="col-12">{{$clase->block->start}} - {{$clase->block->end}}</div>
                 </div>
                 <div class="row mb-2">
                   <div class="col-12 text-muted">Coach:</div>
@@ -35,10 +35,10 @@
             <div class="card mb-4">
               <div class="card-body flexbox-b">
                 <div class="row ">
-                  <div class="easypie mr-4" data-percent="80" data-bar-color="#5c6bc0" data-size="80" data-line-width="8">
+                  <div class="easypie mr-4" data-percent="{{$clase->reservations->count()*100/25}}" data-bar-color="#5c6bc0" data-size="80" data-line-width="8">
                     <span class="easypie-data font-26 text-primary"><i class="ti-user"></i></span>
                   </div>
-                  <h3 class="font-strong text-primary">20/25</h3>
+                  <h3 class="font-strong text-primary">{{$clase->reservations->count()}}/25</h3>
                   <div class="text-muted">Cupos confirmados</div>
                 </div>
                 <div class="row">
@@ -57,61 +57,51 @@
         <div class="ibox-head">
             <div class="ibox-title">WOD</div>
             <div class="ibox-tools">
-                <a ><i class="ti-pencil"></i></a>
-
+              <a ><i class="ti-pencil"></i></a>
             </div>
 
         </div>
         <div class="ibox-body">
           <div class="row">
             <div class="col-md-4">
-                  <div class="ibox shadow-wide">
-                      <div class="ibox-body text-center">
-                          <h3 class="font-strong">Warm up</h3>
-
-                          <div class="py-5">
-                              <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
-                              <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 15 Pull Ups</div>
-                              <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
-                              <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
-
-                          </div>
-
-                      </div>
+              <div class="ibox shadow-wide">
+                <div class="ibox-body text-center">
+                  <h3 class="font-strong">Warm up</h3>
+                  <div class="py-5">
+                    <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
+                    <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 15 Pull Ups</div>
+                    <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
+                    <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
                   </div>
+                </div>
+              </div>
+            </div>
+              <div class="col-md-4">
+                <div class="ibox shadow-wide">
+                  <div class="ibox-body text-center">
+                    <h3 class="font-strong">Skills</h3>
+                    <div class="py-5">
+                      <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
+                      <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 15 Pull Ups</div>
+                      <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
+                      <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="col-md-4">
-                    <div class="ibox shadow-wide">
-                        <div class="ibox-body text-center">
-                            <h3 class="font-strong">Skills</h3>
-
-                            <div class="py-5">
-                                <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
-                                <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 15 Pull Ups</div>
-                                <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
-                                <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
-
-                            </div>
-
-                        </div>
+                <div class="ibox shadow-wide">
+                  <div class="ibox-body text-center">
+                    <h3 class="font-strong">Wod</h3>
+                    <div class="py-5">
+                      <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
+                      <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 15 Pull Ups</div>
+                      <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
+                      <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                      <div class="ibox shadow-wide">
-                          <div class="ibox-body text-center">
-                              <h3 class="font-strong">Wod</h3>
-
-                              <div class="py-5">
-                                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
-                                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 15 Pull Ups</div>
-                                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
-                                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
-
-                              </div>
-
-                          </div>
-                      </div>
                   </div>
+                </div>
+              </div>
           </div>
 
 

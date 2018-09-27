@@ -2,20 +2,27 @@
 
 namespace App\Models\Clases;
 
-use App\Models\Users\User;
-use App\Models\Exercises\Stage;
 use App\Models\Clases\Reservation;
+use App\Models\Exercises\Stage;
+use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * [Clase description]
  */
 class Clase extends Model
 {
+    use SoftDeletes;
+    
     protected $table = 'clases';
+    protected $dates = ['deleted_at'];
     protected $fillable = ['date', 'start_at', 'finish_at', 'room', 'profesor_id', 'quota' ,'block_id'];
     protected $appends = ['start','end','url','reservation_count'];
 
+    protected static function boot() {
+      parent::boot();
+    }
     /**
      * [reservations description]
      * @return [type] [description]

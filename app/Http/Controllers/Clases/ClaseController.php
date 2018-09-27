@@ -25,7 +25,6 @@ class ClaseController extends Controller
     public function index()
     {
         $clases = Clase::all()->toArray();
-
         return view('clases.index')->with('clases',json_encode($clases));
     }
 
@@ -92,8 +91,8 @@ class ClaseController extends Controller
      */
     public function destroy(Clase $clase)
     {
-      $clase->reservations()->delete();
-      $clase->delete();
-      return redirect('/clases')->with('success', 'La clase ha sido borrada correctamente');
+        $clase->reservations()->delete();
+        $clase->delete();
+        return redirect('/clases')->with('success', 'La clase ha sido borrada correctamente');
     }
 }
