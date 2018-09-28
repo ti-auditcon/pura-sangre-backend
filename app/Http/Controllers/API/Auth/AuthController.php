@@ -13,7 +13,7 @@ class AuthController extends Controller
 {
   public function login(Request $request)
   {
-    
+
 
       if (Auth::attempt($request->only('email', 'password'))) {
           $user = Auth::user();
@@ -23,7 +23,7 @@ class AuthController extends Controller
               'user' => $user
           ], 200);
       } else {
-          return response()->json(['error' => 'no entre'], 401);
+          return response()->json(['error' => 'No autorizado'], 401);
       }
   }
   public function logout()
