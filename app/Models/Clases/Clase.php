@@ -23,6 +23,7 @@ class Clase extends Model
     protected static function boot() {
       parent::boot();
     }
+
     /**
      * [reservations description]
      * @return [type] [description]
@@ -31,7 +32,6 @@ class Clase extends Model
     {
       return $this->hasMany(Reservation::class);
     }
-
     /**
      * [stages description]
      * @return [type] [description]
@@ -46,6 +46,16 @@ class Clase extends Model
      * @return [type] [description]
      */
     public function users()
+    {
+    return $this->belongsToMany(User::Class)->using(Reservation::class);
+    }
+
+    public function profresor()
+    {
+        return $this->morphMany('App\Models\Users\User', 'userable');
+    }
+
+    public function profesor()
     {
     return $this->belongsToMany(User::Class)->using(Reservation::class);
     }

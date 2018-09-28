@@ -66,6 +66,15 @@ class User extends Authenticatable
       $this->attributes['rut'] = Rut::parse($value)->number();
     }
 
+     /**
+     * [getFullNameAttribute description]
+     * @return [type] [description]
+     */
+    public function getFullNameAttribute()
+    {
+      return $this->first_name.' '.$this->last_name;
+    }
+
     /**
      * [esAdministrador description]
      * @return [boolean] [description]
@@ -124,15 +133,6 @@ class User extends Authenticatable
     }
 
     /**
-     * [blocks description]
-     * @return [type] [description]
-     */
-    public function blocks()
-    {
-        return $this->hasMany(Block::class);
-    }
-
-    /**
     * metodo  para obtener el plan activo del usuario
     * @return [type] [description]
     */
@@ -142,22 +142,21 @@ class User extends Authenticatable
     }
 
     /**
-    * [status_user description]
-    * @return [model] [description]
-    */
-    public function plan_users()
+     * [active_users description]
+     * @return [type] [description]
+     */
+    public function active_users()
     {
-      return $this->hasMany(PlanUser::class)->orderBy('finish_date', 'desc');
+      return $this->where('status_user_id', 1);
     }
-
+ 
     /**
-    * [reservations description]
-    * @method reservations
-    * @return [Model]       [description]
-    */
-    public function reservations()
+     * [blocks description]
+     * @return [type] [description]
+     */
+    public function blocks()
     {
-      return $this->hasMany(Reservation::class);
+        return $this->hasMany(Block::class);
     }
 
     /**
@@ -175,6 +174,15 @@ class User extends Authenticatable
     }
 
     /**
+    * [status_user description]
+    * @return [model] [description]
+    */
+    public function plan_users()
+    {
+      return $this->hasMany(PlanUser::class)->orderBy('finish_date', 'desc');
+    }
+
+    /**
      * [regular_users description]
      * @return [collection] [description]
      */
@@ -184,22 +192,16 @@ class User extends Authenticatable
     }
 
     /**
-     * [active_users description]
-     * @return [type] [description]
-     */
-    public function active_users()
+    * [reservations description]
+    * @method reservations
+    * @return [Model]       [description]
+    */
+    public function reservations()
     {
-      return $this->where('status_user_id', 1);
+      return $this->hasMany(Reservation::class);
     }
 
-    /**
-     * [getFullNameAttribute description]
-     * @return [type] [description]
-     */
-    public function getFullNameAttribute()
-    {
-      return $this->first_name.' '.$this->last_name;
-    }
+   
 }
 
 // /**

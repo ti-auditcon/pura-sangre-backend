@@ -25,7 +25,7 @@
                 </div>
                 <div class="row mb-2">
                   <div class="col-12 text-muted">Coach:</div>
-                  <div class="col-12">Max Maximo</div>
+                  <div class="col-12">{{$clase->block->user->first_name}} {{$clase->block->user->last_name}}</div>
                 </div>
                 <br />
               </div>
@@ -54,78 +54,70 @@
       </div>
     </div>
     <div class="ibox">
-        <div class="ibox-head">
-            <div class="ibox-title">WOD</div>
-            <div class="ibox-tools">
-              <a ><i class="ti-pencil"></i></a>
-            </div>
-
+      <div class="ibox-head">
+        <div class="ibox-title">WOD</div>
+        <div class="ibox-tools">
+          <a ><i class="ti-pencil"></i></a>
         </div>
-        <div class="ibox-body">
-          <div class="row">
-            <div class="col-md-4">
-              <div class="ibox shadow-wide">
-                <div class="ibox-body text-center">
-                  <h3 class="font-strong">Warm up</h3>
-                  <div class="py-5">
-                    <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
-                    <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 15 Pull Ups</div>
-                    <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
-                    <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
-                  </div>
+      </div>
+      <div class="ibox-body">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="ibox shadow-wide">
+              <div class="ibox-body text-center">
+                <h3 class="font-strong">Warm up</h3>
+                <div class="py-5">
+                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
+                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 15 Pull Ups</div>
+                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
+                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
                 </div>
               </div>
             </div>
-              <div class="col-md-4">
-                <div class="ibox shadow-wide">
-                  <div class="ibox-body text-center">
-                    <h3 class="font-strong">Skills</h3>
-                    <div class="py-5">
-                      <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
-                      <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 15 Pull Ups</div>
-                      <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
-                      <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="ibox shadow-wide">
-                  <div class="ibox-body text-center">
-                    <h3 class="font-strong">Wod</h3>
-                    <div class="py-5">
-                      <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
-                      <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 15 Pull Ups</div>
-                      <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
-                      <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
           </div>
-
-
-
-
+          <div class="col-md-4">
+            <div class="ibox shadow-wide">
+              <div class="ibox-body text-center">
+                <h3 class="font-strong">Skills</h3>
+                <div class="py-5">
+                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
+                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 15 Pull Ups</div>
+                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
+                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="ibox shadow-wide">
+              <div class="ibox-body text-center">
+                <h3 class="font-strong">Wod</h3>
+                <div class="py-5">
+                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
+                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 15 Pull Ups</div>
+                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
+                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
   </div>
   <div class="col-6">
-
     <div class="ibox">
         <div class="ibox-head">
-            <div class="ibox-title">Alumnos </div>
-            <button class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
-
+          <div class="ibox-title">Alumnos </div>
+          <button class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
         </div>
         <div class="ibox-body">
           <div class="ibox-fullwidth-block">
             <table id="students-table" class="table table-hover">
               <thead class="thead-default thead-lg">
                 <tr>
-                  <th width="30%">Alumno</th>
-
-
+                  <th width="80%">Alumno</th>
+                  <th width="20%">Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -143,7 +135,12 @@
                       {{$reservation->user->first_name}} {{$reservation->user->last_name}}
                     </a>
                   </td>
-
+                  <td>
+            {!! Form::open(['route' => ['clases.users.destroy', 'clase' => $clase->id, 'user' => $reservation->user->id], 'method' => 'delete']) !!}
+                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick sweet-user-delete"
+            data-id="{{$clase->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash"></i></button>
+            {!! Form::close() !!}
+                  </td>
                 </tr>
                 @endforeach
               </tbody>
@@ -151,9 +148,7 @@
           </div>
         </div>
     </div>
-
   </div>
-
 </div>
 
   <!-- Modal -->
@@ -172,37 +167,33 @@
               <tr>
                 <th width="80%">Alumnos</th>
                 <th width="20%">Accion</th>
-
-
               </tr>
             </thead>
             <tbody>
-              @foreach (App\Models\Users\User::all() as $user)
+              @foreach ($outclase as $usuario)
               <tr>
                 <td>
-                  @if($user->status_user_id == 1 )
-                    <span class="badge-success badge-point"></span>
-                  @elseif($user->status_user_id == 2 )
-                    <span class="badge-danger badge-point"></span>
-                  @elseif($user->status_user_id == 3 )
-                    <span class="badge-warning badge-point"></span>
-                  @endif
-                  <a href="{{url('/users/'.$user->id)}}">
-                    {{$user->first_name}} {{$user->last_name}}
+                @if($usuario->status_user_id == 1 )
+                  <span class="badge-success badge-point"></span>
+                @elseif($usuario->status_user_id == 2 )
+                  <span class="badge-danger badge-point"></span>
+                @elseif($usuario->status_user_id == 3 )
+                  <span class="badge-warning badge-point"></span>
+                @endif
+                  <a href="{{url('/users/'.$usuario->id)}}">
+                    {{$usuario->first_name}} {{$usuario->last_name}}
                   </a>
                 </td>
                 <td>
-                  <button class="btn btn-success">agregar</button>
+                  {!! Form::open(['route' => ['clases.users.store', 'clase' => $clase->id], 'method' => 'post']) !!}
+                  <input type="hidden" value="{{$usuario->id}}" name="user_id">
+                  <button type="button" class="btn btn-primary" type="submit" onClick="this.form.submit();">Agregar</button>
+                {!! Form::close() !!}
                 </td>
-
               </tr>
               @endforeach
             </tbody>
           </table>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>
@@ -218,6 +209,29 @@
 
 
 @section('scripts') {{-- scripts para esta vista --}}
+
+<script>
+  $('.sweet-user-delete').click(function(e){
+    var id = $(this).data('id');
+    //alert(id);
+      swal({
+          title: "Desea sacar a: "+$(this).data('name')+" de esta clase?",
+          text: "",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonClass: 'btn-danger',
+          cancelButtonText: 'Cancelar',
+          confirmButtonText: 'Eliminar',
+          closeOnConfirm: false,
+      },function(){
+        //redirección para sacar al usuario
+         $('form.user-delete').submit();
+      });
+  });
+  </script>
+
+
+
 	{{--  datatable --}}
 	<script src="{{ asset('js/datatables.min.js') }}"></script>
 	<script >
@@ -225,7 +239,7 @@
 			table = $('#students-table').DataTable({
 				"paging": true,
 				"ordering": true,
-        "pageLength": 10,
+        "pageLength": 8,
         "bLengthChange" : false, //thought this line could hide the LengthMenu
         "bpageLength": false,
         "bPaginate": false,

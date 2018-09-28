@@ -27,7 +27,7 @@ class Block extends Model
 
   public function user()
   {
-    return $this->belongsTo(User::class);
+    return $this->belongsTo(User::class,'profesor_id');
   }
 
   public function getPlansIdAttribute()
