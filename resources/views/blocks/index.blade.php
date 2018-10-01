@@ -136,6 +136,11 @@
                     </select>
                 </div>
 
+                <label class="radio radio-grey radio-primary">
+                  <input type="radio" name="repetition" value="unique"><span class="input-span"></span>Unico</label>
+                  <label class="radio radio-grey radio-primary">
+                  <input type="radio" name="repetition" value="multiple"><span class="input-span"></span>No unico</label>
+
               </div>
               <div class="modal-footer">
                 <button type="submit" class="btn btn-primary"  onClick="this.disabled=true; this.value='Guardando…';this.form.submit();">Guardar horario</button>
