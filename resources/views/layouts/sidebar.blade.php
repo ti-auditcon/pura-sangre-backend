@@ -54,6 +54,9 @@
                                     <a href="{{ route('blocks.index') }}">Horarios</a>
                                 </li>
                                 <li>
+                                    <a href="{{ route('exercises.index') }}">Ejercicios</a>
+                                </li>
+                                <li>
                                     <a href="form_masks.html">Facturacion</a>
                                 </li>
                             </ul>

@@ -40,13 +40,19 @@ class ClaseUserController extends Controller
      */
     public function store(Request $request, Clase $clase)
     {
-        Reservation::create(array_merge($request->all(), [
-            'clase_id' => $clase->id,
-            'reservation_status_id' => 1
-        ]));
-        $outclase = $this->outClass($clase);
-        Session::flash('success','wiiiii');
-        return Redirect::back();
+        $inclase = $this->inClass($clase, $request);
+        if (count($inclase) == 0) {
+            Reservation::create(array_merge($request->all(), [
+                    'clase_id' => $clase->id,
+                    'reservation_status_id' => 1
+            ]));
+            Session::flash('success','Usuario agregado');
+            return Redirect::back();
+        }
+        else{
+            Session::flash('warning','El usuario ya esta en esta clase');
+            return Redirect::back();
+        }
     }
 
     /**
@@ -96,15 +102,9 @@ class ClaseUserController extends Controller
         return Redirect::back();
     }
 
-    /**
-     * [outClass recibe la clase, obtiene todas las reservaaciones, luego obtiene
-     * todos los usurios del sistema que no tienen reservación a la clase, y los devuelve en una colección]
-     * @param  [model] $clase [description]
-     * @return [collection]        [description]
-     */
-    public function outClass($clase){
-        $otro = Reservation::where('clase_id', $clase->id)->get();
-        $consulta = User::whereNotIn('id', $otro->pluck('user_id'))->get();
+    public function inclass($clase, $request){
+        $consulta = Reservation::where('clase_id', $clase->id)
+                ->where('user_id', $request->user_id)->get();
         return $consulta;
     }   
 }

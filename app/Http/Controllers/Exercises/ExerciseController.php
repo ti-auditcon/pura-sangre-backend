@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Exercises;
 
+use Session;
+use Redirect;
 use Illuminate\Http\Request;
 use App\Models\Exercises\Exercise;
 use App\Http\Controllers\Controller;
@@ -26,17 +28,17 @@ class ExerciseController extends Controller
     public function index()
     {
         $exercises = Exercise::all();
-        return $exercises->toJson();
+        return view('exercises.index')->with('exercises', $exercises);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new exercise.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
+        return view('exercises.create');
     }
 
     /**
@@ -45,9 +47,10 @@ class ExerciseController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Exercise $exercise)
     {
-        //
+        $exercise = Exercise::create($request->all());
+        return redirect()->route('exercise.show', $exercise->id)->with('success', 'El ejercicio ha sido creado correctamente');
     }
 
     /**
@@ -58,7 +61,7 @@ class ExerciseController extends Controller
      */
     public function show(Exercise $exercise)
     {
-        //
+        return view('exercises.show')->with('exercise', $exercise);
     }
 
     /**
@@ -69,7 +72,7 @@ class ExerciseController extends Controller
      */
     public function edit(Exercise $exercise)
     {
-        //
+        return view('exercises.edit')->with('exercise', $exercise);
     }
 
     /**
@@ -81,7 +84,9 @@ class ExerciseController extends Controller
      */
     public function update(Request $request, Exercise $exercise)
     {
-        //
+        $exercise->update($request->all());
+        Session::flash('success','Los datos del ejercicio han sido actualizados correctamente');
+        return view('exercises.show')->with('exercise', $exercise);
     }
 
     /**
@@ -92,6 +97,7 @@ class ExerciseController extends Controller
      */
     public function destroy(Exercise $exercise)
     {
-        //
+       $exercise->delete();
+       return redirect('/exercises')->with('success','El ejercicio ha sido eliminado correctamente');
     }
 }

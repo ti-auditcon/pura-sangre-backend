@@ -81,7 +81,7 @@ class User extends Authenticatable
      */
     public function esAdministrador()
     {
-      return $this->admin = User::USUARIO_ADMINISTRADOR;
+      return $this->admin;
     }
 
     /**

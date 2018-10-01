@@ -65,6 +65,11 @@ class Clase extends Model
       return $this->belongsTo(Block::class);
     }
 
+    public function getReservationCountAttribute()
+    {
+      return $this->hasMany(Reservation::class)->count();
+    }
+
     public function getStartAttribute()
     {
       return $this->date.' '.$this->block->start;
@@ -78,10 +83,5 @@ class Clase extends Model
     public function getUrlAttribute()
     {
       return url('clases/'.$this->id);
-    }
-
-    public function getReservationCountAttribute()
-    {
-      return $this->hasMany(Reservation::class)->count();
     }
 }

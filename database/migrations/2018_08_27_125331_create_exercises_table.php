@@ -28,24 +28,28 @@ class CreateExercisesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('clase_stage', function (Blueprint $table) {
-          $table->unsignedInteger('clase_id');
-          $table->unsignedInteger('stage_id');
-          $table->timestamps();
-
-          $table->foreign('clase_id')->references('id')->on('clases')->onDelete('cascade');
-          $table->foreign('stage_id')->references('id')->on('stages')->onDelete('cascade');
-        });
-
         Schema::create('exercise_stages', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('exercise_id');
             $table->unsignedInteger('stage_id');
+            $table->string('weight')->nullable();
+            $table->integer('time')->nullable();
+            $table->integer('repetitions')->nullable();
+            $table->integer('round')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('exercise_id')->references('id')->on('exercises')->onDelete('cascade');
             $table->foreign('stage_id')->references('id')->on('stages')->onDelete('cascade');
+        });
+
+        Schema::create('clase_exercise_stages', function (Blueprint $table) {
+          $table->unsignedInteger('clase_id');
+          $table->unsignedInteger('exercise_stage_id');
+          $table->timestamps();
+
+          $table->foreign('clase_id')->references('id')->on('clases')->onDelete('cascade');
+          $table->foreign('exercise_stage_id')->references('id')->on('exercise_stages')->onDelete('cascade');
         });
 
         Schema::create('statistics', function (Blueprint $table) {
@@ -61,8 +65,8 @@ class CreateExercisesTable extends Migration
             $table->unsignedInteger('exercise_stage_id');
             $table->string('weight')->nullable();
             $table->integer('time')->nullable();
-            $table->integer('round')->nullable();
             $table->integer('repetitions')->nullable();
+            $table->integer('round')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
@@ -82,7 +86,7 @@ class CreateExercisesTable extends Migration
       Schema::disableForeignKeyConstraints();
       Schema::dropIfExists('exercises');
       Schema::dropIfExists('stages');
-      Schema::dropIfExists('clase_stage');
+      Schema::dropIfExists('clase_exercise_stages');
       Schema::dropIfExists('exercise_stages');
       Schema::dropIfExists('statistics');
       Schema::dropIfExists('reservation_statistic_stages');

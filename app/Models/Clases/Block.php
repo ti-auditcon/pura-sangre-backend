@@ -3,6 +3,7 @@
 namespace App\Models\Clases;
 
 use App\Models\Users\User;
+use App\Models\Clases\Clase;
 use Illuminate\Database\Eloquent\Model;
 
 class Block extends Model
@@ -33,6 +34,11 @@ class Block extends Model
   public function getPlansIdAttribute()
   {
     return $this->plans->pluck('id');
+  }
+
+  public function clases()
+  {
+    return $this->hasMany(Clase::class);
   }
 
 }

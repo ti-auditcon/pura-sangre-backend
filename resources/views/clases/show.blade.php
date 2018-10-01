@@ -41,12 +41,14 @@
                   <h3 class="font-strong text-primary">{{$clase->reservations->count()}}/25</h3>
                   <div class="text-muted">Cupos confirmados</div>
                 </div>
+                @if (Auth::user()->esAdministrador() == 'true')
                 <div class="row">
                   {!! Form::open(['route' => ['clases.destroy', $clase->id], 'method' => 'delete', 'class' => 'clase-delete']) !!}
                   {!! Form::close() !!}
                   <button class="btn btn-danger sweet-clase-delete" data-id="{{$clase->id}}" data-name="{{$clase->date}}"><i>
                   </i>Deshabilitar clase</button>
                 </div>
+                @endif
               </div>
             </div>
           </div>
@@ -108,8 +110,17 @@
   <div class="col-6">
     <div class="ibox">
         <div class="ibox-head">
-          <div class="ibox-title">Alumnos </div>
-          <button class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
+          <div class="ibox-title">Alumnos</div>
+          {{-- {{dd(Auth::user()->esAdministrador())}} --}}
+          @if (Auth::user()->esAdministrador() == 'true')
+            <button class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
+          @else
+            {!! Form::open(['route' => ['clases.users.store', 'clase' => $clase->id], 'method' => 'post']) !!}
+                <input type="hidden" value="{{Auth::user()->id}}" name="user_id">
+                <button class="btn btn-success sweet-user-join" data-id="{{$clase->id}}" data-name="{{$clase->date}}">
+                <i class=""></i></button>
+            {!! Form::close() !!}
+          @endif
         </div>
         <div class="ibox-body">
           <div class="ibox-fullwidth-block">
@@ -117,7 +128,9 @@
               <thead class="thead-default thead-lg">
                 <tr>
                   <th width="80%">Alumno</th>
+                  @if (Auth::user()->esAdministrador() == 'true')
                   <th width="20%">Acciones</th>
+                  @endif
                 </tr>
               </thead>
               <tbody>
@@ -131,16 +144,18 @@
                     @elseif($reservation->user->status_user_id == 3 )
                       <span class="badge-warning badge-point"></span>
                     @endif
-                    <a href="{{url('/users/'.$reservation->user->id)}}">
+                    <a @if (Auth::user()->esAdministrador() == 'true')href="{{url('/users/'.$reservation->user->id)}}" @endif>
                       {{$reservation->user->first_name}} {{$reservation->user->last_name}}
                     </a>
                   </td>
+                  @if (Auth::user()->esAdministrador() == 'true')
                   <td>
             {!! Form::open(['route' => ['clases.users.destroy', 'clase' => $clase->id, 'user' => $reservation->user->id], 'method' => 'delete']) !!}
                     <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick sweet-user-delete"
             data-id="{{$clase->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash"></i></button>
             {!! Form::close() !!}
                   </td>
+                  @endif
                 </tr>
                 @endforeach
               </tbody>
@@ -211,6 +226,7 @@
 @section('scripts') {{-- scripts para esta vista --}}
 
 <script>
+  // ELIMINAR A USUARIO DE LA CLASE
   $('.sweet-user-delete').click(function(e){
     var id = $(this).data('id');
     //alert(id);
@@ -230,7 +246,26 @@
   });
   </script>
 
-
+{{-- RESERVAR CUPO A LA CLASE (VISTA DEL USUARIO) --}}
+<script>
+ $('.sweet-user-join').click(function(e){
+    var id = $(this).data('id');
+    //alert(id);
+      swal({
+          title: "Confirma la reserva a la clase: "+$(this).data('name')+"?",
+          text: "",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonClass: 'btn-danger',
+          cancelButtonText: 'Cancelar',
+          confirmButtonText: 'Eliminar',
+          closeOnConfirm: false,
+      },function(){
+        //redirección para sacar al usuario
+         $('form.user-delete').submit();
+      });
+  });
+  </script>
 
 	{{--  datatable --}}
 	<script src="{{ asset('js/datatables.min.js') }}"></script>

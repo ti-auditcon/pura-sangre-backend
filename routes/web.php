@@ -35,6 +35,11 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::resource('plans', 'Plans\PlanController');
 
     /**
+     * Exercises Routes (exercises)
+     */
+    Route::resource('exercises', 'Exercises\ExerciseController');
+
+    /**
     * Users Routes (alumnos, profes, admins)
     */
     Route::resource('users', 'Users\UserController');
