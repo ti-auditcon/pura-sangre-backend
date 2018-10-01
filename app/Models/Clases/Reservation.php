@@ -15,14 +15,7 @@ class Reservation extends Model
   use SoftDeletes;
 
   protected $dates = ['deleted_at'];
-  protected $fillable = [
-    'date',
-    'start_at',
-    'finish_at',
-    'room',
-    'profesor_id',
-    'quota',
-  ];
+  protected $fillable = ['clase_id', 'reservation_status_id', 'user_id'];
 
   /**
    * [reservation_statistic_stages description]
@@ -34,6 +27,10 @@ class Reservation extends Model
     return $this->hasMany(ReservationStatisticStage::class);
   }
 
+  /**
+   * [user description]
+   * @return [type] [description]
+   */
   public function user()
   {
     return $this->belongsTo(User::class);

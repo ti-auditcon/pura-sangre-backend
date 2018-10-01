@@ -27,8 +27,8 @@ class PlanUser extends Pivot
    */
   public static function boot()
   {
-    parent::boot();
-    PlanUser::observe(PlanUserObserver::class);
+      parent::boot();
+      PlanUser::observe(PlanUserObserver::class);
   }
 
   /**
@@ -38,7 +38,7 @@ class PlanUser extends Pivot
    */
   public function getStartDateAttribute($value)
   {
-    return Carbon::parse($value);
+      return Carbon::parse($value);
   }
 
   /**
@@ -48,7 +48,7 @@ class PlanUser extends Pivot
    */
   public function getFinishDateAttribute($value)
   {
-    return Carbon::parse($value);
+      return Carbon::parse($value);
   }
 
   /**
@@ -58,7 +58,7 @@ class PlanUser extends Pivot
   */
   public function discount()
   {
-    return $this->hasOne(Discount::class);
+      return $this->hasOne(Discount::class);
   }
 
   /**

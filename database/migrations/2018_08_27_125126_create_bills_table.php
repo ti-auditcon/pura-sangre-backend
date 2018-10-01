@@ -44,20 +44,6 @@ class CreateBillsTable extends Migration
           $table->timestamps();
         });
 
-        Schema::create('installments', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('bill_id');
-            $table->unsignedInteger('payment_status_id');
-            $table->string('commitment_date')->nullable();
-            $table->string('expiration_date');
-            $table->string('payment_date')->nullable();
-            $table->integer('amount');
-            $table->timestamps();
-            $table->softDeletes();
-
-            $table->foreign('bill_id')->references('id')->on('bills')->onDelete('cascade');
-            $table->foreign('payment_status_id')->references('id')->on('payment_statuses')->onDelete('cascade');
-        });
     }
 
     /**
@@ -71,6 +57,5 @@ class CreateBillsTable extends Migration
         Schema::dropIfExists('payment_types');
         Schema::dropIfExists('bills');
         Schema::dropIfExists('payment_statuses');
-        Schema::dropIfExists('installments');
     }
 }

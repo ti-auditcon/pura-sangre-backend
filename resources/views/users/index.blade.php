@@ -91,8 +91,7 @@
                     <td>{{'No aplica'}}</td>
                   @endif
                   <td>
-                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-credit-card"></i></button>
-                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-send"></i></button>
+                    <a href="{{url('/users/'.$user->id)}}" class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-eye"></i></a>
                   </td>
                   <td>{{$user->status_user_id}}</td>
 

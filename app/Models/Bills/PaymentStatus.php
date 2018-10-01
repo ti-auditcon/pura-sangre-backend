@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentStatus extends Model
 {
   protected $fillable = ['payment_status'];
-
+  // protected $table = 'payment_statuses';
   /**
    * [installment description]
    * @method installment
