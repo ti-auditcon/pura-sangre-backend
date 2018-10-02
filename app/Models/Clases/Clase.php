@@ -72,12 +72,22 @@ class Clase extends Model
 
     public function getStartAttribute()
     {
-      return $this->date.' '.$this->block->start;
+      if($this->block->date==null){
+        return $this->date.' '.$this->block->start;
+      } else {
+        return $this->block->start;
+      }
+
+
     }
 
     public function getEndAttribute()
     {
-      return $this->date.' '.$this->block->end;
+      if($this->block->date==null){
+        return $this->date.' '.$this->block->end;
+      } else {
+        return $this->block->end;
+      }
     }
     public function getTitleAttribute()
     {

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Block extends Model
 {
   protected $table = 'blocks';
-  protected $fillable = ['start', 'end', 'dow', 'title'];
+  protected $fillable = ['start', 'end', 'dow', 'title', 'date'];
   protected $appends = ['plans_id'];
   // protected $with = array('plans');
 
@@ -34,6 +34,28 @@ class Block extends Model
   public function getPlansIdAttribute()
   {
     return $this->plans->pluck('id');
+  }
+
+  public function getStartAttribute($value)
+  {
+    if($this->date!=null){
+      return $this->date.' '.$value;
+    }
+    else
+    {
+      return $value;
+    }
+  }
+
+  public function getEndAttribute($value)
+  {
+    if($this->date!=null){
+      return $this->date.' '.$value;
+    }
+    else
+    {
+      return $value;
+    }
   }
 
   public function clases()
