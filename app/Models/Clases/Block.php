@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Block extends Model
 {
   protected $table = 'blocks';
-  protected $fillable = ['start', 'end','dow'];
+  protected $fillable = ['start', 'end', 'dow', 'title'];
   protected $appends = ['plans_id'];
   // protected $with = array('plans');
 

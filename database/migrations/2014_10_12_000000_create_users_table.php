@@ -99,7 +99,7 @@ class CreateUsersTable extends Migration
         Schema::dropIfExists('millestones');
         Schema::dropIfExists('roles');
         Schema::dropIfExists('users');
-        Schema::dropIfExists('roles_users');
+        Schema::dropIfExists('role_user');
         Schema::dropIfExists('millestone_users');
     }
 }
