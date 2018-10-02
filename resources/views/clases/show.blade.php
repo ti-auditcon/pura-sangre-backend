@@ -137,6 +137,9 @@
                 @foreach ($clase->reservations as $reservation)
                 <tr>
                   <td>
+                    <a class="media-img" href="javascript:;">
+                        <img class="img-circle" src="{{url('/img/users/u'.rand(1,11).'.jpg')}}" alt="image" width="54">
+                    </a>
                     @if($reservation->user->status_user_id == 1 )
                       <span class="badge-success badge-point"></span>
                     @elseif($reservation->user->status_user_id == 2 )
@@ -150,9 +153,9 @@
                   </td>
                   @if (Auth::user()->esAdministrador() == 'true')
                   <td>
-            {!! Form::open(['route' => ['clases.users.destroy', 'clase' => $clase->id, 'user' => $reservation->user->id], 'method' => 'delete']) !!}
-                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick sweet-user-delete"
-            data-id="{{$clase->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash"></i></button>
+            {!! Form::open(['route' => ['clases.users.destroy', 'clase' => $clase->id, 'user' => $reservation->user->id], 'method' => 'delete', 'id'=>'delete'.$reservation->user->id]) !!}
+                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick sweet-user-delete" type="button"
+            data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash"></i></button>
             {!! Form::close() !!}
                   </td>
                   @endif
@@ -188,6 +191,9 @@
               @foreach ($outclase as $usuario)
               <tr>
                 <td>
+                  <a class="media-img" href="javascript:;">
+                      <img class="img-circle" src="{{url('/img/users/u'.rand(1,11).'.jpg')}}" alt="image" width="54">
+                  </a>
                 @if($usuario->status_user_id == 1 )
                   <span class="badge-success badge-point"></span>
                 @elseif($usuario->status_user_id == 2 )
@@ -195,6 +201,7 @@
                 @elseif($usuario->status_user_id == 3 )
                   <span class="badge-warning badge-point"></span>
                 @endif
+
                   <a href="{{url('/users/'.$usuario->id)}}">
                     {{$usuario->first_name}} {{$usuario->last_name}}
                   </a>
@@ -241,7 +248,7 @@
           closeOnConfirm: false,
       },function(){
         //redirección para sacar al usuario
-         $('form.user-delete').submit();
+         $('form#delete'+id).submit();
       });
   });
   </script>
