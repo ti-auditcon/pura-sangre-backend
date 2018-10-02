@@ -14,12 +14,6 @@
 
             </div>
             <div class="ibox-body" >
-              @guest()
-                <p>hola no estoy logueado</p>
-              @endguest
-              @auth
-                  <p>wiiii</p>
-              @endauth
                 <div id="calendar"></div>
             </div>
         </div>
@@ -145,7 +139,7 @@
   <script src="{{ asset('js/moment.min.js') }}"></script>
 	<script src="{{ asset('js/fullcalendar.min.js') }}"></script>
 
-  {{-- <script>
+  <script>
   $(document).ready(function() {
     $('#calendar').fullCalendar({
       header: {
@@ -154,26 +148,20 @@
       },
       minTime: "07:00:00",
       maxTime: "21:00:00",
-      events:{!!$events!!},
+      events:{!!json_encode(App\Models\Clases\Clase::where('date',today())->get())!!},
       editable: false,
       defaultView: 'agendaDay',
       // allDaySlot: false,
       slotDuration: '00:30:00',
       slotLabelFormat: 'h(:mm)a',
       hiddenDays: [0],
-      eventClick: function(calEvent, jsEvent, view) {
-
-        if(!calEvent.allDay){
-          window.location.href = "{{url('/blocks/1')}}";
-        }
-        else{
-          $('#wod-modal').modal('show');
-        }
-
-      }
+      eventColor: '#4c6c8b',
+      eventRender: function( event, element, view ) {
+        element.find('.fc-title').append('<span > '+event.reservation_count+'/25</span> ');
+      },
     });
   });
-  </script> --}}
+  </script>
 
 
 @endsection
