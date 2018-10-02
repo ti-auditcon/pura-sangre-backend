@@ -128,13 +128,19 @@
                     </div>
                 </div>
                 <div class="form-group mb-4">
-
-                    <select multiple="multiple" id="plan-select-add" name="plans[]">
-                      @foreach (App\Models\Plans\Plan::all() as $plan)
-                        <option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period}}</option>
-                      @endforeach
-                    </select>
+                  <select multiple="multiple" id="plan-select-add" name="plans[]">
+                    @foreach (App\Models\Plans\Plan::all() as $plan)
+                      <option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period}}</option>
+                    @endforeach
+                  </select>
                 </div>
+
+                 <div class="form-group mb-12">
+                    <label class="col-sm-2 col-form-label">Profesor:</label>
+                    <input type="text" class="form-control" value="" name="profesor_id">
+                    <span class="input-group-addon">
+                    </span>
+                  </div>
 
                 <label class="radio radio-grey radio-primary">
                   <input type="radio" name="repetition" value="unique"><span class="input-span"></span>Unico</label>

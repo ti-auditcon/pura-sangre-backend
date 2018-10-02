@@ -10,6 +10,8 @@ use App\Models\Plans\Plan;
 use App\Models\Plans\PlanUser;
 use App\Models\Users\Emergency;
 use App\Models\Users\Millestone;
+use App\Models\Users\Role;
+use App\Models\Users\RoleUser;
 use App\Models\Users\StatusUser;
 use Freshwork\ChileanBundle\Rut;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -24,24 +26,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable, SoftDeletes;
 
-    /**
-     * [USUARIO_ADMINISTRADOR description]
-     * @var string
-     */
-    const USUARIO_ADMINISTRADOR = 'true';
-
-    /**
-     * [USUARIO_REGULAR description]
-     * @var string
-     */
-    const USUARIO_REGULAR = 'false';
-
     protected $fillable = [
       'rut', 'first_name', 'last_name',
       'birthdate', 'gender', 'email',
       'address', 'password', 'phone',
-      'emergency_id', 'status_user_id', 'admin'
-    ];
+      'emergency_id', 'status_user_id'];
 
     protected $hidden = ['password', 'remember_token'];
     protected $dates = ['deleted_at'];
@@ -56,6 +45,14 @@ class User extends Authenticatable
     // {
     //   return Rut::set($value)->fix()->format();
     // }
+    
+    public function hasRole($role)
+    {
+      $role = RoleUser::where('role_id', $role)->where('user_id', $this->id)->get();
+      if (count($role) > 0) {
+        return true;
+      }
+    }
 
     /**
      * [setRutAttribute description]
@@ -73,15 +70,6 @@ class User extends Authenticatable
     public function getFullNameAttribute()
     {
       return $this->first_name.' '.$this->last_name;
-    }
-
-    /**
-     * [esAdministrador description]
-     * @return [boolean] [description]
-     */
-    public function esAdministrador()
-    {
-      return $this->admin;
     }
 
     /**
@@ -201,6 +189,11 @@ class User extends Authenticatable
       return $this->hasMany(Reservation::class);
     }
 
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class)->using(RoleUser::class);
+    }   
+
    
 }
 
@@ -222,3 +215,11 @@ class User extends Authenticatable
 // {
 //     return 'name';
 // }
+    // *
+    //  * [esAdministrador description]
+    //  * @return [boolean] [description]
+     
+    // public function esAdministrador()
+    // {
+    //   return $this->admin;
+    // }

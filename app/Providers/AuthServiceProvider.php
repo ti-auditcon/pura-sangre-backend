@@ -29,6 +29,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        Gate::resource('Users', 'App\Policies\UserPolicy');
+
         Passport::routes();
 
         /**

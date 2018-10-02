@@ -41,7 +41,11 @@ class BlockController extends Controller
      */
     public function store(BlockRequest $request){
       foreach ($request->day as $day) {
-        $block = Block::create(['start'=>$request->start,'end'=>$request->end,'dow'=>$day]);
+        $block = Block::create([
+            'start'=>$request->start,
+            'end'=>$request->end,
+            'dow'=>$day
+        ]);
         $block->plans()->sync($request->plans);
       }
       return Redirect::back();
