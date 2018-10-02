@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Clases;
 
+use Session;
+use Redirect;
 use App\Models\Clases\Block;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Redirect;
+use App\Http\Requests\Clases\BlockRequest;
 
 class BlockController extends Controller
 {
@@ -37,11 +39,13 @@ class BlockController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-
+    public function store(BlockRequest $request){
       foreach ($request->day as $day) {
-        $block = Block::create(['start'=>$request->start,'end'=>$request->end,'dow'=>$day]);
+        $block = Block::create([
+            'start'=>$request->start,
+            'end'=>$request->end,
+            'dow'=>$day
+        ]);
         $block->plans()->sync($request->plans);
       }
       return Redirect::back();

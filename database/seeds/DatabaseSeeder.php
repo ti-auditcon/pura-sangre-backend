@@ -37,6 +37,8 @@ class DatabaseSeeder extends Seeder
       $this->call(PaymentStatusesTableSeeder::class);
       $this->call(ExercisesTableSeeder::class);
       $this->call(ExerciseStagesTableSeeder::class);
+      $this->call(RolesTableSeeder::class);
+      factory(Emergency::class, 60)->create();
 
       $user = User::create([
           'rut' => 11111111,
@@ -48,9 +50,8 @@ class DatabaseSeeder extends Seeder
           'password' => bcrypt('123123'),
           'phone' => '87654321',
           'address' => 'Estado, Esquina Membrillar, Oficina 208',
-          // 'emergency_id' => 1,
+          'emergency_id' => 1,
           'status_user_id' => 1,
-          'admin' => 'true',
       ]);
 
       $user = User::create([
@@ -63,17 +64,18 @@ class DatabaseSeeder extends Seeder
           'password' => bcrypt('123123'),
           'phone' => '76543211',
           'address' => 'Estado, Esquina Membrillar, Oficina 208',
-          // 'emergency_id' => 1,
+          'emergency_id' => 1,
           'status_user_id' => 1,
-          'admin' => 'false',
       ]);
 
-        factory(Emergency::class, 60)->create();
+
         factory(Millestone::class, 40)->create();
         factory(User::class, 50)->create()->each(function ($u)
         {
           factory(PlanUser::class, 1)->create(['user_id' => $u->id ]);
+            $this->call(RoleUserTableSeeder::class);
     });
+        // $this->call(RolesUsersTableSeeder::class);
 
         factory(PaymentType::class, 4)->create();
         factory(Bill::class, 100)->create();

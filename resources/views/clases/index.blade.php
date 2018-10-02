@@ -9,7 +9,7 @@
       <div class="ibox">
           <div class="ibox-head">
               <div class="ibox-title">Clases</div>
-
+              <a class="btn btn-primary" href="{{ route('blocks.index') }}">Ir a Horarios</a>
           </div>
           <div class="ibox-body">
               <div id="calendar"></div>
