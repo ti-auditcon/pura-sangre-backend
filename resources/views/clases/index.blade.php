@@ -65,7 +65,7 @@
           hiddenDays: [0],
           eventColor: '#4c6c8b',
           eventRender: function( event, element, view ) {
-            element.find('.fc-content').append('<span >'+event.reservation_count+'/25</span> ');
+            element.find('.fc-title').append('<span > ' +event.reservation_count+'/25</span> ');
           },
           // eventClick: function(calEvent, jsEvent, view) {
           //   $('#clase-resume').modal();

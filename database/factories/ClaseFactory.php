@@ -33,14 +33,14 @@ $factory->define(Reservation::class, function (Faker $faker) {
   ];
 });
 
-$factory->define(ReservationStatisticStage::class, function (Faker $faker) {
-  return [
-    'statistic_id' => Statistic::all()->random()->id,
-    'reservation_id' => Reservation::all()->random()->id,
-    'exercise_stage_id' => ExerciseStage::all()->random()->id,
-    'weight' => $faker->randomElement($array = array ('5', '10', '15', '20', '25')),
-    'time' => $faker->numberBetween($min = 1, $max = 45),
-    'round' => $faker->numberBetween($min = 1, $max = 6),
-    'repetitions' => $faker->numberBetween($min = 1, $max = 4),
-  ];
-});
+// $factory->define(ReservationStatisticStage::class, function (Faker $faker) {
+//   return [
+//     'statistic_id' => Statistic::all()->random()->id,
+//     'reservation_id' => Reservation::all()->random()->id,
+//     'exercise_stage_id' => ExerciseStage::all()->random()->id,
+//     'weight' => $faker->randomElement($array = array ('5', '10', '15', '20', '25')),
+//     'time' => $faker->numberBetween($min = 1, $max = 45),
+//     'round' => $faker->numberBetween($min = 1, $max = 6),
+//     'repetitions' => $faker->numberBetween($min = 1, $max = 4),
+//   ];
+// });

@@ -148,7 +148,7 @@
       },
       minTime: "07:00:00",
       maxTime: "21:00:00",
-      events:{!!json_encode(App\Models\Clases\Clase::where('date',today())->get())!!},
+      events:{!!json_encode(App\Models\Clases\Clase::all())!!},
       editable: false,
       defaultView: 'agendaDay',
       // allDaySlot: false,

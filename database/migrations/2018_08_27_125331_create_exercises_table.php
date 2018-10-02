@@ -31,7 +31,6 @@ class CreateExercisesTable extends Migration
         Schema::create('exercise_stages', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('exercise_id');
-            $table->unsignedInteger('stage_id');
             $table->string('weight')->nullable();
             $table->integer('time')->nullable();
             $table->integer('repetitions')->nullable();
@@ -40,16 +39,20 @@ class CreateExercisesTable extends Migration
             $table->softDeletes();
 
             $table->foreign('exercise_id')->references('id')->on('exercises')->onDelete('cascade');
-            $table->foreign('stage_id')->references('id')->on('stages')->onDelete('cascade');
+
         });
 
         Schema::create('clase_exercise_stages', function (Blueprint $table) {
           $table->unsignedInteger('clase_id');
           $table->unsignedInteger('exercise_stage_id');
+          $table->unsignedInteger('stage_id');
+          $table->string('name');
+          $table->longText('description');
           $table->timestamps();
 
           $table->foreign('clase_id')->references('id')->on('clases')->onDelete('cascade');
           $table->foreign('exercise_stage_id')->references('id')->on('exercise_stages')->onDelete('cascade');
+          $table->foreign('stage_id')->references('id')->on('stages')->onDelete('cascade');
         });
 
         Schema::create('statistics', function (Blueprint $table) {

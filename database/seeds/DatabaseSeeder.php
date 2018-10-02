@@ -83,15 +83,15 @@ class DatabaseSeeder extends Seeder
         // factory(Installment::class, 200)->create();
 
         // factory(Exercise::class, 30)->create();
-        factory(ExerciseStage::class, 40)->create();
+        // factory(ExerciseStage::class, 40)->create();
         factory(Statistic::class, 5)->create();
 
         // factory(PlanUser::class, 500)->create();
         $this->call(BlockTableSeeder::class);
         // factory(Clase::class, 5)->create();
         factory(ReservationStatus::class, 3)->create();
-        factory(Reservation::class, 1000)->create();
-        factory(ReservationStatisticStage::class, 400)->create();
+        factory(Reservation::class, 3000)->create();
+        // factory(ReservationStatisticStage::class, 400)->create();
 
         $this->call(RoleUserTableSeeder::class);
     }
