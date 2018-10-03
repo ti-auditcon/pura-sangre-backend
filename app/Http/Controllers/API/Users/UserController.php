@@ -2,27 +2,26 @@
 
 namespace App\Http\Controllers\API\Users;
 
+use Auth;
+use App\Models\Users\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Users\User;
-use Auth;
 
 class UserController extends Controller
 {
-<<<<<<< HEAD
+
   public function profile()
   {
       $user = Auth::user();
       return response()->json(compact('user'), 200);
   }
-=======
     /** [__construct description] */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->middleware('can:view,user')->only('show');
-        // $this->middleware('can:update,user')->only('update');
-    }
+    // public function __construct()
+    // {
+    //     parent::__construct();
+    //     $this->middleware('can:view,user')->only('show');
+    //     // $this->middleware('can:update,user')->only('update');
+    // }
 
     /**
      * Display a listing of the resource.
@@ -58,7 +57,6 @@ class UserController extends Controller
       $user->update($request->all());
       return $this->showOne($user, 200);
     }
->>>>>>> raul
 }
 
 // /**

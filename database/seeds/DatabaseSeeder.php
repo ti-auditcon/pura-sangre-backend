@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
       $this->call(ExercisesTableSeeder::class);
       $this->call(ExerciseStagesTableSeeder::class);
       $this->call(RolesTableSeeder::class);
+      $this->call(PlanStatusTableSeeder::class);
       factory(Emergency::class, 60)->create();
 
       $user = User::create([
@@ -73,8 +74,7 @@ class DatabaseSeeder extends Seeder
         factory(User::class, 50)->create()->each(function ($u)
         {
           factory(PlanUser::class, 1)->create(['user_id' => $u->id ]);
-
-    });
+        });
         // $this->call(RolesUsersTableSeeder::class);
 
         factory(PaymentType::class, 4)->create();

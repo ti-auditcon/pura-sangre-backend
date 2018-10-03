@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
 	   // Innecesario ya que se agregara desde DB
-	   // protected $fillable = ['role'];
+	   protected $fillable = ['role'];
 
 	  /**
 	   * [users description]

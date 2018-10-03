@@ -19,7 +19,7 @@ class PlanUser extends Pivot
   protected $table = 'plan_user';
   protected $dates = ['deleted_at'];
   protected $fillable = ['start_date', 'finish_date', 'amount',
-  'counter', 'plan_state', 'discount_id', 'plan_id', 'user_id'];
+  'counter', 'plan_status_id', 'discount_id', 'plan_id', 'user_id'];
 
   /**
    * [boot description]
