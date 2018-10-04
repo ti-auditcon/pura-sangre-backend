@@ -4,6 +4,7 @@ namespace App\Models\Exercises;
 
 Use App\Models\Exercises\Exercise;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Exercises\ExerciseStage;
 
 /**
  * [Stage description]
@@ -19,6 +20,6 @@ class Stage extends Model
    */
   public function exercises()
   {
-    return $this->belongsToMany(Exercise::class);
+    return $this->belongsToMany(Exercise::class)->using(ExerciseStage::class);
   }
 }

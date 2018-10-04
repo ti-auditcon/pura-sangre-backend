@@ -21,12 +21,14 @@ class CreateClasesTable extends Migration
           $table->date('date');
           $table->time('start_at')->nullable();
           $table->time('finish_at')->nullable();
-          $table->string('block_id')->nullable();
+          $table->unsignedInteger('block_id')->nullable();
           $table->integer('room')->nullable();
           $table->integer('profesor_id')->nullable();
           $table->integer('quota')->nullable();
           $table->timestamps();
           $table->softDeletes();
+
+          $table->foreign('block_id')->references('id')->on('blocks')->onDelete('cascade');
       });
 
       Schema::create('reservation_statuses', function (Blueprint $table) {
@@ -49,6 +51,12 @@ class CreateClasesTable extends Migration
           $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
       });
 
+      Schema::create('block_types', function (Blueprint $table) {
+          $table->increments('id');
+          $table->string('block_type');
+          $table->timestamps();
+      });
+
       Schema::create('blocks', function (Blueprint $table) {
           $table->increments('id');
           $table->string('start');
@@ -56,10 +64,12 @@ class CreateClasesTable extends Migration
           $table->string('title')->nullable();
           $table->date('date')->nullable();
           $table->unsignedInteger('profesor_id')->nullable();
+          $table->unsignedInteger('block_type_id')->nullable();
           $table->unsignedInteger('dow')->nullable();
           $table->timestamps();
 
           $table->foreign('profesor_id')->references('id')->on('users')->onDelete('cascade');
+          $table->foreign('block_type_id')->references('id')->on('block_types')->onDelete('cascade');
       });
 
       Schema::create('block_plan', function (Blueprint $table) {
@@ -80,6 +90,7 @@ class CreateClasesTable extends Migration
         Schema::dropIfExists('clases');
         Schema::dropIfExists('reservation_statuses');
         Schema::dropIfExists('reservations');
+        Schema::dropIfExists('block_types');
         Schema::dropIfExists('blocks');
         Schema::dropIfExists('block_plan');
     }
