@@ -40,15 +40,28 @@ class BlockController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(BlockRequest $request){
-      foreach ($request->day as $day) {
+      //si es bloque multiple o unico
+      if($request->repetition == 'multiple'){
+        foreach ($request->day as $day) {
+          $block = Block::create([
+              'start'=>$request->start,
+              'end'=>$request->end,
+              'dow'=>$day
+          ]);
+          $block->plans()->sync($request->plans);
+        }
+        return Redirect::back();
+      } else {
         $block = Block::create([
             'start'=>$request->start,
             'end'=>$request->end,
-            'dow'=>$day
+            'date'=>date("Y-d-m",strtotime($request->date)),//falta local
         ]);
         $block->plans()->sync($request->plans);
+        return Redirect::back();
       }
-      return Redirect::back();
+
+
     }
 
     /**

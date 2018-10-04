@@ -14,11 +14,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Clase extends Model
 {
     use SoftDeletes;
-    
+
     protected $table = 'clases';
     protected $dates = ['deleted_at'];
     protected $fillable = ['date', 'start_at', 'finish_at', 'room', 'profesor_id', 'quota' ,'block_id'];
-    protected $appends = ['start','end','url','reservation_count'];
+    protected $appends = ['start','end','url','reservation_count','title'];
 
     protected static function boot() {
       parent::boot();
@@ -72,12 +72,26 @@ class Clase extends Model
 
     public function getStartAttribute()
     {
-      return $this->date.' '.$this->block->start;
+      if($this->block->date==null){
+        return $this->date.' '.$this->block->start;
+      } else {
+        return $this->block->start;
+      }
+
+
     }
 
     public function getEndAttribute()
     {
-      return $this->date.' '.$this->block->end;
+      if($this->block->date==null){
+        return $this->date.' '.$this->block->end;
+      } else {
+        return $this->block->end;
+      }
+    }
+    public function getTitleAttribute()
+    {
+      return $this->block->title;
     }
 
     public function getUrlAttribute()

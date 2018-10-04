@@ -22,34 +22,43 @@ class CreateExercisesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('stages', function (Blueprint $table) {
+        Schema::create('stage_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('stage');
+            $table->string('stage_type');
             $table->timestamps();
         });
 
-        Schema::create('exercise_stages', function (Blueprint $table) {
+        Schema::create('stages', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('stage_type_id');
+            $table->string('name');
+            $table->string('description');
+            $table->boolean('star');
+            $table->timestamps();
+
+            $table->foreign('stage_type_id')->references('id')->on('stage_types')->onDelete('cascade');
+        });
+
+        Schema::create('exercise_stage', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('exercise_id');
             $table->unsignedInteger('stage_id');
-            $table->string('weight')->nullable();
-            $table->integer('time')->nullable();
-            $table->integer('repetitions')->nullable();
-            $table->integer('round')->nullable();
             $table->timestamps();
             $table->softDeletes();
-
+            
             $table->foreign('exercise_id')->references('id')->on('exercises')->onDelete('cascade');
             $table->foreign('stage_id')->references('id')->on('stages')->onDelete('cascade');
         });
 
-        Schema::create('clase_exercise_stages', function (Blueprint $table) {
-          $table->unsignedInteger('clase_id');
-          $table->unsignedInteger('exercise_stage_id');
-          $table->timestamps();
-
-          $table->foreign('clase_id')->references('id')->on('clases')->onDelete('cascade');
-          $table->foreign('exercise_stage_id')->references('id')->on('exercise_stages')->onDelete('cascade');
+        Schema::create('clase_stage', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('clase_id');
+            $table->unsignedInteger('stage_id');
+            $table->timestamps();
+            $table->softDeletes();
+            
+            $table->foreign('clase_id')->references('id')->on('clases')->onDelete('cascade');
+            $table->foreign('stage_id')->references('id')->on('stages')->onDelete('cascade');
         });
 
         Schema::create('statistics', function (Blueprint $table) {
@@ -58,22 +67,22 @@ class CreateExercisesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('reservation_statistic_stages', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('statistic_id');
-            $table->unsignedInteger('reservation_id');
-            $table->unsignedInteger('exercise_stage_id');
-            $table->string('weight')->nullable();
-            $table->integer('time')->nullable();
-            $table->integer('repetitions')->nullable();
-            $table->integer('round')->nullable();
-            $table->timestamps();
-            $table->softDeletes();
+        // Schema::create('rsvn_stat_excses_stages', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->unsignedInteger('statistic_id');
+        //     $table->unsignedInteger('reservation_id');
+        //     $table->unsignedInteger('exercise_stage_id');
+        //     $table->string('weight')->nullable();
+        //     $table->integer('time')->nullable();
+        //     $table->integer('repetitions')->nullable();
+        //     $table->integer('round')->nullable();
+        //     $table->timestamps();
+        //     $table->softDeletes();
 
-            $table->foreign('statistic_id')->references('id')->on('statistics')->onDelete('cascade');
-            $table->foreign('exercise_stage_id')->references('id')->on('exercise_stages')->onDelete('cascade');
-            $table->foreign('reservation_id')->references('id')->on('reservations')->onDelete('cascade');
-        });
+        //     $table->foreign('statistic_id')->references('id')->on('statistics')->onDelete('cascade');
+        //     $table->foreign('exercise_stage_id')->references('id')->on('exercise_stages')->onDelete('cascade');
+        //     $table->foreign('reservation_id')->references('id')->on('reservations')->onDelete('cascade');
+        // });
     }
 
     /**
@@ -85,10 +94,24 @@ class CreateExercisesTable extends Migration
     {
       Schema::disableForeignKeyConstraints();
       Schema::dropIfExists('exercises');
+      Schema::dropIfExists('stage_types');
       Schema::dropIfExists('stages');
-      Schema::dropIfExists('clase_exercise_stages');
-      Schema::dropIfExists('exercise_stages');
+      Schema::dropIfExists('exercise_stage');
+      Schema::dropIfExists('clase_stage');
       Schema::dropIfExists('statistics');
-      Schema::dropIfExists('reservation_statistic_stages');
+      // Schema::dropIfExists('reservation_statistic_stages');
     }
 }
+        // Schema::dropIfExists('clase_exercise_stages');
+        // Schema::create('clase_exercise_stages', function (Blueprint $table) {
+        //   $table->unsignedInteger('clase_id');
+        //   $table->unsignedInteger('exercise_stage_id');
+        //   $table->unsignedInteger('stage_id');
+        //   $table->string('name');
+        //   $table->longText('description');
+        //   $table->timestamps();
+
+        //   $table->foreign('clase_id')->references('id')->on('clases')->onDelete('cascade');
+        //   $table->foreign('exercise_stage_id')->references('id')->on('exercise_stages')->onDelete('cascade');
+        //   $table->foreign('stage_id')->references('id')->on('stages')->onDelete('cascade');
+        // });

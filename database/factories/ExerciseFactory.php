@@ -19,14 +19,14 @@ $factory->define(Stage::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(ExerciseStage::class, function (Faker $faker) {
-    return [
-        'exercise_id' => Exercise::all()->random()->id,
-        'stage_id' => Stage::all()->random()->id,
-        'repetitions' => $faker->numberBetween( 1, 6),
-        'round' => $faker->numberBetween(1, 2)
-    ];
-});
+// $factory->define(ExerciseStage::class, function (Faker $faker) {
+//     return [
+//         'exercise_id' => Exercise::all()->random()->id,
+//         'stage_id' => Stage::all()->random()->id,
+//         'repetitions' => $faker->numberBetween( 1, 6),
+//         'round' => $faker->numberBetween(1, 2)
+//     ];
+// });
 
 $factory->define(Statistic::class, function (Faker $faker) {
     return [
