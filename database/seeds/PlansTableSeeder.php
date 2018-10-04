@@ -22,7 +22,7 @@ class PlansTableSeeder extends Seeder
             0 =>
             array (
                 'id' => 1,
-                'plan' => 'Full',
+                'plan' => 'Full Mensual',
                 'plan_period_id' => 1,
                 'class_numbers' => 0,
                 'amount' => 25000,
@@ -32,7 +32,7 @@ class PlansTableSeeder extends Seeder
             1 =>
             array (
                 'id' => 2,
-                'plan' => 'Full',
+                'plan' => 'Full Trimestral',
                 'plan_period_id' => 3,
                 'class_numbers' => 0,
                 'amount' => 60000,
@@ -42,7 +42,7 @@ class PlansTableSeeder extends Seeder
             2 =>
             array (
                 'id' => 3,
-                'plan' => 'Full',
+                'plan' => 'Full Semestral',
                 'plan_period_id' => 5,
                 'class_numbers' => 0,
                 'amount' => 100000,
@@ -51,8 +51,8 @@ class PlansTableSeeder extends Seeder
             ),
             3 =>
             array (
-                'id' => 4,
-                'plan' => 'Full',
+                'id' => 4, 
+                'plan' => 'Full Anual',
                 'plan_period_id' => 6,
                 'class_numbers' => 0,
                 'amount' => 195000,
@@ -62,7 +62,7 @@ class PlansTableSeeder extends Seeder
             4 =>
             array (
                 'id' => 5,
-                'plan' => '12 clases',
+                'plan' => '12 clases Mensual',
                 'plan_period_id' => 1,
                 'class_numbers' => 12,
                 'amount' => 22000,
@@ -72,7 +72,7 @@ class PlansTableSeeder extends Seeder
             5 =>
             array (
                 'id' => 6,
-                'plan' => '12 clases',
+                'plan' => '12 clases Trimestral',
                 'plan_period_id' => 3,
                 'class_numbers' => 12,
                 'amount' => 60000,
@@ -82,7 +82,7 @@ class PlansTableSeeder extends Seeder
             6 =>
             array (
                 'id' => 7,
-                'plan' => '12 clases',
+                'plan' => '12 clases Semestral',
                 'plan_period_id' => 5,
                 'class_numbers' => 12,
                 'amount' => 115000,
@@ -92,7 +92,7 @@ class PlansTableSeeder extends Seeder
             7 =>
             array (
                 'id' => 8,
-                'plan' => '12 clases',
+                'plan' => '12 clases Anual',
                 'plan_period_id' => 6,
                 'class_numbers' => 12,
                 'amount' => 220000,
