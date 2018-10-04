@@ -157,7 +157,7 @@
                     </div>
                   </div>
                   <div id="unique-tab"  >
-                    <div class="form-group mb-12 datepicker">
+                    <div class="form-group mb-12">
                       <div class="input-group date ">
 
                           <input type="text" class="form-control" value="" name="date">
@@ -233,6 +233,7 @@
     .fc-scroller.fc-time-grid-container{height:100% !important;}
     .fc-time-grid.fc-event-container {left:10px}
     .datepicker {z-index: 1151 !important;}
+    /*Date picker container*/ bs-datepicker-container { z-index: 3000; }
   </style>
 @endsection
 
@@ -249,9 +250,13 @@
   <script defer>
   $(document).ready(function() {
     $('.clockpicker').clockpicker({autoclose: true});
-    $('.datepicker').datepicker({
+    $('#unique-tab .form-group').datepicker({
       format: 'dd/mm/yyyy',
-      autoclose: true,
+      todayBtn: "linked",
+      keyboardNavigation: false,
+      forceParse: false,
+      calendarWeeks: true,
+      autoclose: true
     });
 
     $('#plan-select-add').multiSelect();
