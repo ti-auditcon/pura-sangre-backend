@@ -47,11 +47,12 @@ class CreateUsersTable extends Migration
           $table->unsignedInteger('rut');
           $table->string('first_name');
           $table->string('last_name');
-          $table->string('birthdate');
-          $table->string('gender');
           $table->string('email')->unique();
           $table->string('password');
+          $table->string('avatar')->nullable();
           $table->unsignedInteger('phone')->nullable();
+          $table->string('birthdate');
+          $table->string('gender');
           $table->string('address')->nullable();
           $table->unsignedInteger('emergency_id')->nullable();
           $table->unsignedInteger('status_user_id')->nullable();
