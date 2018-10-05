@@ -69,8 +69,8 @@ class CreateExercisesTable extends Migration
 
         // Schema::create('rsvn_stat_excses_stages', function (Blueprint $table) {
         //     $table->increments('id');
-        //     $table->unsignedInteger('statistic_id');
         //     $table->unsignedInteger('reservation_id');
+        //     $table->unsignedInteger('statistic_id');
         //     $table->unsignedInteger('exercise_stage_id');
         //     $table->string('weight')->nullable();
         //     $table->integer('time')->nullable();
