@@ -30,7 +30,7 @@ class CreateExercisesTable extends Migration
 
         Schema::create('stages', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('stage_type_id');
+            $table->unsignedInteger('stage_type_id')->nullable();
             $table->string('name');
             $table->longText('description');
             $table->boolean('star')->nullable();

@@ -2,10 +2,10 @@
 
 namespace App\Models\Clases;
 
+use App\Models\Users\User;
+use App\Models\Exercises\Stage;
 use App\Models\Clases\ClaseStage;
 use App\Models\Clases\Reservation;
-use App\Models\Exercises\Stage;
-use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
