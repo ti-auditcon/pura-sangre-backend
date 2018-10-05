@@ -32,8 +32,8 @@ class CreateExercisesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('stage_type_id');
             $table->string('name');
-            $table->string('description');
-            $table->boolean('star');
+            $table->longText('description');
+            $table->boolean('star')->nullable();
             $table->timestamps();
 
             $table->foreign('stage_type_id')->references('id')->on('stage_types')->onDelete('cascade');

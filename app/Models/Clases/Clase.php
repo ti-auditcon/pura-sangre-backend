@@ -2,9 +2,10 @@
 
 namespace App\Models\Clases;
 
-use App\Models\Users\User;
-use App\Models\Exercises\Stage;
+use App\Models\Clases\ClaseStage;
 use App\Models\Clases\Reservation;
+use App\Models\Exercises\Stage;
+use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -32,17 +33,17 @@ class Clase extends Model
     }
 
     /**
-     * [stages description]
-     * @return [type] [description]
+     * [stages relation to this model]
+     * @return [model] [description]
      */
     public function stages()
     {
-      return $this->belongsToMany(Stage::class);
+      return $this->belongsToMany(Stage::class)->using(ClaseStage::class);
     }
 
     /**
-     * [users description]
-     * @return [type] [description]
+     * [users relation to this model]
+     * @return [model] [description]
      */
     public function users()
     {
@@ -50,8 +51,8 @@ class Clase extends Model
     }
 
     /**
-     * [profresor description]
-     * @return [type] [description]
+     * [profresor relation to this model]
+     * @return [model] [description]
      */
     public function profresor()
     {
@@ -59,8 +60,8 @@ class Clase extends Model
     }
 
     /**
-     * [profesor description]
-     * @return [type] [description]
+     * [profesor relation to this model]
+     * @return [model] [description]
      */
     public function profesor()
     {
@@ -68,8 +69,8 @@ class Clase extends Model
     }
 
     /**
-     * [block description]
-     * @return [type] [description]
+     * [block relation to this model]
+     * @return [model] [description]
      */
     public function block()
     {

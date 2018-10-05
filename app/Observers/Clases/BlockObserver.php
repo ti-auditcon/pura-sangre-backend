@@ -27,7 +27,7 @@ class BlockObserver
             'start_at' => $block->start,
             'finish_at' => $block->end,
             'profesor_id' => $block->profesor_id,
-        ]);
+            ]);
           $date->addWeek();
         }
       }
