@@ -18,7 +18,15 @@ $factory->define(Exercise::class, function (Faker $faker) {
 
 $factory->define(Stage::class, function (Faker $faker) {
 	$stage_type_id = StageType::all()->random()->id;
-	$stage_name = StageType::where('id', $stage_type_id)->pluck('stage_type');
+    if ($stage_type_id == 1) {
+        $stage_name = 'WARM-UP';
+    }
+    elseif ($stage_type_id == 2) {
+        $stage_name = 'SKILL';
+    }
+    elseif ($stage_type_id == 3) {
+        $stage_name = 'WOD';
+    }
     return [
         'stage_type_id' => $stage_type_id,
         'name' => $stage_name,
