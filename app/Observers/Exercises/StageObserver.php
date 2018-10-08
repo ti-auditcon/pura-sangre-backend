@@ -19,11 +19,11 @@ class StageObserver
     public function created(Stage $stage)
     {
         $ssn_date = Carbon::parse(Session::get('date'))->format('Y-m-d');
-        $clases = Clase::where('date', $ssn_date)->get(); 
+        $clases = Clase::where('date', $ssn_date)->get();
         foreach ($clases as $clase) {
-                ClaseStage::create([
-                    'clase_id' => $clase->id,
-                    'stage_id' => $stage->id]);
+            ClaseStage::create([
+                'clase_id' => $clase->id,
+                'stage_id' => $stage->id]);
         }
     }
     
