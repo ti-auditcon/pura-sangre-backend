@@ -8,6 +8,7 @@ use App\Models\Bills\PaymentStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/** [Installment description] */
 class Installment extends Model
 {
   use SoftDeletes;
@@ -38,7 +39,7 @@ class Installment extends Model
    */
   public function payment_status()
   {
-    return $this->hasOne(PaymentStatus::class);
+    return $this->belongsTo(PaymentStatus::class);
   }
 
   /**

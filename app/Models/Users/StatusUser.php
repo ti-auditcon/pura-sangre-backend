@@ -5,6 +5,9 @@ namespace App\Models\Users;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * [StatusUser description]
+ */
 class StatusUser extends Model
 {
   protected $fillable = ['status_user'];

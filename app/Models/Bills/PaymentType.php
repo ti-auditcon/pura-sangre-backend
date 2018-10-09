@@ -5,6 +5,9 @@ namespace App\Models\Bills;
 use App\Models\Bills\Bill;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * [PaymentType description]
+ */
 class PaymentType extends Model
 {
     protected $fillable = ['payment_type'];

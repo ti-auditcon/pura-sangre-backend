@@ -1,4 +1,6 @@
 <?php
+use App\Models\Users;
+
 
 return [
 
@@ -42,6 +44,7 @@ return [
         ],
 
         'api' => [
+          // se cambia de tokens a passport,
             'driver' => 'passport',
             'provider' => 'users',
         ],
@@ -67,7 +70,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Users\User::class,
+            'model' => \App\Models\Users\User::class,
         ],
 
         // 'users' => [

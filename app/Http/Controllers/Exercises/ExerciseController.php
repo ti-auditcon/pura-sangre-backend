@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers\Exercises;
 
-use App\Http\Controllers\ApiController;
-
-use App\Models\Exercises\Exercise;
+use Session;
+use Redirect;
 use Illuminate\Http\Request;
+use App\Models\Exercises\Exercise;
+use App\Http\Controllers\Controller;
 
-class ExerciseController extends ApiController
+class ExerciseController extends Controller
 {
 
     /**
      * [__construct description]
      */
-    public function __construct()
-    {
-        $this->middleware('client.credentials')->only(['index', 'show']);
-        $this->middleware('auth:api')->except(['index', 'show']);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('client.credentials')->only(['index', 'show']);
+    //     $this->middleware('auth:api')->except(['index', 'show']);
+    // }
 
     /**
      * Display a listing of the resource.
@@ -27,17 +28,17 @@ class ExerciseController extends ApiController
     public function index()
     {
         $exercises = Exercise::all();
-        return $exercises->toJson();
+        return view('exercises.index')->with('exercises', $exercises);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new exercise.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
+        return view('exercises.create');
     }
 
     /**
@@ -46,9 +47,10 @@ class ExerciseController extends ApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Exercise $exercise)
     {
-        //
+        $exercise = Exercise::create($request->all());
+        return redirect()->route('exercise.show', $exercise->id)->with('success', 'El ejercicio ha sido creado correctamente');
     }
 
     /**
@@ -59,7 +61,7 @@ class ExerciseController extends ApiController
      */
     public function show(Exercise $exercise)
     {
-        //
+        return view('exercises.show')->with('exercise', $exercise);
     }
 
     /**
@@ -70,7 +72,7 @@ class ExerciseController extends ApiController
      */
     public function edit(Exercise $exercise)
     {
-        //
+        return view('exercises.edit')->with('exercise', $exercise);
     }
 
     /**
@@ -82,7 +84,9 @@ class ExerciseController extends ApiController
      */
     public function update(Request $request, Exercise $exercise)
     {
-        //
+        $exercise->update($request->all());
+        Session::flash('success','Los datos del ejercicio han sido actualizados correctamente');
+        return view('exercises.show')->with('exercise', $exercise);
     }
 
     /**
@@ -93,6 +97,7 @@ class ExerciseController extends ApiController
      */
     public function destroy(Exercise $exercise)
     {
-        //
+       $exercise->delete();
+       return redirect('/exercises')->with('success','El ejercicio ha sido eliminado correctamente');
     }
 }

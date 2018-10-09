@@ -3,8 +3,11 @@
 namespace App\Models\Exercises;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Reservations\ReservationStatisticStage;
+use App\Models\Clases\ReservationStatisticStage;
 
+/**
+ * [Statistic description]
+ */
 class Statistic extends Model
 {
     protected $fillable = ['statistic'];

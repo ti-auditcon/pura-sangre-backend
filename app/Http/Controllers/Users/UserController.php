@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers\Users;
 
+use Session;
 use App\Models\Users\User;
+use App\Models\Users\Emergency;
 use Illuminate\Http\Request;
-use App\Http\Controllers\ApiController;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Users\UserRequest;
 
-class UserController extends ApiController
+/**
+ * [UserController description]
+ */
+class UserController extends Controller
 {
-    /**
-     * [__construct description]
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -23,8 +21,8 @@ class UserController extends ApiController
      */
     public function index()
     {
-        $users = User::all();
-        return $users;
+      $users = User::all();
+      return view('users.index')->with('users', $users);
     }
 
     /**
@@ -34,20 +32,21 @@ class UserController extends ApiController
      */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     /**
      * [store description]
-     * @param  Request $request [description]
-     * @param  User    $user    [description]
-     * @return [type]           [description]
+     * @param  UserRequest $request [description]
+     * @param  User        $user    [description]
+     * @return [type]               [description]
      */
-    public function store(Request $request, User $user)
+    public function store(UserRequest $request, User $user)
     {
-      $user = User::create($request->all());
-      $user->emergency->save($request->all());
-      return $user;
+      $emergency = Emergency::create($request->all());
+      $user = User::create(array_merge($request->all(), ['password' => bcrypt('purasangre'), 'emergency_id' => $emergency->id]));
+      Session::flash('success','El usuario ha sido creado correctamente');
+      return view('users.show')->with('user', $user);
     }
 
     /**
@@ -58,7 +57,7 @@ class UserController extends ApiController
      */
     public function show(User $user)
     {
-        return $user;
+      return view('users.show')->with('user', $user);
     }
 
     /**
@@ -69,29 +68,32 @@ class UserController extends ApiController
      */
     public function edit(User $user)
     {
-        //
+      return view('users.edit')->with('user', $user);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Users\User  $user
-     * @return \Illuminate\Http\Response
+     * [update description]
+     * @param  UserRequest $request [description]
+     * @param  User        $user    [description]
+     * @return [type]               [description]
      */
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
-        //
+      $user->update($request->all());
+      Session::flash('success','Los datos del usuario han sido actualizados');
+      return view('users.show')->with('user', $user);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Users\User  $user
-     * @return \Illuminate\Http\Response
+     * [destroy description]
+     * @param  Request $request [description]
+     * @param  User    $user    [description]
+     * @return [type]           [description]
      */
-    public function destroy(User $user)
+    public function destroy(Request $request, User $user)
     {
-        //
+      $user->plan_users()->delete();
+      $user->delete();
+      return redirect('/users')->with('success', 'El usuario ha sido borrado correctamente');
     }
 }

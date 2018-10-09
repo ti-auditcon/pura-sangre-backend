@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers\Plans;
 
-use App\Http\Controllers\ApiController;
+use Session;
 use App\Models\Plans\Plan;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class PlanController extends ApiController
+/** [PlanController description] */
+class PlanController extends Controller
 {
-    
+
     /**
      * [__construct description]
      */
-    public function __construct()
-    {
-        $this->middleware('client.credentials')->only(['index', 'show']);
-        $this->middleware('auth:api')->except(['index', 'show']);
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('plan.credentials')->only(['index', 'show']);
+    //     $this->middleware('auth:api')->except(['index', 'show']);
+    // }
 
     /**
      * Display a listing of the resource.
@@ -25,28 +27,30 @@ class PlanController extends ApiController
      */
     public function index()
     {
-        return (Plan::all());
+      $plans = Plan::all();
+      return view('plans.index')->with('plans', $plans);
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * [create description]
+     * @param  Plan   $plan [description]
+     * @return [type]       [description]
      */
-    public function create()
+    public function create(Plan $plan)
     {
-        //
+      return view('plans.create_plan')->with('plan', $plan);
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * [store description]
+     * @param  Request $request [description]
+     * @param  Plan    $plan    [description]
+     * @return [type]           [description]
      */
-    public function store(Request $request)
+    public function store(Request $request, Plan $plan)
     {
-        //
+      $plan = Plan::create($request->all());
+      return redirect()->route('plans.show', $plan->id)->with('success', 'El plan ha sido creado correctamente');
     }
 
     /**
@@ -57,7 +61,7 @@ class PlanController extends ApiController
      */
     public function show(Plan $plan)
     {
-        //
+      return view('plans.show')->with('plan', $plan);
     }
 
     /**
@@ -68,7 +72,7 @@ class PlanController extends ApiController
      */
     public function edit(Plan $plan)
     {
-        //
+      return view('plans.edit')->with('plan', $plan);
     }
 
     /**
@@ -80,7 +84,9 @@ class PlanController extends ApiController
      */
     public function update(Request $request, Plan $plan)
     {
-        //
+      $plan->update($request->all());
+      Session::flash('success','Los datos del plan han sido actualizados correctamente');
+      return view('plans.show')->with('plan', $plan);
     }
 
     /**
@@ -91,6 +97,8 @@ class PlanController extends ApiController
      */
     public function destroy(Plan $plan)
     {
-        //
+       $plan->delete();
+       return redirect('/plans')->with('success','El plan ha sido eliminado correctamente');
     }
+
 }

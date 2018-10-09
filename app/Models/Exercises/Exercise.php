@@ -2,23 +2,23 @@
 
 namespace App\Models\Exercises;
 
+use App\Models\Exercises\Stage;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Exercises\ExerciseStage;
 
 /**
  * [Exercise description]
  */
 class Exercise extends Model
 {
-  protected $fillable = ['exercise'];
+    protected $fillable = ['exercise'];
 
-  /**
-   * [stages description]
-   * @method stages
-   * @return [type] [description]
-   */
-  public function stages()
-  {
-    return $this->belongsToMany(Stage::class);
-  }
-
+    /**
+     * [stages relation]
+     * @return [model] [description]
+     */
+    public function stages()
+    {
+       return $this->belongsToMany(Stage::class)->using(ExerciseStage::class);
+    }
 }

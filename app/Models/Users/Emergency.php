@@ -5,6 +5,7 @@ namespace App\Models\Users;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
 
+/** [Emergency description] */
 class Emergency extends Model
 {
   protected $fillable = ['contact_name', 'contact_phone'];
@@ -16,6 +17,6 @@ class Emergency extends Model
    */
   public function user()
   {
-    return $this->belongsTo(User::class);
+    return $this->hasOne(User::class);
   }
 }

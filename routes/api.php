@@ -1,44 +1,21 @@
 <?php
 
 use Illuminate\Http\Request;
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
 
 /**
- * [User_route rutas para el usuario]
+ * [Route Users ApiControllers]
  * @var [type]
  */
-Route::resource('users', 'Users\UserController')->except(['create', 'edit']);
+//Route::apiResource('users', 'API\Users\UserController')->except('destroy');
 
-/**
- * [Route description]
- * @var [type]
- */
-Route::resource('bills', 'Bills\BillController')->middleware('can:view,bill');
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
-/**
- * [Route description]
- * @var [type]
- */
-Route::resource('exercises', 'Exercises\ExerciseController');
+Route::post('login', 'API\Auth\AuthController@login');
 
-/**
- * [Route description]
- * @var [type]
- */
-Route::resource('plans', 'Plans\PlanController');
 
-//Se cambia de middleware de throttle a api (this)
-Route::post('oauth/token', '\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('profile', 'API\Users\UserController@profile');
+    Route::post('logout', 'API\Auth\AuthController@logout');
+});

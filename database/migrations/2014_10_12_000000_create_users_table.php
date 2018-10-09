@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Users\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -35,19 +36,42 @@ class CreateUsersTable extends Migration
           $table->timestamps();
         });
 
-        Schema::create('users', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->unsignedInteger('emergency_id')->nullable();
-            $table->unsignedInteger('status_user_id');
-            $table->rememberToken();
-            $table->timestamps();
-            $table->softDeletes();
+        Schema::create('roles', function (Blueprint $table) {
+          $table->increments('id');
+          $table->string('role');
+          $table->timestamps();
+        });
 
-            $table->foreign('emergency_id')->references('id')->on('emergencies')->onDelete('cascade');
-            $table->foreign('status_user_id')->references('id')->on('status_users')->onDelete('cascade');
+        Schema::create('users', function (Blueprint $table) {
+          $table->increments('id');
+          $table->unsignedInteger('rut');
+          $table->string('first_name');
+          $table->string('last_name');
+          $table->string('email')->unique();
+          $table->string('password');
+          $table->string('avatar')->nullable();
+          $table->unsignedInteger('phone')->nullable();
+          $table->string('birthdate');
+          $table->string('gender');
+          $table->string('address')->nullable();
+          $table->unsignedInteger('emergency_id')->nullable();
+          $table->unsignedInteger('status_user_id')->nullable();
+          $table->rememberToken();
+          $table->timestamps();
+          $table->softDeletes();
+
+          $table->foreign('emergency_id')->references('id')->on('emergencies')->onDelete('cascade');
+          $table->foreign('status_user_id')->references('id')->on('status_users')->onDelete('cascade');
+        });
+
+        Schema::create('role_user', function (Blueprint $table) {
+          $table->unsignedInteger('role_id')->nullable();
+          $table->unsignedInteger('user_id');
+          $table->timestamps();
+          $table->softDeletes();
+
+          $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+          $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
         Schema::create('millestone_users', function (Blueprint $table) {
@@ -74,7 +98,9 @@ class CreateUsersTable extends Migration
         Schema::dropIfExists('emergencies');
         Schema::dropIfExists('status_users');
         Schema::dropIfExists('millestones');
+        Schema::dropIfExists('roles');
         Schema::dropIfExists('users');
+        Schema::dropIfExists('role_user');
         Schema::dropIfExists('millestone_users');
     }
 }

@@ -2,19 +2,64 @@
 
 namespace App\Models\Plans;
 
+use Carbon\Carbon;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
 use App\Models\Plans\Discount;
 use App\Models\Bills\Installment;
-use Illuminate\Database\Eloquent\Model;
+use App\Observers\Plans\PlanUserObserver;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class PlanUser extends Model
+/** [PlanUser description] */
+class PlanUser extends Pivot
 {
   use SoftDeletes;
 
+  protected $table = 'plan_user';
   protected $dates = ['deleted_at'];
-  protected $fillable = ['discount_id', 'plan_id', 'start_time', 'finish_time'];
+  protected $fillable = ['start_date', 'finish_date', 'amount',
+  'counter', 'plan_status_id', 'discount_id', 'plan_id', 'user_id'];
+
+  /**
+   * [boot description]
+   * @return [model] [description]
+   */
+  public static function boot()
+  {
+      parent::boot();
+      PlanUser::observe(PlanUserObserver::class);
+  }
+
+  /**
+   * [getStartDateAttribute description]
+   * @param  [type] $value [description]
+   * @return [type]        [description]
+   */
+  public function getStartDateAttribute($value)
+  {
+      return Carbon::parse($value);
+  }
+
+  /**
+   * [getFinishDateAttribute description]
+   * @param  [type] $value [description]
+   * @return [type]        [description]
+   */
+  public function getFinishDateAttribute($value)
+  {
+      return Carbon::parse($value);
+  }
+
+  /**
+  * [discount description]
+  * @method discount
+  * @return [model]   [description]
+  */
+  public function discount()
+  {
+      return $this->hasOne(Discount::class);
+  }
 
   /**
    * [installments description]
@@ -27,23 +72,13 @@ class PlanUser extends Model
   }
 
   /**
-   * [discount description]
-   * @method discount
-   * @return [model]   [description]
-   */
-  public function discount()
-  {
-      return $this->hasOne(Discount::class);
-  }
-
-  /**
    * [plan description]
    * @method plan
    * @return [model] [description]
    */
   public function plan()
   {
-      return $this->hasOne(Plan::class);
+      return $this->belongsTo(Plan::class);
   }
 
   /**

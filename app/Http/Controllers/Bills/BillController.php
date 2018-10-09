@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers\Bills;
 
-use App\Http\Controllers\ApiController;
 use App\Models\Bills\Bill;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 /**
  * [BillController description]
  */
-class BillController extends ApiController
+class BillController extends Controller
 {
     /**
      * [__construct description]
      */
-    public function __construct()
-    {
-        parent::__construct();
-        // $this->cMIDLLEWARWE
-    }
+    // public function __construct()
+    // {
+    //     parent::__construct();
+    //     // $this->cMIDLLEWARWE
+    // }
 
     /**
      * Display a listing of the resource.

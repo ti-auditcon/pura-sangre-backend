@@ -2,15 +2,13 @@
 
 namespace App\Providers;
 
-use App\Models\Bills\Bill;
+use App\Models\Users\User;
+use App\Policies\UserPolicy;
 use Laravel\Passport\Passport;
-use App\Policies\Bills\BillPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
-/**
- * [AuthServiceProvider description]
- */
+/** [AuthServiceProvider description] */
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -18,9 +16,9 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $policies = [
-        Bill::class => BillPolicy::class,
-    ];
+     protected $policies = [
+         User::class => UserPolicy::class,
+     ];
 
     /**
      * Register any authentication / authorization services.
@@ -31,6 +29,20 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        Gate::resource('Users', 'App\Policies\UserPolicy');
+
         Passport::routes();
+
+        /**
+         * [Passport expiration tokens "first token"]
+         * @var [type]
+         */
+        Passport::tokensExpireIn(now()->addMinutes(30));
+
+        /**
+         * [Passport expiration refresh token]
+         * @var [type]
+         */
+        Passport::refreshTokensExpireIn(now()->addDays(30));
     }
 }
