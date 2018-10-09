@@ -25,6 +25,7 @@ class CreateClasesTable extends Migration
       Schema::create('block_types', function (Blueprint $table) {
           $table->increments('id');
           $table->string('block_type');
+          $table->integer('max_quota');
           $table->timestamps();
       });
 

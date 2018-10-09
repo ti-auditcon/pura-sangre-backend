@@ -45,6 +45,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     */
     Route::resource('users', 'Users\UserController');
     Route::resource('users.plans', 'Plans\PlanUserController');
+    Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
   
     /**
      * Clases routes (clases, clases-alumnos, bloques)

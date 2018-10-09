@@ -2,8 +2,9 @@
 
 namespace App\Models\Clases;
 
-use App\Models\Users\User;
+use App\Models\Clases\BlockType;
 use App\Models\Clases\Clase;
+use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Block extends Model
@@ -30,6 +31,11 @@ class Block extends Model
   public function user()
   {
     return $this->belongsTo(User::class,'profesor_id');
+  }
+
+  public function block_type()
+  {
+    return $this->belongsTo(BlockType::class,'block_type_id');
   }
 
   public function getPlansIdAttribute()

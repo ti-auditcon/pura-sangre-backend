@@ -50,7 +50,9 @@ class PlanUserController extends Controller
           'finish_date' => $fecha_termino,
           'counter' => $plan->class_numbers
         ]));
-        return redirect()->route('users.show', $user->id)->with('success', 'El plan ha sido asignado correctamente');
+        return view('userplanpayments.create', [
+          'user' => $user->id,
+          'plan' => $planuser->id]);
       }
     }
 
