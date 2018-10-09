@@ -22,9 +22,9 @@ class CreateClasesTable extends Migration
           $table->timestamps();
       });
 
-      Schema::create('block_types', function (Blueprint $table) {
+      Schema::create('clase_types', function (Blueprint $table) {
           $table->increments('id');
-          $table->string('block_type');
+          $table->string('clase_type');
           $table->timestamps();
       });
 
@@ -35,12 +35,12 @@ class CreateClasesTable extends Migration
           $table->string('title')->nullable();
           $table->date('date')->nullable();
           $table->unsignedInteger('profesor_id')->nullable();
-          $table->unsignedInteger('block_type_id')->nullable();
+          $table->unsignedInteger('clase_type_id')->nullable();
           $table->unsignedInteger('dow')->nullable();
           $table->timestamps();
 
           $table->foreign('profesor_id')->references('id')->on('users')->onDelete('cascade');
-          $table->foreign('block_type_id')->references('id')->on('block_types')->onDelete('cascade');
+          $table->foreign('clase_type_id')->references('id')->on('clase_types')->onDelete('cascade');
       });
 
       Schema::create('clases', function (Blueprint $table) {
@@ -88,7 +88,7 @@ class CreateClasesTable extends Migration
     {
         Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('reservation_statuses');
-        Schema::dropIfExists('block_types');
+        Schema::dropIfExists('clase_types');
         Schema::dropIfExists('blocks');
         Schema::dropIfExists('clases');
         Schema::dropIfExists('reservations');

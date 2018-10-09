@@ -45,7 +45,7 @@ class CreateExercisesTable extends Migration
             $table->unsignedInteger('stage_id');
             $table->timestamps();
             $table->softDeletes();
-            
+
             $table->foreign('exercise_id')->references('id')->on('exercises')->onDelete('cascade');
             $table->foreign('stage_id')->references('id')->on('stages')->onDelete('cascade');
         });
@@ -56,9 +56,19 @@ class CreateExercisesTable extends Migration
             $table->unsignedInteger('stage_id');
             $table->timestamps();
             $table->softDeletes();
-            
+
             $table->foreign('clase_id')->references('id')->on('clases')->onDelete('cascade');
             $table->foreign('stage_id')->references('id')->on('stages')->onDelete('cascade');
+        });
+        Schema::create('day_works', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('clase_type_id');
+            $table->date('date');
+            $table->longText('description')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('clase_type_id')->references('id')->on('clase_types')->onDelete('cascade');
         });
 
         Schema::create('statistics', function (Blueprint $table) {
@@ -98,6 +108,7 @@ class CreateExercisesTable extends Migration
       Schema::dropIfExists('stages');
       Schema::dropIfExists('exercise_stage');
       Schema::dropIfExists('clase_stage');
+      Schema::dropIfExists('day_works');
       Schema::dropIfExists('statistics');
       // Schema::dropIfExists('reservation_statistic_stages');
     }
