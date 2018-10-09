@@ -57,7 +57,24 @@
           },
           minTime: "07:00:00",
           maxTime: "21:00:00",
-          events: {!! $clases !!},
+          eventSources:[
+            {!! $clases !!},
+            {
+              events: [
+                {
+                  dow: [2],
+                },
+                {
+                  start: '2018-10-11'
+                }
+                // etc...
+              ],
+              color: 'yellow',   // an option!
+              textColor: 'black', // an option!
+              allDayDefault :true,
+              className: 'fc-wod',
+            }
+          ],
           editable: false,
           defaultView: 'agendaWeek',
           // allDaySlot: false,
@@ -73,6 +90,7 @@
           // },
 
         });
+
 
     });
   </script>
