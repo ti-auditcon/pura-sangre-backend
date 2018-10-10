@@ -31,6 +31,7 @@ class ClaseController extends Controller
     public function show(Clase $clase)
     {
         $outclase = $this->outClass($clase);
+
         return view('clases.show')->with('clase', $clase)->with('outclase', $outclase);
     }
 

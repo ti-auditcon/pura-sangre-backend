@@ -22,6 +22,10 @@
     <link href="{{asset('/css/toastr.min.css')}}" rel="stylesheet" />
     <link href="{{asset('/css/bootstrap-datepicker.min.css')}}" rel="stylesheet" />
     <!-- PLUGINS STYLES-->
+
+  <!-- VUE-->
+    <link href="{{asset('/css/app.css')}}" rel="stylesheet" />
+
     <!-- THEME STYLES-->
     <link href="{{asset('/css/main.min.css')}}" rel="stylesheet" />
 
@@ -33,8 +37,8 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
 
 </head>
-<body class="fixed-navbar">
-  <div class="page-wrapper">
+<body class="fixed-navbar" >
+  <div class="page-wrapper" id="app">
 
     @include('layouts.header')
     @yield('sidebar')
@@ -50,8 +54,8 @@
   <!-- CORE PLUGINS-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.5/umd/popper.min.js"></script>
   <script src="{{asset('/js/jquery.min.js')}}"></script>
-  <script src="{{asset('/js/bootstrap.min.js')}}"></script>
-  <script src="{{asset('/js/bootstrap-select.min.js')}}"></script>
+{{--   <script src="{{asset('/js/bootstrap.min.js')}}"></script>
+  <script src="{{asset('/js/bootstrap-select.min.js')}}"></script> --}}
   <script src="{{asset('/js/idle-timer.min.js')}}"></script>
   <script src="{{asset('/js/jquery.easypiechart.min.js')}}"></script>
   <script src="{{asset('/js/jquery.slimscroll.min.js')}}"></script>
@@ -62,10 +66,15 @@
 
   <!-- PAGE LEVEL PLUGINS-->
 
+
+  <!-- VUE-->
+  <script src="{{asset('/js/app.js')}}"></script>
+
   <!-- CORE SCRIPTS-->
   <script src="{{asset('/js/app.min.js')}}"></script>
+
   <!-- PAGE LEVEL SCRIPTS-->
-  <script>
+{{--   <script>
     $(document).ready(function() {
       $('.easypie').each(function(){
           $(this).easyPieChart({
@@ -75,7 +84,17 @@
       });
     });
 
-  </script>
+  </script> --}}
+
+<script>
+  import VueEasyPieChart from 'vue-easy-pie-chart'
+  import 'vue-easy-pie-chart/dist/vue-easy-pie-chart.css'
+  
+  export default {
+      components:{ VueEasyPieChart }
+  }
+</script> 
+
   <!-- PAGE SCRIPT-->
    @yield('scripts')
 

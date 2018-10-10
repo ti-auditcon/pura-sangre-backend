@@ -108,63 +108,7 @@
     </div>
   </div>
   <div class="col-6">
-    <div class="ibox">
-        <div class="ibox-head">
-          <div class="ibox-title">Alumnos</div>
-          @if (Auth::user()->hasRole(1))
-            <button class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
-          @else
-            {!! Form::open(['route' => ['clases.users.store', 'clase' => $clase->id], 'method' => 'post']) !!}
-                <input type="hidden" value="{{Auth::user()->id}}" name="user_id">
-                <button class="btn btn-success sweet-user-join" data-id="{{$clase->id}}" data-name="{{$clase->date}}">
-                <i class=""></i>Reservar</button>
-            {!! Form::close() !!}
-          @endif
-        </div>
-        <div class="ibox-body">
-          <div class="ibox-fullwidth-block">
-            <table id="students-table" class="table table-hover">
-              <thead class="thead-default thead-lg">
-                <tr>
-                  <th width="80%">Alumno</th>
-                  @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
-                  <th width="20%">Acciones</th>
-                  @endif
-                </tr>
-              </thead>
-              <tbody>
-                @foreach ($clase->reservations as $reservation)
-                <tr>
-                  <td>
-                    <a class="media-img" href="javascript:;">
-                        <img class="img-circle" src="{{url('/img/users/u'.rand(1,11).'.jpg')}}" alt="image" width="54">
-                    </a>
-                    @if($reservation->user->status_user_id == 1 )
-                      <span class="badge-success badge-point"></span>
-                    @elseif($reservation->user->status_user_id == 2 )
-                      <span class="badge-danger badge-point"></span>
-                    @elseif($reservation->user->status_user_id == 3 )
-                      <span class="badge-warning badge-point"></span>
-                    @endif
-                    <a @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2)) href="{{url('/users/'.$reservation->user->id)}}" @endif>
-                      {{$reservation->user->first_name}} {{$reservation->user->last_name}}
-                    </a>
-                  </td>
-                  @if (Auth::user()->hasRole(1))
-                  <td>
-            {!! Form::open(['route' => ['clases.users.destroy', 'clase' => $clase->id, 'user' => $reservation->user->id], 'method' => 'delete', 'id'=>'delete'.$reservation->user->id]) !!}
-                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick sweet-user-delete" type="button"
-            data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash"></i></button>
-            {!! Form::close() !!}
-                  </td>
-                  @endif
-                </tr>
-                @endforeach
-              </tbody>
-            </table>
-          </div>
-        </div>
-    </div>
+    <example-component :reservations="{{ $clase->reservations }}"></example-component>
   </div>
 </div>
 
