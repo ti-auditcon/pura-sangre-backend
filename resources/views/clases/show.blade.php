@@ -108,62 +108,11 @@
     </div>
   </div>
   <div class="col-6">
-    <example-component :reservations="{{ $clase->reservations }}"></example-component>
+    <example-component :clase="{{ $clase->id }}"></example-component>
   </div>
 </div>
 
   <!-- Modal -->
-  <div class="modal fade" id="user-assign" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <table id="students-table-search" class="table table-hover">
-            <thead class="thead-default thead-lg">
-              <tr>
-                <th width="80%">Alumnos</th>
-                <th width="20%">Accion</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach ($outclase as $usuario)
-              <tr>
-                <td>
-                  <a class="media-img" href="javascript:;">
-                      <img class="img-circle" src="{{url('/img/users/u'.rand(1,11).'.jpg')}}" alt="image" width="54">
-                  </a>
-                @if($usuario->status_user_id == 1 )
-                  <span class="badge-success badge-point"></span>
-                @elseif($usuario->status_user_id == 2 )
-                  <span class="badge-danger badge-point"></span>
-                @elseif($usuario->status_user_id == 3 )
-                  <span class="badge-warning badge-point"></span>
-                @endif
-
-                  <a href="{{url('/users/'.$usuario->id)}}">
-                    {{$usuario->first_name}} {{$usuario->last_name}}
-                  </a>
-                </td>
-                <td>
-                  {!! Form::open(['route' => ['clases.users.store', 'clase' => $clase->id], 'method' => 'post']) !!}
-                  <input type="hidden" value="{{$usuario->id}}" name="user_id">
-                  <button type="button" class="btn btn-primary" type="submit" onClick="this.form.submit();">Agregar</button>
-                {!! Form::close() !!}
-                </td>
-              </tr>
-              @endforeach
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-
 
 @endsection
 

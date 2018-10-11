@@ -18,12 +18,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="reservation in reservations">
-               <!--  <li v-for="clase in reservas"> -->
-                  <td >{{reservation.user_id}}</td>
+            <tr v-for="student in students">
+                  <td>{{student.first_name}} {{student.last_name}}</td>
                   <td><button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick sweet-user-delete" type="button"><i class="la la-trash"></i></button>
                   </td>
-            <!--     </li> -->
             </tr>
           </tbody>
         </table>
@@ -31,28 +29,38 @@
     </div>
 </div>
 
+<!-- MODAL -->
+
+
+
 </template>
 
 <script>
     import axios  from 'axios'
     
     export default {
-        props: ['reservations'],
-        // data () {
-        //     return {
-        //         reservas : this.reservations
-        //     }
-        // },
-        // created: function() {
-        //     this.getAlumnos();
-        // },
-        // methods: {
-        //     getAlumnos: function(page) {
-        //         var urlAlumnos = 'aqui va la url';
-        //         axios.get(urlAlumnos).then(response => {
-        //             this.Alumnos = response.data
-        //         });
-        //     }
+        props: ['clase'],
+        data () {
+            return {
+                students : [],
+            }
+        },
+        created: function() {
+            this.getAlumnos();
+        },
+        methods: {
+            getAlumnos: function() {
+              var urlIdeas = '/clases/'+this.clase+'/reservations';
+              axios.get(urlIdeas).then(response => {
+                  this.students = response.data
+              });
+            }
+        },
+        // mounted: function () {
+        //     console.log('hola adentor');
+        //     var prueba = '/clases/'+this.clase+'/reservations';
+        //     axios.get(prueba).then(response => 
+        //     console.log(response));
         // }
     }
 </script>

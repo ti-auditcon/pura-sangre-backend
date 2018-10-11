@@ -47,7 +47,7 @@ class Clase extends Model
      */
     public function users()
     {
-    return $this->belongsToMany(User::Class)->using(Reservation::class);
+        return $this->belongsToMany('App\Models\Users\User', 'reservations', 'clase_id', 'user_id');
     }
 
     /**

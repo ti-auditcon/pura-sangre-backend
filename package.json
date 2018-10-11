@@ -19,5 +19,9 @@
         "popper.js": "^1.12",
         "vue": "^2.5.7",
         "vue-easy-pie-chart": "^1.0.3"
+    },
+    "dependencies": {
+        "ajv": "^6.5.4",
+        "imagemin": "^5.0.0"
     }
 }

@@ -78,7 +78,7 @@ class User extends Authenticatable
     */
     public function clases()
     {
-      return $this->belongsToMany(Clase::Class)->using(Reservation::class);
+        return $this->belongsToMany('App\Models\Clases\Clase', 'reservations', 'user_id', 'clase_id');
     }
 
     /**
