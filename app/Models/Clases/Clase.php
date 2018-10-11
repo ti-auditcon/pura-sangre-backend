@@ -16,7 +16,7 @@ class Clase extends Model
 
     protected $table = 'clases';
     protected $dates = ['deleted_at'];
-    protected $fillable = ['date', 'start_at', 'finish_at', 'room', 'profesor_id', 'quota' ,'block_id'];
+    protected $fillable = ['date', 'start_at', 'finish_at', 'room', 'profesor_id', 'quota' ,'block_id','clase_type_id'];
     protected $appends = ['start','end','url','reservation_count','title','color'];
 
     protected static function boot()
@@ -50,7 +50,7 @@ class Clase extends Model
     {
     return $this->belongsToMany(User::Class)->using(Reservation::class);
     }
-    
+
     public function claseType()
     {
       return $this->belongsTo(ClaseType::class);

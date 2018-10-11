@@ -45,7 +45,7 @@ class User extends Authenticatable
     // {
     //   return Rut::set($value)->fix()->format();
     // }
-    
+
     public function hasRole($role)
     {
       $role = RoleUser::where('role_id', $role)->where('user_id', $this->id)->get();
@@ -137,7 +137,7 @@ class User extends Authenticatable
     {
       return $this->where('status_user_id', 1);
     }
- 
+
     /**
      * [blocks description]
      * @return [type] [description]
@@ -179,6 +179,8 @@ class User extends Authenticatable
       return User::all()->where('admin', 'false')->orderBy('name');
     }
 
+
+
     /**
     * [reservations description]
     * @method reservations
@@ -192,9 +194,9 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class)->using(RoleUser::class);
-    }   
+    }
 
-   
+
 }
 
 // /**
@@ -218,7 +220,7 @@ class User extends Authenticatable
     // *
     //  * [esAdministrador description]
     //  * @return [boolean] [description]
-     
+
     // public function esAdministrador()
     // {
     //   return $this->admin;

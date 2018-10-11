@@ -43,10 +43,11 @@
             <div class="modal-dialog ">
               {{Form::open(['route'=>'blocks.store'])}}
               <input type="text" hidden class="form-control" value="" name="date">
+              <input type="text" hidden class="form-control" value="{{Session::get('clases-type')}}" name="clase_type_id">
 
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title">Nuevo horario</h5>
+                  <h5 class="modal-title">Nuevo horario de {{App\Models\Clases\ClaseType::find(Session::get('clases-type'))->clase_type}}</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -81,7 +82,11 @@
 
                    <div class="form-group mb-12">
                       <label class="col-sm-2 col-form-label">Profesor:</label>
-                      <input type="text" class="form-control" value="" name="profesor_id">
+                      <select  name="profesor_id" class="form-control"</select>>
+                        {{-- @foreach (App\Models\Users\User::coaches() as $coach)
+                          <option value="{{$coach->id}}">{{$coach->first_name}} {{$coach->last_name}}</option>
+                        @endforeach --}}
+                      </select>
                       <span class="input-group-addon">
                       </span>
                     </div>
