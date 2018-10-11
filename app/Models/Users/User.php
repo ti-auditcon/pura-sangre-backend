@@ -195,7 +195,11 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class)->using(RoleUser::class);
     }
-
+    // 
+    // public function coaches()
+    // {
+    //     return $this->belongsToMany(Role::class)->using(RoleUser::class);
+    // }
 
 }
 

@@ -83,9 +83,9 @@
                    <div class="form-group mb-12">
                       <label class="col-sm-2 col-form-label">Profesor:</label>
                       <select  name="profesor_id" class="form-control"</select>>
-                        {{-- @foreach (App\Models\Users\User::coaches() as $coach)
+                       @foreach (App\Models\Users\Role::find(2)->users as $coach)
                           <option value="{{$coach->id}}">{{$coach->first_name}} {{$coach->last_name}}</option>
-                        @endforeach --}}
+                        @endforeach
                       </select>
                       <span class="input-group-addon">
                       </span>

@@ -19,7 +19,7 @@ class BlockController extends Controller
      */
     public function index()
     {
-    //  dd(Role::coaches());
+
       $blocks = Block::where('clase_type_id',Session::get('clases-type'))->get()->toArray();
 
       return view('blocks.index')->with('blocks',json_encode($blocks));
@@ -49,7 +49,8 @@ class BlockController extends Controller
               'start'=>$request->start,
               'end'=>$request->end,
               'dow'=>$day,
-              'clase_type_id'=>$request->clase_type_id
+              'clase_type_id'=>$request->clase_type_id,
+              'profesor_id'=>$request->profesor_id
           ]);
           $block->plans()->sync($request->plans);
         }
@@ -59,7 +60,8 @@ class BlockController extends Controller
             'start'=>$request->start,
             'end'=>$request->end,
             'date'=>date("Y-d-m",strtotime($request->date)),//falta local
-            'clase_type_id'=>$request->clase_type_id
+            'clase_type_id'=>$request->clase_type_id,
+            'profesor_id'=>$request->profesor_id
         ]);
         $block->plans()->sync($request->plans);
         return Redirect::back();
