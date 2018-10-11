@@ -9,9 +9,9 @@
   <div class="col-10">
     <div class="ibox form-control-air">
       <div class="ibox-head">
-        <div class="ibox-title">Crear Workout</div>
+        <div class="ibox-title">Crear Workout {{Session::get('clase-type-id')}}</div>
       </div>
-      {!! Form::open(['route' => 'stages.store']) !!}
+      {!! Form::open(['route' => 'wods.store']) !!}
       <div class="ibox-body">
         <div class="row">
           <div class="col-sm-6 form-group mb-4">
@@ -28,51 +28,51 @@
     <div class="contaner">
       <div class="row">
         <div class="col">
-          <div class="form-group mb-4">
+          {{-- <div class="form-group mb-4">
             <label class="col-form-label">Nombre</label>
             <div class="input-group-icon input-group-icon-left">
               <input class="form-control form-control-air"
               name="name[]" type="text" placeholder="Ej: WarmUP" required/>
             </div>
-          </div>
+          </div> --}}
           <div class="form-group mb-4">
             <label>Warm-Up</label>
-            <textarea name="description[]" class="form-control form-control-solid" rows="3"></textarea>
+            <textarea name="warm" class="form-control form-control-solid" rows="6"></textarea>
           </div>
         </div>
         <div class="col">
-          <div class="form-group mb-4">
+          {{-- <div class="form-group mb-4">
             <label class="col-form-label">Nombre</label>
             <div class="input-group-icon input-group-icon-left">
               <input class="form-control form-control-air"
               name="name[]" type="text" placeholder="Ej: Skill" required/>
             </div>
-          </div>
+          </div> --}}
           <div class="form-group mb-4">
             <label>Skills</label>
-            <textarea name="description[]" class="form-control form-control-solid" rows="3"></textarea>
+            <textarea name="skill" class="form-control form-control-solid" rows="6"></textarea>
           </div>
         </div>
         <div class="col">
-          <div class="form-group mb-4">
+          {{-- <div class="form-group mb-4">
             <label class="col-form-label">Nombre</label>
             <div class="input-group-icon input-group-icon-left">
               <input class="form-control form-control-air"
               name="name[]" type="text" placeholder="Ej: OPEN WOD 14.4" required/>
             </div>
-          </div>
+          </div> --}}
           <div class="form-group mb-4">
             <label>WOD</label>
-            <textarea name="description[]" class="form-control form-control-solid" rows="3"></textarea>
+            <textarea name="wod" class="form-control form-control-solid" rows="6"></textarea>
           </div>
         </div>
       </div>
     </div>
-          
+
 
       <br>
       <div class="ibox-footer">
-      <button class="btn btn-primary btn-air" type="submit">Crear stage</button>
+      <button class="btn btn-primary btn-air" type="submit">Crear WOD</button>
       {{-- <button class="" href="" type="btn btn-secondary"></button> --}}
       <a class="btn btn-secondary" href="{{ route('clases.index') }}">Volver</a>
       </div>

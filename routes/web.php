@@ -38,7 +38,8 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
      * Exercises Routes (exercises)
      */
     Route::resource('exercises', 'Exercises\ExerciseController');
-    Route::resource('stages', 'Exercises\StageController');
+    //Route::resource('stages', 'Exercises\StageController');
+    Route::resource('wods', 'Wods\WodController');
 
     /**
     * Users Routes (alumnos, profes, admins)

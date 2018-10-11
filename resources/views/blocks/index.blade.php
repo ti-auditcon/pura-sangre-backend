@@ -19,7 +19,7 @@
                 <div class="col-sm-4">
                   <select class="form-control" name="type">
                     @foreach(App\Models\Clases\ClaseType::all() as $type)
-                      <option value="{{$type->id}}" @if($type->id == Session::get('clases-type')) selected @endif>
+                      <option value="{{$type->id}}" @if($type->id == Session::get('clases-type-id')) selected @endif>
                         {{$type->clase_type}}
                       </option>
                     @endforeach
@@ -43,11 +43,11 @@
             <div class="modal-dialog ">
               {{Form::open(['route'=>'blocks.store'])}}
               <input type="text" hidden class="form-control" value="" name="date">
-              <input type="text" hidden class="form-control" value="{{Session::get('clases-type')}}" name="clase_type_id">
+              <input type="text" hidden class="form-control" value="{{Session::get('clases-type-id')}}" name="clase_type_id">
 
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title">Nuevo horario de {{App\Models\Clases\ClaseType::find(Session::get('clases-type'))->clase_type}}</h5>
+                  <h5 class="modal-title">Nuevo horario de {{Session::get('clases-type-name')}}</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>

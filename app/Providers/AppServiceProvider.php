@@ -28,7 +28,10 @@ class AppServiceProvider extends ServiceProvider
       Clase::observe(ClaseObserver::class);
       Stage::observe(StageObserver::class);
 
-      if(!Session::has('clases-type')){ Session::put('clases-type',1); }
+      if(!Session::has('clases-type-id')){
+        Session::put('clases-type-id',1);
+        Session::put('clases-type-name',Clase::find(1)->clase_type);
+      }
     }
 
     /**

@@ -37,9 +37,14 @@ class Clase extends Model
      * [stages relation to this model]
      * @return [model] [description]
      */
-    public function stages()
+    // public function stages()
+    // {
+    //   return $this->belongsToMany(Stage::class)->using(ClaseStage::class);
+    // }
+
+    public function wod()
     {
-      return $this->belongsToMany(Stage::class)->using(ClaseStage::class);
+      return $this->belongsTo(Wod::class);
     }
 
     /**

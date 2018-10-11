@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Clases;
 
 use App\Http\Controllers\Controller;
 use App\Models\Clases\Clase;
+use App\Models\Clases\ClaseType;
 use App\Models\Clases\Reservation;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class ClaseController extends Controller
      */
     public function index()
     {
-        $clases = Clase::where('clase_type_id',Session::get('clases-type'))->get()->toArray();
+        $clases = Clase::where('clase_type_id',Session::get('clases-type-id'))->get()->toArray();
 
         return view('clases.index')->with('clases',json_encode($clases));
     }
@@ -63,7 +64,8 @@ class ClaseController extends Controller
     }
 
     public function typeSelect(Request $request){
-      Session::put('clases-type',$request->type);
+      Session::put('clases-type-id',$request->type);
+      Session::put('clases-type-name',ClaseType::find($request->type)->clase_type);
       return Redirect::back();
 
     }

@@ -9,7 +9,7 @@
       <div class="ibox">
           <div class="ibox-head">
               <div class="ibox-title">Clases</div>
-              <a class="btn btn-primary" href="{{ route('stages.create') }}">Asignar Workout</a>
+              <a class="btn btn-primary" href="{{ route('wods.create') }}">Asignar Workout</a>
               <a class="btn btn-primary" href="{{ route('blocks.index') }}">Ir a Horarios</a>
           </div>
           <div class="ibox-body">
@@ -20,7 +20,7 @@
                 <div class="col-sm-4">
                   <select class="form-control" name="type">
                     @foreach(App\Models\Clases\ClaseType::all() as $type)
-                      <option value="{{$type->id}}" @if($type->id == Session::get('clases-type')) selected @endif>
+                      <option value="{{$type->id}}" @if($type->id == Session::get('clases-type-id')) selected @endif>
                         {{$type->clase_type}}
                       </option>
                     @endforeach

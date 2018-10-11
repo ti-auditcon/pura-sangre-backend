@@ -20,7 +20,7 @@ class BlockController extends Controller
     public function index()
     {
 
-      $blocks = Block::where('clase_type_id',Session::get('clases-type'))->get()->toArray();
+      $blocks = Block::where('clase_type_id',Session::get('clases-type-id'))->get()->toArray();
 
       return view('blocks.index')->with('blocks',json_encode($blocks));
     }
