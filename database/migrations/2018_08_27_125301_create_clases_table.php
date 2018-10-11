@@ -14,8 +14,8 @@ class CreateClasesTable extends Migration
      */
     public function up()
     {
-      // Schema::drop('classes');
 
+      
       Schema::create('reservation_statuses', function (Blueprint $table) {
           $table->increments('id');
           $table->string('reservation_status');
@@ -25,6 +25,7 @@ class CreateClasesTable extends Migration
       Schema::create('clase_types', function (Blueprint $table) {
           $table->increments('id');
           $table->string('clase_type');
+          $table->string('clase_color');
           $table->timestamps();
       });
 
@@ -39,8 +40,8 @@ class CreateClasesTable extends Migration
           $table->unsignedInteger('dow')->nullable();
           $table->timestamps();
 
-          $table->foreign('profesor_id')->references('id')->on('users')->onDelete('cascade');
-          $table->foreign('clase_type_id')->references('id')->on('clase_types')->onDelete('cascade');
+          // $table->foreign('profesor_id')->references('id')->on('users')->onDelete('cascade');
+          // $table->foreign('clase_type_id')->references('id')->on('clase_types')->onDelete('cascade');
       });
 
       Schema::create('clases', function (Blueprint $table) {
@@ -55,7 +56,8 @@ class CreateClasesTable extends Migration
           $table->timestamps();
           $table->softDeletes();
 
-          $table->foreign('block_id')->references('id')->on('blocks')->onDelete('cascade');
+          // $table->foreign('profesor_id')->references('id')->on('users')->onDelete('cascade');
+          // $table->foreign('block_id')->references('id')->on('blocks')->onDelete('cascade');
       });
 
       Schema::create('reservations', function (Blueprint $table) {
@@ -66,10 +68,10 @@ class CreateClasesTable extends Migration
           $table->timestamps();
           $table->softDeletes();
 
-          $table->foreign('clase_id')->references('id')->on('clases')->onDelete('cascade');
-          $table->foreign('reservation_status_id')->references('id')->on('reservation_statuses')
-          ->onDelete('cascade');
-          $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+          // $table->foreign('clase_id')->references('id')->on('clases')->onDelete('cascade');
+          // $table->foreign('reservation_status_id')->references('id')->on('reservation_statuses')
+          // ->onDelete('cascade');
+          // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
       });
 
       Schema::create('block_plan', function (Blueprint $table) {
@@ -77,7 +79,11 @@ class CreateClasesTable extends Migration
           $table->unsignedInteger('block_id');
           $table->unsignedInteger('plan_id');
           $table->timestamps();
+
+          // $table->foreign('block_id')->references('id')->on('blocks')->onDelete('cascade');
+          // $table->foreign('plan_id')->references('id')->on('plans')->onDelete('cascade');
       });
+
 }
     /**
      * Reverse the migrations.
