@@ -5,6 +5,7 @@ namespace App\Models\Clases;
 use App\Models\Users\User;
 use App\Models\Exercises\Stage;
 use App\Models\Clases\ClaseStage;
+use App\Models\Clases\ClaseType;
 use App\Models\Clases\Reservation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,9 +17,9 @@ class Clase extends Model
     protected $table = 'clases';
     protected $dates = ['deleted_at'];
     protected $fillable = ['date', 'start_at', 'finish_at', 'room', 'profesor_id', 'quota' ,'block_id'];
-    protected $appends = ['start','end','url','reservation_count','title'];
+    protected $appends = ['start','end','url','reservation_count','title','color'];
 
-    protected static function boot() 
+    protected static function boot()
     {
         parent::boot();
     }
@@ -49,7 +50,11 @@ class Clase extends Model
     {
     return $this->belongsToMany(User::Class)->using(Reservation::class);
     }
-
+    
+    public function claseType()
+    {
+      return $this->belongsTo(ClaseType::class);
+    }
     /**
      * [profresor relation to this model]
      * @return [model] [description]
@@ -128,5 +133,10 @@ class Clase extends Model
     public function getUrlAttribute()
     {
       return url('clases/'.$this->id);
+    }
+
+    public function getColorAttribute()
+    {
+      return $this->claseType->clase_color;
     }
 }

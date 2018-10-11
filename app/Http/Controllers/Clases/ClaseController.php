@@ -21,6 +21,7 @@ class ClaseController extends Controller
     public function index()
     {
         $clases = Clase::where('clase_type_id',Session::get('clases-type'))->get()->toArray();
+
         return view('clases.index')->with('clases',json_encode($clases));
     }
 
