@@ -7,6 +7,8 @@ use App\Models\Clases\Clase;
 use App\Models\Clases\Reservation;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
+use Session;
+use Redirect;
 
 /** [ClaseController description] */
 class ClaseController extends Controller
@@ -18,7 +20,7 @@ class ClaseController extends Controller
      */
     public function index()
     {
-        $clases = Clase::all()->toArray();
+        $clases = Clase::where('clase_type_id',Session::get('clases-type'))->get()->toArray();
         return view('clases.index')->with('clases',json_encode($clases));
     }
 
@@ -57,5 +59,12 @@ class ClaseController extends Controller
         $otro = Reservation::where('clase_id', $clase->id)->get();
         $consulta = User::whereNotIn('id', $otro->pluck('user_id'))->get();
         return $consulta;
-    }      
+    }
+
+    public function typeSelect(Request $request){
+      Session::put('clases-type',$request->type);
+      return Redirect::back();
+
+    }
+
 }

@@ -11,6 +11,7 @@ use App\Observers\Clases\ClaseObserver;
 use Illuminate\Support\ServiceProvider;
 use App\Observers\Plans\PlanUserObserver;
 use App\Observers\Exercises\StageObserver;
+use Session;
 
 /** [AppServiceProvider description]*/
 class AppServiceProvider extends ServiceProvider
@@ -26,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
       Block::observe(BlockObserver::class);
       Clase::observe(ClaseObserver::class);
       Stage::observe(StageObserver::class);
+
+      if(!Session::has('clases-type')){ Session::put('clases-type',1); }
     }
 
     /**

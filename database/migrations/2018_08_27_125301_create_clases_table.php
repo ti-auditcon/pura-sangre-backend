@@ -15,7 +15,7 @@ class CreateClasesTable extends Migration
     public function up()
     {
 
-      
+
       Schema::create('reservation_statuses', function (Blueprint $table) {
           $table->increments('id');
           $table->string('reservation_status');
@@ -53,6 +53,7 @@ class CreateClasesTable extends Migration
           $table->integer('room')->nullable();
           $table->integer('profesor_id')->nullable();
           $table->integer('quota')->nullable();
+          $table->unsignedInteger('clase_type_id')->nullable();
           $table->timestamps();
           $table->softDeletes();
 
