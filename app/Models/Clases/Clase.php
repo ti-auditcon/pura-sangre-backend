@@ -3,7 +3,8 @@
 namespace App\Models\Clases;
 
 use App\Models\Users\User;
-use App\Models\Exercises\Stage;
+use App\Models\Wods\Stage;
+use App\Models\Wods\Wod;
 use App\Models\Clases\ClaseStage;
 use App\Models\Clases\ClaseType;
 use App\Models\Clases\Reservation;

@@ -52,6 +52,7 @@ class CreateClasesTable extends Migration
           $table->unsignedInteger('block_id')->nullable();
           $table->integer('room')->nullable();
           $table->integer('profesor_id')->nullable();
+          $table->integer('wod_id')->nullable();
           $table->integer('quota')->nullable();
           $table->unsignedInteger('clase_type_id')->nullable();
           $table->timestamps();
