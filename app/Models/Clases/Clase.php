@@ -128,7 +128,7 @@ class Clase extends Model
      */
     public function getTitleAttribute()
     {
-      return $this->block->title;
+      return '';
     }
 
     /**

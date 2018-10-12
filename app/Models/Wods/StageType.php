@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Exercises;
+namespace App\Models\Wods;
 
 use App\Models\Exercises\Stage;
 use Illuminate\Database\Eloquent\Model;

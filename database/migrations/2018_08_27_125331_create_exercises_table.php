@@ -33,7 +33,7 @@ class CreateExercisesTable extends Migration
             $table->unsignedInteger('stage_type_id')->nullable();
             $table->unsignedInteger('wod_id')->nullable();
             $table->string('name')->nullable();
-            $table->longText('description');
+            $table->longText('description')->nullable();
             $table->boolean('star')->nullable();
             $table->timestamps();
 

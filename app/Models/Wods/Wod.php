@@ -8,6 +8,7 @@ use App\Models\Clases\Clase;
 class Wod extends Model
 {
   protected $fillable = ['date','clase_type_id'];
+  protected $appends = ['start','allDay'];
 
 
   public function clases()
@@ -18,6 +19,23 @@ class Wod extends Model
   public function stages()
   {
     return $this->hasMany(Stage::class);
+  }
+
+  //etapa por id
+  public function stage($id)
+  {
+    return $this->hasMany(Stage::class)->where('stage_type_id',$id)->first() ?? null;
+  }
+
+
+  public function getAllDayAttribute()
+  {
+    return true;
+  }
+
+  public function getStartAttribute()
+  {
+    return $this->date;
   }
 
 }

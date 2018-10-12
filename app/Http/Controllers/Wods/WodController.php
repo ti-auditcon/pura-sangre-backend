@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Wods\Wod;
 use App\Models\Wods\Stage;
+use App\Models\Wods\StageType;
 use Session;
 
 class WodController extends Controller
@@ -43,21 +44,14 @@ class WodController extends Controller
       'clase_type_id' => Session::get('clases-type-id')
      ]);
 
-     Stage::create([
-       'wod_id' =>  $wod->id,
-       'stage_type_id' => 1,
-       'description' => $request->warm,
-     ]);
-     Stage::create([
-       'wod_id' =>  $wod->id,
-       'stage_type_id' => 2,
-       'description' => $request->skill,
-     ]);
-     Stage::create([
-       'wod_id' =>  $wod->id,
-       'stage_type_id' => 3,
-       'description' => $request->wod,
-     ]);
+     foreach (StageType::all() as $st) {
+       $id = $st->id;
+       Stage::create([
+         'wod_id' =>  $wod->id,
+         'stage_type_id' => $id,
+         'description' => $request->$id,
+       ]);
+     }
 
     return redirect('/clases');
   }
@@ -81,7 +75,7 @@ class WodController extends Controller
    */
   public function edit(Wod $wod)
   {
-    //
+    return view('wods.edit')->with('wod',$wod);
   }
 
   /**
@@ -92,7 +86,13 @@ class WodController extends Controller
    */
   public function update(Request $request, Wod $wod)
   {
-
+    foreach (StageType::all() as $st) {
+      $id = $st->id;
+      $stage = $wod->stage($st->id);
+      $stage->description = $request->$id;
+      $stage->save();
+    }
+      return redirect('/clases');
   }
 
   /**

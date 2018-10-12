@@ -77,24 +77,29 @@
           minTime: "07:00:00",
           maxTime: "21:00:00",
           eventSources:[
-            {!! $clases !!},
+            {
+              events: {!! $clases !!},
+              className: 'fc-clase',
+
+            },
             {
               events: [
-                {
-                  dow: [2],
+                @foreach( $wods as $wod)
+                { start: '{!! $wod->date !!}',
+                  url: '/wods/{!! $wod->id !!}/edit',
+                  title:'WOD'
                 },
-                {
-                  start: '2018-10-11'
-                }
-                // etc...
+                @endforeach
               ],
               color: 'yellow',   // an option!
               textColor: 'black', // an option!
-              allDayDefault :true,
+
               className: 'fc-wod',
+
             }
           ],
           editable: false,
+
           defaultView: 'agendaWeek',
           // allDaySlot: false,
           slotDuration: '00:30:00',
@@ -102,7 +107,7 @@
           hiddenDays: [0],
           eventColor: '#4c6c8b',
           eventRender: function( event, element, view ) {
-            element.find('.fc-title').append('<span > ' +event.reservation_count+'/25</span> ');
+            element.find('.fc-time').append('<div> reservas: ' +event.reservation_count+'/25</div> ');
           },
           // eventClick: function(calEvent, jsEvent, view) {
           //   $('#clase-resume').modal();

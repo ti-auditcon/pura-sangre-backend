@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Clases;
 
 use App\Http\Controllers\Controller;
 use App\Models\Clases\Clase;
+use App\Models\Wods\Wod;
 use App\Models\Clases\ClaseType;
 use App\Models\Clases\Reservation;
 use App\Models\Users\User;
@@ -22,8 +23,11 @@ class ClaseController extends Controller
     public function index()
     {
         $clases = Clase::where('clase_type_id',Session::get('clases-type-id'))->get()->toArray();
+        $wods = Wod::where('clase_type_id',Session::get('clases-type-id'))->get();
 
-        return view('clases.index')->with('clases',json_encode($clases));
+        return view('clases.index')
+          ->with('clases',json_encode($clases))
+          ->with('wods',$wods);
     }
 
     /**

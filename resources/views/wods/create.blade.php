@@ -1,7 +1,7 @@
 
 @extends('layouts.app')
 @section('sidebar')
-  @include('layouts.sidebar',['page'=>'student'])
+  @include('layouts.sidebar',['page'=>'wod-create'])
 @endsection
 
 @section('content')
@@ -27,45 +27,14 @@
 
     <div class="contaner">
       <div class="row">
+        @foreach(App\Models\Wods\StageType::all() as $st)
         <div class="col">
-          {{-- <div class="form-group mb-4">
-            <label class="col-form-label">Nombre</label>
-            <div class="input-group-icon input-group-icon-left">
-              <input class="form-control form-control-air"
-              name="name[]" type="text" placeholder="Ej: WarmUP" required/>
-            </div>
-          </div> --}}
           <div class="form-group mb-4">
-            <label>Warm-Up</label>
-            <textarea name="warm" class="form-control form-control-solid" rows="6"></textarea>
+            <label>{{$st->stage_type}}</label>
+            <textarea name="{{$st->id}}" class="form-control form-control-solid" rows="6"></textarea>
           </div>
         </div>
-        <div class="col">
-          {{-- <div class="form-group mb-4">
-            <label class="col-form-label">Nombre</label>
-            <div class="input-group-icon input-group-icon-left">
-              <input class="form-control form-control-air"
-              name="name[]" type="text" placeholder="Ej: Skill" required/>
-            </div>
-          </div> --}}
-          <div class="form-group mb-4">
-            <label>Skills</label>
-            <textarea name="skill" class="form-control form-control-solid" rows="6"></textarea>
-          </div>
-        </div>
-        <div class="col">
-          {{-- <div class="form-group mb-4">
-            <label class="col-form-label">Nombre</label>
-            <div class="input-group-icon input-group-icon-left">
-              <input class="form-control form-control-air"
-              name="name[]" type="text" placeholder="Ej: OPEN WOD 14.4" required/>
-            </div>
-          </div> --}}
-          <div class="form-group mb-4">
-            <label>WOD</label>
-            <textarea name="wod" class="form-control form-control-solid" rows="6"></textarea>
-          </div>
-        </div>
+        @endforeach
       </div>
     </div>
 

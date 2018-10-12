@@ -1,75 +1,66 @@
+
 @extends('layouts.app')
 @section('sidebar')
-  @include('layouts.sidebar',['page'=>'student'])
+  @include('layouts.sidebar',['page'=>'wod-create'])
 @endsection
 
 @section('content')
-  <div class="row justify-content-center">
-    <div class="col-6">
-      <div class="ibox form-control-air">
-        <div class="ibox-head">
-          <div class="ibox-title">EDITAR PLAN: {{strtoupper($plan->plan)}}</div>
-        </div>
-        {!! Form::open(['route' => ['plans.update', $plan->id], 'method' => 'put']) !!}
-        <div class="ibox-body">
-          <div class="row">
-            <div class="col-sm-6 form-group mb-4">
-              <div class="form-group inline @if($errors->has('plan')) has-warning  @endif">
-                <label class="col-form-label">Nombre del Plan*</label>
-                <input class="form-control form-control-air" name="plan" value="{{$plan->plan}}" placeholder="Ejemplo: 12 sesiones" required>
-              </div>
-            </div>
-            <div class="col-sm-6 form-group mb-4 @if($errors->has('plan_period_id')) has-warning  @endif">
-              <label class="col-form-label">Período*</label>
-              <select class="selectpicker form-control form-control-air"  name="plan_period_id" required>
-               <option value="">Elegir período...</option>
-               @foreach (App\Models\Plans\PlanPeriod::all() as $plan_period)
-               <option value="{{$plan_period->id}}" @if(old('plan_period_id')!=null) @if(old('plan_period_id')==$plan_period->id) selected @endif @else @if($plan_period->id==$plan->plan_period_id) selected @endif @endif >{{$plan_period->period}}</option>
-               @endforeach
-              </select>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-6 form-group mb-4">
-                <label class="col-form-label">Valor del Plan</label>
-              <div class="input-group-icon input-group-icon-left">
-                <span class="input-icon input-icon-left"><i class="la la-dollar"></i></span>
-                <input class="form-control form-control-air"value="{{$plan->amount}}"
-                name="amount" type="text" placeholder="solo números" required/>
-              </div>
-            </div>
-            <div class="col-sm-6 form-group mb-4">
-              <div class="form-group inline @if($errors->has('class_numbers')) has-warning  @endif">
-                <label class="col-form-label">Número de Clases</label>
-                <input class="form-control form-control-air" type="number"value="{{$plan->class_numbers}}" name="class_numbers" placeholder="0" required>
-              </div>
-            </div>
-          </div>
-
-        <br>
-        <div class="ibox-footer">
-        <button class="btn btn-primary btn-air" type="submit">Actualizar Plan</button>
-        {{-- <button class="" href="" type="btn btn-secondary"></button> --}}
-        <a class="btn btn-secondary" href="{{ route('plans.index') }}">Volver</a>
-        </div>
+<div class="row justify-content-center">
+  <div class="col-10">
+    <div class="ibox form-control-air">
+      <div class="ibox-head">
+        <div class="ibox-title"> Workout {{Session::get('clase-type-id')}} día {{$wod->date}}</div>
       </div>
-      {!! Form::close() !!}
+      {!! Form::open(['route' => ['wods.update',$wod->id],'method' => 'PUT']) !!}
+      <div class="ibox-body">
+
+        <div class="contaner">
+          <div class="row">
+            @foreach(App\Models\Wods\StageType::all() as $st)
+            <div class="col">
+              <div class="form-group mb-4">
+                <label>{{$st->stage_type}}</label>
+                <textarea name="{{$st->id}}" class="form-control form-control-solid" rows="6">{{$wod->stage($st->id)->description ?? 'sin registro'}}</textarea>
+              </div>
+            </div>
+            @endforeach
+
+          </div>
+    </div>
+
+
+      <br>
+      <div class="ibox-footer">
+      <button class="btn btn-primary btn-air" type="submit">Editar Workout</button>
+      {{-- <button class="" href="" type="btn btn-secondary"></button> --}}
+      <a class="btn btn-secondary" href="{{ route('clases.index') }}">Volver</a>
+      <a class="btn btn-secondary btn-danger" href="">Eliminar</a>
       </div>
     </div>
+
+    </div>
   </div>
-
-
+</div>
 
 @endsection
-
 
 @section('css') {{-- stylesheet para esta vista --}}
 
 @endsection
 
 
-
 @section('scripts') {{-- scripts para esta vista --}}
+
+<script defer>
+// Bootstrap datepicker
+$('#start_date .input-group.date').datepicker({
+  todayBtn: "linked",
+  keyboardNavigation: false,
+  forceParse: false,
+  calendarWeeks: true,
+  autoclose: true
+});
+</script>
 
 
 @endsection
