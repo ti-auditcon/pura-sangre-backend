@@ -57,52 +57,32 @@
     </div>
     <div class="ibox">
       <div class="ibox-head">
-        <div class="ibox-title">WOD</div>
+        <div class="ibox-title">Workout</div>
         <div class="ibox-tools">
-          <a ><i class="ti-pencil"></i></a>
+          <a href=""><i class="ti-pencil"></i></a>
         </div>
       </div>
       <div class="ibox-body">
         <div class="row">
-          <div class="col-md-4">
-            <div class="ibox shadow-wide">
-              <div class="ibox-body text-center">
-                <h3 class="font-strong">Warm up</h3>
-                <div class="py-5">
-                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
-                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 15 Pull Ups</div>
-                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
-                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
+          @foreach(App\Models\Wods\StageType::all() as $st)
+            <div class="col-md-4">
+              <div class="ibox shadow-wide">
+                <div class="ibox-body text-center">
+                  <h5 class="font-strong">{{$st->stage_type}}</h5>
+                  <div class="py-5">
+                    <textarea name="{{$st->id}}" class="form-control form-control-solid" rows="6" disabled>
+                      @if($clase->wod)
+                      {{$clase->wod->stage($st->id)->description }}
+                      @else
+                        - sin registro -
+                      @endif
+                    </textarea>
+
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-4">
-            <div class="ibox shadow-wide">
-              <div class="ibox-body text-center">
-                <h3 class="font-strong">Skills</h3>
-                <div class="py-5">
-                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
-                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 15 Pull Ups</div>
-                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
-                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="ibox shadow-wide">
-              <div class="ibox-body text-center">
-                <h3 class="font-strong">Wod</h3>
-                <div class="py-5">
-                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 5 HS Push Ups</div>
-                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 15 Pull Ups</div>
-                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
-                  <div class="flexbox-b mb-3"><i class="ti-check mr-3 font-18"></i> 25 Push Ups</div>
-                </div>
-              </div>
-            </div>
-          </div>
+          @endforeach
         </div>
       </div>
     </div>

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Observers\Exercises;
+namespace App\Observers\Wods;
 
 use Session;
 use Carbon\Carbon;
 use App\Models\Clases\Clase;
-use App\Models\Exercises\Stage;
+use App\Models\Wods\Stage;
 use App\Models\Clases\ClaseStage;
 
 class StageObserver
@@ -18,15 +18,15 @@ class StageObserver
      */
     public function created(Stage $stage)
     {
-        $ssn_date = Carbon::parse(Session::get('date'))->format('Y-m-d');
-        $clases = Clase::where('date', $ssn_date)->get();
-        foreach ($clases as $clase) {
-            ClaseStage::create([
-                'clase_id' => $clase->id,
-                'stage_id' => $stage->id]);
-        }
+        // $ssn_date = Carbon::parse(Session::get('date'))->format('Y-m-d');
+        // $clases = Clase::where('date', $ssn_date)->get();
+        // foreach ($clases as $clase) {
+        //     ClaseStage::create([
+        //         'clase_id' => $clase->id,
+        //         'stage_id' => $stage->id]);
+        // }
     }
-    
+
     /**
      * Handle the stage "updated" event.
      *

@@ -9,11 +9,30 @@
       <div class="ibox">
           <div class="ibox-head">
               <div class="ibox-title">Clases</div>
-              <a class="btn btn-primary" href="{{ route('stages.create') }}">Asignar Workout</a>
+              <a class="btn btn-primary" href="{{ route('wods.create') }}">Asignar Workout</a>
               <a class="btn btn-primary" href="{{ route('blocks.index') }}">Ir a Horarios</a>
           </div>
           <div class="ibox-body">
-              <div id="calendar"></div>
+            {{Form::open(['route'=>'clases.type'])}}
+            <div class="form-group mb-4 row">
+
+                <label class="col-sm-1 col-form-label">Tipo de clase:</label>
+                <div class="col-sm-4">
+                  <select class="form-control" name="type">
+                    @foreach(App\Models\Clases\ClaseType::all() as $type)
+                      <option value="{{$type->id}}" @if($type->id == Session::get('clases-type-id')) selected @endif>
+                        {{$type->clase_type}}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="col-sm-1">
+                  <button class="btn btn-default">seleccionar</button>
+                </div>
+
+            </div>
+            {{Form::close()}}
+            <div id="calendar"></div>
           </div>
       </div>
     </div>
@@ -57,8 +76,30 @@
           },
           minTime: "07:00:00",
           maxTime: "21:00:00",
-          events: {!! $clases !!},
+          eventSources:[
+            {
+              events: {!! $clases !!},
+              className: 'fc-clase',
+
+            },
+            {
+              events: [
+                @foreach( $wods as $wod)
+                { start: '{!! $wod->date !!}',
+                  url: '/wods/{!! $wod->id !!}/edit',
+                  title:'WOD'
+                },
+                @endforeach
+              ],
+              color: 'yellow',   // an option!
+              textColor: 'black', // an option!
+
+              className: 'fc-wod',
+
+            }
+          ],
           editable: false,
+
           defaultView: 'agendaWeek',
           // allDaySlot: false,
           slotDuration: '00:30:00',
@@ -66,13 +107,14 @@
           hiddenDays: [0],
           eventColor: '#4c6c8b',
           eventRender: function( event, element, view ) {
-            element.find('.fc-title').append('<span > ' +event.reservation_count+'/25</span> ');
+            element.find('.fc-time').append('<div> reservas: ' +event.reservation_count+'/25</div> ');
           },
           // eventClick: function(calEvent, jsEvent, view) {
           //   $('#clase-resume').modal();
           // },
 
         });
+
 
     });
   </script>

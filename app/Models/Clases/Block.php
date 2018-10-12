@@ -4,15 +4,19 @@ namespace App\Models\Clases;
 
 use App\Models\Clases\BlockType;
 use App\Models\Clases\Clase;
+<<<<<<< HEAD
 use App\Models\Users\User;
+=======
+use App\Models\Clases\ClaseType;
+>>>>>>> dev
 use Illuminate\Database\Eloquent\Model;
 
 class Block extends Model
 {
   protected $table = 'blocks';
   protected $fillable = ['start', 'end', 'dow', 'title',
-            'date', 'profesor_id', 'block_type_id'];
-  protected $appends = ['plans_id'];
+            'date', 'profesor_id', 'clase_type_id'];
+  protected $appends = ['plans_id','color'];
   // protected $with = array('plans');
 
   //transformamos el valor de dow a un arraglo para fullcalendar
@@ -33,9 +37,15 @@ class Block extends Model
     return $this->belongsTo(User::class,'profesor_id');
   }
 
+<<<<<<< HEAD
   public function block_type()
   {
     return $this->belongsTo(BlockType::class,'block_type_id');
+=======
+  public function claseType()
+  {
+    return $this->belongsTo(ClaseType::class);
+>>>>>>> dev
   }
 
   public function getPlansIdAttribute()
@@ -63,6 +73,11 @@ class Block extends Model
     {
       return $value;
     }
+  }
+
+  public function getColorAttribute()
+  {
+    return $this->claseType->clase_color;
   }
 
   public function clases()

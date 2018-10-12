@@ -2,17 +2,20 @@
 
 namespace App\Models\Clases;
 
-use App\Models\Clases\Block;
+//use App\Models\Clases\Clase;
 use Illuminate\Database\Eloquent\Model;
 
-class BlockType extends Model
+
+
+class ClaseType extends Model
 {
 	/**
 	 * [blocks description]
 	 * @return [model] [return block model]
 	 */
-	public function blocks()
-	{
-		return $this->hasMany(Block::class);
-	}
+	// public function blocks()
+	// {
+	// 	return $this->hasMany(Block::class);
+	// }
+
 }
