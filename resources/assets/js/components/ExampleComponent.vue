@@ -19,19 +19,15 @@
           </thead>
           <tbody>
             <tr v-for="student in students">
-                  <td>{{student.first_name}} {{student.last_name}}</td>
-                  <td><button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick sweet-user-delete" type="button"><i class="la la-trash"></i></button>
-                  </td>
+                <td>{{student.first_name}} {{student.last_name}}</td>
+                <td><button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick sweet-user-delete" type="button"><i class="la la-trash"></i></button>
+                </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
 </div>
-
-<!-- MODAL -->
-
-
 
 </template>
 
