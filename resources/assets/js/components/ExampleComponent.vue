@@ -20,7 +20,7 @@
           <tbody>
             <tr v-for="student in students">
                 <td>{{student.first_name}} {{student.last_name}}</td>
-                <td><button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick sweet-user-delete" type="button"><i class="la la-trash"></i></button>
+                <td><button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick sweet-user-delete" type="button" @click="createAlumnos(student.id)"><i class="la la-trash"></i></button>
                 </td>
             </tr>
           </tbody>
@@ -45,13 +45,28 @@
             this.getAlumnos();
         },
         methods: {
-            getAlumnos: function() {
-              var urlIdeas = '/clases/'+this.clase+'/reservations';
-              axios.get(urlIdeas).then(response => {
-                  this.students = response.data
+          getAlumnos: function() {
+            var urlIdeas = '/clases/'+this.clase+'/reservations';
+            axios.get(urlIdeas).then(response => {
+                this.students = response.data
+            });
+          },
+          createAlumnos: function() {
+              var url = '/clases/'+this.clase+'/users/';
+              var student = this.student.id;
+              axios.post(url, {
+                id: this.newKeep
+              }).then(response => {
+                this.getKeeps();
+                this.newKeep = '';
+                this.errors = [];
+                $('#create').modal('hide');
+                toastr.success('Nueva tarea creada con éxito');
+              }).catch(error => {
+                this.errors = 'Corrija para poder crear con éxito'
               });
-            }
-        },
+            },
+        }
         // mounted: function () {
         //     console.log('hola adentor');
         //     var prueba = '/clases/'+this.clase+'/reservations';

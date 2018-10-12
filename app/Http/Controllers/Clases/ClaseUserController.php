@@ -56,28 +56,6 @@ class ClaseUserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Clases\Clase  $clase
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Clase $clase)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Clases\Clase  $clase
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Clase $clase)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
