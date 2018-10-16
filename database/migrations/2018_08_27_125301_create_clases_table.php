@@ -24,13 +24,10 @@ class CreateClasesTable extends Migration
 
       Schema::create('clase_types', function (Blueprint $table) {
           $table->increments('id');
-<<<<<<< HEAD
           $table->string('block_type');
           $table->integer('max_quota');
-=======
           $table->string('clase_type');
           $table->string('clase_color');
->>>>>>> dev
           $table->timestamps();
       });
 
