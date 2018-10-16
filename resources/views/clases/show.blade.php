@@ -38,7 +38,7 @@
                   <div class="easypie mr-4" data-percent="{{$clase->reservations->count()*100/25}}" data-bar-color="#5c6bc0" data-size="80" data-line-width="8">
                     <span class="easypie-data font-26 text-primary"><i class="ti-user"></i></span>
                   </div>
-                  <h3 class="font-strong text-primary">{{$clase->reservations->count()}}/{{$clase->block->block_type->max_quota}}</h3>
+                  <h3 class="font-strong text-primary">{{$clase->reservations->count()}}/25</h3>
                   <div class="text-muted">Cupos confirmados</div>
                 </div>
                 @if (Auth::user()->hasRole(1))
@@ -204,7 +204,7 @@
 @endsection
 
 @section('css') {{-- stylesheet para esta vista --}}
-	<link href="{{asset('css/datatables.min.css')}}" rel="stylesheet" />
+  <link href="{{asset('css/datatables.min.css')}}" rel="stylesheet" />
 @endsection
 
 
@@ -253,27 +253,27 @@
   });
   </script>
 
-	{{--  datatable --}}
-	<script src="{{ asset('js/datatables.min.js') }}"></script>
-	<script >
-		$(document).ready(function() {
-			table = $('#students-table').DataTable({
-				"paging": true,
-				"ordering": true,
+  {{--  datatable --}}
+  <script src="{{ asset('js/datatables.min.js') }}"></script>
+  <script >
+    $(document).ready(function() {
+      table = $('#students-table').DataTable({
+        "paging": true,
+        "ordering": true,
         "pageLength": 8,
         "bLengthChange" : false, //thought this line could hide the LengthMenu
         "bpageLength": false,
         "bPaginate": false,
-				"language": {
-					"lengthMenu": "Mostrar _MENU_ elementos",
-					"zeroRecords": "Sin resultados",
-					"info": "Mostrando página _PAGE_ de _PAGES_",
-					"infoEmpty": "Sin resultados",
-					"infoFiltered": "(filtrado de _MAX_ registros totales)",
-					"search": "Filtrar:"
+        "language": {
+          "lengthMenu": "Mostrar _MENU_ elementos",
+          "zeroRecords": "Sin resultados",
+          "info": "Mostrando página _PAGE_ de _PAGES_",
+          "infoEmpty": "Sin resultados",
+          "infoFiltered": "(filtrado de _MAX_ registros totales)",
+          "search": "Filtrar:"
 
-				},
-			});
+        },
+      });
       table_search = $('#students-table-search').DataTable({
           "paging": true,
           "ordering": true,
@@ -291,34 +291,34 @@
 
           },
         });
-		});
+    });
   //
   //
   // $('button.user-filter').on("click", function(){
   //     table.columns( 6 ).search( $(this).data('status') ).draw();
   //   });
 
-	</script>
-	{{--  End datatable --}}
+  </script>
+  {{--  End datatable --}}
 
   <script>
-	$('.sweet-clase-delete').click(function(e){
-	  var id = $(this).data('id');
-		//alert(id);
-			swal({
-					title: "Desea eliminar la clase: "+$(this).data('name')+"?",
-					text: "(Se sacarán a todos los usuarios ya inscritos a esta clase)",
-					type: 'warning',
-					showCancelButton: true,
-					confirmButtonClass: 'btn-danger',
-					cancelButtonText: 'Cancelar',
-					confirmButtonText: 'Eliminar',
-					closeOnConfirm: false,
-			},function(){
-				//redirección para eliminar clase
+  $('.sweet-clase-delete').click(function(e){
+    var id = $(this).data('id');
+    //alert(id);
+      swal({
+          title: "Desea eliminar la clase: "+$(this).data('name')+"?",
+          text: "(Se sacarán a todos los usuarios ya inscritos a esta clase)",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonClass: 'btn-danger',
+          cancelButtonText: 'Cancelar',
+          confirmButtonText: 'Eliminar',
+          closeOnConfirm: false,
+      },function(){
+        //redirección para eliminar clase
          $('form.clase-delete').submit();
-			});
-	});
-	</script>
+      });
+  });
+  </script>
 
 @endsection
