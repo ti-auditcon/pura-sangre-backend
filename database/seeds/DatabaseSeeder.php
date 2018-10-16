@@ -28,14 +28,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-
+      $this->call(BlockTableSeeder::class);
+      $this->call(RoleUserTableSeeder::class);
       $this->call(StatusUsersTableSeeder::class);
       $this->call(PlanPeriodsTableSeeder::class);
       $this->call(PlansTableSeeder::class);
       $this->call(PaymentStatusesTableSeeder::class);
       $this->call(PaymentTypesTableSeeder::class);
-      // $this->call(ExercisesTableSeeder::class);
-      // $this->call(ExerciseStagesTableSeeder::class);
       $this->call(RolesTableSeeder::class);
       $this->call(PlanStatusTableSeeder::class);
       $this->call(StageTypesTableSeeder::class);
@@ -70,27 +69,14 @@ class DatabaseSeeder extends Seeder
           'status_user_id' => 1,
       ]);
 
-        factory(User::class, 50)->create()->each(function ($u)
-        {
-<<<<<<< HEAD
-          factory(PlanUser::class, 3)->create(['user_id' => $u->id ]);
-            $this->call(BlockTypesTableSeeder::class);
-    });
-        factory(Stage::class, 200)->create();
-=======
-          // factory(PlanUser::class, 3)->create(['user_id' => $u->id ]);
-        });
-        //factory(Stage::class, 200)->create();
->>>>>>> dev
-        $this->call(BlockTableSeeder::class);
-        $this->call(RoleUserTableSeeder::class);
-        // factory(ClaseStage::class, 600)->create();
-        // factory(Millestone::class, 40)->create();
-
-        // factory(Bill::class, 100)->create();
-        // factory(Statistic::class, 5)->create();
-        factory(ReservationStatus::class, 3)->create();
-        factory(Reservation::class, 2000)->create();
+      factory(User::class, 50)->create()->each(function ($u)
+      {
+        factory(PlanUser::class, 3)->create(['user_id' => $u->id ]);
+          $this->call(BlockTypesTableSeeder::class);
+      });
+      factory(Stage::class, 200)->create();
+      factory(ReservationStatus::class, 3)->create();
+      factory(Reservation::class, 2000)->create();
 
     }
 }
