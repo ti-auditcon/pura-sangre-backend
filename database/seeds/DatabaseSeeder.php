@@ -72,7 +72,6 @@ class DatabaseSeeder extends Seeder
       factory(User::class, 50)->create()->each(function ($u)
       {
         factory(PlanUser::class, 3)->create(['user_id' => $u->id ]);
-          $this->call(BlockTypesTableSeeder::class);
       });
       factory(Stage::class, 200)->create();
       factory(ReservationStatus::class, 3)->create();
