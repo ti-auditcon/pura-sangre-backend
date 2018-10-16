@@ -46,12 +46,9 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     */
     Route::resource('users', 'Users\UserController');
     Route::resource('users.plans', 'Plans\PlanUserController');
-<<<<<<< HEAD
+
     Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
   
-=======
-
->>>>>>> dev
     /**
      * Clases routes (clases, clases-alumnos, bloques)
      */

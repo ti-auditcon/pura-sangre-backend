@@ -79,9 +79,9 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
-      $user->update($request->all());
-      Session::flash('success','Los datos del usuario han sido actualizados');
-      return view('users.show')->with('user', $user);
+        $user->update($request->all());
+        Session::flash('success','Los datos del usuario han sido actualizados');
+        return view('users.show')->with('user', $user);
     }
 
     /**
