@@ -22,11 +22,6 @@
                   <span class="nav-label">Reportes</span>
               </a>
           </li>
-          <li @if($page=="payments") class="active" @endif>
-              <a href="{{url('/')}}"><i class="sidebar-item-icon ti-money"></i>
-                  <span class="nav-label">Pagos</span>
-              </a>
-          </li>
           {{-- <li @if($page=="mercados") class="active" @endif>
               <a href="mercado.html"><i class="sidebar-item-icon ti-clipboard"></i>
                   <span class="nav-label">Planes</span>
