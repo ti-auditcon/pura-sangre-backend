@@ -4,7 +4,6 @@ namespace App\Models\Clases;
 
 use App\Models\Users\User;
 use App\Models\Clases\Clase;
-use App\Models\Clases\BlockType;
 use App\Models\Clases\ClaseType;
 use Illuminate\Database\Eloquent\Model;
 
@@ -34,11 +33,6 @@ class Block extends Model
     return $this->belongsTo(User::class,'profesor_id');
   }
 
-  public function block_type()
-  {
-    return $this->belongsTo(BlockType::class,'block_type_id');
-  }
-  
   public function claseType()
   {
     return $this->belongsTo(ClaseType::class);
