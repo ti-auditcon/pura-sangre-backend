@@ -60,11 +60,19 @@ class CreatePlansTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('plan_status_id')->references('id')->on('plan_status')->onDelete('cascade');
-            // $table->foreign('discount_id')->references('id')->on('discounts')->onDelete('cascade');
-            $table->foreign('plan_id')->references('id')->on('plans')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            // $table->foreign('plan_status_id')->references('id')->on('plan_status')->onDelete('cascade');
+            // // $table->foreign('discount_id')->references('id')->on('discounts')->onDelete('cascade');
+            // $table->foreign('plan_id')->references('id')->on('plans')->onDelete('cascade');
+            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
+
+        // Schema::create('payments', function (Blueprint $table) {
+        //     $table->increments('id');
+        //
+        //     $table->timestamps();
+        //     $table->softDeletes();
+        //
+        // });
 
         // Schema::create('installments', function (Blueprint $table) {
         //     $table->increments('id');

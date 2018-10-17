@@ -18,7 +18,7 @@ class Bill extends Model
 
     protected $dates = ['deleted_at'];
     protected $fillable = ['payment_type_id', 'user_id',
-    'date', 'detail', 'amount', 'sub_total', 'total'];
+    'date', 'detail', 'amount', 'user_plan_id'];
 
     /**
      * [installments description]

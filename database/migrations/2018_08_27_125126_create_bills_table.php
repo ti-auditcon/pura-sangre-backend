@@ -25,17 +25,18 @@ class CreateBillsTable extends Migration
         Schema::create('bills', function (Blueprint $table) {
           $table->increments('id');
           $table->unsignedInteger('payment_type_id');
-          $table->unsignedInteger('user_id');
+          $table->unsignedInteger('payment_status_id');
+          $table->unsignedInteger('user_plan_id');
           $table->string('date');
           $table->string('detail')->nullable();
-          $table->integer('amount');
-          $table->integer('subtotal')->nullable();
           $table->integer('total');
+          // $table->integer('subtotal')->nullable();
+          // $table->integer('total');
           $table->timestamps();
           $table->softDeletes();
 
-          $table->foreign('payment_type_id')->references('id')->on('payment_types')->onDelete('cascade');
-          $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+          // $table->foreign('payment_type_id')->references('id')->on('payment_types')->onDelete('cascade');
+          // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
         Schema::create('payment_statuses', function (Blueprint $table) {
