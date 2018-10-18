@@ -29,7 +29,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
       $this->call(BlockTableSeeder::class);
-      $this->call(RoleUserTableSeeder::class);
       $this->call(StatusUsersTableSeeder::class);
       $this->call(PlanPeriodsTableSeeder::class);
       $this->call(PlansTableSeeder::class);
@@ -38,8 +37,6 @@ class DatabaseSeeder extends Seeder
       $this->call(RolesTableSeeder::class);
       $this->call(PlanStatusTableSeeder::class);
       $this->call(StageTypesTableSeeder::class);
-
-      factory(Emergency::class, 60)->create();
 
       $user = User::create([
           'rut' => 11111111,
