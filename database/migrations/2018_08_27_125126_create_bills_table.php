@@ -28,6 +28,8 @@ class CreateBillsTable extends Migration
           //$table->unsignedInteger('payment_status_id');
           $table->unsignedInteger('plan_user_id');
           $table->string('date');
+          $table->string('start_period');
+          $table->string('end_period');
           $table->string('detail')->nullable();
           $table->integer('amount');
           // $table->integer('subtotal')->nullable();
