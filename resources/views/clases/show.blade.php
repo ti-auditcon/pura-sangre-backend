@@ -88,9 +88,9 @@
     </div>
   </div>
   <div class="col-6">
-<<<<<<< HEAD
-    <example-component :clase="{{ $clase->id }}"></example-component>
-=======
+
+    {{-- <example-component :clase="{{ $clase->id }}"></example-component> --}}
+
     <div class="ibox">
         <div class="ibox-head">
           <div class="ibox-title">Alumnos</div>
@@ -148,7 +148,6 @@
           </div>
         </div>
     </div>
->>>>>>> raul
   </div>
 </div>
 
