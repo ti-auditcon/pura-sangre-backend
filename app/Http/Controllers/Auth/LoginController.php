@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Models\Clases\Clase;
+use Session;
+
 
 class LoginController extends Controller
 {
@@ -34,6 +37,10 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+        if(!Session::has('clases-type-id')){
+          Session::put('clases-type-id',1);
+          Session::put('clases-type-name',Clase::find(1)->clase_type);
+        }
         $this->middleware('guest')->except('logout');
     }
 }

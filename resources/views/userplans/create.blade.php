@@ -8,10 +8,8 @@
     <div class="col-6">
       <div class="ibox form-control-air">
         <div class="ibox-head">
-          <div class="ibox-title">Agregar plan a:  {{$user->first_name}} {{$user->last_name}}</div>
-          <div class="ibox-tools">
-            {{-- <a class="btn btn-success text-white" href="{{ route('users.create')}}">Nuevo alumno</a> --}}
-          </div>
+          <div class="ibox-title">Agregar plan a:   {{$user->first_name}} {{$user->last_name}}</div>
+
         </div>
         {!! Form::open(['route' => ['users.plans.store', $user->id]]) !!}
         <div class="ibox-body">
@@ -20,13 +18,14 @@
             <div class="col-sm-6 form-group mb-4">
             <div class="form-group">
               <label class="form-control-label">Planes*</label>
-              <select class="selectpicker form-control form-control-air" name="plan_id" required>
-               <option value="">Asignar plan...</option>
-               @foreach (App\Models\Plans\Plan::all() as $plan)
-               <option value="{{$plan->id}}" @if(old('plan_id')==$plan->id) selected @endif>
-                 {{$plan->plan}} - {{$plan->plan_period->period}}
-               </option>
-               @endforeach
+              <select class="selectpicker form-control form-control-air" name="plan_id" required id="plan-select">
+                  <option value="" > Elegir plan..</option>
+                   @foreach (App\Models\Plans\Plan::all() as $plan)
+                   <option value="{{$plan->id}}" @if(old('plan_id')==$plan->id) selected @endif data-amount="{{$plan->amount}}">
+                     {{$plan->plan}} - {{$plan->plan_period->period ?? ''}}
+                   </option>
+                   @endforeach
+
               </select>
             </div>
           </div>
@@ -40,13 +39,31 @@
             </div>
           </div>
         </div>
+        <div class="row" style="display:none;" id="payment">
+          <div class="col-sm-12 form-group mb-4">
+            <div class="form-group mb-4">
+              <label>Forma de pago</label>
+              <select class="selectpicker form-control form-control-air" name="payment_type_id">
+                @foreach (App\Models\Bills\PaymentType::all() as $pt)
+                   <option value="{{$pt->id}}">
+                     {{$pt->payment_type}}
+                   </option>
 
-        <div class="form-group mb-4">
-          <label>Total</label>
-          <div class="input-group-icon input-group-icon-left">
-            <span class="input-icon input-icon-left"><i class="la la-dollar"></i></span>
-            <input class="form-control form-control-air"
-            name="amount" type="text" placeholder="solo números" required/>
+                @endforeach
+              </select>
+
+            </div>
+            <div class="form-group mb-4">
+              <label>Total</label>
+              <div class="input-group-icon input-group-icon-left">
+                <span class="input-icon input-icon-left"><i class="la la-dollar"></i></span>
+                <input class="form-control form-control-air" id="plan-amount"
+                name="amount" type="text" placeholder="solo números" required/>
+              </div>
+            </div>
+            <div class="form-group mb-4">
+              <textarea class="form-control" name="detalle" placeholder="detalle"></textarea>
+            </div>
           </div>
         </div>
         <br>
@@ -78,6 +95,27 @@ $('#start_date .input-group.date').datepicker({
   calendarWeeks: true,
   autoclose: true
 });
+
+$('#plan-select').change(function() {
+
+var data = $('#plan-select').find('option:selected').data('amount');
+
+$('#plan-amount').val(data);
+
+if(parseInt(data) > 0)
+{
+  console.log('mayor');
+  $('#payment').show();
+
+}
+else {
+    console.log('no mayor');
+    $('#payment').hide();
+}
+
+
+});
+
 </script>
 
 {{-- AGREGAR PUNTOS PARA MONTO DEL PLAN --}}

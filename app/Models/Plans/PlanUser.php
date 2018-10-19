@@ -20,7 +20,7 @@ class PlanUser extends Model
 
   protected $table = 'plan_user';
   protected $dates = ['deleted_at'];
-  protected $fillable = ['start_date', 'finish_date', 'amount',
+  protected $fillable = ['start_date', 'finish_date',
   'counter', 'plan_status_id', 'plan_id', 'user_id'];
 
   /**
@@ -83,6 +83,8 @@ class PlanUser extends Model
       return $this->belongsTo(Plan::class);
   }
 
+
+
   /**
    * [user description]
    * @method user
@@ -91,5 +93,10 @@ class PlanUser extends Model
   public function user()
   {
       return $this->belongsTo(User::class);
+  }
+
+  public function bill()
+  {
+      return $this->hasOne(Bill::class);
   }
 }

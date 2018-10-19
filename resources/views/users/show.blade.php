@@ -15,7 +15,7 @@
             <h4>{{$user->first_name}} {{$user->last_name}}</h4>
 
             <div class="text-muted font-13 mb-3">
-              <span class="mr-3"><i class="mr-2"></i>{{$user->active_plan()->plan ?? 'sin plan'}}</span>
+              <span class="mr-3"><i class="mr-2"></i></span>
             </div>
           </div>
         </div>
@@ -107,7 +107,7 @@
                 <a class="media-img" href="{{route('users.plans.show', ['user' => $user->id, 'plan' => $plan_user->id])}}">
                   {{$plan_user->plan->plan}}</a>
                 </td>
-                <td>{{$plan_user->plan->plan_period->period}}</td>
+                <td>{{$plan_user->plan->plan_period->period ?? ''}}</td>
                 <td>{{Carbon\Carbon::parse($plan_user->start_date)->format('d-m-Y')}}</td>
                 <td>{{Carbon\Carbon::parse($plan_user->finish_date)->format('d-m-Y')}}</td>
                 {{-- <td><span class="badge badge-success">{{$plan_user->plan_state}}</span></td> --}}
@@ -121,13 +121,13 @@
     <div class="col-8">
       <div class="ibox ibox-fullheight">
         <div class="ibox-head">
-          <div class="ibox-title">Pagos</div>
-          <div class="ibox-tools">
+          <div class="ibox-title">Planes</div>
+          {{-- <div class="ibox-tools">
             <button class="btn btn-success">Realizar pago</button>
-          </div>
+          </div> --}}
         </div>
         <div class="ibox-body">
-          <div class="flexbox mb-4">
+          {{-- <div class="flexbox mb-4">
             <div class="flexbox">
               <span class="flexbox mr-3">
                 <span class="mr-2 text-muted">Dia de pago</span>
@@ -138,23 +138,38 @@
                 <span class="h3 mb-0 text-primary font-strong">9</span>
               </span>
             </div>
-          </div>
+          </div> --}}
           <div class="ibox-fullwidth-block">
             <table id="students-table" class="table table-hover">
               <thead class="thead-default thead-lg">
                 <tr>
                   <th width="15%">Plan</th>
-                  <th width="15%">Fecha Compromiso</th>
-                  <th width="15%">Fecha de Pago</th>
+                  <th width="15%">Estado</th>
+                  <th width="15%">Fecha termino</th>
                   <th width="15%">Fecha expiración</th>
-                  <th width="15%">Estado del pago</th>
+                  <th width="15%">medio de pago</th>
                   <th width="15%">Monto</th>
                   <th width="10%">Acciones</th>
                 </tr>
               </thead>
               <tbody>
+
+                @foreach($user->plan_users()->orderBy('created_at','desc')->get() as $up)
+                  <tr>
+                    <td>{{$up->plan->plan}}</td>
+                    <td>@if($up->plan_status_id==1) <span class="success">Activo</span>  @else <span class="danger">Inactivo</span>  @endif</td>
+                    <td>{{$up->start_date->format('d-m-Y')}}</td>
+                    <td>{{$up->finish_date->format('d-m-Y')}}</td>
+                    <td>{{$up->bill->amount}}</td>
+                    <td>{{$up->bill->amount}}</td>
+                    <td>
+                      
+                    </td>
+                  </tr>
+
+                @endforeach
                 {{-- @foreach ($user->installments as $fee)
-                
+
                     <tr>
                       <td>{{$fee->plan_user->plan->plan}}</td>
                       <td>{{Carbon\Carbon::parse($fee->commitment_date)->format('d-m-Y')}}</td>

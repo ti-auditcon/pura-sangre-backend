@@ -3,6 +3,7 @@
 namespace App\Observers\Plans;
 
 use App\Models\Plans\PlanUser;
+use Session;
 
 /**
  * [PlanUserObserver description]
@@ -16,7 +17,16 @@ class PlanUserObserver
      */
     public function creating(PlanUser $planUser)
     {
-      //
+      //verificamos que no exista uij plan activo para el usuario
+      $exist = PlanUser::where('user_id', $planUser->user_id)->where('plan_status_id', 1)->exists();
+      if($exist){
+        Session::flash('error','ya existe un plan activo para el usuario');
+        return false;
+      }
+      else {
+        return true;
+      }
+
     }
 
     /**

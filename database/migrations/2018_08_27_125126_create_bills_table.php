@@ -25,11 +25,11 @@ class CreateBillsTable extends Migration
         Schema::create('bills', function (Blueprint $table) {
           $table->increments('id');
           $table->unsignedInteger('payment_type_id');
-          $table->unsignedInteger('payment_status_id');
-          $table->unsignedInteger('user_plan_id');
+          //$table->unsignedInteger('payment_status_id');
+          $table->unsignedInteger('plan_user_id');
           $table->string('date');
           $table->string('detail')->nullable();
-          $table->integer('total');
+          $table->integer('amount');
           // $table->integer('subtotal')->nullable();
           // $table->integer('total');
           $table->timestamps();

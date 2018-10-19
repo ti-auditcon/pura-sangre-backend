@@ -167,7 +167,7 @@ class User extends Authenticatable
     */
     public function plan_users()
     {
-      return $this->hasMany(PlanUser::class)->orderBy('finish_date', 'desc');
+      return $this->hasMany(PlanUser::class);;
     }
 
     /**
@@ -195,7 +195,7 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class)->using(RoleUser::class);
     }
-    // 
+    //
     // public function coaches()
     // {
     //     return $this->belongsToMany(Role::class)->using(RoleUser::class);

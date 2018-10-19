@@ -37,7 +37,7 @@ class Plan extends Model
    * [plan_users relation to this model]
    * @return [model] [return plan_users model]
    */
-  public function plan_users()
+  public function user_plans()
   {
     return $this->hasMany(PlanUser::class);
   }

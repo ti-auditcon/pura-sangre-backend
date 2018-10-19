@@ -17,7 +17,7 @@ class Bill extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
-    protected $fillable = ['payment_type_id', 'user_id',
+    protected $fillable = ['payment_type_id',
     'date', 'detail', 'amount', 'user_plan_id'];
 
     /**
