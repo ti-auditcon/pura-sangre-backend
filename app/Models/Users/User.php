@@ -124,9 +124,9 @@ class User extends Authenticatable
     * metodo  para obtener el plan activo del usuario
     * @return [type] [description]
     */
-    public function active_plan()
+    public function actual_plan()
     {
-      return $this->belongsToMany(Plan::class)->using(PlanUser::class)->first();
+      return $this->hasOne(PlanUser::class)->where('start_date','<=', today())->where('finish_date','>=', today());
     }
 
     /**

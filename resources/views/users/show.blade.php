@@ -13,6 +13,7 @@
           </div>
           <div>
             <h4>{{$user->first_name}} {{$user->last_name}}</h4>
+            <span class="mr-3">{{$user->actual_plan->plan->plan ?? "sin plan actualmente" }}</span>
 
             <div class="text-muted font-13 mb-3">
               <span class="mr-3"><i class="mr-2"></i></span>
@@ -81,53 +82,7 @@
           </div>
         </div>
       </div>
-      <div class="ibox">
-        <div class="ibox-head">
-          <div class="ibox-title">Planes</div>
-          <div class="ibox-tools">
-            <a class="btn btn-success text-white"
-            href="{{ route('users.plans.create', $user->id) }}">Asignar Plan</a>
-          </div>
-        </div>
-        <div class="ibox-body">
-          <div class="ibox-fullwidth-block">
-            <table id="plans-table" class="table table-hover">
-              <thead class="thead-default thead-lg">
-                <tr>
-                  <th width="35%">Plan</th>
-                  <th width="25%">Expira</th>
-                  <th width="10%">Estado</th>
-                  <th width="30%"></th>
-                </tr>
-              </thead>
-              <tbody>
-              @foreach ($user->plan_users as $plan_user)
-                <tr>
-                  <td>
-                    {{-- {{dd($user->id, $plan_user->id)}} --}}
-                  <a class="media-img" href="{{route('users.plans.show', ['user' => $user->id, 'plan' => $plan_user->id])}}">
-                    {{$plan_user->plan->plan}}</a>
-                  </td>
-                  {{-- <td>{{$plan_user->plan->plan_period->period ?? ''}}</td> --}}
-                  {{-- <td>{{Carbon\Carbon::parse($plan_user->start_date)->format('d-m-Y')}}</td> --}}
-                  <td>{{Carbon\Carbon::parse($plan_user->finish_date)->format('d-m-Y')}}</td>
-                  <td>
-                    {{$plan_user->plan_status->plan_status}}
-                  </td>
-                  <td>
-                    <button class="btn btn-info btn-icon-only btn-circle btn-sm btn-air"><span class="ti-reload"></span></button>
-                    <button class="btn btn-info btn-icon-only btn-circle btn-sm btn-air"><span class="ti-trash"></span></button>
-                  </td>
 
-                  {{-- <td><span class="badge badge-success">{{$plan_user->plan_state}}</span></td> --}}
-                </tr>
-              @endforeach
-              </tbody>
-            </table>
-          </div>
-
-        </div>
-      </div>
     </div>
     <div class="col-8">
       <div class="ibox ibox-fullheight">
@@ -150,6 +105,9 @@
                   <th width="10%">Clases</th>
                   <th width="15%">medio de pago</th>
                   <th width="15%">Monto</th>
+                  <th>
+
+                  </th>
 
                 </tr>
               </thead>
@@ -158,13 +116,15 @@
                 @foreach($user->plan_users()->orderBy('created_at','desc')->get() as $up)
                   <tr>
                     <td>{{$up->plan->plan}}</td>
-                    <td>{{$up->bill->date}}</td>
+                    <td>{{$up->bill->date ?? "no aplica"}}</td>
 
                     <td>{{$up->start_date->format('d-m-Y')}} al {{$up->finish_date->format('d-m-Y')}}</td>
                     <td>1/12</td>
-                    <td>{{$up->bill->payment_type->payment_type}}</td>
-                    <td>{{$up->bill->amount}}</td>
-
+                    <td>{{$up->bill->payment_type->payment_type ?? "no aplica"}}</td>
+                    <td>{{$up->bill->amount?? "no aplica" }}</td>
+                    <td>
+                      <button class="btn btn-info btn-icon-only btn-circle btn-sm btn-air"><i class="la la-trash"></i></button>
+                    </td>
                   </tr>
 
                 @endforeach
