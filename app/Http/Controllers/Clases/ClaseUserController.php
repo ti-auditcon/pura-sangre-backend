@@ -7,6 +7,7 @@ use App\Models\Clases\Clase;
 use App\Models\Clases\Reservation;
 use App\Models\Plans\PlanUser;
 use App\Models\Users\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Redirect;
 use Session;
@@ -41,62 +42,37 @@ class ClaseUserController extends Controller
      */
     public function store(Request $request, Clase $clase)
     {
-        $plan_user = PlanUser::where('plan_status_id', 1)
-                     ->where('user_id', $request->user_id)->first();
-        if ($plan_user == null) {
+        $planuser = PlanUser::where('plan_status_id', 1)->where('user_id', $request->user_id)->first();
+        if ($planuser == null) {
             Session::flash('warning', 'El usuario no tiene ningun plan activo');
             return Redirect::back();
-        }                
-        $inclase = $this->inClass($clase, $request);
-        if (count($inclase) == 0) {
-            if ($plan_user->plan_id == 5) {
-                $plan_user->counter =  $plan_user->counter + 1;
+        }
+
+        $response = $this->hasReserve($clase, $request);
+            if ($response != null) {
+                Session::flash('warning', $response);
+                return Redirect::back();
             }
+
+        $responseTwo = $this->hasTwelvePlan($planuser);
+            if ($responseTwo != null) {
+                Session::flash('warning', $responseTwo);
+                return Redirect::back();
+            }
+
+        $class_hour = Carbon::parse($clase->start_at)->format('H:i');
+        if (now()->format('H:i') > ($class_hour)) {
+            return $this->errorResponse('Ya no se puede tomar esta clase', 400);
+        }else{
+            $planuser->counter = $planuser->counter + 1;
+            $planuser->save();
             Reservation::create(array_merge($request->all(), [
                 'clase_id' => $clase->id,
                 'reservation_status_id' => 1
             ]));
-            Session::flash('success','Usuario agregado');
-            return Redirect::back();
+        Session::flash('success','Usuario agregado');
+        return Redirect::back();
         }
-        else{
-            Session::flash('warning','El usuario ya está en esta clase');
-            return Redirect::back();
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Clases\Clase  $clase
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Clase $clase)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Clases\Clase  $clase
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Clase $clase)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Clases\Clase  $clase
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Clase $clase)
-    {
-        //
     }
 
     /**
@@ -107,20 +83,83 @@ class ClaseUserController extends Controller
      */
     public function destroy(Clase $clase, User $user)
     {
-        $clase->reservations()->where('user_id', $user->id)->delete();
-        Session::flash('success','El usuario se eliminó de la clase');
-        return Redirect::back();
+        $reservation = $clase->reservations()->where('user_id', $user->id)->first();
+        $planuser = PlanUser::where('plan_status_id', 1)->where('user_id', $user->id)->first();
+
+        if ($clase->date < toDay()->format('Y-m-d')) {
+            Session::flash('warning','No puede votar una clase de un día anterior a hoy');
+            return Redirect::back();
+        }
+        elseif ($clase->date > toDay()->format('Y-m-d')) {
+            if ($reservation->delete()) {
+                    $planuser->counter = $planuser->counter - 1;
+                    $planuser->save();
+                    Session::flash('success','Retiro de clase exitoso');
+                    return Redirect::back();
+                }
+        }
+        else {
+            $class_hour = Carbon::parse($clase->start_at);
+            if ($class_hour->diffInMinutes(now()->format('H:i')) < 40) {
+            Session::flash('warning','Ya no puede votar la clase');
+            return Redirect::back();
+            }else{
+                if ($reservation->delete()) {
+                    $planuser->counter = $planuser->counter - 1;
+                    $planuser->save();
+                    Session::flash('success','Retiro de clase exitoso');
+                    return Redirect::back();
+                }
+            }
+        }
+
+
+
+
+       
     }
 
-    /**
-     * [inclass description]
-     * @param  [type] $clase   [description]
-     * @param  [type] $request [description]
-     * @return [collection] [description]
-     */
-    public function inclass($clase, $request){
-        $consulta = Reservation::where('clase_id', $clase->id)
-                ->where('user_id', $request->user_id)->get();
-        return $consulta;
-    }   
+
+    private function hasReserve($clase, $request)
+    {
+        $response = '';
+        $clases = Clase::where('date', $clase->date)->get();
+        foreach ($clases as $clase) {
+            $reservations = Reservation::where('user_id', $request->user_id)->where('clase_id', $clase->id)->get();
+            if (count($reservations) != 0) {
+                $response = 'Ya tiene clase tomada este día';
+            }
+        }
+        return $response;
+    }
+
+    private function hasTwelvePlan($planuser)
+    {
+        $responseTwo = null;
+        if ($planuser->plan_id == 5 && $planuser->counter >= 12) {
+            $responseTwo = 'No puede reservar, ya ha ocupado o reservado sus 12 clases del plan 12 clases mensual';
+        }
+        elseif ($planuser->plan_id == 6 && $planuser->counter >= 12) {
+            $responseTwo = 'Ya ha ocupado o reservado sus 12 clases de este mes del plan trimestral';
+        }
+        elseif ($planuser->plan_id == 7 && $planuser->counter >= 12) {
+            $responseTwo = 'Ya ha ocupado o reservado sus 12 clases de este mes del plan semestral';
+        }
+        elseif ($planuser->plan_id == 8 && $planuser->counter >= 12) {
+            $responseTwo = 'Ya ha ocupado o reservado sus 12 clases de este mes del plan anual';
+        }
+
+        return $responseTwo;
+    }
 }
+    // /**
+    //  * [inclass description]
+    //  * @param  [type] $clase   [description]
+    //  * @param  [type] $request [description]
+    //  * @return [collection] [description]
+    //  */
+    // public function inclass($clase, $request){
+    //     $consulta = Reservation::where('clase_id', $clase->id)
+    //             ->where('user_id', $request->user_id)->get();
+    //     return $consulta;
+    // }

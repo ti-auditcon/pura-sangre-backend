@@ -47,6 +47,7 @@ class DatabaseSeeder extends Seeder
           'email' => 'sa@auditcon.cl',
           'password' => bcrypt('123123'),
           'phone' => '87654321',
+          'avatar' => '1Audito',
           'address' => 'Estado, Esquina Membrillar, Oficina 208',
           // 'emergency_id' => 1,
           'status_user_id' => 1,
@@ -69,8 +70,11 @@ class DatabaseSeeder extends Seeder
       factory(User::class, 50)->create()->each(function ($u)
       {
         factory(PlanUser::class, 3)->create(['user_id' => $u->id ]);
-      });
+    });
+      $this->call(PlanUserTableSeeder::class);
+      $this->call(RoleUserTableSeeder::class);
       factory(Stage::class, 200)->create();
+      $this->call(ReservationsTableSeeder::class);
       factory(ReservationStatus::class, 3)->create();
       factory(Reservation::class, 2000)->create();
 
