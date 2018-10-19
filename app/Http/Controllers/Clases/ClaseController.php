@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Clases;
 
-use App\Http\Controllers\Controller;
-use App\Models\Clases\Clase;
-use App\Models\Wods\Wod;
-use App\Models\Clases\ClaseType;
-use App\Models\Clases\Reservation;
-use App\Models\Users\User;
-use Illuminate\Http\Request;
 use Session;
 use Redirect;
+use App\Models\Wods\Wod;
+use App\Models\Users\User;
+use App\Models\Clases\Clase;
+use Illuminate\Http\Request;
+use App\Models\Clases\ClaseType;
+use App\Models\Clases\Reservation;
+use App\Http\Controllers\Controller;
 
 /** [ClaseController description] */
 class ClaseController extends Controller
@@ -73,10 +73,9 @@ class ClaseController extends Controller
     }
 
     public function typeSelect(Request $request){
-      Session::put('clases-type-id',$request->type);
-      Session::put('clases-type-name',ClaseType::find($request->type)->clase_type);
-      return Redirect::back();
-
+        Session::put('clases-type-id',$request->type);
+        Session::put('clases-type-name',ClaseType::find($request->type)->clase_type);
+        return Redirect::back();
     }
 
 }
