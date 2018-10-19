@@ -37,7 +37,7 @@ class Bill extends Model
      */
     public function payment_type()
     {
-      return $this->hasOne(PaymentType::class);
+      return $this->belongsTo(PaymentType::class);
     }
 
     /**

@@ -50,7 +50,7 @@ class CreatePlansTable extends Migration
         Schema::create('plan_user', function (Blueprint $table) {
             $table->increments('id');
             $table->date('start_date');
-            $table->date('end_date');
+            $table->date('finish_date');
             $table->integer('counter')->nullable();
             $table->unsignedInteger('plan_status_id')->nullable();
             // $table->unsignedInteger('discount_id')->nullable();

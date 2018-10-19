@@ -6,6 +6,7 @@ use App\Models\Users\User;
 use App\Models\Clases\Block;
 use App\Models\Plans\PlanUser;
 use App\Models\Plans\PlanPeriod;
+use App\Models\Plans\PlanStatus;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -50,5 +51,6 @@ class Plan extends Model
   {
     return $this->belongsToMany(User::class)->using(PlanUser::class);
   }
+
 
 }

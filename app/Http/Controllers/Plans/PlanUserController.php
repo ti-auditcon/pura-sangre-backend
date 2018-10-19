@@ -68,6 +68,8 @@ class PlanUserController extends Controller
           $bill->plan_user_id = $planUser->id;
           $bill->payment_type_id = $request->payment_type_id;
           $bill->date = today();
+          $bill->start_date =  $planUser->start_date;
+          $bill->finish_date =  $planUser->finish_date;
           $bill->detail = $request->detalle;
           $bill->amount = $request->amount;
           $bill->save();

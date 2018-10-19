@@ -4,6 +4,7 @@ namespace App\Models\Plans;
 
 use Carbon\Carbon;
 use App\Models\Plans\Plan;
+use App\Models\Plans\PlanStatus;
 use App\Models\Users\User;
 use App\Models\Bills\Bill;
 // use App\Models\Plans\Discount;
@@ -98,5 +99,10 @@ class PlanUser extends Model
   public function bill()
   {
       return $this->hasOne(Bill::class);
+  }
+
+  public function plan_status()
+  {
+    return $this->belongsTo(PlanStatus::class);
   }
 }

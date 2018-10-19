@@ -90,31 +90,42 @@
           </div>
         </div>
         <div class="ibox-body">
-          <table id="plans-table" class="table table-hover">
-            <thead class="thead-default thead-lg">
-              <tr>
-                <th width="30%">Plan</th>
-                <th width="30%">Período</th>
-                <th width="20%">Desde</th>
-                <th width="20%">Hasta</th>
-              </tr>
-            </thead>
-            <tbody>
-            @foreach ($user->plan_users as $plan_user)
-              <tr>
-                <td>
-                  {{-- {{dd($user->id, $plan_user->id)}} --}}
-                <a class="media-img" href="{{route('users.plans.show', ['user' => $user->id, 'plan' => $plan_user->id])}}">
-                  {{$plan_user->plan->plan}}</a>
-                </td>
-                <td>{{$plan_user->plan->plan_period->period ?? ''}}</td>
-                <td>{{Carbon\Carbon::parse($plan_user->start_date)->format('d-m-Y')}}</td>
-                <td>{{Carbon\Carbon::parse($plan_user->finish_date)->format('d-m-Y')}}</td>
-                {{-- <td><span class="badge badge-success">{{$plan_user->plan_state}}</span></td> --}}
-              </tr>
-            @endforeach
-            </tbody>
-          </table>
+          <div class="ibox-fullwidth-block">
+            <table id="plans-table" class="table table-hover">
+              <thead class="thead-default thead-lg">
+                <tr>
+                  <th width="35%">Plan</th>
+                  <th width="25%">Expira</th>
+                  <th width="10%">Estado</th>
+                  <th width="30%"></th>
+                </tr>
+              </thead>
+              <tbody>
+              @foreach ($user->plan_users as $plan_user)
+                <tr>
+                  <td>
+                    {{-- {{dd($user->id, $plan_user->id)}} --}}
+                  <a class="media-img" href="{{route('users.plans.show', ['user' => $user->id, 'plan' => $plan_user->id])}}">
+                    {{$plan_user->plan->plan}}</a>
+                  </td>
+                  {{-- <td>{{$plan_user->plan->plan_period->period ?? ''}}</td> --}}
+                  {{-- <td>{{Carbon\Carbon::parse($plan_user->start_date)->format('d-m-Y')}}</td> --}}
+                  <td>{{Carbon\Carbon::parse($plan_user->finish_date)->format('d-m-Y')}}</td>
+                  <td>
+                    {{$plan_user->plan_status->plan_status}}
+                  </td>
+                  <td>
+                    <button class="btn btn-info btn-icon-only btn-circle btn-sm btn-air"><span class="ti-reload"></span></button>
+                    <button class="btn btn-info btn-icon-only btn-circle btn-sm btn-air"><span class="ti-trash"></span></button>
+                  </td>
+
+                  {{-- <td><span class="badge badge-success">{{$plan_user->plan_state}}</span></td> --}}
+                </tr>
+              @endforeach
+              </tbody>
+            </table>
+          </div>
+
         </div>
       </div>
     </div>
@@ -122,34 +133,24 @@
       <div class="ibox ibox-fullheight">
         <div class="ibox-head">
           <div class="ibox-title">Planes</div>
-          {{-- <div class="ibox-tools">
-            <button class="btn btn-success">Realizar pago</button>
-          </div> --}}
+          <div class="ibox-tools">
+            <a class="btn btn-success text-white"
+            href="{{ route('users.plans.create', $user->id) }}">Asignar Plan</a>
+          </div>
         </div>
         <div class="ibox-body">
-          {{-- <div class="flexbox mb-4">
-            <div class="flexbox">
-              <span class="flexbox mr-3">
-                <span class="mr-2 text-muted">Dia de pago</span>
-                <span class="h3 mb-0 text-primary font-strong">08</span>
-              </span>
-              <span class="flexbox mr-3">
-                <span class="mr-2 text-muted">Dias disponibles</span>
-                <span class="h3 mb-0 text-primary font-strong">9</span>
-              </span>
-            </div>
-          </div> --}}
           <div class="ibox-fullwidth-block">
             <table id="students-table" class="table table-hover">
               <thead class="thead-default thead-lg">
                 <tr>
                   <th width="15%">Plan</th>
-                  <th width="15%">Estado</th>
-                  <th width="15%">Fecha termino</th>
-                  <th width="15%">Fecha expiración</th>
+
+                  <th width="15%">Fecha Pago</th>
+                  <th width="25%">Periodo</th>
+                  <th width="10%">Clases</th>
                   <th width="15%">medio de pago</th>
                   <th width="15%">Monto</th>
-                  <th width="10%">Acciones</th>
+
                 </tr>
               </thead>
               <tbody>
@@ -157,14 +158,13 @@
                 @foreach($user->plan_users()->orderBy('created_at','desc')->get() as $up)
                   <tr>
                     <td>{{$up->plan->plan}}</td>
-                    <td>@if($up->plan_status_id==1) <span class="success">Activo</span>  @else <span class="danger">Inactivo</span>  @endif</td>
-                    <td>{{$up->start_date->format('d-m-Y')}}</td>
-                    <td>{{$up->finish_date->format('d-m-Y')}}</td>
+                    <td>{{$up->bill->date}}</td>
+
+                    <td>{{$up->start_date->format('d-m-Y')}} al {{$up->finish_date->format('d-m-Y')}}</td>
+                    <td>1/12</td>
+                    <td>{{$up->bill->payment_type->payment_type}}</td>
                     <td>{{$up->bill->amount}}</td>
-                    <td>{{$up->bill->amount}}</td>
-                    <td>
-                      
-                    </td>
+
                   </tr>
 
                 @endforeach
