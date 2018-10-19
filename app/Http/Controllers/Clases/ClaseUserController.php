@@ -60,6 +60,45 @@ class ClaseUserController extends Controller
                 return Redirect::back();
             }
 
+        if ($clase->date < toDay()->format('Y-m-d')) {
+            Session::flash('warning','No puede tomar una clase de un día anterior a hoy');
+            return Redirect::back();
+        }
+        elseif ($clase->date > toDay()->format('Y-m-d')) {
+            $planuser->counter = $planuser->counter + 1;
+            $planuser->save();
+            Reservation::create(array_merge($request->all(), [
+                'clase_id' => $clase->id,
+                'reservation_status_id' => 1
+            ]));
+            Session::flash('success','Usuario agregado');
+            return Redirect::back();
+        }
+        else {
+            $class_hour = Carbon::parse($clase->start_at);
+            $diff_mns = $class_hour->diffInMinutes(now()->format('H:i'));
+
+            // if (now()->format('H:i') < $class_hour) {
+            //     dd('ahora es menor que la hora de la clase');
+            // }else{
+            //     dd('ahora es mayor que la hora de la clase');
+            // }
+            if ((now()->format('H:i') > $class_hour) || (now()->format('H:i') < $class_hour && diff_mns < 40)) {
+            Session::flash('warning','Ya no puede tomar la clase');
+            return Redirect::back();
+            }else{
+                $planuser->counter = $planuser->counter + 1;
+                $planuser->save();
+                Reservation::create(array_merge($request->all(), [
+                    'clase_id' => $clase->id,
+                    'reservation_status_id' => 1
+                ]));
+                Session::flash('success','Usuario agregado');
+                return Redirect::back();
+            }
+        }
+
+
         $class_hour = Carbon::parse($clase->start_at)->format('H:i');
         if (now()->format('H:i') > ($class_hour)) {
             return $this->errorResponse('Ya no se puede tomar esta clase', 400);
@@ -112,13 +151,7 @@ class ClaseUserController extends Controller
                 }
             }
         }
-
-
-
-
-       
     }
-
 
     private function hasReserve($clase, $request)
     {
