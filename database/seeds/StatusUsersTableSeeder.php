@@ -38,13 +38,6 @@ class StatusUsersTableSeeder extends Seeder
                 'created_at' => '2018-08-28 20:59:28',
                 'updated_at' => '2018-08-28 20:59:28',
             ),
-            // 3 => 
-            // array (
-            //     'id' => 4,
-            //     'status_user' => 'Nuevo',
-            //     'created_at' => '2018-08-28 20:59:28',
-            //     'updated_at' => '2018-08-28 20:59:28',
-            // ),
         ));
 
 

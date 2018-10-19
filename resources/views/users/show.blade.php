@@ -153,8 +153,8 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach ($user->installments as $fee)
-                  {{-- {{dd($fee)}} --}}
+                {{-- @foreach ($user->installments as $fee)
+                
                     <tr>
                       <td>{{$fee->plan_user->plan->plan}}</td>
                       <td>{{Carbon\Carbon::parse($fee->commitment_date)->format('d-m-Y')}}</td>
@@ -164,7 +164,7 @@
                       <td>{{$fee->amount}}</td>
                       <td></td>
                     </tr>
-                @endforeach
+                @endforeach --}}
               </tbody>
             </table>
           </div>

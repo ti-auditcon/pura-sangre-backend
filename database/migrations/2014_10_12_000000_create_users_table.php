@@ -17,12 +17,6 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('emergencies', function (Blueprint $table) {
-          $table->increments('id');
-          $table->string('contact_name');
-          $table->integer('contact_phone');
-          $table->timestamps();
-        });
 
         Schema::create('status_users', function (Blueprint $table) {
           $table->increments('id');
@@ -30,11 +24,11 @@ class CreateUsersTable extends Migration
           $table->timestamps();
         });
 
-        Schema::create('millestones', function (Blueprint $table) {
-          $table->increments('id');
-          $table->string('millestone');
-          $table->timestamps();
-        });
+        // Schema::create('millestones', function (Blueprint $table) {
+        //   $table->increments('id');
+        //   $table->string('millestone');
+        //   $table->timestamps();
+        // });
 
         Schema::create('roles', function (Blueprint $table) {
           $table->increments('id');
@@ -54,14 +48,25 @@ class CreateUsersTable extends Migration
           $table->string('birthdate');
           $table->string('gender');
           $table->string('address')->nullable();
-          $table->unsignedInteger('emergency_id')->nullable();
+          // $table->unsignedInteger('emergency_id')->nullable();
           $table->unsignedInteger('status_user_id')->nullable();
           $table->rememberToken();
           $table->timestamps();
           $table->softDeletes();
 
-          $table->foreign('emergency_id')->references('id')->on('emergencies')->onDelete('cascade');
+
           $table->foreign('status_user_id')->references('id')->on('status_users')->onDelete('cascade');
+        });
+
+// contactos de emergencia
+        Schema::create('emergencies', function (Blueprint $table) {
+          $table->increments('id');
+          $table->unsignedInteger('user_id')->nullable();
+          $table->string('contact_name')->nullable();
+          $table->integer('contact_phone')->nullable();
+          $table->timestamps();
+
+          $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
         Schema::create('role_user', function (Blueprint $table) {
@@ -74,17 +79,17 @@ class CreateUsersTable extends Migration
           $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
-        Schema::create('millestone_users', function (Blueprint $table) {
-          $table->unsignedInteger('millestone_id')->nullable();
-          $table->unsignedInteger('user_id');
-          $table->date('month');
-          $table->date('year');
-          $table->timestamps();
-          $table->softDeletes();
-
-          $table->foreign('millestone_id')->references('id')->on('millestones')->onDelete('cascade');
-          $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-        });
+        // Schema::create('millestone_users', function (Blueprint $table) {
+        //   $table->unsignedInteger('millestone_id')->nullable();
+        //   $table->unsignedInteger('user_id');
+        //   $table->date('month');
+        //   $table->date('year');
+        //   $table->timestamps();
+        //   $table->softDeletes();
+        //
+        //   $table->foreign('millestone_id')->references('id')->on('millestones')->onDelete('cascade');
+        //   $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        // });
     }
 
     /**
@@ -95,12 +100,13 @@ class CreateUsersTable extends Migration
     public function down()
     {
         Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('emergencies');
+
         Schema::dropIfExists('status_users');
-        Schema::dropIfExists('millestones');
         Schema::dropIfExists('roles');
         Schema::dropIfExists('users');
+        Schema::dropIfExists('emergencies');
         Schema::dropIfExists('role_user');
-        Schema::dropIfExists('millestone_users');
+        // Schema::dropIfExists('millestones');
+        // Schema::dropIfExists('millestone_users');
     }
 }
