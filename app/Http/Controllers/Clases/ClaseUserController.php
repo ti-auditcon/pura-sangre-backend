@@ -41,7 +41,12 @@ class ClaseUserController extends Controller
      */
     public function store(Request $request, Clase $clase)
     {
-        $plan_user = PlanUser::where('plan_status_id', 1)->where('user_id', $request->user_id)->get();
+        $plan_user = PlanUser::where('plan_status_id', 1)
+                     ->where('user_id', $request->user_id)->first();
+        if ($plan_user == null) {
+            Session::flash('warning', 'El usuario no tiene ningun plan activo');
+            return Redirect::back();
+        }                
         $inclase = $this->inClass($clase, $request);
         if (count($inclase) == 0) {
             if ($plan_user->plan_id == 5) {
