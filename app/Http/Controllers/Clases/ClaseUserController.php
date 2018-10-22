@@ -97,7 +97,22 @@ class ClaseUserController extends Controller
                 return Redirect::back();
             }
         }
-      }
+
+
+        $class_hour = Carbon::parse($clase->start_at)->format('H:i');
+        if (now()->format('H:i') > ($class_hour)) {
+            return $this->errorResponse('Ya no se puede tomar esta clase', 400);
+        }else{
+            $planuser->counter = $planuser->counter + 1;
+            $planuser->save();
+            Reservation::create(array_merge($request->all(), [
+                'clase_id' => $clase->id,
+                'reservation_status_id' => 1
+            ]));
+        Session::flash('success','Usuario agregado');
+        return Redirect::back();
+        }
+    }
 
     /**
      * Remove the specified resource from storage.
