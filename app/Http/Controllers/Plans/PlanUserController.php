@@ -23,7 +23,8 @@ class PlanUserController extends Controller
      */
     public function index()
     {
-        //
+       $userPlans = PlanUser::all();
+       return view('userplans.index')->with('userPlans', $userPlans);
     }
 
     /**

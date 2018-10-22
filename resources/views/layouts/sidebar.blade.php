@@ -18,10 +18,16 @@
               </a>
           </li>
           <li @if($page=="payments") class="active" @endif>
+              <a href="{{url('/payments')}}"><i class="sidebar-item-icon ti-money"></i>
+                  <span class="nav-label">Pagos</span>
+              </a>
+          </li>
+          <li @if($page=="reports") class="active" @endif>
               <a href="{{url('/reports')}}"><i class="sidebar-item-icon ti-bar-chart"></i>
                   <span class="nav-label">Reportes</span>
               </a>
           </li>
+
           {{-- <li @if($page=="mercados") class="active" @endif>
               <a href="mercado.html"><i class="sidebar-item-icon ti-clipboard"></i>
                   <span class="nav-label">Planes</span>
