@@ -2,10 +2,11 @@
 
 namespace App\Models\Clases;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Clases\Clase;
 use App\Models\Clases\ReservationStatisticStage;
 use App\Models\Users\User;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * [Reservation description]
@@ -18,9 +19,18 @@ class Reservation extends Model
   protected $fillable = ['clase_id', 'reservation_status_id', 'user_id'];
 
   /**
-   * [reservation_statistic_stages description]
+   * clase relation to this model
+   * @return model [description]
+   */
+  public function clase()
+  {
+    return $this->belongsTo(Clase::class);
+  }
+
+  /**
+   * reservation_statistic_stages relation to this model
    * @method reservation_statistic_stages
-   * @return [type]                       [description]
+   * @return model                       [description]
    */
   public function reservation_statistic_stages()
   {
@@ -28,12 +38,13 @@ class Reservation extends Model
   }
 
   /**
-   * [user description]
-   * @return [type] [description]
+   * user relation to this model
+   * @return model [description]
    */
   public function user()
   {
     return $this->belongsTo(User::class);
   }
+
 
 }

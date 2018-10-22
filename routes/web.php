@@ -48,6 +48,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::resource('users.plans', 'Plans\PlanUserController');
 
     Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
+    // Route::resource('users.plans.installments', 'Bills\InstallmentController');
   
     /**
      * Clases routes (clases, clases-alumnos, bloques)
@@ -57,6 +58,11 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::resource('clases', 'Clases\ClaseController')->except('create', 'edit', 'store', 'update');
 
     Route::resource('clases.users', 'Clases\ClaseUserController')->only('store', 'update', 'destroy');
+
+    Route::resource('clases.reservations', 'Clases\ClaseReservationController');
+    });
+
     Route::post('clases/type-select/', 'Clases\ClaseController@typeSelect')->name('clases.type');
     // Route::resource('users.plans.installments', 'Bills\InstallmentController');
-});
+    });
+

@@ -40,11 +40,8 @@ class ClaseController extends Controller
     {
         $outclase = $this->outClass($clase);
         $wod = $clase->wod;
-
-        return view('clases.show')
-        ->with('clase', $clase)
-        ->with('outclase', $outclase)
-        ->with('wod',$wod);
+        return view('clases.show')->with('clase', $clase)->with('outclase', $outclase)
+            ->with('wod',$wod);
     }
 
     /**
