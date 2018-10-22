@@ -33,7 +33,7 @@ class PlansTableSeeder extends Seeder
             array (
                 'id' => 2,
                 'plan' => 'Invitado',
-                'plan_period_id' => null,
+                'plan_period_id' =>  6,
                 'class_numbers' => 0,
                 'amount' => 0,
                 'created_at' => '2018-08-28 20:59:34',
