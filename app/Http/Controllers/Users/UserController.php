@@ -44,7 +44,9 @@ class UserController extends Controller
     public function store(UserRequest $request, User $user)
     {
       $emergency = Emergency::create($request->all());
-      $user = User::create(array_merge($request->all(), ['password' => bcrypt('purasangre'), 'emergency_id' => $emergency->id]));
+      $user = User::create(array_merge($request->all(), [
+        'password' => bcrypt('purasangre'), 
+        'emergency_id' => $emergency->id]));
       Session::flash('success','El usuario ha sido creado correctamente');
       return view('users.show')->with('user', $user);
     }
@@ -79,9 +81,16 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
-      $user->update($request->all());
-      Session::flash('success','Los datos del usuario han sido actualizados');
-      return view('users.show')->with('user', $user);
+        request()->file('image')->storeAs('public/users', $user->id.$user->first_name.'.jpg');
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->avatar = $user->id.$user->first_name;
+        $user->save();
+        // $user->update(array_merge($request->all(), ['avatar' => $avatar]));
+        Session::flash('success','Los datos del usuario han sido actualizados');
+        return view('users.show')->with('user', $user);
     }
 
     /**

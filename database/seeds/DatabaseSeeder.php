@@ -28,19 +28,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-
+      $this->call(BlockTableSeeder::class);
       $this->call(StatusUsersTableSeeder::class);
       $this->call(PlanPeriodsTableSeeder::class);
       $this->call(PlansTableSeeder::class);
       $this->call(PaymentStatusesTableSeeder::class);
       $this->call(PaymentTypesTableSeeder::class);
-      // $this->call(ExercisesTableSeeder::class);
-      // $this->call(ExerciseStagesTableSeeder::class);
       $this->call(RolesTableSeeder::class);
       $this->call(PlanStatusTableSeeder::class);
       $this->call(StageTypesTableSeeder::class);
-
-      factory(Emergency::class, 60)->create();
 
       $user = User::create([
           'rut' => 11111111,
@@ -51,6 +47,7 @@ class DatabaseSeeder extends Seeder
           'email' => 'sa@auditcon.cl',
           'password' => bcrypt('123123'),
           'phone' => '87654321',
+          'avatar' => 'u (22)',
           'address' => 'Estado, Esquina Membrillar, Oficina 208',
           // 'emergency_id' => 1,
           'status_user_id' => 1,
@@ -64,26 +61,23 @@ class DatabaseSeeder extends Seeder
           'gender' => 'male',
           'email' => 'user@auditcon.cl',
           'password' => bcrypt('123123'),
+          'avatar' => 'u (23)',
           'phone' => '76543211',
           'address' => 'Estado, Esquina Membrillar, Oficina 208',
           // 'emergency_id' => 1,
           'status_user_id' => 1,
       ]);
 
-        factory(User::class, 50)->create()->each(function ($u)
-        {
-          // factory(PlanUser::class, 3)->create(['user_id' => $u->id ]);
-        });
-        //factory(Stage::class, 200)->create();
-        $this->call(BlockTableSeeder::class);
-        $this->call(RoleUserTableSeeder::class);
-        // factory(ClaseStage::class, 600)->create();
-        // factory(Millestone::class, 40)->create();
-
-        // factory(Bill::class, 100)->create();
-        // factory(Statistic::class, 5)->create();
-        factory(ReservationStatus::class, 3)->create();
-        factory(Reservation::class, 2000)->create();
+      factory(User::class, 50)->create()->each(function ($u)
+      {
+        factory(PlanUser::class, 3)->create(['user_id' => $u->id ]);
+    });
+      $this->call(PlanUserTableSeeder::class);
+      $this->call(RoleUserTableSeeder::class);
+      factory(Stage::class, 200)->create();
+      $this->call(ReservationsTableSeeder::class);
+      factory(ReservationStatus::class, 3)->create();
+      factory(Reservation::class, 2000)->create();
 
     }
 }

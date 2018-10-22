@@ -42,6 +42,7 @@ class UserRequest extends FormRequest
          return [
            'first_name' => 'required',
            'last_name' => 'required',
+           'image' => 'required',
            'email' => 'required|email'.$case,
            'phone' => $this->phone != null ? 'digits:8': '',
          ];

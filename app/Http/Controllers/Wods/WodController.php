@@ -39,7 +39,9 @@ class WodController extends Controller
    */
   public function store(Request $request)
   {
-    $wod = Wod::create([
+    $haywod = $this->hayWod($request);
+    if ($haywod == true) {
+      $wod = Wod::create([
       'date' => date('Y-m-d',strtotime($request->date)),
       'clase_type_id' => Session::get('clases-type-id')
      ]);
@@ -52,8 +54,19 @@ class WodController extends Controller
          'description' => $request->$id,
        ]);
      }
+     return redirect('/clases');
+    }
+    return redirect()->back()->with('warning', 'Ya ha sido asignado un Wod para la fecha seleccionada');
+  }
 
-    return redirect('/clases');
+  protected function hayWod($request)
+  {
+      $wod = Wod::where('date', date('Y-m-d',strtotime($request->date)))->get();
+      if (count($wod) == 0) {
+        return true;
+      }else{
+        return false;
+      }
   }
 
   /**
