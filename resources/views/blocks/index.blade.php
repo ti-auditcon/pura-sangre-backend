@@ -75,7 +75,7 @@
                   <div class="form-group mb-4">
                     <select multiple="multiple" id="plan-select-add" name="plans[]">
                       @foreach (App\Models\Plans\Plan::all() as $plan)
-                        <option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period}}</option>
+                        <option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period ?? "no aplica"}}</option>
                       @endforeach
                     </select>
                   </div>
@@ -168,7 +168,7 @@
                   {{Form::open(['route' => ['blocks.update', 1 ],'method' => 'put', 'id' => 'block-update'])}}
                     <select multiple="multiple" id="plan-select-edit" name="plans[]">
                       @foreach (App\Models\Plans\Plan::all() as $plan)
-                        <option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period}}</option>
+                        <option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period ?? "no aplica"}}</option>
                       @endforeach
                     </select>
                     <button type="submit" class="btn btn-primary" onClick="this.disabled=true; this.value='Editando…';this.form.submit(); ">Editar planes</button>

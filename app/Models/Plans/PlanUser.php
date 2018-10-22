@@ -20,7 +20,7 @@ class PlanUser extends Model
   use SoftDeletes;
 
   protected $table = 'plan_user';
-  protected $dates = ['deleted_at'];
+  protected $dates = ['start_date','finish_date','deleted_at'];
   protected $fillable = ['start_date', 'finish_date',
   'counter', 'plan_status_id', 'plan_id', 'user_id'];
 
@@ -105,4 +105,7 @@ class PlanUser extends Model
   {
     return $this->belongsTo(PlanStatus::class);
   }
+
+
+
 }

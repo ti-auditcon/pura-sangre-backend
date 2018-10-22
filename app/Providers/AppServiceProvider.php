@@ -32,6 +32,9 @@ class AppServiceProvider extends ServiceProvider
       Wod::observe(WodObserver::class);
 
 
+      \Carbon\Carbon::setLocale(config('app.locale'));
+
+
     }
 
     /**
