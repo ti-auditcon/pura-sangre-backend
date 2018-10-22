@@ -77,12 +77,6 @@ class ClaseUserController extends Controller
         else {
             $class_hour = Carbon::parse($clase->start_at);
             $diff_mns = $class_hour->diffInMinutes(now()->format('H:i'));
-
-            // if (now()->format('H:i') < $class_hour) {
-            //     dd('ahora es menor que la hora de la clase');
-            // }else{
-            //     dd('ahora es mayor que la hora de la clase');
-            // }
             if ((now()->format('H:i') > $class_hour) || (now()->format('H:i') < $class_hour && diff_mns < 40)) {
             Session::flash('warning','Ya no puede tomar la clase');
             return Redirect::back();
@@ -116,11 +110,11 @@ class ClaseUserController extends Controller
         }
         elseif ($clase->date > toDay()->format('Y-m-d')) {
             if ($reservation->delete()) {
-                    $planuser->counter = $planuser->counter - 1;
-                    $planuser->save();
-                    Session::flash('success','Retiro de clase exitoso');
-                    return Redirect::back();
-                }
+                $planuser->counter = $planuser->counter - 1;
+                $planuser->save();
+                Session::flash('success','Retiro de clase exitoso');
+                return Redirect::back();
+            }
         }
         else {
             $class_hour = Carbon::parse($clase->start_at);
@@ -170,14 +164,3 @@ class ClaseUserController extends Controller
         return $responseTwo;
     }
 }
-    // /**
-    //  * [inclass description]
-    //  * @param  [type] $clase   [description]
-    //  * @param  [type] $request [description]
-    //  * @return [collection] [description]
-    //  */
-    // public function inclass($clase, $request){
-    //     $consulta = Reservation::where('clase_id', $clase->id)
-    //             ->where('user_id', $request->user_id)->get();
-    //     return $consulta;
-    // }
