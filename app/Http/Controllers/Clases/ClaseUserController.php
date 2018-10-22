@@ -65,8 +65,7 @@ class ClaseUserController extends Controller
             return Redirect::back();
         }
         elseif ($clase->date > toDay()->format('Y-m-d')) {
-            $planuser->counter = $planuser->counter + 1;
-            $planuser->save();
+            $planuser->update(['counter' => $planuser->counter + 1]);
             Reservation::create(array_merge($request->all(), [
                 'clase_id' => $clase->id,
                 'reservation_status_id' => 1
@@ -81,8 +80,7 @@ class ClaseUserController extends Controller
             Session::flash('warning','Ya no puede tomar la clase');
             return Redirect::back();
             }else{
-                $planuser->counter = $planuser->counter + 1;
-                $planuser->save();
+                $planuser->update(['counter' => $planuser->counter + 1]);
                 Reservation::create(array_merge($request->all(), [
                     'clase_id' => $clase->id,
                     'reservation_status_id' => 1
@@ -110,8 +108,7 @@ class ClaseUserController extends Controller
         }
         elseif ($clase->date > toDay()->format('Y-m-d')) {
             if ($reservation->delete()) {
-                $planuser->counter = $planuser->counter - 1;
-                $planuser->save();
+                $planuser->update(['counter' => $planuser->counter - 1]);
                 Session::flash('success','Retiro de clase exitoso');
                 return Redirect::back();
             }
@@ -123,8 +120,7 @@ class ClaseUserController extends Controller
             return Redirect::back();
             }else{
                 if ($reservation->delete()) {
-                    $planuser->counter = $planuser->counter - 1;
-                    $planuser->save();
+                    $planuser->update(['counter' => $planuser->counter - 1]);
                     Session::flash('success','Retiro de clase exitoso');
                     return Redirect::back();
                 }
