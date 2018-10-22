@@ -31,7 +31,7 @@
                     <span class="badge-success badge-point"></span>
                     <a class="media-img" href="{{url('/plans/'.$plan->id)}}">{{$plan->plan}}</a>
                   </td>
-                  <td>{{$plan->plan_period->period}}</td>
+                  <td>{{$plan->plan_period->period ?? "una semana"}}</td>
                   <td> {{$plan->class_numbers}}</td>
                   <td>
                     <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><a class="la la-eye" href="{{url('/plans/'.$plan->id)}}"></a></button>

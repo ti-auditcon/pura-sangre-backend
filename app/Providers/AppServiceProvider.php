@@ -31,10 +31,10 @@ class AppServiceProvider extends ServiceProvider
       Stage::observe(StageObserver::class);
       Wod::observe(WodObserver::class);
 
-      // if(!Session::has('clases-type-id')){
-      //   Session::put('clases-type-id',1);
-      //   Session::put('clases-type-name',Clase::find(1)->clase_type);
-      // }
+
+      \Carbon\Carbon::setLocale(config('app.locale'));
+
+
     }
 
     /**

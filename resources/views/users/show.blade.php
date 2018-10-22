@@ -13,9 +13,10 @@
           </div>
           <div>
             <h4>{{$user->first_name}} {{$user->last_name}}</h4>
+            <span class="mr-3">{{$user->actual_plan->plan->plan ?? "sin plan actualmente" }}</span>
 
             <div class="text-muted font-13 mb-3">
-              <span class="mr-3"><i class="mr-2"></i>{{$user->active_plan()->plan ?? 'sin plan'}}</span>
+              <span class="mr-3"><i class="mr-2"></i></span>
             </div>
           </div>
         </div>
@@ -81,7 +82,10 @@
           </div>
         </div>
       </div>
-      <div class="ibox">
+
+    </div>
+    <div class="col-8">
+      <div class="ibox ibox-fullheight">
         <div class="ibox-head">
           <div class="ibox-title">Planes</div>
           <div class="ibox-tools">
@@ -90,71 +94,42 @@
           </div>
         </div>
         <div class="ibox-body">
-          <table id="plans-table" class="table table-hover">
-            <thead class="thead-default thead-lg">
-              <tr>
-                <th width="30%">Plan</th>
-                <th width="30%">Período</th>
-                <th width="20%">Desde</th>
-                <th width="20%">Hasta</th>
-              </tr>
-            </thead>
-            <tbody>
-            @foreach ($user->plan_users as $plan_user)
-              <tr>
-                <td>
-                  {{-- {{dd($user->id, $plan_user->id)}} --}}
-                <a class="media-img" href="{{route('users.plans.show', ['user' => $user->id, 'plan' => $plan_user->id])}}">
-                  {{$plan_user->plan->plan}}</a>
-                </td>
-                <td>{{$plan_user->plan->plan_period->period}}</td>
-                <td>{{Carbon\Carbon::parse($plan_user->start_date)->format('d-m-Y')}}</td>
-                <td>{{Carbon\Carbon::parse($plan_user->finish_date)->format('d-m-Y')}}</td>
-                {{-- <td><span class="badge badge-success">{{$plan_user->plan_state}}</span></td> --}}
-              </tr>
-            @endforeach
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    <div class="col-8">
-      <div class="ibox ibox-fullheight">
-        <div class="ibox-head">
-          <div class="ibox-title">Pagos</div>
-          <div class="ibox-tools">
-            <button class="btn btn-success">Realizar pago</button>
-          </div>
-        </div>
-        <div class="ibox-body">
-          <div class="flexbox mb-4">
-            <div class="flexbox">
-              <span class="flexbox mr-3">
-                <span class="mr-2 text-muted">Dia de pago</span>
-                <span class="h3 mb-0 text-primary font-strong">08</span>
-              </span>
-              <span class="flexbox mr-3">
-                <span class="mr-2 text-muted">Dias disponibles</span>
-                <span class="h3 mb-0 text-primary font-strong">9</span>
-              </span>
-            </div>
-          </div>
           <div class="ibox-fullwidth-block">
             <table id="students-table" class="table table-hover">
               <thead class="thead-default thead-lg">
                 <tr>
                   <th width="15%">Plan</th>
-                  <th width="15%">Fecha Compromiso</th>
-                  <th width="15%">Fecha de Pago</th>
-                  <th width="15%">Fecha expiración</th>
-                  <th width="15%">Estado del pago</th>
+
+                  <th width="15%">Fecha Pago</th>
+                  <th width="25%">Periodo</th>
+                  <th width="10%">Clases</th>
+                  <th width="15%">medio de pago</th>
                   <th width="15%">Monto</th>
-                  <th width="10%">Acciones</th>
+                  <th>
+
+                  </th>
+
                 </tr>
               </thead>
               <tbody>
+
+                @foreach($user->plan_users()->orderBy('created_at','desc')->get() as $up)
+                  <tr>
+                    <td>{{$up->plan->plan}}</td>
+                    <td>{{$up->bill->date ?? "no aplica"}}</td>
+
+                    <td>{{$up->start_date->format('d-m-Y')}} al {{$up->finish_date->format('d-m-Y')}}</td>
+                    <td>1/12</td>
+                    <td>{{$up->bill->payment_type->payment_type ?? "no aplica"}}</td>
+                    <td>{{$up->bill->amount?? "no aplica" }}</td>
+                    <td>
+                      <button class="btn btn-info btn-icon-only btn-circle btn-sm btn-air"><i class="la la-trash"></i></button>
+                    </td>
+                  </tr>
+
+                @endforeach
                 {{-- @foreach ($user->installments as $fee)
-                
+
                     <tr>
                       <td>{{$fee->plan_user->plan->plan}}</td>
                       <td>{{Carbon\Carbon::parse($fee->commitment_date)->format('d-m-Y')}}</td>

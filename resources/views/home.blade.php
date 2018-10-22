@@ -32,12 +32,24 @@
                           <th >Alumno</th>
                           <th >Plan</th>
                           <th >Vence en</th>
-                          <th>
-                          </th>
+                          <th> Acciones  </th>
                       </tr>
                   </thead>
                   <tbody>
+                    @foreach (App\Models\Plans\PlanUser::all()->where('finish_date','>=', now())->sortBy('finish_date')->take(5) as $pu)
+                      <tr>
+                        <td>
+                          {{$pu->user->first_name}} {{$pu->user->last_name}}
+                        </td>
+                        <td>
+                          {{$pu->plan->plan}}
+                        </td>
+                        <td>
+                          {{ $pu->finish_date->diffForHumans() }}
+                        </td>
+                      </tr>
 
+                    @endforeach
 
                   </tbody>
               </table>

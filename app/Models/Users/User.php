@@ -124,9 +124,9 @@ class User extends Authenticatable
     * metodo  para obtener el plan activo del usuario
     * @return [type] [description]
     */
-    public function active_plan()
+    public function actual_plan()
     {
-      return $this->belongsToMany(Plan::class)->using(PlanUser::class)->first();
+      return $this->hasOne(PlanUser::class)->where('start_date','<=', today())->where('finish_date','>=', today());
     }
 
     /**
@@ -167,7 +167,7 @@ class User extends Authenticatable
     */
     public function plan_users()
     {
-      return $this->hasMany(PlanUser::class)->orderBy('finish_date', 'desc');
+      return $this->hasMany(PlanUser::class);;
     }
 
     /**
@@ -195,7 +195,7 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class)->using(RoleUser::class);
     }
-    // 
+    //
     // public function coaches()
     // {
     //     return $this->belongsToMany(Role::class)->using(RoleUser::class);

@@ -22,6 +22,26 @@ class PlansTableSeeder extends Seeder
             0 =>
             array (
                 'id' => 1,
+                'plan' => 'Prueba',
+                'plan_period_id' => null,
+                'class_numbers' => 3,
+                'amount' => 0,
+                'created_at' => '2018-08-28 20:59:34',
+                'updated_at' => '2018-08-28 20:59:34',
+            ),
+            1 =>
+            array (
+                'id' => 2,
+                'plan' => 'Invitado',
+                'plan_period_id' =>  6,
+                'class_numbers' => 0,
+                'amount' => 0,
+                'created_at' => '2018-08-28 20:59:34',
+                'updated_at' => '2018-08-28 20:59:34',
+            ),
+            2 =>
+            array (
+                'id' => 3,
                 'plan' => 'Full Mensual',
                 'plan_period_id' => 1,
                 'class_numbers' => 0,
@@ -29,9 +49,9 @@ class PlansTableSeeder extends Seeder
                 'created_at' => '2018-08-28 20:59:34',
                 'updated_at' => '2018-08-28 20:59:34',
             ),
-            1 =>
+            3 =>
             array (
-                'id' => 2,
+                'id' => 4,
                 'plan' => 'Full Trimestral',
                 'plan_period_id' => 3,
                 'class_numbers' => 0,
@@ -39,9 +59,9 @@ class PlansTableSeeder extends Seeder
                 'created_at' => '2018-08-28 20:59:34',
                 'updated_at' => '2018-08-28 20:59:34',
             ),
-            2 =>
+            4 =>
             array (
-                'id' => 3,
+                'id' => 5,
                 'plan' => 'Full Semestral',
                 'plan_period_id' => 5,
                 'class_numbers' => 0,
@@ -49,9 +69,9 @@ class PlansTableSeeder extends Seeder
                 'created_at' => '2018-08-28 20:59:34',
                 'updated_at' => '2018-08-28 20:59:34',
             ),
-            3 =>
+            5 =>
             array (
-                'id' => 4, 
+                'id' => 6,
                 'plan' => 'Full Anual',
                 'plan_period_id' => 6,
                 'class_numbers' => 0,
@@ -59,9 +79,9 @@ class PlansTableSeeder extends Seeder
                 'created_at' => '2018-08-28 20:59:34',
                 'updated_at' => '2018-08-28 20:59:34',
             ),
-            4 =>
+            6 =>
             array (
-                'id' => 5,
+                'id' => 7,
                 'plan' => '12 clases Mensual',
                 'plan_period_id' => 1,
                 'class_numbers' => 12,
@@ -69,9 +89,9 @@ class PlansTableSeeder extends Seeder
                 'created_at' => '2018-08-28 20:59:34',
                 'updated_at' => '2018-08-28 20:59:34',
             ),
-            5 =>
+            7 =>
             array (
-                'id' => 6,
+                'id' => 8,
                 'plan' => '12 clases Trimestral',
                 'plan_period_id' => 3,
                 'class_numbers' => 12,
@@ -79,9 +99,9 @@ class PlansTableSeeder extends Seeder
                 'created_at' => '2018-08-28 20:59:34',
                 'updated_at' => '2018-08-28 20:59:34',
             ),
-            6 =>
+            8 =>
             array (
-                'id' => 7,
+                'id' => 9,
                 'plan' => '12 clases Semestral',
                 'plan_period_id' => 5,
                 'class_numbers' => 12,
@@ -89,9 +109,9 @@ class PlansTableSeeder extends Seeder
                 'created_at' => '2018-08-28 20:59:34',
                 'updated_at' => '2018-08-28 20:59:34',
             ),
-            7 =>
+            9 =>
             array (
-                'id' => 8,
+                'id' => 10,
                 'plan' => '12 clases Anual',
                 'plan_period_id' => 6,
                 'class_numbers' => 12,
@@ -99,9 +119,9 @@ class PlansTableSeeder extends Seeder
                 'created_at' => '2018-08-28 20:59:34',
                 'updated_at' => '2018-08-28 20:59:34',
             ),
-            8 =>
+            10 =>
             array (
-                'id' => 9,
+                'id' => 11,
                 'plan' => 'Estudiante',
                 'plan_period_id' => 1,
                 'class_numbers' => 0,
@@ -109,9 +129,9 @@ class PlansTableSeeder extends Seeder
                 'created_at' => '2018-08-28 20:59:34',
                 'updated_at' => '2018-08-28 20:59:34',
             ),
-            9 =>
+            11 =>
             array (
-                'id' => 10,
+                'id' => 12,
                 'plan' => 'AM',
                 'plan_period_id' => 1,
                 'class_numbers' => 0,
