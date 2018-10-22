@@ -59,6 +59,6 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::resource('clases.users', 'Clases\ClaseUserController')->only('store', 'update', 'destroy');
     Route::post('clases/type-select/', 'Clases\ClaseController@typeSelect')->name('clases.type');
 
-    Route::resource('payments', 'Plans\PLanUserController');
-    
+    Route::resource('payments', 'Plans\PlanUserController');
+
 });
