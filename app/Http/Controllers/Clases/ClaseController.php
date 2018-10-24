@@ -22,24 +22,20 @@ class ClaseController extends Controller
      */
     public function index()
     {
-
-        // $clases = Clase::where('clase_type_id',Session::get('clases-type-id'))->get();
-        $wods = Wod::where('clase_type_id',Session::get('clases-type-id'))->get();
-
-
-        return view('clases.index')
-          // ->with('clases',json_encode(compact('clases')))
-          ->with('wods',$wods);
+        return view('clases.index');
     }
 
     public function clases(request $request)
     {
-
       $clases =  Clase::where('clase_type_id',Session::get('clases-type-id'))->where('date','>=',$request->datestart)->where('date','<=',$request->dateend)->get();
       return response()->json($clases, 200);
     }
 
-    /**
+    public function wods(request $request)
+    {
+      $wods = Wod::where('clase_type_id',Session::get('clases-type-id'))->where('date','>=',$request->datestart)->where('date','<=',$request->dateend)->get();
+      return response()->json($wods, 200);
+    }    /**
      * Display the specified resource.
      *
      * @param  \App\Models\Clases\Clase  $clase
