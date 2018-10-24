@@ -45,7 +45,7 @@ class planuserController extends Controller
      */
     public function store(Request $request, User $user)
     {
-      dd($request->all());
+      // dd($request->all());
       $plan = Plan::find($request->plan_id);
 
       $planuser = new PlanUser;
@@ -79,34 +79,12 @@ class planuserController extends Controller
             'amount' => $request->amount,
           ]);
         }
-        Session::flash('success','guardado con existo');
+        Session::flash('success','Guardado con éxito');
         return redirect('/users/'.$user->id);
       }
       else {
         return redirect('/users/'.$user->id);
       }
-
-
-
-      // if($user->plans()->where('plan_status_id',1) ) {
-      //   return back()->with('error', $response);
-      // }
-      // else {
-      //   dd('sin plan');
-      // }
-
-      // list($response, $fecha_inicio, $fecha_termino, $plan) = $this->uniquePlan($user, $request);
-      // if ($response != null) {
-      //   return back()->with('error', $response);
-      // }else {
-      //   $planuser = planuser::create(array_merge($request->all(), [
-      //     'start_date' => $fecha_inicio,
-      //     'finish_date' => $fecha_termino,
-      //     'counter' => $plan->class_numbers
-      //   ]));
-      //   return redirect()->route('users.show', $user->id)->with('success', 'El plan ha sido asignado correctamente');
-      // }
-
 
     }
 
@@ -161,7 +139,9 @@ class planuserController extends Controller
       return redirect()->route('users.show', $user->id)->with('success', 'Se eliminó correctamente');
     }
 
-  /**
+}
+
+   /**
    * [uniquePlan si la fecha a no esta entre c y d y la fecha b tampoco entonces que pase, ademas
    * si $fecha_inicio es menor que $plan_user->start_date y $fecha_termino es mayor que $plan_user->finish_date que no pase]
    * si la fecha a no esta entre c y d y la fecha b tampoco entonces que pase
@@ -185,4 +165,22 @@ class planuserController extends Controller
   //   return array($response, $fecha_inicio, $fecha_termino, $plan);
   // }
 
-}
+
+      // if($user->plans()->where('plan_status_id',1) ) {
+      //   return back()->with('error', $response);
+      // }
+      // else {
+      //   dd('sin plan');
+      // }
+
+      // list($response, $fecha_inicio, $fecha_termino, $plan) = $this->uniquePlan($user, $request);
+      // if ($response != null) {
+      //   return back()->with('error', $response);
+      // }else {
+      //   $planuser = planuser::create(array_merge($request->all(), [
+      //     'start_date' => $fecha_inicio,
+      //     'finish_date' => $fecha_termino,
+      //     'counter' => $plan->class_numbers
+      //   ]));
+      //   return redirect()->route('users.show', $user->id)->with('success', 'El plan ha sido asignado correctamente');
+      // }

@@ -7,36 +7,35 @@
   <div class="row justify-content-center">
     <div class="col-12">
       <div class="ibox">
-          <div class="ibox-head">
-              <div class="ibox-title">Clases</div>
-              <a class="btn btn-primary" href="{{ route('wods.create') }}">Asignar Workout</a>
-              <a class="btn btn-primary" href="{{ route('blocks.index') }}">Ir a Horarios</a>
-          </div>
-          <div class="ibox-body">
-            {{Form::open(['route'=>'clases.type'])}}
-            <div class="form-group mb-4 row">
-
-                <label class="col-sm-1 col-form-label">Tipo de clase:</label>
-                <div class="col-sm-4">
-                  <select class="form-control" name="type">
-                    @foreach(App\Models\Clases\ClaseType::all() as $type)
-                      <option value="{{$type->id}}" @if($type->id == Session::get('clases-type-id')) selected @endif>
-                        {{$type->clase_type}}
-                      </option>
-                    @endforeach
-                  </select>
-                </div>
-                <div class="col-sm-1">
-                  <button class="btn btn-default">seleccionar</button>
-                </div>
-
+        <div class="ibox-head">
+          <div class="ibox-title">Clases</div>
+          @if (Auth::user()->hasRole(1))
+            <a class="btn btn-primary" href="{{ route('wods.create') }}">Asignar Workout</a>
+            <a class="btn btn-primary" href="{{ route('blocks.index') }}">Ir a Horarios</a>
+          @endif
+        </div>
+        <div class="ibox-body">
+          {{Form::open(['route'=>'clases.type'])}}
+          <div class="form-group mb-4 row">
+            <label class="col-sm-1 col-form-label">Tipo de clase:</label>
+            <div class="col-sm-4">
+              <select class="form-control" name="type">
+                @foreach(App\Models\Clases\ClaseType::all() as $type)
+                  <option value="{{$type->id}}" @if($type->id == Session::get('clases-type-id')) selected @endif>
+                    {{$type->clase_type}}
+                  </option>
+                @endforeach
+              </select>
             </div>
-            {{Form::close()}}
-            <div id="calendar"></div>
+            <div class="col-sm-1">
+              <button class="btn btn-default">seleccionar</button>
+            </div>
           </div>
+          {{Form::close()}}
+          <div id="calendar"></div>
+        </div>
       </div>
     </div>
-
   </div>
 
 

@@ -13,17 +13,11 @@
 
 Auth::routes();
 
-// Route::get('/home', 'HomeController@index')->name('home');
-// Route::get('/', 'HomeController@index');
-// Route::resource('students', 'StudentController'); //CRUDS students
 
 Route::get('/', function () {return view('home');})->middleware('auth');
 
-// Route::get('/blocks', 'HomeController@blocks')->name('bills.validates'); //validar recibo
-// Route::get('/blocks/config', 'Controller@blocksshow')->name('blocks.config'); //configurar horario
-
 Route::get('/reports', function () {
-    return view('reports');
+    return view('reports')->middleware('role:1');
 });
 
 Route::get('/messages', function () {
@@ -32,7 +26,6 @@ Route::get('/messages', function () {
 });
 
 Route::middleware(['auth'])->prefix('/')->group(function () {
-    Route::resource('plans', 'Plans\PlanController');
 
     /**
      * Exercises Routes (exercises)
@@ -42,23 +35,30 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::resource('wods', 'Wods\WodController');
 
     /**
+     * Clases routes (clases, clases-alumnos, bloques)
+     */
+    Route::resource('blocks', 'Clases\BlockController')->middleware('role:1');
+
+      //Tal vez mas adelante se necesite el store de clases
+    Route::resource('clases', 'Clases\ClaseController')->except('create', 'edit', 'store', 'update');
+    Route::resource('clases.users', 'Clases\ClaseUserController')->only('store', 'update', 'destroy');
+    Route::post('clases/type-select/', 'Clases\ClaseController@typeSelect')->name('clases.type');
+
+    /**
+     * Payments Routes
+     */
+    Route::resource('payments', 'Plans\PlanUserController')->middleware('role:1');
+
+    /**
+     * Plans Routes
+     */
+    Route::resource('plans', 'Plans\PlanController')->middleware('role:1');
+
+    /**
     * Users Routes (alumnos, profes, admins)
     */
     Route::resource('users', 'Users\UserController');
     Route::resource('users.plans', 'Plans\PlanUserController');
-
     Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
-
-    /**
-     * Clases routes (clases, clases-alumnos, bloques)
-     */
-    Route::resource('blocks', 'Clases\BlockController');
-      //Tal vez mas adelante se necesite el store de clases
-    Route::resource('clases', 'Clases\ClaseController')->except('create', 'edit', 'store', 'update');
-
-    Route::resource('clases.users', 'Clases\ClaseUserController')->only('store', 'update', 'destroy');
-    Route::post('clases/type-select/', 'Clases\ClaseController@typeSelect')->name('clases.type');
-
-    Route::resource('payments', 'Plans\PlanUserController');
-
+    
 });

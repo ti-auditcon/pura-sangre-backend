@@ -90,15 +90,15 @@
     <div class="ibox">
         <div class="ibox-head">
           <div class="ibox-title">Alumnos</div>
-          @if (Auth::user()->hasRole(1))
-            <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
-          @else
-            {!! Form::open(['route' => ['clases.users.store', 'clase' => $clase->id], 'method' => 'post']) !!}
-              <input type="hidden" value="{{Auth::user()->id}}" name="user_id">
-              <button class="btn btn-success sweet-user-join" data-id="{{$clase->id}}" data-name="{{$clase->date}}">
-              <i class=""></i>Reservar</button>
-            {!! Form::close() !!}
-          @endif
+            @if (Auth::user()->hasRole(1))
+              <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
+            @else
+              {!! Form::open(['route' => ['clases.users.store', 'clase' => $clase->id], 'method' => 'post' ,'id' => 'user-join']) !!}
+                <input type="hidden" value="{{Auth::user()->id}}" name="user_id">
+              {!! Form::close() !!}
+              <button class="btn btn-success sweet-user-join" data-id="{{$clase->id}}" data-name="{{$clase->date}}">  <i></i>Reservar esta clase
+              </button>
+            @endif
         </div>
         <div class="ibox-body">
           <div class="ibox-fullwidth-block">
@@ -116,7 +116,7 @@
                 <tr>
                   <td>
                     <a class="media-img" href="javascript:;">
-                        <img class="img-circle" src="{{url('/storage/users/'.$reservation->user->avatar.'.jpg')}}" alt="image" width="54">
+                      <img class="img-circle" src="{{url('/storage/users/'.$reservation->user->avatar.'.jpg')}}" alt="image" width="54">
                     </a>
                     @if($reservation->user->status_user_id == 1 )
                       <span class="badge-success badge-point"></span>
@@ -129,7 +129,7 @@
                       {{$reservation->user->first_name}} {{$reservation->user->last_name}}
                     </a>
                   </td>
-                  @if (Auth::user()->hasRole(1))
+                  @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
                   <td>
             {!! Form::open(['route' => ['clases.users.destroy', 'clase' => $clase->id, 'user' => $reservation->user->id], 'method' => 'delete', 'id'=>'delete'.$reservation->user->id]) !!}
                     <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick sweet-user-delete" type="button"
@@ -234,17 +234,16 @@
     var id = $(this).data('id');
     //alert(id);
       swal({
-          title: "Confirma la reserva a la clase: "+$(this).data('name')+"?",
+          title: "Confirma la reserva a la clase del "+$(this).data('name')+"?",
           text: "",
           type: 'warning',
           showCancelButton: true,
-          confirmButtonClass: 'btn-danger',
+          confirmButtonClass: 'btn-success',
           cancelButtonText: 'Cancelar',
-          confirmButtonText: 'Eliminar',
+          confirmButtonText: 'Confirmar',
           closeOnConfirm: false,
       },function(){
-        //redirección para sacar al usuario
-         $('form.user-delete').submit();
+         $('form#user-join').submit();
       });
   });
   </script>

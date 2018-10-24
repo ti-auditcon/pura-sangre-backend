@@ -57,19 +57,23 @@
                   </div>
               </div>
           </li>
+          @auth()
           <li class="dropdown dropdown-user">
               <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
-                  <span>Super User</span>
-                  <img src="{{url('/img/users/admin-image.png')}}" alt="image" />
+                  <span>
+                    {{Auth::user()->first_name}}
+                  </span>
+                  <img src="{{url('/storage/users/'.Auth::user()->avatar.'.jpg')}}" alt="image" />
+                  
               </a>
               <div class="dropdown-menu dropdown-arrow dropdown-menu-right admin-dropdown-menu">
                   <div class="dropdown-arrow"></div>
                   <div class="dropdown-header">
                     <div class="admin-avatar">
-                      <img src="{{url('/img/users/admin-image.png')}}" alt="image" />
+                      <img src="{{url('/storage/users/'.Auth::user()->avatar.'.jpg')}}" alt="image" />
                     </div>
                     <div>
-                      <h5 class="font-strong text-white">Super User</h5>
+                      <h5 class="font-strong text-white">{{Auth::user()->first_name}} {{Auth::user()->last_name}}</h5>
                       <div>
                         <span class="admin-badge mr-3"><i class="ti-alarm-clock mr-2"></i>30m.</span>
                         <span class="admin-badge"><i class="ti-lock mr-2"></i>Safe Mode</span>
@@ -77,7 +81,7 @@
                     </div>
                   </div>
                   <div class="admin-menu-features">
-                    <a class="admin-features-item" href="javascript:;"><i class="ti-user"></i>
+                    <a class="admin-features-item" href="{{ route('users.show', Auth::id()) }}"><i class="ti-user"></i>
                       <span>PROFILE</span>
                     </a>
                     <a class="admin-features-item" href="javascript:;"><i class="ti-support"></i>
@@ -88,12 +92,8 @@
                     </a>
                   </div>
                 <div class="admin-menu-content">
-                  <div class="text-muted mb-2">Your Wallet</div>
-                  <div><i class="ti-wallet h1 mr-3 text-light"></i>
-                    <span class="h1 text-success"><sup>$</sup>12.7k</span>
-                  </div>
                   <div class="d-flex justify-content-between mt-2">
-                    <a class="text-muted" href="javascript:;">Earnings history</a>
+                    <a class="text-muted" href="javascript:;">Testo de egemplo</a>
                     <a class="d-flex align-items-center" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Cerrar Sesión<i class="ti-shift-right ml-2 font-20"></i></a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                       @csrf
@@ -102,6 +102,7 @@
                 </div>
               </div>
           </li>
+          @endauth
       </ul>
       <!-- END TOP-RIGHT TOOLBAR-->
   </div>

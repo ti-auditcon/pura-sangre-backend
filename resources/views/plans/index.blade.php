@@ -20,7 +20,7 @@
                 <tr>
                   <th width="30%">Nombre</th>
                   <th width="20%">Período</th>
-                  <th width="10%">Numero de Clases</th>
+                  <th width="10%">Número de Clases</th>
                   <th width="10%">Acciones</th>
                 </tr>
               </thead>

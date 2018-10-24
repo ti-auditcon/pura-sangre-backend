@@ -21,8 +21,7 @@
                   <option value=""> Elegir plan..</option>
                    @foreach (App\Models\Plans\Plan::all() as $plan)
                    <option value="{{$plan->id}}" @if(old('plan_id')==$plan->id) selected @endif data-amount="{{$plan->amount}}" data-custom="{{$plan->custom}}">
-                     {{$plan->plan}} - {{$plan->plan_period->period ?? ''}}
-                   </option>
+                     {{$plan->plan}}</option>
                    @endforeach
                 </select>
               </div>
@@ -41,7 +40,7 @@
           <div class="row">
             <div class="col-sm-6 form-group mb-4">
               <div class="form-group" id="start_date">
-                <label class="font-normal">Fecha inicio del plan</label>
+                <label class="font-normal">Fecha de inicio del plan</label>
                 <div class="input-group date form-control-air">
                   <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
                   <input class="form-control" name="fecha_inicio" type="text" value="{{ date('m/d/Y') }}">
@@ -50,7 +49,7 @@
             </div>
             <div class="col-sm-6 form-group mb-4 is-custom">
               <div class="form-group"  id="finish_date">
-                <label class="font-normal">Fecha termino del plan</label>
+                <label class="font-normal">Fecha de término del plan</label>
                 <div class="input-group date form-control-air">
                   <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
                   <input class="form-control " name="fecha_termino" type="text" value="{{ date('m/d/Y') }}">

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Clases;
 
-use Redirect;
+use Auth;
 use Session;
+use Redirect;
 use Carbon\Carbon;
 use App\Models\Users\User;
 use App\Models\Clases\Clase;
@@ -22,9 +23,10 @@ class ClaseUserController extends Controller
      */
     public function store(Request $request, Clase $clase)
     {
+        // dd($request->all());
         $planuser = PlanUser::where('plan_status_id', 1)->where('user_id', $request->user_id)->first();
             if ($planuser == null) {
-                Session::flash('warning', 'El usuario no tiene ningun plan activo');
+                Session::flash('warning', 'No tienes ningun plan activo');
                 return Redirect::back();
             }
 
@@ -34,38 +36,39 @@ class ClaseUserController extends Controller
                 return Redirect::back();
             }
 
-        $responseTwo = $this->hasTwelvePlan($planuser);
-            if ($responseTwo != null) {
-                Session::flash('warning', $responseTwo);
-                return Redirect::back();
+        if (!Auth::user()->hasRole(1)) {
+            if ($planuser->counter <= 0) {
+            Session::flash('warning', 'Ya ha ocupado o reservado todas sus clases de este mes de su plan actual');
+            return Redirect::back();
             }
-
+        }
+        
         if ($clase->date < toDay()->format('Y-m-d')) {
             Session::flash('warning','No puede tomar una clase de un día anterior a hoy');
             return Redirect::back();
         }
         elseif ($clase->date > toDay()->format('Y-m-d')) {
-            $planuser->update(['counter' => $planuser->counter + 1]);
+            $planuser->update(['counter' => $planuser->counter - 1]);
             Reservation::create(array_merge($request->all(), [
                 'clase_id' => $clase->id,
                 'reservation_status_id' => 1
             ]));
-            Session::flash('success','Usuario agregado');
+            Session::flash('success','Agregado correctamente a la clase');
             return Redirect::back();
         }
         else {
             $class_hour = Carbon::parse($clase->start_at);
             $diff_mns = $class_hour->diffInMinutes(now()->format('H:i'));
             if ((now()->format('H:i') > $class_hour) || (now()->format('H:i') < $class_hour && diff_mns < 40)) {
-            Session::flash('warning','Ya no puede tomar la clase');
+            Session::flash('warning','Ya no se puede tomar la clase');
             return Redirect::back();
             }else{
-                $planuser->update(['counter' => $planuser->counter + 1]);
+                $planuser->update(['counter' => $planuser->counter - 1]);
                 Reservation::create(array_merge($request->all(), [
                     'clase_id' => $clase->id,
                     'reservation_status_id' => 1
                 ]));
-                Session::flash('success','Usuario agregado');
+                Session::flash('success','Agregado correctamente a la clase');
                 return Redirect::back();
             }
         }
@@ -88,7 +91,7 @@ class ClaseUserController extends Controller
         }
         elseif ($clase->date > toDay()->format('Y-m-d')) {
             if ($reservation->delete()) {
-                $planuser->update(['counter' => $planuser->counter - 1]);
+                $planuser->update(['counter' => $planuser->counter + 1]);
                 Session::flash('success','Retiro de clase exitoso');
                 return Redirect::back();
             }
@@ -100,7 +103,7 @@ class ClaseUserController extends Controller
             return Redirect::back();
             }else{
                 if ($reservation->delete()) {
-                    $planuser->update(['counter' => $planuser->counter - 1]);
+                    $planuser->update(['counter' => $planuser->counter + 1]);
                     Session::flash('success','Retiro de clase exitoso');
                     return Redirect::back();
                 }
@@ -121,22 +124,42 @@ class ClaseUserController extends Controller
         return $response;
     }
 
-    private function hasTwelvePlan($planuser)
+    /**
+     * [hasClassesLeft description]
+     * @param  [type]  $planuser [description]
+     * @return String  [description]
+     */
+    private function hasClassesLeft($planuser)
     {
-        $responseTwo = null;
-        if ($planuser->plan->class_numbers == 12 && $planuser->counter >= 12 && $planuser->plan->plan_period_id == 1) {
-            $responseTwo = 'No puede reservar, ya ha ocupado o reservado sus 12 clases del plan 12 clases mensual';
+        $responseThree = null;
+        if ($planuser->counter <= 0) {
+           $responseThree = 'Ya ha ocupado o reservado todas sus clases de este mes del plan'; 
         }
-        elseif ($planuser->plan->class_numbers == 12 && $planuser->counter >= 12 && $planuser->plan->plan_period_id == 3) {
-            $responseTwo = 'Ya ha ocupado o reservado sus 12 clases de este mes del plan trimestral';
-        }
-        elseif ($planuser->plan->class_numbers == 12 && $planuser->counter >= 12 && $planuser->plan->plan_period_id == 5) {
-            $responseTwo = 'Ya ha ocupado o reservado sus 12 clases de este mes del plan semestral';
-        }
-        elseif ($planuser->plan->class_numbers == 12 && $planuser->counter >= 12 && $planuser->plan->plan_period_id == 6) {
-            $responseTwo = 'Ya ha ocupado o reservado sus 12 clases de este mes del plan anual';
-        }
-
-        return $responseTwo;
+        return $responseThree;
     }
 }
+    // private function hasTwelvePlan($planuser)
+    // {
+    //     $responseTwo = null;
+    //     if ($planuser->plan->class_numbers == 12 && $planuser->counter >= 12 && $planuser->plan->plan_period_id == 1) {
+    //         $responseTwo = 'No puede reservar, ya ha ocupado o reservado sus 12 clases del plan 12 clases mensual';
+    //     }
+    //     elseif ($planuser->plan->class_numbers == 12 && $planuser->counter >= 12 && $planuser->plan->plan_period_id == 3) {
+    //         $responseTwo = 'Ya ha ocupado o reservado sus 12 clases de este mes del plan trimestral';
+    //     }
+    //     elseif ($planuser->plan->class_numbers == 12 && $planuser->counter >= 12 && $planuser->plan->plan_period_id == 5) {
+    //         $responseTwo = 'Ya ha ocupado o reservado sus 12 clases de este mes del plan semestral';
+    //     }
+    //     elseif ($planuser->plan->class_numbers == 12 && $planuser->counter >= 12 && $planuser->plan->plan_period_id == 6) {
+    //         $responseTwo = 'Ya ha ocupado o reservado sus 12 clases de este mes del plan anual';
+    //     }
+
+    //     return $responseTwo;
+    // }
+    // 
+    
+        // $responseTwo = $this->hasClassesLeft($planuser);
+        //     if ($responseTwo != null) {
+        //         Session::flash('warning', $responseTwo);
+        //         return Redirect::back();
+        //     }
