@@ -2,38 +2,18 @@
 
 namespace App\Http\Controllers\Clases;
 
-use App\Http\Controllers\Controller;
-use App\Models\Clases\Clase;
-use App\Models\Clases\Reservation;
-use App\Models\Plans\PlanUser;
-use App\Models\Users\User;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Redirect;
 use Session;
+use Carbon\Carbon;
+use App\Models\Users\User;
+use App\Models\Clases\Clase;
+use Illuminate\Http\Request;
+use App\Models\Plans\PlanUser;
+use App\Models\Clases\Reservation;
+use App\Http\Controllers\Controller;
 
 class ClaseUserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -43,10 +23,10 @@ class ClaseUserController extends Controller
     public function store(Request $request, Clase $clase)
     {
         $planuser = PlanUser::where('plan_status_id', 1)->where('user_id', $request->user_id)->first();
-        if ($planuser == null) {
-            Session::flash('warning', 'El usuario no tiene ningun plan activo');
-            return Redirect::back();
-        }
+            if ($planuser == null) {
+                Session::flash('warning', 'El usuario no tiene ningun plan activo');
+                return Redirect::back();
+            }
 
         $response = $this->hasReserve($clase, $request);
             if ($response != null) {
@@ -144,16 +124,16 @@ class ClaseUserController extends Controller
     private function hasTwelvePlan($planuser)
     {
         $responseTwo = null;
-        if ($planuser->plan_id == 5 && $planuser->counter >= 12) {
+        if ($planuser->plan->class_numbers == 12 && $planuser->counter >= 12 && $planuser->plan->plan_period_id == 1) {
             $responseTwo = 'No puede reservar, ya ha ocupado o reservado sus 12 clases del plan 12 clases mensual';
         }
-        elseif ($planuser->plan_id == 6 && $planuser->counter >= 12) {
+        elseif ($planuser->plan->class_numbers == 12 && $planuser->counter >= 12 && $planuser->plan->plan_period_id == 3) {
             $responseTwo = 'Ya ha ocupado o reservado sus 12 clases de este mes del plan trimestral';
         }
-        elseif ($planuser->plan_id == 7 && $planuser->counter >= 12) {
+        elseif ($planuser->plan->class_numbers == 12 && $planuser->counter >= 12 && $planuser->plan->plan_period_id == 5) {
             $responseTwo = 'Ya ha ocupado o reservado sus 12 clases de este mes del plan semestral';
         }
-        elseif ($planuser->plan_id == 8 && $planuser->counter >= 12) {
+        elseif ($planuser->plan->class_numbers == 12 && $planuser->counter >= 12 && $planuser->plan->plan_period_id == 6) {
             $responseTwo = 'Ya ha ocupado o reservado sus 12 clases de este mes del plan anual';
         }
 

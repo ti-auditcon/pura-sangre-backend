@@ -72,7 +72,7 @@ class DatabaseSeeder extends Seeder
       {
         //factory(PlanUser::class, 3)->create(['user_id' => $u->id ]);
       });
-      //$this->call(PlanUserTableSeeder::class);
+      $this->call(PlanUserTableSeeder::class);
       $this->call(RoleUserTableSeeder::class);
       factory(Stage::class, 200)->create();
       $this->call(ReservationsTableSeeder::class);

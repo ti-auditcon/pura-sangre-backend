@@ -13,8 +13,8 @@ use App\Http\Controllers\Controller;
 use Redirect;
 
 
-/** [PlanUserController description] */
-class PlanUserController extends Controller
+/** [planuserController description] */
+class planuserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,7 +23,7 @@ class PlanUserController extends Controller
      */
     public function index()
     {
-       $userPlans = PlanUser::all();
+       $userPlans = planuser::all();
        return view('userplans.index')->with('userPlans', $userPlans);
     }
 
@@ -45,35 +45,39 @@ class PlanUserController extends Controller
      */
     public function store(Request $request, User $user)
     {
-      //dd($request->all());
-
+      dd($request->all());
       $plan = Plan::find($request->plan_id);
 
-      $planUser = new PlanUser;
-      $planUser->plan_id = $plan->id;
-      $planUser->user_id = $user->id;
-      $planUser->plan_status_id = 1;
-      $planUser->counter = $plan->class_numbers;
-      $planUser->start_date = Carbon::parse($request->fecha_inicio);
-      if($plan->id == 1){
-        $planUser->finish_date = Carbon::parse($request->fecha_inicio)->addWeeks(1);
+      $planuser = new PlanUser;
+      $planuser->plan_id = $plan->id;
+      $planuser->user_id = $user->id;
+      $planuser->plan_status_id = 1;
+      $planuser->start_date = Carbon::parse($request->fecha_inicio);
+      if ($plan->custom == 1) {
+        $planuser->finish_date = Carbon::parse($request->fecha_termino);
+        $planuser->counter = $request->counter;
+      }
+      elseif($plan->id == 1){
+        $planuser->finish_date = Carbon::parse($request->fecha_inicio)->addWeeks(1);
+        $planuser->counter = $plan->class_numbers;
       }
       else {
-        $planUser->finish_date = Carbon::parse($request->fecha_inicio)->addMonths($plan->plan_period->period_number);
+        $planuser->finish_date = Carbon::parse($request->fecha_inicio)->addMonths($plan->plan_period->period_number);
+        $planuser->counter = $plan->class_numbers;
       }
 
-      if($planUser->save()){
-        if($planUser->plan_id > 2)
+      if($planuser->save()){
+        if($plan->custom == 0)
         {
-          $bill = new Bill;
-          $bill->plan_user_id = $planUser->id;
-          $bill->payment_type_id = $request->payment_type_id;
-          $bill->date = today();
-          $bill->start_date =  $planUser->start_date;
-          $bill->finish_date =  $planUser->finish_date;
-          $bill->detail = $request->detalle;
-          $bill->amount = $request->amount;
-          $bill->save();
+          Bill::create([
+            'plan_user_id' => $planuser->id,
+            'payment_type_id' => $request->payment_type_id,
+            'date' => today(),
+            'start_date' => $planuser->start_date,
+            'finish_date' => $planuser->finish_date,
+            'detail' => $request->detalle,
+            'amount' => $request->amount,
+          ]);
         }
         Session::flash('success','guardado con existo');
         return redirect('/users/'.$user->id);
@@ -95,7 +99,7 @@ class PlanUserController extends Controller
       // if ($response != null) {
       //   return back()->with('error', $response);
       // }else {
-      //   $planuser = PlanUser::create(array_merge($request->all(), [
+      //   $planuser = planuser::create(array_merge($request->all(), [
       //     'start_date' => $fecha_inicio,
       //     'finish_date' => $fecha_termino,
       //     'counter' => $plan->class_numbers
@@ -109,10 +113,10 @@ class PlanUserController extends Controller
     /**
      * [show description]
      * @param  User     $user [description]
-     * @param  PlanUser $plan [description]
+     * @param  planuser $plan [description]
      * @return [type]         [description]
      */
-    public function show(User $user, PlanUser $plan)
+    public function show(User $user, planuser $plan)
     {
       return view('userplans.show')->with('plan_user', $plan)->with('user', $user);
     }
@@ -120,10 +124,10 @@ class PlanUserController extends Controller
     /**
      * [edit description]
      * @param  User     $user [description]
-     * @param  PlanUser $plan [description]
+     * @param  planuser $plan [description]
      * @return [type]         [description]
      */
-    public function edit(User $user, PlanUser $plan)
+    public function edit(User $user, planuser $plan)
     {
       return view('userplans.edit')->with('user', $user)->with('plan_user', $plan);
     }
@@ -132,10 +136,10 @@ class PlanUserController extends Controller
      * [update description]
      * @param  Request  $request [description]
      * @param  User     $user    [description]
-     * @param  PlanUser $plan    [description]
+     * @param  planuser $plan    [description]
      * @return [type]            [description]
      */
-    public function update(Request $request, User $user, PlanUser $plan)
+    public function update(Request $request, User $user, planuser $plan)
     {
       // dd($plan);
       $plan->update($request->all());
@@ -146,10 +150,10 @@ class PlanUserController extends Controller
     /**
      * [destroy description]
      * @param  User     $user [description]
-     * @param  PlanUser $plan [description]
+     * @param  planuser $plan [description]
      * @return [type]         [description]
      */
-    public function destroy(User $user, PlanUser $plan)
+    public function destroy(User $user, planuser $plan)
     {
       // dd($plan);
       $plan->delete();

@@ -9,41 +9,41 @@
       <div class="ibox">
         {!! Form::open(['route' => ['users.update', $user->id], 'method' => 'put', 'files' => true]) !!}
         <div class="ibox-body">
-          <div class="form-group inline @if($errors->has('first_name')) has-warning  @endif">
-            <label class="col-form-label">Nombre</label>
-            <input class="form-control " name="first_name" value="{{ $user->first_name }}" required>
-          </div>
-
-          <div class="form-group inline @if($errors->has('last_name')) has-warning  @endif">
-            <label class="col-form-label">Apellido</label>
-            <input class="form-control " name="last_name" value="{{ $user->last_name }}" required>
-          </div>
-
-        <div class="row">
-            <div class="form-group col-md-4">
-                <label class="btn btn-info file-input mr-2">
-                  <span class="btn-icon"><i class="la la-upload"></i>Subir Imagen</span>
-                  <input style="display: none" name="image" type="file" accept="image/*">
-                </label>
-                <span class="help-block"></span>
-            </div>
-            <div id="container-logo" class="pull-right" style="display: none">
-                <img class="img-responsive" width="200" id="logo-img" src="#" />
-            </div>
+        <div class="form-group inline @if($errors->has('first_name')) has-warning  @endif">
+          <label class="col-form-label">Nombre</label>
+          <input class="form-control " name="first_name" value="{{ $user->first_name }}" required>
         </div>
 
-          <div class="form-group inline @if($errors->has('phone')) has-warning  @endif">
-            <label class="col-form-label">Numero de Celular</label>
-            <div class="input-group mb-3">
-              <span class="input-group-addon">+56 9</span>
-              <input class="form-control " name="phone" value="{{ $user->phone }}" type="tel">
-            </div>
+        <div class="form-group inline @if($errors->has('last_name')) has-warning  @endif">
+          <label class="col-form-label">Apellido</label>
+          <input class="form-control " name="last_name" value="{{ $user->last_name }}" required>
+        </div>
+          
+        <div class="row">
+          <div class="form-group col-md-4">
+            <label class="btn btn-info file-input mr-2">
+              <span class="btn-icon"><i class="la la-upload"></i>Subir Imagen</span>
+              <input style="display: none" name="image" type="file" accept="image/*">
+            </label>
+            <span class="help-block"></span>
           </div>
+          <div id="container-logo" class="pull-right" style="display: none">
+            <img class="img-responsive" width="200" id="logo-img" src="#" />
+          </div>
+        </div>
 
-          <div class="form-group inline @if($errors->has('email')) has-warning  @endif">
-            <label class="col-form-label">email</label>
-            <input class="form-control " name="email" value="{{ $user->email }}" required>
+        <div class="form-group inline @if($errors->has('phone')) has-warning  @endif">
+          <label class="col-form-label">Numero de Celular</label>
+          <div class="input-group mb-3">
+            <span class="input-group-addon">+56 9</span>
+            <input class="form-control " name="phone" value="{{ $user->phone }}" type="tel">
           </div>
+        </div>
+
+        <div class="form-group inline @if($errors->has('email')) has-warning  @endif">
+          <label class="col-form-label">email</label>
+          <input class="form-control " name="email" value="{{ $user->email }}" required>
+        </div>
 
 				{{-- 	<div class="form-group @if($errors->has('contact_name')) has-warning  @endif">
 	          <label class="col-form-label">Contacto de Emergencia</label>

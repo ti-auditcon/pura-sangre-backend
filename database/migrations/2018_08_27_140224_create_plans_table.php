@@ -29,6 +29,7 @@ class CreatePlansTable extends Migration
           $table->unsignedInteger('plan_period_id')->nullable();
           $table->integer('class_numbers');
           $table->integer('amount')->nullable();
+          $table->boolean('custom')->nullable();
           $table->timestamps();
 
           $table->foreign('plan_period_id')->references('id')->on('plan_periods')->onDelete('cascade');

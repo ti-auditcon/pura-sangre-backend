@@ -77,7 +77,6 @@
                         - sin registro -
                       @endif
                     </textarea>
-
                   </div>
                 </div>
               </div>
@@ -92,12 +91,12 @@
         <div class="ibox-head">
           <div class="ibox-title">Alumnos</div>
           @if (Auth::user()->hasRole(1))
-            <button class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
+            <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
           @else
             {!! Form::open(['route' => ['clases.users.store', 'clase' => $clase->id], 'method' => 'post']) !!}
-                <input type="hidden" value="{{Auth::user()->id}}" name="user_id">
-                <button class="btn btn-success sweet-user-join" data-id="{{$clase->id}}" data-name="{{$clase->date}}">
-                <i class=""></i>Reservar</button>
+              <input type="hidden" value="{{Auth::user()->id}}" name="user_id">
+              <button class="btn btn-success sweet-user-join" data-id="{{$clase->id}}" data-name="{{$clase->date}}">
+              <i class=""></i>Reservar</button>
             {!! Form::close() !!}
           @endif
         </div>
@@ -153,7 +152,7 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Agregar Alumno</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -170,9 +169,9 @@
               @foreach ($outclase as $usuario)
               <tr>
                 <td>
-                  <a class="media-img" href="javascript:;">
-                      <img class="img-circle" src="{{url('/storage/users/'.$usuario->avatar.'.jpg')}}" alt="image" width="54">
-                  </a>
+                <a class="media-img" href="javascript:;">
+                  <img class="img-circle" src="{{url('/storage/users/'.$usuario->avatar.'.jpg')}}" alt="image" width="54">
+                </a>
                 @if($usuario->status_user_id == 1 )
                   <span class="badge-success badge-point"></span>
                 @elseif($usuario->status_user_id == 2 )
@@ -180,10 +179,7 @@
                 @elseif($usuario->status_user_id == 3 )
                   <span class="badge-warning badge-point"></span>
                 @endif
-
-                  <a href="{{url('/users/'.$usuario->id)}}">
-                    {{$usuario->first_name}} {{$usuario->last_name}}
-                  </a>
+                <a href="{{url('/users/'.$usuario->id)}}">{{$usuario->first_name}} {{$usuario->last_name}}</a>
                 </td>
                 <td>
                   {!! Form::open(['route' => ['clases.users.store', 'clase' => $clase->id], 'method' => 'post']) !!}
@@ -288,9 +284,12 @@
             "infoEmpty": "Sin resultados",
             "infoFiltered": "(filtrado de _MAX_ registros totales)",
             "search": "Buscar Alumno:"
-
           },
         });
+      //foco al input al abrir el modal
+      $('#user-assign').on('shown.bs.modal', function () {
+          $('#students-table-search_filter input').focus();
+      }) 
     });
   //
   //
