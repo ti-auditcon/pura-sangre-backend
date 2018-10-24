@@ -55,9 +55,9 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::resource('blocks', 'Clases\BlockController');
       //Tal vez mas adelante se necesite el store de clases
     Route::resource('clases', 'Clases\ClaseController')->except('create', 'edit', 'store', 'update');
-
     Route::resource('clases.users', 'Clases\ClaseUserController')->only('store', 'update', 'destroy');
     Route::post('clases/type-select/', 'Clases\ClaseController@typeSelect')->name('clases.type');
+    Route::get('get-clases', 'Clases\ClaseController@clases');
 
     Route::resource('payments', 'Plans\PlanUserController');
 

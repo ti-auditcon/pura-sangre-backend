@@ -22,12 +22,21 @@ class ClaseController extends Controller
      */
     public function index()
     {
-        $clases = Clase::where('clase_type_id',Session::get('clases-type-id'))->get()->toArray();
+
+        // $clases = Clase::where('clase_type_id',Session::get('clases-type-id'))->get();
         $wods = Wod::where('clase_type_id',Session::get('clases-type-id'))->get();
 
+
         return view('clases.index')
-          ->with('clases',json_encode($clases))
+          // ->with('clases',json_encode(compact('clases')))
           ->with('wods',$wods);
+    }
+
+    public function clases(request $request)
+    {
+
+      $clases =  Clase::where('clase_type_id',Session::get('clases-type-id'))->where('date','>=',$request->datestart)->where('date','<=',$request->dateend)->get();
+      return response()->json($clases, 200);
     }
 
     /**
@@ -75,6 +84,7 @@ class ClaseController extends Controller
     public function typeSelect(Request $request){
         Session::put('clases-type-id',$request->type);
         Session::put('clases-type-name',ClaseType::find($request->type)->clase_type);
+
         return Redirect::back();
     }
 

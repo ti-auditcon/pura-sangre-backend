@@ -31,8 +31,8 @@ class CreateClasesTable extends Migration
 
       Schema::create('blocks', function (Blueprint $table) {
           $table->increments('id');
-          $table->string('start');
-          $table->string('end');
+          $table->time('start');
+          $table->time('end');
           $table->string('title')->nullable();
           $table->date('date')->nullable();
           $table->unsignedInteger('profesor_id')->nullable();
