@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Plans;
 
 use Session;
+use Redirect;
 use Carbon\Carbon;
 use App\Models\Plans\Plan;
 use App\Models\Bills\Bill;
@@ -10,7 +11,6 @@ use App\Models\Users\User;
 use Illuminate\Http\Request;
 use App\Models\Plans\PlanUser;
 use App\Http\Controllers\Controller;
-use Redirect;
 
 
 /** [planuserController description] */

@@ -17,8 +17,8 @@ Auth::routes();
 Route::get('/', function () {return view('home');})->middleware('auth');
 
 Route::get('/reports', function () {
-    return view('reports')->middleware('role:1');
-});
+    return view('reports');
+})->middleware('role:1');
 
 Route::get('/messages', function () {
   Article::where('sd');
