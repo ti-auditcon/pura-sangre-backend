@@ -68,11 +68,26 @@ class DatabaseSeeder extends Seeder
           'status_user_id' => 1,
       ]);
 
+      $user = User::create([
+          'rut' => 33333333,
+          'first_name' => 'Student',
+          'last_name' => 'Crossfit',
+          'birthdate' => '1994-01-02',
+          'gender' => 'male',
+          'email' => 'student@auditcon.cl',
+          'password' => bcrypt('123123'),
+          'avatar' => 'u (25)',
+          'phone' => '76543211',
+          'address' => 'Estado, Esquina Membrillar, Oficina 208',
+          // 'emergency_id' => 1,
+          'status_user_id' => 1,
+      ]);
+
       factory(User::class, 50)->create()->each(function ($u)
       {
         //factory(PlanUser::class, 3)->create(['user_id' => $u->id ]);
       });
-      //$this->call(PlanUserTableSeeder::class);
+      $this->call(PlanUserTableSeeder::class);
       $this->call(RoleUserTableSeeder::class);
       factory(Stage::class, 200)->create();
       $this->call(ReservationsTableSeeder::class);

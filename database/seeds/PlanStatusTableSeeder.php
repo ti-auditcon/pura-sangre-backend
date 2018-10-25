@@ -34,7 +34,7 @@ class PlanStatusTableSeeder extends Seeder
             2 =>
             array (
                 'id' => 3,
-                'plan_status' => 'precomprs',
+                'plan_status' => 'Precompra',
                 'created_at' => '2018-08-28 20:59:34',
                 'updated_at' => '2018-08-28 20:59:34',
             ),

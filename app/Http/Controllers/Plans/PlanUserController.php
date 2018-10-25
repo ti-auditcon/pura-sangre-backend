@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Plans;
 
 use Session;
+use Redirect;
 use Carbon\Carbon;
 use App\Models\Plans\Plan;
 use App\Models\Bills\Bill;
@@ -10,11 +11,10 @@ use App\Models\Users\User;
 use Illuminate\Http\Request;
 use App\Models\Plans\PlanUser;
 use App\Http\Controllers\Controller;
-use Redirect;
 
 
-/** [PlanUserController description] */
-class PlanUserController extends Controller
+/** [planuserController description] */
+class planuserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,7 +23,7 @@ class PlanUserController extends Controller
      */
     public function index()
     {
-       $userPlans = PlanUser::all();
+       $userPlans = planuser::all();
        return view('userplans.index')->with('userPlans', $userPlans);
     }
 
@@ -45,74 +45,56 @@ class PlanUserController extends Controller
      */
     public function store(Request $request, User $user)
     {
-      //dd($request->all());
-
+      // dd($request->all());
       $plan = Plan::find($request->plan_id);
 
-      $planUser = new PlanUser;
-      $planUser->plan_id = $plan->id;
-      $planUser->user_id = $user->id;
-      $planUser->plan_status_id = 1;
-      $planUser->counter = $plan->class_numbers;
-      $planUser->start_date = Carbon::parse($request->fecha_inicio);
-      if($plan->id == 1){
-        $planUser->finish_date = Carbon::parse($request->fecha_inicio)->addWeeks(1);
+      $planuser = new PlanUser;
+      $planuser->plan_id = $plan->id;
+      $planuser->user_id = $user->id;
+      $planuser->plan_status_id = 1;
+      $planuser->start_date = Carbon::parse($request->fecha_inicio);
+      if ($plan->custom == 1) {
+        $planuser->finish_date = Carbon::parse($request->fecha_termino);
+        $planuser->counter = $request->counter;
+      }
+      elseif($plan->id == 1){
+        $planuser->finish_date = Carbon::parse($request->fecha_inicio)->addWeeks(1);
+        $planuser->counter = $plan->class_numbers;
       }
       else {
-        $planUser->finish_date = Carbon::parse($request->fecha_inicio)->addMonths($plan->plan_period->period_number);
+        $planuser->finish_date = Carbon::parse($request->fecha_inicio)->addMonths($plan->plan_period->period_number);
+        $planuser->counter = $plan->class_numbers;
       }
 
-      if($planUser->save()){
-        if($planUser->plan_id > 2)
+      if($planuser->save()){
+        if($plan->custom == 0)
         {
-          $bill = new Bill;
-          $bill->plan_user_id = $planUser->id;
-          $bill->payment_type_id = $request->payment_type_id;
-          $bill->date = today();
-          $bill->start_date =  $planUser->start_date;
-          $bill->finish_date =  $planUser->finish_date;
-          $bill->detail = $request->detalle;
-          $bill->amount = $request->amount;
-          $bill->save();
+          Bill::create([
+            'plan_user_id' => $planuser->id,
+            'payment_type_id' => $request->payment_type_id,
+            'date' => today(),
+            'start_date' => $planuser->start_date,
+            'finish_date' => $planuser->finish_date,
+            'detail' => $request->detalle,
+            'amount' => $request->amount,
+          ]);
         }
-        Session::flash('success','guardado con existo');
+        Session::flash('success','Guardado con éxito');
         return redirect('/users/'.$user->id);
       }
       else {
         return redirect('/users/'.$user->id);
       }
-
-
-
-      // if($user->plans()->where('plan_status_id',1) ) {
-      //   return back()->with('error', $response);
-      // }
-      // else {
-      //   dd('sin plan');
-      // }
-
-      // list($response, $fecha_inicio, $fecha_termino, $plan) = $this->uniquePlan($user, $request);
-      // if ($response != null) {
-      //   return back()->with('error', $response);
-      // }else {
-      //   $planuser = PlanUser::create(array_merge($request->all(), [
-      //     'start_date' => $fecha_inicio,
-      //     'finish_date' => $fecha_termino,
-      //     'counter' => $plan->class_numbers
-      //   ]));
-      //   return redirect()->route('users.show', $user->id)->with('success', 'El plan ha sido asignado correctamente');
-      // }
-
 
     }
 
     /**
      * [show description]
      * @param  User     $user [description]
-     * @param  PlanUser $plan [description]
+     * @param  planuser $plan [description]
      * @return [type]         [description]
      */
-    public function show(User $user, PlanUser $plan)
+    public function show(User $user, planuser $plan)
     {
       return view('userplans.show')->with('plan_user', $plan)->with('user', $user);
     }
@@ -120,10 +102,10 @@ class PlanUserController extends Controller
     /**
      * [edit description]
      * @param  User     $user [description]
-     * @param  PlanUser $plan [description]
+     * @param  planuser $plan [description]
      * @return [type]         [description]
      */
-    public function edit(User $user, PlanUser $plan)
+    public function edit(User $user, planuser $plan)
     {
       return view('userplans.edit')->with('user', $user)->with('plan_user', $plan);
     }
@@ -132,10 +114,10 @@ class PlanUserController extends Controller
      * [update description]
      * @param  Request  $request [description]
      * @param  User     $user    [description]
-     * @param  PlanUser $plan    [description]
+     * @param  planuser $plan    [description]
      * @return [type]            [description]
      */
-    public function update(Request $request, User $user, PlanUser $plan)
+    public function update(Request $request, User $user, planuser $plan)
     {
       // dd($plan);
       $plan->update($request->all());
@@ -146,10 +128,10 @@ class PlanUserController extends Controller
     /**
      * [destroy description]
      * @param  User     $user [description]
-     * @param  PlanUser $plan [description]
+     * @param  planuser $plan [description]
      * @return [type]         [description]
      */
-    public function destroy(User $user, PlanUser $plan)
+    public function destroy(User $user, planuser $plan)
     {
       // dd($plan);
       $plan->delete();
@@ -157,7 +139,9 @@ class PlanUserController extends Controller
       return redirect()->route('users.show', $user->id)->with('success', 'Se eliminó correctamente');
     }
 
-  /**
+}
+
+   /**
    * [uniquePlan si la fecha a no esta entre c y d y la fecha b tampoco entonces que pase, ademas
    * si $fecha_inicio es menor que $plan_user->start_date y $fecha_termino es mayor que $plan_user->finish_date que no pase]
    * si la fecha a no esta entre c y d y la fecha b tampoco entonces que pase
@@ -181,4 +165,22 @@ class PlanUserController extends Controller
   //   return array($response, $fecha_inicio, $fecha_termino, $plan);
   // }
 
-}
+
+      // if($user->plans()->where('plan_status_id',1) ) {
+      //   return back()->with('error', $response);
+      // }
+      // else {
+      //   dd('sin plan');
+      // }
+
+      // list($response, $fecha_inicio, $fecha_termino, $plan) = $this->uniquePlan($user, $request);
+      // if ($response != null) {
+      //   return back()->with('error', $response);
+      // }else {
+      //   $planuser = planuser::create(array_merge($request->all(), [
+      //     'start_date' => $fecha_inicio,
+      //     'finish_date' => $fecha_termino,
+      //     'counter' => $plan->class_numbers
+      //   ]));
+      //   return redirect()->route('users.show', $user->id)->with('success', 'El plan ha sido asignado correctamente');
+      // }

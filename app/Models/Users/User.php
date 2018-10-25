@@ -126,7 +126,7 @@ class User extends Authenticatable
     */
     public function actual_plan()
     {
-      return $this->hasOne(PlanUser::class)->where('start_date','<=', today())->where('finish_date','>=', today());
+      return $this->hasOne(PlanUser::class)->where('start_date','<=', today())->where('finish_date','>=', today())->withDefault();
     }
 
     /**
@@ -167,7 +167,7 @@ class User extends Authenticatable
     */
     public function plan_users()
     {
-      return $this->hasMany(PlanUser::class);;
+      return $this->hasMany(PlanUser::class);
     }
 
     /**
@@ -178,8 +178,6 @@ class User extends Authenticatable
     {
       return User::all()->where('admin', 'false')->orderBy('name');
     }
-
-
 
     /**
     * [reservations description]
@@ -202,15 +200,6 @@ class User extends Authenticatable
     // }
 
 }
-
-// /**
-//  * [active_plan description]
-//  * @return [type] [description]
-//  */
-// public function active_plan()
-// {
-//     return $this->belongsToMany(Plan::class)->wherePivot('plan_state', 'activo');
-// }
 
 /**
 * [getRouteKeyName obtener nombre]
