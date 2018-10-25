@@ -2,10 +2,11 @@
 
 namespace App\Models\Clases;
 
+use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Clases\ReservationStatus;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Clases\ReservationStatisticStage;
-use App\Models\Users\User;
 
 /**
  * [Reservation description]
@@ -34,6 +35,11 @@ class Reservation extends Model
   public function user()
   {
     return $this->belongsTo(User::class);
+  }
+
+  public function reservation_status()
+  {
+    return $this->belongsTo(ReservationStatus::class);
   }
 
 }

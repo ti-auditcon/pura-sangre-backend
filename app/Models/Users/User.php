@@ -200,21 +200,3 @@ class User extends Authenticatable
     // }
 
 }
-
-/**
-* [getRouteKeyName obtener nombre]
-* @method getRouteKeyName
-* @return string  [allow to search the route by "name", instead of "id"]
-*/
-// public function getRouteKeyName()
-// {
-//     return 'name';
-// }
-    // *
-    //  * [esAdministrador description]
-    //  * @return [boolean] [description]
-
-    // public function esAdministrador()
-    // {
-    //   return $this->admin;
-    // }

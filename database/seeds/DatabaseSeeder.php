@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
       $this->call(RolesTableSeeder::class);
       $this->call(PlanStatusTableSeeder::class);
       $this->call(StageTypesTableSeeder::class);
+      $this->call(ReservationStatusesTableSeeder::class);
 
       $user = User::create([
           'rut' => 11111111,
@@ -86,12 +87,11 @@ class DatabaseSeeder extends Seeder
       factory(User::class, 50)->create()->each(function ($u)
       {
         //factory(PlanUser::class, 3)->create(['user_id' => $u->id ]);
-      });
+    });
       $this->call(PlanUserTableSeeder::class);
       $this->call(RoleUserTableSeeder::class);
       factory(Stage::class, 200)->create();
       $this->call(ReservationsTableSeeder::class);
-      factory(ReservationStatus::class, 3)->create();
       factory(Reservation::class, 2000)->create();
 
     }

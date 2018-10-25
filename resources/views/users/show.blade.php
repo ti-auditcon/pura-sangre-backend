@@ -131,7 +131,7 @@
 
                 @foreach($user->plan_users()->orderBy('created_at','desc')->get() as $up)
                   <tr>
-                    <td>{{$up->plan->plan}}</td>
+                    <td><a href="{{url('/users/'.$user->id.'/plans/'.$up->id)}}">{{$up->plan->plan}}</a></td>
                     <td>{{$up->bill->date ?? "no aplica"}}</td>
                     <td>{{$up->start_date->format('d-m-Y')}} al {{$up->finish_date->format('d-m-Y')}}</td>
                     <td>1/12</td>

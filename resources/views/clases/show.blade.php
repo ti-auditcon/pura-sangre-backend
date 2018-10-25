@@ -105,7 +105,8 @@
             <table id="students-table" class="table table-hover">
               <thead class="thead-default thead-lg">
                 <tr>
-                  <th width="80%">Alumno</th>
+                  <th width="60%">Alumno</th>
+                  <th width="20%">Estado</th>
                   @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
                   <th width="20%">Acciones</th>
                   @endif
@@ -129,6 +130,17 @@
                       {{$reservation->user->first_name}} {{$reservation->user->last_name}}
                     </a>
                   </td>
+
+                  <td>
+                    <span 
+                    @if ($reservation->reservation_status->id == 1)
+                      class="badge badge-warning badge-pill"
+                    @elseif ($reservation->reservation_status->id == 2)   
+                      class="badge badge-success badge-pill"
+                    @endif
+                    >{{strtoupper($reservation->reservation_status->reservation_status)}}</span>
+                  </td>
+
                   @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
                   <td>
             {!! Form::open(['route' => ['clases.users.destroy', 'clase' => $clase->id, 'user' => $reservation->user->id], 'method' => 'delete', 'id'=>'delete'.$reservation->user->id]) !!}
