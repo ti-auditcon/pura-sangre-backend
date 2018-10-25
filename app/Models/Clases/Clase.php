@@ -104,7 +104,7 @@ class Clase extends Model
     public function getStartAttribute()
     {
         if($this->block->date==null){
-          return $this->date.' '.$this->block->start;
+          return $this->date." ".$this->block->start;
         } else {
           return $this->block->start;
         }
@@ -117,7 +117,7 @@ class Clase extends Model
     public function getEndAttribute()
     {
         if($this->block->date==null){
-          return $this->date.' '.$this->block->end;
+          return $this->date." ".$this->block->end;
         } else {
           return $this->block->end;
         }

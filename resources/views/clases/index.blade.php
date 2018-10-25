@@ -75,28 +75,6 @@
           },
           minTime: "07:00:00",
           maxTime: "21:00:00",
-          eventSources:[
-            {
-              events: {!! $clases !!},
-              className: 'fc-clase',
-
-            },
-            {
-              events: [
-                @foreach( $wods as $wod)
-                { start: '{!! $wod->date !!}',
-                  url: '/wods/{!! $wod->id !!}/edit',
-                  title:'WOD'
-                },
-                @endforeach
-              ],
-              color: 'yellow',   // an option!
-              textColor: 'black', // an option!
-
-              className: 'fc-wod',
-
-            }
-          ],
           editable: false,
 
           defaultView: 'agendaWeek',
@@ -107,6 +85,26 @@
           eventColor: '#4c6c8b',
           eventRender: function( event, element, view ) {
             element.find('.fc-time').append('<div> reservas: ' +event.reservation_count+'/25</div> ');
+          },
+          viewRender: function (view, element,start,end) {
+             var b = $('#calendar').fullCalendar('getDate');
+             console.log(b.startOf('week').format('Y-M-D'));
+             $('#calendar').fullCalendar( 'removeEventSources');
+             //alert(b.format('Y-M-D'));
+
+            $('#calendar').fullCalendar( 'addEventSource',
+             {
+               url: '/get-clases?datestart='+b.startOf('week').format('Y-M-D')+'&dateend='+b.endOf('week').format('Y-M-D'), // use the `url` property
+               textColor: 'black'  // an option!
+             }
+            );
+            $('#calendar').fullCalendar( 'addEventSource',
+              {
+                url: '/get-wods?datestart='+b.startOf('week').format('Y-M-D')+'&dateend='+b.endOf('week').format('Y-M-D'), // use the `url` property
+                color: 'yellow',    // an option!
+                textColor: 'black'  // an option!
+              }
+            );
           },
           // eventClick: function(calEvent, jsEvent, view) {
           //   $('#clase-resume').modal();

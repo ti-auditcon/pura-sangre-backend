@@ -8,7 +8,7 @@ use App\Models\Clases\Clase;
 class Wod extends Model
 {
   protected $fillable = ['date','clase_type_id'];
-  protected $appends = ['start','allDay'];
+  protected $appends = ['start','allDay','title','url'];
 
 
   public function clases()
@@ -37,5 +37,14 @@ class Wod extends Model
   {
     return $this->date;
   }
+  public function getTitleAttribute()
+  {
+    return 'WorkOut';
+  }
+  public function getUrlAttribute()
+  {
+    return url('/wods/'.$this->id.'/edit');
+  }
+
 
 }
