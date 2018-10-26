@@ -25,7 +25,14 @@ class ClaseUserController extends Controller
     {
         // dd($request->all());
         $planuser = PlanUser::where('plan_status_id', 1)->where('user_id', $request->user_id)->first();
-            if ($planuser == null) {
+            if ($planuser == null && Auth::user()->hasRole(1)) {
+                Reservation::create(array_merge($request->all(), [
+                'clase_id' => $clase->id,
+                'reservation_status_id' => 1
+                ]));
+                    Session::flash('success','Agregado correctamente a la clase');
+                    return Redirect::back();
+            }else{
                 Session::flash('warning', 'No tienes ningun plan activo');
                 return Redirect::back();
             }
