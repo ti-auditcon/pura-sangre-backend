@@ -32,6 +32,7 @@
               <span class="badge badge-danger badge-pills">INACTIVO</span>
             @endif
           </div>
+          {{-- {{dd($user->attendedClases)}} --}}
           <div class="px-4 text-center">
             <div class="text-muted font-13">Clases Disponibles</div>
             <div class="h2 mt-2">
@@ -138,7 +139,9 @@
                     <td>{{$up->bill->payment_type->payment_type ?? "no aplica"}}</td>
                     <td>{{$up->bill->amount?? "no aplica" }}</td>
                     <td>
-                      <button class="btn btn-info btn-icon-only btn-circle btn-sm btn-air"><i class="la la-trash"></i></button>
+                      {!! Form::open(['route' => ['users.plans.destroy', 'user' => $user->id, 'plan' => $up->id], 'method' => 'delete', 'class' => 'user-plan-delete']) !!}
+                      {!! Form::close() !!}
+                      <button class="btn btn-info btn-icon-only btn-circle btn-sm btn-air sweet-user-plan-delete" data-id="{{$up->id}}" data-name="{{$up->plan->plan}}"><i class="la la-trash"></i></button>
                     </td>
                   </tr>
 
@@ -193,6 +196,27 @@
 			});
 	});
 	</script>
+
+  {{-- ELIMINAR UN PLAN A UN USUARIO --}}
+  <script>
+  $('.sweet-user-plan-delete').click(function(e){
+    var id = $(this).data('id');
+    //alert(id);
+      swal({
+          title: "Desea eliminar el plan: "+$(this).data('name')+"?",
+          text: "(Se borrarán todas las cuotas futuras de este plan, manteniendo los ya consumidos)",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonClass: 'btn-danger',
+          cancelButtonText: 'Cancelar',
+          confirmButtonText: 'Eliminar',
+          closeOnConfirm: false,
+      },function(){
+        //redirección para eliminar usuario
+         $('form.user-plan-delete').submit();
+      });
+  });
+  </script>
 
 
 
