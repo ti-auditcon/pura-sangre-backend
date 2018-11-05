@@ -37,10 +37,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        if(!Session::has('clases-type-id')){
-          Session::put('clases-type-id',1);
-          Session::put('clases-type-name',Clase::find(1)->clase_type);
-        }
+
         $this->middleware('guest')->except('logout');
     }
 }
