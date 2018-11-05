@@ -15,9 +15,11 @@ class ClaseObserver
     * @param  \App\Models\Clases\Clase  $clase
     * @return void
     */
-    public function deleting(Clase $clase)
+    public function deleted(Clase $clase)
     {
-        //
+        $clase->reservations()->each(function ($reservation){
+            $reservation->delete();
+        });
     }
 
     /**

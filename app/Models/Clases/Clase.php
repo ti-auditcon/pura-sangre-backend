@@ -2,11 +2,11 @@
 
 namespace App\Models\Clases;
 
+use App\Models\Wods\Wod;
 use App\Models\Users\User;
 use App\Models\Wods\Stage;
-use App\Models\Wods\Wod;
-use App\Models\Clases\ClaseStage;
 use App\Models\Clases\ClaseType;
+use App\Models\Clases\ClaseStage;
 use App\Models\Clases\Reservation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,10 +20,10 @@ class Clase extends Model
     protected $fillable = ['date', 'start_at', 'finish_at', 'room', 'profesor_id', 'quota' ,'block_id','clase_type_id'];
     protected $appends = ['start','end','url','reservation_count','title','color'];
 
-    protected static function boot()
-    {
-        parent::boot();
-    }
+    // protected static function boot()
+    // {
+    //     parent::boot();
+    // }
 
     /**
      * [reservations description]

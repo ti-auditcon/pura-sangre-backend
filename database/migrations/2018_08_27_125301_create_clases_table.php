@@ -67,6 +67,7 @@ class CreateClasesTable extends Migration
           $table->unsignedInteger('clase_id');
           $table->unsignedInteger('reservation_status_id');
           $table->unsignedInteger('user_id');
+          $table->longText('details')->nullable();
           $table->timestamps();
           $table->softDeletes();
 
