@@ -154,13 +154,11 @@ class planuserController extends Controller
 	//  * @param  planuser $plan [description]
 	//  * @return [type]         [description]
 	//  */
-	// public function destroy(User $user, planuser $plan)
-	// {
-	//   // dd($plan);
-	//   $plan->delete();
-	//   // return redirect('/users/'.$user->id)->with('succes', 'Se eliminó correctamente');
-	//   return redirect()->route('users.show', $user->id)->with('success', 'Se eliminó correctamente');
-	// }
+	public function destroy(User $user, planuser $plan)
+	{
+	  $plan->plan_status_id = 5;
+	  return redirect()->route('users.show', $user->id)->with('success', 'Se canceló el plan correctamente');
+	}
 
 }
 

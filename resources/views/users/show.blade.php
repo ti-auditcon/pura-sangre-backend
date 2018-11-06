@@ -123,21 +123,21 @@
                   <th width="15%">Fecha Pago</th>
                   <th width="20%">Periodo</th>
                   <th width="10%">Clases</th>
-                  <th width="15%">medio de pago</th>
+                  <th width="15%">Medio de pago</th>
                   <th width="15%">Monto</th>
                   <th width="10%">Acciones</th>
                 </tr>
               </thead>
               <tbody>
 
-                @foreach($user->plan_users()->orderBy('created_at','desc')->get() as $up)
+                @foreach($user->plan_users()->orderBy('created_at','desc')->orderBy('plan_status_id', 'ASC')->get() as $up)
                   <tr>
                     <td><a href="{{url('/users/'.$user->id.'/plans/'.$up->id)}}">{{$up->plan->plan}}</a></td>
                     <td>{{$up->bill->date ?? "no aplica"}}</td>
                     <td>{{$up->start_date->format('d-m-Y')}} al {{$up->finish_date->format('d-m-Y')}}</td>
-                    <td>1/12</td>
+                    <td>{{$up->counter}}</td>
                     <td>{{$up->bill->payment_type->payment_type ?? "no aplica"}}</td>
-                    <td>{{$up->bill->amount?? "no aplica" }}</td>
+                    <td>{{$up->bill->amount ?? "no aplica" }}</td>
                     <td>
                       {!! Form::open(['route' => ['users.plans.destroy', 'user' => $user->id, 'plan' => $up->id], 'method' => 'delete', 'class' => 'user-plan-delete']) !!}
                       {!! Form::close() !!}

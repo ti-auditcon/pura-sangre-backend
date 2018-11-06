@@ -32,7 +32,7 @@ class ClaseUserController extends Controller
                 ]));
                     Session::flash('success','Agregado correctamente a la clase');
                     return Redirect::back();
-            }else{
+            }elseif ($planuser == null) {
                 Session::flash('warning', 'No tienes ningun plan activo');
                 return Redirect::back();
             }
@@ -66,7 +66,7 @@ class ClaseUserController extends Controller
         else {
             $class_hour = Carbon::parse($clase->start_at);
             $diff_mns = $class_hour->diffInMinutes(now()->format('H:i'));
-            if ((now()->format('H:i') > $class_hour) || (now()->format('H:i') < $class_hour && diff_mns < 40)) {
+            if ((now()->format('H:i') > $class_hour) || (now()->format('H:i') < $class_hour && $diff_mns < 40)) {
             Session::flash('warning','Ya no se puede tomar la clase');
             return Redirect::back();
             }else{
