@@ -24,15 +24,15 @@ class CreatePlansTable extends Migration
         });
 
         Schema::create('plans', function (Blueprint $table) {
-          $table->increments('id');
-          $table->string('plan');
-          $table->unsignedInteger('plan_period_id')->nullable();
-          $table->integer('class_numbers');
-          $table->integer('amount')->nullable();
-          $table->boolean('custom')->nullable();
-          $table->timestamps();
+            $table->increments('id');
+            $table->string('plan');
+            $table->unsignedInteger('plan_period_id')->nullable();
+            $table->integer('class_numbers');
+            $table->integer('amount')->nullable();
+            $table->boolean('custom')->nullable();
+            $table->timestamps();
 
-          $table->foreign('plan_period_id')->references('id')->on('plan_periods')->onDelete('cascade');
+            $table->foreign('plan_period_id')->references('id')->on('plan_periods')->onDelete('cascade');
         });
 
         // Schema::create('discounts', function (Blueprint $table) {
@@ -43,9 +43,9 @@ class CreatePlansTable extends Migration
         // });
 
         Schema::create('plan_status', function (Blueprint $table) {
-          $table->increments('id');
-          $table->string('plan_status')->nullable();
-          $table->timestamps();
+            $table->increments('id');
+            $table->string('plan_status')->nullable();
+            $table->timestamps();
         });
 
         Schema::create('plan_user', function (Blueprint $table) {
@@ -64,6 +64,30 @@ class CreatePlansTable extends Migration
             // // $table->foreign('discount_id')->references('id')->on('discounts')->onDelete('cascade');
             // $table->foreign('plan_id')->references('id')->on('plans')->onDelete('cascade');
             // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        });
+
+        Schema::create('plan_user_periods', function (Blueprint $table) {
+            $table->increments('id');
+            $table->date('start_date');
+            $table->date('finish_date');
+            $table->integer('counter')->nullable();
+            $table->unsignedInteger('plan_user_id')->nullable();
+            $table->timestamps();
+
+            $table->foreign('plan_user_id')->references('id')
+                                           ->on('plan_user')
+                                           ->onDelete('cascade');
+        });
+
+        Schema::create('plan_income_summaries', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('plan_id')->nullable();
+            $table->string('amount');
+            $table->integer('month')->nullable();
+            $table->integer('year')->nullable();
+            $table->timestamps();
+
+            $table->foreign('plan_id')->references('id')->on('plans')->onDelete('cascade');
         });
 
         // Schema::create('payments', function (Blueprint $table) {
@@ -105,6 +129,7 @@ class CreatePlansTable extends Migration
       Schema::dropIfExists('plan_status');
       Schema::dropIfExists('plan_user');
       Schema::dropIfExists('plan_periods');
-      // Schema::dropIfExists('installments');
+      Schema::dropIfExists('plan_user_periods');
+      Schema::dropIfExists('plan_income_summary');
     }
 }

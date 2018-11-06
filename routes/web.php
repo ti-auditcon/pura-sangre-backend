@@ -16,9 +16,6 @@ Auth::routes();
 
 Route::get('/', function () {return view('home');})->middleware('auth');
 
-Route::get('/reports', function () {
-    return view('reports');
-})->middleware('role:1');
 
 Route::get('/messages', function () {
   Article::where('sd');
@@ -40,8 +37,10 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::resource('blocks', 'Clases\BlockController')->middleware('role:1');
 
       //Tal vez mas adelante se necesite el store de clases
-    Route::resource('clases', 'Clases\ClaseController')->except('create', 'edit', 'store', 'update');
-    Route::resource('clases.users', 'Clases\ClaseUserController')->only('store', 'update', 'destroy');
+    Route::resource('clases', 'Clases\ClaseController')
+           ->except('create', 'edit', 'store', 'update');
+    Route::resource('clases.users', 'Clases\ClaseUserController')
+             ->only('store', 'update', 'destroy');
     Route::post('clases/type-select/', 'Clases\ClaseController@typeSelect')->name('clases.type');
     Route::get('get-clases', 'Clases\ClaseController@clases');
     Route::get('get-wods', 'Clases\ClaseController@wods');
@@ -49,12 +48,17 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     /**
      * Payments Routes
      */
-    Route::resource('payments', 'Plans\PlanUserController')->middleware('role:1');
+    // Route::resource('payments', 'Plans\PlanUserController')->middleware('role:1');
 
     /**
      * Plans Routes
      */
     Route::resource('plans', 'Plans\PlanController')->middleware('role:1');
+    
+    /**
+     * Reports routes
+     */
+    Route::resource('reports', 'Reports\ReportController')->middleware('role:1');
 
     /**
     * Users Routes (alumnos, profes, admins)

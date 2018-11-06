@@ -7,8 +7,8 @@ use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
 use App\Models\Plans\PlanStatus;
+use App\Models\Plans\PlanUserPeriod;
 use Illuminate\Database\Eloquent\Model;
-use App\Observers\Plans\PlanUserObserver;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /** [PlanUser description] */
@@ -28,7 +28,6 @@ class PlanUser extends Model
     public static function boot()
     {
         parent::boot();
-        PlanUser::observe(PlanUserObserver::class);
     }
 
     /**
@@ -73,7 +72,7 @@ class PlanUser extends Model
 
     /**
      * [bill description]
-     * @return [type] [description]
+     * @return [model] [description]
      */
     public function bill()
     {
@@ -82,10 +81,19 @@ class PlanUser extends Model
 
     /**
      * [plan_status description]
-     * @return [type] [description]
+     * @return [model] [description]
      */
     public function plan_status()
     {
         return $this->belongsTo(PlanStatus::class);
+    }
+
+    /**
+     * [plan_user_periods description]
+     * @return [model] [description]
+     */
+    public function plan_user_periods()
+    {
+        return $this->hasMany(PlanUserPeriod::class);
     }
 }

@@ -32,6 +32,7 @@
               <span class="badge badge-danger badge-pills">INACTIVO</span>
             @endif
           </div>
+          {{-- {{dd($user->attendedClases)}} --}}
           <div class="px-4 text-center">
             <div class="text-muted font-13">Clases Disponibles</div>
             <div class="h2 mt-2">
@@ -122,23 +123,25 @@
                   <th width="15%">Fecha Pago</th>
                   <th width="20%">Periodo</th>
                   <th width="10%">Clases</th>
-                  <th width="15%">medio de pago</th>
+                  <th width="15%">Medio de pago</th>
                   <th width="15%">Monto</th>
                   <th width="10%">Acciones</th>
                 </tr>
               </thead>
               <tbody>
 
-                @foreach($user->plan_users()->orderBy('created_at','desc')->get() as $up)
+                @foreach($user->plan_users()->orderBy('created_at','desc')->orderBy('plan_status_id', 'ASC')->get() as $up)
                   <tr>
                     <td><a href="{{url('/users/'.$user->id.'/plans/'.$up->id)}}">{{$up->plan->plan}}</a></td>
                     <td>{{$up->bill->date ?? "no aplica"}}</td>
                     <td>{{$up->start_date->format('d-m-Y')}} al {{$up->finish_date->format('d-m-Y')}}</td>
-                    <td>1/12</td>
+                    <td>{{$up->counter}}</td>
                     <td>{{$up->bill->payment_type->payment_type ?? "no aplica"}}</td>
-                    <td>{{$up->bill->amount?? "no aplica" }}</td>
+                    <td>{{$up->bill->amount ?? "no aplica" }}</td>
                     <td>
-                      <button class="btn btn-info btn-icon-only btn-circle btn-sm btn-air"><i class="la la-trash"></i></button>
+                      {!! Form::open(['route' => ['users.plans.destroy', 'user' => $user->id, 'plan' => $up->id], 'method' => 'delete', 'class' => 'user-plan-delete']) !!}
+                      {!! Form::close() !!}
+                      <button class="btn btn-info btn-icon-only btn-circle btn-sm btn-air sweet-user-plan-delete" data-id="{{$up->id}}" data-name="{{$up->plan->plan}}"><i class="la la-trash"></i></button>
                     </td>
                   </tr>
 
@@ -193,6 +196,27 @@
 			});
 	});
 	</script>
+
+  {{-- ELIMINAR UN PLAN A UN USUARIO --}}
+  <script>
+  $('.sweet-user-plan-delete').click(function(e){
+    var id = $(this).data('id');
+    //alert(id);
+      swal({
+          title: "Desea eliminar el plan: "+$(this).data('name')+"?",
+          text: "(Se borrarán todas las cuotas futuras de este plan, manteniendo los ya consumidos)",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonClass: 'btn-danger',
+          cancelButtonText: 'Cancelar',
+          confirmButtonText: 'Eliminar',
+          closeOnConfirm: false,
+      },function(){
+        //redirección para eliminar usuario
+         $('form.user-plan-delete').submit();
+      });
+  });
+  </script>
 
 
 

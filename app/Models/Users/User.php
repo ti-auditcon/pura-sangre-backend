@@ -2,26 +2,24 @@
 
 namespace App\Models\Users;
 
-use App\Models\Bills\Installment;
+use App\Models\Users\Role;
+use App\Models\Plans\Plan;
 use App\Models\Clases\Block;
 use App\Models\Clases\Clase;
-use App\Models\Clases\Reservation;
-use App\Models\Plans\Plan;
 use App\Models\Plans\PlanUser;
-use App\Models\Users\Emergency;
-use App\Models\Users\Millestone;
-use App\Models\Users\Role;
 use App\Models\Users\RoleUser;
-use App\Models\Users\StatusUser;
+use App\Models\Users\Emergency;
 use Freshwork\ChileanBundle\Rut;
+use App\Models\Users\Millestone;
+use App\Models\Users\StatusUser;
+use App\Models\Bills\Installment;
+use App\Models\Clases\Reservation;
+use Laravel\Passport\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;
 
-/**
- * [User description]
- */
+
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable, SoftDeletes;
@@ -48,10 +46,10 @@ class User extends Authenticatable
 
     public function hasRole($role)
     {
-      $role = RoleUser::where('role_id', $role)->where('user_id', $this->id)->get();
-      if (count($role) > 0) {
-        return true;
-      }
+        $role = RoleUser::where('role_id', $role)->where('user_id', $this->id)->get();
+        if (count($role) > 0) {
+            return true;
+        }
     }
 
     /**
@@ -60,7 +58,7 @@ class User extends Authenticatable
      */
     public function setRutAttribute($value)
     {
-      $this->attributes['rut'] = Rut::parse($value)->number();
+        $this->attributes['rut'] = Rut::parse($value)->number();
     }
 
      /**
@@ -69,7 +67,7 @@ class User extends Authenticatable
      */
     public function getFullNameAttribute()
     {
-      return $this->first_name.' '.$this->last_name;
+        return $this->first_name.' '.$this->last_name;
     }
 
     /**
@@ -78,7 +76,7 @@ class User extends Authenticatable
     */
     public function clases()
     {
-      return $this->belongsToMany(Clase::Class)->using(Reservation::class);
+        return $this->belongsToMany(Clase::Class)->using(Reservation::class);
     }
 
     /**
@@ -88,7 +86,7 @@ class User extends Authenticatable
      */
     public function emergency()
     {
-      return $this->belongsTo(Emergency::class)->withDefault();
+        return $this->belongsTo(Emergency::class)->withDefault();
     }
 
     /**
@@ -98,7 +96,7 @@ class User extends Authenticatable
     */
     public function status_user()
     {
-      return $this->belongsTo(StatusUser::class);
+        return $this->belongsTo(StatusUser::class);
     }
 
     /**
@@ -108,7 +106,7 @@ class User extends Authenticatable
     */
     public function millestones()
     {
-      return $this->belongsToMany(Millestone::class);
+        return $this->belongsToMany(Millestone::class);
     }
 
     /**
@@ -117,7 +115,7 @@ class User extends Authenticatable
     */
     public function plans()
     {
-      return $this->belongsToMany(Plan::class)->using(PlanUser::class);
+        return $this->belongsToMany(Plan::class)->using(PlanUser::class);
     }
 
     /**
@@ -126,7 +124,7 @@ class User extends Authenticatable
     */
     public function actual_plan()
     {
-      return $this->hasOne(PlanUser::class)->where('start_date','<=', today())->where('finish_date','>=', today())->withDefault();
+        return $this->hasOne(PlanUser::class)->where('start_date','<=', today())->where('finish_date','>=', today())->withDefault();
     }
 
     /**
@@ -135,7 +133,7 @@ class User extends Authenticatable
      */
     public function active_users()
     {
-      return $this->where('status_user_id', 1);
+        return $this->where('status_user_id', 1);
     }
 
     /**
@@ -167,7 +165,7 @@ class User extends Authenticatable
     */
     public function plan_users()
     {
-      return $this->hasMany(PlanUser::class);
+        return $this->hasMany(PlanUser::class);
     }
 
     /**
@@ -176,7 +174,7 @@ class User extends Authenticatable
      */
     public function regular_users()
     {
-      return User::all()->where('admin', 'false')->orderBy('name');
+        return User::all()->where('admin', 'false')->orderBy('name');
     }
 
     /**
@@ -186,17 +184,16 @@ class User extends Authenticatable
     */
     public function reservations()
     {
-      return $this->hasMany(Reservation::class);
+        return $this->hasMany(Reservation::class);
     }
 
     public function roles()
     {
         return $this->belongsToMany(Role::class)->using(RoleUser::class);
     }
-    //
+
     // public function coaches()
     // {
     //     return $this->belongsToMany(Role::class)->using(RoleUser::class);
     // }
-
 }
