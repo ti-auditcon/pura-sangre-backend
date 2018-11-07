@@ -6,8 +6,13 @@ use App\Models\Clases\Reservation;
 
 class ReservationObserver
 {
-    public function deleted(Reservation $reservation)
+    public function retrived(Reservation $reservation)
     {
-        
+      // dd('hola');
+      // $date = $reservation->clase->date;
+      // $hour =
+      // if($reservation){
+
+      }
     }
 }

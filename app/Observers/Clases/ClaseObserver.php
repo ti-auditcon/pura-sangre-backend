@@ -9,6 +9,16 @@ use App\Models\Clases\Clase;
  */
 class ClaseObserver
 {
+    public function retrieved(Clase $clase)
+    {
+      $date = $clase->date;
+      $time = $clase->start_at;
+      $dateTime = $date.' '.$time;
+      if ($dateTime < now()) {
+        $clase->reservations()->update(['reservation_status_id' => 3]);
+      }
+
+    }
     /**
     * Handle the clase "deleting" event.
     *

@@ -49,7 +49,7 @@ class ClaseUserController extends Controller
             return Redirect::back();
             }
         }
-        
+
         if ($clase->date < toDay()->format('Y-m-d')) {
             Session::flash('warning','No puede tomar una clase de un día anterior a hoy');
             return Redirect::back();
@@ -140,10 +140,20 @@ class ClaseUserController extends Controller
     {
         $responseThree = null;
         if ($planuser->counter <= 0) {
-           $responseThree = 'Ya ha ocupado o reservado todas sus clases de este mes del plan'; 
+           $responseThree = 'Ya ha ocupado o reservado todas sus clases de este mes del plan';
         }
         return $responseThree;
     }
+
+    private function reservedStatusHelper($planuser)
+    {
+        $responseThree = null;
+        if ($planuser->counter <= 0) {
+           $responseThree = 'Ya ha ocupado o reservado todas sus clases de este mes del plan';
+        }
+        return $responseThree;
+    }
+
 }
     // private function hasTwelvePlan($planuser)
     // {
@@ -163,8 +173,8 @@ class ClaseUserController extends Controller
 
     //     return $responseTwo;
     // }
-    // 
-    
+    //
+
         // $responseTwo = $this->hasClassesLeft($planuser);
         //     if ($responseTwo != null) {
         //         Session::flash('warning', $responseTwo);
