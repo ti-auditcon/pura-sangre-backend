@@ -6,16 +6,16 @@
 @section('content')
   <div class="row">
       <div class="col-md-6">
-          <div class="ibox">
-              <div class="ibox-head">
-                  <div class="ibox-title">Reporte de este mes</div>
-              </div>
-              <div class="ibox-body">
-                  <div>
-                      <canvas id="line_chart" style="height:200px;"></canvas>
-                  </div>
-              </div>
+        <div class="ibox">
+          <div class="ibox-head">
+            <div class="ibox-title">Reporte de este mes</div>
           </div>
+          <div class="ibox-body">
+            <div>
+              {{-- {{dd($summary)}} --}}
+            </div>
+          </div>
+        </div>
       </div>
       <div class="col-md-6">
           <div class="ibox">
@@ -40,9 +40,9 @@
 
 
 @section('scripts') {{-- scripts para esta vista --}}
+
 <script src="{{ asset('js/Chart.min.js') }}"></script>
 <script>
-
   // Bar Chart example
 $(document).ready(function() {
   var barData = {
@@ -71,4 +71,5 @@ $(document).ready(function() {
   new Chart(ctx, {type: 'bar', data: barData, options:barOptions});
 });
 </script>
+
 @endsection

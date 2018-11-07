@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Reports;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Plans\PlanIncomeSummary;
+use App\Models\Users\User;
+use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
@@ -15,73 +16,52 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $summary = PlanIncomeSummary::all();
-        return view('reports.index')->with('summary', $summary);
+        // dd(now()->year);
+        $year_income = $this->yearIncome();
+        $month_income = $this->monthIncome();
+        $plans_month = $this->totalPlansMonth();
+        $new_students = $this->newStudents();
+        // dd($new_students);
+        
+        $summaries = PlanIncomeSummary::all();
+        return view('reports.index')->with('summaries', $summaries);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    //INGRESOS EN EL AÑO
+    public function yearIncome()
     {
-        //
+        $year_summ = PlanIncomeSummary::where('year', now()->year)
+                                      ->get()
+                                      ->sum('amount');
+        return $year_summ;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    //INGRESOS EN EL MES
+    public function monthIncome()
     {
-        //
+        $month_summ = PlanIncomeSummary::where('month', now()->month)
+                                       ->get()
+                                       ->sum('amount');
+        return $month_summ;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Plans\PlanIncomeSummary  $planIncomeSummary
-     * @return \Illuminate\Http\Response
-     */
-    public function show(PlanIncomeSummary $planIncomeSummary)
+    // CANTIDAD DE PLANES EN EL MES
+    public function totalPlansMonth()
     {
-        //
+        $plans_month = PlanIncomeSummary::where('month', now()->month)
+                                               ->get()
+                                               ->count();
+        return $plans_month;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Plans\PlanIncomeSummary  $planIncomeSummary
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(PlanIncomeSummary $planIncomeSummary)
+    // ALUMNOS NUEVOS POR MES
+    public function newStudents()
     {
-        //
+        $new_students = User::whereMonth('created_at' , now()->month)
+                            ->get()
+                            ->count();
+        return $new_students;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Plans\PlanIncomeSummary  $planIncomeSummary
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, PlanIncomeSummary $planIncomeSummary)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Plans\PlanIncomeSummary  $planIncomeSummary
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(PlanIncomeSummary $planIncomeSummary)
-    {
-        //
-    }
 }

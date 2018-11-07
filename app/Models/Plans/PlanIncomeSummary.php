@@ -2,6 +2,7 @@
 
 namespace App\Models\Plans;
 
+use App\Models\Plans\PlanUser;
 use Illuminate\Database\Eloquent\Model;
 
 class PlanIncomeSummary extends Model
