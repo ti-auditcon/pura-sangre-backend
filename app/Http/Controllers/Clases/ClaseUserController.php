@@ -145,14 +145,7 @@ class ClaseUserController extends Controller
         return $responseThree;
     }
 
-    private function reservedStatusHelper($planuser)
-    {
-        $responseThree = null;
-        if ($planuser->counter <= 0) {
-           $responseThree = 'Ya ha ocupado o reservado todas sus clases de este mes del plan';
-        }
-        return $responseThree;
-    }
+
 
 }
     // private function hasTwelvePlan($planuser)
