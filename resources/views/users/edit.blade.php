@@ -21,9 +21,10 @@
           
         <div class="row">
           <div class="form-group col-md-4">
+            {{Session::get('error')}}
             <label class="btn btn-info file-input mr-2">
               <span class="btn-icon"><i class="la la-upload"></i>Subir Imagen</span>
-              <input style="display: none" name="image" type="file" accept="image/*">
+              <input style="display: none" name="image" type="file" accept="image/*" max-file-size=1234>
             </label>
             <span class="help-block"></span>
           </div>
@@ -42,7 +43,7 @@
 
         <div class="form-group inline @if($errors->has('email')) has-warning  @endif">
           <label class="col-form-label">email</label>
-          <input class="form-control " name="email" value="{{ $user->email }}" @if (!Auth::user()->hasRole(1)) disabled @endif required>
+          <input class="form-control " name="email" value="{{ $user->email }}" @if (!Auth::user()->hasRole(1)) readonly @endif required>
         </div>
 
 				{{-- 	<div class="form-group @if($errors->has('contact_name')) has-warning  @endif">

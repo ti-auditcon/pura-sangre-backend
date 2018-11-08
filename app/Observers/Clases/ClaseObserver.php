@@ -2,7 +2,9 @@
 
 namespace App\Observers\Clases;
 
+use App\Models\Users\User;
 use App\Models\Clases\Clase;
+use App\Models\Plans\PlanUser;
 
 /**
  * [ClaseObserver description]
@@ -18,6 +20,16 @@ class ClaseObserver
     public function deleted(Clase $clase)
     {
         $clase->reservations()->each(function ($reservation){
+            $user = User::where('id', $reservation->user_id)->first();
+            // dd($user->id);
+            $plan_user = PlanUser::where('user_id', $user->id)
+                                 ->where('plan_status_id', 1)
+                                 ->first();
+            // dd($plan_user);
+            if ($plan_user != null) {
+                $plan_user->counter = $plan_user->counter + 1;
+                $plan_user->save();
+            }
             $reservation->delete();
         });
     }

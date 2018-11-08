@@ -12,6 +12,13 @@
                   <span class="nav-label">Clases</span>
               </a>
           </li>
+        @if (!Auth::user()->hasRole(1))
+          <li @if($page=="users") class="active" @endif>
+            <a href="{{ route('users.show', Auth::user()->id) }}"><i class="sidebar-item-icon ti-user"></i>
+              <span class="nav-label">Perfil</span>
+            </a>
+          </li>
+        @endif
 
         @if (Auth::user()->hasRole(1))
 

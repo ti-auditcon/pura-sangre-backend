@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Users;
 
+use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
@@ -39,11 +40,16 @@ class UserRequest extends FormRequest
          else {
            $case = '';
          }
+         if (Auth::user()->hasRole(1)) {
+           $required = 'required';
+         }else{
+          $required = '';
+         }
          return [
            'first_name' => 'required',
            'last_name' => 'required',
-           'image' => 'required',
-           'email' => 'required|email'.$case,
+           'image' => 'mimes:jpeg,png|max:1024',
+           'email' => $required.'|email'.$case,
            'phone' => $this->phone != null ? 'digits:8': '',
          ];
        }
@@ -64,6 +70,9 @@ class UserRequest extends FormRequest
        'email.email' => 'El formato del email es incorrecto.',
        'email.unique' => 'El email ya ha sido tomado.',
        'phone.digits' => 'El número de teléfono debe contener :digits dígitos.',
+       'phone.digits' => 'El número de teléfono debe contener :digits dígitos.',
+       'image.mimes' => 'El formato de imagen debe ser jpeg o png',
+       'image.max' => 'La imagen no debe se mas grande que 1 MB',
        // $this->$unique => 'El email ya ha sido tomado.',
      ];
    }

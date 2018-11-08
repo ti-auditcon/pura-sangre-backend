@@ -27,8 +27,8 @@ class ClaseUserController extends Controller
         $planuser = PlanUser::where('plan_status_id', 1)->where('user_id', $request->user_id)->first();
             if ($planuser == null && Auth::user()->hasRole(1)) {
                 Reservation::create(array_merge($request->all(), [
-                'clase_id' => $clase->id,
-                'reservation_status_id' => 1
+                    'clase_id' => $clase->id,
+                    'reservation_status_id' => 1
                 ]));
                     Session::flash('success','Agregado correctamente a la clase');
                     return Redirect::back();
@@ -106,8 +106,8 @@ class ClaseUserController extends Controller
         else {
             $class_hour = Carbon::parse($clase->start_at);
             if ($class_hour->diffInMinutes(now()->format('H:i')) < 40) {
-            Session::flash('warning','Ya no puede votar la clase');
-            return Redirect::back();
+                Session::flash('warning','Ya no puede votar la clase');
+                return Redirect::back();
             }else{
                 if ($reservation->delete()) {
                     $planuser->update(['counter' => $planuser->counter + 1]);

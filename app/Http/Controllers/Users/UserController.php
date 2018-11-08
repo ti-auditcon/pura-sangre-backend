@@ -14,6 +14,11 @@ use App\Http\Requests\Users\UserRequest;
  */
 class UserController extends Controller
 {
+    public function __construct()
+    {
+      // parent::__construct();
+      $this->middleware('can:view,user')->only('show');
+    }
     /**
      * Display a listing of the resource.
      *
