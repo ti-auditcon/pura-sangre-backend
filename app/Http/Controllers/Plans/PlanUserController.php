@@ -74,7 +74,8 @@ class planuserController extends Controller
 		}
 		else {
 			$planuser->finish_date = Carbon::parse($request->fecha_inicio)
-										   ->addMonths($plan->plan_period->period_number);
+										   ->addMonths($plan->plan_period->period_number)
+										   ->subDay();
 			$planuser->counter = $plan->class_numbers;
 		}
 
@@ -84,7 +85,8 @@ class planuserController extends Controller
 					$planuserperiod = new PlanUserPeriod;
 					$planuserperiod->start_date = Carbon::parse($request->fecha_inicio)
 														->addMonths($i);
-					$planuserperiod->finish_date = Carbon::parse($request->fecha_inicio)									 	 ->addMonths($i+1);
+					$planuserperiod->finish_date = Carbon::parse($request->fecha_inicio)									 	 				 ->addMonths($i+1)
+														 ->subDay();
 					$planuserperiod->counter = $plan->class_numbers;
 					$planuserperiod->plan_user_id = $planuser->id;
 					$planuserperiod->save();
@@ -162,7 +164,8 @@ class planuserController extends Controller
 	//  */
 	public function destroy(User $user, planuser $plan)
 	{
-	  $plan->plan_status_id = 5;
+	  $plan->update(['plan_status_id' => 5]);
+	  $plan->plan_user_periods()->delete();
 	  return redirect()->route('users.show', $user->id)->with('success', 'Se canceló el plan correctamente');
 	}
 

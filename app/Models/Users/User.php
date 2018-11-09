@@ -119,12 +119,25 @@ class User extends Authenticatable
     }
 
     /**
-    * metodo  para obtener el plan activo del usuario
+    * metodo para obtener el plan activo del usuario
     * @return [type] [description]
     */
     public function actual_plan()
     {
-        return $this->hasOne(PlanUser::class)->where('start_date','<=', today())->where('finish_date','>=', today())->withDefault();
+        return $this->hasOne(PlanUser::class)->where('plan_status_id', 1)->where('start_date','<=', today())->where('finish_date','>=', today());
+    }
+
+    public function active_plan()
+    {
+        $plan = PlanUser::where('plan_status_id', 1)
+                        ->where('user_id', $this->id)
+                        ->where('start_date','<=', today())
+                        ->where('finish_date','>=', today())
+                        ->first();
+        // dd($plan);
+        if ($plan != null) {
+            return $this->hasOne(PlanUser::class)->where('id', $plan->id);
+        }
     }
 
     /**
