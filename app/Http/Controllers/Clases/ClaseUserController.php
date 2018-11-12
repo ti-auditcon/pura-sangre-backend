@@ -41,7 +41,7 @@ class ClaseUserController extends Controller
             foreach ($planusers as $planuser) {
                 foreach ($planuser->plan_user_periods as $pup) {
                     if ($date_class->between(Carbon::parse($pup->start_date), Carbon::parse($pup->finish_date))) {
-                        $period_plan = $pup; 
+                        $period_plan = $pup;
                     }
                 }
             }
@@ -84,7 +84,7 @@ class ClaseUserController extends Controller
             foreach ($planusers as $planuser) {
                 foreach ($planuser->plan_user_periods as $pup) {
                     if ($date_class->between(Carbon::parse($pup->start_date), Carbon::parse($pup->finish_date))) {
-                        $period_plan = $pup; 
+                        $period_plan = $pup;
                     }
                 }
             }
@@ -158,10 +158,10 @@ class ClaseUserController extends Controller
     {
         $badResponse = null;
         if ($period_plan->counter <= 0) {
-            $badResponse = 'Ya ha ocupado o reservado todas sus clases de este mes de su plan actual');
+            $badResponse = 'Ya ha ocupado o reservado todas sus clases de este mes de su plan actual';
         }
         elseif ($clase->date < toDay()->format('Y-m-d')) {
-            $badResponse = 'No puede tomar una clase de un día anterior a hoy');
+            $badResponse = 'No puede tomar una clase de un día anterior a hoy';
         }
         else {
             $class_hour = Carbon::parse($clase->start_at);
@@ -169,7 +169,7 @@ class ClaseUserController extends Controller
             if ((now()->format('H:i') > $class_hour) || (now()->format('H:i') < $class_hour && $diff_mns < 40)) {
                 $badResponse = 'Ya no se puede tomar la clase';
             }
-        }  
+        }
         return $badResponse;
     }
 
