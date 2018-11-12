@@ -14,7 +14,7 @@
         <div class="row mb-4">
           <div class="col-lg-6 col-md-6">
             <div class="card mb-4">
-              <div class="card-body ">
+              <div class="card-body">
                 <div class="row mb-2">
                   <div class="col-12 text-muted">Fecha:</div>
                   <div class="col-12">{{Carbon\Carbon::parse($clase->date)->format('d-m-Y')}}</div>
