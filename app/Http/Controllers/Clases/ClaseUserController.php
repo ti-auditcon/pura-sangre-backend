@@ -53,10 +53,6 @@ class ClaseUserController extends Controller
             }
         }
   
-        
-
-       
-        
         if ($clase->date < toDay()->format('Y-m-d')) {
             Session::flash('warning','No puede tomar una clase de un día anterior a hoy');
             return Redirect::back();
@@ -96,8 +92,20 @@ class ClaseUserController extends Controller
      */
     public function destroy(Clase $clase, User $user)
     {
+        // $planuser = PlanUser::where('plan_status_id', 1)->where('user_id', $user->id)->first();
+        $planusers = PlanUser::whereIn('plan_status_id', [1,3])->where('user_id', $user->id)->get();
+        $date_class = Carbon::parse($clase->date);
         $reservation = $clase->reservations()->where('user_id', $user->id)->first();
-        $planuser = PlanUser::where('plan_status_id', 1)->where('user_id', $user->id)->first();
+
+        if(count($planusers) != 0){
+            foreach ($planusers as $planuser) {
+                foreach ($planuser->plan_user_periods as $pup) {
+                    if ($date_class->between(Carbon::parse($pup->start_date), Carbon::parse($pup->finish_date))) {
+                        $period_plan = $pup; 
+                    }
+                }
+            }
+        }
 
         if ($clase->date < toDay()->format('Y-m-d')) {
             Session::flash('warning','No puede votar una clase de un día anterior a hoy');
@@ -105,22 +113,26 @@ class ClaseUserController extends Controller
         }
         elseif ($clase->date > toDay()->format('Y-m-d')) {
             if ($reservation->delete()) {
-                if ($planuser != null) {
-                        $planuser->update(['counter' => $planuser->counter + 1]);
-                    }
+                if ($period_plan != null) {
+                    $period_plan->update(['counter' => $period_plan->counter + 1]);
+                }
                 Session::flash('success','Retiro de clase exitoso');
                 return Redirect::back();
             }
         }
         else {
             $class_hour = Carbon::parse($clase->start_at);
-            if ($class_hour->diffInMinutes(now()->format('H:i')) < 40) {
-                Session::flash('warning','Ya no puede votar la clase');
+            if ($class_hour->diffInMinutes(now()->format('H:i')) < 40 && $class_hour > now()->format('H:i')) {
+                Session::flash('warning','Ya no puede votar la clase, por que esta pronto a comenzar');
                 return Redirect::back();
-            }else{
+            }elseif ($class_hour < now()) {
+                Session::flash('warning','No puede votar una clase que ya pasó');
+                return Redirect::back();
+            }
+            else{
                 if ($reservation->delete()) {
-                    if ($planuser != null) {
-                        $planuser->update(['counter' => $planuser->counter + 1]);
+                    if ($period_plan != null) {
+                        $period_plan->update(['counter' => $period_plan->counter + 1]);
                     }
                     Session::flash('success','Retiro de clase exitoso');
                     return Redirect::back();

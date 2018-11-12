@@ -2,9 +2,10 @@
 
 namespace App\Observers\Clases;
 
-use App\Models\Users\User;
 use App\Models\Clases\Clase;
 use App\Models\Plans\PlanUser;
+use App\Models\Users\User;
+use Carbon\Carbon;
 
 /**
  * [ClaseObserver description]
@@ -19,63 +20,25 @@ class ClaseObserver
     */
     public function deleted(Clase $clase)
     {
-        $clase->reservations()->each(function ($reservation){
-            $user = User::where('id', $reservation->user_id)->first();
-            // dd($user->id);
-            $plan_user = PlanUser::where('user_id', $user->id)
-                                 ->where('plan_status_id', 1)
-                                 ->first();
-            // dd($plan_user);
-            if ($plan_user != null) {
-                $plan_user->counter = $plan_user->counter + 1;
-                $plan_user->save();
+        $date_class = Carbon::parse($clase->date);
+        foreach ($clase->reservations as $reservation) {
+            $user = User::find($reservation->user_id);
+            $planusers = PlanUser::whereIn('plan_status_id', [1,3])->where('user_id', $user->id)->get();
+
+            if(count($planusers) != 0){
+                foreach ($planusers as $planuser) {
+                    foreach ($planuser->plan_user_periods as $pup) {
+                        if ($date_class->between(Carbon::parse($pup->start_date), Carbon::parse($pup->finish_date))) {
+                            $period_plan = $pup; 
+                        }
+                    }
+                }
+                if ($period_plan != null) {
+                    $period_plan->counter = $period_plan->counter + 1;
+                    $period_plan->save();
+                }
+                $reservation->delete();
             }
-            $reservation->delete();
-        });
-    }
-
-    /**
-     * Handle the clase "created" event.
-     *
-     * @param  \App\Models\Clases\Clase  $clase
-     * @return void
-     */
-    public function created(Clase $clase)
-    {
-        //
-    }
-
-    /**
-     * Handle the clase "updated" event.
-     *
-     * @param  \App\Models\Clases\Clase  $clase
-     * @return void
-     */
-    public function updated(Clase $clase)
-    {
-        //
-    }
-
-
-    /**
-     * Handle the clase "restored" event.
-     *
-     * @param  \App\Models\Clases\Clase  $clase
-     * @return void
-     */
-    public function restored(Clase $clase)
-    {
-        //
-    }
-
-    /**
-     * Handle the clase "force deleted" event.
-     *
-     * @param  \App\Models\Clases\Clase  $clase
-     * @return void
-     */
-    public function forceDeleted(Clase $clase)
-    {
-        //
+        }
     }
 }
