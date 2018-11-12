@@ -134,12 +134,7 @@
                   </td>
 
                   <td>
-                    <span 
-                    @if ($reservation->reservation_status->id == 1)
-                      class="badge badge-warning badge-pill"
-                    @elseif ($reservation->reservation_status->id == 2)   
-                      class="badge badge-success badge-pill"
-                    @endif
+                    <span class="badge badge-{{$reservation->reservation_status->type}} badge-pill"
                     >{{strtoupper($reservation->reservation_status->reservation_status)}}</span>
                   </td>
 

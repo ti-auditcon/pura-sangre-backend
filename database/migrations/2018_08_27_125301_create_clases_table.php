@@ -19,6 +19,7 @@ class CreateClasesTable extends Migration
       Schema::create('reservation_statuses', function (Blueprint $table) {
           $table->increments('id');
           $table->string('reservation_status');
+          $table->string('type');
           $table->timestamps();
       });
 
