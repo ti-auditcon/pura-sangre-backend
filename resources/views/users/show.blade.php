@@ -32,21 +32,19 @@
               <span class="badge badge-danger badge-pills">INACTIVO</span>
             @endif
           </div>
-          {{-- {{dd($user->attendedClases)}} --}}
-          <div class="px-4 text-center">
-            <div class="text-muted font-13">Clases Disponibles</div>
-            <div class="h2 mt-2">
-              {{$user->actual_plan->counter ?? "0"}}
-            </div>
-          </div>
-          @if (in_array($user->actual_plan->plan_id, [7,8,9,10]))
-            <div class="px-4 text-center">
-              <div class="text-muted font-13">Clases disponibles</div>
-              <div class="h2 mt-2 text-warning">
-                {{12-$user->actual_plan->counter}}
+  
+  {{--         {{dd($user->actual_plan)}} --}}
+          @if ($user->actual_plan != null)
+            @if ($user->actual_plan->plan->has_clases == true)
+              <div class="px-4 text-center">
+                <div class="text-muted font-13">Clases disponibles</div>
+                <div class="h2 mt-2 text-warning">
+                  {{$user->actual_plan->counter}}
+                </div>
               </div>
-            </div>
+            @endif
           @endif
+          
           
         </div>
       </div>
@@ -125,7 +123,10 @@
                   <th width="10%">Clases</th>
                   <th width="15%">Medio de pago</th>
                   <th width="15%">Monto</th>
-                  <th width="10%">Acciones</th>
+                  <th width="10%">Estado</th>
+                  @if (Auth::user()->hasRole(1))
+                    <th width="10%">Acciones</th>
+                  @endif
                 </tr>
               </thead>
               <tbody>
@@ -135,14 +136,22 @@
                     <td><a href="{{url('/users/'.$user->id.'/plans/'.$up->id)}}">{{$up->plan->plan}}</a></td>
                     <td>{{$up->bill->date ?? "no aplica"}}</td>
                     <td>{{$up->start_date->format('d-m-Y')}} al {{$up->finish_date->format('d-m-Y')}}</td>
-                    <td>{{$up->counter}}</td>
+                    <td>{{$up->plan->class_numbers}}</td>
                     <td>{{$up->bill->payment_type->payment_type ?? "no aplica"}}</td>
                     <td>{{$up->bill->amount ?? "no aplica" }}</td>
                     <td>
+                    <span class="badge badge-{{$up->plan_status->type}} badge-pill">
+                      {{strtoupper($up->plan_status->plan_status)}}</span>
+                    </td>
+
+                    @if (Auth::user()->hasRole(1) && $up->plan_status->can_delete == true)
+                      <td>
                       {!! Form::open(['route' => ['users.plans.destroy', 'user' => $user->id, 'plan' => $up->id], 'method' => 'delete', 'class' => 'user-plan-delete']) !!}
                       {!! Form::close() !!}
                       <button class="btn btn-info btn-icon-only btn-circle btn-sm btn-air sweet-user-plan-delete" data-id="{{$up->id}}" data-name="{{$up->plan->plan}}"><i class="la la-trash"></i></button>
                     </td>
+                    @endif
+                    
                   </tr>
 
                 @endforeach

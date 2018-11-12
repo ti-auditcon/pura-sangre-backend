@@ -60,7 +60,6 @@ class ClaseController extends Controller
      */
     public function destroy(Clase $clase)
     {
-        $clase->reservations()->delete();
         $clase->delete();
         return redirect('/clases')->with('success', 'La clase ha sido borrada correctamente');
     }
