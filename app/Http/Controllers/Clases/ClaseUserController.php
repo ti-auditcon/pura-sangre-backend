@@ -60,7 +60,7 @@ class ClaseUserController extends Controller
 
             $response = $this->userReserve($clase, $period_plan, $request);
             if ($response != null) {
-                Session::flash('warning', $response);
+                Session::flash('success', $response);
                 return Redirect::back();
             }
 
