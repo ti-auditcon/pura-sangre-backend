@@ -27,6 +27,7 @@ class CreatePlansTable extends Migration
             $table->increments('id');
             $table->string('plan');
             $table->unsignedInteger('plan_period_id')->nullable();
+            $table->boolean('has_clases');
             $table->integer('class_numbers');
             $table->integer('amount')->nullable();
             $table->boolean('custom')->nullable();
@@ -45,6 +46,8 @@ class CreatePlansTable extends Migration
         Schema::create('plan_status', function (Blueprint $table) {
             $table->increments('id');
             $table->string('plan_status')->nullable();
+            $table->string('type')->nullable();
+            $table->boolean('can_delete')->nullable();
             $table->timestamps();
         });
 

@@ -58,7 +58,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     /**
      * Reports routes
      */
-    Route::resource('reports', 'Reports\ReportController')->middleware('role:1');
+    Route::resource('reports', 'Reports\ReportController')->middleware('role:1')->only('index');
 
     /**
     * Users Routes (alumnos, profes, admins)

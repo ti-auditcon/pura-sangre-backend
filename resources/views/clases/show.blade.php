@@ -14,14 +14,14 @@
         <div class="row mb-4">
           <div class="col-lg-6 col-md-6">
             <div class="card mb-4">
-              <div class="card-body ">
+              <div class="card-body">
                 <div class="row mb-2">
                   <div class="col-12 text-muted">Fecha:</div>
                   <div class="col-12">{{Carbon\Carbon::parse($clase->date)->format('d-m-Y')}}</div>
                 </div>
                 <div class="row mb-2">
                   <div class="col-12 text-muted">Horario:</div>
-                  <div class="col-12">{{$clase->block->start}} - {{$clase->block->end}}</div>
+                  <div class="col-12">{{Carbon\Carbon::parse($clase->block->start)->format('H:i')}} - {{Carbon\Carbon::parse($clase->block->end)->format('H:i')}}</div>
                 </div>
                 <div class="row mb-2">
                   <div class="col-12 text-muted">Coach:</div>
@@ -42,12 +42,14 @@
                   <div class="text-muted">Cupos confirmados</div>
                 </div>
                 @if (Auth::user()->hasRole(1))
-                <div class="row">
-                  {!! Form::open(['route' => ['clases.destroy', $clase->id], 'method' => 'delete', 'class' => 'clase-delete']) !!}
-                  {!! Form::close() !!}
-                  <button class="btn btn-danger sweet-clase-delete" data-id="{{$clase->id}}" data-name="{{$clase->date}}"><i>
-                  </i>Deshabilitar clase</button>
-                </div>
+                  @if (Carbon\Carbon::parse($clase->date)->gte(today()))
+                    <div class="row">
+                      {!! Form::open(['route' => ['clases.destroy', $clase->id], 'method' => 'delete', 'class' => 'clase-delete']) !!}
+                      {!! Form::close() !!}
+                      <button class="btn btn-danger sweet-clase-delete" data-id="{{$clase->id}}" data-name="{{$clase->date}}"><i>
+                      </i>Cerrar Clase</button>
+                    </div>
+                  @endif
                 @endif
               </div>
             </div>
@@ -58,9 +60,9 @@
     <div class="ibox">
       <div class="ibox-head">
         <div class="ibox-title">Workout</div>
-        <div class="ibox-tools">
+        {{-- <div class="ibox-tools">
           <a href=""><i class="ti-pencil"></i></a>
-        </div>
+        </div> --}}
       </div>
       <div class="ibox-body">
         <div class="row">
@@ -89,7 +91,7 @@
   <div class="col-6">
     <div class="ibox">
         <div class="ibox-head">
-          <div class="ibox-title">Alumnos</div>
+          <div class="ibox-title">Crossfiteros de esta clase</div>
             @if (Auth::user()->hasRole(1))
               <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
             @else
@@ -273,9 +275,9 @@
         "bPaginate": false,
         "language": {
           "lengthMenu": "Mostrar _MENU_ elementos",
-          "zeroRecords": "Sin resultados",
+          "zeroRecords": "Sin Alumnos/as",
           "info": "Mostrando página _PAGE_ de _PAGES_",
-          "infoEmpty": "Sin resultados",
+          "infoEmpty": "Sin Alumnos",
           "infoFiltered": "(filtrado de _MAX_ registros totales)",
           "search": "Filtrar:"
 
@@ -316,13 +318,13 @@
     var id = $(this).data('id');
     //alert(id);
       swal({
-          title: "Desea eliminar la clase: "+$(this).data('name')+"?",
+          title: "Seguro desea cerrar la clase del: "+$(this).data('name')+"?",
           text: "(Se sacarán a todos los usuarios ya inscritos a esta clase)",
           type: 'warning',
           showCancelButton: true,
           confirmButtonClass: 'btn-danger',
           cancelButtonText: 'Cancelar',
-          confirmButtonText: 'Eliminar',
+          confirmButtonText: 'Cerrar Clase',
           closeOnConfirm: false,
       },function(){
         //redirección para eliminar clase
