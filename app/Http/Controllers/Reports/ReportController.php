@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Reports;
 
 use App\Http\Controllers\Controller;
+use App\Models\Clases\Clase;
+use App\Models\Clases\Reservation;
 use App\Models\Plans\PlanIncomeSummary;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
@@ -21,10 +23,14 @@ class ReportController extends Controller
         $month_income = $this->monthIncome();
         $plans_month = $this->totalPlansMonth();
         $new_students = $this->newStudents();
+        $day_reservations = $this->reservationsOfDay();
+        $month_reservations = $this->reservationsOfMonth();
         // dd($new_students);
         
         $summaries = PlanIncomeSummary::all();
-        return view('reports.index')->with('summaries', $summaries);
+        return view('reports.index')->with('summaries', $summaries)
+                                    ->with('day_reservations', $day_reservations)
+                                    ->with('month_reservations', $month_reservations);
     }
 
     //INGRESOS EN EL AÑO
@@ -46,6 +52,15 @@ class ReportController extends Controller
         return $month_summ;
     }
 
+    // CANTIDAD DE PLANES EN EL AÑO
+    public function totalPlansYear()
+    {
+        $plans_year = PlanIncomeSummary::where('year', now()->year)
+                                               ->get()
+                                               ->count();
+        return $plans_year;
+    }
+
     // CANTIDAD DE PLANES EN EL MES
     public function totalPlansMonth()
     {
@@ -62,6 +77,33 @@ class ReportController extends Controller
                             ->get()
                             ->count();
         return $new_students;
+    }
+
+    public function reservationsOfDay()
+    {
+        $clases = Clase::where('date', toDay())->get();
+        foreach ($clases as $clase) {
+            foreach ($clase->reservations as $reservation) {
+                $day_reservations[] = $reservation;
+            }
+        }
+        // dd($day_reservations);
+        return $day_reservations;
+    }
+
+    public function reservationsOfMonth()
+    {
+        // dd(now()->endOfMonth());
+        $clases = Clase::where('date', '>=', now()->startOfMonth())
+                       ->where('date', '<=', now()->endOfMonth())
+                       ->get();
+        foreach ($clases as $clase) {
+            foreach ($clase->reservations as $reservation) {
+                $month_reservations[] = $reservation;
+            }
+        }
+        // dd($month_reservations);
+        return $month_reservations;
     }
 
 }

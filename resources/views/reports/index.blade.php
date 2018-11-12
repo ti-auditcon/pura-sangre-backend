@@ -21,6 +21,7 @@
           <div class="ibox">
               <div class="ibox-head">
                   <div class="ibox-title">Activos</div>
+                 {{--  {{dd()}} --}}
               </div>
               <div class="ibox-body">
                   <div>

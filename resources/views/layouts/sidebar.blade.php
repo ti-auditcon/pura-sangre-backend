@@ -13,6 +13,11 @@
               </a>
           </li>
         @if (!Auth::user()->hasRole(1))
+          {{-- <li @if($page=="reservations") class="active" @endif>
+            <a href="{{ route('reservations.show', Auth::user()->id) }}"><i class="sidebar-item-icon ti-user"></i>
+              <span class="nav-label">Mis Reservas</span>
+            </a>
+          </li> --}}
           <li @if($page=="users") class="active" @endif>
             <a href="{{ route('users.show', Auth::user()->id) }}"><i class="sidebar-item-icon ti-user"></i>
               <span class="nav-label">Perfil</span>
