@@ -22,6 +22,9 @@ class ReportController extends Controller
         $year_income = $this->yearIncome();
         $month_income = $this->monthIncome();
         $plans_month = $this->totalPlansMonth();
+        $plans_sub_month = $this->totalPlansSubMonth();
+        $plans_sub_year = $this->totalPlansSubYear();
+        $plans_year = $this->totalPlansbeforeYear();
         $new_students = $this->newStudents();
         $day_reservations = $this->reservationsOfDay();
         $month_reservations = $this->reservationsOfMonth();
@@ -30,7 +33,9 @@ class ReportController extends Controller
         $summaries = PlanIncomeSummary::all();
         return view('reports.index')->with('summaries', $summaries)
                                     ->with('day_reservations', $day_reservations)
-                                    ->with('month_reservations', $month_reservations);
+                                    ->with('month_reservations', $month_reservations)
+                                    ->with('plans_sub_month', $plans_sub_month)
+                                    ->with('plans_sub_year', $plans_sub_year);
     }
 
     //INGRESOS EN EL AÑO
@@ -61,6 +66,15 @@ class ReportController extends Controller
         return $plans_year;
     }
 
+    // CANTIDAD DE PLANES DEL AÑO ANTERIOR
+    public function totalPlansSubYear()
+    {
+        $plans_before_year = PlanIncomeSummary::where('year', now()->subYear()->year)
+                                               ->get()
+                                               ->count();
+        return $plans_before_year;
+    }
+
     // CANTIDAD DE PLANES EN EL MES
     public function totalPlansMonth()
     {
@@ -68,6 +82,15 @@ class ReportController extends Controller
                                                ->get()
                                                ->count();
         return $plans_month;
+    }
+
+    // CANTIDAD DE PLANES DEL MES ANTERIOR
+    public function totalPlansSubMonth()
+    {
+        $plans_sub_month = PlanIncomeSummary::where('month', now()->subMonth()->month)
+                                               ->get()
+                                               ->count();
+        return $plans_sub_month;
     }
 
     // ALUMNOS NUEVOS POR MES
@@ -81,6 +104,7 @@ class ReportController extends Controller
 
     public function reservationsOfDay()
     {
+        $day_reservations = null;
         $clases = Clase::where('date', toDay())->get();
         foreach ($clases as $clase) {
             foreach ($clase->reservations as $reservation) {
@@ -93,7 +117,22 @@ class ReportController extends Controller
 
     public function reservationsOfMonth()
     {
-        // dd(now()->endOfMonth());
+        $month_reservations = null;
+        $clases = Clase::where('date', '>=', now()->startOfMonth())
+                       ->where('date', '<=', now()->endOfMonth())
+                       ->get();
+        foreach ($clases as $clase) {
+            foreach ($clase->reservations as $reservation) {
+                $month_reservations[] = $reservation;
+            }
+        }
+        // dd($month_reservations);
+        return $month_reservations;
+    }
+
+    public function reservationsDailyMonth()
+    {
+        $month_reservations = null;
         $clases = Clase::where('date', '>=', now()->startOfMonth())
                        ->where('date', '<=', now()->endOfMonth())
                        ->get();
