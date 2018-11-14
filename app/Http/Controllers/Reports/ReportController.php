@@ -29,7 +29,7 @@ class ReportController extends Controller
         $day_reservations = $this->reservationsOfDay();
         $month_reservations = $this->reservationsOfMonth();
         // dd($new_students);
-        
+
         $summaries = PlanIncomeSummary::all();
         return view('reports.index')->with('summaries', $summaries)
                                     ->with('day_reservations', $day_reservations)
@@ -61,6 +61,14 @@ class ReportController extends Controller
     public function totalPlansYear()
     {
         $plans_year = PlanIncomeSummary::where('year', now()->year)
+                                               ->get()
+                                               ->count();
+        return $plans_year;
+    }
+
+    public function totalPlansbeforeYear()
+    {
+        $plans_year = PlanIncomeSummary::where('year', now()->year -1)
                                                ->get()
                                                ->count();
         return $plans_year;
