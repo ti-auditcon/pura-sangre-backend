@@ -46,7 +46,7 @@ class ClaseUserController extends Controller
                 }
             }
 
-            $response = $this->adminReserve($request, $period_plan);
+            $response = $this->adminReserve($request, $period_plan, $clase);
             if ($response != null) {
                 Session::flash('success', $response);
                 return Redirect::back();
