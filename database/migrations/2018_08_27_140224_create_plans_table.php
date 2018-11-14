@@ -90,7 +90,7 @@ class CreatePlansTable extends Migration
             $table->integer('year')->nullable();
             $table->timestamps();
 
-            $table->foreign('plan_id')->references('id')->on('plans')->onDelete('cascade');
+            // $table->foreign('plan_id')->references('id')->on('plans')->onDelete('cascade');
         });
 
     }
