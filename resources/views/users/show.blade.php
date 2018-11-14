@@ -93,7 +93,7 @@
               </div>
               <div class="row mb-2">
                 <div class="col-12 text-muted">Contacto de emergencia</div>
-                <div class="col-12">{{$user->emergency->contact_name}}, {{$user->emergency->contact_phone}}</div>
+                <div class="col-12">{{$user->emergency->contact_name}} - {{$user->emergency->contact_phone ?? 'Sin contacto de emergencia'}}</div>
               </div>
             </div>
           </div>

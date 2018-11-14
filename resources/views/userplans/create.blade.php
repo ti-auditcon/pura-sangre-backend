@@ -47,6 +47,17 @@
                 </div>
               </div>
             </div>
+
+            <div class="col-sm-6 form-group mb-4">
+              <div class="form-group" id="date">
+                <label class="font-normal">Fecha del pago del plan</label>
+                <div class="input-group date form-control-air">
+                  <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
+                  <input class="form-control" name="date" type="text" value="{{ date('m/d/Y') }}">
+                </div>
+              </div>
+            </div>
+
             <div class="col-sm-6 form-group mb-4 is-custom">
               <div class="form-group"  id="finish_date">
                 <label class="font-normal">Fecha de término del plan</label>
@@ -105,6 +116,14 @@
 <script defer>
 // Bootstrap datepicker
 $('#start_date .input-group.date').datepicker({
+  todayBtn: "linked",
+  keyboardNavigation: false,
+  forceParse: false,
+  calendarWeeks: true,
+  autoclose: true
+});
+
+$('#date .input-group.date').datepicker({
   todayBtn: "linked",
   keyboardNavigation: false,
   forceParse: false,
