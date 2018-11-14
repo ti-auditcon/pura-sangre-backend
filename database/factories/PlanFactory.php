@@ -8,10 +8,20 @@ use App\Models\Plans\PlanUser;
 use App\Models\Bills\Installment;
 use App\Models\Bills\PaymentStatus;
 
+<<<<<<< HEAD
+=======
+// $factory->define(Plan::class, function (Faker $faker) {
+//     return [
+//       'plan' => $faker->word,
+//       'class_numbers' => $faker->numberBetween($min = 12, $max = 24),
+//     ];
+// });
+>>>>>>> e12be5ec10fd4bd9c056dd5e32d53096ee9f21f2
 
 $factory->define(PlanUser::class, function (Faker $faker) {
 //
   $plan = Plan::inRandomOrder()->first();
+<<<<<<< HEAD
 
   $starts_at = Carbon::createFromTimestamp($faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now')->getTimeStamp());
   $ends_at= Carbon::createFromFormat("Y-n-j G:i:s", $starts_at)->addMonths($plan->plan_period->period_number ?? 1 );
@@ -26,6 +36,21 @@ $factory->define(PlanUser::class, function (Faker $faker) {
       $plan_status_id = '4';
     }
 
+=======
+  $starts_at = Carbon::createFromTimestamp($faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now')->getTimeStamp());
+  $ends_at= Carbon::createFromFormat("Y-n-j G:i:s", $starts_at)->addMonths($plan->plan_period->period_number);
+
+  if($starts_at >= today()){
+    $plan_status_id = '3'
+  } else {
+    if($ends_at >= today())
+    {
+      $plan_status_id = '1'
+    } else {
+      $plan_status_id = '4'
+    }
+
+>>>>>>> e12be5ec10fd4bd9c056dd5e32d53096ee9f21f2
   }
 
     return [
@@ -38,6 +63,7 @@ $factory->define(PlanUser::class, function (Faker $faker) {
     ];
 });
 
+<<<<<<< HEAD
 // $factory->define(Plan::class, function (Faker $faker) {
 //     return [
 //       'plan' => $faker->word,
@@ -60,6 +86,8 @@ $factory->define(PlanUser::class, function (Faker $faker) {
 //     ];
 // });
 //
+=======
+>>>>>>> e12be5ec10fd4bd9c056dd5e32d53096ee9f21f2
 // $factory->define(Installment::class, function (Faker $faker) {
 //     return [
 //         'bill_id' => Bill::all()->random()->id,
