@@ -21,9 +21,11 @@ use App\Models\Plans\PlanUser;
 $factory->define(Bill::class, function (Faker $faker) {
 
    $planUser = PlanUser::inRandomOrder()->first();
+
+
     return [
-        'payment_type_id' => PaymentType::inRandomOrder()->first()->id;
-        'plan_user_id' => $planUser->id;
+        'payment_type_id' => PaymentType::inRandomOrder()->first()->id,
+        'plan_user_id' => $planUser->id,
         'date' => $planUser->start_date,
         'detail' => $faker->paragraph(1),
         'amount' => $planUser->plan->amount,

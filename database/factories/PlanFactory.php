@@ -36,20 +36,6 @@ $factory->define(PlanUser::class, function (Faker $faker) {
     }
 
 
-  $starts_at = Carbon::createFromTimestamp($faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now')->getTimeStamp());
-  $ends_at= Carbon::createFromFormat("Y-n-j G:i:s", $starts_at)->addMonths($plan->plan_period->period_number);
-
-  if($starts_at >= today()){
-    $plan_status_id = '3'
-  } else {
-    if($ends_at >= today())
-    {
-      $plan_status_id = '1'
-    } else {
-      $plan_status_id = '4'
-    }
-
-
   }
 
     return [

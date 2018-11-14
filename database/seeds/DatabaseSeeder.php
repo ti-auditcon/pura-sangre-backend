@@ -91,13 +91,23 @@ class DatabaseSeeder extends Seeder
       factory(User::class, 50)->create()->each(function ($u)
       {
           factory(PlanUser::class, 10)->create(['user_id' => $u->id ])->each(function ($pu){
-              factory(Bill::class, 1)->create([
-                'plan_user_id' => $pu->id,
-                'date' => $pu->start_date,
-                'start_date' => $pu->start_date,
-                'finish_date' => $pu->finish_date,
-                'amount' => $pu->plan->amount,
-              ]);
+            // $bill = new Bill;
+            // $bill->plan_user_id = $pu->id;
+            // $bill->plan_user_id = $pu->id
+            // $bill->plan_user_id = $pu->id
+            // $bill->plan_user_id = $pu->id
+            //
+           if($pu->id!=null){
+             factory(Bill::class, 1)->create([
+               'plan_user_id' => $pu->id,
+               'date' => $pu->start_date,
+               'start_date' => $pu->start_date,
+               'finish_date' => $pu->finish_date,
+               'amount' => $pu->plan->amount,
+             ]);
+           }
+
+
           });
 
           factory(Reservation::class, 20)->create(['user_id' => $u->id ]);
