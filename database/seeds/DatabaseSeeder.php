@@ -91,11 +91,10 @@ class DatabaseSeeder extends Seeder
       factory(User::class, 50)->create()->each(function ($u)
       {
           factory(PlanUser::class, 10)->create(['user_id' => $u->id ]);
-<<<<<<< HEAD
+
           factory(Reservation::class, 20)->create(['user_id' => $u->id ]);
-=======
+
           //factory(Reservation::class, 20)->create(['user_id' => $u->id ]);
->>>>>>> e12be5ec10fd4bd9c056dd5e32d53096ee9f21f2
       });
       // $this->call(ReservationsTableSeeder::class);
       // factory(Reservation::class, 2000)->create();
