@@ -31,7 +31,7 @@ class CreateBillsTable extends Migration
           $table->date('start_date');
           $table->date('finish_date');
           $table->string('detail')->nullable();
-          $table->integer('amount');
+          $table->integer('amount')->nullable();
           // $table->integer('subtotal')->nullable();
           // $table->integer('total');
           $table->timestamps();
