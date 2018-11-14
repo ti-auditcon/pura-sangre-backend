@@ -139,7 +139,7 @@ class ClaseUserController extends Controller
         return $response;
     }
 
-    private function adminReserve($request, $period_plan)
+    private function adminReserve($request, $period_plan, $clase)
     {
         $response = null;
         if (Auth::user()->hasRole(1)) {
