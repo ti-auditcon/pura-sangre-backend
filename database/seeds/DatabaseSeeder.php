@@ -84,14 +84,15 @@ class DatabaseSeeder extends Seeder
           'status_user_id' => 1,
       ]);
 
-      factory(User::class, 50)->create()->each(function ($u)
-      {
-          factory(PlanUser::class, 1)->create(['user_id' => $u->id ]);
-          factory(Reservation::class, 20)->create(['user_id' => $u->id ]);
-      });
       $this->call(PlanUserTableSeeder::class);
       $this->call(RoleUserTableSeeder::class);
       factory(Stage::class, 200)->create();
+
+      factory(User::class, 50)->create()->each(function ($u)
+      {
+          factory(PlanUser::class, 10)->create(['user_id' => $u->id ]);
+          factory(Reservation::class, 20)->create(['user_id' => $u->id ]);
+      });
       // $this->call(ReservationsTableSeeder::class);
       // factory(Reservation::class, 2000)->create();
 
