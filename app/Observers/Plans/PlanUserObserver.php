@@ -3,6 +3,7 @@
 namespace App\Observers\Plans;
 
 use App\Models\Plans\PlanUser;
+use App\Models\Plans\PlanUserPeriod;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
 use Carbon\Carbon;
@@ -54,7 +55,23 @@ class PlanUserObserver
      */
     public function created(PlanUser $planUser)
     {
-      //
+
+      if($planUser->plan->plan_period!=null)
+      {
+        for ($i=0; $i < $planUser->plan->plan_period->period_number; $i++) {
+          $planuserperiod = new PlanUserPeriod;
+          $planuserperiod->start_date = Carbon::parse($planUser->start_date)
+                            ->addMonths($i);
+          $planuserperiod->finish_date = Carbon::parse($planUser->start_date)									 	 				 ->addMonths($i+1)
+                             ->subDay();
+
+          $planuserperiod->counter = $planUser->plan->class_numbers;
+          $planuserperiod->plan_user_id = $planUser->id;
+          $planuserperiod->save();
+        } 
+      }
+
+
     }
 
     /**
