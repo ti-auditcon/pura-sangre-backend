@@ -1,6 +1,6 @@
 {{-- alertas success --}}
 @if(Session::has('success'))
-  <script defer>
+  <script >
   $(function ()
   {
     window.onload = function()
@@ -32,7 +32,7 @@
 
 {{-- alerta warning --}}
 @if(Session::has('warning'))
-  <script defer>
+  <script >
   $(function ()
   {
     window.onload = function()
@@ -46,9 +46,9 @@
         "positionClass": "toast-bottom-right",
         "preventDuplicates": false,
         "onclick": null,
-        "showDuration": "300",
+        "showDuration": "600",
         "hideDuration": "5000",
-        "timeOut": "3000",
+        "timeOut": "8000",
         "extendedTimeOut": "500",
         "showEasing": "swing",
         "hideEasing": "linear",
@@ -64,13 +64,8 @@
 
 {{-- alerta error --}}
 @if(Session::has('error'))
-  {{-- <div class="alert alert-danger">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        {{ Session::get('error') }}
-    </div> --}}
-  <script defer>
+
+  <script >
 
   $(function ()
   {

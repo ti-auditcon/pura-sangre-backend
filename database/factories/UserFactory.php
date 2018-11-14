@@ -7,12 +7,6 @@ use App\Models\Users\Millestone;
 use Freshwork\ChileanBundle\Rut;
 use App\Models\Users\StatusUser;
 
-$factory->define(Emergency::class, function (Faker $faker) {
-    return [
-        'contact_name' => $faker->name,
-        'contact_phone' => $faker->numberBetween($min = 50000001, $max = 99999999),
-    ];
-});
 
 $factory->define(StatusUser::class, function (Faker $faker) {
     return [
@@ -20,11 +14,11 @@ $factory->define(StatusUser::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(Millestone::class, function (Faker $faker) {
-    return [
-        'millestone' => $faker->word,
-    ];
-});
+// $factory->define(Millestone::class, function (Faker $faker) {
+//     return [
+//         'millestone' => $faker->word,
+//     ];
+// });
 
 $factory->define(User::class, function (Faker $faker) {
     return [
@@ -35,13 +29,23 @@ $factory->define(User::class, function (Faker $faker) {
       'birthdate' => $faker->date($format = 'Y-m-d', $max = 'now'), // '1979-06-09',
       'gender' => $faker->randomElement($array = array ('male','female')),
       'password' => bcrypt('123123'), // secret
+      'avatar' => 'u ('.$faker->numberBetween($min = 1, $max = 54).')',
       'phone' => $faker->numberBetween($min = 40000000, $max = 99876599),
       'address' => $faker->streetAddress,
-      'emergency_id' => Emergency::all()->random()->id,
+      // 'emergency_id' => Emergency::all()->random()->id,
       'status_user_id' => StatusUser::all()->random()->id,
       'remember_token' => str_random(10),
     ];
 });
+
+//numeros de emergencia
+$factory->define(Emergency::class, function (Faker $faker) {
+    return [
+        'contact_name' => $faker->name,
+        'contact_phone' => $faker->numberBetween($min = 50000001, $max = 99999999),
+    ];
+});
+
 //
 // $factory->define(MillestoneUser::class, function (Faker $faker) {
 //     return [

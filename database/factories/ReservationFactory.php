@@ -1,44 +1,16 @@
 <?php
 
-use App\Models\Users\User;
+
 use Faker\Generator as Faker;
-use App\Models\Reservations\Clase;
-use App\Models\Exercises\Statistic;
-use App\Models\Reservations\ClassStage;
-use App\Models\Exercises\ExerciseStage;
-use App\Models\Reservations\Reservation;
-use App\Models\Reservations\ReservationStatus;
-use App\Models\Reservations\ReservationStatisticStage;
+use App\Models\Clases\Reservation;
+use App\Models\Clases\Clase;
+use App\Models\Users\user;
 
-$factory->define(Clase::class, function (Faker $faker) {
-    return [
-      'date' => $faker->date($format = 'm-d-Y', $max = 'now'),
-      'start_at' => $faker->time($format = 'H:i:s', $max = 'now'),
-      'finish_at' => $faker->time($format = 'H:i:s', $max = 'now'),
-      'profesor_id' => User::all()->random()->id,
-      'quota' => $faker->numberBetween($min = 22, $max = 24),
-    ];
-});
-
-
-$factory->define(ReservationStatus::class, function (Faker $faker) {
-  return [
-      'reservation_status' => $faker->word,
-  ];
-});
 
 $factory->define(Reservation::class, function (Faker $faker) {
-  return [
-    'clase_id' => Clase::all()->random()->id,
-    'reservation_status_id' => ReservationStatus::all()->random()->id,
-    'user_id' => User::all()->random()->id,
-  ];
-});
-
-$factory->define(ReservationStatisticStage::class, function (Faker $faker) {
-  return [
-    'statistic_id' => Statistic::all()->random()->id,
-    'reservation_id' => Reservation::all()->random()->id,
-    'exercise_stage_id' => ExerciseStage::all()->random()->id,
-  ];
+    return [
+        'clase_id' => Clase::all()->random()->id,
+        'user_id' => User::all()->random()->id,
+        'reservation_status_id' => '1'
+    ];
 });

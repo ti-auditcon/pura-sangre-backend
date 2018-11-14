@@ -17,8 +17,7 @@ class Bill extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
-    protected $fillable = ['payment_type_id', 'user_id',
-    'date', 'detail', 'amount', 'sub_total', 'total'];
+    protected $fillable = ['payment_type_id', 'plan_user_id', 'date', 'start_date', 'finish_date', 'detail', 'amount']; 
 
     /**
      * [installments description]
@@ -37,7 +36,7 @@ class Bill extends Model
      */
     public function payment_type()
     {
-      return $this->hasOne(PaymentType::class);
+      return $this->belongsTo(PaymentType::class);
     }
 
     /**

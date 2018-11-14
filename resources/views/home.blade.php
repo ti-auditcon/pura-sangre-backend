@@ -21,41 +21,28 @@
       <div class="col-4">
         <div class="ibox">
             <div class="ibox-head">
-                <div class="ibox-title">Alumnos proximos a vencer</div>
-
+                <div class="ibox-title">Alumnos con planes próximos a vencer</div>
             </div>
             <div class="ibox-body" style="padding-top:0px">
               <div class="ibox-fullwidth-block">
               <table id="students-table" class="table table-hover">
-                  <thead class="thead-default thead-lg">
-                      <tr>
-                          <th >Alumno</th>
-                          <th >Plan</th>
-                          <th >Vence en</th>
-                          <th>
-                          </th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                    @foreach (App\Models\Student::all()->take(3) as $student)
-                      <tr>
-                          <td>
-                            <span class="badge-success badge-point"></span>
-                            <a class="media-img " href="{{url('/students/'.$student->id)}}">
-                                    {{$student->first_name}} {{$student->last_name}}
-                            </a>
-                          </td>
-                          {{-- <td>{{$student->email}}</td> --}}
-                          <td>{{$student->plan}}</td>
-                          <td>2 dias</td>
-                          <td>
-                            <a class="dropdown-toggle btn btn-outline-info btn-icon-only btn-circle btn-sm" data-toggle="dropdown"><i class="ti-more-alt"></i></a>
-                          </td>
-
-                      </tr>
-                     @endforeach
-
-                  </tbody>
+                <thead class="thead-default thead-lg">
+                  <tr>
+                    <th >Alumno</th>
+                    <th >Plan</th>
+                    <th >Vence en</th>
+                    <th> Acciones </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach (App\Models\Plans\PlanUser::all()->where('finish_date','>=', now())->sortBy('finish_date')->take(5) as $pu)
+                    <tr>
+                      <td>{{$pu->user->first_name}} {{$pu->user->last_name}}</td>
+                      <td>{{$pu->plan->plan}}</td>
+                      <td> {{ $pu->finish_date->diffForHumans() }}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
               </table>
               </div>
             </div>
@@ -74,30 +61,14 @@
 
                             <th >Alumno</th>
                             <th >Plan</th>
-                            <th >Hase</th>
+                            <th >Desde el</th>
                             <th>
                             </th>
                         </tr>
                       </tr>
                   </thead>
                   <tbody>
-                    @foreach (App\Models\Student::all()->take(3) as $student)
-                      <tr>
-                          <td>
-                            <span class="badge-danger badge-point"></span>
-                            <a class="media-img " href="{{url('/students/'.$student->id)}}">
-                                    {{$student->first_name}} {{$student->last_name}}
-                            </a>
-                          </td>
-                          {{-- <td>{{$student->email}}</td> --}}
-                          <td>{{$student->plan}}</td>
-                          <td>  2 dias</td>
-                          <td>
-                            <a class="dropdown-toggle btn btn-outline-info btn-icon-only btn-circle btn-sm" data-toggle="dropdown"><i class="ti-more-alt"></i></a>
-                          </td>
 
-                      </tr>
-                     @endforeach
 
                   </tbody>
               </table>

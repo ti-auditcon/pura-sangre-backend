@@ -12,6 +12,25 @@
 
           </div>
           <div class="ibox-body">
+            {{Form::open(['route'=>'clases.type'])}}
+            <div class="form-group mb-4 row">
+
+                <label class="col-sm-1 col-form-label">Tipo de clase:</label>
+                <div class="col-sm-4">
+                  <select class="form-control" name="type">
+                    @foreach(App\Models\Clases\ClaseType::all() as $type)
+                      <option value="{{$type->id}}" @if($type->id == Session::get('clases-type-id')) selected @endif>
+                        {{$type->clase_type}}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="col-sm-1">
+                  <button class="btn btn-default">seleccionar</button>
+                </div>
+
+            </div>
+            {{Form::close()}}
               <div id="calendar"></div>
           </div>
       </div>
@@ -19,167 +38,119 @@
 
   </div>
 
-  <div class="modal fade show" id="wod-modal" tabindex="-1" role="dialog" >
-  			  <div class="modal-dialog" role="document">
-  			    <div class="modal-content">
+  {{-- modal para agrergar horario  --}}
+          <div class="modal fade" id="blockadd" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog ">
+              {{Form::open(['route'=>'blocks.store'])}}
+              <input type="text" hidden class="form-control" value="" name="date">
+              <input type="text" hidden class="form-control" value="{{Session::get('clases-type-id')}}" name="clase_type_id">
 
-  			      <div class="modal-header">
-  			        <h5 class="modal-title">Actualizar wod</h5>
-  			      </div>
-  			      <div class="modal-body">
-                <div class="ibox shadow-wide">
-                                        <div class="ibox-body text-center">
-                                            <h3 class="font-strong">Warm up</h3>
-
-                                            <div class="py-1">
-                                              <textarea class="form-control" rows="5">
-5 HS Push Ups
-15 Pull Ups
-25 Push Ups
-25 Push Ups
-                                              </textarea>
-                                            </div>
-                                            <h3 class="font-strong">Skills</h3>
-
-                                            <div class="py-1">
-                                              <textarea class="form-control" rows="5">
-5 HS Push Ups
-15 Pull Ups
-25 Push Ups
-25 Push Ups
-                                              </textarea>
-                                            </div>
-                                            <h3 class="font-strong">WOD</h3>
-
-                                            <div class="py-1">
-                                              <textarea class="form-control" rows="5">
-5 HS Push Ups
-15 Pull Ups
-25 Push Ups
-25 Push Ups
-                                              </textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-  			      </div>
-
-  			      <div class="modal-footer">
-  			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-  			        <button type="button" class="btn btn-primary" onclick="this.form.submit();">Actualizar wood</button>
-  			      </div>
-  						</form>
-  			    </div>
-  			  </div>
-  			</div>
-
-{{-- modal para agrergar horario  --}}
-        <div class="modal fade" id="blockadd" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-          <div class="modal-dialog ">
-            {{Form::open(['route'=>'blocks.store'])}}
-            <input type="text" hidden class="form-control" value="" name="date">
-
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title">Nuevo horario</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="form-group">
-                  <div class="input-group clockpicker">
-                      <label class="col-sm-2 col-form-label">Inicio:</label>
-                      <input type="text" class="form-control" value="" name="start">
-                      <span class="input-group-addon">
-                          <span class="la la-clock-o"></span>
-                      </span>
-                  </div>
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Nuevo horario de {{Session::get('clases-type-name')}}</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 </div>
-
-                <div class="form-group">
-                  <div class="input-group clockpicker">
-                      <label class="col-sm-2 col-form-label">Termino:</label>
-                      <input type="text" class="form-control" value="" name="end">
-                      <span class="input-group-addon">
-                          <span class="la la-clock-o"></span>
-                      </span>
-                  </div>
-                </div>
-                <div class="form-group mb-4">
-                  <select multiple="multiple" id="plan-select-add" name="plans[]">
-                    @foreach (App\Models\Plans\Plan::all() as $plan)
-                      <option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period}}</option>
-                    @endforeach
-                  </select>
-                </div>
-
-                 <div class="form-group mb-12">
-                    <label class="col-sm-2 col-form-label">Profesor:</label>
-                    <input type="text" class="form-control" value="" name="profesor_id">
-                    <span class="input-group-addon">
-                    </span>
-                  </div>
-
-                <div class="form-group mb-12">
-                  <label class="radio radio-grey radio-primary">
-                    <input id="recurrent" type="radio" name="repetition" value="multiple" checked><span class="input-span"></span>Recurrente
-                  </label>
-                    <label class="radio radio-grey radio-primary">
-                    <input id="unique" type="radio" name="repetition" value="unique"><span class="input-span"></span>Unico
-                  </label>
-                </div>
-
-                <div class="tab-content">
-                  <div id="recurrent-tab" >
-                    <div class="form-group" id="daycheckbox">
-                        <div class="mb-2">
-                            <label class="checkbox checkbox-inline">
-                                <input type="checkbox" name="day[]" value="1">
-                                <span class="input-span"></span>Lunes</label>
-                            <label class="checkbox checkbox-inline">
-                                <input type="checkbox" name="day[]" value="2">
-                                <span class="input-span"></span>Martes</label>
-                            <label class="checkbox checkbox-inline">
-                                <input type="checkbox" name="day[]" value="3">
-                                <span class="input-span"></span>Miercoles</label>
-                            <label class="checkbox checkbox-inline">
-                                <input type="checkbox" name="day[]" value="4">
-                                <span class="input-span"></span>Jueves</label>
-                            <label class="checkbox checkbox-inline">
-                                <input type="checkbox" name="day[]" value="5">
-                                <input type="checkbox" >
-                                <span class="input-span"></span>Viernes</label>
-                            <label class="checkbox checkbox-inline">
-                                <input type="checkbox" name="day[]" value="6">
-                                <input type="checkbox" >
-                                <span class="input-span"></span>Sabado</label>
-                        </div>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <div class="input-group clockpicker">
+                        <label class="col-sm-2 col-form-label">Inicio:</label>
+                        <input type="text" class="form-control" value="" name="start">
+                        <span class="input-group-addon">
+                            <span class="la la-clock-o"></span>
+                        </span>
                     </div>
                   </div>
-                  <div id="unique-tab"  >
-                    <div class="form-group mb-12">
-                      <div class="input-group date ">
 
-                          <input type="text" class="form-control" value="" name="date">
-                          <span class="input-group-addon">
-                              <span class="la la-clock-o"></span>
-                          </span>
+                  <div class="form-group">
+                    <div class="input-group clockpicker">
+                        <label class="col-sm-2 col-form-label">Termino:</label>
+                        <input type="text" class="form-control" value="" name="end">
+                        <span class="input-group-addon">
+                            <span class="la la-clock-o"></span>
+                        </span>
+                    </div>
+                  </div>
+                  <div class="form-group mb-4">
+                    <select multiple="multiple" id="plan-select-add" name="plans[]">
+                      @foreach (App\Models\Plans\Plan::all() as $plan)
+                        <option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period ?? "no aplica"}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+
+                   <div class="form-group mb-12">
+                      <label class="col-sm-2 col-form-label">Profesor:</label>
+                      <select  name="profesor_id" class="form-control"</select>>
+                       @foreach (App\Models\Users\Role::find(2)->users as $coach)
+                          <option value="{{$coach->id}}">{{$coach->first_name}} {{$coach->last_name}}</option>
+                        @endforeach
+                      </select>
+                      <span class="input-group-addon">
+                      </span>
+                    </div>
+
+                  <div class="form-group mb-12">
+                    <label class="radio radio-grey radio-primary">
+                      <input id="recurrent" type="radio" name="repetition" value="multiple" checked><span class="input-span"></span>Recurrente
+                    </label>
+                      <label class="radio radio-grey radio-primary">
+                      <input id="unique" type="radio" name="repetition" value="unique"><span class="input-span"></span>Unico
+                    </label>
+                  </div>
+
+                  <div class="tab-content">
+                    <div id="recurrent-tab" >
+                      <div class="form-group" id="daycheckbox">
+                          <div class="mb-2">
+                              <label class="checkbox checkbox-inline">
+                                  <input type="checkbox" name="day[]" value="1">
+                                  <span class="input-span"></span>Lunes</label>
+                              <label class="checkbox checkbox-inline">
+                                  <input type="checkbox" name="day[]" value="2">
+                                  <span class="input-span"></span>Martes</label>
+                              <label class="checkbox checkbox-inline">
+                                  <input type="checkbox" name="day[]" value="3">
+                                  <span class="input-span"></span>Miercoles</label>
+                              <label class="checkbox checkbox-inline">
+                                  <input type="checkbox" name="day[]" value="4">
+                                  <span class="input-span"></span>Jueves</label>
+                              <label class="checkbox checkbox-inline">
+                                  <input type="checkbox" name="day[]" value="5">
+                                  <input type="checkbox" >
+                                  <span class="input-span"></span>Viernes</label>
+                              <label class="checkbox checkbox-inline">
+                                  <input type="checkbox" name="day[]" value="6">
+                                  <input type="checkbox" >
+                                  <span class="input-span"></span>Sabado</label>
+                          </div>
+                      </div>
+                    </div>
+                    <div id="unique-tab"  >
+                      <div class="form-group mb-12">
+                        <div class="input-group date ">
+
+                            <input type="text" class="form-control" value="" name="date">
+                            <span class="input-group-addon">
+                                <span class="la la-clock-o"></span>
+                            </span>
+                        </div>
                       </div>
                     </div>
                   </div>
+
+
+
                 </div>
-
-
-
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary"  onClick="this.disabled=true; this.value='Guardando…';this.form.submit();">Guardar horario</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
               </div>
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-primary"  onClick="this.disabled=true; this.value='Guardando…';this.form.submit();">Guardar horario</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-              </div>
+              {{Form::close()}}
             </div>
-            {{Form::close()}}
           </div>
-        </div>
 
         <div class="modal fade" id="blockedit" tabindex="-1" role="dialog" aria-hidden="true">
           <div class="modal-dialog ">
@@ -197,7 +168,7 @@
                   {{Form::open(['route' => ['blocks.update', 1 ],'method' => 'put', 'id' => 'block-update'])}}
                     <select multiple="multiple" id="plan-select-edit" name="plans[]">
                       @foreach (App\Models\Plans\Plan::all() as $plan)
-                        <option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period}}</option>
+                        <option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period ?? "no aplica"}}</option>
                       @endforeach
                     </select>
                     <button type="submit" class="btn btn-primary" onClick="this.disabled=true; this.value='Editando…';this.form.submit(); ">Editar planes</button>

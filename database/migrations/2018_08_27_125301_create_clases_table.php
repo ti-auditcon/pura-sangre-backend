@@ -14,33 +14,35 @@ class CreateClasesTable extends Migration
      */
     public function up()
     {
-      // Schema::drop('classes');
+
 
       Schema::create('reservation_statuses', function (Blueprint $table) {
           $table->increments('id');
           $table->string('reservation_status');
+          $table->string('type');
           $table->timestamps();
       });
 
-      Schema::create('block_types', function (Blueprint $table) {
+      Schema::create('clase_types', function (Blueprint $table) {
           $table->increments('id');
-          $table->string('block_type');
+          $table->string('clase_type');
+          $table->string('clase_color');
           $table->timestamps();
       });
 
       Schema::create('blocks', function (Blueprint $table) {
           $table->increments('id');
-          $table->string('start');
-          $table->string('end');
+          $table->time('start');
+          $table->time('end');
           $table->string('title')->nullable();
           $table->date('date')->nullable();
           $table->unsignedInteger('profesor_id')->nullable();
-          $table->unsignedInteger('block_type_id')->nullable();
+          $table->unsignedInteger('clase_type_id')->nullable();
           $table->unsignedInteger('dow')->nullable();
           $table->timestamps();
 
-          $table->foreign('profesor_id')->references('id')->on('users')->onDelete('cascade');
-          $table->foreign('block_type_id')->references('id')->on('block_types')->onDelete('cascade');
+          // $table->foreign('profesor_id')->references('id')->on('users')->onDelete('cascade');
+          // $table->foreign('clase_type_id')->references('id')->on('clase_types')->onDelete('cascade');
       });
 
       Schema::create('clases', function (Blueprint $table) {
@@ -51,11 +53,14 @@ class CreateClasesTable extends Migration
           $table->unsignedInteger('block_id')->nullable();
           $table->integer('room')->nullable();
           $table->integer('profesor_id')->nullable();
+          $table->integer('wod_id')->nullable();
           $table->integer('quota')->nullable();
+          $table->unsignedInteger('clase_type_id')->nullable();
           $table->timestamps();
           $table->softDeletes();
 
-          $table->foreign('block_id')->references('id')->on('blocks')->onDelete('cascade');
+          // $table->foreign('profesor_id')->references('id')->on('users')->onDelete('cascade');
+          // $table->foreign('block_id')->references('id')->on('blocks')->onDelete('cascade');
       });
 
       Schema::create('reservations', function (Blueprint $table) {
@@ -63,13 +68,14 @@ class CreateClasesTable extends Migration
           $table->unsignedInteger('clase_id');
           $table->unsignedInteger('reservation_status_id');
           $table->unsignedInteger('user_id');
+          $table->longText('details')->nullable();
           $table->timestamps();
           $table->softDeletes();
 
-          $table->foreign('clase_id')->references('id')->on('clases')->onDelete('cascade');
-          $table->foreign('reservation_status_id')->references('id')->on('reservation_statuses')
-          ->onDelete('cascade');
-          $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+          // $table->foreign('clase_id')->references('id')->on('clases')->onDelete('cascade');
+          // $table->foreign('reservation_status_id')->references('id')->on('reservation_statuses')
+          // ->onDelete('cascade');
+          // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
       });
 
       Schema::create('block_plan', function (Blueprint $table) {
@@ -77,7 +83,11 @@ class CreateClasesTable extends Migration
           $table->unsignedInteger('block_id');
           $table->unsignedInteger('plan_id');
           $table->timestamps();
+
+          // $table->foreign('block_id')->references('id')->on('blocks')->onDelete('cascade');
+          // $table->foreign('plan_id')->references('id')->on('plans')->onDelete('cascade');
       });
+
 }
     /**
      * Reverse the migrations.
@@ -88,7 +98,7 @@ class CreateClasesTable extends Migration
     {
         Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('reservation_statuses');
-        Schema::dropIfExists('block_types');
+        Schema::dropIfExists('clase_types');
         Schema::dropIfExists('blocks');
         Schema::dropIfExists('clases');
         Schema::dropIfExists('reservations');

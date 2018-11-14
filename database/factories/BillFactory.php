@@ -5,11 +5,11 @@ use App\Models\Users\User;
 use Faker\Generator as Faker;
 use App\Models\Bills\PaymentType;
 
-$factory->define(PaymentType::class, function (Faker $faker) {
-    return [
-        'payment_type' => $faker->word,
-    ];
-});
+// $factory->define(PaymentType::class, function (Faker $faker) {
+//     return [
+//         'payment_type' => $faker->word,
+//     ];
+// });
 
 // $factory->define(PaymentStatus::class, function (Faker $faker) {
 //     return [

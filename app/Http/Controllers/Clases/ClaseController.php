@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Clases;
 
-use App\Http\Controllers\Controller;
-use App\Models\Clases\Clase;
-use App\Models\Clases\Reservation;
+use Session;
+use Redirect;
+use App\Models\Wods\Wod;
 use App\Models\Users\User;
+use App\Models\Clases\Clase;
 use Illuminate\Http\Request;
+use App\Models\Clases\ClaseType;
+use App\Models\Clases\Reservation;
+use App\Http\Controllers\Controller;
 
 /** [ClaseController description] */
 class ClaseController extends Controller
@@ -18,11 +22,20 @@ class ClaseController extends Controller
      */
     public function index()
     {
-        $clases = Clase::all()->toArray();
-        return view('clases.index')->with('clases',json_encode($clases));
+        return view('clases.index');
     }
 
-    /**
+    public function clases(request $request)
+    {
+      $clases =  Clase::where('clase_type_id',Session::get('clases-type-id'))->where('date','>=',$request->datestart)->where('date','<=',$request->dateend)->get();
+      return response()->json($clases, 200);
+    }
+
+    public function wods(request $request)
+    {
+      $wods = Wod::where('clase_type_id',Session::get('clases-type-id'))->where('date','>=',$request->datestart)->where('date','<=',$request->dateend)->get();
+      return response()->json($wods, 200);
+    }    /**
      * Display the specified resource.
      *
      * @param  \App\Models\Clases\Clase  $clase
@@ -31,7 +44,12 @@ class ClaseController extends Controller
     public function show(Clase $clase)
     {
         $outclase = $this->outClass($clase);
-        return view('clases.show')->with('clase', $clase)->with('outclase', $outclase);
+        $wod = $clase->wod;
+
+        return view('clases.show')
+        ->with('clase', $clase)
+        ->with('outclase', $outclase)
+        ->with('wod',$wod);
     }
 
     /**
@@ -42,7 +60,6 @@ class ClaseController extends Controller
      */
     public function destroy(Clase $clase)
     {
-        $clase->reservations()->delete();
         $clase->delete();
         return redirect('/clases')->with('success', 'La clase ha sido borrada correctamente');
     }
@@ -57,5 +74,13 @@ class ClaseController extends Controller
         $otro = Reservation::where('clase_id', $clase->id)->get();
         $consulta = User::whereNotIn('id', $otro->pluck('user_id'))->get();
         return $consulta;
-    }      
+    }
+
+    public function typeSelect(Request $request){
+        Session::put('clases-type-id',$request->type);
+        Session::put('clases-type-name',ClaseType::find($request->type)->clase_type);
+
+        return Redirect::back();
+    }
+
 }

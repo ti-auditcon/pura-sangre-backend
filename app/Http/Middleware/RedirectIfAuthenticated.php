@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Clases\Clase;
+
 
 class RedirectIfAuthenticated
 {
@@ -18,6 +20,10 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
+            if(!Session::has('clases-type-id')){
+              Session::put('clases-type-id',1);
+              Session::put('clases-type-name',Clase::find(1)->clase_type);
+            }
             return redirect('/home');
         }
 

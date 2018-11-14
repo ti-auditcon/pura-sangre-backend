@@ -14,8 +14,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('login', 'API\Auth\AuthController@login');
 
+Route::get('clases', 'API\Clases\ClaseController@index');
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('profile', 'API\Users\UserController@profile');
     Route::post('logout', 'API\Auth\AuthController@logout');
+
 });

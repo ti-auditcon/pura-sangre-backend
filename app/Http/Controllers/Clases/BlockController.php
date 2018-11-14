@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Clases;
 use Session;
 use Redirect;
 use App\Models\Clases\Block;
+use App\Models\Users\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Clases\BlockRequest;
@@ -18,7 +19,8 @@ class BlockController extends Controller
      */
     public function index()
     {
-      $blocks = Block::all()->toArray();
+
+      $blocks = Block::where('clase_type_id',Session::get('clases-type-id'))->get()->toArray();
 
       return view('blocks.index')->with('blocks',json_encode($blocks));
     }
@@ -46,7 +48,9 @@ class BlockController extends Controller
           $block = Block::create([
               'start'=>$request->start,
               'end'=>$request->end,
-              'dow'=>$day
+              'dow'=>$day,
+              'clase_type_id'=>$request->clase_type_id,
+              'profesor_id'=>$request->profesor_id
           ]);
           $block->plans()->sync($request->plans);
         }
@@ -56,6 +60,8 @@ class BlockController extends Controller
             'start'=>$request->start,
             'end'=>$request->end,
             'date'=>date("Y-d-m",strtotime($request->date)),//falta local
+            'clase_type_id'=>$request->clase_type_id,
+            'profesor_id'=>$request->profesor_id
         ]);
         $block->plans()->sync($request->plans);
         return Redirect::back();

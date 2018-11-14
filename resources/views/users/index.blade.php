@@ -40,6 +40,16 @@
                   <span class="btn-label-out btn-label-out-right btn-label-out-warning pointing">{{$users->where('status_user_id', 3)->count()}}</span>
                 </div>
               </span>
+              <span class="flexbox mr-3">
+                <div class="btn-group">
+                  <button class="btn btn-outline-warning user-filter" data-status="">
+                    <span class="btn-icon">TODOS</span>
+                  </button>
+                  <span class="btn-label-out btn-label-out-right btn-label-out-warning pointing">{{$users->count()}}</span>
+                </div>
+              </span>
+
+
             </div>
           </div>
           <div class="ibox-fullwidth-block">
@@ -60,6 +70,9 @@
                 @foreach ($users as $user)
                 <tr>
                   <td>
+                     <a class="media-img" href="javascript:;">
+                      <img class="img-circle" src="{{url('/storage/users/'.$user->avatar.'.jpg')}}" alt="image" width="54">
+                    </a>
                     @if($user->status_user_id == 1 )
                       <span class="badge-success badge-point"></span>
                     @elseif($user->status_user_id == 2 )
@@ -92,6 +105,9 @@
                   @endif
                   <td>
                     <a href="{{url('/users/'.$user->id)}}" class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-eye"></i></a>
+                    <a href="" class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-envelope"></i></a>
+                    <a href="" class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-usd"></i></a>
+                    
                   </td>
                   <td>{{$user->status_user_id}}</td>
 
