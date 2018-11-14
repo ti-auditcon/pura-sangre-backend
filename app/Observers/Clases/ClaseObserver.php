@@ -49,6 +49,8 @@ class ClaseObserver
                     $period_plan->save();
                 }
                 $reservation->delete();
+            }else{
+                $reservation->delete();
             }
         }
     }
