@@ -25,7 +25,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                    @foreach ($bills as $bill)
+                  @foreach ($bills as $bill)
                   <tr>
                       <td>{{$bill->plan_user->user->first_name}} {{$bill->plan_user->user->last_name}}</td>
                       <td>{{$bill->plan_user->plan->plan}}</td>
@@ -34,7 +34,7 @@
                       <td>{{Carbon\Carbon::parse($bill->finish_date)->format('d-m-Y')}}</td>
                       <td>{{$bill->amount}}</td>
                   </tr>
-                    @endforeach
+                  @endforeach
                 </tbody>
               </table>
             </div>
