@@ -2,9 +2,10 @@
 
 namespace App\Models\Bills;
 
-use App\Models\Users\User;
 use App\Models\Bills\Installment;
 use App\Models\Bills\PaymentType;
+use App\Models\Plans\PlanUser;
+use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 // use App\Models\Bills\Payment_status;
@@ -44,8 +45,15 @@ class Bill extends Model
      * @method user
      * @return [type] [description]
      */
-    public function user()
+    // public function user()
+    // {
+    //     return $this->hasManyThrough('App\Models\Users\User',
+    //                                  'App\Models\Plans\PlanUser', 'user_','user_id');
+    //     // return $this->belongsToMany(User::class);
+    // }
+
+    public function plan_user()
     {
-      return $this->belongsTo(User::class);
+        return $this->belongsTo('App\Models\Plans\PlanUser');
     }
 }
