@@ -140,6 +140,15 @@ class User extends Authenticatable
         }
     }
 
+    public function reservable_plans()
+    {
+      return $this->hasMany(PlanUser::class)->where('plan_status_id',[1,3]);
+    }
+
+    public function canReserve(Clase $clase)
+    {
+
+    }
     /**
      * [active_users description]
      * @return [type] [description]

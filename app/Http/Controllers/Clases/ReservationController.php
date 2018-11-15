@@ -15,6 +15,8 @@ class ReservationController extends Controller
 {
     public function store(Request $request)
     {
+      $plans = Auth::user()->reservable_plans;
+      dd($plans);
       $reservation = new Reservation;
       $reservation->clase_id = $request->clase_id;
       $reservation->reservation_status_id = 1;
