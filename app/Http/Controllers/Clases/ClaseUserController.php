@@ -16,10 +16,49 @@ use App\Models\Plans\PlanUserPeriod;
 
 class ClaseUserController extends Controller
 {
-    public function store(Request $request, Clase $clase)
-    {
+    // public function store(Request $request, Clase $clase)
+    // {
+    //     // $planusers = PlanUser::whereIn('plan_status_id', [1,3])->where('user_id', $request->user_id)->get();
+    //     // $response = $this->hasReserve($clase, $request);
+    //     //     if ($response != null) {
+    //     //         Session::flash('warning', $response);
+    //     //         return Redirect::back();
+    //     //     }
+    //     // if(count($planusers) == 0){
+    //     //     if (Auth::user()->hasRole(1)) {
+    //             Reservation::create(array_merge($request->all(), [
+    //                 'clase_id' => $clase->id,
+    //                 'reservation_status_id' => 1
+    //             ]));
+    //             Session::flash('success','Agregado correctamente a la clase');
+    //             return Redirect::back();
+    //         // }else {
+    //         // }
+    //     // }else{
+    //            private function userReserve($period_plan, $request, $clase)
+    // {
+    //     $response = null;
+    //     if ($clase->date > toDay()->format('Y-m-d')) {
+    //         $period_plan->update(['counter' => $period_plan->counter - 1]);
+    //         Reservation::create(array_merge($request->all(), [
+    //             'clase_id' => $clase->id,
+    //             'reservation_status_id' => 1
+    //         ]));
+    //         $response = 'Agregado correctamente a la clase';
+    //     }
+    //     elseif ($clase->date == toDay()->format('Y-m-d')) {
+    //         $period_plan->update(['counter' => $period_plan->counter - 1]);
+    //         Reservation::create(array_merge($request->all(), [
+    //             'clase_id' => $clase->id,
+    //             'reservation_status_id' => 1
+    //         ]));
+    //         $response = 'Agregado correctamente a la clase';
+    //     }
+    //     return $response;
+    // }
 
-    }
+    //     }
+    // }
 
     /**
      * Remove the specified resource from storage.
@@ -46,24 +85,7 @@ class ClaseUserController extends Controller
             # code...
         }
 
-        if ($clase->date < toDay()->format('Y-m-d')) {
-            Session::flash('warning','No puede votar una clase de un día anterior a hoy');
-            return Redirect::back();
-        }
-        elseif ($clase->date > toDay()->format('Y-m-d')) {
-            if ($reservation->delete()) {
-                if ($period_plan != null) {
-                    $period_plan->update(['counter' => $period_plan->counter + 1]);
-                }
-                Session::flash('success','Retiro de clase exitoso');
-                return Redirect::back();
-            }
-        }
-        else {
-            $class_hour = Carbon::parse($clase->start_at);
-            if ($class_hour->diffInMinutes(now()->format('H:i')) < 40 && $class_hour > now()->format('H:i')) {
-                Session::flash('warning','Ya no puede votar la clase, por que esta pronto a comenzar');
-                return Redirect::back();
+        
             }elseif ($class_hour < now()) {
                 Session::flash('warning','No puede votar una clase que ya pasó');
                 return Redirect::back();

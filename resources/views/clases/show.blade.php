@@ -6,8 +6,7 @@
 @section('content')
 <div class="row justify-content-center">
 
-  <div class="col-12">{{Session::get('success')}}</div>
-  <div class="col-12">{{Session::get('warning')}}</div>
+
   <div class="col-6">
     <div class="ibox">
       <div class="ibox-head">
@@ -144,7 +143,8 @@
 
                   @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
                   <td>
-            {!! Form::open(['route' => ['clases.users.destroy', 'clase' => $clase->id, 'user' => $reservation->user->id], 'method' => 'delete', 'id'=>'delete'.$reservation->user->id]) !!}
+            {!! Form::open(['route' => ['reservation.destroy', $reservation->id], 'method' => 'delete', 'id'=>'delete'.$reservation->user->id]) !!}
+                  <input type="hidden" value="1" name="by_god">
                     <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick sweet-user-delete" type="button"
             data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash"></i></button>
             {!! Form::close() !!}
@@ -198,7 +198,7 @@
                   {!! Form::open(['route' => ['reservation.store'], 'method' => 'post']) !!}
                   <input type="hidden" value="{{$usuario->id}}" name="user_id">
                   <input type="hidden" value="{{$clase->id}}" name="clase_id">
-                  <input type="hidden" value="true" name="by_god">
+                  <input type="hidden" value="1" name="by_god">
                   <button type="button" class="btn btn-primary" type="submit" onClick="this.form.submit();">Agregar</button>
                 {!! Form::close() !!}
                 </td>

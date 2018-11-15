@@ -58,7 +58,7 @@ class planuserController extends Controller
 		$planuser->user_id = $user->id;
 		$planuser->start_date = Carbon::parse($request->fecha_inicio);
 		
-		if (!$user->actual_plan) {
+		if ($user->actual_plan) {
 			$planuser->plan_status_id = 3;      
 		}else{
 			$planuser->plan_status_id = 1;
