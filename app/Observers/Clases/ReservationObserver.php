@@ -10,15 +10,17 @@ class ReservationObserver
 {
     public function creating(Reservation $reservation)
     {
-      if (Auth::user()->hasRole(1)) {
-          return true;
+      if(!Auth::guest())
+      {
+        if (Auth::user()->hasRole(1)) {
+            return true;
 
-      }else {
+        }else {
 
-          Session::flash('warning', 'errrrorrr');
-          return false;
+            Session::flash('warning', 'errrrorrr');
+            return false;
+        }
       }
-
 
     }
     public function created(Reservation $reservation)
