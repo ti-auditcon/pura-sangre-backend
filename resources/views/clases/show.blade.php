@@ -5,6 +5,9 @@
 
 @section('content')
 <div class="row justify-content-center">
+
+  <div class="col-12">{{Session::get('success')}}</div>
+  <div class="col-12">{{Session::get('warning')}}</div>
   <div class="col-6">
     <div class="ibox">
       <div class="ibox-head">
@@ -95,8 +98,9 @@
             @if (Auth::user()->hasRole(1))
               <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
             @else
-              {!! Form::open(['route' => ['clases.users.store', 'clase' => $clase->id], 'method' => 'post' ,'id' => 'user-join']) !!}
+              {!! Form::open(['route' => ['reservation.store'], 'method' => 'post' ,'id' => 'user-join']) !!}
                 <input type="hidden" value="{{Auth::user()->id}}" name="user_id">
+                <input type="hidden" value="{{$clase->id}}" name="clase_id">
               {!! Form::close() !!}
               <button class="btn btn-success sweet-user-join" data-id="{{$clase->id}}" data-name="{{$clase->date}}">  <i></i>Reservar esta clase
               </button>
@@ -191,8 +195,9 @@
                 <a href="{{url('/users/'.$usuario->id)}}">{{$usuario->first_name}} {{$usuario->last_name}}</a>
                 </td>
                 <td>
-                  {!! Form::open(['route' => ['clases.users.store', 'clase' => $clase->id], 'method' => 'post']) !!}
+                  {!! Form::open(['route' => ['reservation.store'], 'method' => 'post']) !!}
                   <input type="hidden" value="{{$usuario->id}}" name="user_id">
+                  <input type="hidden" value="{{$clase->id}}" name="clase_id">
                   <button type="button" class="btn btn-primary" type="submit" onClick="this.form.submit();">Agregar</button>
                 {!! Form::close() !!}
                 </td>
@@ -297,7 +302,7 @@
       //foco al input al abrir el modal
       $('#user-assign').on('shown.bs.modal', function () {
           $('#students-table-search_filter input').focus();
-      }) 
+      })
     });
   //
   //

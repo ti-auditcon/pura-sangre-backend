@@ -40,7 +40,10 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::resource('clases', 'Clases\ClaseController')
            ->except('create', 'edit', 'store', 'update');
     Route::resource('clases.users', 'Clases\ClaseUserController')
-             ->only('store', 'update', 'destroy');
+           ->only('store', 'update', 'destroy');
+
+    Route::resource('reservation', 'Clases\ReservationController')
+           ->only('store', 'update', 'destroy');
     Route::post('clases/type-select/', 'Clases\ClaseController@typeSelect')->name('clases.type');
     Route::get('get-clases', 'Clases\ClaseController@clases');
     Route::get('get-wods', 'Clases\ClaseController@wods');
@@ -54,7 +57,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
      * Plans Routes
      */
     Route::resource('plans', 'Plans\PlanController')->middleware('role:1');
-    
+
     /**
      * Reports routes
      */
@@ -66,5 +69,5 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::resource('users', 'Users\UserController');
     Route::resource('users.plans', 'Plans\PlanUserController');
     Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
-    
+
 });

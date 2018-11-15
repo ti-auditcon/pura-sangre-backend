@@ -21,15 +21,7 @@ class PlanUserObserver
      */
     public function creating(PlanUser $planUser)
     {
-      //verificamos que no exista uij plan activo para el usuario
-      // $exist = PlanUser::where('user_id', $planUser->user_id)->where('plan_status_id', 1)->exists();
-      // if($exist){
-      //   Session::flash('error','ya existe un plan activo para el usuario');
-      //   return false;
-      // }
-      // else {
-      //   return true;
-      // }
+
         $plan = Plan::findOrFail($planUser->plan_id);
         $user = User::findOrFail($planUser->user_id);
         $fecha_inicio = Carbon::parse($planUser->start_date);
@@ -78,7 +70,19 @@ class PlanUserObserver
           $planuserperiod->counter = $planUser->plan->class_numbers;
           $planuserperiod->plan_user_id = $planUser->id;
           $planuserperiod->save();
-        } 
+        }
+      }
+      else
+      {
+        $planuserperiod = new PlanUserPeriod;
+        $planuserperiod->start_date = Carbon::parse($planUser->start_date);
+
+        $planuserperiod->finish_date = Carbon::parse($planUser->start_date)->addWeek();
+
+        $planuserperiod->counter = $planUser->plan->class_numbers;
+        $planuserperiod->plan_user_id = $planUser->id;
+        $planuserperiod->save();
+
       }
 
 

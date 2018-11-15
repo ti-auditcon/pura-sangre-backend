@@ -38,6 +38,7 @@ class ClaseUserController extends Controller
                 return Redirect::back();
             }
         }else{
+            $period_plan = null;
             foreach ($planusers as $planuser) {
                 foreach ($planuser->plan_user_periods as $pup) {
                     if ($date_class->between(Carbon::parse($pup->start_date), Carbon::parse($pup->finish_date))) {
@@ -47,7 +48,7 @@ class ClaseUserController extends Controller
             }
 
             $response = $this->adminReserve($request, $period_plan, $clase);
-            if ($response != null) {
+            if ($response != null ) {
                 Session::flash('success', $response);
                 return Redirect::back();
             }
