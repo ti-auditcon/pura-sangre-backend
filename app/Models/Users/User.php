@@ -181,6 +181,16 @@ class User extends Authenticatable
         );
     }
 
+    public function bills()
+    {
+        return $this->hasManyThrough(
+            Bill::class,
+            PlanUser::class,
+            'user_id',
+            'plan_user_id'
+        );
+    }
+
     /**
     * [status_user description]
     * @return [model] [description]

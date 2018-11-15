@@ -49,9 +49,9 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('get-wods', 'Clases\ClaseController@wods');
 
     /**
-     * Payments Routes
+     * BILLS Routes
      */
-    // Route::resource('payments', 'Plans\PlanUserController')->middleware('role:1');
+    Route::resource('payments', 'Bills\BillController')->middleware('role:1');
 
     /**
      * Plans Routes

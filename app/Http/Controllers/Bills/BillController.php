@@ -27,17 +27,9 @@ class BillController extends Controller
      */
     public function index()
     {
-        return Bill::all()->toJson();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        // return Bill::all()->toJson();
+        $bills = Bill::all();
+        return view('payments.index')->with('bills', $bills);
     }
 
     /**
@@ -60,17 +52,6 @@ class BillController extends Controller
     public function show(Bill $bill)
     {
         return $bill->toJson();
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Bills\Bill  $bill
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Bill $bill)
-    {
-        //
     }
 
     /**
