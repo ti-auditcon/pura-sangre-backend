@@ -198,6 +198,7 @@
                   {!! Form::open(['route' => ['reservation.store'], 'method' => 'post']) !!}
                   <input type="hidden" value="{{$usuario->id}}" name="user_id">
                   <input type="hidden" value="{{$clase->id}}" name="clase_id">
+                  <input type="hidden" value="true" name="by_god">
                   <button type="button" class="btn btn-primary" type="submit" onClick="this.form.submit();">Agregar</button>
                 {!! Form::close() !!}
                 </td>

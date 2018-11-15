@@ -2,33 +2,83 @@
 
 namespace App\Observers\Clases;
 
-use App\Models\Clases\Reservation;
 use Auth;
 use Session;
+use Carbon\Carbon;
+use App\Models\Clases\Clase;
+use App\Models\Clases\Reservation;
 
 class ReservationObserver
 {
     public function creating(Reservation $reservation)
     {
-      if(!Auth::guest())
-      {
-        if (Auth::user()->hasRole(1)) {
-            return true;
-
-        }else {
-
-            Session::flash('warning', 'errrrorrr');
+        $clase = $reservation->clase;
+        $plans = $reservation->user->reservable_plans;
+        $date_class = Carbon::parse($clase->date);
+        $response = $this->hasReserve($clase, $reservation);
+        if ($response) {
+            Session::flash('warning', $response);
             return false;
         }
-      }
 
+        if ($reservation->by_god) {
+            return true;
+        }else{
+            $period_plan = null;
+            foreach ($plans as $planuser) {
+                if ($date_class->between(Carbon::parse($planuser->start_date), Carbon::parse($planuser->finish_date))) {
+                    $period_plan = $planuser;
+                }
+            }
+            if (!$period_plan) {
+                Session::flash('warning', 'No tiene un plan que le permita tomar esta clase');
+                return false;
+            }
+
+            $response = $this->userBadReserve($clase, $period_plan);
+            if ($response) {
+                Session::flash('warning', $response);
+                return Redirect::back();
+            }
+        }
     }
+
+    private function hasReserve($clase, $reservation)
+    {
+        $response = '';
+        $clases = Clase::where('date', $clase->date)->get();
+        foreach ($clases as $clase) {
+            $reservations = Reservation::where('clase_id', $clase->id)
+                                       ->where('user_id', $reservation->user_id)
+                                       ->get();
+            if (count($reservations) != 0) {
+                $response = 'Ya tiene clase tomada este día';
+            }
+        }
+        return $response;
+    }
+
+    private function userBadReserve($period_plan, $clase)
+    {
+        $badResponse = null;
+        if ($period_plan->counter <= 0) {
+            $badResponse = 'Ya ha ocupado o reservado todas sus clases de su plan actual';
+        }
+        elseif ($clase->date < toDay()->format('Y-m-d')) {
+            $badResponse = 'No puede tomar una clase de un día anterior a hoy';
+        }
+        elseif ($clase->date == toDay()->format('Y-m-d')) {
+            $class_hour = Carbon::parse($clase->start_at);
+            $diff_mns = $class_hour->diffInMinutes(now()->format('H:i'));
+            if ((now()->format('H:i') > $class_hour) || (now()->format('H:i') < $class_hour && $diff_mns < 40)) {
+                $badResponse = 'Ya no se puede tomar la clase';
+            }
+        }
+        return $badResponse;
+    }
+
     public function created(Reservation $reservation)
     {
-
-      return false;
+        return false;
     }
-
-
-
 }

@@ -65,6 +65,7 @@ class CreateClasesTable extends Migration
 
       Schema::create('reservations', function (Blueprint $table) {
           $table->increments('id');
+          $table->unsignedInteger('plan_user_id')->nullable();
           $table->unsignedInteger('clase_id');
           $table->unsignedInteger('reservation_status_id');
           $table->unsignedInteger('user_id');

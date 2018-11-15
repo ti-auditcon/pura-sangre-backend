@@ -21,16 +21,11 @@ class PlanUserObserver
      */
    public function creating(PlanUser $planUser)
    {
-      $plan = Plan::findOrFail($planUser->plan_id);
       $user = User::findOrFail($planUser->user_id);
       $fecha_inicio = Carbon::parse($planUser->start_date);
       $fecha_termino = Carbon::parse($planUser->finish_date);
       $plan_users = PlanUser::whereIn('plan_status_id', [1,3])->where('user_id', $user->id)->get();
       foreach ($plan_users as $plan_user) {
-         // if ($fecha_inicio->lte(Carbon::parse($plan_user->finish_date)) || $fecha_termino->gte(Carbon::parse($plan_user->start_date))) {
-         //    Session::flash('error','El usuario tiene un plan activo o precompra, que choca con la fecha de inicio y período seleccionados');
-         //    return false;
-         // }
          if (($fecha_inicio->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date))) || ($fecha_termino->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date)))) {
 
                     Session::flash('error','El usuario tiene un plan activo que choca con la fecha de inicio y período seleccionados');

@@ -56,14 +56,14 @@ class planuserController extends Controller
 		$planuser = new PlanUser;
 		$planuser->plan_id = $plan->id;
 		$planuser->user_id = $user->id;
+		$planuser->start_date = Carbon::parse($request->fecha_inicio);
 		
-		if ($user->actual_plan()->first() != null) {
+		if (!$user->actual_plan) {
 			$planuser->plan_status_id = 3;      
 		}else{
 			$planuser->plan_status_id = 1;
 		}
 
-		$planuser->start_date = Carbon::parse($request->fecha_inicio);
 		if ($plan->custom == 1) {
 			$planuser->finish_date = Carbon::parse($request->fecha_termino);
 			$planuser->counter = $request->counter;
@@ -76,23 +76,10 @@ class planuserController extends Controller
 			$planuser->finish_date = Carbon::parse($request->fecha_inicio)
 										   ->addMonths($plan->plan_period->period_number)
 										   ->subDay();
-			$planuser->counter = $plan->class_numbers;
+			$planuser->counter = $plan->class_numbers*$plan->plan_period->period_number;
 		}
 
 		if($planuser->save()){
-			if ($plan->plan_period_id != null) {
-				for ($i=0; $i < $plan->plan_period->period_number; $i++) { 
-					$planuserperiod = new PlanUserPeriod;
-					$planuserperiod->start_date = Carbon::parse($request->fecha_inicio)
-														->addMonths($i);
-					$planuserperiod->finish_date = Carbon::parse($request->fecha_inicio)									 	 			 ->addMonths($i+1)
-														 ->subDay();
-					$planuserperiod->counter = $plan->class_numbers;
-					$planuserperiod->plan_user_id = $planuser->id;
-					$planuserperiod->save();
-				}
-			}
-
 			if($plan->custom == 0)
 			{
 				Bill::create([
@@ -221,3 +208,16 @@ class planuserController extends Controller
 	//   $active_plan = PlanUser::where('plan_status_id', 1)->where('user_id', $user->id)->first();
 	//   return $active_plan;
 	// }
+	// 
+	// 			// if ($plan->plan_period_id != null) {
+			// 	for ($i=0; $i < $plan->plan_period->period_number; $i++) { 
+			// 		$planuserperiod = new PlanUserPeriod;
+			// 		$planuserperiod->start_date = Carbon::parse($request->fecha_inicio)
+			// 											->addMonths($i);
+			// 		$planuserperiod->finish_date = Carbon::parse($request->fecha_inicio)									 	 			 ->addMonths($i+1)
+			// 											 ->subDay();
+			// 		$planuserperiod->counter = $plan->class_numbers;
+			// 		$planuserperiod->plan_user_id = $planuser->id;
+			// 		$planuserperiod->save();
+			// 	}
+			// }
