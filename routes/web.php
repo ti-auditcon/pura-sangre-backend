@@ -39,8 +39,8 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
       //Tal vez mas adelante se necesite el store de clases
     Route::resource('clases', 'Clases\ClaseController')
            ->except('create', 'edit', 'store', 'update');
-    Route::resource('clases.users', 'Clases\ClaseUserController')
-           ->only('store', 'update', 'destroy');
+    // Route::resource('clases.users', 'Clases\ClaseUserController')
+    //        ->only('store', 'update', 'destroy');
 
     Route::resource('reservation', 'Clases\ReservationController')
            ->only('store', 'update', 'destroy');

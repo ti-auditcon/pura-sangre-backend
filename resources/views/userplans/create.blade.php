@@ -97,6 +97,7 @@
         <br>
         <div class="ibox-footer">
           <button class="btn btn-primary btn-air" type="submit">ASIGNAR PLAN</button>
+          <a class="btn btn-secondary" href="{{ route('users.show', $user->id) }}">Volver</a>
         </div>
       </div>
         {!! Form::close() !!}

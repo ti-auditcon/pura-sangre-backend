@@ -17,7 +17,7 @@ class Reservation extends Model
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
-    protected $fillable = ['clase_id', 'reservation_status_id', 'user_id'];
+    protected $fillable = ['plan_user_id', 'clase_id', 'reservation_status_id', 'user_id', 'by_god', 'details'];
 
     /**
      * [reservation_statistic_stages description]

@@ -149,14 +149,6 @@ class User extends Authenticatable
     {
 
     }
-    /**
-     * [active_users description]
-     * @return [type] [description]
-     */
-    public function active_users()
-    {
-        return $this->where('status_user_id', 1);
-    }
 
     /**
      * [blocks description]

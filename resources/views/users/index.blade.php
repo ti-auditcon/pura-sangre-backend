@@ -87,11 +87,11 @@
 
                   <td>{{Rut::set($user->rut)->fix()->format()}}</td>
 
-                  @if ($user->plan_users->isNotEmpty() && $user->plan_users->where('plan_state', 'activo'))
+                  @if ($user->plan_users->isNotEmpty() && $user->plan_users->where('plan_status_id', 1)->first())
 
-                    <td>{{$user->active_plan->plan->plan}}</td>
+                    <td>{{$user->actual_plan->plan->plan}}</td>
 
-                    @if ($user->active_plan->finish_date >= (Carbon\Carbon::today()))
+                    @if ($user->actual_plan->finish_date >= (Carbon\Carbon::today()))
                       <td>{{'Quedan '}}{{$user->plan_users->first()->finish_date->diffInDays(Carbon\Carbon::now())}}{{' días'}}</td>
                     @else
                       <td>{{'--'}}</td>
