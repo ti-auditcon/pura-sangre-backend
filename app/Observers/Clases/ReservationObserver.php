@@ -3,16 +3,32 @@
 namespace App\Observers\Clases;
 
 use App\Models\Clases\Reservation;
+use Auth;
+use Session;
 
 class ReservationObserver
 {
-    public function retrived(Reservation $reservation)
+    public function creating(Reservation $reservation)
     {
-      // dd('hola');
-      // $date = $reservation->clase->date;
-      // $hour =
-      // if($reservation){
+      if(!Auth::guest())
+      {
+        if (Auth::user()->hasRole(1)) {
+            return true;
 
+        }else {
+
+            Session::flash('warning', 'errrrorrr');
+            return false;
+        }
       }
+
     }
+    public function created(Reservation $reservation)
+    {
+
+      return false;
+    }
+
+
+
 }

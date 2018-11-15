@@ -25,12 +25,34 @@ class PlanUserObserver
       $user = User::findOrFail($planUser->user_id);
       $fecha_inicio = Carbon::parse($planUser->start_date);
       $fecha_termino = Carbon::parse($planUser->finish_date);
-      $plan_users = PlanUser::whereIn('plan_status_id', [1, 2, 3])->where('user_id', $user->id)->get();
+      $plan_users = PlanUser::whereIn('plan_status_id', [1,3])->where('user_id', $user->id)->get();
       foreach ($plan_users as $plan_user) {
-         if ($fecha_inicio->lte(Carbon::parse($plan_user->finish_date)) || $fecha_termino->gte(Carbon::parse($plan_user->start_date))) {
-            Session::flash('error','El usuario tiene un plan activo o precompra, que choca con la fecha de inicio y período seleccionados');
-            return false;
-         }
+         // if ($fecha_inicio->lte(Carbon::parse($plan_user->finish_date)) || $fecha_termino->gte(Carbon::parse($plan_user->start_date))) {
+         //    Session::flash('error','El usuario tiene un plan activo o precompra, que choca con la fecha de inicio y período seleccionados');
+         //    return false;
+         // }
+         if (($fecha_inicio->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date))) || ($fecha_termino->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date)))) {
+
+                    Session::flash('error','El usuario tiene un plan activo que choca con la fecha de inicio y período seleccionados');
+
+                    return false;
+
+                  }
+
+                  elseif (($fecha_inicio->lt(Carbon::parse($plan_user->start_date))) && ($fecha_termino->gt(Carbon::parse($plan_user->finish_date)))) {
+
+                    Session::flash('error','El usuario tiene un plan activo que choca con la fecha de inicio y período seleccionados');
+
+                    return false;
+
+                  }
+
+                  elseif (($fecha_inicio->gt(Carbon::parse($plan_user->start_date))) && ($fecha_termino->lt(Carbon::parse($plan_user->finish_date)))) {
+                    Session::flash('error','El usuario tiene un plan activo que choca con la fecha de inicio y período seleccionados');
+
+                    return false;
+
+                       }
       }
 
         return true;
@@ -45,7 +67,7 @@ class PlanUserObserver
           //   return false;
           // }
           // elseif (($fecha_inicio->gt(Carbon::parse($plan_user->start_date))) && ($fecha_termino->lt(Carbon::parse($plan_user->finish_date)))) {
-            
+
           // }
     /**
      * Handle the plan user "created" event.
@@ -60,15 +82,22 @@ class PlanUserObserver
       {
         for ($i=0; $i < $planUser->plan->plan_period->period_number; $i++) {
           $planuserperiod = new PlanUserPeriod;
-          $planuserperiod->start_date = Carbon::parse($planUser->start_date)
-                            ->addMonths($i);
-          $planuserperiod->finish_date = Carbon::parse($planUser->start_date)									 	 				 ->addMonths($i+1)
-                             ->subDay();
-
+          $planuserperiod->start_date = Carbon::parse($planUser->start_date)->addMonths($i);
+          $planuserperiod->finish_date = Carbon::parse($planUser->start_date)->addMonths($i+1)->subDay();
           $planuserperiod->counter = $planUser->plan->class_numbers;
           $planuserperiod->plan_user_id = $planUser->id;
           $planuserperiod->save();
-        } 
+        }
+      }
+      else
+      {
+        $planuserperiod = new PlanUserPeriod;
+        $planuserperiod->start_date = Carbon::parse($planUser->start_date);
+        $planuserperiod->finish_date = Carbon::parse($planUser->start_date)->addWeek();
+        $planuserperiod->counter = $planUser->plan->class_numbers;
+        $planuserperiod->plan_user_id = $planUser->id;
+        $planuserperiod->save();
+
       }
 
 

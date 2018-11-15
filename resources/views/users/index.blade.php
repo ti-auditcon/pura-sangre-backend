@@ -89,9 +89,9 @@
 
                   @if ($user->plan_users->isNotEmpty() && $user->plan_users->where('plan_state', 'activo'))
 
-                    <td>{{$user->plan_users->first()->plan->plan}}</td>
+                    <td>{{$user->active_plan->plan->plan}}</td>
 
-                    @if ($user->plan_users->first()->finish_date >= (Carbon\Carbon::today()))
+                    @if ($user->active_plan->finish_date >= (Carbon\Carbon::today()))
                       <td>{{'Quedan '}}{{$user->plan_users->first()->finish_date->diffInDays(Carbon\Carbon::now())}}{{' días'}}</td>
                     @else
                       <td>{{'--'}}</td>
@@ -107,7 +107,7 @@
                     <a href="{{url('/users/'.$user->id)}}" class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-eye"></i></a>
                     <a href="" class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-envelope"></i></a>
                     <a href="" class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-usd"></i></a>
-                    
+
                   </td>
                   <td>{{$user->status_user_id}}</td>
 
