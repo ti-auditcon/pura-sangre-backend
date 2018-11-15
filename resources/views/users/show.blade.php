@@ -93,7 +93,7 @@
               </div>
               <div class="row mb-2">
                 <div class="col-12 text-muted">Contacto de emergencia</div>
-                <div class="col-12">{{$user->emergency->contact_name}}, {{$user->emergency->contact_phone}}</div>
+                <div class="col-12">{{$user->emergency->contact_name}} - {{$user->emergency->contact_phone ?? 'Sin contacto de emergencia'}}</div>
               </div>
             </div>
           </div>
@@ -118,11 +118,11 @@
               <thead class="thead-default thead-lg">
                 <tr>
                   <th width="15%">Plan</th>
-                  <th width="15%">Fecha Pago</th>
-                  <th width="20%">Periodo</th>
+                  <th width="12%">Fecha Pago</th>
+                  <th width="22%">Periodo</th>
                   <th width="10%">Clases</th>
                   <th width="15%">Medio de pago</th>
-                  <th width="15%">Monto</th>
+                  <th width="10%">Monto</th>
                   <th width="10%">Estado</th>
                   @if (Auth::user()->hasRole(1))
                     <th width="10%">Acciones</th>
