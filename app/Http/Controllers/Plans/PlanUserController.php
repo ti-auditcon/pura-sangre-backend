@@ -152,7 +152,6 @@ class planuserController extends Controller
 	public function destroy(User $user, planuser $plan)
 	{
 	  $plan->update(['plan_status_id' => 5]);
-	  $plan->plan_user_periods()->delete();
 	  return redirect()->route('users.show', $user->id)->with('success', 'Se canceló el plan correctamente');
 	}
 

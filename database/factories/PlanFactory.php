@@ -1,12 +1,13 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\Plans\Plan;
 use App\Models\Bills\Bill;
-use Faker\Generator as Faker;
-use App\Models\Plans\PlanUser;
 use App\Models\Bills\Installment;
 use App\Models\Bills\PaymentStatus;
+use App\Models\Plans\Plan;
+use App\Models\Plans\PlanPeriod;
+use App\Models\Plans\PlanUser;
+use Carbon\Carbon;
+use Faker\Generator as Faker;
 
 
 // $factory->define(Plan::class, function (Faker $faker) {
@@ -37,11 +38,17 @@ $factory->define(PlanUser::class, function (Faker $faker) {
 
 
   }
+  $plan_period = PlanPeriod::where('id', $plan->plan_period_id)->first();
+  if ($plan_period) {
+    $period_number = $plan_period->period_number;
+  }else{
+    $period_number = 0;
+  }
 
     return [
       'start_date' => $starts_at,
       'finish_date' => $ends_at,
-      'counter' => $plan->class_numbers,
+      'counter' => $plan->class_numbers*$period_number,
       'plan_status_id' => $plan_status_id,
       'user_id' => 1,
       'plan_id' => $plan->id,

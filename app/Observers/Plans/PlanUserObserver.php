@@ -106,7 +106,7 @@ class PlanUserObserver
      */
     public function deleted(PlanUser $planUser)
     {
-        //
+        $planUser->bill()->delete();
     }
 
     /**
