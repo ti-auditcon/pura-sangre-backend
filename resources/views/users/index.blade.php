@@ -71,7 +71,7 @@
                 <tr>
                   <td>
                      <a class="media-img" href="javascript:;">
-                      <img class="img-circle" src="{{url('/storage/users/'.$user->avatar.'.jpg')}}" alt="image" width="54">
+                      <img class="img-circle" src="{{$user->avatar}}" alt="image" width="54">
                     </a>
                     @if($user->status_user_id == 1 )
                       <span class="badge-success badge-point"></span>
