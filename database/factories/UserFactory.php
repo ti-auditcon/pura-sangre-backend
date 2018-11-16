@@ -29,7 +29,7 @@ $factory->define(User::class, function (Faker $faker) {
       'birthdate' => $faker->date($format = 'Y-m-d', $max = 'now'), // '1979-06-09',
       'gender' => $faker->randomElement($array = array ('male','female')),
       'password' => bcrypt('123123'), // secret
-      'avatar' => 'u ('.$faker->numberBetween($min = 1, $max = 54).')',
+      'avatar' => url('/').'/storage/users/u ('.$faker->numberBetween($min = 1, $max = 54).')',
       'phone' => $faker->numberBetween($min = 40000000, $max = 99876599),
       'address' => $faker->streetAddress,
       // 'emergency_id' => Emergency::all()->random()->id,

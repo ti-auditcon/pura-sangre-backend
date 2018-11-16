@@ -63,7 +63,6 @@
                   <th width="20%">Período</th>
                   <th width="10%">acciones</th>
                   <th width="10%">status</th>
-
                 </tr>
               </thead>
               <tbody>

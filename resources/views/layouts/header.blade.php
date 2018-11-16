@@ -20,7 +20,7 @@
       <!-- END TOP-LEFT TOOLBAR-->
       <!-- START TOP-RIGHT TOOLBAR-->
       <ul class="nav navbar-toolbar">
-          <li class="dropdown dropdown-notification">
+          {{-- <li class="dropdown dropdown-notification">
               <a class="nav-link dropdown-toggle toolbar-icon" data-toggle="dropdown" href="javascript:;"><i class="ti-bell rel"><span class="notify-signal"></span></i></a>
               <div class="dropdown-menu dropdown-menu-right dropdown-menu-media">
                   <div class="dropdown-arrow"></div>
@@ -56,15 +56,14 @@
                       </ul>
                   </div>
               </div>
-          </li>
+          </li> --}}
           @auth()
           <li class="dropdown dropdown-user">
               <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
                   <span>
-                    {{Auth::user()->first_name}}
+                    {{Auth::user()->first_name}} {{Auth::user()->last_name}}
                   </span>
-                  <img src="{{url('/storage/users/'.Auth::user()->avatar.'.jpg')}}" alt="image" />
-                  
+                  <img src="{{Auth::user()->avatar}}" alt="image" />
               </a>
               <div class="dropdown-menu dropdown-arrow dropdown-menu-right admin-dropdown-menu">
                   <div class="dropdown-arrow"></div>
@@ -82,7 +81,7 @@
                   </div>
                   <div class="admin-menu-features">
                     <a class="admin-features-item" href="{{ route('users.show', Auth::id()) }}"><i class="ti-user"></i>
-                      <span>PROFILE</span>
+                      <span>PERFIL</span>
                     </a>
                     <a class="admin-features-item" href="javascript:;"><i class="ti-support"></i>
                       <span>SUPPORT</span>

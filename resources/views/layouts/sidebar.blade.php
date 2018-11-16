@@ -3,21 +3,16 @@
     <div id="sidebar-collapse">
         <ul class="side-menu">
           <li @if($page=="home") class="active" @endif>
-              <a href="{{url('/')}}"><i class="sidebar-item-icon ti-home"></i>
-                  <span class="nav-label">Inicio</span>
-              </a>
+            <a href="{{url('/')}}"><i class="sidebar-item-icon ti-home"></i>
+              <span class="nav-label">Inicio</span>
+            </a>
           </li>
-          <li @if($page=="blocks") class="active" @endif>
-              <a href="{{url('/clases')}}"><i class="sidebar-item-icon  ti-calendar "></i>
-                  <span class="nav-label">Clases</span>
-              </a>
+          <li @if($page=="clases/index") class="active" @endif>
+            <a href="{{url('/clases')}}"><i class="sidebar-item-icon  ti-calendar"></i>
+              <span class="nav-label">Clases</span>
+            </a>
           </li>
         @if (!Auth::user()->hasRole(1))
-          {{-- <li @if($page=="reservations") class="active" @endif>
-            <a href="{{ route('reservations.show', Auth::user()->id) }}"><i class="sidebar-item-icon ti-user"></i>
-              <span class="nav-label">Mis Reservas</span>
-            </a>
-          </li> --}}
           <li @if($page=="users") class="active" @endif>
             <a href="{{ route('users.show', Auth::user()->id) }}"><i class="sidebar-item-icon ti-user"></i>
               <span class="nav-label">Perfil</span>
@@ -28,12 +23,12 @@
         @if (Auth::user()->hasRole(1))
 
           <li @if($page=="users") class="active" @endif>
-            <a href="{{ route('users.index') }}"><i class="sidebar-item-icon ti-id-badge"></i>
+            <a href="{{ url('/users') }}"><i class="sidebar-item-icon ti-id-badge"></i>
               <span class="nav-label">Alumnos</span>
             </a>
           </li>
           <li @if($page=="payments") class="active" @endif>
-            <a href="{{url('/payments')}}"><i class="sidebar-item-icon ti-money"></i>
+            <a href="{{ url('/payments') }}"><i class="sidebar-item-icon ti-money"></i>
               <span class="nav-label">Pagos</span>
             </a>
           </li>
@@ -44,12 +39,12 @@
           </li>
           <li @if($page=="messages") class="active" @endif>
             <a href="{{url('/messages')}}"><i class="sidebar-item-icon ti-email"></i>
-              <span class="nav-label">Mensajeria</span>
+              <span class="nav-label">Mensajería</span>
             </a>
           </li>
           <li @if($page=="config") class="active" @endif>
             <a href="javascript:;"><i class="sidebar-item-icon ti-settings"></i>
-              <span class="nav-label">Configuracion<br /> del box</span>
+              <span class="nav-label">Configuración<br /> del box</span>
             </a>
             <div class="nav-2-level">
               <ul>
@@ -58,7 +53,7 @@
                 <li><a href="{{ route('plans.index') }}">Planes</a></li>
                 <li><a href="{{ route('blocks.index') }}">Horarios</a></li>
                 <li><a href="{{ route('exercises.index') }}">Ejercicios</a></li>
-                <li><a href="form_masks.html">Facturacion</a></li>
+                <li><a href="form_masks.html">Facturación</a></li>
               </ul>
             </div>
           </li>
