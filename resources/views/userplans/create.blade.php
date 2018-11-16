@@ -26,7 +26,6 @@
                 </select>
               </div>
             </div>
-            
           </div>
 
         <div style="display:none;" id="payment">

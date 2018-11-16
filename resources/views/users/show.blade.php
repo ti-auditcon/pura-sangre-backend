@@ -11,8 +11,9 @@
           <div class="ml-5 mr-5">
             {{-- <img class="img-circle" src="{{url('/img/users/'.$student->avatar)}}" alt="image" width="110"> --}}
           </div>
+            {{-- {{url('/storage/users/'.$user->avatar.'.jpg')}} --}}
           <a class="media-img" href="javascript:;">
-            <img class="img-circle" src="{{url('/storage/users/'.$user->avatar.'.jpg')}}" alt="image" width="72">
+            <img class="img-circle" src="{{$user->avatar}}" alt="image" width="72">
           </a>
           <div>
 

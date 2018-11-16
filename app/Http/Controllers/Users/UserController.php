@@ -85,12 +85,13 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
+        // dd(url('/').'/public/users/'.$user->id.$user->first_name.'.jpg');
         request()->file('image')->storeAs('public/users', $user->id.$user->first_name.'.jpg');
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->avatar = $user->id.$user->first_name;
+        $user->avatar = url('/').'/storage/users/'.$user->id.$user->first_name.'.jpg';
         $user->save();
         // $user->update(array_merge($request->all(), ['avatar' => $avatar]));
         Session::flash('success','Los datos del usuario han sido actualizados');
