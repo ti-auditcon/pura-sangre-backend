@@ -69,7 +69,7 @@
                   <div class="dropdown-arrow"></div>
                   <div class="dropdown-header">
                     <div class="admin-avatar">
-                      <img src="{{url('/storage/users/'.Auth::user()->avatar.'.jpg')}}" alt="image" />
+                      <img src="{{Auth::user()->avatar}}" alt="image" />
                     </div>
                     <div>
                       <h5 class="font-strong text-white">{{Auth::user()->first_name}} {{Auth::user()->last_name}}</h5>

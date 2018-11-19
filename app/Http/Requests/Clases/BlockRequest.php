@@ -26,7 +26,8 @@ class BlockRequest extends FormRequest
         switch ($this->method()){
            case 'POST': {
              return [
-               // 'first_name' => 'required',
+               'profesor_id' => 'required',
+               'day' => 'required',
                // 'last_name' => 'required',
                // 'email' => 'required|email|unique:users',
                // 'phone' => $this->phone != null ? 'digits:8': '',
@@ -53,7 +54,8 @@ class BlockRequest extends FormRequest
     public function messages()
     {
         return [
-           // 'first_name.required' => 'Debe ingresar un nombre.',
+           'profesor_id.required' => 'Debe seleccionar un profesor.',
+           'day.required' => 'Debe elegir al menos un día.'
         ];
     }
 }

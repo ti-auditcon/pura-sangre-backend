@@ -71,7 +71,7 @@ class ReservationObserver
         elseif ($clase->date == toDay()->format('Y-m-d')) {
             $class_hour = Carbon::parse($clase->start_at);
             $diff_mns = $class_hour->diffInMinutes(now()->format('H:i'));
-            if ((now()->format('H:i') > $class_hour) || (now()->format('H:i') < $class_hour && $diff_mns < 40)) {
+            if ((now()->format('H:i') > $class_hour->format('H:i')) || (now()->format('H:i') < $class_hour->format('H:i') && $diff_mns < 40)) {
                 $badResponse = 'Ya no se puede tomar la clase';
             }
         }

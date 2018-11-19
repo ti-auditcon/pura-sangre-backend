@@ -59,7 +59,7 @@ class BlockController extends Controller
         $block = Block::create([
             'start'=>$request->start,
             'end'=>$request->end,
-            'date'=>date("Y-d-m",strtotime($request->date)),//falta local
+            'date'=>date("Y-m-d",strtotime($request->date)),//falta local
             'clase_type_id'=>$request->clase_type_id,
             'profesor_id'=>$request->profesor_id
         ]);
