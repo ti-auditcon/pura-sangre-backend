@@ -29,7 +29,7 @@ class ClaseObserver
     * @param  \App\Models\Clases\Clase  $clase
     * @return void
     */
-    public function deleted(Clase $clase)
+    public function deleting(Clase $clase)
     {
         $date_class = Carbon::parse($clase->date);
         foreach ($clase->reservations as $reservation) {
@@ -37,6 +37,7 @@ class ClaseObserver
             $planusers = PlanUser::whereIn('plan_status_id', [1,3])->where('user_id', $user->id)->get();
 
             if(count($planusers) != 0){
+                $period_plan = null;
                 foreach ($planusers as $planuser) {
                     foreach ($planuser->plan_user_periods as $pup) {
                         if ($date_class->between(Carbon::parse($pup->start_date), Carbon::parse($pup->finish_date))) {
@@ -44,7 +45,7 @@ class ClaseObserver
                         }
                     }
                 }
-                if ($period_plan != null) {
+                if ($period_plan) {
                     $period_plan->counter = $period_plan->counter + 1;
                     $period_plan->save();
                 }

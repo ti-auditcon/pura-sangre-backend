@@ -112,9 +112,7 @@
                 <tr>
                   <th width="60%">Alumno</th>
                   <th width="20%">Estado</th>
-                  @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
                   <th width="20%">Acciones</th>
-                  @endif
                 </tr>
               </thead>
               <tbody>
@@ -124,13 +122,7 @@
                     <a class="media-img" href="javascript:;">
                       <img class="img-circle" src="{{$reservation->user->avatar}}" alt="image" width="54">
                     </a>
-                    @if($reservation->user->status_user_id == 1 )
-                      <span class="badge-success badge-point"></span>
-                    @elseif($reservation->user->status_user_id == 2 )
-                      <span class="badge-danger badge-point"></span>
-                    @elseif($reservation->user->status_user_id == 3 )
-                      <span class="badge-warning badge-point"></span>
-                    @endif
+                    <span class="badge-{{$reservation->user->status_user->type}} badge-point"></span>
                     <a @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2)) href="{{url('/users/'.$reservation->user->id)}}" @endif>
                       {{$reservation->user->first_name}} {{$reservation->user->last_name}}
                     </a>
@@ -147,6 +139,15 @@
                   <input type="hidden" value="1" name="by_god">
                     <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick sweet-user-delete" type="button"
             data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash"></i></button>
+            {!! Form::close() !!}
+                  </td>
+                  @endif
+                  @if (Auth::user()->hasRole(3) && Auth::id() == $reservation->user->id)
+                    <td>
+            {!! Form::open(['route' => ['reservation.destroy', $reservation->id], 'method' => 'delete', 'id'=>'delete'.$reservation->user->id]) !!}
+                  <input type="hidden" value="1" name="by_god">
+                    <button class="btn btn-outline-info btn-sm btn-thick sweet-user-delete" type="button"
+            data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash">Salir de Clase</i></button>
             {!! Form::close() !!}
                   </td>
                   @endif

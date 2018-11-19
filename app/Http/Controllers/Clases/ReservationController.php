@@ -7,8 +7,8 @@ use Session;
 use Redirect;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Clases\Reservation;
+use App\Http\Controllers\Controller;
 
 
 class ReservationController extends Controller

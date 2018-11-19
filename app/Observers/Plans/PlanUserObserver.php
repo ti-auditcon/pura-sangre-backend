@@ -28,75 +28,41 @@ class PlanUserObserver
       foreach ($plan_users as $plan_user) {
          if (($fecha_inicio->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date))) || ($fecha_termino->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date)))) {
 
-                    Session::flash('error','El usuario tiene un plan activo que choca con la fecha de inicio y período seleccionados');
+           Session::flash('error','El usuario tiene un plan activo que choca con la fecha de inicio y período seleccionados');
+           return false;
+         }
 
-                    return false;
+         elseif (($fecha_inicio->lt(Carbon::parse($plan_user->start_date))) && ($fecha_termino->gt(Carbon::parse($plan_user->finish_date)))) {
 
-                  }
+           Session::flash('error','El usuario tiene un plan activo que choca con la fecha de inicio y período seleccionados');
+           return false;
+         }
 
-                  elseif (($fecha_inicio->lt(Carbon::parse($plan_user->start_date))) && ($fecha_termino->gt(Carbon::parse($plan_user->finish_date)))) {
-
-                    Session::flash('error','El usuario tiene un plan activo que choca con la fecha de inicio y período seleccionados');
-
-                    return false;
-
-                  }
-
-                  elseif (($fecha_inicio->gt(Carbon::parse($plan_user->start_date))) && ($fecha_termino->lt(Carbon::parse($plan_user->finish_date)))) {
-                    Session::flash('error','El usuario tiene un plan activo que choca con la fecha de inicio y período seleccionados');
-
-                    return false;
-
-                       }
+         elseif (($fecha_inicio->gt(Carbon::parse($plan_user->start_date))) && ($fecha_termino->lt(Carbon::parse($plan_user->finish_date)))) {
+           Session::flash('error','El usuario tiene un plan activo que choca con la fecha de inicio y período seleccionados');
+           return false;
+         }
       }
-
-        return true;
+      return true;
    }
 
-          // if (($fecha_inicio->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date))) || ($fecha_termino->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date)))) {
-          //   Session::flash('error','El usuario tiene un plan activo que choca con la fecha de inicio y período seleccionados');
-          //   return false;
-          // }
-          // elseif (($fecha_inicio->lt(Carbon::parse($plan_user->start_date))) && ($fecha_termino->gt(Carbon::parse($plan_user->finish_date)))) {
-          //   Session::flash('error','El usuario tiene un plan activo que choca con la fecha de inicio y período seleccionados');
-          //   return false;
-          // }
-          // elseif (($fecha_inicio->gt(Carbon::parse($plan_user->start_date))) && ($fecha_termino->lt(Carbon::parse($plan_user->finish_date)))) {
-
-          // }
-    /**
-     * Handle the plan user "created" event.
-     *
-     * @param  \App\Models\Plans\PlanUser  $planUser
-     * @return void
-     */
-    public function created(PlanUser $planUser)
-    {
-
-      if($planUser->plan->plan_period!=null)
-      {
-        for ($i=0; $i < $planUser->plan->plan_period->period_number; $i++) {
-          $planuserperiod = new PlanUserPeriod;
-          $planuserperiod->start_date = Carbon::parse($planUser->start_date)->addMonths($i);
-          $planuserperiod->finish_date = Carbon::parse($planUser->start_date)->addMonths($i+1)->subDay();
-          $planuserperiod->counter = $planUser->plan->class_numbers;
-          $planuserperiod->plan_user_id = $planUser->id;
-          $planuserperiod->save();
-        }
-      }
-      else
-      {
-        $planuserperiod = new PlanUserPeriod;
-        $planuserperiod->start_date = Carbon::parse($planUser->start_date);
-        $planuserperiod->finish_date = Carbon::parse($planUser->start_date)->addWeek();
-        $planuserperiod->counter = $planUser->plan->class_numbers;
-        $planuserperiod->plan_user_id = $planUser->id;
-        $planuserperiod->save();
-
+   /**
+    * Handle the plan user "created" event.
+    *
+    * @param  \App\Models\Plans\PlanUser  $planUser
+    * @return void
+    */
+   public function created(PlanUser $planUser)
+   {
+      $plan = $planUser->plan;
+      if ($planUser->user->actual_plan) {
+         $planUser->plan_status_id = 3;
+      }else{
+         $planUser->plan_status_id = 1;
       }
 
-
-    }
+      $planUser->save();
+   }
 
     /**
      * Handle the plan user "deleted" event.

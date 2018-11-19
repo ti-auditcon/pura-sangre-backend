@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('sidebar')
-  @include('layouts.sidebar',['page'=>'student'])
+  @include('layouts.sidebar',['page'=>'users'])
 @endsection
 
 @section('content')
@@ -72,13 +72,7 @@
                      <a class="media-img" href="javascript:;">
                       <img class="img-circle" src="{{$user->avatar}}" alt="image" width="54">
                     </a>
-                    @if($user->status_user_id == 1 )
-                      <span class="badge-success badge-point"></span>
-                    @elseif($user->status_user_id == 2 )
-                      <span class="badge-danger badge-point"></span>
-                    @elseif($user->status_user_id == 3 )
-                      <span class="badge-warning badge-point"></span>
-                    @endif
+                      <span class="badge-{{$user->status_user->type}} badge-point"></span>
                     <a href="{{url('/users/'.$user->id)}}">
                       {{$user->first_name}} {{$user->last_name}}
                     </a>
@@ -86,16 +80,16 @@
 
                   <td>{{Rut::set($user->rut)->fix()->format()}}</td>
 
-                  @if ($user->plan_users->isNotEmpty() && $user->plan_users->where('plan_status_id', 1)->first())
+                  @if ($user->plan_users->isNotEmpty() && $user->actual_plan)
 
-                    <td>{{$user->actual_plan->plan->plan}}</td>
+                    <td>{{$user->actual_plan->plan->plan ?? 'No aplica'}}</td>
 
                     @if ($user->actual_plan->finish_date >= (Carbon\Carbon::today()))
                       <td>{{'Quedan '}}{{$user->plan_users->first()->finish_date->diffInDays(Carbon\Carbon::now())}}{{' días'}}</td>
                     @else
                       <td>{{'--'}}</td>
                     @endif
-                    <td>{{$user->plan_users->first()->start_date->format('d-m-Y')}} a {{$user->plan_users->first()->finish_date->format('d-m-Y')}}</td>
+                    <td>{{$user->actual_plan->start_date->format('d-m-Y')}} a {{$user->actual_plan->finish_date->format('d-m-Y')}}</td>
 
                   @else
                     <td>{{'Sin plan'}}</td>

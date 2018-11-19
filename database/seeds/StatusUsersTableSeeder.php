@@ -21,6 +21,7 @@ class StatusUsersTableSeeder extends Seeder
             array (
                 'id' => 1,
                 'status_user' => 'Activo',
+                'type' => 'success',
                 'created_at' => '2018-08-28 20:59:28',
                 'updated_at' => '2018-08-28 20:59:28',
             ),
@@ -28,6 +29,7 @@ class StatusUsersTableSeeder extends Seeder
             array (
                 'id' => 2,
                 'status_user' => 'Inactivo',
+                'type' => 'danger',
                 'created_at' => '2018-08-28 20:59:28',
                 'updated_at' => '2018-08-28 20:59:28',
             ),
@@ -35,6 +37,7 @@ class StatusUsersTableSeeder extends Seeder
             array (
                 'id' => 3,
                 'status_user' => 'Prueba',
+                'type' => 'warning',
                 'created_at' => '2018-08-28 20:59:28',
                 'updated_at' => '2018-08-28 20:59:28',
             ),

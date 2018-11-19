@@ -124,7 +124,9 @@ class User extends Authenticatable
     */
     public function actual_plan()
     {
-        return $this->hasOne(PlanUser::class)->where('plan_status_id', 1)->where('start_date','<=', today())->where('finish_date','>=', today());
+        return $this->hasOne(PlanUser::class)->where('plan_status_id', 1)
+                                             ->where('start_date','<=', today())
+                                             ->where('finish_date','>=', today());
     }
 
     public function active_plan()
@@ -134,7 +136,6 @@ class User extends Authenticatable
                         ->where('start_date','<=', today())
                         ->where('finish_date','>=', today())
                         ->first();
-        // dd($plan);
         if ($plan != null) {
             return $this->hasOne(PlanUser::class)->where('id', $plan->id);
         }
@@ -142,12 +143,7 @@ class User extends Authenticatable
 
     public function reservable_plans()
     {
-      return $this->hasMany(PlanUser::class)->where('plan_status_id',[1,3]);
-    }
-
-    public function canReserve(Clase $clase)
-    {
-
+        return $this->hasMany(PlanUser::class)->where('plan_status_id',[1,3]);
     }
 
     /**
@@ -216,8 +212,4 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class)->using(RoleUser::class);
     }
 
-    // public function coaches()
-    // {
-    //     return $this->belongsToMany(Role::class)->using(RoleUser::class);
-    // }
 }
