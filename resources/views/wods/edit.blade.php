@@ -20,7 +20,7 @@
             <div class="col">
               <div class="form-group mb-4">
                 <label>{{$st->stage_type}}</label>
-                <textarea name="{{$st->id}}" class="form-control form-control-solid" rows="6">{{$wod->stage($st->id)->description ?? 'sin registro'}}</textarea>
+                <textarea name="{{$st->id}}" class="form-control form-control-solid" rows="12">{{$wod->stage($st->id)->description ?? 'sin registro'}}</textarea>
               </div>
             </div>
             @endforeach

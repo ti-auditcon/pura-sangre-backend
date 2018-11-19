@@ -74,7 +74,7 @@
                 <div class="ibox-body text-center">
                   <h5 class="font-strong">{{$st->stage_type}}</h5>
                   <div class="py-5">
-                    <textarea name="{{$st->id}}" class="form-control form-control-solid" rows="6" disabled>
+                    <textarea name="{{$st->id}}" class="form-control form-control-solid" rows="10" disabled>
                       @if($clase->wod)
                       {{$clase->wod->stage($st->id)->description }}
                       @else
@@ -184,15 +184,9 @@
               <tr>
                 <td>
                 <a class="media-img" href="javascript:;">
-                  <img class="img-circle" src="{{url('/storage/users/'.$usuario->avatar.'.jpg')}}" alt="image" width="54">
+                  <img class="img-circle" src="{{$usuario->avatar}}" alt="image" width="54">
                 </a>
-                @if($usuario->status_user_id == 1 )
-                  <span class="badge-success badge-point"></span>
-                @elseif($usuario->status_user_id == 2 )
-                  <span class="badge-danger badge-point"></span>
-                @elseif($usuario->status_user_id == 3 )
-                  <span class="badge-warning badge-point"></span>
-                @endif
+                  <span class="badge-{{$usuario->status_user->type}} badge-point"></span>
                 <a href="{{url('/users/'.$usuario->id)}}">{{$usuario->first_name}} {{$usuario->last_name}}</a>
                 </td>
                 <td>

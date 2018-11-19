@@ -28,6 +28,8 @@ class BlockRequest extends FormRequest
              return [
                'profesor_id' => 'required',
                'day' => 'required',
+               'start' => 'required',
+               'end' => 'required',
                // 'last_name' => 'required',
                // 'email' => 'required|email|unique:users',
                // 'phone' => $this->phone != null ? 'digits:8': '',
@@ -55,7 +57,9 @@ class BlockRequest extends FormRequest
     {
         return [
            'profesor_id.required' => 'Debe seleccionar un profesor.',
-           'day.required' => 'Debe elegir al menos un día.'
+           'day.required' => 'Debe elegir al menos un día.',
+           'start.required' => 'Seleccione una hora de inicio.',
+           'end.required' => 'Seleccione una hora de término.',
         ];
     }
 }
