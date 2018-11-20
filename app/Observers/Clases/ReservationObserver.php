@@ -15,7 +15,6 @@ class ReservationObserver
         $clase = $reservation->clase;
         $plans = $reservation->user->reservable_plans;
         $date_class = Carbon::parse($clase->date);
-        // dd($date_class);
         $response = $this->hasReserve($clase, $reservation);
         if ($response) {
             Session::flash('warning', $response);

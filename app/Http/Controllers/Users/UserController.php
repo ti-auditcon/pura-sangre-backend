@@ -63,7 +63,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $plan_users = $user->plan_users()->orderBy('created_at','desc')->orderBy('plan_status_id', 'ASC')->get();
+        $plan_users = $user->plan_users()->orderBy('plan_status_id', 'ASC')->orderBy('created_at','desc')->get();
         return view('users.show')->with('user', $user)->with('plan_users', $plan_users);
     }
 
