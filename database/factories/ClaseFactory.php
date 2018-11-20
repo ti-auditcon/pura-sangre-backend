@@ -19,19 +19,19 @@ use App\Models\Clases\ReservationStatisticStage;
 // });
 
 
-$factory->define(ReservationStatus::class, function (Faker $faker) {
-  return [
-      'reservation_status' => $faker->word,
-  ];
-});
+// $factory->define(ReservationStatus::class, function (Faker $faker) {
+//   return [
+//       'reservation_status' => $faker->word,
+//   ];
+// });
 
-$factory->define(Reservation::class, function (Faker $faker) {
-  return [
-    'clase_id' => Clase::all()->random()->id,
-    'reservation_status_id' => ReservationStatus::all()->random()->id,
-    'user_id' => User::all()->random()->id,
-  ];
-});
+// $factory->define(Reservation::class, function (Faker $faker) {
+//   return [
+//     'clase_id' => Clase::all()->random()->id,
+//     'reservation_status_id' => ReservationStatus::all()->random()->id,
+//     'user_id' => User::all()->random()->id,
+//   ];
+// });
 
 // $factory->define(ReservationStatisticStage::class, function (Faker $faker) {
 //   return [

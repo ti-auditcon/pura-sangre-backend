@@ -29,6 +29,7 @@ class BlockObserver
             'finish_at' => $block->end,
             'profesor_id' => $block->profesor_id,
             'clase_type_id' => $block->clase_type_id,
+            'quota' => 25,
             ]);
           $date->addWeek();
         }
@@ -41,6 +42,7 @@ class BlockObserver
           'finish_at' => $block->end,
           'profesor_id' => 1,
           'clase_type_id' => $block->clase_type_id,
+          'quota' => 25,
       ]);
       }
 
