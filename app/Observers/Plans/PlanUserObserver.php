@@ -54,13 +54,15 @@ class PlanUserObserver
     */
    public function created(PlanUser $planUser)
    {
-      $plan = $planUser->plan;
-      if ($planUser->user->actual_plan) {
-         $planUser->plan_status_id = 3;
-      }else{
+      if ($planUser->user->actual_plan && $planUser->user->actual_plan->id != $planUser->id) {
+         if ($planUser->start_date >= today()) {
+            $planUser->plan_status_id = 3;
+         }
+      }elseif ($planUser->start_date <= today() && $planUser->finish_date >= today()) {
          $planUser->plan_status_id = 1;
+      }else{
+         $planUser->plan_status_id = 4;
       }
-
       $planUser->save();
    }
 

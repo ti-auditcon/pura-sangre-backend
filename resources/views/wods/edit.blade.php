@@ -13,7 +13,6 @@
       </div>
       {!! Form::open(['route' => ['wods.update',$wod->id],'method' => 'PUT']) !!}
       <div class="ibox-body">
-
         <div class="contaner">
           <div class="row">
             @foreach(App\Models\Wods\StageType::all() as $st)
@@ -24,11 +23,8 @@
               </div>
             </div>
             @endforeach
-
           </div>
-    </div>
-
-
+        </div>
       <br>
       <div class="ibox-footer">
       <button class="btn btn-primary btn-air" type="submit">Editar Workout</button>

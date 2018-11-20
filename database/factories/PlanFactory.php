@@ -22,28 +22,33 @@ $factory->define(PlanUser::class, function (Faker $faker) {
 //
   $plan = Plan::inRandomOrder()->first();
 
-
-  $starts_at = Carbon::createFromTimestamp($faker->dateTimeBetween($startDate = '-1 years', $endDate = 'now')->getTimeStamp());
-  $ends_at= Carbon::createFromFormat("Y-n-j G:i:s", $starts_at)->addMonths($plan->plan_period->period_number ?? 1 );
-
-  if($starts_at >= today()){
-    $plan_status_id = '3';
-  } else {
-    if($ends_at >= today())
-    {
-      $plan_status_id = '1';
-    } else {
-      $plan_status_id = '4';
-    }
-
-
-  }
-  $plan_period = PlanPeriod::where('id', $plan->plan_period_id)->first();
-  if ($plan_period) {
-    $period_number = $plan_period->period_number;
-  }else{
-    $period_number = 0;
-  }
+  $starts_at = Carbon::createFromTimestamp($faker->dateTimeBetween($startDate = '-1 years', $endDate = '+2 months')->getTimeStamp());
+  $ends_at= Carbon::createFromFormat("Y-n-j G:i:s", $starts_at)->addMonths($plan->plan_period->period_number ?? 1);
+  // $plan_status_id = 0;
+   // echo($starts_at.'--');
+   // echo($ends_at.'--');
+   if($starts_at >= today()){
+      $plan_status_id = 3;
+      // echo ('-'.$plan_status_id.'-');
+      // echo ('-precompra'."\n");
+   }
+   if($ends_at >= today()){
+      $plan_status_id = 1;
+      // echo ('-'.$plan_status_id.'-');
+      // echo ('-activo-'."\n");
+   } 
+   if ($ends_at < today()) {
+      $plan_status_id = 4;
+      // echo ('-'.$plan_status_id.'-');
+      // echo ('-completado-'."\n");
+   }
+   
+   $plan_period = PlanPeriod::where('id', $plan->plan_period_id)->first();
+      if ($plan_period) {
+         $period_number = $plan_period->period_number;
+      }else{
+         $period_number = 0;
+      }
 
     return [
       'start_date' => $starts_at,

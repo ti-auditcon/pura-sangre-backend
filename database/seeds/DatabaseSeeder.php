@@ -88,7 +88,7 @@ class DatabaseSeeder extends Seeder
       $this->call(RoleUserTableSeeder::class);
       factory(Stage::class, 200)->create();
 
-      factory(User::class, 10)->create()->each(function ($u)
+      factory(User::class, 50)->create()->each(function ($u)
       {
           factory(PlanUser::class, 10)->create(['user_id' => $u->id ])->each(function ($pu){
             // $bill = new Bill;
@@ -110,7 +110,7 @@ class DatabaseSeeder extends Seeder
 
           });
 
-          factory(Reservation::class, 5)->create(['user_id' => $u->id ]);
+          factory(Reservation::class, 30)->create(['user_id' => $u->id ]);
 
           //factory(Reservation::class, 20)->create(['user_id' => $u->id ]);
       });

@@ -136,9 +136,10 @@ class User extends Authenticatable
                         ->where('start_date','<=', today())
                         ->where('finish_date','>=', today())
                         ->first();
-        if ($plan != null) {
+        if ($plan) {
             return $this->hasOne(PlanUser::class)->where('id', $plan->id);
         }
+        return false;
     }
 
     public function reservable_plans()

@@ -57,13 +57,13 @@
         <div class="ibox-head d-flex">
           <div class="ibox-title">MIS DATOS</div>
           <div class="row">
-          <div class="col-sm-6 form-group mb-4">
+          <div class="col-sm-6 form-groplan_user mb-4">
             <a class="btn btn-success text-white" style="display: inline-block;" href="{{ route('users.edit', $user->id) }}">Editar</a>
           </div>
             {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'delete', 'class' => 'user-delete']) !!}
             {!! Form::close() !!}
             @if (Auth::user()->hasRole(1))
-            <div class="col-sm-6 form-group mb-4">
+            <div class="col-sm-6 form-groplan_user mb-4">
                <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick sweet-user-delete" style="display: inline-block;" data-id="{{$user->id}}" data-name="{{$user->first_name}} {{$user->last_name}}"><i class="la la-trash"></i></button>
             </div>
             @endif
@@ -100,7 +100,6 @@
           </div>
         </div>
       </div>
-
     </div>
     <div class="col-8">
       <div class="ibox ibox-fullheight">
@@ -131,43 +130,27 @@
                 </tr>
               </thead>
               <tbody>
-
-                @foreach($user->plan_users()->orderBy('created_at','desc')->orderBy('plan_status_id', 'ASC')->get() as $up)
+                @foreach($plan_users as $plan_user)
                   <tr>
-                    <td><a href="{{url('/users/'.$user->id.'/plans/'.$up->id)}}">{{$up->plan->plan}}</a></td>
-                    <td>{{$up->bill->date ?? "no aplica"}}</td>
-                    <td>{{$up->start_date->format('d-m-Y')}} al {{$up->finish_date->format('d-m-Y')}}</td>
-                    <td>{{$up->plan->class_numbers}}</td>
-                    <td>{{$up->bill->payment_type->payment_type ?? "no aplica"}}</td>
-                    <td>{{$up->bill->amount ?? "no aplica" }}</td>
-                    <td>
-                    <span class="badge badge-{{$up->plan_status->type}} badge-pill">
-                      {{strtoupper($up->plan_status->plan_status)}}</span>
-                    </td>
+                    <td><a href="{{url('/users/'.$user->id.'/plans/'.$plan_user->id)}}">{{$plan_user->plan->plan}}</a></td>
+                    <td>{{$plan_user->bill->date ?? "no aplica"}}</td>
+                    <td>{{$plan_user->start_date->format('d-m-Y')}} al {{$plan_user->finish_date->format('d-m-Y')}}</td>
+                    <td>{{$plan_user->plan->class_numbers}}</td>
+                    <td>{{$plan_user->bill->payment_type->payment_type ?? "no aplica"}}</td>
+                    <td>{{$plan_user->bill->amount ?? "no aplica" }}</td>
+                    <td><span class="badge badge-{{$plan_user->plan_status->type}} badge-pill">
+                      {{strtoupper($plan_user->plan_status->plan_status)}}</span></td>
 
-                    @if (Auth::user()->hasRole(1) && $up->plan_status->can_delete == true)
+                    @if (Auth::user()->hasRole(1) && $plan_user->plan_status->can_delete == true)
                       <td>
-                      {!! Form::open(['route' => ['users.plans.destroy', 'user' => $user->id, 'plan' => $up->id], 'method' => 'delete', 'class' => 'user-plan-delete']) !!}
+                      {!! Form::open(['route' => ['users.plans.destroy', 'user' => $user->id, 'plan' => $plan_user->id], 'method' => 'delete', 'class' => 'user-plan-delete',  'id'=>'delete'.$plan_user->id]) !!}
+                      {{-- <input type="hidden" name="plan_user_id" hidden value="{{$plan_user->id}}"> --}}
                       {!! Form::close() !!}
-                      <button class="btn btn-info btn-icon-only btn-circle btn-sm btn-air sweet-user-plan-delete" data-id="{{$up->id}}" data-name="{{$up->plan->plan}}"><i class="la la-trash"></i></button>
+                      <button class="btn btn-info btn-icon-only btn-circle btn-sm btn-air sweet-user-plan-delete" data-id="{{$plan_user->id}}" data-name="{{$plan_user->plan->plan}}"><i class="la la-trash"></i></button>
                     </td>
                     @endif
-                    
                   </tr>
-
                 @endforeach
-                {{-- @foreach ($user->installments as $fee)
-
-                    <tr>
-                      <td>{{$fee->plan_user->plan->plan}}</td>
-                      <td>{{Carbon\Carbon::parse($fee->commitment_date)->format('d-m-Y')}}</td>
-                      <td>{{Carbon\Carbon::parse($fee->payment_date)->format('d-m-Y')}}</td>
-                      <td>{{Carbon\Carbon::parse($fee->expiration_date)->format('d-m-Y')}}</td>
-                      <td>{{$fee->payment_status->payment_status}}</td>
-                      <td>{{$fee->amount}}</td>
-                      <td></td>
-                    </tr>
-                @endforeach --}}
               </tbody>
             </table>
           </div>
@@ -211,7 +194,7 @@
   <script>
   $('.sweet-user-plan-delete').click(function(e){
     var id = $(this).data('id');
-    //alert(id);
+    // alert(id);
       swal({
           title: "Desea eliminar el plan: "+$(this).data('name')+"?",
           text: "(Se borrarán todas las cuotas futuras de este plan, manteniendo los ya consumidos)",
@@ -222,8 +205,8 @@
           confirmButtonText: 'Eliminar',
           closeOnConfirm: false,
       },function(){
-        //redirección para eliminar usuario
-         $('form.user-plan-delete').submit();
+        //redirección para eliminar plan del usuario
+         $('form#delete'+id).submit();
       });
   });
   </script>

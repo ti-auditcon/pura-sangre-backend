@@ -63,7 +63,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-      return view('users.show')->with('user', $user);
+        $plan_users = $user->plan_users()->orderBy('created_at','desc')->orderBy('plan_status_id', 'ASC')->get();
+        return view('users.show')->with('user', $user)->with('plan_users', $plan_users);
     }
 
     /**
@@ -85,15 +86,15 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
-        // dd(url('/').'/public/users/'.$user->id.$user->first_name.'.jpg');
-        request()->file('image')->storeAs('public/users', $user->id.$user->first_name.'.jpg');
+        if ($request->image) {
+            request()->file('image')->storeAs('public/users', $user->id.$user->first_name.'.jpg');
+            $user->avatar = url('/').'/storage/users/'.$user->id.$user->first_name.'.jpg';
+        }
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->avatar = url('/').'/storage/users/'.$user->id.$user->first_name.'.jpg';
         $user->save();
-        // $user->update(array_merge($request->all(), ['avatar' => $avatar]));
         Session::flash('success','Los datos del usuario han sido actualizados');
         return view('users.show')->with('user', $user);
     }
