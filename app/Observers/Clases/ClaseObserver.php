@@ -18,7 +18,6 @@ class ClaseObserver
       $time = $clase->start_at;
       $dateTime = $date.' '.$time;
       if ($dateTime < now()) {
-
         $clase->reservations()->update(['reservation_status_id' => 3]);
       }
 
