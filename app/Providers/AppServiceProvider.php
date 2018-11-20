@@ -8,7 +8,7 @@ use App\Models\Plans\PlanUser;
 use App\Models\Users\User;
 use App\Models\Wods\Stage;
 use App\Models\Wods\Wod;
-use App\Models\clases\Reservation;
+use App\Models\Clases\Reservation;
 use App\Observers\Clases\BlockObserver;
 use App\Observers\Clases\ClaseObserver;
 use App\Observers\Clases\ReservationObserver;
