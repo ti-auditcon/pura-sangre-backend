@@ -3,7 +3,6 @@
 namespace App\Observers\Plans;
 
 use App\Models\Plans\PlanUser;
-use App\Models\Plans\PlanUserPeriod;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
 use Carbon\Carbon;
@@ -70,15 +69,16 @@ class PlanUserObserver
    }
 
 
-    /**
-     * Handle the plan user "deleted" event.
-     *
-     * @param  \App\Models\Plans\PlanUser  $planUser
-     * @return void
-     */
-    public function deleted(PlanUser $planUser)
+    public function updated(PlanUser $planUser)
     {
+      if ($planUser->plan_status_id == 5) {
+        $planUser->reservations()->each(function ($reserv){
+          if ($reserv->reservation_status_id == 1 || $reserv->reservation_status_id == 2) {
+            $reserv->delete();
+          }
+        });
         $planUser->bill()->delete();
+      }
     }
 
     /**

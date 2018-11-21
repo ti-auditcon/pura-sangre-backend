@@ -2,12 +2,13 @@
 
 namespace App\Models\Plans;
 
-use Carbon\Carbon;
 use App\Models\Bills\Bill;
+use App\Models\Clases\Reservation;
 use App\Models\Plans\Plan;
-use App\Models\Users\User;
 use App\Models\Plans\PlanStatus;
 use App\Models\Plans\PlanUserPeriod;
+use App\Models\Users\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -21,14 +22,14 @@ class PlanUser extends Model
     protected $fillable = ['start_date', 'finish_date',
     'counter', 'plan_status_id', 'plan_id', 'user_id'];
 
-    /**
-     * [boot description]
-     * @return [model] [description]
-     */
-    public static function boot()
-    {
-        parent::boot();
-    }
+    // *
+    //  * [boot description]
+    //  * @return [model] [description]
+     
+    // public static function boot()
+    // {
+    //     parent::boot();
+    // }
 
     /**
      * [getStartDateAttribute description]
@@ -95,5 +96,10 @@ class PlanUser extends Model
     public function plan_user_periods()
     {
         return $this->hasMany(PlanUserPeriod::class);
+    }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
     }
 }

@@ -198,11 +198,11 @@ class User extends Authenticatable
         return User::all()->where('admin', 'false')->orderBy('name');
     }
 
-    /**
-    * [reservations description]
-    * @method reservations
-    * @return [Model]       [description]
-    */
+    // public function reservations()
+    // {
+    //     return $this->hasManyThrough(Reservation::class, PlanUser::class, 'user_id', 'plan_user_id');
+    // }
+
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
