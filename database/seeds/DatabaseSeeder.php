@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
       $this->call(PlanStatusTableSeeder::class);
       $this->call(StageTypesTableSeeder::class);
       $this->call(ReservationStatusesTableSeeder::class);
+      $this->call(OauthClientsTableSeeder::class);
 
       $user = User::create([
           'rut' => 11111111,
@@ -99,10 +100,9 @@ class DatabaseSeeder extends Seeder
                   'finish_date' => $pu->finish_date,
                   'amount' => $pu->plan->amount,
                ]);
-                $this->call(OauthClientsTableSeeder::class);
     }
          });
-         factory(Reservation::class, 30)->create(['user_id' => $u->id ]);
+         factory(Reservation::class, 80)->create(['user_id' => $u->id ]);
       });
       // $this->call(ReservationsTableSeeder::class);
       // factory(Reservation::class, 2000)->create();
