@@ -87,6 +87,13 @@
 								<span class="input-group-addon"></span>
 								</div>
 
+								<div class="form-group">
+									<div class="input-group">
+										<label class="col-sm-2 col-form-label">N° de Clases</label>
+										<input type="number" class="form-control" value="" name="quota" required>
+									</div>
+								</div>
+
 									<div class="form-group mb-12">
 										<label class="radio radio-grey radio-primary">
 											<input id="recurrent" type="radio" name="repetition" value="multiple" checked><span class="input-span"></span>Recurrente

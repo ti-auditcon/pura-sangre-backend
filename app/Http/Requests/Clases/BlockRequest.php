@@ -30,6 +30,7 @@ class BlockRequest extends FormRequest
                'day' => 'required',
                'start' => 'required',
                'end' => 'required',
+               'quota' => 'required',
                // 'last_name' => 'required',
                // 'email' => 'required|email|unique:users',
                // 'phone' => $this->phone != null ? 'digits:8': '',
@@ -60,6 +61,7 @@ class BlockRequest extends FormRequest
            'day.required' => 'Debe elegir al menos un día.',
            'start.required' => 'Seleccione una hora de inicio.',
            'end.required' => 'Seleccione una hora de término.',
+           'quota.required' => 'Ingrese un número de clases.',
         ];
     }
 }

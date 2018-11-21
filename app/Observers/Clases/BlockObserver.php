@@ -15,7 +15,6 @@ class BlockObserver
      */
     public function created(Block $block)
     {
-
       //creamos las 12 clases siguientes por cada bloque
       if($block->date == null){
         $first_date = now()->startOfWeek()->addDays($block->dow[0]-1);
@@ -29,7 +28,7 @@ class BlockObserver
             'finish_at' => $block->end,
             'profesor_id' => $block->profesor_id,
             'clase_type_id' => $block->clase_type_id,
-            'quota' => 25,
+            'quota' => $block->quota,
             ]);
           $date->addWeek();
         }
@@ -42,7 +41,7 @@ class BlockObserver
           'finish_at' => $block->end,
           'profesor_id' => 1,
           'clase_type_id' => $block->clase_type_id,
-          'quota' => 25,
+          'quota' => $block->quota,
       ]);
       }
 

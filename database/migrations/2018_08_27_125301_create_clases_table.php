@@ -37,6 +37,7 @@ class CreateClasesTable extends Migration
           $table->string('title')->nullable();
           $table->date('date')->nullable();
           $table->unsignedInteger('profesor_id')->nullable();
+          $table->Integer('quota')->nullable();
           $table->unsignedInteger('clase_type_id')->nullable();
           $table->unsignedInteger('dow')->nullable();
           $table->timestamps();

@@ -46,50 +46,28 @@ class BlockController extends Controller
       if($request->repetition == 'multiple'){
         foreach ($request->day as $day) {
           $block = Block::create([
-              'start'=>$request->start,
-              'end'=>$request->end,
-              'dow'=>$day,
-              'clase_type_id'=>$request->clase_type_id,
-              'profesor_id'=>$request->profesor_id
+              'start'=> $request->start,
+              'end'=> $request->end,
+              'dow'=> $day,
+              'clase_type_id'=> $request->clase_type_id,
+              'profesor_id'=> $request->profesor_id,
+              'quota' => $request->quota,
           ]);
           $block->plans()->sync($request->plans);
         }
         return Redirect::back();
       } else {
         $block = Block::create([
-            'start'=>$request->start,
-            'end'=>$request->end,
-            'date'=>date("Y-m-d",strtotime($request->date)),//falta local
-            'clase_type_id'=>$request->clase_type_id,
-            'profesor_id'=>$request->profesor_id
+            'start'=> $request->start,
+            'end'=> $request->end,
+            'date'=> date("Y-m-d",strtotime($request->date)),//falta local
+            'clase_type_id'=> $request->clase_type_id,
+            'profesor_id'=> $request->profesor_id,
+            'quota' => $request->quota,
         ]);
         $block->plans()->sync($request->plans);
         return Redirect::back();
       }
-
-
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Clases\Block  $block
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Block $block)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Clases\Block  $block
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Block $block)
-    {
-        //
     }
 
     /**

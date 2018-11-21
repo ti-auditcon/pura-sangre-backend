@@ -74,7 +74,7 @@
               right:  'today prev,next',
           },
           minTime: "07:00:00",
-          maxTime: "21:00:00",
+          maxTime: "22:00:00",
           editable: false,
 
           defaultView: 'agendaWeek',
@@ -84,7 +84,7 @@
           hiddenDays: [0],
           eventColor: '#4c6c8b',
           eventRender: function( event, element, view ) {
-            element.find('.fc-time').append('<div> reservas: ' +event.reservation_count+'/25</div> ');
+            element.find('.fc-time').append('<div> reservas: ' +event.reservation_count+'/'+event.quota+'</div> ');
           },
           viewRender: function (view, element,start,end) {
              var b = $('#calendar').fullCalendar('getDate');

@@ -11,7 +11,7 @@ class Block extends Model
 {
   protected $table = 'blocks';
   protected $fillable = ['start', 'end', 'dow', 'title',
-            'date', 'profesor_id', 'clase_type_id'];
+            'date', 'profesor_id', 'quota', 'clase_type_id'];
   protected $appends = ['plans_id','color'];
   // protected $with = array('plans');
 
