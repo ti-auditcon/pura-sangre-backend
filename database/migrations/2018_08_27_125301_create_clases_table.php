@@ -72,7 +72,6 @@ class CreateClasesTable extends Migration
           $table->boolean('by_god')->nullable();
           $table->longText('details')->nullable();
           $table->timestamps();
-          $table->softDeletes();
 
           // $table->foreign('clase_id')->references('id')->on('clases')->onDelete('cascade');
           // $table->foreign('reservation_status_id')->references('id')->on('reservation_statuses')

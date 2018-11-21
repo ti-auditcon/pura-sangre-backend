@@ -101,7 +101,7 @@ class DatabaseSeeder extends Seeder
                ]);
             }
          });
-         factory(Reservation::class, 50)->create(['user_id' => $u->id ]);
+         factory(Reservation::class, 30)->create(['user_id' => $u->id ]);
       });
       // $this->call(ReservationsTableSeeder::class);
       // factory(Reservation::class, 2000)->create();
