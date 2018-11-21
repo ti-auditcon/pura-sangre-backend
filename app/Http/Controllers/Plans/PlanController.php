@@ -10,16 +10,6 @@ use App\Http\Controllers\Controller;
 /** [PlanController description] */
 class PlanController extends Controller
 {
-
-    /**
-     * [__construct description]
-     */
-    // public function __construct()
-    // {
-    //     $this->middleware('plan.credentials')->only(['index', 'show']);
-    //     $this->middleware('auth:api')->except(['index', 'show']);
-    // }
-
     /**
      * Display a listing of the resource.
      *
@@ -49,7 +39,7 @@ class PlanController extends Controller
      */
     public function store(Request $request, Plan $plan)
     {
-      $plan = Plan::create($request->all());
+      $plan = Plan::create(array_merge($request->all(), ['has_clases' => 1, 'custom' => 0]));
       return redirect()->route('plans.show', $plan->id)->with('success', 'El plan ha sido creado correctamente');
     }
 

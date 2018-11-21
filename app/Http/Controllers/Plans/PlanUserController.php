@@ -68,15 +68,14 @@ class planuserController extends Controller
         	$planuser->counter = $plan->class_numbers;
       	}
 	    else {
-	         $planuser->finish_date = Carbon::parse($request->fecha_inicio)
-	                                        ->addMonths($plan->plan_period->period_number)
-	                                        ->subDay();
-	         $planuser->counter = $plan->class_numbers * $plan->plan_period->period_number;
+	        $planuser->finish_date = Carbon::parse($request->fecha_inicio)
+	                                       ->addMonths($plan->plan_period->period_number)
+	                                       ->subDay();
+	        $planuser->counter = $plan->class_numbers * $plan->plan_period->period_number;
 	    }
 		
 		if($planuser->save()){
-			if($plan->custom == 0)
-			{
+			if($plan->custom == 0){
 				Bill::create([
 					'plan_user_id' => $planuser->id,
 					'payment_type_id' => $request->payment_type_id,

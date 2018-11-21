@@ -3,7 +3,6 @@
 namespace App\Observers\Plans;
 
 use App\Models\Plans\PlanUser;
-use App\Models\Plans\PlanUserPeriod;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
 use Carbon\Carbon;
@@ -54,27 +53,32 @@ class PlanUserObserver
     */
    public function created(PlanUser $planUser)
    {
+      // dd($planUser);
       if ($planUser->user->actual_plan && $planUser->user->actual_plan->id != $planUser->id) {
-         if ($planUser->start_date >= today()) {
+         if ($planUser->start_date > today()) {
             $planUser->plan_status_id = 3;
          }
+      }elseif (!$planUser->user->actual_plan && $planUser->start_date > today()) {
+        $planUser->plan_status_id = 3;
       }elseif ($planUser->start_date <= today() && $planUser->finish_date >= today()) {
-         $planUser->plan_status_id = 1;
-      }else{
-         $planUser->plan_status_id = 4;
+        $planUser->plan_status_id = 1;
+      }else {
+        $planUser->plan_status_id = 4;
       }
       $planUser->save();
    }
 
-    /**
-     * Handle the plan user "deleted" event.
-     *
-     * @param  \App\Models\Plans\PlanUser  $planUser
-     * @return void
-     */
-    public function deleted(PlanUser $planUser)
+
+    public function updated(PlanUser $planUser)
     {
+      if ($planUser->plan_status_id == 5) {
+        $planUser->reservations()->each(function ($reserv){
+          if ($reserv->reservation_status_id == 1 || $reserv->reservation_status_id == 2) {
+            $reserv->delete();
+          }
+        });
         $planUser->bill()->delete();
+      }
     }
 
     /**

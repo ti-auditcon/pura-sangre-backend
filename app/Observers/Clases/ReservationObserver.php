@@ -15,7 +15,6 @@ class ReservationObserver
         $clase = $reservation->clase;
         $plans = $reservation->user->reservable_plans;
         $date_class = Carbon::parse($clase->date);
-        // dd($date_class);
         $response = $this->hasReserve($clase, $reservation);
         if ($response) {
             Session::flash('warning', $response);
@@ -99,7 +98,6 @@ class ReservationObserver
 
     public function deleting(Reservation $reservation)
     {
-        // dd($reservation);
         $clase = $reservation->clase;
         $plans = $reservation->user->reservable_plans;
         $date_class = Carbon::parse($clase->date);
@@ -107,10 +105,12 @@ class ReservationObserver
         if ($reservation->by_god) {
             return true;
         }else{
-            $response = $this->badGetOut($clase);
-            if ($response) {
-                Session::flash('warning', $response);
-                return false;
+            if (!Auth::user()->hasRole(1)) {
+                $response = $this->badGetOut($clase);
+                if ($response) {
+                    Session::flash('warning', $response);
+                    return false;
+                }    
             }
         }
     }
@@ -123,12 +123,11 @@ class ReservationObserver
             $badGetOut = 'No puede votar una clase de un día anterior a hoy';
         }
         elseif ($clase->date == toDay()->format('Y-m-d')){
-            
             if ($class_hour->diffInMinutes(now()->format('H:i')) < 40 && $class_hour > now()->format('H:i')) {
                 $badGetOut = 'Ya no puede votar la clase, por que esta pronto a comenzar';
             }
             elseif ($class_hour < now()) {
-                    $badGetOut = 'No puede votar una clase que ya pasó';
+                $badGetOut = 'No puede votar una clase que ya pasó';
             }
         }
         return $badGetOut;
