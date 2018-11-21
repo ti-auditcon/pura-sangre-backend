@@ -20,10 +20,11 @@ use Faker\Generator as Faker;
 
 $factory->define(PlanUser::class, function (Faker $faker) {
 //
-  $plan = Plan::inRandomOrder()->first();
+  $plan = Plan::inRandomOrder()->where('id', $faker->numberBetween($min = 3, $max = 12))->first();
 
   $starts_at = Carbon::createFromTimestamp($faker->dateTimeBetween($startDate = '-1 years', $endDate = '+2 months')->getTimeStamp());
-  $ends_at= Carbon::createFromFormat("Y-n-j G:i:s", $starts_at)->addMonths($plan->plan_period->period_number ?? 1);
+  $ends_at= Carbon::createFromFormat("Y-n-j G:i:s", $starts_at)->addMonths($plan->plan_period->period_number ?? 1)
+                                                               ->subDay();
   // $plan_status_id = 0;
    // echo($starts_at.'--');
    // echo($ends_at.'--');
@@ -43,11 +44,11 @@ $factory->define(PlanUser::class, function (Faker $faker) {
       // echo ('-completado-'."\n");
    }
    
-   $plan_period = PlanPeriod::where('id', $plan->plan_period_id)->first();
+   $plan_period = PlanPeriod::find($plan->plan_period_id);
       if ($plan_period) {
          $period_number = $plan_period->period_number;
       }else{
-         $period_number = 0;
+         $period_number = 1;
       }
 
     return [
@@ -56,7 +57,7 @@ $factory->define(PlanUser::class, function (Faker $faker) {
       'counter' => $plan->class_numbers*$period_number,
       'plan_status_id' => $plan_status_id,
       'user_id' => 1,
-      'plan_id' => $plan->id,
+      'plan_id' => $faker->numberBetween($min = 3, $max = 12),
     ];
 });
 
