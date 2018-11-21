@@ -99,7 +99,8 @@ class DatabaseSeeder extends Seeder
                   'finish_date' => $pu->finish_date,
                   'amount' => $pu->plan->amount,
                ]);
-            }
+                $this->call(OauthClientsTableSeeder::class);
+    }
          });
          factory(Reservation::class, 30)->create(['user_id' => $u->id ]);
       });
