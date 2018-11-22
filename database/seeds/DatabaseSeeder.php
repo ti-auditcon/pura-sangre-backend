@@ -90,8 +90,13 @@ class DatabaseSeeder extends Seeder
 
       factory(User::class, 400)->create()->each(function ($u)
       {
+<<<<<<< HEAD
         foreach ($u->plan_users as $pu) {
           if($pu->id){
+=======
+        factory(PlanUser::class, 5)->create(['user_id' => $u->id ])->each(function ($pu){
+          if(($pu->id!=null) && ($pu->plan->custom == 0) ){
+>>>>>>> dev
             factory(Bill::class, 1)->create([
               'plan_user_id' => $pu->id,
               'date' => $pu->start_date,

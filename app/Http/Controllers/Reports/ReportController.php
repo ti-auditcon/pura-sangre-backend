@@ -19,23 +19,26 @@ class ReportController extends Controller
     public function index()
     {
         // dd(now()->year);
-        $year_income = $this->yearIncome();
-        $month_income = $this->monthIncome();
-        $plans_month = $this->totalPlansMonth();
-        $plans_sub_month = $this->totalPlansSubMonth();
-        $plans_sub_year = $this->totalPlansSubYear();
-        $plans_year = $this->totalPlansbeforeYear();
-        $new_students = $this->newStudents();
-        $day_reservations = $this->reservationsOfDay();
-        $month_reservations = $this->reservationsOfMonth();
+        // $year_income = $this->yearIncome();
+        // $month_income = $this->monthIncome();
+        // $plans_month = $this->totalPlansMonth();
+        // $plans_sub_month = $this->totalPlansSubMonth();
+        // $plans_sub_year = $this->totalPlansSubYear();
+        // $plans_year = $this->totalPlansbeforeYear();
+        // $new_students = $this->newStudents();
+        // $day_reservations = $this->reservationsOfDay();
+        // $month_reservations = $this->reservationsOfMonth();
         // dd($new_students);
 
+
+
         $summaries = PlanIncomeSummary::all();
-        return view('reports.index')->with('summaries', $summaries)
-                                    ->with('day_reservations', $day_reservations)
-                                    ->with('month_reservations', $month_reservations)
-                                    ->with('plans_sub_month', $plans_sub_month)
-                                    ->with('plans_sub_year', $plans_sub_year);
+
+        return view('reports.index')->with('summaries', $summaries);
+                                    // ->with('day_reservations', $day_reservations)
+                                    // ->with('month_reservations', $month_reservations)
+                                    // ->with('plans_sub_month', $plans_sub_month)
+                                    // ->with('plans_sub_year', $plans_sub_year);
     }
 
     //INGRESOS EN EL AÑO

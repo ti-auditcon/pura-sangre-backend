@@ -8,24 +8,25 @@
       <div class="col-md-6">
         <div class="ibox">
           <div class="ibox-head">
-            <div class="ibox-title">Reporte de este mes</div>
+            <div class="ibox-title">Acomulado</div>
           </div>
           <div class="ibox-body">
-            <div>
-              {{-- {{dd($summary)}} --}}
-            </div>
+              <div>
+                  <canvas id="acumulative" ></canvas>
+              </div>
           </div>
         </div>
       </div>
+
       <div class="col-md-6">
           <div class="ibox">
               <div class="ibox-head">
-                  <div class="ibox-title">Activos</div>
-                 {{--  {{dd()}} --}}
+                  <div class="ibox-title">Total ingresos</div>
+                  {{--  {{dd()}} --}}
               </div>
               <div class="ibox-body">
                   <div>
-                      <canvas id="bar_chart" style="height:200px;"></canvas>
+                      <canvas id="total_income" ></canvas>
                   </div>
               </div>
           </div>
@@ -46,31 +47,77 @@
 <script>
   // Bar Chart example
 $(document).ready(function() {
+
+  //////////////////total summary
+  ///////////////////////////////
   var barData = {
       labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "septiembre", "Octubre", "Noviembre", "Diciembre"],
       datasets: [
           {
               label: "2017",
               backgroundColor:'#DADDE0', //'rgba(220, 220, 220, 0.5)',
-              data: [45, 80, 58, 74, 54, 59, 40, 54, 59, 40, 31, 85]
+              data:
+              [{!!$summaries->where('month',1)->where('year',date("Y",strtotime("-1 year")))->sum('amount'); !!},
+              {!!$summaries->where('month',2)->where('year',date("Y",strtotime("-1 year")))->sum('amount'); !!},
+              {!!$summaries->where('month',3)->where('year',date("Y",strtotime("-1 year")))->sum('amount'); !!},
+              {!!$summaries->where('month',4)->where('year',date("Y",strtotime("-1 year")))->sum('amount'); !!},
+              {!!$summaries->where('month',5)->where('year',date("Y",strtotime("-1 year")))->sum('amount'); !!},
+              {!!$summaries->where('month',6)->where('year',date("Y",strtotime("-1 year")))->sum('amount'); !!},
+              {!!$summaries->where('month',7)->where('year',date("Y",strtotime("-1 year")))->sum('amount'); !!},
+              {!!$summaries->where('month',8)->where('year',date("Y",strtotime("-1 year")))->sum('amount'); !!},
+              {!!$summaries->where('month',9)->where('year',date("Y",strtotime("-1 year")))->sum('amount'); !!},
+              {!!$summaries->where('month',10)->where('year',date("Y",strtotime("-1 year")))->sum('amount'); !!},
+              {!!$summaries->where('month',11)->where('year',date("Y",strtotime("-1 year")))->sum('amount'); !!},
+              {!!$summaries->where('month',12)->where('year',date("Y",strtotime("-1 year")))->sum('amount'); !!}]
           },
           {
               label: "2018",
               //backgroundColor:'#84cac6',// 'rgba(26,179,148,0.5)',
               backgroundColor: '#18C5A9', // '#30C8B3'
               borderColor: "#fff",
-              data: [29, 48, 40, 19, 78, 31, 85, 48, 40, 19, 78, 48]
+              data: [{!!$summaries->where('month',1)->where('year',date("Y"))->sum('amount'); !!},
+                    {!!$summaries->where('month',2)->where('year',date("Y"))->sum('amount'); !!},
+                    {!!$summaries->where('month',3)->where('year',date("Y"))->sum('amount'); !!},
+                    {!!$summaries->where('month',4)->where('year',date("Y"))->sum('amount'); !!},
+                    {!!$summaries->where('month',5)->where('year',date("Y"))->sum('amount'); !!},
+                    {!!$summaries->where('month',6)->where('year',date("Y"))->sum('amount'); !!},
+                    {!!$summaries->where('month',7)->where('year',date("Y"))->sum('amount'); !!},
+                    {!!$summaries->where('month',8)->where('year',date("Y"))->sum('amount'); !!},
+                    {!!$summaries->where('month',9)->where('year',date("Y"))->sum('amount'); !!},
+                    {!!$summaries->where('month',10)->where('year',date("Y"))->sum('amount'); !!},
+                    {!!$summaries->where('month',11)->where('year',date("Y"))->sum('amount'); !!},
+                    {!!$summaries->where('month',12)->where('year',date("Y"))->sum('amount'); !!}]
           }
       ]
   };
   var barOptions = {
       responsive: true,
-      maintainAspectRatio: false
+
+
   };
 
-  var ctx = document.getElementById("bar_chart").getContext("2d");
+  var ctx = document.getElementById("total_income").getContext("2d");
   new Chart(ctx, {type: 'bar', data: barData, options:barOptions});
+
+  //////////////////END total summary
+  ///////////////////////////////
+
+
+  //////////////////Acomulativo
+  ///////////////////////////////
+
+
+
+  var options_acumulative = {
+      responsive: true,
+      maintainAspectRatio: false,
+
+  };
+
+  var ctx = document.getElementById("acumulative").getContext("2d");
+  new Chart(ctx, {type: 'line', data: data_acomulative, options:options_acumulative});
 });
+
 </script>
 
 @endsection

@@ -9,10 +9,12 @@ use App\Models\Users\User;
 use App\Models\Wods\Stage;
 use App\Models\Wods\Wod;
 use App\Models\Clases\Reservation;
+use App\Models\Bills\Bill;
 use App\Observers\Clases\BlockObserver;
 use App\Observers\Clases\ClaseObserver;
 use App\Observers\Clases\ReservationObserver;
 use App\Observers\Plans\PlanUserObserver;
+use App\Observers\Bills\BillObserver;
 use App\Observers\Users\UserObserver;
 use App\Observers\Wods\StageObserver;
 use App\Observers\Wods\WodObserver;
@@ -36,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
       Stage::observe(StageObserver::class);
       Wod::observe(WodObserver::class);
       User::observe(UserObserver::class);
+      Bill::observe(BillObserver::class);
 
 
       \Carbon\Carbon::setLocale(config('app.locale'));
