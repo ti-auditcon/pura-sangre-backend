@@ -86,6 +86,7 @@ class CreatePlansTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('plan_id')->nullable();
             $table->string('amount');
+            $table->string('quantity');
             $table->integer('month')->nullable();
             $table->integer('year')->nullable();
             $table->timestamps();
