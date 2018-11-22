@@ -10,19 +10,13 @@ use Carbon\Carbon;
 use Faker\Generator as Faker;
 
 
-// $factory->define(Plan::class, function (Faker $faker) {
-//     return [
-//       'plan' => $faker->word,
-//       'class_numbers' => $faker->numberBetween($min = 12, $max = 24),
-//     ];
-// });
-
-
 $factory->define(PlanUser::class, function (Faker $faker) {
 //
   $plan = Plan::inRandomOrder()->where('id', $faker->numberBetween($min = 3, $max = 12))->first();
 
-  $starts_at = Carbon::createFromTimestamp($faker->dateTimeBetween($startDate = '-1 years', $endDate = '+2 months')->getTimeStamp());
+  $starts_at = Carbon::createFromTimestamp($faker->dateTimeBetween($startDate = '-8 months', $endDate = '-3 weeks')
+                     ->getTimeStamp());
+
   $ends_at= Carbon::createFromFormat("Y-n-j G:i:s", $starts_at)->addMonths($plan->plan_period->period_number ?? 1)
                                                                ->subDay();
   // $plan_status_id = 0;
@@ -57,7 +51,7 @@ $factory->define(PlanUser::class, function (Faker $faker) {
       'counter' => $plan->class_numbers*$period_number,
       'plan_status_id' => $plan_status_id,
       'user_id' => 1,
-      'plan_id' => $faker->numberBetween($min = 3, $max = 12),
+      'plan_id' => $plan->id,
     ];
 });
 

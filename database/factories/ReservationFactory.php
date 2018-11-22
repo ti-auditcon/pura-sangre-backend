@@ -15,7 +15,6 @@ $factory->define(ReservationStatus::class, function (Faker $faker) {
 });
 
 $factory->define(Reservation::class, function (Faker $faker) {
-
 	$clase = Clase::find(Clase::all()->random()->id);
 	$date_class = Carbon\Carbon::parse($clase->date)->format('y-m-d');
 	if ($date_class > today()) {
@@ -23,9 +22,9 @@ $factory->define(Reservation::class, function (Faker $faker) {
 	}else {
 		$status = 1;
 	}
-    return [
-        'clase_id' => $clase->id,
-        'user_id' => User::all()->random()->id,
-        'reservation_status_id' => $status,
-    ];
+   return [
+      'clase_id' => $clase->id,
+      'user_id' => User::all()->random()->id,
+      'reservation_status_id' => $status,
+   ];
 });

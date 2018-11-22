@@ -85,14 +85,13 @@ class DatabaseSeeder extends Seeder
           'status_user_id' => 1,
       ]);
 
-      $this->call(PlanUserTableSeeder::class);
       $this->call(RoleUserTableSeeder::class);
       factory(Stage::class, 200)->create();
 
-      factory(User::class, 180)->create()->each(function ($u)
+      factory(User::class, 400)->create()->each(function ($u)
       {
-        factory(PlanUser::class, 5)->create(['user_id' => $u->id ])->each(function ($pu){
-          if($pu->id!=null){
+        foreach ($u->plan_users as $pu) {
+          if($pu->id){
             factory(Bill::class, 1)->create([
               'plan_user_id' => $pu->id,
               'date' => $pu->start_date,
@@ -101,10 +100,16 @@ class DatabaseSeeder extends Seeder
               'amount' => $pu->plan->amount,
             ]);
           }
-        });
-         factory(Reservation::class, 60)->create(['user_id' => $u->id ]);
+        }
       });
-      // $this->call(ReservationsTableSeeder::class);
+      $this->call(PlanUserTableSeeder::class);
+      $this->call(ReservationsTableSeeder::class);
+      foreach (User::all() as $user) {
+        factory(Reservation::class, 10)->create(['user_id' => $user->id ]);
+      }
+      
+      // factory(PlanUser::class, 7)->create(['user_id' => $u->id ])->each(function ($pu){
+      // });
       // factory(Reservation::class, 2000)->create();
     }
 }

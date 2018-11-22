@@ -37,10 +37,10 @@
             <div class="card mb-4">
               <div class="card-body flexbox-b">
                 <div class="row ">
-                  <div class="easypie mr-4" data-percent="{{$clase->reservations->count()*100/25}}" data-bar-color="#5c6bc0" data-size="80" data-line-width="8">
+                  <div class="easypie mr-4" data-percent="{{$clase->reservations->count()*100/$clase->quota}}" data-bar-color="#5c6bc0" data-size="80" data-line-width="8">
                     <span class="easypie-data font-26 text-primary"><i class="ti-user"></i></span>
                   </div>
-                  <h3 class="font-strong text-primary">{{$clase->reservations->count()}}/25</h3>
+                  <h3 class="font-strong text-primary">{{$clase->reservations->count()}}/{{$clase->quota}}</h3>
                   <div class="text-muted">Cupos confirmados</div>
                 </div>
                 @if (Auth::user()->hasRole(1))
