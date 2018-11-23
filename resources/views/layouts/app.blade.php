@@ -24,6 +24,7 @@
     <!-- PLUGINS STYLES-->
     <!-- THEME STYLES-->
     <link href="{{asset('/css/main.min.css')}}" rel="stylesheet" />
+    <link href="{{asset('/css/ps-app.css')}}" rel="stylesheet" />
 
    <!-- PAGE CSS-->
     @yield('css')

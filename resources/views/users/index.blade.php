@@ -52,7 +52,7 @@
 
             </div>
           </div>
-          <div class="ibox-fullwidth-block">
+          <div class="table-responsive">
             <table id="students-table" class="table table-hover">
               <thead class="thead-default thead-lg">
                 <tr>

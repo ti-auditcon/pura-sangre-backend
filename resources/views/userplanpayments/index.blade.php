@@ -14,9 +14,9 @@
           </div>
         </div>
         <div class="ibox-body">
-          <div class="ibox-fullwidth-block">
+          <div class="table-responsive">
             <table id="students-table" class="table table-hover">
-              <thead class="thead-default thead-lg">
+              <thead class="thead-default">
                 <tr>
                   <th width="30%">Nombre</th>
                   <th width="20%">Período</th>

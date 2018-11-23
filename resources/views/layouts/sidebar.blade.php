@@ -3,7 +3,7 @@
     <div id="sidebar-collapse">
         <ul class="side-menu">
           <li @if($page=="home") class="active" @endif>
-            <a href="{{url('/')}}"><i class="sidebar-item-icon ti-home"></i>
+            <a href="/"><i class="sidebar-item-icon ti-home"></i>
               <span class="nav-label">Inicio</span>
             </a>
           </li>
@@ -57,7 +57,7 @@
               </ul>
             </div>
           </li>
-          
+
         @endif
 
           {{-- <li @if($page=="mercados") class="active" @endif>

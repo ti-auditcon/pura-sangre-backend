@@ -11,7 +11,7 @@
             <div class="ibox-head">
                <div class="ibox-title">Clases de hoy</div>
             </div>
-            <div class="ibox-body" >
+            <div class="ibox-body">
                <div id="calendar"></div>
             </div>
          </div>
@@ -21,15 +21,15 @@
             <div class="ibox-head">
                <div class="ibox-title">Alumnos con planes próximos a vencer</div>
             </div>
-            <div class="ibox-body" style="padding-top:0px">
-               <div class="ibox-fullwidth-block">
+            <div class="ibox-body">
+               {{-- <div class="ibox-fullwidth-block"> --}}
                   <table id="students-table" class="table table-hover">
-                     <thead class="thead-default thead-lg">
+                     <thead class="thead-default">
                         <tr>
                           <th>Alumno</th>
                           <th>Plan</th>
                           <th>Vence en</th>
-                          <th> Acciones </th>
+                          <th>Acciones</th>
                         </tr>
                      </thead>
                      <tbody>
@@ -38,21 +38,22 @@
                             <td>{{$pu->user->first_name}} {{$pu->user->last_name}}</td>
                             <td>{{$pu->plan->plan}}</td>
                             <td> {{ $pu->finish_date->diffForHumans() }}</td>
+                            <td></td>
                           </tr>
                         @endforeach
                      </tbody>
                   </table>
-               </div>
+               {{-- </div> --}}
             </div>
          </div>
          <div class="ibox">
             <div class="ibox-head">
                <div class="ibox-title">Alumnos recientemente inactivos</div>
             </div>
-            <div class="ibox-body" style="padding-top:0px">
-               <div class="ibox-fullwidth-block">
+            <div class="ibox-body">
+               {{-- <div class="ibox-fullwidth-block"> --}}
                   <table id="students-table" class="table table-hover">
-                     <thead class="thead-default thead-lg">
+                     <thead class="thead-default">
                         <tr>
                            <tr>
                               <th>Alumno</th>
@@ -66,7 +67,7 @@
 
                      </tbody>
                   </table>
-               </div>
+               {{-- </div> --}}
             </div>
          </div>
       </div>
@@ -75,7 +76,7 @@
             <div class="ibox-head">
                <div class="ibox-title">Reporte de Julio</div>
             </div>
-            <div class="ibox-body" >
+            <div class="ibox-body">
             </div>
          </div>
       </div>

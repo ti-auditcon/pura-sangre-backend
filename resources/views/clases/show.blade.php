@@ -7,55 +7,58 @@
 <div class="row justify-content-center">
 
 
-  <div class="col-6">
+  <div class="col-4">
     <div class="ibox">
       <div class="ibox-head">
-        <div class="ibox-title">CLASE</div>
+        <div class="ibox-title">Clase</div>
+        <div class="ibox-tools">
+          @if (Auth::user()->hasRole(1))
+            @if (Carbon\Carbon::parse($clase->date)->gte(today()))
+              {!! Form::open(['route' => ['clases.destroy', $clase->id], 'method' => 'delete', 'class' => 'clase-delete']) !!}
+              {!! Form::close() !!}
+              <button class="btn btn-danger sweet-clase-delete" data-id="{{$clase->id}}" data-name="{{$clase->date}}"><i>
+              </i>Cerrar Clase</button>
+            @endif
+          @endif
+        </div>
       </div>
       <div class="ibox-body">
-        <div class="row mb-4">
-          <div class="col-lg-6 col-md-6">
-            <div class="card mb-4">
-              <div class="card-body">
-                <div class="row mb-2">
-                  <div class="col-12 text-muted">Fecha:</div>
-                  <div class="col-12">{{Carbon\Carbon::parse($clase->date)->format('d-m-Y')}}</div>
-                </div>
-                <div class="row mb-2">
-                  <div class="col-12 text-muted">Horario:</div>
-                  <div class="col-12">{{Carbon\Carbon::parse($clase->block->start)->format('H:i')}} - {{Carbon\Carbon::parse($clase->block->end)->format('H:i')}}</div>
-                </div>
-                <div class="row mb-2">
-                  <div class="col-12 text-muted">Coach:</div>
-                  <div class="col-12">{{$clase->block->user->first_name}} {{$clase->block->user->last_name}}</div>
-                </div>
-                <br />
+        <div class="mb-4 clase">
+
+          <div class="card">
+            <div class="row mb-2">
+              <div class="col-12 text-muted">Fecha:</div>
+              <div class="col-12">{{Carbon\Carbon::parse($clase->date)->format('d-m-Y')}}</div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-12 text-muted">Horario:</div>
+              <div class="col-12">{{Carbon\Carbon::parse($clase->block->start)->format('H:i')}} - {{Carbon\Carbon::parse($clase->block->end)->format('H:i')}}</div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-12 text-muted">Coach:</div>
+              <div class="col-12">{{$clase->block->user->first_name}} {{$clase->block->user->last_name}}</div>
+            </div>
+            <br />
+          </div>
+          <div class="clase-graphics">
+            <div class="canvas-item">
+              <div class="easypie col" data-percent="{{$clase->reservations->count()*100/$clase->quota}}" data-bar-color="#5c6bc0" data-size="70" data-line-width="8">
               </div>
             </div>
-          </div>
-          <div class="col-lg-6 col-md-6">
-            <div class="card mb-4">
-              <div class="card-body flexbox-b">
-                <div class="row ">
-                  <div class="easypie mr-4" data-percent="{{$clase->reservations->count()*100/$clase->quota}}" data-bar-color="#5c6bc0" data-size="80" data-line-width="8">
-                    <span class="easypie-data font-26 text-primary"><i class="ti-user"></i></span>
-                  </div>
+            <div class="data-item">
+              <div class="row m-0">
+                <div class="col-12 p-0 m-0">
+                  <span class="easypie-data font-26 text-primary icon-people"><i class="ti-user"></i></span>
                   <h3 class="font-strong text-primary">{{$clase->reservations->count()}}/{{$clase->quota}}</h3>
+                </div>
+                <div class="col-12 p-0 m-0">
                   <div class="text-muted">Cupos confirmados</div>
                 </div>
-                @if (Auth::user()->hasRole(1))
-                  @if (Carbon\Carbon::parse($clase->date)->gte(today()))
-                    <div class="row">
-                      {!! Form::open(['route' => ['clases.destroy', $clase->id], 'method' => 'delete', 'class' => 'clase-delete']) !!}
-                      {!! Form::close() !!}
-                      <button class="btn btn-danger sweet-clase-delete" data-id="{{$clase->id}}" data-name="{{$clase->date}}"><i>
-                      </i>Cerrar Clase</button>
-                    </div>
-                  @endif
-                @endif
               </div>
             </div>
           </div>
+
+
         </div>
       </div>
     </div>
@@ -69,7 +72,7 @@
       <div class="ibox-body">
         <div class="row">
           @foreach(App\Models\Wods\StageType::all() as $st)
-            <div class="col-md-4">
+            <div class="col-12">
               <div class="ibox shadow-wide">
                 <div class="ibox-body text-center">
                   <h5 class="font-strong">{{$st->stage_type}}</h5>
@@ -90,7 +93,7 @@
       </div>
     </div>
   </div>
-  <div class="col-6">
+  <div class="col-8">
     <div class="ibox">
         <div class="ibox-head">
           <div class="ibox-title">Crossfiteros de esta clase</div>
