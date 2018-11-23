@@ -30,12 +30,14 @@ class BillObserver
 
      if($plan_income_sum){
        $plan_income_sum->amount = $plan_income_sum->amount + $amount;
+       $plan_income_sum->quantity = $plan_income_sum->quantity + 1;
      } else {
        $plan_income_sum = new PlanIncomeSummary;
        $plan_income_sum->amount = $amount;
        $plan_income_sum->plan_id = $plan_id;
        $plan_income_sum->month = $month;
        $plan_income_sum->year = $year;
+       $plan_income_sum->quantity = 1;
      }
 
      $plan_income_sum->save();
