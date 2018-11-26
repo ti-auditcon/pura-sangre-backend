@@ -42,10 +42,10 @@
               </span>
               <span class="flexbox mr-3">
                 <div class="btn-group">
-                  <button class="btn btn-outline-warning user-filter" data-status="">
+                  <button class="btn btn-outline-primary user-filter" data-status="">
                     <span class="btn-icon">TODOS</span>
                   </button>
-                  <span class="btn-label-out btn-label-out-right btn-label-out-warning pointing">{{$users->count()}}</span>
+                  <span class="btn-label-out btn-label-out-right btn-label-out-primary pointing">{{$users->count()}}</span>
                 </div>
               </span>
 

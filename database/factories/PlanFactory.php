@@ -14,7 +14,7 @@ $factory->define(PlanUser::class, function (Faker $faker) {
 //
   $plan = Plan::inRandomOrder()->where('id', $faker->numberBetween($min = 3, $max = 12))->first();
 
-  $starts_at = Carbon::createFromTimestamp($faker->dateTimeBetween($startDate = '-8 months', $endDate = '-3 weeks')
+  $starts_at = Carbon::createFromTimestamp($faker->dateTimeBetween($startDate = '-14 months', $endDate = '-1 weeks')
                      ->getTimeStamp());
 
   $ends_at= Carbon::createFromFormat("Y-n-j G:i:s", $starts_at)->addMonths($plan->plan_period->period_number ?? 1)

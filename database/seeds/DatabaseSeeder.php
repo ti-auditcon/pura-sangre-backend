@@ -40,74 +40,76 @@ class DatabaseSeeder extends Seeder
       $this->call(ReservationStatusesTableSeeder::class);
       $this->call(OauthClientsTableSeeder::class);
 
-      $user = User::create([
-          'rut' => 11111111,
-          'first_name' => 'Audito',
-          'last_name' => 'Asomic',
-          'birthdate' => '1985-01-01',
-          'gender' => 'male',
-          'email' => 'sa@auditcon.cl',
-          'password' => bcrypt('123123'),
-          'phone' => '87654321',
-          'avatar' => url('/').'/storage/users/u (22).jpg',
-          'address' => 'Estado, Esquina Membrillar, Oficina 208',
-          // 'emergency_id' => 1,
-          'status_user_id' => 1,
-      ]);
+      // $user = User::create([
+      //     'rut' => 11111111,
+      //     'first_name' => 'Audito',
+      //     'last_name' => 'Asomic',
+      //     'birthdate' => '1985-01-01',
+      //     'gender' => 'male',
+      //     'email' => 'sa@auditcon.cl',
+      //     'password' => bcrypt('123123'),
+      //     'phone' => '87654321',
+      //     'avatar' => url('/').'/storage/users/u (22).jpg',
+      //     'address' => 'Estado, Esquina Membrillar, Oficina 208',
+      //     // 'emergency_id' => 1,
+      //     'status_user_id' => 1,
+      // ]);
 
-      $user = User::create([
-          'rut' => 22222222,
-          'first_name' => 'User',
-          'last_name' => 'Asomic',
-          'birthdate' => '1985-01-02',
-          'gender' => 'male',
-          'email' => 'user@auditcon.cl',
-          'password' => bcrypt('123123'),
-          'avatar' => url('/').'/storage/users/u (23).jpg',
-          'phone' => '76543211',
-          'address' => 'Estado, Esquina Membrillar, Oficina 208',
-          // 'emergency_id' => 1,
-          'status_user_id' => 1,
-      ]);
+      // $user = User::create([
+      //     'rut' => 22222222,
+      //     'first_name' => 'User',
+      //     'last_name' => 'Asomic',
+      //     'birthdate' => '1985-01-02',
+      //     'gender' => 'male',
+      //     'email' => 'user@auditcon.cl',
+      //     'password' => bcrypt('123123'),
+      //     'avatar' => url('/').'/storage/users/u (23).jpg',
+      //     'phone' => '76543211',
+      //     'address' => 'Estado, Esquina Membrillar, Oficina 208',
+      //     // 'emergency_id' => 1,
+      //     'status_user_id' => 1,
+      // ]);
 
-      $user = User::create([
-          'rut' => 33333333,
-          'first_name' => 'Student',
-          'last_name' => 'Crossfit',
-          'birthdate' => '1994-01-02',
-          'gender' => 'male',
-          'email' => 'student@auditcon.cl',
-          'password' => bcrypt('123123'),
-          'avatar' => url('/').'/storage/users/u (25).jpg',
-          'phone' => '76543211',
-          'address' => 'Estado, Esquina Membrillar, Oficina 208',
-          // 'emergency_id' => 1,
-          'status_user_id' => 1,
-      ]);
+      // $user = User::create([
+      //     'rut' => 33333333,
+      //     'first_name' => 'Student',
+      //     'last_name' => 'Crossfit',
+      //     'birthdate' => '1994-01-02',
+      //     'gender' => 'male',
+      //     'email' => 'student@auditcon.cl',
+      //     'password' => bcrypt('123123'),
+      //     'avatar' => url('/').'/storage/users/u (25).jpg',
+      //     'phone' => '76543211',
+      //     'address' => 'Estado, Esquina Membrillar, Oficina 208',
+      //     // 'emergency_id' => 1,
+      //     'status_user_id' => 1,
+      // ]);
 
       $this->call(RoleUserTableSeeder::class);
-      factory(Stage::class, 200)->create();
+      $this->call(UsersTableSeeder::class);
+      // factory(User::class, 200)->create();
 
-      factory(User::class, 400)->create();
-      $this->call(PlanUserTableSeeder::class);
-      $this->call(ReservationsTableSeeder::class);
-      foreach (User::all() as $user) {
-         foreach ($user->plan_users as $pu) {
-           if($pu->id && $pu->plan->custom == 0){
-             factory(Bill::class, 1)->create([
-               'plan_user_id' => $pu->id,
-               'date' => $pu->start_date,
-               'start_date' => $pu->start_date,
-               'finish_date' => $pu->finish_date,
-               'amount' => $pu->plan->amount,
-             ]);
-           }
-         }
-        factory(Reservation::class, 10)->create(['user_id' => $user->id ]);
-      }
-      
-      // factory(PlanUser::class, 7)->create(['user_id' => $u->id ])->each(function ($pu){
+      // factory(User::class, 250)->create()->each(function ($u){
+         // factory(PlanUser::class, 40)->create(['user_id' => $u->id ])->each(function ($pu){
+         //    if($pu->id && $pu->plan->custom == 0){
+         //       factory(Bill::class, 1)->create([
+         //          'plan_user_id' => $pu->id,
+         //          'date' => $pu->start_date,
+         //          'start_date' => $pu->start_date,
+         //          'finish_date' => $pu->finish_date,
+         //          'amount' => $pu->plan->amount,
+         //       ]);
+         //        $this->call(UsersTableSeeder::class);
+    // }
+         // });
+         // factory(Reservation::class, 10)->create(['user_id' => $u->id ]);
       // });
-      // factory(Reservation::class, 2000)->create();
+      $this->call(PlanUserTableSeeder::class);
+      $this->call(BillsTableSeeder::class);
+      foreach (User::all() as $user) {
+          factory(Reservation::class, 100)->create(['user_id' => $user->id ]);
+      }
+      // $this->call(ReservationsTableSeeder::class);
+      // factory(Reservation::class, 1)->create(['user_id' => $user->id ]);
     }
 }

@@ -130,7 +130,7 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach($plan_users as $plan_user)
+                @foreach($user->plan_users as $plan_user)
                   <tr>
                     <td><a href="{{url('/users/'.$user->id.'/plans/'.$plan_user->id)}}">{{$plan_user->plan->plan}}</a></td>
                     <td>{{$plan_user->bill->date ?? "no aplica"}}</td>
@@ -149,6 +149,73 @@
                       <button class="btn btn-info btn-icon-only btn-circle btn-sm btn-air sweet-user-plan-delete" data-id="{{$plan_user->id}}" data-name="{{$plan_user->plan->plan}}"><i class="la la-trash"></i></button>
                     </td>
                     @endif
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-8">
+      <div class="ibox ibox-fullheight">
+        <div class="ibox-head">
+          <div class="ibox-title">Proximas Clases</div>
+        </div>
+        <div class="ibox-body">
+          <div class="ibox-fullwidth-block">
+            <table id="students-table" class="table table-hover">
+              <thead class="thead-default thead-lg">
+                <tr>
+                  <th width="25%">Fecha Clase</th>
+                  <th width="25%">Hora</th>
+                  <th width="25%">Estado</th>
+                  {{-- <th width="25%">Período</th> --}}
+                </tr>
+              </thead>
+              <tbody>
+                @foreach($user->reservations->whereIn('reservation_status_id', [1,2]) as $reserv)
+
+                  <tr>
+                    <td><a href="{{url('/clases/'.$reserv->clase->id)}}">{{$reserv->clase->date}}</a></td>
+                    <td>{{$reserv->clase->start_at}} {{$reserv->clase->finish_at}}</td>
+                    <td>{{$reserv->reservation_status->reservation_status}}</td>
+                    {{-- <td>{{$clase->claseation_status->claseation_status}}</td> --}}
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-8">
+      <div class="ibox ibox-fullheight">
+        <div class="ibox-head">
+          <div class="ibox-title">Clases Anteriores</div>
+        </div>
+        <div class="ibox-body">
+          <div class="ibox-fullwidth-block">
+            <table id="students-table" class="table table-hover">
+              <thead class="thead-default thead-lg">
+                <tr>
+                  <th width="35%">Fecha Clase</th>
+                  <th width="35%">Hora</th>
+                  <th width="30%">Estado</th>
+                  {{-- <th width="25%">Período</th> --}}
+                </tr>
+              </thead>
+              <tbody>
+                @foreach($user->reservations->whereIn('reservation_status_id', [3,4]) as $reserv)
+
+                  <tr>
+                    <td><a href="{{url('/clases/'.$reserv->clase->id)}}">{{$reserv->clase->date}}</a></td>
+                    <td>{{$reserv->clase->start_at}} {{$reserv->clase->finish_at}}</td>
+                    <td>{{$reserv->reservation_status->reservation_status}}</td>
+                    {{-- <td>{{$clase->claseation_status->claseation_status}}</td> --}}
                   </tr>
                 @endforeach
               </tbody>

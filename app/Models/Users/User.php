@@ -76,17 +76,7 @@ class User extends Authenticatable
     */
     public function clases()
     {
-        return $this->belongsToMany(Clase::Class)->using(Reservation::class);
-    }
-
-    /**
-     * [emergency description]
-     * @method emergency
-     * @return [Model]    [description]
-     */
-    public function emergency()
-    {
-        return $this->belongsTo(Emergency::class)->withDefault();
+        return $this->belongsToMany(Clase::Class, 'reservations', 'user_id', 'clase_id');
     }
 
     /**
@@ -97,16 +87,6 @@ class User extends Authenticatable
     public function status_user()
     {
         return $this->belongsTo(StatusUser::class);
-    }
-
-    /**
-    * [millestones description]
-    * @method millestones
-    * @return [Model]      [description]
-    */
-    public function millestones()
-    {
-        return $this->belongsToMany(Millestone::class);
     }
 
     /**
@@ -129,22 +109,11 @@ class User extends Authenticatable
                                              ->where('finish_date','>=', today());
     }
 
-    public function active_plan()
-    {
-        $plan = PlanUser::where('plan_status_id', 1)
-                        ->where('user_id', $this->id)
-                        ->where('start_date','<=', today())
-                        ->where('finish_date','>=', today())
-                        ->first();
-        if ($plan) {
-            return $this->hasOne(PlanUser::class)->where('id', $plan->id);
-        }
-        return false;
-    }
 
     public function reservable_plans()
     {
-        return $this->hasMany(PlanUser::class)->where('plan_status_id',[1,3]);
+        return $this->hasMany(PlanUser::class);
+        // ->where('plan_status_id',[1,3])
     }
 
     /**
@@ -154,20 +123,6 @@ class User extends Authenticatable
     public function blocks()
     {
         return $this->hasMany(Block::class);
-    }
-
-    /**
-     * [installments description]
-     * @return [type] [description]
-     */
-    public function installments()
-    {
-        return $this->hasManyThrough(
-            Installment::class,
-            PlanUser::class,
-            'user_id',
-            'plan_user_id'
-        );
     }
 
     public function bills()
@@ -186,7 +141,7 @@ class User extends Authenticatable
     */
     public function plan_users()
     {
-        return $this->hasMany(PlanUser::class);
+        return $this->hasMany(PlanUser::class)->orderBy('plan_status_id', 'ASC')->orderBy('start_date','desc');
     }
 
     /**
@@ -203,6 +158,11 @@ class User extends Authenticatable
     //     return $this->hasManyThrough(Reservation::class, PlanUser::class, 'user_id', 'plan_user_id');
     // }
 
+    public function emergency()
+    {
+        return $this->belongsTo(Emergency::class)->withDefault();
+    }
+
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
@@ -214,3 +174,35 @@ class User extends Authenticatable
     }
 
 }
+    // public function active_plan()
+    // {
+    //     $plan = PlanUser::where('plan_status_id', 1)
+    //                     ->where('user_id', $this->id)
+    //                     ->where('start_date','<=', today())
+    //                     ->where('finish_date','>=', today())
+    //                     ->first();
+    //     if ($plan) {
+    //         return $this->hasOne(PlanUser::class)->where('id', $plan->id);
+    //     }
+    //     return false;
+    // }
+
+    // /**
+    //  * [emergency description]
+    //  * @method emergency
+    //  * @return [Model]    [description]
+    //  */
+
+    // /**
+    //  * [installments description]
+    //  * @return [type] [description]
+    //  */
+    // public function installments()
+    // {
+    //     return $this->hasManyThrough(
+    //         Installment::class,
+    //         PlanUser::class,
+    //         'user_id',
+    //         'plan_user_id'
+    //     );
+    // }
