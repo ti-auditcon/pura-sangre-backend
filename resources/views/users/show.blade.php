@@ -27,13 +27,9 @@
         </div>
         <div class="d-inline-flex">
           <div class="px-4 text-center">
-            @if ($user->plan_users->where('plan_status_id', 1)->first() != null)
-              <span class="badge badge-success badge-pills">ACTIVO</span>
-            @else
-              <span class="badge badge-danger badge-pills">INACTIVO</span>
-            @endif
+              <span class="badge  badge-{{$user->status_user->type}} badge-pills">{{$user->status_user->status_user}}</span>
           </div>
-  
+
   {{--         {{dd($user->actual_plan)}} --}}
           @if ($user->actual_plan != null)
             @if ($user->actual_plan->plan->has_clases == true)
@@ -45,8 +41,8 @@
               </div>
             @endif
           @endif
-          
-          
+
+
         </div>
       </div>
     </div>

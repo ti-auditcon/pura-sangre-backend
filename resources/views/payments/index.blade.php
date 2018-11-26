@@ -5,15 +5,16 @@
 
 @section('content')
   <div class="row justify-content-center">
-    <div class="col-6">
-      <div class="ibox form-control-air">
+    <div class="col-12">
+      <div class="ibox">
         <div class="ibox-head">
           <div class="ibox-title">
             Pagos
           </div>
-          <div class="ibox-body">
+        </div>
+        <div class="ibox-body">
             <div class="ibox-fullwidth-block">
-              <table id="students-table" class="table table-hover">
+              <table id="payment-table" class="table table-hover">
                 <thead class="thead-default thead-lg">
                   <tr>
                     <th width="20%">Usuario</th>
@@ -25,9 +26,15 @@
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach ($bills as $bill)
+                  @foreach ($bills->sortByDesc('date') as $bill)
                   <tr>
-                      <td>{{$bill->plan_user->user->first_name}} {{$bill->plan_user->user->last_name}}</td>
+                      <td>
+                      
+                          <a href="{{url('/users/'.$bill->plan_user->user->id)}}">
+                              {{$bill->plan_user->user->first_name}} {{$bill->plan_user->user->last_name}}
+                          </a>
+
+                      </td>
                       <td>{{$bill->plan_user->plan->plan}}</td>
                       <td>{{Carbon\Carbon::parse($bill->date)->format('d-m-Y')}}</td>
                       <td>{{Carbon\Carbon::parse($bill->start_date)->format('d-m-Y')}}</td>
@@ -38,11 +45,11 @@
                 </tbody>
               </table>
             </div>
-          </div>
         </div>
       </div>
     </div>
   </div>
+
 
 
 @endsection

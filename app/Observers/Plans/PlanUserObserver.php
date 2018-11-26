@@ -67,6 +67,9 @@ class PlanUserObserver
         $planUser->plan_status_id = 4;
       }
       $planUser->save();
+      $user = $planUser->user;
+      $user->status_user_id = 1;
+      $user->save();
    }
 
 

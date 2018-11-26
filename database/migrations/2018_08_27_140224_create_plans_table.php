@@ -85,7 +85,8 @@ class CreatePlansTable extends Migration
         Schema::create('plan_income_summaries', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('plan_id')->nullable();
-            $table->string('amount');
+            $table->integer('amount');
+            $table->integer('quantity');
             $table->integer('month')->nullable();
             $table->integer('year')->nullable();
             $table->timestamps();

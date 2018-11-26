@@ -6,6 +6,20 @@ use App\Models\Users\User;
 
 class UserObserver
 {
+
+    public function retrieved(User $user)
+    {
+
+      if($user->status_user_id == 1 || $user->status_user_id == 3)
+      {
+
+        if(!$user->reservable_plans->first())
+        {
+          $user->status_user_id = 2;
+          $user->save();
+        }
+      }
+    }
     /**
      * Handle the user "created" event.
      *
