@@ -14,7 +14,7 @@
         <div class="ibox-body">
           <input class="form-control" name="user_id" type="hidden" value="{{ $user->id }}" hidden>
           <div class="row">
-            <div class="col-sm-6 form-group mb-4">
+            <div class="col-sm-6 form-group mb-2">
               <div class="form-group">
                 <label class="form-control-label">Planes*</label>
                 <select class="selectpicker form-control form-control-air" name="plan_id" required id="plan-select">
@@ -29,10 +29,13 @@
           </div>
 
         <div style="display:none;" id="payment">
-          <div class="col-sm-6 form-group mb-4 is-custom">
-            <div class="form-group inline form-control-air">
-              <label class="col-form-label">Número de Clases</label>
-              <input class="form-control" name="counter" type="numeric">
+
+          <div class="row">
+            <div class="col-sm-6 form-group mb-4">
+              {{-- <div class="form-group inline form-control-air"> --}}
+                <label class="col-form-label">Número de Clases</label>
+                <input class="form-control" name="counter" type="numeric">
+              {{-- </div> --}}
             </div>
           </div>
 
@@ -94,8 +97,8 @@
           </div>
         </div>
         <br>
-        <div class="ibox-footer">
-          <button class="btn btn-primary btn-air" type="submit">ASIGNAR PLAN</button>
+        <div class="ibox-footer p-0 pt-3">
+          <button class="btn btn-primary btn-air mr-2" type="submit">Asignar Plan</button>
           <a class="btn btn-secondary" href="{{ route('users.show', $user->id) }}">Volver</a>
         </div>
       </div>
@@ -151,7 +154,7 @@ if(custom != 0)
   console.log('es custom');
   $('.is-custom').show();
   $('.is-not-custom').hide();
-  
+
 }
 else {
     console.log('no es custom');

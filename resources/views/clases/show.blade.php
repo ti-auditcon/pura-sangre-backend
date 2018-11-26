@@ -23,7 +23,7 @@
         </div>
       </div>
       <div class="ibox-body">
-        <div class="mb-4 clase">
+        <div class="clase">
 
           <div class="card">
             <div class="row mb-2">
@@ -34,13 +34,13 @@
               <div class="col-12 text-muted">Horario:</div>
               <div class="col-12">{{Carbon\Carbon::parse($clase->block->start)->format('H:i')}} - {{Carbon\Carbon::parse($clase->block->end)->format('H:i')}}</div>
             </div>
-            <div class="row mb-2">
+            <div class="row">
               <div class="col-12 text-muted">Coach:</div>
               <div class="col-12">{{$clase->block->user->first_name}} {{$clase->block->user->last_name}}</div>
             </div>
             <br />
           </div>
-          <div class="clase-graphics">
+          <div class="clase-graphics pt-2">
             <div class="canvas-item">
               <div class="easypie col" data-percent="{{$clase->reservations->count()*100/$clase->quota}}" data-bar-color="#5c6bc0" data-size="70" data-line-width="8">
               </div>
@@ -73,10 +73,10 @@
         <div class="row">
           @foreach(App\Models\Wods\StageType::all() as $st)
             <div class="col-12">
-              <div class="ibox shadow-wide">
-                <div class="ibox-body text-center">
+              <div class="ibox">
+                <div class="ibox-body">
                   <h5 class="font-strong">{{$st->stage_type}}</h5>
-                  <div class="py-5">
+                  <div class="py-2">
                     <textarea name="{{$st->id}}" class="form-control form-control-solid" rows="10" disabled>
                       @if($clase->wod)
                       {{$clase->wod->stage($st->id)->description }}
@@ -97,6 +97,7 @@
     <div class="ibox">
         <div class="ibox-head">
           <div class="ibox-title">Crossfiteros de esta clase</div>
+          <div class="ibox-tools">
             @if (Auth::user()->hasRole(1))
               <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
             @else
@@ -107,15 +108,16 @@
               <button class="btn btn-success sweet-user-join" data-id="{{$clase->id}}" data-name="{{$clase->date}}">  <i></i>Reservar esta clase
               </button>
             @endif
+          </div>
         </div>
-        <div class="ibox-body">
-          <div class="ibox-fullwidth-block">
+        <div class="ibox-body pb-5">
+          <div class="table-responsive">
             <table id="students-table" class="table table-hover">
-              <thead class="thead-default thead-lg">
+              <thead class="thead-default">
                 <tr>
-                  <th width="60%">Alumno</th>
-                  <th width="20%">Estado</th>
-                  <th width="20%">Acciones</th>
+                  <th width="80%">Alumno</th>
+                  <th width="10%">Estado</th>
+                  <th width="10%">Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -140,7 +142,7 @@
                   <td>
             {!! Form::open(['route' => ['reservation.destroy', $reservation->id], 'method' => 'delete', 'id'=>'delete'.$reservation->user->id]) !!}
                   <input type="hidden" value="1" name="by_god">
-                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick sweet-user-delete" type="button"
+                    <button class="btn btn-info btn-icon-only btn-danger sweet-user-delete" type="button"
             data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash"></i></button>
             {!! Form::close() !!}
                   </td>
@@ -174,9 +176,9 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-          <table id="students-table-search" class="table table-hover">
-            <thead class="thead-default thead-lg">
+        <div class="modal-body pr-0 pl-4 pb-5">
+          <table id="students-table-search" class="table table-hover m-0 mr-0">
+            <thead class="thead-default">
               <tr>
                 <th width="80%">Alumnos</th>
                 <th width="20%">Accion</th>
@@ -197,7 +199,7 @@
                   <input type="hidden" value="{{$usuario->id}}" name="user_id">
                   <input type="hidden" value="{{$clase->id}}" name="clase_id">
                   <input type="hidden" value="1" name="by_god">
-                  <button type="button" class="btn btn-primary" type="submit" onClick="this.form.submit();">Agregar</button>
+                  <button type="button" class="btn btn-primary button-little" type="submit" onClick="this.form.submit();">Agregar</button>
                 {!! Form::close() !!}
                 </td>
               </tr>
@@ -268,7 +270,7 @@
       table = $('#students-table').DataTable({
         "paging": true,
         "ordering": true,
-        "pageLength": 8,
+        "pageLength": 12,
         "bLengthChange" : false, //thought this line could hide the LengthMenu
         "bpageLength": false,
         "bPaginate": false,
@@ -285,7 +287,7 @@
       table_search = $('#students-table-search').DataTable({
           "paging": true,
           "ordering": true,
-          "pageLength": 3,
+          "pageLength": 5,
           "bLengthChange" : false, //thought this line could hide the LengthMenu
           "bpageLength": false,
           "bPaginate": false,

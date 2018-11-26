@@ -8,7 +8,7 @@
     <div class="col-md-8">
       <div class="ibox ibox-fullheight">
         <div class="ibox-head">
-          <div class="ibox-title">PLANES</div>
+          <div class="ibox-title">Planes</div>
           <div class="ibox-tools">
             <a class="btn btn-success btn-air text-white" href="{{ route('plans.create')}}">CREAR PLAN</a>
           </div>

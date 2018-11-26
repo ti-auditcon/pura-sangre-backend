@@ -97,9 +97,9 @@
                     <td>{{'No aplica'}}</td>
                   @endif
                   <td>
-                    <a href="{{url('/users/'.$user->id)}}" class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-eye"></i></a>
-                    <a href="" class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-envelope"></i></a>
-                    <a href="" class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><i class="la la-usd"></i></a>
+                    <a href="{{url('/users/'.$user->id)}}" class="btn btn-info btn-icon-only btn-success"><i class="la la-eye"></i></a>
+                    <a href="" class="btn btn-info btn-icon-only btn-alert"><i class="la la-envelope"></i></a>
+                    <a href="" class="btn btn-info btn-icon-only btn-pay"><i class="la la-usd"></i></a>
 
                   </td>
                   <td>{{$user->status_user_id}}</td>

@@ -51,7 +51,7 @@
 								<div class="modal-body">
 									<div class="form-group">
 										<div class="input-group clockpicker">
-											<label class="col-sm-2 col-form-label">Inicio:</label>
+											<label class="col-sm-2 col-form-label mr-1 pl-0">Inicio:</label>
 											<input type="text" class="form-control" value="" name="start">
 											<span class="input-group-addon">
 												<span class="la la-clock-o"></span>
@@ -59,9 +59,9 @@
 										</div>
 									</div>
 
-									<div class="form-group">
+									<div class="form-group mb-4">
 										<div class="input-group clockpicker">
-											<label class="col-sm-2 col-form-label">Termino:</label>
+											<label class="col-sm-2 col-form-label mr-1 pl-0">Termino:</label>
 											<input type="text" class="form-control" value="" name="end">
 											<span class="input-group-addon">
 												<span class="la la-clock-o"></span>
@@ -77,7 +77,7 @@
 									</div>
 
 								<div class="form-group mb-12">
-									<label class="col-sm-2 col-form-label">Profesor:</label>
+									<label class="col-form-label">Profesor:</label>
 									<select name="profesor_id" class="form-control" required>
 										<option value="">Elegir un Profesor</option>
 										@foreach (App\Models\Users\Role::find(2)->users as $coach)
@@ -87,14 +87,12 @@
 								<span class="input-group-addon"></span>
 								</div>
 
-								<div class="form-group">
-									<div class="input-group">
-										<label class="col-sm-2 col-form-label">N° de Clases</label>
+								<div class="form-group mb-4">
+										<label class="col-form-label">N° de Clases</label>
 										<input type="number" class="form-control" value="" name="quota" required>
-									</div>
 								</div>
 
-									<div class="form-group mb-12">
+									<div class="form-group mb-4">
 										<label class="radio radio-grey radio-primary">
 											<input id="recurrent" type="radio" name="repetition" value="multiple" checked><span class="input-span"></span>Recurrente
 										</label>
@@ -107,23 +105,23 @@
 										<div id="recurrent-tab" >
 											<div class="form-group" id="daycheckbox">
 													<div class="mb-2">
-															<label class="checkbox checkbox-inline">
+															<label class="checkbox checkbox-inline mb-2">
 																	<input type="checkbox" name="day[]" value="1">
 																	<span class="input-span"></span>Lunes</label>
-															<label class="checkbox checkbox-inline">
+															<label class="checkbox checkbox-inline mb-2">
 																	<input type="checkbox" name="day[]" value="2">
 																	<span class="input-span"></span>Martes</label>
-															<label class="checkbox checkbox-inline">
+															<label class="checkbox checkbox-inline mb-2">
 																	<input type="checkbox" name="day[]" value="3">
 																	<span class="input-span"></span>Miercoles</label>
-															<label class="checkbox checkbox-inline">
+															<label class="checkbox checkbox-inline mb-2">
 																	<input type="checkbox" name="day[]" value="4">
 																	<span class="input-span"></span>Jueves</label>
-															<label class="checkbox checkbox-inline">
+															<label class="checkbox checkbox-inline mb-2">
 																	<input type="checkbox" name="day[]" value="5">
 																	<input type="checkbox" >
 																	<span class="input-span"></span>Viernes</label>
-															<label class="checkbox checkbox-inline">
+															<label class="checkbox checkbox-inline mb-2">
 																	<input type="checkbox" name="day[]" value="6">
 																	<input type="checkbox" >
 																	<span class="input-span"></span>Sabado</label>
@@ -155,26 +153,26 @@
 					<div class="modal-dialog ">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title">Editars horario</h5>
+								<h5 class="modal-title">Editar horario</h5>
 								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
 							<div class="modal-body">
 								<div class="form-group mb-4">
-									{{Form::open(['route' => ['blocks.update', 1 ],'method' => 'put', 'id' => 'block-update'])}}
+									{{Form::open(['route' => ['blocks.update', 1 ],'method' => 'put', 'id' => 'block-update', 'class' => 'styles-select'])}}
 										<select multiple="multiple" id="plan-select-edit" name="plans[]">
 											@foreach (App\Models\Plans\Plan::all() as $plan)
 												<option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period ?? "no aplica"}}</option>
 											@endforeach
 										</select>
-										<button type="submit" class="btn btn-primary" onClick="this.disabled=true; this.value='Editando…';this.form.submit(); ">Editar planes</button>
+										<button type="submit" class="btn btn-primary mt-2" onClick="this.disabled=true; this.value='Editando…';this.form.submit(); ">Editar planes</button>
 									{{Form::close()}}
 								</div>
-								<div class="form-group mb-4">
+								<div class="form-group mt-2 mb-4">
 									{{Form::open(['route' => ['blocks.destroy', 1 ],'method' => 'delete' , 'id' => 'block-delete'])}}
 										Eliminar la clase? </br>
-										<button  class ="btn btn-danger" onClick="this.disabled=true; this.value='Eliminando…';this.form.submit();" >Eliminar</button>
+										<button  class ="btn btn-danger mt-2" onClick="this.disabled=true; this.value='Eliminando…';this.form.submit();" >Eliminar</button>
 									{{Form::close()}}
 								</div>
 							</div>

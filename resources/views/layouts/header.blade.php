@@ -2,7 +2,8 @@
 <header class="header">
   <div class="page-brand">
       <a href="">
-        <span class="brand align-items-center">Pura Sangre</span>
+        {{-- <span class="brand align-items-center">Pura Sangre</span> --}}
+        <img class="logo" src="{{ asset('img/logo.png') }}" alt="Ir a Dashboard">
       </a>
   </div>
   <div class="d-flex justify-content-end align-items-center flex-1">

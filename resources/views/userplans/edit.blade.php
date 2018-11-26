@@ -8,8 +8,8 @@
     <div class="col-4">
       <div class="ibox form-control-air">
         <div class="ibox-head">
-          <div class="ibox-title"><h4 class="m-0">Editar Plan {{$plan_user->plan->plan}}
-              a {{$user->first_name}} {{$user->last_name}}</h4></div>
+          <div class="ibox-title">Editar Plan {{$plan_user->plan->plan}}
+              a {{$user->first_name}} {{$user->last_name}}</div>
         </div>
         {!! Form::open(['route' => ['users.plans.update', $user->id, $plan_user->id], 'method' => 'put']) !!}
         <div class="ibox-body">
@@ -28,11 +28,11 @@
               </div>
             </div>
           </div>
-        <div class="ibox-footer">
-        <button class="btn btn-primary btn-air" type="submit">Actualizar Plan</button>
+        {{-- <div class="ibox-footer"> --}}
+        <button class="btn btn-primary btn-air mr-2" type="submit">Actualizar Plan</button>
         {{-- <button class="" href="" type="btn btn-secondary"></button> --}}
         <a class="btn btn-secondary" href="{{ route('users.plans.show', ['user' => $user->id, 'plan' => $plan_user->id]) }}">Volver</a>
-        </div>
+        {{-- </div> --}}
       </div>
       {!! Form::close() !!}
       </div>

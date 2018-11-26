@@ -18,7 +18,7 @@
           <label class="col-form-label">Apellido</label>
           <input class="form-control " name="last_name" value="{{ $user->last_name }}" required>
         </div>
-          
+
         <div class="row">
           <div class="form-group col-md-4">
             {{Session::get('error')}}
@@ -66,8 +66,11 @@
              @endforeach
             </select>
           </div> --}}
-          <button class="btn btn-primary" type="submit">Actualizar datos</button>
-          <a class="btn btn-secondary" href="{{ route('users.show', $user->id) }}">Volver</a>
+          <br>
+          <div>
+            <button class="btn btn-primary mr-2" type="submit">Actualizar datos</button>
+            <a class="btn btn-secondary" href="{{ route('users.show', $user->id) }}">Volver</a>
+          </div>
         </div>
         {!! Form::close() !!}
       </div>
@@ -93,12 +96,12 @@ jQuery(function ()
     jQuery("input[type=file]").change(function() {
         readURL(this);
     });
- 
+
     const readURL = (input) => {
- 
+
         if (input.files && input.files[0]) {
             const reader = new FileReader();
- 
+
             reader.onload = (e) => {
                 jQuery('#logo-img').attr('src', e.target.result)
                 jQuery('#container-logo').css('display', 'block');

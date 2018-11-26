@@ -8,15 +8,15 @@
     <div class="col-md-8">
       <div class="ibox ibox-fullheight">
         <div class="ibox-head">
-          <div class="ibox-title">PLANES</div>
+          <div class="ibox-title">Planes</div>
           <div class="ibox-tools">
-            <a class="btn btn-success btn-air text-white" href="{{ route('plans.create')}}">CREAR PLAN</a>
+            <a class="btn btn-success btn-air text-white" href="{{ route('plans.create')}}">Crear Plan</a>
           </div>
         </div>
         <div class="ibox-body">
-          <div class="ibox-fullwidth-block">
+          <div class="table-responsive">
             <table id="students-table" class="table table-hover">
-              <thead class="thead-default thead-lg">
+              <thead class="thead-default">
                 <tr>
                   <th width="30%">Nombre</th>
                   <th width="20%">Período</th>
@@ -34,8 +34,8 @@
                   <td>{{$plan->plan_period->period ?? "una semana"}}</td>
                   <td> {{$plan->class_numbers}}</td>
                   <td>
-                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><a class="la la-eye" href="{{url('/plans/'.$plan->id)}}"></a></button>
-                    <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick"><a class="la la-pencil" href="{{route('plans.edit', $plan->id)}}"></a></button>
+                    <button class="btn btn-info btn-icon-only btn-success"><a class="la la-eye" href="{{url('/plans/'.$plan->id)}}"></a></button>
+                    <button class="btn btn-info btn-icon-only"><a class="la la-pencil" href="{{route('plans.edit', $plan->id)}}"></a></button>
                   </td>
                 </tr>
                 @endforeach
@@ -47,16 +47,11 @@
     </div>
   </div>
 
-
-
 @endsection
-
 
 @section('css') {{-- stylesheet para esta vista --}}
 	<link href="{{asset('css/datatables.min.css')}}" rel="stylesheet" />
 @endsection
-
-
 
 @section('scripts') {{-- scripts para esta vista --}}
 	{{--  datatable --}}
@@ -79,5 +74,4 @@
 
 	</script>
 	{{--  End datatable --}}
-
 @endsection
