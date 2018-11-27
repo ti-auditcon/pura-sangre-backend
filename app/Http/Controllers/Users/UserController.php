@@ -100,10 +100,10 @@ class UserController extends Controller
         return view('users.show')->with('user', $user);
     }
 
-    public function image(Request $request)
+    public function image(Request $request, User $user)
     {
 
-      $user = Auth::user();
+
 
       if ($request->hasFile('image')) {
 
