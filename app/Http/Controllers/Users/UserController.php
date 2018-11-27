@@ -8,6 +8,7 @@ use App\Models\Users\Emergency;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\UserRequest;
+use Auth;
 
 /**
  * [UserController description]
