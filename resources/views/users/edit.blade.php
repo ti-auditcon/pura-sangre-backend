@@ -22,7 +22,7 @@
         <div class="row">
           <div class="form-group col-md-4">
             {{Session::get('error')}}
-            <label class="btn btn-info file-input mr-2">
+            <label class="btn btn-info btn-edit file-input mr-2">
               <span class="btn-icon"><i class="la la-upload"></i>Subir Imagen</span>
               <input style="display: none" name="image" type="file" accept="image/*" max-file-size=1234>
             </label>

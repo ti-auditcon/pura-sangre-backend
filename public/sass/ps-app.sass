@@ -58,9 +58,9 @@ table
     .canvas-item
       padding-right: 0
     .data-item
-      margin-left: 24px
+      margin-left: 22px
       position: relative
-      width: 43%
+      width: 45%
       .icon-people
         display: inline-block
         margin-right: 10px
@@ -135,15 +135,36 @@ table
   // -o-animation: buttonGradient 3s ease infinite
   // animation: buttonGradient 3s ease infinite
   transition: all ease 0.4s
-  &:hover
+  &:hover, &:active, &:focus
     background: #35AF17
     // background: linear-gradient(108.43deg, #35AF17 11.38%, #259F06 63.4%) !important
+
+.btn-message
+  background: #F1BC00
+  border-color: transparent !important
+  &:hover, &:active, &:focus
+    background: #F1BC00
+
+.btn-danger
+  background: red
+  border-color: transparent !important
+  &:hover, &:active, &:focus
+    background: red
+
+.btn-pay, .btn-edit
+  background: #00A8F1
+  border-color: transparent !important
+  &:hover, &:active, &:focus
+    background: #00A8F1
 
 .badge-success
   background: #35AF17
 
 .button-little
   font-size: 12px
+
+.btn-icon-only
+  height: 37px
 
   // Pagination
 .pagination .active>a

@@ -15,7 +15,7 @@
             <a class="btn btn-success text-white mr-2" href="{{ route('plans.edit', $plan->id) }}">Editar</a>
             {{-- {!! Form::open(['route' => ['plans.destroy', $plan->id], 'method' => 'delete', 'class' => 'plan-delete']) !!}
             {!! Form::close() !!} --}}
-            <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick sweet-plan-delete"
+            <button class="btn btn-icon-only btn-danger sweet-plan-delete"
             data-id="{{$plan->id}}" data-name="{{$plan->plan}}"><i class="la la-trash"></i></button>
           </div>
         </div>

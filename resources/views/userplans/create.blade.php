@@ -18,7 +18,7 @@
               <div class="form-group">
                 <label class="form-control-label">Planes*</label>
                 <select class="selectpicker form-control form-control-air" name="plan_id" required id="plan-select">
-                  <option value=""> Elegir plan..</option>
+                  <option value=""> Elegir plan...</option>
                    @foreach (App\Models\Plans\Plan::all() as $plan)
                    <option value="{{$plan->id}}" @if(old('plan_id')==$plan->id) selected @endif data-amount="{{$plan->amount}}" data-custom="{{$plan->custom}}">
                      {{$plan->plan}}</option>
@@ -34,7 +34,7 @@
             <div class="col-sm-6 form-group mb-4">
               {{-- <div class="form-group inline form-control-air"> --}}
                 <label class="col-form-label">Número de Clases</label>
-                <input class="form-control" name="counter" type="numeric">
+                <input class="form-control" name="counter" type="number">
               {{-- </div> --}}
             </div>
           </div>
@@ -44,7 +44,7 @@
               <div class="form-group" id="start_date">
                 <label class="font-normal">Fecha de inicio del plan</label>
                 <div class="input-group date form-control-air">
-                  <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
+                  <span class="input-group-addon bg-white"><i class="la la-calendar"></i></span>
                   <input class="form-control" name="fecha_inicio" type="text" value="{{ date('m/d/Y') }}">
                 </div>
               </div>
@@ -54,7 +54,7 @@
               <div class="form-group" id="date">
                 <label class="font-normal">Fecha del pago del plan</label>
                 <div class="input-group date form-control-air">
-                  <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
+                  <span class="input-group-addon bg-white"><i class="la la-calendar"></i></span>
                   <input class="form-control" name="date" type="text" value="{{ date('m/d/Y') }}">
                 </div>
               </div>
@@ -92,7 +92,7 @@
           <div class="row">
             <div class="col-sm-12 form-group mb-4">
               <label>Observaciones</label>
-              <textarea class="form-control form-control-air" name="detalle" placeholder="Detalle..."></textarea>
+              <textarea class="form-control form-control-air" rows="5" name="detalle" placeholder="Detalle..."></textarea>
             </div>
           </div>
         </div>

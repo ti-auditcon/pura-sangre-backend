@@ -34,8 +34,11 @@
                   <td>{{$plan->plan_period->period ?? "una semana"}}</td>
                   <td> {{$plan->class_numbers}}</td>
                   <td>
-                    <button class="btn btn-info btn-icon-only btn-success"><a class="la la-eye" href="{{url('/plans/'.$plan->id)}}"></a></button>
-                    <button class="btn btn-info btn-icon-only"><a class="la la-pencil" href="{{route('plans.edit', $plan->id)}}"></a></button>
+                    {{-- <button class="btn btn-info btn-icon-only btn-success"><a class="la la-eye" href="{{url('/plans/'.$plan->id)}}"></a></button> --}}
+                    <a class="btn btn-info btn-icon-only btn-success" href="{{url('/plans/'.$plan->id)}}"><i class="la la-eye"></i> </a>
+                    <a class="btn btn-info btn-icon-only btn-edit" href="{{route('plans.edit', $plan->id)}}"><i class="la la-pencil"></i></a>
+
+                    {{-- <a href="" class="btn btn-info btn-icon-only btn-message"><i class="la la-envelope"></i></a --}}
                   </td>
                 </tr>
                 @endforeach

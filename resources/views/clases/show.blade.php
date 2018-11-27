@@ -77,13 +77,7 @@
                 <div class="ibox-body">
                   <h5 class="font-strong">{{$st->stage_type}}</h5>
                   <div class="py-2">
-                    <textarea name="{{$st->id}}" class="form-control form-control-solid" rows="10" disabled>
-                      @if($clase->wod)
-                      {{$clase->wod->stage($st->id)->description }}
-                      @else
-                        - sin registro -
-                      @endif
-                    </textarea>
+                    <textarea name="{{$st->id}}" class="form-control form-control-solid" rows="10" disabled>@if($clase->wod){{$clase->wod->stage($st->id)->description }} @else No hay {{$st->stage_type}} ingresado @endif</textarea>
                   </div>
                 </div>
               </div>

@@ -9,7 +9,7 @@
       <div class="flexbox">
         <div class="flexbox-b">
             {{-- {{url('/storage/users/'.$user->avatar.'.jpg')}} --}}
-          <a class="media-img align-self-start" href="javascript:;">
+          <a class="media-img align-self-start">
             <img class="img-circle mr-3" src="{{$user->avatar}}" alt="image" width="72">
           </a>
           <div class="ml-1">
