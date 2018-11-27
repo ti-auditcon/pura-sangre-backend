@@ -48,11 +48,11 @@
           </div>
         </div>
       <br>
-      <div class="ibox-footer">
-      <button class="btn btn-primary btn-air" type="submit">Crear Plan</button>
+      {{-- <div class="ibox-footer"> --}}
+      <button class="btn btn-primary btn-air mr-2" type="submit">Crear Plan</button>
       {{-- <button class="" href="" type="btn btn-secondary"></button> --}}
       <a class="btn btn-secondary" href="{{ route('plans.index') }}">Volver</a>
-      </div>
+      {{-- </div> --}}
     </div>
 
     </div>

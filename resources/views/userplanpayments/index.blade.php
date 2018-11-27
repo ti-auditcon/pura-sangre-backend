@@ -8,15 +8,15 @@
     <div class="col-md-8">
       <div class="ibox ibox-fullheight">
         <div class="ibox-head">
-          <div class="ibox-title">PLANES</div>
+          <div class="ibox-title">Planes</div>
           <div class="ibox-tools">
             <a class="btn btn-success btn-air text-white" href="{{ route('plans.create')}}">CREAR PLAN</a>
           </div>
         </div>
         <div class="ibox-body">
-          <div class="ibox-fullwidth-block">
+          <div class="table-responsive">
             <table id="students-table" class="table table-hover">
-              <thead class="thead-default thead-lg">
+              <thead class="thead-default">
                 <tr>
                   <th width="30%">Nombre</th>
                   <th width="20%">Período</th>
