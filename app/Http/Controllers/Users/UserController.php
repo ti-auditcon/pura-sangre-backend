@@ -99,6 +99,23 @@ class UserController extends Controller
         return view('users.show')->with('user', $user);
     }
 
+    public function image(Request $request)
+    {
+
+      $user = Auth::user();
+
+      if ($request->hasFile('image')) {
+
+          request()->file('image')->storeAs('public/users', $user->id.$user->first_name.'.jpg');
+          $user->avatar = url('/').'/storage/users/'.$user->id.$user->first_name.'.jpg';
+          return response()->json(['success' =>'Sesion finalizada'], 200);
+      }
+      else {
+        return response()->json(['error' =>'nooooooooooooooo'], 400);
+      }
+
+    }
+
     /**
      * [destroy description]
      * @param  Request $request [description]
