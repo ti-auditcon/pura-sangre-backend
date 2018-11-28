@@ -13,14 +13,7 @@
 
 Auth::routes();
 
-
-Route::get('/', function () {return view('home');})->middleware('auth');
-
-
-Route::get('/messages', function () {
-  Article::where('sd');
-    return view('messages');
-});
+Route::get('/', 'HomeController@index');
 
 Route::middleware(['auth'])->prefix('/')->group(function () {
 
@@ -36,7 +29,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
      */
     Route::resource('blocks', 'Clases\BlockController')->middleware('role:1');
 
-      //Tal vez mas adelante se necesite el store de clases
+    //Tal vez mas adelante se necesite el store de clases
     Route::resource('clases', 'Clases\ClaseController')
            ->except('create', 'edit', 'store', 'update');
     // Route::resource('clases.users', 'Clases\ClaseUserController')
@@ -69,5 +62,11 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::resource('users', 'Users\UserController');
     Route::resource('users.plans', 'Plans\PlanUserController');
     Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
+
+    /**
+     * Messages Routes
+     */
+    Route::get('messages', 'Messages\MessageController@index')->middleware('role:1');
+    Route::post('messages/send', 'Messages\MessageController@send')->middleware('role:1');
 
 });

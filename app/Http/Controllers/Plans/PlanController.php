@@ -51,7 +51,7 @@ class PlanController extends Controller
      */
     public function show(Plan $plan)
     {
-      return view('plans.show')->with('plan', $plan);
+        return view('plans.show')->with('plan', $plan);
     }
 
     /**

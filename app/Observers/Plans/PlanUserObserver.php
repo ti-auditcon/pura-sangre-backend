@@ -91,7 +91,7 @@ class PlanUserObserver
      * @param  \App\Models\Plans\PlanUser  $planUser
      * @return void
      */
-    public function restored(PlanUser $planUser)
+    public function deleted(PlanUser $planUser)
     {
         //
     }

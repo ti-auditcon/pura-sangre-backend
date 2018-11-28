@@ -107,7 +107,7 @@ class DatabaseSeeder extends Seeder
       $this->call(PlanUserTableSeeder::class);
       $this->call(BillsTableSeeder::class);
       foreach (User::all() as $user) {
-          factory(Reservation::class, 5)->create(['user_id' => $user->id ]);
+          factory(Reservation::class, 100)->create(['user_id' => $user->id ]);
       }
       // $this->call(ReservationsTableSeeder::class);
       // factory(Reservation::class, 1)->create(['user_id' => $user->id ]);

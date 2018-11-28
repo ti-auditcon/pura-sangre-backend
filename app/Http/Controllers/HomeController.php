@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Plans\PlanUser;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        // dd('hola');
+        $plan_users = PlanUser::where('plan_status_id', 1)->where('finish_date','>=', now())->orderBy('finish_date')->get();
+        return view('home')->with('plan_users', $plan_users);
     }
 }
