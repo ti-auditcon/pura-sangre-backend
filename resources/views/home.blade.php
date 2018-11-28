@@ -43,40 +43,6 @@
                 </tbody>
               </table>
             </div>
-<<<<<<< HEAD
-          </div>
-        </div>
-        <div class="ibox">
-          <div class="ibox-head">
-            <div class="ibox-title">Alumnos recientemente inactivos</div>
-          </div>
-          <div class="ibox-body" style="padding-top:0px">
-            <div class="ibox-fullwidth-block">
-              <table id="students-table" class="table table-hover">
-                <thead class="thead-default thead-lg">
-                  <tr>
-                    <th>Alumno</th>
-                    <th>Plan</th>
-                    <th>Desde el</th>
-                    <th>N° Teléfono</th>
-                  </tr>
-                </thead>
-                <tbody>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="ibox">
-          <div class="ibox-head">
-            <div class="ibox-title">Reporte de Julio</div>
-          </div>
-          <div class="ibox-body" >
-          </div>
-        </div>
-=======
             <div class="ibox-body">
                {{-- <div class="ibox-fullwidth-block"> --}}
                   <table id="students-table" class="table table-hover">
@@ -135,7 +101,6 @@
             <div class="ibox-body">
             </div>
          </div>
->>>>>>> dev
       </div>
    </div>
 
