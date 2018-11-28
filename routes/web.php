@@ -70,4 +70,6 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::resource('users.plans', 'Plans\PlanUserController');
     Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
 
+
+    Route::get('update-avatar', 'Users\UserController@updateAvatar')->name('user.update.avatar');
 });
