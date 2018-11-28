@@ -63,10 +63,13 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::resource('users.plans', 'Plans\PlanUserController');
     Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
 
+
     /**
      * Messages Routes
      */
     Route::get('messages', 'Messages\MessageController@index')->middleware('role:1');
     Route::post('messages/send', 'Messages\MessageController@send')->middleware('role:1');
+
+    Route::get('update-avatar', 'Users\UserController@updateAvatar')->name('user.update.avatar');
 
 });

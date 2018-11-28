@@ -55,14 +55,14 @@
                         </tr>
                      </thead>
                      <tbody>
-                        @foreach (App\Models\Plans\PlanUser::all()->where('plan_status_id', 1)->where('finish_date','>=', now())->sortBy('finish_date')->take(5) as $pu)
+                        {{-- @foreach (App\Models\Plans\PlanUser::all()->where('plan_status_id', 1)->where('finish_date','>=', now())->sortBy('finish_date')->take(5) as $pu)
                           <tr>
                             <td>{{$pu->user->first_name}} {{$pu->user->last_name}}</td>
                             <td>{{$pu->plan->plan}}</td>
                             <td> {{ $pu->finish_date->diffForHumans() }}</td>
                             <td></td>
                           </tr>
-                        @endforeach
+                         @endforeach --}}
                      </tbody>
                   </table>
                {{-- </div> --}}
@@ -134,8 +134,7 @@
       },
       minTime: "07:00:00",
       maxTime: "21:00:00",
-      // events:
-      // {json_encode(App\Models\Clases\Clase::all())!!},
+      // events:{json_encode(App\Models\Clases\Clase::all())!!},
       editable: false,
       defaultView: 'agendaDay',
       // allDaySlot: false,

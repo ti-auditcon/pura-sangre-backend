@@ -128,4 +128,17 @@ class UserController extends Controller
       $user->delete();
       return redirect('/users')->with('success', 'El usuario ha sido borrado correctamente');
     }
+
+
+    public function updateAvatar()
+    {
+      $users = User::all();
+      foreach ($users as $user) {
+        $user->avatar = url('/').'/storage/users/u ('.rand ( 1, 54 ).').jpg';
+        $user->save();
+      }
+      return 'listoco';
+
+    }
+
 }
