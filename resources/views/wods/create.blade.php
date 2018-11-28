@@ -40,11 +40,11 @@
 
 
       <br>
-      <div class="ibox-footer">
-      <button class="btn btn-primary btn-air" type="submit">Crear WOD</button>
+      {{-- <div class="ibox-footer"> --}}
+      <button class="btn btn-primary btn-air mr-2" type="submit">Crear WOD</button>
       {{-- <button class="" href="" type="btn btn-secondary"></button> --}}
       <a class="btn btn-secondary" href="{{ route('clases.index') }}">Volver</a>
-      </div>
+      {{-- </div> --}}
     </div>
 
     </div>

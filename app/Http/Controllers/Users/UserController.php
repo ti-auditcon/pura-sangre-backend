@@ -8,6 +8,7 @@ use App\Models\Users\Emergency;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\UserRequest;
+use Auth;
 
 /**
  * [UserController description]
@@ -96,6 +97,24 @@ class UserController extends Controller
         $user->save();
         Session::flash('success','Los datos del usuario han sido actualizados');
         return view('users.show')->with('user', $user);
+    }
+
+    public function image(Request $request, User $user)
+    {
+
+
+
+      if ($request->hasFile('image')) {
+
+          request()->file('image')->storeAs('public/users', $user->id.$user->first_name.'.jpg');
+          $user->avatar = url('/').'/storage/users/'.$user->id.$user->first_name.'.jpg';
+          $user->save();
+          return response()->json(['success' =>'imagen subida'], 200);
+      }
+      else {
+        return response()->json(['error' =>'nooooooooooooooo'], 400);
+      }
+
     }
 
     /**

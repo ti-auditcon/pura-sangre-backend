@@ -10,14 +10,17 @@
         <div class="ibox-head">
           <div class="ibox-title">Clases</div>
           @if (Auth::user()->hasRole(1))
-            <a class="btn btn-primary" href="{{ route('wods.create') }}">Asignar Workout</a>
-            <a class="btn btn-primary" href="{{ route('blocks.index') }}">Ir a Horarios</a>
+            <div class="ibox-tools">
+              <a class="btn btn-primary" href="{{ route('wods.create') }}">Asignar Workout</a>
+              <a class="btn btn-primary" href="{{ route('blocks.index') }}">Ir a Horarios</a>
+            </div>
           @endif
         </div>
         <div class="ibox-body">
           {{Form::open(['route'=>'clases.type'])}}
-          <div class="form-group mb-4 row">
-            <label class="col-sm-1 col-form-label">Tipo de clase:</label>
+          <div class="form-group m-0 mt-2 mb-4 row align-items-center">
+
+            <span>Tipo de clase:</span>
             <div class="col-sm-4">
               <select class="form-control" name="type">
                 @foreach(App\Models\Clases\ClaseType::all() as $type)
@@ -27,9 +30,10 @@
                 @endforeach
               </select>
             </div>
-            <div class="col-sm-1">
+            <div class="col-sm-1 pl-0">
               <button class="btn btn-default">seleccionar</button>
             </div>
+
           </div>
           {{Form::close()}}
           <div id="calendar"></div>

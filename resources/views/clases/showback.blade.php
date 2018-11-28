@@ -8,7 +8,7 @@
     <div class="col-6">
       <div class="ibox">
           <div class="ibox-head">
-              <div class="ibox-title">CLASE</div>
+              <div class="ibox-title">Clase</div>
 
           </div>
           <div class="ibox-body">

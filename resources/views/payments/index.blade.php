@@ -13,9 +13,9 @@
           </div>
         </div>
         <div class="ibox-body">
-            <div class="ibox-fullwidth-block">
+            <div class="table-responsive">
               <table id="payment-table" class="table table-hover">
-                <thead class="thead-default thead-lg">
+                <thead class="thead-default">
                   <tr>
                     <th width="20%">Usuario</th>
                     <th width="15%">Plan</th>
@@ -29,7 +29,7 @@
                   @foreach ($bills->sortByDesc('date') as $bill)
                   <tr>
                       <td>
-                      
+
                           <a href="{{url('/users/'.$bill->plan_user->user->id)}}">
                               {{$bill->plan_user->user->first_name}} {{$bill->plan_user->user->last_name}}
                           </a>

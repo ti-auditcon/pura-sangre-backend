@@ -22,27 +22,32 @@
           </div>
         </div>
         <div class="ibox-body">
-          <div class="card mb-4">
-            <div class="card-body ">
+          {{-- <div class="card mb-4"> --}}
+            {{-- <div class="card-body"> --}}
 
-              <div class="row mb-2">
-                <div class="col-12 text-muted">Comineza el</div>
-                <div class="col-12">{{$plan_user->start_date}}</div>
+              <div class="row mb-4">
+                <div class="col-4">
+                  <div class="col-12 text-muted ">Comineza el</div>
+                  <div class="col-12">{{$plan_user->start_date}}</div>
+                </div>
+                <div class="col-4">
+                  <div class="col-12 text-muted ">Termina el</div>
+                  <div class="col-12">{{$plan_user->finish_date}}</div>
+                </div>
               </div>
-              <div class="row mb-2">
-                <div class="col-12 text-muted">Termina el</div>
-                <div class="col-12">{{$plan_user->finish_date}}</div>
+              <div class="row mb-3">
+                <div class="col-4">
+                  <div class="col-12 text-muted ">Valor del Plan</div>
+                  <div class="col-12">{{$plan_user->amount}}</div>
+                </div>
+                <div class="col-4">
+                  <div class="col-12 text-muted ">Estado del Plan</div>
+                  <div class="col-12">{{$plan_user->plan_state}}</div>
+                </div>
               </div>
-              <div class="row mb-2">
-                <div class="col-12 text-muted">Valor del Plan</div>
-                <div class="col-12">{{$plan_user->amount}}</div>
-              </div>
-              <div class="row mb-2">
-                <div class="col-12 text-muted">Estado del Plan</div>
-                <div class="col-12">{{$plan_user->plan_state}}</div>
-              </div>
-            </div>
-          </div>
+
+            {{-- </div> --}}
+          {{-- </div> --}}
         </div>
       </div>
     </div>

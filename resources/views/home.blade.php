@@ -43,6 +43,7 @@
                 </tbody>
               </table>
             </div>
+<<<<<<< HEAD
           </div>
         </div>
         <div class="ibox">
@@ -75,6 +76,66 @@
           <div class="ibox-body" >
           </div>
         </div>
+=======
+            <div class="ibox-body">
+               {{-- <div class="ibox-fullwidth-block"> --}}
+                  <table id="students-table" class="table table-hover">
+                     <thead class="thead-default">
+                        <tr>
+                          <th>Alumno</th>
+                          <th>Plan</th>
+                          <th>Vence en</th>
+                          <th>Acciones</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        @foreach (App\Models\Plans\PlanUser::all()->where('plan_status_id', 1)->where('finish_date','>=', now())->sortBy('finish_date')->take(5) as $pu)
+                          <tr>
+                            <td>{{$pu->user->first_name}} {{$pu->user->last_name}}</td>
+                            <td>{{$pu->plan->plan}}</td>
+                            <td> {{ $pu->finish_date->diffForHumans() }}</td>
+                            <td></td>
+                          </tr>
+                        @endforeach
+                     </tbody>
+                  </table>
+               {{-- </div> --}}
+            </div>
+         </div>
+         <div class="ibox">
+            <div class="ibox-head">
+               <div class="ibox-title">Alumnos recientemente inactivos</div>
+            </div>
+            <div class="ibox-body">
+               {{-- <div class="ibox-fullwidth-block"> --}}
+                  <table id="students-table" class="table table-hover">
+                     <thead class="thead-default">
+                        <tr>
+                           <tr>
+                              <th>Alumno</th>
+                              <th>Plan</th>
+                              <th>Desde el</th>
+                              <th>N° Teléfono</th>
+                           </tr>
+                        </tr>
+                     </thead>
+                     <tbody>
+
+                     </tbody>
+                  </table>
+               {{-- </div> --}}
+            </div>
+         </div>
+      </div>
+      <div class="col-4">
+         <div class="ibox">
+            <div class="ibox-head">
+               <div class="ibox-title">Reporte de Julio</div>
+            </div>
+            <div class="ibox-body">
+            </div>
+         </div>
+>>>>>>> dev
       </div>
    </div>
 

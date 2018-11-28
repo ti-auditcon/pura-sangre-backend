@@ -2,12 +2,13 @@
 <header class="header">
   <div class="page-brand">
       <a href="">
-        <span class="brand align-items-center">Pura Sangre</span>
+        {{-- <span class="brand align-items-center">Pura Sangre</span> --}}
+        <img class="logo" src="{{ asset('img/logo.png') }}" alt="Ir a Dashboard">
       </a>
   </div>
-  <div class="d-flex justify-content-between align-items-center flex-1">
+  <div class="d-flex justify-content-end align-items-center flex-1">
       <!-- START TOP-LEFT TOOLBAR-->
-      <ul class="nav navbar-toolbar">
+      <!-- <ul class="nav navbar-toolbar">
           <li>
               <a class="nav-link sidebar-toggler js-sidebar-toggler" href="javascript:;">
                   <span class="icon-bar"></span>
@@ -16,7 +17,7 @@
               </a>
           </li>
 
-      </ul>
+      </ul> -->
       <!-- END TOP-LEFT TOOLBAR-->
       <!-- START TOP-RIGHT TOOLBAR-->
       <ul class="nav navbar-toolbar">

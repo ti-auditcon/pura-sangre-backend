@@ -8,36 +8,39 @@
     <div class="ibox-body">
       <div class="flexbox">
         <div class="flexbox-b">
-          <div class="ml-5 mr-5">
-            {{-- <img class="img-circle" src="{{url('/img/users/'.$student->avatar)}}" alt="image" width="110"> --}}
-          </div>
             {{-- {{url('/storage/users/'.$user->avatar.'.jpg')}} --}}
-          <a class="media-img" href="javascript:;">
-            <img class="img-circle" src="{{$user->avatar}}" alt="image" width="72">
+          <a class="media-img align-self-start">
+            <img class="img-circle mr-3" src="{{$user->avatar}}" alt="image" width="72">
           </a>
-          <div>
+          <div class="ml-1">
 
-            <h4>{{$user->first_name}} {{$user->last_name}}</h4>
+            <h4 class="mt-1 mb-1">{{$user->first_name}} {{$user->last_name}}</h4>
             <span class="mr-3">{{$user->actual_plan->plan->plan ?? "sin plan actualmente" }}</span>
 
-            <div class="text-muted font-13 mb-3">
-              <span class="mr-3"><i class="mr-2"></i></span>
+            <div class="text-left mt-3">
+              <span class="badge badge-{{$user->status_user->type}} badge-pills">{{$user->status_user->status_user}}</span>
             </div>
+
+            {{-- <div class="text-muted font-13">
+              <span class="mr-3"><i class="mr-2"></i></span>
+            </div> --}}
+
+
           </div>
         </div>
-        <div class="d-inline-flex">
-          <div class="px-4 text-center">
+        <div class="flexbox-b align-self-start">
+          {{-- <div class="px-4 text-center">
               <span class="badge  badge-{{$user->status_user->type}} badge-pills">{{$user->status_user->status_user}}</span>
-          </div>
+          </div> --}}
 
   {{--         {{dd($user->actual_plan)}} --}}
           @if ($user->actual_plan != null)
             @if ($user->actual_plan->plan->has_clases == true)
-              <div class="px-4 text-center">
-                <div class="text-muted font-13">Clases disponibles</div>
-                <div class="h2 mt-2 text-warning">
+              <div class="pr-2 text-right">
+                <div class="h2 mt-2 mb-0 text-warning">
                   {{$user->actual_plan->counter}}
                 </div>
+                <div class="text-muted font-13">Clases disponibles</div>
               </div>
             @endif
           @endif
@@ -51,29 +54,31 @@
     <div class="col-4">
       <div class="ibox">
         <div class="ibox-head d-flex">
-          <div class="ibox-title">MIS DATOS</div>
-          <div class="row">
-          <div class="col-sm-6 form-groplan_user mb-4">
-            <a class="btn btn-success text-white" style="display: inline-block;" href="{{ route('users.edit', $user->id) }}">Editar</a>
-          </div>
-            {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'delete', 'class' => 'user-delete']) !!}
-            {!! Form::close() !!}
-            @if (Auth::user()->hasRole(1))
-            <div class="col-sm-6 form-groplan_user mb-4">
-               <button class="btn btn-outline-info btn-icon-only btn-circle btn-sm btn-thick sweet-user-delete" style="display: inline-block;" data-id="{{$user->id}}" data-name="{{$user->first_name}} {{$user->last_name}}"><i class="la la-trash"></i></button>
-            </div>
-            @endif
+          <div class="ibox-title">Mis Datos</div>
+          <div class="ibox-tools">
+            {{-- <div class="row"> --}}
+              {{-- <div class="col-sm-6 form-groplan_user"> --}}
+              <a class="btn btn-success text-white mr-2" style="display: inline-block;" href="{{ route('users.edit', $user->id) }}">Editar</a>
+              {{-- </div> --}}
+              {{-- {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'delete', 'class' => 'user-delete']) !!}
+              {!! Form::close() !!} --}}
+              @if (Auth::user()->hasRole(1))
+              {{-- <div class="col-sm-6 form-groplan_user"> --}}
+                 <button class="btn btn-info btn-danger sweet-user-delete" style="display: inline-block;" data-id="{{$user->id}}" data-name="{{$user->first_name}} {{$user->last_name}}"><i class="la la-trash"></i></button>
+              {{-- </div> --}}
+              @endif
+            {{-- </div> --}}
           </div>
         </div>
         <div class="ibox-body">
-          <div class="card mb-4">
-            <div class="card-body">
+          {{-- <div class="card">
+            <div class="card-body"> --}}
               <div class="row mb-2">
-                <div class="col-12 text-muted">RUT:</div>
+                <div class="col-12 text-muted">Rut:</div>
                 <div class="col-12">{{Rut::set($user->rut)->fix()->format()}}</div>
               </div>
               <div class="row mb-2">
-                <div class="col-12 text-muted">EMAIL:</div>
+                <div class="col-12 text-muted">Email:</div>
                 <div class="col-12">{{$user->email}}</div>
               </div>
               <div class="row mb-2">
@@ -90,17 +95,17 @@
               </div>
               <div class="row mb-2">
                 <div class="col-12 text-muted">Contacto de emergencia</div>
-                <div class="col-12">{{$user->emergency->contact_name}} - {{$user->emergency->contact_phone ?? 'Sin contacto de emergencia'}}</div>
+                <div class="col-12">{{$user->emergency->contact_name}}  {{$user->emergency->contact_phone ?? 'No ingresado'}}</div>
               </div>
-            </div>
-          </div>
+            {{-- </div>
+          </div> --}}
         </div>
       </div>
     </div>
     <div class="col-8">
       <div class="ibox ibox-fullheight">
         <div class="ibox-head">
-          <div class="ibox-title">MIS PLANES</div>
+          <div class="ibox-title">Mis Planes</div>
           @if (Auth::user()->hasRole(1))
             <div class="ibox-tools">
             <a class="btn btn-success text-white"
@@ -109,20 +114,20 @@
           @endif
         </div>
         <div class="ibox-body">
-          <div class="ibox-fullwidth-block">
+          <div class="table-responsive">
             <table id="students-table" class="table table-hover">
               <thead class="thead-default thead-lg">
                 <tr>
                   <th width="15%">Plan</th>
                   <th width="12%">Fecha Pago</th>
-                  <th width="22%">Periodo</th>
-                  <th width="10%">Clases</th>
+                  <th width="19%">Periodo</th>
+                  <th width="7%">Clases</th>
                   <th width="15%">Medio de pago</th>
                   <th width="10%">Monto</th>
                   <th width="10%">Estado</th>
-                  @if (Auth::user()->hasRole(1))
-                    <th width="10%">Acciones</th>
-                  @endif
+                  {{-- @if (Auth::user()->hasRole(1))
+                  @endif --}}
+                  <th width="10%">Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -137,14 +142,14 @@
                     <td><span class="badge badge-{{$plan_user->plan_status->type}} badge-pill">
                       {{strtoupper($plan_user->plan_status->plan_status)}}</span></td>
 
-                    @if (Auth::user()->hasRole(1) && $plan_user->plan_status->can_delete == true)
-                      <td>
-                      {!! Form::open(['route' => ['users.plans.destroy', 'user' => $user->id, 'plan' => $plan_user->id], 'method' => 'delete', 'class' => 'user-plan-delete',  'id'=>'delete'.$plan_user->id]) !!}
-                      {{-- <input type="hidden" name="plan_user_id" hidden value="{{$plan_user->id}}"> --}}
-                      {!! Form::close() !!}
-                      <button class="btn btn-info btn-icon-only btn-circle btn-sm btn-air sweet-user-plan-delete" data-id="{{$plan_user->id}}" data-name="{{$plan_user->plan->plan}}"><i class="la la-trash"></i></button>
+                    <td>
+                      @if (Auth::user()->hasRole(1) && $plan_user->plan_status->can_delete == true)
+                          {!! Form::open(['route' => ['users.plans.destroy', 'user' => $user->id, 'plan' => $plan_user->id], 'method' => 'delete', 'class' => 'user-plan-delete',  'id'=>'delete'.$plan_user->id]) !!}
+                          {{-- <input type="hidden" name="plan_user_id" hidden value="{{$plan_user->id}}"> --}}
+                          {!! Form::close() !!}
+                          <button class="btn btn-info btn-icon-only btn-danger sweet-user-plan-delete" data-id="{{$plan_user->id}}" data-name="{{$plan_user->plan->plan}}"><i class="la la-trash"></i></button>
+                      @endif
                     </td>
-                    @endif
                   </tr>
                 @endforeach
               </tbody>
