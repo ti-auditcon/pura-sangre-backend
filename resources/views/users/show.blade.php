@@ -131,27 +131,31 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach($user->plan_users as $plan_user)
-                  <tr>
-                    <td><a href="{{url('/users/'.$user->id.'/plans/'.$plan_user->id)}}">{{$plan_user->plan->plan}}</a></td>
-                    <td>{{$plan_user->bill->date ?? "no aplica"}}</td>
-                    <td>{{$plan_user->start_date->format('d-m-Y')}} al {{$plan_user->finish_date->format('d-m-Y')}}</td>
-                    <td>{{$plan_user->plan->class_numbers}}</td>
-                    <td>{{$plan_user->bill->payment_type->payment_type ?? "no aplica"}}</td>
-                    <td>{{$plan_user->bill->amount ?? "no aplica" }}</td>
-                    <td><span class="badge badge-{{$plan_user->plan_status->type}} badge-pill">
-                      {{strtoupper($plan_user->plan_status->plan_status)}}</span></td>
+          @foreach($user->plan_users as $plan_user)
+            <tr>
+              <td><a href="{{url('/users/'.$user->id.'/plans/'.$plan_user->id)}}">{{$plan_user->plan->plan}}</a></td>
+              <td>{{$plan_user->bill->date ?? "no aplica"}}</td>
+              <td>{{$plan_user->start_date->format('d-m-Y')}} al {{$plan_user->finish_date->format('d-m-Y')}}</td>
+              <td>{{$plan_user->plan->class_numbers}}</td>
+              <td>{{$plan_user->bill->payment_type->payment_type ?? "no aplica"}}</td>
+              <td>{{$plan_user->bill->amount ?? "no aplica" }}</td>
+              <td><span class="badge badge-{{$plan_user->plan_status->type}} badge-pill">
+                {{strtoupper($plan_user->plan_status->plan_status)}}</span></td>
 
-                    <td>
-                      @if (Auth::user()->hasRole(1) && $plan_user->plan_status->can_delete == true)
-                          {!! Form::open(['route' => ['users.plans.destroy', 'user' => $user->id, 'plan' => $plan_user->id], 'method' => 'delete', 'class' => 'user-plan-delete',  'id'=>'delete'.$plan_user->id]) !!}
-                          {{-- <input type="hidden" name="plan_user_id" hidden value="{{$plan_user->id}}"> --}}
-                          {!! Form::close() !!}
-                          <button class="btn btn-info btn-icon-only btn-danger sweet-user-plan-delete" data-id="{{$plan_user->id}}" data-name="{{$plan_user->plan->plan}}"><i class="la la-trash"></i></button>
-                      @endif
-                    </td>
-                  </tr>
-                @endforeach
+              <td>
+                @if (Auth::user()->hasRole(1) && $plan_user->plan_status->can_delete == true)
+                  {!! Form::open(['route' => ['users.plans.annul', 'user' => $user->id, 'plan' => $plan_user->id], 'method' => 'post', 'class' => 'user-plan-annul',  'id'=>'annul'.$plan_user->id]) !!}
+                  {!! Form::close() !!}
+                  <button class="btn btn-info btn-icon-only btn-danger sweet-user-plan-annul" data-id="{{$plan_user->id}}" data-name="{{$plan_user->plan->plan}}"><i class="la la-ban"></i></button>
+                @elseif (Auth::user()->hasRole(1) && $plan_user->plan_status_id == 5)
+                  {!! Form::open(['route' => ['users.plans.destroy', 'user' => $user->id, 'plan' => $plan_user->id], 'method' => 'delete', 'class' => 'user-plan-delete',  'id'=>'delete'.$plan_user->id]) !!}
+
+                  {!! Form::close() !!}
+                  <button class="btn btn-info btn-icon-only btn-danger sweet-user-plan-delete" data-id="{{$plan_user->id}}" data-name="{{$plan_user->plan->plan}}"><i class="la la-trash"></i></button>
+                @endif
+              </td>
+            </tr>
+          @endforeach
               </tbody>
             </table>
           </div>
@@ -178,13 +182,12 @@
               </thead>
               <tbody>
                 @foreach($user->reservations->whereIn('reservation_status_id', [1,2]) as $reserv)
-
-                  <tr>
-                    <td><a href="{{url('/clases/'.$reserv->clase->id)}}">{{$reserv->clase->date}}</a></td>
-                    <td>{{$reserv->clase->start_at}} {{$reserv->clase->finish_at}}</td>
-                    <td>{{$reserv->reservation_status->reservation_status}}</td>
-                    {{-- <td>{{$clase->claseation_status->claseation_status}}</td> --}}
-                  </tr>
+                <tr>
+                  <td><a href="{{url('/clases/'.$reserv->clase->id)}}">{{$reserv->clase->date}}</a></td>
+                  <td>{{$reserv->clase->start_at}} {{$reserv->clase->finish_at}}</td>
+                  <td>{{$reserv->reservation_status->reservation_status}}</td>
+                  {{-- <td>{{$clase->claseation_status->claseation_status}}</td> --}}
+                </tr>
                 @endforeach
               </tbody>
             </table>
@@ -211,7 +214,6 @@
               </thead>
               <tbody>
                 @foreach($user->reservations->whereIn('reservation_status_id', [3,4]) as $reserv)
-
                   <tr>
                     <td><a href="{{url('/clases/'.$reserv->clase->id)}}">{{$reserv->clase->date}}</a></td>
                     <td>{{$reserv->clase->start_at}} {{$reserv->clase->finish_at}}</td>
@@ -258,18 +260,39 @@
 	});
 	</script>
 
-  {{-- ELIMINAR UN PLAN A UN USUARIO --}}
+ {{-- ELIMINAR UN PLAN A UN USUARIO --}}
   <script>
-  $('.sweet-user-plan-delete').click(function(e){
+  $('.sweet-user-plan-annul').click(function(e){
     var id = $(this).data('id');
     // alert(id);
       swal({
-          title: "Desea eliminar el plan: "+$(this).data('name')+"?",
+          title: "Desea cancelar el plan: "+$(this).data('name')+"?",
           text: "(Se borrarán todas las cuotas futuras de este plan, manteniendo los ya consumidos)",
           type: 'warning',
           showCancelButton: true,
           confirmButtonClass: 'btn-danger',
-          cancelButtonText: 'Cancelar',
+          cancelButtonText: 'Volver',
+          confirmButtonText: 'Cancelar Plan',
+          closeOnConfirm: false,
+      },function(){
+        //redirección para eliminar plan del usuario
+         $('form#annul'+id).submit();
+      });
+  });
+  </script>
+
+  {{-- ELIMINAR UN PLAN A UN USUARIO --}}
+  <script>
+  $('.sweet-user-plan-delete').click(function(e){
+    var id = $(this).data('id');
+
+      swal({
+          title: "Desea borrar el plan: "+$(this).data('name')+"?",
+          text: "Se eliminará completamente del sistema",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonClass: 'btn-danger',
+          cancelButtonText: 'cancelar',
           confirmButtonText: 'Eliminar',
           closeOnConfirm: false,
       },function(){
@@ -278,8 +301,6 @@
       });
   });
   </script>
-
-
 
 
 @endsection

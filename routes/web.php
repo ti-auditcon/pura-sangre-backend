@@ -61,6 +61,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     */
     Route::resource('users', 'Users\UserController');
     Route::resource('users.plans', 'Plans\PlanUserController');
+        Route::post('users/{user}/plans/{plan}/annul', 'Plans\PlanUserController@annul')->name('users.plans.annul');
     Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
 
 

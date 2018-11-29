@@ -31,7 +31,7 @@
         <div style="display:none;" id="payment">
 
           <div class="row">
-            <div class="col-sm-6 form-group mb-4">
+            <div class="col-sm-6 form-group mb-4 is-custom">
               {{-- <div class="form-group inline form-control-air"> --}}
                 <label class="col-form-label">Número de Clases</label>
                 <input class="form-control" name="counter" type="number">

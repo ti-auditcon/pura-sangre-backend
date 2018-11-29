@@ -2,24 +2,24 @@
 
 namespace App\Providers;
 
+use Session;
+use App\Models\Wods\Wod;
+use App\Models\Bills\Bill;
+use App\Models\Users\User;
+use App\Models\Wods\Stage;
 use App\Models\Clases\Block;
 use App\Models\Clases\Clase;
 use App\Models\Plans\PlanUser;
-use App\Models\Users\User;
-use App\Models\Wods\Stage;
-use App\Models\Wods\Wod;
 use App\Models\Clases\Reservation;
-use App\Models\Bills\Bill;
-use App\Observers\Clases\BlockObserver;
-use App\Observers\Clases\ClaseObserver;
-use App\Observers\Clases\ReservationObserver;
-use App\Observers\Plans\PlanUserObserver;
+use App\Observers\Wods\WodObserver;
 use App\Observers\Bills\BillObserver;
 use App\Observers\Users\UserObserver;
 use App\Observers\Wods\StageObserver;
-use App\Observers\Wods\WodObserver;
 use Illuminate\Support\ServiceProvider;
-use Session;
+use App\Observers\Clases\ClaseObserver;
+use App\Observers\Clases\BlockObserver;
+use App\Observers\Plans\PlanUserObserver;
+use App\Observers\Clases\ReservationObserver;
 
 /** [AppServiceProvider description]*/
 class AppServiceProvider extends ServiceProvider
