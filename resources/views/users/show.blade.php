@@ -60,8 +60,8 @@
               {{-- <div class="col-sm-6 form-groplan_user"> --}}
               <a class="btn btn-success text-white mr-2" style="display: inline-block;" href="{{ route('users.edit', $user->id) }}">Editar</a>
               {{-- </div> --}}
-              {{-- {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'delete', 'class' => 'user-delete']) !!}
-              {!! Form::close() !!} --}}
+              {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'delete', 'class' => 'user-delete']) !!}
+              {!! Form::close() !!}
               @if (Auth::user()->hasRole(1))
               {{-- <div class="col-sm-6 form-groplan_user"> --}}
                  <button class="btn btn-info btn-danger sweet-user-delete" style="display: inline-block;" data-id="{{$user->id}}" data-name="{{$user->first_name}} {{$user->last_name}}"><i class="la la-trash"></i></button>
