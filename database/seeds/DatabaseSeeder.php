@@ -106,10 +106,10 @@ class DatabaseSeeder extends Seeder
       // });
       $this->call(PlanUserTableSeeder::class);
       $this->call(BillsTableSeeder::class);
-      foreach (User::all() as $user) {
-          factory(Reservation::class, 100)->create(['user_id' => $user->id ]);
-      }
-      // $this->call(ReservationsTableSeeder::class);
+      // foreach (User::all() as $user) {
+      //     factory(Reservation::class, 100)->create(['user_id' => $user->id ]);
+      // }
+      $this->call(ReservationsTableSeeder::class);
       // factory(Reservation::class, 1)->create(['user_id' => $user->id ]);
     }
 }
