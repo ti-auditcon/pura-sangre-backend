@@ -40,6 +40,35 @@ class DatabaseSeeder extends Seeder
       $this->call(ReservationStatusesTableSeeder::class);
       $this->call(OauthClientsTableSeeder::class);
 
+
+      $this->call(RoleUserTableSeeder::class);
+      $this->call(UsersTableSeeder::class);
+      // factory(User::class, 200)->create();
+
+      // factory(User::class, 250)->create()->each(function ($u){
+         // factory(PlanUser::class, 40)->create(['user_id' => $u->id ])->each(function ($pu){
+         //    if($pu->id && $pu->plan->custom == 0){
+         //       factory(Bill::class, 1)->create([
+         //          'plan_user_id' => $pu->id,
+         //          'date' => $pu->start_date,
+         //          'start_date' => $pu->start_date,
+         //          'finish_date' => $pu->finish_date,
+         //          'amount' => $pu->plan->amount,
+         //       ]);
+         //        $this->call(UsersTableSeeder::class);
+         // }
+         // });
+         // factory(Reservation::class, 10)->create(['user_id' => $u->id ]);
+      // });
+      $this->call(PlanUserTableSeeder::class);
+      $this->call(BillsTableSeeder::class);
+      // foreach (User::all() as $user) {
+      //     factory(Reservation::class, 100)->create(['user_id' => $user->id ]);
+      // }
+      $this->call(ReservationsTableSeeder::class);
+      // factory(Reservation::class, 1)->create(['user_id' => $user->id ]);
+    }
+}
       // $user = User::create([
       //     'rut' => 11111111,
       //     'first_name' => 'Audito',
@@ -84,32 +113,3 @@ class DatabaseSeeder extends Seeder
       //     // 'emergency_id' => 1,
       //     'status_user_id' => 1,
       // ]);
-
-      $this->call(RoleUserTableSeeder::class);
-      $this->call(UsersTableSeeder::class);
-      // factory(User::class, 200)->create();
-
-      // factory(User::class, 250)->create()->each(function ($u){
-         // factory(PlanUser::class, 40)->create(['user_id' => $u->id ])->each(function ($pu){
-         //    if($pu->id && $pu->plan->custom == 0){
-         //       factory(Bill::class, 1)->create([
-         //          'plan_user_id' => $pu->id,
-         //          'date' => $pu->start_date,
-         //          'start_date' => $pu->start_date,
-         //          'finish_date' => $pu->finish_date,
-         //          'amount' => $pu->plan->amount,
-         //       ]);
-         //        $this->call(UsersTableSeeder::class);
-    // }
-         // });
-         // factory(Reservation::class, 10)->create(['user_id' => $u->id ]);
-      // });
-      $this->call(PlanUserTableSeeder::class);
-      $this->call(BillsTableSeeder::class);
-      foreach (User::all() as $user) {
-          factory(Reservation::class, 100)->create(['user_id' => $user->id ]);
-      }
-      // $this->call(ReservationsTableSeeder::class);
-      // factory(Reservation::class, 1)->create(['user_id' => $user->id ]);
-    }
-}

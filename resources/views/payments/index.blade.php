@@ -13,43 +13,64 @@
           </div>
         </div>
         <div class="ibox-body">
-            <div class="table-responsive">
-              <table id="payment-table" class="table table-hover">
-                <thead class="thead-default">
-                  <tr>
-                    <th width="20%">Usuario</th>
-                    <th width="15%">Plan</th>
-                    <th width="15%">Fecha de Pago</th>
-                    <th width="15%">Fecha de Inicio</th>
-                    <th width="15%">Fecha de Termino</th>
-                    <th width="10%">Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach ($bills->sortByDesc('date') as $bill)
-                  <tr>
-                      <td>
-
-                          <a href="{{url('/users/'.$bill->plan_user->user->id)}}">
-                              {{$bill->plan_user->user->first_name}} {{$bill->plan_user->user->last_name}}
-                          </a>
-
-                      </td>
-                      <td>{{$bill->plan_user->plan->plan}}</td>
-                      <td>{{Carbon\Carbon::parse($bill->date)->format('d-m-Y')}}</td>
-                      <td>{{Carbon\Carbon::parse($bill->start_date)->format('d-m-Y')}}</td>
-                      <td>{{Carbon\Carbon::parse($bill->finish_date)->format('d-m-Y')}}</td>
-                      <td>{{$bill->amount}}</td>
-                  </tr>
-                  @endforeach
-                </tbody>
-              </table>
-            </div>
+          <div class="table-responsive">
+            <table id="payments-table" class="table table-hover">
+              <thead class="thead-default">
+                <tr>
+                  <th width="20%">Usuario</th>
+                  <th width="15%">Plan</th>
+                  <th width="15%">Fecha de Pago</th>
+                  <th width="15%">Fecha de Inicio</th>
+                  <th width="15%">Fecha de Termino</th>
+                  <th width="10%">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach ($bills->sortByDesc('date') as $bill)
+                <tr>
+                  <td><a href="{{url('/users/'.$bill->plan_user->user->id)}}">
+                    {{$bill->plan_user->user->first_name}} {{$bill->plan_user->user->last_name}}</a>
+                  </td>
+                  <td>{{$bill->plan_user->plan->plan}}</td>
+                  <td>{{Carbon\Carbon::parse($bill->date)->format('d-m-Y')}}</td>
+                  <td>{{Carbon\Carbon::parse($bill->start_date)->format('d-m-Y')}}</td>
+                  <td>{{Carbon\Carbon::parse($bill->finish_date)->format('d-m-Y')}}</td>
+                  <td>{{$bill->amount}}</td>
+                </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
 
+
+@endsection
+
+@section('scripts') {{-- scripts para esta vista --}}
+  {{--  datatable --}}
+  <script src="{{ asset('js/datatables.min.js') }}"></script>
+  <script >
+    $(document).ready(function() {
+      table = $('#payments-table').DataTable({
+        "paging": true,
+        "ordering": true,
+        "order": [[ 3, "asc" ]],
+        "language": {
+          "lengthMenu": "Mostrar _MENU_ elementos",
+          "zeroRecords": "Sin resultados",
+          "info": "Mostrando página _PAGE_ de _PAGES_",
+          "infoEmpty": "Sin resultados",
+          "infoFiltered": "(filtrado de _MAX_ registros totales)",
+          "search": "Filtrar:"
+
+        },
+      });
+    });
+  </script>
+  {{--  End datatable --}}
 
 @endsection
