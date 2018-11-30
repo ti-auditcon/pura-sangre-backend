@@ -16,9 +16,9 @@
         <div class="row">
           <div class="col-sm-6 form-group mb-4">
             <div class="form-group" id="start_date">
-              <label class="font-normal">Fecha WORKOUT</label>
+              <label class="font-normal">Fecha Workout</label>
               <div class="input-group date">
-                <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
+                <span class="input-group-addon bg-white"><i class="la la-calendar"></i></span>
                 <input class="form-control form-control-air" name="date" type="text" value="{{ date('m/d/Y') }}">
               </div>
             </div>
