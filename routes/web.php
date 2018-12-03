@@ -60,6 +60,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     * Users Routes (alumnos, profes, admins)
     */
     Route::resource('users', 'Users\UserController');
+        Route::get('update-avatar', 'Users\UserController@updateAvatar')->name('user.update.avatar');
     Route::resource('users.plans', 'Plans\PlanUserController');
         Route::post('users/{user}/plans/{plan}/annul', 'Plans\PlanUserController@annul')->name('users.plans.annul');
     Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
@@ -71,6 +72,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('messages', 'Messages\MessageController@index')->middleware('role:1');
     Route::post('messages/send', 'Messages\MessageController@send')->middleware('role:1');
 
-    Route::get('update-avatar', 'Users\UserController@updateAvatar')->name('user.update.avatar');
+    Route::get('alerts', 'Messages\AlertController@index')->middleware('role:1');
 
+    Route::get('notifications', 'Messages\NotificationController@index')->middleware('role:1');
 });

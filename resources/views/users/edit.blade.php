@@ -4,34 +4,39 @@
 @endsection
 
 @section('content')
-  <div class="row justify-content-center">
-    <div class="col-6">
+<div class="row justify-content-center">
+   <div class="col-6">
       <div class="ibox">
-        {!! Form::open(['route' => ['users.update', $user->id], 'method' => 'put', 'files' => true]) !!}
-        <div class="ibox-body">
-        <div class="form-group inline @if($errors->has('first_name')) has-warning  @endif">
-          <label class="col-form-label">Nombre</label>
-          <input class="form-control " name="first_name" value="{{ $user->first_name }}" required>
-        </div>
+      {!! Form::open(['route' => ['users.update', $user->id], 'method' => 'put', 'files' => true]) !!}
+         <div class="ibox-body">
+            <div class="form-group inline @if($errors->has('first_name')) has-warning  @endif">
+               <label class="col-form-label">Nombre</label>
+               <input class="form-control " name="first_name" value="{{ $user->first_name }}" required>
+            </div>
 
-        <div class="form-group inline @if($errors->has('last_name')) has-warning  @endif">
-          <label class="col-form-label">Apellido</label>
-          <input class="form-control " name="last_name" value="{{ $user->last_name }}" required>
-        </div>
+            <div class="form-group inline @if($errors->has('last_name')) has-warning  @endif">
+               <label class="col-form-label">Apellido</label>
+               <input class="form-control " name="last_name" value="{{ $user->last_name }}" required>
+            </div>
 
-        <div class="row">
-          <div class="form-group col-md-4">
-            {{Session::get('error')}}
-            <label class="btn btn-info btn-edit file-input mr-2">
-              <span class="btn-icon"><i class="la la-upload"></i>Subir Imagen</span>
-              <input style="display: none" name="image" type="file" accept="image/*" max-file-size=1234>
-            </label>
-            <span class="help-block"></span>
-          </div>
-          <div id="container-logo" class="pull-right" style="display: none">
-            <img class="img-responsive" width="200" id="logo-img" src="#" />
-          </div>
-        </div>
+            <div class="row">
+               <div class="form-group col-md-4">
+                  {{Session::get('error')}}
+                  <label class="btn btn-info btn-edit file-input mr-2">
+                     <span class="btn-icon"><i class="la la-upload"></i>Subir o cambiar Imagen</span>
+                     <input style="display: none" name="image" id="photoinput" type="file" accept="image/*" max-file-size=1234>
+                  </label>
+                 <a class="media-img align-self-start">
+                   @if ($user->avatar)
+                     <img class="img-circle mr-3" src="{{$user->avatar}}" id="imgback" alt="image" width="72">
+                   @endif
+                 </a>
+               <span class="help-block"></span>
+             </div>
+             <div id="container-logo" class="pull-right" style="display: none">
+               <img class="img-responsive" width="200" id="logo-img" src="#" />
+             </div>
+           </div>
 
         <div class="form-group inline @if($errors->has('phone')) has-warning  @endif">
           <label class="col-form-label">Numero de Celular</label>
@@ -43,29 +48,8 @@
 
         <div class="form-group inline @if($errors->has('email')) has-warning  @endif">
           <label class="col-form-label">email</label>
-          <input class="form-control " name="email" value="{{ $user->email }}" @if (!Auth::user()->hasRole(1)) readonly @endif required>
+          <input class="form-control" hidden="false" name="email" value="{{ $user->email }}" @if (!Auth::user()->hasRole(1)) readonly @endif required>
         </div>
-
-				{{-- 	<div class="form-group @if($errors->has('contact_name')) has-warning  @endif">
-	          <label class="col-form-label">Contacto de Emergencia</label>
-	          <input class="form-control" name="contact_name" type="text" value="{{ old($user->emergency->contact_name) }}" required>
-		      </div>
-
-					<div class="form-group @if($errors->has('contact_phone')) has-warning  @endif">
-	          <label class="col-form-label">Telefono de Contacto de Emergencia</label>
-	          <input class="form-control" name="contact_phone" type="text" value="{{ old($user->emergency->contact_phone) }}" required>
-		      </div> --}}
-
-          {{-- COMPROBAR SI ES NECESARIO ESTE CAMPO --}}
-         {{--  <div class="form-group  @if($errors->has('status_user_id')) has-warning  @endif">
-            <label class="form-control-label">Estado del Usuario*</label>
-            <select class="selectpicker form-control"  name="status_user_id" data-live-search="true" required>
-             <option value="">Seleccionar estado...</option>
-             @foreach (App\Models\Users\StatusUser::all() as $status_user)
-             <option value="{{$status_user->id}}" @if($user->status_user_id == $status_user->id) selected @endif >{{$status_user->status_user}}</option>
-             @endforeach
-            </select>
-          </div> --}}
           <br>
           <div>
             <button class="btn btn-primary mr-2" type="submit">Actualizar datos</button>
@@ -110,5 +94,16 @@ jQuery(function ()
         }
     };
 })
+</script>
+
+<script>
+   $(function() {
+      $("input:file").change(function (){
+         $("#imgback").prop('hidden', true);
+         // console.log("si");
+         // var fileName = $(this).val();
+         // $(".filename").html(fileName);
+     });
+  });
 </script>
 @endsection

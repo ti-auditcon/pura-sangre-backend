@@ -2,6 +2,7 @@
 
 namespace App\Observers\Users;
 
+use App\Models\Plans\PlanUser;
 use App\Models\Users\User;
 
 class UserObserver
@@ -9,16 +10,12 @@ class UserObserver
 
     public function retrieved(User $user)
     {
-
-      if($user->status_user_id == 1 || $user->status_user_id == 3)
-      {
-
-        if(!$user->reservable_plans->first())
-        {
-          $user->status_user_id = 2;
-          $user->save();
+        if($user->status_user_id == 1 || $user->status_user_id == 3) {
+            if(!$user->reservable_plans->first()) {
+                $user->status_user_id = 2;
+                $user->save();
+            }
         }
-      }
     }
     /**
      * Handle the user "created" event.
@@ -28,7 +25,16 @@ class UserObserver
      */
     public function created(User $user)
     {
-        //
+        if ($user->status_user_id == 3) {
+            $planuser = new PlanUser;
+            $planuser->plan_id = 1;
+            $planuser->user_id = $user->id;
+            $planuser->counter = 3;
+            $planuser->plan_status_id = 1;
+            $planuser->start_date = today();
+            $planuser->finish_date = today()->addDays(7);
+            $planuser->save();
+        }
     }
 
     /**

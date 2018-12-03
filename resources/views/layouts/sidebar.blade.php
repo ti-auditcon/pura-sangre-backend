@@ -38,10 +38,22 @@
             </a>
           </li>
           <li @if($page=="messages") class="active" @endif>
+            <a href="javascript:;"><i class="sidebar-item-icon ti-email"></i>
+              <span class="nav-label">Mensajería</span>
+            </a>
+            <div class="nav-2-level">
+              <ul>
+                <li><a href="{{url('/messages')}}">Correos</a></li>
+                <li><a href="{{url('/alerts')}}">Mensajes</a></li>
+                <li><a href="{{url('/notifications')}}">Notificaciones</a></li>
+              </ul>
+            </div>
+          </li>
+  {{--         <li @if($page=="messages") class="active" @endif>
             <a href="{{url('/messages')}}"><i class="sidebar-item-icon ti-email"></i>
               <span class="nav-label">Mensajería</span>
             </a>
-          </li>
+          </li> --}}
           <li @if($page=="config") class="active" @endif>
             <a href="javascript:;"><i class="sidebar-item-icon ti-settings"></i>
               <span class="nav-label">Configuración<br /> del box</span>

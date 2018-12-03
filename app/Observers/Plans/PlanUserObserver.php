@@ -93,15 +93,18 @@ class PlanUserObserver
      */
     public function deleted(PlanUser $planUser)
     {
-        $plan_income_sum = PlanIncomeSummary::where('month', Carbon::parse($planUser->bill->date)->month)
-                                            ->where('year', Carbon::parse($planUser->bill->date)->year)
-                                            ->where('plan_id', $planUser->plan_id)->first();
-        if($plan_income_sum){
-            $plan_income_sum->amount = $plan_income_sum->amount - $planUser->bill->amount;
-            $plan_income_sum->quantity = $plan_income_sum->quantity - 1;
-            $plan_income_sum->save();
-        }
-        $planUser->bill->delete();
+        if ($planUser->bill) {
+            $plan_income_sum = PlanIncomeSummary::where('month', Carbon::parse($planUser->bill->date)->month)
+                                                ->where('year', Carbon::parse($planUser->bill->date)->year)
+                                                ->where('plan_id', $planUser->plan_id)->first();
+            if($plan_income_sum){
+                $plan_income_sum->amount = $plan_income_sum->amount - $planUser->bill->amount;
+                $plan_income_sum->quantity = $plan_income_sum->quantity - 1;
+                $plan_income_sum->save();
+            }
+            $planUser->bill->delete();
+      }
+        
     }
 
     /**

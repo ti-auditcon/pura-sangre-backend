@@ -51,7 +51,9 @@ class UserController extends Controller
     {
       $emergency = Emergency::create($request->all());
       $user = User::create(array_merge($request->all(), [
-        'password' => bcrypt('purasangre')]));
+        'password' => bcrypt('purasangre'),
+        'avatar' => url('/').'/storage/users/default.jpg'
+      ]));
       Session::flash('success','El usuario ha sido creado correctamente');
       return view('users.show')->with('user', $user);
     }

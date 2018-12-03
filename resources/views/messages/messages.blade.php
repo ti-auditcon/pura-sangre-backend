@@ -5,7 +5,7 @@
 
 @section('content')
    <div class="row justify-content-center">
-      <div class="col-6">
+      <div class="col-8">
             <div class="ibox" id="mailbox-container">
                <div class="flexbox-b p-4">
                   <h5 class="font-strong m-0 mr-3">Enviar Correo</h5>
@@ -13,7 +13,7 @@
                      <span class="font-strong text-danger ml-2" id="counter-count">15</span>
                   </span>
                </div>
-               <div class="flexbox px-4 py-3 bg-primary-50">
+            {{--    <div class="flexbox px-4 py-3 bg-primary-50">
                   <div class="flexbox-b">
                      <label id="all_id" class="checkbox checkbox-primary check-single pt-1">
                         <input type="checkbox" data-select="all">
@@ -30,7 +30,7 @@
                         </ul>
                     </div>
                   </div>
-               </div>
+               </div> --}}
             <table class="table table-hover table-inbox" id="table-inbox">
                <thead class="rowlinkx">
                   <tr>
@@ -38,13 +38,13 @@
                   </tr>
                </thead>
                <tbody class="rowlinkx" data-link="row">
-                  @foreach (App\Models\Users\User::all()->take(10) as $user)
+                  @foreach (App\Models\Users\User::all() as $user)
                   <tr class="{{$user->status_user->status_user}}" data-id="1">
                      <td class="check-cell rowlink-skip">
-                        <label class="checkbox checkbox-primary checkbox-select check-single">
+                       {{--  <label class="checkbox checkbox-primary checkbox-select check-single">
                            <input class="mail-check" type="checkbox">
                            <span class="input-span"></span>
-                        </label>
+                        </label> --}}
                         <a class="media-img" href="{{url('/users/'.$user->id)}}">
                            <img class="img-circle" src="{{url($user->avatar)}}" alt="image" width="54">
                         </a>
@@ -106,6 +106,7 @@
       table = $('#table-inbox').DataTable({
         "paging": true,
         "ordering": true,
+        "select": true,
         "language": {
           "lengthMenu": "Mostrar _MENU_ elementos",
           "zeroRecords": "Sin resultados",
@@ -115,18 +116,15 @@
           "search": "Filtrar:"
         },
       });
-    });
-  </script>
 
-  <script src="{{ asset('js/summernote.min.js') }}"></script>
-   <script>
-      $(function() {
-         $('#summernote').summernote({
-            height: 350, 
-         });
-      });
+      table.on('search.dt', function() {
+         //number of filtered rows
+         console.log(table.rows( { filter : 'applied'} ).nodes().length);
+         //filtered rows data as arrays
+         console.log(table.rows( { filter : 'applied'} ).data('#users_id'));                                  
+      }) 
+   });
    </script>
-
    <script>
    $(function(){
       $('#save_value').click(function(){
@@ -148,13 +146,24 @@
    });
    </script>>
 
+{{--   <script src="{{ asset('js/summernote.min.js') }}"></script>
    <script>
+      $(function() {
+         $('#summernote').summernote({
+            height: 350, 
+         });
+      });
+   </script> --}}
+
+
+ {{--   <script>
    $(function() {
       var actions = $('#inbox-actions .btn');
       var count = 0;
-      rows = $('#table-inbox tr');
+     
 
       $("input[data-select='all']").change(function(){
+          rows = $('#table-inbox tr');
          $(this).prop('checked')
             ? (rows.find('.mail-check').prop('checked',true), actions.removeClass('disabled'), $("#save_value").prop('disabled', false))
             : (rows.find('.mail-check').prop('checked',false), actions.addClass('disabled'))
@@ -240,11 +249,8 @@ $('.checkbox input').prop('checked',false);
          }
       }
    });
-   </script>
+   </script> --}}
 
-   <script defer>
-   
-   </script>
 @endsection
 
 {{--  if($('input[type=checkbox]').prop('checked');){

@@ -21,6 +21,7 @@
     <link href="{{asset('/css/themify-icons.css')}}" rel="stylesheet" />
     <link href="{{asset('/css/toastr.min.css')}}" rel="stylesheet" />
     <link href="{{asset('/css/bootstrap-datepicker.min.css')}}" rel="stylesheet" />
+    {{-- <link href="{{asset('/css/summernote.css')}}" rel="stylesheet" /> --}}
     <!-- PLUGINS STYLES-->
     <!-- THEME STYLES-->
     <link href="{{asset('/css/main.min.css')}}" rel="stylesheet" />
@@ -60,6 +61,8 @@
   <script src="{{ asset('js/sweetalert.min.js') }}"></script>
   <script src="{{asset('/js/bootstrap-datepicker.min.js')}}"></script>
   <script src="{{asset('/js/toastr.min.js')}}"></script>
+{{--   <script src="{{asset('/js/summernote.min.js')}}"></script> --}}
+  
 
   <!-- PAGE LEVEL PLUGINS-->
 
