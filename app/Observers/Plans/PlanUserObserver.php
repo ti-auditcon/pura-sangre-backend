@@ -76,12 +76,19 @@ class PlanUserObserver
 
     public function updated(PlanUser $planUser)
     {
+        //este update es para cancelar el plan
         if ($planUser->plan_status_id == 5){
             $planUser->reservations()->each(function ($reserv){
                 if ($reserv->reservation_status_id == 1 || $reserv->reservation_status_id == 2){
                     $reserv->delete();
                 }
             });
+            if ($planUser->user->actual_plan) {
+              $planUser->user->status_user_id = 1;
+            }else {
+              $planUser->user->status_user_id = 2;
+            }
+            $planUser->user->save();
         }
     }
 

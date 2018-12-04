@@ -26,40 +26,40 @@
                      <span class="btn-icon"><i class="la la-upload"></i>Subir o cambiar Imagen</span>
                      <input style="display: none" name="image" id="photoinput" type="file" accept="image/*" max-file-size=1234>
                   </label>
-                 <a class="media-img align-self-start">
-                   @if ($user->avatar)
+                  <a class="media-img align-self-start">
+                  @if ($user->avatar)
                      <img class="img-circle mr-3" src="{{$user->avatar}}" id="imgback" alt="image" width="72">
-                   @endif
-                 </a>
-               <span class="help-block"></span>
-             </div>
-             <div id="container-logo" class="pull-right" style="display: none">
-               <img class="img-responsive" width="200" id="logo-img" src="#" />
-             </div>
-           </div>
+                  @endif
+                  </a>
+                  <span class="help-block"></span>
+               </div>
+               <div id="container-logo" class="pull-right" style="display: none">
+                  <img class="img-responsive" width="200" id="logo-img" src="#" />
+               </div>
+            </div>
 
-        <div class="form-group inline @if($errors->has('phone')) has-warning  @endif">
-          <label class="col-form-label">Numero de Celular</label>
-          <div class="input-group mb-3">
-            <span class="input-group-addon">+56 9</span>
-            <input class="form-control " name="phone" value="{{ $user->phone }}" type="tel">
-          </div>
-        </div>
+            <div class="form-group inline @if($errors->has('phone')) has-warning  @endif">
+               <label class="col-form-label">Numero de Celular</label>
+               <div class="input-group mb-3">
+                  <span class="input-group-addon">+56 9</span>
+                  <input class="form-control " name="phone" value="{{ $user->phone }}" type="tel">
+               </div>
+            </div>
 
-        <div class="form-group inline @if($errors->has('email')) has-warning  @endif">
-          <label class="col-form-label">email</label>
-          <input class="form-control" hidden="false" name="email" value="{{ $user->email }}" @if (!Auth::user()->hasRole(1)) readonly @endif required>
-        </div>
-          <br>
-          <div>
-            <button class="btn btn-primary mr-2" type="submit">Actualizar datos</button>
-            <a class="btn btn-secondary" href="{{ route('users.show', $user->id) }}">Volver</a>
-          </div>
-        </div>
-        {!! Form::close() !!}
+            <div class="form-group inline @if($errors->has('email')) has-warning  @endif">
+               <label class="col-form-label">email</label>
+               <input class="form-control" name="email" value="{{ $user->email }}" @if (!Auth::user()->hasRole(1)) readonly @endif required>
+            </div>
+            <br>
+            <div>
+               <button class="btn btn-primary mr-2" type="submit">Actualizar datos</button>
+               <a class="btn btn-secondary" href="{{ route('users.show', $user->id) }}">Volver</a>
+            </div>
+         </div>
+      {!! Form::close() !!}
       </div>
-    </div>
-  </div>
+   </div>
+</div>
 
 
 

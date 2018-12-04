@@ -52,6 +52,13 @@ class ClaseController extends Controller
         ->with('wod',$wod);
     }
 
+    public function confirm(Request $request, Clase $clase)
+    {    
+        dd($request->user_id);
+        Session::flash('success','¡Asistencia lista!');
+        return Redirect::back();
+    }
+
     /**
      * Remove the specified resource from storage.
      *

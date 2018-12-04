@@ -22,7 +22,3 @@
 @section('scripts') {{-- scripts para esta vista --}}
 
 @endsection
-
-{{--  if($('input[type=checkbox]').prop('checked');){
-      console.log('si esta checkeado');
-   } --}}

@@ -5,63 +5,58 @@
 
 @section('content')
 <div class="row justify-content-center">
-
-
-  <div class="col-4">
-    <div class="ibox">
-      <div class="ibox-head">
-        <div class="ibox-title">Clase</div>
-        <div class="ibox-tools">
-          @if (Auth::user()->hasRole(1))
-            @if (Carbon\Carbon::parse($clase->date)->gte(today()))
-              {!! Form::open(['route' => ['clases.destroy', $clase->id], 'method' => 'delete', 'class' => 'clase-delete']) !!}
-              {!! Form::close() !!}
-              <button class="btn btn-danger sweet-clase-delete" data-id="{{$clase->id}}" data-name="{{$clase->date}}"><i>
-              </i>Cerrar Clase</button>
+   <div class="col-4">
+      <div class="ibox">
+         <div class="ibox-head">
+         <div class="ibox-title">Clase</div>
+            <div class="ibox-tools">
+            @if (Auth::user()->hasRole(1))
+               @if (Carbon\Carbon::parse($clase->date)->gte(today()))
+                  {!! Form::open(['route' => ['clases.destroy', $clase->id], 'method' => 'delete', 'class' => 'clase-delete']) !!}
+                  {!! Form::close() !!}
+                  <button class="btn btn-danger sweet-clase-delete" data-id="{{$clase->id}}" data-name="{{$clase->date}}"><i>
+                  </i>Cerrar Clase</button>
+               @endif
             @endif
-          @endif
-        </div>
+            </div>
+         </div>
+         <div class="ibox-body">
+            <div class="clase">
+               <div class="card">
+                  <div class="row mb-2">
+                     <div class="col-12 text-muted">Fecha:</div>
+                     <div class="col-12">{{Carbon\Carbon::parse($clase->date)->format('d-m-Y')}}</div>
+                  </div>
+                  <div class="row mb-2">
+                     <div class="col-12 text-muted">Horario:</div>
+                     <div class="col-12">{{Carbon\Carbon::parse($clase->block->start)->format('H:i')}} - {{Carbon\Carbon::parse($clase->block->end)->format('H:i')}}</div>
+                  </div>
+                  <div class="row">
+                     <div class="col-12 text-muted">Coach:</div>
+                     <div class="col-12">{{$clase->block->user->first_name}} {{$clase->block->user->last_name}}</div>
+                  </div>
+                  <br />
+               </div>
+               <div class="clase-graphics pt-2">
+                  <div class="canvas-item">
+                     <div class="easypie col" data-percent="{{$clase->reservations->count()*100/$clase->quota}}" data-bar-color="#5c6bc0" data-size="70" data-line-width="8">
+                     </div>
+                  </div>
+                  <div class="data-item">
+                     <div class="row m-0">
+                        <div class="col-12 p-0 m-0">
+                           <span class="easypie-data font-26 text-primary icon-people"><i class="ti-user"></i></span>
+                           <h3 class="font-strong text-primary">{{$clase->reservations->count()}}/{{$clase->quota}}</h3>
+                        </div>
+                        <div class="col-12 p-0 m-0">
+                           <div class="text-muted">Cupos confirmados</div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+         </div>
       </div>
-      <div class="ibox-body">
-        <div class="clase">
-
-          <div class="card">
-            <div class="row mb-2">
-              <div class="col-12 text-muted">Fecha:</div>
-              <div class="col-12">{{Carbon\Carbon::parse($clase->date)->format('d-m-Y')}}</div>
-            </div>
-            <div class="row mb-2">
-              <div class="col-12 text-muted">Horario:</div>
-              <div class="col-12">{{Carbon\Carbon::parse($clase->block->start)->format('H:i')}} - {{Carbon\Carbon::parse($clase->block->end)->format('H:i')}}</div>
-            </div>
-            <div class="row">
-              <div class="col-12 text-muted">Coach:</div>
-              <div class="col-12">{{$clase->block->user->first_name}} {{$clase->block->user->last_name}}</div>
-            </div>
-            <br />
-          </div>
-          <div class="clase-graphics pt-2">
-            <div class="canvas-item">
-              <div class="easypie col" data-percent="{{$clase->reservations->count()*100/$clase->quota}}" data-bar-color="#5c6bc0" data-size="70" data-line-width="8">
-              </div>
-            </div>
-            <div class="data-item">
-              <div class="row m-0">
-                <div class="col-12 p-0 m-0">
-                  <span class="easypie-data font-26 text-primary icon-people"><i class="ti-user"></i></span>
-                  <h3 class="font-strong text-primary">{{$clase->reservations->count()}}/{{$clase->quota}}</h3>
-                </div>
-                <div class="col-12 p-0 m-0">
-                  <div class="text-muted">Cupos confirmados</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-        </div>
       </div>
-    </div>
     <div class="ibox">
       <div class="ibox-head">
         <div class="ibox-title">Workout</div>
@@ -85,79 +80,83 @@
           @endforeach
         </div>
       </div>
-    </div>
+   </div>
   </div>
-  <div class="col-8">
-    <div class="ibox">
-        <div class="ibox-head">
-          <div class="ibox-title">Crossfiteros de esta clase</div>
-          <div class="ibox-tools">
-            @if (Auth::user()->hasRole(1))
-              <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
-            @else
-              {!! Form::open(['route' => ['reservation.store'], 'method' => 'post' ,'id' => 'user-join']) !!}
-                <input type="hidden" value="{{Auth::user()->id}}" name="user_id">
-                <input type="hidden" value="{{$clase->id}}" name="clase_id">
-              {!! Form::close() !!}
-              <button class="btn btn-success sweet-user-join" data-id="{{$clase->id}}" data-name="{{$clase->date}}">  <i></i>Reservar esta clase
-              </button>
-            @endif
-          </div>
-        </div>
-        <div class="ibox-body pb-5">
-          <div class="table-responsive">
-            <table id="students-table" class="table table-hover">
-              <thead class="thead-default">
-                <tr>
-                  <th width="80%">Alumno</th>
-                  <th width="10%">Estado</th>
-                  <th width="10%">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach ($clase->reservations as $reservation)
-                <tr>
-                  <td>
-                    <a class="media-img" href="javascript:;">
-                      <img class="img-circle" src="{{$reservation->user->avatar}}" alt="image" width="54">
-                    </a>
-                    <span class="badge-{{$reservation->user->status_user->type}} badge-point"></span>
-                    <a @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2)) href="{{url('/users/'.$reservation->user->id)}}" @endif>
-                      {{$reservation->user->first_name}} {{$reservation->user->last_name}}
-                    </a>
-                  </td>
+   <div class="col-8">
+      <div class="ibox">
+         <div class="ibox-head">
+            <div class="ibox-title">Crossfiteros de esta clase</div>
+            <div class="ibox-tools">
+               @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
+                  <button class="btn btn-white btn-ext" data-toggle="modal" data-target="#confirm-assistance-modal"><i class="la la-building mr-2"></i>Pasar lista</button>
+               @if (Auth::user()->hasRole(1))
+                  <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
+               @endif
+               @else
+               {!! Form::open(['route' => ['reservation.store'], 'method' => 'post' ,'id' => 'user-join']) !!}
+                  <input type="hidden" value="{{Auth::user()->id}}" name="user_id">
+                  <input type="hidden" value="{{$clase->id}}" name="clase_id">
+               {!! Form::close() !!}
+                  <button class="btn btn-success sweet-user-join" data-id="{{$clase->id}}" data-name="{{$clase->date}}">  <i></i>Reservar esta clase
+                  </button>
+               @endif
+            </div>
+         </div>
 
-                  <td>
-                    <span class="badge badge-{{$reservation->reservation_status->type}} badge-pill"
-                    >{{strtoupper($reservation->reservation_status->reservation_status)}}</span>
-                  </td>
+         <div class="ibox-body pb-5">
+            <div class="table-responsive">
+               {!! Form::open(['route' => ['clase.confirm', $clase->id], 'method' => 'post', 'id'=>'confirm']) !!}
+               <table id="students-table" class="table table-hover">
+                  <thead class="thead-default">
+                     <tr>
+                        <th width="80%">Alumno</th>
+                        <th width="10%">Estado</th>
+                        <th width="10%">Acciones</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                  @foreach ($clase->reservations as $reservation)
+                     <tr>
+                        <td>
+                           <a class="media-img" href="javascript:;">
+                           <img class="img-circle" src="{{$reservation->user->avatar}}" alt="image" width="54"></a>
+                           <span class="badge-{{$reservation->user->status_user->type}} badge-point"></span>
+                           <a @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2)) href="{{url('/users/'.$reservation->user->id)}}" @endif>
+                              {{$reservation->user->first_name}} {{$reservation->user->last_name}}
+                           </a>
 
-                  @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
-                  <td>
-            {!! Form::open(['route' => ['reservation.destroy', $reservation->id], 'method' => 'delete', 'id'=>'delete'.$reservation->user->id]) !!}
-                  <input type="hidden" value="1" name="by_god">
-                    <button class="btn btn-info btn-icon-only btn-danger sweet-user-delete" type="button"
-            data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash"></i></button>
-            {!! Form::close() !!}
-                  </td>
-                  @endif
-                  @if (Auth::user()->hasRole(3) && Auth::id() == $reservation->user->id)
-                    <td>
-            {!! Form::open(['route' => ['reservation.destroy', $reservation->id], 'method' => 'delete', 'id'=>'delete'.$reservation->user->id]) !!}
-                  <input type="hidden" value="1" name="by_god">
-                    <button class="btn btn-outline-info btn-sm btn-thick sweet-user-delete" type="button"
-            data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash">Salir de Clase</i></button>
-            {!! Form::close() !!}
-                  </td>
-                  @endif
-                </tr>
-                @endforeach
-              </tbody>
-            </table>
-          </div>
-        </div>
-    </div>
-  </div>
+                        </td>
+                        <td>
+                           <span class="badge badge-{{$reservation->reservation_status->type}} badge-pill">{{strtoupper($reservation->reservation_status->reservation_status)}}</span>
+                        </td>
+
+                     @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
+                        <td>
+                        {!! Form::open(['route' => ['reservation.destroy', $reservation->id], 'method' => 'delete', 'id'=>'delete'.$reservation->user->id]) !!}
+                           <input type="hidden" value="1" name="by_god">
+                           <button class="btn btn-info btn-icon-only btn-danger sweet-user-delete" type="button" data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash"></i></button>
+                        {!! Form::close() !!}
+                        </td>
+                        
+                     @endif
+                     @if (Auth::user()->hasRole(3) && Auth::id() == $reservation->user->id)
+                        <td>
+                           {!! Form::open(['route' => ['reservation.destroy', $reservation->id], 'method' => 'delete', 'id'=>'delete'.$reservation->user->id]) !!}
+                           <input type="hidden" value="1" name="by_god">
+                           <button class="btn btn-outline-info btn-sm btn-thick sweet-user-delete" type="button" data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash">Salir de Clase</i></button>
+                           {!! Form::close() !!}
+                        </td>
+                     @endif
+                     </tr>
+                  @endforeach
+                  </tbody>
+               </table>
+               
+               {!! Form::close() !!}
+            </div>
+         </div>
+      </div>
+   </div>
 </div>
 
   <!-- Modal -->
@@ -205,6 +204,10 @@
     </div>
   </div>
 
+<!-- Modal de confirmacion de clase-->
+@include('clases.modals.asistencia', ['clase' => $clase])
+<!-- END Modal de confirmacion de clase-->
+
 
 @endsection
 
@@ -217,6 +220,18 @@
 @section('scripts') {{-- scripts para esta vista --}}
 
 <script>
+
+$('.checkboxBla').change(function(){
+    if(this.checked) {
+      console.log('si');
+      $(this).parent().parent().find('[name="user_id[]"]').prop('disabled',false);
+
+    } else {
+      console.log('no');
+      $(this).parent().parent().find('[name="user_id[]"]').prop('disabled',true);
+    }
+});
+
   // ELIMINAR A USUARIO DE LA CLASE
   $('.sweet-user-delete').click(function(e){
     var id = $(this).data('id');
@@ -257,53 +272,48 @@
   });
   </script>
 
-  {{--  datatable --}}
-  <script src="{{ asset('js/datatables.min.js') }}"></script>
-  <script >
-    $(document).ready(function() {
-      table = $('#students-table').DataTable({
-        "paging": true,
-        "ordering": true,
-        "pageLength": 12,
-        "bLengthChange" : false, //thought this line could hide the LengthMenu
-        "bpageLength": false,
-        "bPaginate": false,
-        "language": {
-          "lengthMenu": "Mostrar _MENU_ elementos",
-          "zeroRecords": "Sin Alumnos/as",
-          "info": "Mostrando página _PAGE_ de _PAGES_",
-          "infoEmpty": "Sin Alumnos",
-          "infoFiltered": "(filtrado de _MAX_ registros totales)",
-          "search": "Filtrar:"
+   {{--  datatable --}}
+   <script src="{{ asset('js/datatables.min.js') }}"></script>
+   <script >
+      $(document).ready(function() {
+         table = $('#students-table').DataTable({
+            "paging": true,
+            "ordering": true,
+            "pageLength": 12,
+            "bLengthChange" : false, //thought this line could hide the LengthMenu
+            "bpageLength": false,
+            "bPaginate": false,
+            "language": {
+               "lengthMenu": "Mostrar _MENU_ elementos",
+               "zeroRecords": "Sin Alumnos/as",
+               "info": "Mostrando página _PAGE_ de _PAGES_",
+               "infoEmpty": "Sin Alumnos",
+               "infoFiltered": "(filtrado de _MAX_ registros totales)",
+               "search": "Filtrar:"
+            },
+         });
 
-        },
+         table_search = $('#students-table-search').DataTable({
+            "paging": true,
+            "ordering": true,
+            "pageLength": 5,
+            "bLengthChange" : false, //thought this line could hide the LengthMenu
+            "bpageLength": false,
+            "bPaginate": false,
+            "language": {
+               "lengthMenu": "Mostrar _MENU_ elementos",
+               "zeroRecords": "Sin resultados",
+               "info": "Mostrando página _PAGE_ de _PAGES_",
+               "infoEmpty": "Sin resultados",
+               "infoFiltered": "(filtrado de _MAX_ registros totales)",
+               "search": "Buscar Alumno:"
+            },
+         });
+         //foco al input al abrir el modal
+         $('#user-assign').on('shown.bs.modal', function () {
+             $('#students-table-search_filter input').focus();
+         })
       });
-      table_search = $('#students-table-search').DataTable({
-          "paging": true,
-          "ordering": true,
-          "pageLength": 5,
-          "bLengthChange" : false, //thought this line could hide the LengthMenu
-          "bpageLength": false,
-          "bPaginate": false,
-          "language": {
-            "lengthMenu": "Mostrar _MENU_ elementos",
-            "zeroRecords": "Sin resultados",
-            "info": "Mostrando página _PAGE_ de _PAGES_",
-            "infoEmpty": "Sin resultados",
-            "infoFiltered": "(filtrado de _MAX_ registros totales)",
-            "search": "Buscar Alumno:"
-          },
-        });
-      //foco al input al abrir el modal
-      $('#user-assign').on('shown.bs.modal', function () {
-          $('#students-table-search_filter input').focus();
-      })
-    });
-  //
-  //
-  // $('button.user-filter').on("click", function(){
-  //     table.columns( 6 ).search( $(this).data('status') ).draw();
-  //   });
 
   </script>
   {{--  End datatable --}}

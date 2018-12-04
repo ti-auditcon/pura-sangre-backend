@@ -27,7 +27,7 @@ class PlansTableSeeder extends Seeder
                 'has_clases' => true,
                 'class_numbers' => 3,
                 'amount' => 0,
-                'custom' => 1,
+                'custom' => 0,
                 'created_at' => '2018-08-28 20:59:34',
                 'updated_at' => '2018-08-28 20:59:34',
             ),

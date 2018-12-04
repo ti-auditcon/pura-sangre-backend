@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Users;
 
+use Auth;
 use Session;
 use App\Models\Users\User;
-use App\Models\Users\Emergency;
 use Illuminate\Http\Request;
+use App\Models\Users\Emergency;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\UserRequest;
-use Auth;
 
 /**
  * [UserController description]
@@ -17,8 +17,8 @@ class UserController extends Controller
 {
     public function __construct()
     {
-      // parent::__construct();
-      $this->middleware('can:view,user')->only('show');
+        // parent::__construct();
+        $this->middleware('can:view,user')->only('show');
     }
     /**
      * Display a listing of the resource.
@@ -27,8 +27,8 @@ class UserController extends Controller
      */
     public function index()
     {
-      $users = User::all();
-      return view('users.index')->with('users', $users);
+        $users = User::all();
+        return view('users.index')->with('users', $users);
     }
 
     /**
@@ -49,13 +49,13 @@ class UserController extends Controller
      */
     public function store(UserRequest $request, User $user)
     {
-      $emergency = Emergency::create($request->all());
-      $user = User::create(array_merge($request->all(), [
-        'password' => bcrypt('purasangre'),
-        'avatar' => url('/').'/storage/users/default.jpg'
-      ]));
-      Session::flash('success','El usuario ha sido creado correctamente');
-      return view('users.show')->with('user', $user);
+        $emergency = Emergency::create($request->all());
+        $user = User::create(array_merge($request->all(), [
+            'password' => bcrypt('purasangre'),
+            'avatar' => url('/').'/storage/users/default.jpg'
+        ]));
+        Session::flash('success','El usuario ha sido creado correctamente');
+        return view('users.show')->with('user', $user);
     }
 
     /**
@@ -77,7 +77,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-      return view('users.edit')->with('user', $user);
+        return view('users.edit')->with('user', $user);
     }
 
     /**
@@ -103,20 +103,15 @@ class UserController extends Controller
 
     public function image(Request $request, User $user)
     {
-
-
-
-      if ($request->hasFile('image')) {
-
-          request()->file('image')->storeAs('public/users', $user->id.$user->first_name.'.jpg');
-          $user->avatar = url('/').'/storage/users/'.$user->id.$user->first_name.'.jpg';
-          $user->save();
-          return response()->json(['success' =>'imagen subida'], 200);
-      }
-      else {
-        return response()->json(['error' =>'nooooooooooooooo'], 400);
-      }
-
+        if ($request->hasFile('image')) {
+            request()->file('image')->storeAs('public/users', $user->id.$user->first_name.'.jpg');
+            $user->avatar = url('/').'/storage/users/'.$user->id.$user->first_name.'.jpg';
+            $user->save();
+            return response()->json(['success' =>'imagen subida'], 200);
+        }
+        else {
+            return response()->json(['error' =>'nooooooooooooooo'], 400);
+        }
     }
 
     /**
@@ -127,20 +122,19 @@ class UserController extends Controller
      */
     public function destroy(Request $request, User $user)
     {
-      $user->delete();
-      return redirect('/users')->with('success', 'El usuario ha sido borrado correctamente');
+        $user->delete();
+        return redirect('/users')->with('success', 'El usuario ha sido borrado correctamente');
     }
 
 
     public function updateAvatar()
     {
-      $users = User::all();
-      foreach ($users as $user) {
-        $user->avatar = url('/').'/storage/users/u ('.rand ( 1, 54 ).').jpg';
-        $user->save();
-      }
-      return 'listoco';
-
+        $users = User::all();
+        foreach ($users as $user) {
+            $user->avatar = url('/').'/storage/users/u ('.rand ( 1, 54 ).').jpg';
+            $user->save();
+        }
+        return 'listoco';
     }
 
 }

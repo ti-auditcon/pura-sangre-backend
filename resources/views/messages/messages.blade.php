@@ -41,7 +41,7 @@
                   @foreach (App\Models\Users\User::all() as $user)
                   <tr class="{{$user->status_user->status_user}}" data-id="1">
                      <td class="check-cell rowlink-skip">
-                       {{--  <label class="checkbox checkbox-primary checkbox-select check-single">
+                   {{--      <label class="checkbox checkbox-primary checkbox-select check-single">
                            <input class="mail-check" type="checkbox">
                            <span class="input-span"></span>
                         </label> --}}

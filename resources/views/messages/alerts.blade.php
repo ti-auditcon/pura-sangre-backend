@@ -21,7 +21,7 @@
 			         </div>
 
 			         <div class="col-sm-6 form-group mb-2">
-			            <div class="form-group" id="start_date">
+			            <div class="form-group" id="finish_date">
 			              	<label class="font-normal">Hasta</label>
 			              	<div class="input-group date">
 			                	<span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
@@ -60,18 +60,35 @@
 	<script src="{{asset('/js/summernote.min.js')}}"></script>
 
 	<script>
-		$(document).ready(function() {
-	  		$('#summernote').summernote({
-	  			height: 250,
-          	// toolbar: [
-           //  	// [groupName, [list of button]]
-           //  	['style', ['bold', 'italic', 'underline', 'clear']]
-          	// ]
-	  		});
-		});
+	$(document).ready(function() {
+  		$('#summernote').summernote({
+  			height: 250,
+  		});
+	});
 	</script>
 
+	<script>
+	// Bootstrap datepicker
+	$('#start_date .input-group.date').datepicker({
+  		todayBtn: "linked",
+  		keyboardNavigation: false,
+  		forceParse: false,
+  		calendarWeeks: true,
+  		autoclose: true
+	});
+	</script>
 
+	<script>
+	// Bootstrap datepicker
+	$('#finish_date .input-group.date').datepicker({
+  		todayBtn: "linked",
+  		keyboardNavigation: false,
+  		forceParse: false,
+  		calendarWeeks: true,
+  		autoclose: true
+	});
+	</script>
+	
 @endsection
 
 {{--  if($('input[type=checkbox]').prop('checked');){

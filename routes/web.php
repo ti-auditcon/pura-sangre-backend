@@ -32,11 +32,13 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     //Tal vez mas adelante se necesite el store de clases
     Route::resource('clases', 'Clases\ClaseController')
            ->except('create', 'edit', 'store', 'update');
+            Route::post('clases/{clase}/confirm', 'Clases\ClaseController@confirm')->name('clase.confirm');
     // Route::resource('clases.users', 'Clases\ClaseUserController')
     //        ->only('store', 'update', 'destroy');
 
     Route::resource('reservation', 'Clases\ReservationController')
            ->only('store', 'update', 'destroy');
+       
     Route::post('clases/type-select/', 'Clases\ClaseController@typeSelect')->name('clases.type');
     Route::get('get-clases', 'Clases\ClaseController@clases');
     Route::get('get-wods', 'Clases\ClaseController@wods');
