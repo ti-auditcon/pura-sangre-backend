@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Users;
 
 use Auth;
 use Session;
+use Redirect;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
 use App\Models\Users\Emergency;
@@ -54,8 +55,13 @@ class UserController extends Controller
             'password' => bcrypt('purasangre'),
             'avatar' => url('/').'/storage/users/default.jpg'
         ]));
-        Session::flash('success','El usuario ha sido creado correctamente');
-        return view('users.show')->with('user', $user);
+        if ($user->save()) {
+            Session::flash('success','El usuario ha sido creado correctamente');
+            return view('users.show')->with('user', $user);
+        }else {
+            return Redirect::back();
+        }
+       
     }
 
     /**
@@ -66,7 +72,12 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('users.show')->with('user', $user);
+        $future_reservs = $user->reservations->whereIn('reservation_status_id', [1,2])->sortByDesc('id')->take(10);
+        $past_reservs = $user->reservations->whereIn('reservation_status_id', [3,4])->sortByDesc('id')->take(10);
+        return view('users.show')->with('user', $user)
+                                 ->with('future_reservs', $future_reservs)
+                                 ->with('past_reservs', $past_reservs);
+
     }
 
     /**

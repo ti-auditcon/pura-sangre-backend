@@ -73,6 +73,7 @@ class planuserController extends Controller
 	                                       ->subDay();
 	        $planuser->counter = $plan->class_numbers * $plan->plan_period->period_number;
 	    }
+	    // $planuser->plan_status_id = 3;
 		
 		if($planuser->save()){
 			if($plan->custom == 0){

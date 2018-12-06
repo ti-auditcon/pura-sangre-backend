@@ -42,7 +42,7 @@
               <label class="font-normal">Fecha de Nacimiento</label>
               <div class="input-group date">
                 <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
-                <input class="form-control form-control-air" name="birthdate" value="{{ old('birthdate') }}" type="text" value="{{ date('d/m/Y') }}">
+                <input class="form-control" name="birthdate" value="{{ old('birthdate') }}" type="text" value="{{ date('d/m/Y') }}">
               </div>
             </div>
           </div>

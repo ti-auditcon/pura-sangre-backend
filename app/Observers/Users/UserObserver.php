@@ -2,8 +2,10 @@
 
 namespace App\Observers\Users;
 
-use App\Models\Plans\PlanUser;
+use Redirect;
+use Session;
 use App\Models\Users\User;
+use App\Models\Plans\PlanUser;
 
 class UserObserver
 {
@@ -17,6 +19,18 @@ class UserObserver
             }
         }
     }
+
+    public function creating(User $user)
+    {
+        $user = User::where('rut', $user->rut)->first();
+        if ($user) {
+            Session::flash('error','El Rut ingresado ya se encuentra tomado!');
+            return false;
+        }else {
+            return true;
+        }
+    }
+
     /**
      * Handle the user "created" event.
      *

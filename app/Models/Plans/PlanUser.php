@@ -2,13 +2,13 @@
 
 namespace App\Models\Plans;
 
-use App\Models\Bills\Bill;
-use App\Models\Clases\Reservation;
-use App\Models\Plans\Plan;
-use App\Models\Plans\PlanStatus;
-use App\Models\Plans\PlanUserPeriod;
-use App\Models\Users\User;
 use Carbon\Carbon;
+use App\Models\Bills\Bill;
+use App\Models\Plans\Plan;
+use App\Models\Users\User;
+use App\Models\Plans\PlanStatus;
+use App\Models\Clases\Reservation;
+use App\Models\Plans\PlanUserPeriod;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 

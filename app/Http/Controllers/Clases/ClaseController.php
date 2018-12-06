@@ -22,6 +22,12 @@ class ClaseController extends Controller
      */
     public function index()
     {
+        if(!Session::has('clases-type-id'))
+        {
+            Session::put('clases-type-id',1);
+            Session::put('clases-type-name',ClaseType::find(1)->clase_type);
+        }
+        //Session::put('clases-type-name',ClaseType::find($request->type)->clase_type);
         return view('clases.index');
     }
 
@@ -53,8 +59,27 @@ class ClaseController extends Controller
     }
 
     public function confirm(Request $request, Clase $clase)
-    {    
-        dd($request->user_id);
+    {
+        if (!$request->user_id) {
+            foreach ($clase->reservations as $reservation) {
+                $reservation->reservation_status_id = 4;
+                $reservation->save();
+            }
+            Session::flash('success','¡Asistencia lista!');
+            return Redirect::back();
+        }
+        $users_ids = array_map(function($value) {
+            return intval($value);
+        }, $request->user_id);
+        foreach ($clase->reservations as $reservation) {
+            if (in_array($reservation->user_id, $users_ids)){
+                $reservation->reservation_status_id = 3;
+                $reservation->save();
+            }else{
+                $reservation->reservation_status_id = 4;
+                $reservation->save();
+            }
+        }
         Session::flash('success','¡Asistencia lista!');
         return Redirect::back();
     }

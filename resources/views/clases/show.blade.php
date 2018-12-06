@@ -88,7 +88,7 @@
             <div class="ibox-title">Crossfiteros de esta clase</div>
             <div class="ibox-tools">
                @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
-                  <button class="btn btn-white btn-ext" data-toggle="modal" data-target="#confirm-assistance-modal"><i class="la la-building mr-2"></i>Pasar lista</button>
+                  <button class="btn btn-warning btn-icon-only btn-air" data-toggle="modal" data-target="#confirm-assistance-modal"><i class="la la-check-square"></i></button>
                @if (Auth::user()->hasRole(1))
                   <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
                @endif
@@ -124,7 +124,6 @@
                            <a @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2)) href="{{url('/users/'.$reservation->user->id)}}" @endif>
                               {{$reservation->user->first_name}} {{$reservation->user->last_name}}
                            </a>
-
                         </td>
                         <td>
                            <span class="badge badge-{{$reservation->reservation_status->type}} badge-pill">{{strtoupper($reservation->reservation_status->reservation_status)}}</span>
@@ -151,7 +150,6 @@
                   @endforeach
                   </tbody>
                </table>
-               
                {!! Form::close() !!}
             </div>
          </div>
@@ -160,49 +158,49 @@
 </div>
 
   <!-- Modal -->
-  <div class="modal fade" id="user-assign" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" id="user-assign" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Agregar Alumno</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body pr-0 pl-4 pb-5">
-          <table id="students-table-search" class="table table-hover m-0 mr-0">
-            <thead class="thead-default">
-              <tr>
-                <th width="80%">Alumnos</th>
-                <th width="20%">Accion</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach ($outclase as $usuario)
-              <tr>
-                <td>
-                <a class="media-img" href="javascript:;">
-                  <img class="img-circle" src="{{$usuario->avatar}}" alt="image" width="54">
-                </a>
-                  <span class="badge-{{$usuario->status_user->type}} badge-point"></span>
-                <a href="{{url('/users/'.$usuario->id)}}">{{$usuario->first_name}} {{$usuario->last_name}}</a>
-                </td>
-                <td>
-                  {!! Form::open(['route' => ['reservation.store'], 'method' => 'post']) !!}
-                  <input type="hidden" value="{{$usuario->id}}" name="user_id">
-                  <input type="hidden" value="{{$clase->id}}" name="clase_id">
-                  <input type="hidden" value="1" name="by_god">
-                  <button type="button" class="btn btn-primary button-little" type="submit" onClick="this.form.submit();">Agregar</button>
-                {!! Form::close() !!}
-                </td>
-              </tr>
-              @endforeach
-            </tbody>
-          </table>
-        </div>
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Agregar Alumno</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body pr-0 pl-4 pb-5">
+            <table id="students-table-search" class="table table-hover m-0 mr-0">
+               <thead class="thead-default">
+                  <tr>
+                     <th width="80%">Alumnos</th>
+                     <th width="20%">Accion</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  @foreach ($outclase as $usuario)
+                  <tr>
+                     <td>
+                        <a class="media-img" href="javascript:;">
+                           <img class="img-circle" src="{{$usuario->avatar}}" alt="image" width="54">
+                        </a>
+                        <span class="badge-{{$usuario->status_user->type}} badge-point"></span>
+                        <a href="{{url('/users/'.$usuario->id)}}">{{$usuario->first_name}} {{$usuario->last_name}}</a>
+                     </td>
+                     <td>
+                        {!! Form::open(['route' => ['reservation.store'], 'method' => 'post']) !!}
+                        <input type="hidden" value="{{$usuario->id}}" name="user_id">
+                        <input type="hidden" value="{{$clase->id}}" name="clase_id">
+                        <input type="hidden" value="1" name="by_god">
+                        <button type="button" class="btn btn-primary button-little" type="submit" onClick="this.form.submit();">Agregar</button>
+                        {!! Form::close() !!}
+                     </td>
+                 </tr>
+                 @endforeach
+               </tbody>
+            </table>
+         </div>
       </div>
-    </div>
-  </div>
+   </div>
+</div>
 
 <!-- Modal de confirmacion de clase-->
 @include('clases.modals.asistencia', ['clase' => $clase])

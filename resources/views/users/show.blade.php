@@ -171,22 +171,20 @@
         </div>
         <div class="ibox-body">
           <div class="ibox-fullwidth-block">
-            <table id="students-table" class="table table-hover">
+            <table id="next-clases-table" class="table table-hover">
               <thead class="thead-default thead-lg">
                 <tr>
                   <th width="25%">Fecha Clase</th>
                   <th width="25%">Hora</th>
                   <th width="25%">Estado</th>
-                  {{-- <th width="25%">Período</th> --}}
                 </tr>
               </thead>
               <tbody>
-                @foreach($user->reservations->whereIn('reservation_status_id', [1,2]) as $reserv)
+                @foreach($future_reservs as $reserv)
                 <tr>
                   <td><a href="{{url('/clases/'.$reserv->clase->id)}}">{{$reserv->clase->date}}</a></td>
                   <td>{{$reserv->clase->start_at}} {{$reserv->clase->finish_at}}</td>
                   <td>{{$reserv->reservation_status->reservation_status}}</td>
-                  {{-- <td>{{$clase->claseation_status->claseation_status}}</td> --}}
                 </tr>
                 @endforeach
               </tbody>
@@ -213,7 +211,7 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach($user->reservations->whereIn('reservation_status_id', [3,4]) as $reserv)
+                @foreach($past_reservs as $reserv)
                   <tr>
                     <td><a href="{{url('/clases/'.$reserv->clase->id)}}">{{$reserv->clase->date}}</a></td>
                     <td>{{$reserv->clase->start_at}} {{$reserv->clase->finish_at}}</td>
@@ -302,5 +300,27 @@
   });
   </script>
 
+   <script src="{{ asset('js/datatables.min.js') }}"></script>
+   <script>
+      $(document).ready(function() {
+         table = $('#next-clases-table').DataTable({
+            "paging": true,
+            "ordering": true,
+            "pageLength": 10,
+            "bLengthChange" : false,
+            "bpageLength": false,
+            "bPaginate": false,
+            "language": {
+               "lengthMenu": "Mostrar _MENU_ elementos",
+               "zeroRecords": "Sin Registros",
+               "info": "Mostrando página _PAGE_ de _PAGES_",
+               "infoEmpty": "Sin Registros",
+               "infoFiltered": "(filtrado de _MAX_ registros totales)",
+               "search": "Filtrar:"
+            },
+         });
+      });
+   </script>
+  
 
 @endsection

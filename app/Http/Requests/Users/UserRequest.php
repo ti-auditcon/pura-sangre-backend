@@ -22,40 +22,39 @@ class UserRequest extends FormRequest
      *
      * @return array
      */
-     public function rules()
-   {
-     switch ($this->method()){
-       case 'POST': {
-         return [
-           'first_name' => 'required',
-           'last_name' => 'required',
-           'email' => 'required|email|unique:users',
-           'phone' => $this->phone != null ? 'digits:8': '',
-         ];
-       }
-       case 'PUT': {
-         if($this->route('user')->email != $this->email){
-           $case = '|unique:users,email';
-         }
-         else {
-           $case = '';
-         }
-         if (Auth::user()->hasRole(1)) {
-           $required = 'required';
-         }else{
-          $required = '';
-         }
-         return [
-           'first_name' => 'required',
-           'last_name' => 'required',
-           'image' => 'mimes:jpeg,png|max:1024',
-           'email' => $required.'|email'.$case,
-           'phone' => $this->phone != null ? 'digits:8': '',
-         ];
-       }
-       default:break;
-     }
-   }
+    public function rules()
+    {
+        switch ($this->method()){
+            case 'POST': {
+                return [
+                    'first_name' => 'required',
+                    'last_name' => 'required',
+                    'email' => 'required|email|unique:users',
+                    'phone' => $this->phone != null ? 'digits:8': '',
+                ];
+            }
+            case 'PUT': {
+                if($this->route('user')->email != $this->email){
+                    $case = '|unique:users,email';
+                }else {
+                    $case = '';
+                }
+                if (Auth::user()->hasRole(1)) {
+                    $required = 'required';
+                }else {
+                    $required = '';
+                }
+                return [
+                    'first_name' => 'required',
+                    'last_name' => 'required',
+                    'image' => 'mimes:jpeg,png|max:1024',
+                    'email' => $required.'|email'.$case,
+                    'phone' => $this->phone != null ? 'digits:8': '',
+                ];
+           }
+           default:break;
+        }
+    }
 
    /**
     * [messages description]

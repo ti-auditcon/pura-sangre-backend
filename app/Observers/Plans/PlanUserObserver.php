@@ -25,7 +25,7 @@ class PlanUserObserver
       $fecha_inicio = Carbon::parse($planUser->start_date);
       $fecha_termino = Carbon::parse($planUser->finish_date);
       // whereIn('plan_status_id', [1,3])->
-      $plan_users = PlanUser::where('user_id', $user->id)->get();
+      $plan_users = PlanUser::whereIn('plan_status_id', [1,3])->where('user_id', $user->id)->get();
       foreach ($plan_users as $plan_user) {
         if (($fecha_inicio->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date))) || ($fecha_termino->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date)))) {
 
@@ -53,36 +53,45 @@ class PlanUserObserver
     * @param  \App\Models\Plans\PlanUser  $planUser
     * @return void
     */
-   public function created(PlanUser $planUser)
-   {
-      // dd($planUser);
-      if ($planUser->user->actual_plan && $planUser->user->actual_plan->id != $planUser->id) {
-         if ($planUser->start_date > today()) {
+    public function created(PlanUser $planUser)
+    {
+        // $planUser->user->actual_plan->id != $planUser->id ?????
+        if ($planUser->user->actual_plan && $planUser->start_date > today()) {
             $planUser->plan_status_id = 3;
-         }
-      }elseif (!$planUser->user->actual_plan && $planUser->start_date > today()) {
-        $planUser->plan_status_id = 3;
-      }elseif ($planUser->start_date <= today() && $planUser->finish_date >= today()) {
-        $planUser->plan_status_id = 1;
-      }else {
-        $planUser->plan_status_id = 4;
-      }
-      $planUser->save();
-      $user = $planUser->user;
-      $user->status_user_id = 1;
-      $user->save();
-   }
+        }
+        if (!$planUser->user->actual_plan && $planUser->start_date <= today() && $planUser->finish_date >= today()) {
+            $planUser->plan_status_id = 1;
+        }
+        $planUser->user->status_user_id = 1;
+        $planUser->user->save();
 
+        if (!$planUser->user->actual_plan && $planUser->start_date > today()) {
+            $planUser->plan_status_id = 3;
+            $planUser->user->status_user_id = 2;
+            $planUser->user->save();
+        }elseif ($planUser->finish_date < today()) {
+            $planUser->plan_status_id = 4;
+            $planUser->user->status_user_id = 2;
+            $planUser->user->save();
+        }
+ 
+        $planUser->save();
+    }
 
     public function updated(PlanUser $planUser)
     {
         //este update es para cancelar el plan
         if ($planUser->plan_status_id == 5){
-            $planUser->reservations()->each(function ($reserv){
+            foreach ($planUser->reservations as $key => $reserv) {
                 if ($reserv->reservation_status_id == 1 || $reserv->reservation_status_id == 2){
                     $reserv->delete();
                 }
-            });
+            }
+            // $planUser->reservations()->each(function ($reserv){
+            //     if ($reserv->reservation_status_id == 1 || $reserv->reservation_status_id == 2){
+            //         $reserv->delete();
+            //     }
+            // });
             if ($planUser->user->actual_plan) {
               $planUser->user->status_user_id = 1;
             }else {

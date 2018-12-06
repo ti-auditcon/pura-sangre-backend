@@ -3,6 +3,7 @@
 namespace App\Observers\Bills;
 
 use App\Models\Bills\Bill;
+use App\Models\Plans\PlanIncomeSummary;
 use Carbon\Carbon;
 use Session;
 

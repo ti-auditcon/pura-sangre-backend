@@ -79,8 +79,8 @@
                   </td>
 
                   <td>{{Rut::set($user->rut)->fix()->format()}}</td>
-
-                  @if ($user->plan_users->isNotEmpty() && $user->actual_plan)
+{{-- $user->plan_users->isNotEmpty() &&  --}}
+                  @if ($user->actual_plan)
 
                     <td>{{$user->actual_plan->plan->plan ?? 'No aplica'}}</td>
 
