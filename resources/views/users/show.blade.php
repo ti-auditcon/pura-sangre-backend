@@ -163,7 +163,7 @@
       </div>
     </div>
 
-
+   @if ($next_reservs)
     <div class="col-8">
       <div class="ibox ibox-fullheight">
         <div class="ibox-head">
@@ -193,7 +193,9 @@
         </div>
       </div>
     </div>
+   @endif
 
+@if ($past_reservs)
     <div class="col-8">
       <div class="ibox ibox-fullheight">
         <div class="ibox-head">
@@ -207,7 +209,6 @@
                   <th width="35%">Fecha Clase</th>
                   <th width="35%">Hora</th>
                   <th width="30%">Estado</th>
-                  {{-- <th width="25%">Período</th> --}}
                 </tr>
               </thead>
               <tbody>
@@ -216,7 +217,6 @@
                     <td><a href="{{url('/clases/'.$reserv->clase->id)}}">{{$reserv->clase->date}}</a></td>
                     <td>{{$reserv->clase->start_at}} {{$reserv->clase->finish_at}}</td>
                     <td>{{$reserv->reservation_status->reservation_status}}</td>
-                    {{-- <td>{{$clase->claseation_status->claseation_status}}</td> --}}
                   </tr>
                 @endforeach
               </tbody>
@@ -225,18 +225,19 @@
         </div>
       </div>
     </div>
-
+@endif
+   
   </div>
 
 @endsection
 
 
-@section('css') {{-- stylesheet para esta vista --}}
+@section('css') stylesheet para esta vista
 @endsection
 
 
 
-@section('scripts') {{-- scripts para esta vista --}}
+@section('scripts') scripts para esta vista
 
   <script>
 	$('.sweet-user-delete').click(function(e){
@@ -258,7 +259,7 @@
 	});
 	</script>
 
- {{-- ELIMINAR UN PLAN A UN USUARIO --}}
+ ELIMINAR UN PLAN A UN USUARIO
   <script>
   $('.sweet-user-plan-annul').click(function(e){
     var id = $(this).data('id');
@@ -306,6 +307,7 @@
          table = $('#next-clases-table').DataTable({
             "paging": true,
             "ordering": true,
+            "order": [[ 0, 'asc' ]],
             "pageLength": 10,
             "bLengthChange" : false,
             "bpageLength": false,
@@ -316,11 +318,24 @@
                "info": "Mostrando página _PAGE_ de _PAGES_",
                "infoEmpty": "Sin Registros",
                "infoFiltered": "(filtrado de _MAX_ registros totales)",
-               "search": "Filtrar:"
+               "search": "Filtrar:",
+               "paginate": {
+                  "first": "Primero",
+                  "last": "Ultimo",
+                  "next": "Siguiente",
+                  "previous": "Anterior"
+               },
             },
+
          });
       });
    </script>
+
+  {{--  <script>
+      $("#next-clases-table thead tr th").each(function(){
+        alert(this.innerHTML); //This executes once per column showing your column names!
+    }); 
+   </script> --}}
   
 
 @endsection

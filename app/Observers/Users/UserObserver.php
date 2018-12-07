@@ -22,13 +22,7 @@ class UserObserver
 
     public function creating(User $user)
     {
-        $user = User::where('rut', $user->rut)->first();
-        if ($user) {
-            Session::flash('error','El Rut ingresado ya se encuentra tomado!');
-            return false;
-        }else {
-            return true;
-        }
+        //
     }
 
     /**
