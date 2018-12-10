@@ -19,9 +19,7 @@
             </a>
           </li>
         @endif
-
         @if (Auth::user()->hasRole(1))
-
           <li @if($page=="users") class="active" @endif>
             <a href="{{ url('/users') }}"><i class="sidebar-item-icon ti-id-badge"></i>
               <span class="nav-label">Alumnos</span>
@@ -66,6 +64,10 @@
               </a>
           </li> --}}
 
+        </ul>
+
+        <ul class="brand">
+          <img src="{{asset('/img/asomic.png')}}">
         </ul>
     </div>
 </nav>
