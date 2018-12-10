@@ -1,14 +1,14 @@
 <!-- START HEADER-->
 <header class="header">
   <div class="page-brand">
-      <a href="">
+      <a href="/">
         {{-- <span class="brand align-items-center">Pura Sangre</span> --}}
         <img class="logo" src="{{ asset('img/logo.png') }}" alt="Ir a Dashboard">
       </a>
   </div>
-  <div class="d-flex justify-content-end align-items-center flex-1">
+  <div class="d-flex justify-content-between align-items-center flex-1">
       <!-- START TOP-LEFT TOOLBAR-->
-      <!-- <ul class="nav navbar-toolbar">
+      <ul class="nav navbar-toolbar">
           <li>
               <a class="nav-link sidebar-toggler js-sidebar-toggler" href="javascript:;">
                   <span class="icon-bar"></span>
@@ -17,7 +17,7 @@
               </a>
           </li>
 
-      </ul> -->
+      </ul>
       <!-- END TOP-LEFT TOOLBAR-->
       <!-- START TOP-RIGHT TOOLBAR-->
       <ul class="nav navbar-toolbar">
@@ -61,7 +61,7 @@
           @auth()
           <li class="dropdown dropdown-user">
               <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
-                  <span>
+                  <span class="mr-1">
                     {{Auth::user()->first_name}} {{Auth::user()->last_name}}
                   </span>
                   <img src="{{Auth::user()->avatar}}" alt="image" />
@@ -75,12 +75,12 @@
                     <div>
                       <h5 class="font-strong text-white">{{Auth::user()->first_name}} {{Auth::user()->last_name}}</h5>
                       <div>
-                        <span class="admin-badge mr-3"><i class="ti-alarm-clock mr-2"></i>30m.</span>
-                        <span class="admin-badge"><i class="ti-lock mr-2"></i>Safe Mode</span>
+                        {{-- <span class="admin-badge mr-3"><i class="ti-alarm-clock mr-2"></i>30m.</span>
+                        <span class="admin-badge"><i class="ti-lock mr-2"></i>Safe Mode</span> --}}
                       </div>
                     </div>
                   </div>
-                  <div class="admin-menu-features">
+                  {{-- <div class="admin-menu-features">
                     <a class="admin-features-item" href="{{ route('users.show', Auth::id()) }}"><i class="ti-user"></i>
                       <span>PERFIL</span>
                     </a>
@@ -90,10 +90,10 @@
                     <a class="admin-features-item" href="javascript:;"><i class="ti-settings"></i>
                       <span>SETTINGS</span>
                     </a>
-                  </div>
+                  </div> --}}
                 <div class="admin-menu-content">
-                  <div class="d-flex justify-content-between mt-2">
-                    <a class="text-muted" href="javascript:;">Testo de egemplo</a>
+                  <div class="d-flex justify-content-end mt-2">
+                    {{-- <a class="text-muted" href="javascript:;">Testo de egemplo</a> --}}
                     <a class="d-flex align-items-center" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">Cerrar Sesión<i class="ti-shift-right ml-2 font-20"></i></a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                       @csrf
