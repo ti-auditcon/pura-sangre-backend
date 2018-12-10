@@ -72,12 +72,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $future_reservs = $user->reservations->whereIn('reservation_status_id', [1,2])->sortByDesc('id')->take(10);
-        $past_reservs = $user->reservations->whereIn('reservation_status_id', [3,4])->sortByDesc('id')->take(10);
-        return view('users.show')->with('user', $user)
-                                 ->with('future_reservs', $future_reservs)
-                                 ->with('past_reservs', $past_reservs);
-
+        return view('users.show')->with('user', $user);
     }
 
     /**

@@ -48,8 +48,6 @@
                   <span class="btn-label-out btn-label-out-right btn-label-out-primary pointing">{{$users->count()}}</span>
                 </div>
               </span>
-
-
             </div>
           </div>
           <div class="table-responsive">
@@ -77,20 +75,15 @@
                       {{$user->first_name}} {{$user->last_name}}
                     </a>
                   </td>
-
                   <td>{{Rut::set($user->rut)->fix()->format()}}</td>
-{{-- $user->plan_users->isNotEmpty() &&  --}}
                   @if ($user->actual_plan)
-
                     <td>{{$user->actual_plan->plan->plan ?? 'No aplica'}}</td>
-
                     @if ($user->actual_plan->finish_date >= (Carbon\Carbon::today()))
                       <td>{{'Quedan '}}{{$user->plan_users->first()->finish_date->diffInDays(Carbon\Carbon::now())}}{{' días'}}</td>
                     @else
                       <td>{{'--'}}</td>
                     @endif
                     <td>{{$user->actual_plan->start_date->format('d-m-Y')}} a {{$user->actual_plan->finish_date->format('d-m-Y')}}</td>
-
                   @else
                     <td>{{'Sin plan'}}</td>
                     <td>{{'No aplica'}}</td>
@@ -100,11 +93,8 @@
                     <a href="{{url('/users/'.$user->id)}}" class="btn btn-info btn-icon-only btn-success"><i class="la la-eye"></i></a>
                     <a href="" class="btn btn-info btn-icon-only btn-message"><i class="la la-envelope"></i></a>
                     <a href="" class="btn btn-info btn-icon-only btn-pay"><i class="la la-usd"></i></a>
-
                   </td>
                   <td>{{$user->status_user_id}}</td>
-
-
                 </tr>
                 @endforeach
               </tbody>
@@ -134,7 +124,7 @@
 			table = $('#students-table').DataTable({
 				"paging": true,
 				"ordering": true,
-        "order": [[ 3, "asc" ]],
+            "order": [[ 3, "asc" ]],
 				"language": {
 					"lengthMenu": "Mostrar _MENU_ elementos",
 					"zeroRecords": "Sin resultados",

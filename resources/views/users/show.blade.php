@@ -163,7 +163,7 @@
       </div>
     </div>
 
-   @if ($next_reservs)
+   @if ($user->future_reservs)
     <div class="col-8">
       <div class="ibox ibox-fullheight">
         <div class="ibox-head">
@@ -180,7 +180,7 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach($future_reservs as $reserv)
+                @foreach($user->future_reservs as $reserv)
                 <tr>
                   <td><a href="{{url('/clases/'.$reserv->clase->id)}}">{{$reserv->clase->date}}</a></td>
                   <td>{{$reserv->clase->start_at}} {{$reserv->clase->finish_at}}</td>
@@ -195,7 +195,7 @@
     </div>
    @endif
 
-@if ($past_reservs)
+@if ($user->past_reservs)
     <div class="col-8">
       <div class="ibox ibox-fullheight">
         <div class="ibox-head">
@@ -212,7 +212,7 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach($past_reservs as $reserv)
+                @foreach($user->past_reservs as $reserv)
                   <tr>
                     <td><a href="{{url('/clases/'.$reserv->clase->id)}}">{{$reserv->clase->date}}</a></td>
                     <td>{{$reserv->clase->start_at}} {{$reserv->clase->finish_at}}</td>

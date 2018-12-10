@@ -6,56 +6,76 @@
 @section('content')
    <div class="row justify-content-center">
       <div class="col-8">
-            <div class="ibox" id="mailbox-container">
+         <div class="ibox" id="mailbox-container">
+            <div class="flexbox mb-4">
+               <div class="flexbox">
+                  <span class="flexbox mr-3">
+                     <div class="btn-group">
+                        <button class="btn btn-outline-success user-filter" data-status="1">
+                           <span class="btn-icon">ACTIVOS</span>
+                        </button>
+                        <span class="btn-label-out btn-label-out-right btn-label-out-success pointing">{{$users->where('status_user_id', 1)->count()}}</span>
+                     </div>
+                  </span>
+                  <span class="flexbox mr-3" >
+                     <div class="btn-group">
+                        <button class="btn btn-outline-danger user-filter" data-status="2">
+                           <span class="btn-icon">INACTIVOS</span>
+                        </button>
+                        <span class="btn-label-out btn-label-out-right btn-label-out-danger pointing">{{$users->where('status_user_id', 2)->count()}}</span>
+                     </div>
+                  </span>
+                  <span class="flexbox mr-3">
+                     <div class="btn-group">
+                        <button class="btn btn-outline-warning user-filter" data-status="3">
+                           <span class="btn-icon">PRUEBA</span>
+                        </button>
+                        <span class="btn-label-out btn-label-out-right btn-label-out-warning pointing">{{$users->where('status_user_id', 3)->count()}}</span>
+                     </div>
+                  </span>
+                  <span class="flexbox mr-3">
+                     <div class="btn-group">
+                        <button class="btn btn-outline-primary user-filter" data-status="">
+                           <span class="btn-icon">TODOS</span>
+                        </button>
+                        <span class="btn-label-out btn-label-out-right btn-label-out-primary pointing">{{$users->count()}}</span>
+                     </div>
+                  </span>
+               </div>
+            </div>
                <div class="flexbox-b p-4">
                   <h5 class="font-strong m-0 mr-3">Enviar Correo</h5>
                   <span id="counter-selected" style="display: none;">Seleccionados
                      <span class="font-strong text-danger ml-2" id="counter-count">15</span>
                   </span>
                </div>
-            {{--    <div class="flexbox px-4 py-3 bg-primary-50">
-                  <div class="flexbox-b">
-                     <label id="all_id" class="checkbox checkbox-primary check-single pt-1">
-                        <input type="checkbox" data-select="all">
-                        <span class="input-span"></span>
-                     </label>
-                     <div class="btn-group mr-2" style="margin-left: -4px;">
-                        <button class="btn btn-transparent btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-angle-down"></i></button>
-                        <ul class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 29px, 0px); top: 0px; left: 0px; will-change: transform;">
-                           <li data-select="activos"><a class="dropdown-item">Activos</a></li>
-                           <li data-select="inactivos"><a class="dropdown-item">Inactivos</a></li>
-                           <li data-select="pruebas"><a class="dropdown-item">Prueba</a></li>
-                           <li class="dropdown-divider"></li>
-                           <li data-select="clear"><a class="dropdown-item">Limpiar Seleccion</a></li>
-                        </ul>
-                    </div>
-                  </div>
-               </div> --}}
             <table class="table table-hover table-inbox" id="table-inbox">
                <thead class="rowlinkx">
                   <tr>
                      <th width="100%">Nombre</th>
+                     <th width="100%">Estado</th>
+                     <th width="100%">id</th>
                   </tr>
                </thead>
                <tbody class="rowlinkx" data-link="row">
                   @foreach (App\Models\Users\User::all() as $user)
-                  <tr class="{{$user->status_user->status_user}}" data-id="1">
+                  <tr class="{{$user->status_user->status_user}}" data-id="{{$user->id}}">
                      <td class="check-cell rowlink-skip">
-                   {{--      <label class="checkbox checkbox-primary checkbox-select check-single">
-                           <input class="mail-check" type="checkbox">
-                           <span class="input-span"></span>
-                        </label> --}}
                         <a class="media-img" href="{{url('/users/'.$user->id)}}">
                            <img class="img-circle" src="{{url($user->avatar)}}" alt="image" width="54">
                         </a>
-                        <span class="badge badge-{{$user->status_user->type}} badge-pill ml-2">{{$user->status_user->status_user}}</span>
+                        <span class="badge badge-{{$user->status_user->type}} badge-pill ml-2">{{$user->status_user->status_user}}
+                        </span>
                         {{$user->first_name}} {{$user->last_name}}
-                        <small class="text-muted">{{$user->email}} </small></div>
+                        <small class="text-muted">{{$user->email}}</small></div>
                      </td>
+                     <td>{{$user->status_user_id}}</td>
+                  
+                     <td id="users_ids">{{$user->id}}</td>
                   </tr>
                   @endforeach
                </tbody>
-               <button class="btn btn-sm btn-outline-secondary btn-rounded" disabled id="save_value" name="save_value">Enviar Correo</button>
+               <button class="btn btn-sm btn-outline-secondary btn-rounded" id="save_value" name="save_value">Enviar Correo</button>
             </table>
          </div>
       </div>
@@ -82,6 +102,9 @@
                <textarea name="text" required></textarea>
                <button type="button" class="btn btn-primary" type="submit" onClick="this.form.submit();">Enviar Correo</button>
             </tbody>
+            <div id="form-input">
+               
+            </div>
          </div>
          {!! Form::close() !!}
       </div>
@@ -101,158 +124,74 @@
 @section('scripts') {{-- scripts para esta vista --}}
 
   <script src="{{ asset('js/datatables.min.js') }}"></script>
-  <script >
-    $(document).ready(function() {
+   <script >
+   $(document).ready(function() {
       table = $('#table-inbox').DataTable({
-        "paging": true,
-        "ordering": true,
-        "select": true,
-        "language": {
-          "lengthMenu": "Mostrar _MENU_ elementos",
-          "zeroRecords": "Sin resultados",
-          "info": "Mostrando página _PAGE_ de _PAGES_",
-          "infoEmpty": "Sin resultados",
-          "infoFiltered": "(filtrado de _MAX_ registros totales)",
-          "search": "Filtrar:"
-        },
+         "paging": true,
+         "ordering": true,
+         "select": true,
+         "language": {
+            "lengthMenu": "Mostrar _MENU_ elementos",
+            "zeroRecords": "Sin resultados",
+            "info": "Mostrando página _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin resultados",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Filtrar:"
+         },
+         "columnDefs": [
+            {
+               "targets": [ 1 ],
+               "visible": false,
+               "searchable": true
+            }
+         ],
       });
+   });
 
-      table.on('search.dt', function() {
-         //number of filtered rows
-         console.log(table.rows( { filter : 'applied'} ).nodes().length);
-         //filtered rows data as arrays
-         console.log(table.rows( { filter : 'applied'} ).data('#users_id'));                                  
-      }) 
+   $('button.user-filter').on("click", function(){
+      // var form = document.getElementById('form-val');
+      // form.remove(input);
+      table.columns( 1 ).search( $(this).data('status') ).draw();
+      // console.log(input);
    });
    </script>
+
    <script>
+
    $(function(){
+      table = $('#table-inbox').DataTable();
+      var form = document.getElementById('form-input');
+      
+      // input.value = $thisids;
       $('#save_value').click(function(){
-         // console.log('bla');
-         var val = [];
-         $(':checkbox:checked').each(function(i){
-            var form = document.getElementById('form-val');
+         $('.form-input-user').remove();
+         table.rows( {search:'applied'} ).data().each(function(value, index){
             var input = document.createElement("input");
             input.type = "hidden";
             input.name = "users_id[]";
-            input.value = $(this).val();
-            // val.push('user_id' => $(this).val());
+            input.value = value[2];
+            input.className = "form-input-user";
             form.appendChild(input);
+            console.log(input);
          });
-         // console.log(val);
-         $('form#form-val #users_id').val(val);
-         $('#user-assign').modal('show');
+        // console.log($('#form-input input[name=users_id]').length);
+      // form.appendChild(input);
+         
+      $('#user-assign').modal('show');
+
+         // $(':').each(function(i){
+         //    var form = document.getElementBy('form-val');
+         //    var article = document.getElementById('electriccars');
+         //    var input = document.createElement("input");
+         //    input.type = "hidden";
+         //    input.name = "users_id[]";
+         //    input.value = $(this).val();
+         //    form.appendChild(input);
+         // });
+         // $('form#form-val #users_id').val(val);
+         // $('#user-assign').modal('show');
       });
    });
    </script>>
 
-{{--   <script src="{{ asset('js/summernote.min.js') }}"></script>
-   <script>
-      $(function() {
-         $('#summernote').summernote({
-            height: 350, 
-         });
-      });
-   </script> --}}
-
-
- {{--   <script>
-   $(function() {
-      var actions = $('#inbox-actions .btn');
-      var count = 0;
-     
-
-      $("input[data-select='all']").change(function(){
-          rows = $('#table-inbox tr');
-         $(this).prop('checked')
-            ? (rows.find('.mail-check').prop('checked',true), actions.removeClass('disabled'), $("#save_value").prop('disabled', false))
-            : (rows.find('.mail-check').prop('checked',false), actions.addClass('disabled'))
-         checkSelectedCount();
-      });
-      $("li[data-select='activos']").click(function(){
-         
-
-         rows.find('.mail-check').prop('checked',false);
-         var r = rows.filter('.Activo').find('.mail-check');
-         r.prop('checked',true);
-         $("#save_value").prop('disabled', false);
-         if(r.length) actions.removeClass('disabled');
-         checkSelectedCount();
-
-         // count = $("#table-inbox tr.sendeable").length;
-         console.log(count);
-      });
-      $("li[data-select='inactivos']").click(function(){
-         rows.find('.mail-check').prop('checked',false);
-         var r = rows.filter('.Inactivo').find('.mail-check');
-         r.prop('checked',true);
-         $("#save_value").prop('disabled', false);
-         if(r.length) actions.removeClass('disabled');
-         checkSelectedCount();
-      });
-      $("li[data-select='pruebas']").click(function(){
-         rows.find('.mail-check').prop('checked',false);
-         var r = rows.filter('.Prueba').find('.mail-check');
-         r.prop('checked',true);
-         $("#save_value").prop('disabled', false);
-         if(r.length) actions.removeClass('disabled');
-         checkSelectedCount();
-      });
-      $("li[data-select='clear']").click(function(){
-         rows.find('.mail-check').prop('checked',false);
-         $("#save_value").prop('disabled', true);
-         // id="all_id" 
-         actions.addClass('disabled');
-         checkSelectedCount();
-      });
-      $('.mail-check').change(function(){
-         if($(this).prop('checked')) actions.removeClass('disabled');
-         else if(!rows.find('.mail-check:checked').length) actions.addClass('disabled');
-         checkSelectedCount();
-      });
-
-      //check
-$('.checkbox input').prop('checked',false);
-   $("#save_value").prop('disabled', true);
-
-   $("#table-inbox tr .checkbox-select").change(function() {
-      $(this).parent().parent().toggleClass("sendeable");
-      
-      checkSelectedCount();
-      console.log(count);
-      // if(count == 0) {
-      //    $("#save_value").prop('disabled', true);
-      // }
-      if(count > 0) {
-         $("#save_value").prop('disabled', false);
-      }
-      else {
-         $("#save_value").prop('disabled', true);
-      }
-   });
-   //count
-      function checkSelectedCount() {
-         count = 0;
-         $('#table-inbox tr').find('.mail-check').each(function(){
-            if ($(this).is(":checked")){
-               count++;
-               $(this).parent().parent().parent().toggleClass("sendeable");
-            }
-             
-         });
-         if(count) {
-
-            $('#counter-selected').show().find('#counter-count').html(count);
-         }
-         else {
-            $('#counter-selected').hide();
-         }
-      }
-   });
-   </script> --}}
-
 @endsection
-
-{{--  if($('input[type=checkbox]').prop('checked');){
-      console.log('si esta checkeado');
-   } --}}

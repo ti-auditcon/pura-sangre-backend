@@ -109,11 +109,19 @@ class User extends Authenticatable
                                              ->where('finish_date','>=', today());
     }
 
+    public function future_reservs()
+    {
+        return $this->HasMany(Reservation::class)->whereIn('reservation_status_id', [1,2])->take(10);
+    }
+
+    public function past_reservs()
+    {
+        return $this->HasMany(Reservation::class)->whereIn('reservation_status_id', [3,4])->take(10);
+    }
 
     public function reservable_plans()
     {
-        return $this->hasMany(PlanUser::class);
-        // ->where('plan_status_id',[1,3])
+        return $this->hasMany(PlanUser::class)->where('plan_status_id',[1,3]);
     }
 
     /**

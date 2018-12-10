@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Messages;
 
-use Redirect;
 use Session;
-use App\Http\Controllers\Controller;
+use Redirect;
 use App\Mail\SendEmail;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\Controller;
 
 class MessageController extends Controller
 {
@@ -28,6 +28,7 @@ class MessageController extends Controller
      */
     public function send(Request $request)
     {
+        dd($request->users_id);
         $users = User::whereIn('id', $request->users_id)->get();
         foreach ($users as $user) {
             $mail = new \stdClass();
