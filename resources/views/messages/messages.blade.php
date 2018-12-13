@@ -140,7 +140,7 @@
          },
          "columnDefs": [
             {
-               "targets": [ 1 ],
+               "targets": [ 1,2 ],
                "visible": false,
                "searchable": true
             }
@@ -149,10 +149,7 @@
    });
 
    $('button.user-filter').on("click", function(){
-      // var form = document.getElementById('form-val');
-      // form.remove(input);
       table.columns( 1 ).search( $(this).data('status') ).draw();
-      // console.log(input);
    });
    </script>
 
@@ -162,7 +159,6 @@
       table = $('#table-inbox').DataTable();
       var form = document.getElementById('form-input');
       
-      // input.value = $thisids;
       $('#save_value').click(function(){
          $('.form-input-user').remove();
          table.rows( {search:'applied'} ).data().each(function(value, index){
@@ -173,23 +169,8 @@
             input.className = "form-input-user";
             form.appendChild(input);
             console.log(input);
-         });
-        // console.log($('#form-input input[name=users_id]').length);
-      // form.appendChild(input);
-         
+         });     
       $('#user-assign').modal('show');
-
-         // $(':').each(function(i){
-         //    var form = document.getElementBy('form-val');
-         //    var article = document.getElementById('electriccars');
-         //    var input = document.createElement("input");
-         //    input.type = "hidden";
-         //    input.name = "users_id[]";
-         //    input.value = $(this).val();
-         //    form.appendChild(input);
-         // });
-         // $('form#form-val #users_id').val(val);
-         // $('#user-assign').modal('show');
       });
    });
    </script>>

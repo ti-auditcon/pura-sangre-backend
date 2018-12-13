@@ -28,8 +28,8 @@ class MessageController extends Controller
      */
     public function send(Request $request)
     {
-        dd($request->users_id);
         $users = User::whereIn('id', $request->users_id)->get();
+        // dd($users->id);
         foreach ($users as $user) {
             $mail = new \stdClass();
             $mail->subject = $request->subject;

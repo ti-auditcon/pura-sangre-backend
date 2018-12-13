@@ -36,9 +36,17 @@ class ReservationController extends Controller
 
     public function destroy(Request $request, Reservation $reservation)
     {
-        $reservation->delete();
-        Session::flash('success','Retiro de Clase exitoso');
-        return Redirect::back();
+        if ($request->ajax()) {
+            // dd($reservation->clase->getReservationCountAttribute());
+            $reservation->delete();
+        }
+        return response()->json([
+            'reserv_numbers' => $reservation->clase->getReservationCountAttribute(),
+            'quota' => $reservation->clase->quota
+        ]);
+        // $reservation->delete();
+        // Session::flash('success','Retiro de Clase exitoso');
+        // return Redirect::back();
     }
 
 

@@ -39,14 +39,15 @@
                </div>
                <div class="clase-graphics pt-2">
                   <div class="canvas-item">
-                     <div class="easypie col" data-percent="{{$clase->reservations->count()*100/$clase->quota}}" data-bar-color="#5c6bc0" data-size="70" data-line-width="8">
+                     <div id="porcentaje" class="easypie col" data-percent="{{$clase->reservations->count()*100/$clase->quota}}" data-bar-color="#5c6bc0" data-size="70" data-line-width="8">
                      </div>
+                 {{--     <div>{{$clase->reservations->count()*100/$clase->quota}}</div> --}}
                   </div>
                   <div class="data-item">
                      <div class="row m-0">
                         <div class="col-12 p-0 m-0">
                            <span class="easypie-data font-26 text-primary icon-people"><i class="ti-user"></i></span>
-                           <h3 class="font-strong text-primary">{{$clase->reservations->count()}}/{{$clase->quota}}</h3>
+                           <h3 id="total" class="font-strong text-primary">{{$clase->reservations->count()}}</h3><h3 class="font-strong text-primary">/{{$clase->quota}}</h3>
                         </div>
                         <div class="col-12 p-0 m-0">
                            <div class="text-muted">Cupos confirmados</div>
@@ -96,16 +97,16 @@
                {!! Form::open(['route' => ['reservation.store'], 'method' => 'post' ,'id' => 'user-join']) !!}
                   <input type="hidden" value="{{Auth::user()->id}}" name="user_id">
                   <input type="hidden" value="{{$clase->id}}" name="clase_id">
-               {!! Form::close() !!}
                   <button class="btn btn-success sweet-user-join" data-id="{{$clase->id}}" data-name="{{$clase->date}}">  <i></i>Reservar esta clase
                   </button>
+               {!! Form::close() !!}
                @endif
             </div>
          </div>
 
          <div class="ibox-body pb-5">
             <div class="table-responsive">
-               {!! Form::open(['route' => ['clase.confirm', $clase->id], 'method' => 'post', 'id'=>'confirm']) !!}
+               {{-- {!! Form::open(['route' => ['clase.confirm', $clase->id], 'method' => 'post', 'id'=>'confirm']) !!} --}}
                <table id="students-table" class="table table-hover">
                   <thead class="thead-default">
                      <tr>
@@ -131,16 +132,16 @@
 
                      @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
                         <td>
-                        {!! Form::open(['route' => ['reservation.destroy', $reservation->id], 'method' => 'delete', 'id'=>'delete'.$reservation->user->id]) !!}
-                           <input type="hidden" value="1" name="by_god">
-                           <button class="btn btn-info btn-icon-only btn-danger sweet-user-delete" type="button" data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash"></i></button>
-                        {!! Form::close() !!}
+                           {{-- 'url' => 'foo/bar' --}}
+                            {!! Form::open(['action' => ['Clases\ReservationController@destroy', $reservation->id], 'method' => 'delete', 'id' => 'delete'.$reservation->user->id]) !!}
+                       {{--  {!! Form::open(['route' => ['reservation.destroy', $reservation->id], 'method' => 'delete', 'id'=>'delete'.$reservation->user->id]) !!} --}}
+                              <input type="hidden" value="1" name="by_god">
+                              <button class="btn btn-info btn-icon-only btn-danger sweet-user-delete" type="button" data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash"></i></button>
+                           {!! Form::close() !!}
                         </td>
-                        
-                     @endif
-                     @if (Auth::user()->hasRole(3) && Auth::id() == $reservation->user->id)
+                     @elseif (Auth::user()->hasRole(3) && Auth::id() == $reservation->user->id)
                         <td>
-                           {!! Form::open(['route' => ['reservation.destroy', $reservation->id], 'method' => 'delete', 'id'=>'delete'.$reservation->user->id]) !!}
+                           {!! Form::open(['route' => ['reservation.destroy', $reservation->id], 'method' => 'delete', 'id'=> 'delete'.$reservation->user->id]) !!}
                            <input type="hidden" value="1" name="by_god">
                            <button class="btn btn-outline-info btn-sm btn-thick sweet-user-delete" type="button" data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash">Salir de Clase</i></button>
                            {!! Form::close() !!}
@@ -150,7 +151,7 @@
                   @endforeach
                   </tbody>
                </table>
-               {!! Form::close() !!}
+               {{-- {!! Form::close() !!} --}}
             </div>
          </div>
       </div>
@@ -231,9 +232,12 @@ $('.checkboxBla').change(function(){
 });
 
   // ELIMINAR A USUARIO DE LA CLASE
-  $('.sweet-user-delete').click(function(e){
-    var id = $(this).data('id');
-    //alert(id);
+   $('.sweet-user-delete').click(function(e){
+      var id = $(this).data('id');
+      var row = $(this).parents('tr');
+      var form = $(this).parents('form');
+      var url = form.attr('action');
+     //alert(id);
       swal({
           title: "Desea sacar a: "+$(this).data('name')+" de esta clase?",
           text: "",
@@ -244,10 +248,20 @@ $('.checkboxBla').change(function(){
           confirmButtonText: 'Eliminar',
           closeOnConfirm: false,
       },function(){
-        //redirección para sacar al usuario
-         $('form#delete'+id).submit();
+         $.post(url, form.serialize(), function(result){
+            row.fadeOut();
+            swal.close();
+            $('#total').html(result.reserv_numbers);
+            $('.easypie').data('easyPieChart').update(result.reserv_numbers*100/result.quota);
+
+            // $('#students-table').DataTable().columns.adjust().draw();
+            //dibujar nuevamente la tabla con draw()
+            //d
+         }).fail(function(){
+            $('#alert').html('no funcionó');
+         });
       });
-  });
+   });
   </script>
 
 {{-- RESERVAR CUPO A LA CLASE (VISTA DEL USUARIO) --}}
