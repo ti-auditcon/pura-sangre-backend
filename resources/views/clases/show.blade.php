@@ -89,7 +89,7 @@
             <div class="ibox-title">Crossfiteros de esta clase</div>
             <div class="ibox-tools">
                @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
-                  <button class="btn btn-warning btn-icon-only btn-air" data-toggle="modal" data-target="#confirm-assistance-modal"><i class="la la-check-square"></i></button>
+                  <button id="button-modal" class="btn btn-warning btn-icon-only btn-air" data-toggle="modal" data-target="#confirm-assistance-modal"><i class="la la-check-square"></i></button>
                @if (Auth::user()->hasRole(1))
                   <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
                @endif
@@ -217,16 +217,48 @@
 
 
 @section('scripts') {{-- scripts para esta vista --}}
+{{-- <script src="{{ asset('js/datatables.min.js') }}"></script> --}}
+<script>
+   var id = {!!$clase->id!!};
+   var url = '/asistencia-modal/'+id;
+
+   $('#button-modal').on('click',function(){
+      $.get(url, function(result){
+        console.log(result);
+          $('#confirm-assistance-modal').DataTable( {
+        data: result,
+        columns: [
+            { title: "Alumno" },
+            { title: "Estado" },
+            { title: "Asistencia" },
+
+        ]
+      });
+      });
+   });
+
+   //  $(document).ready(function() {
+   //    $('#confirm-assistance-modal').DataTable( {
+   //      data: dataset,
+   //      columns: [
+   //          { title: "Alumno" },
+   //          { title: "Esvfgtado" },
+   //          { title: "Asistencia" },
+   //      ]
+   //    });
+   // });
+   
+</script>
 
 <script>
 
 $('.checkboxBla').change(function(){
     if(this.checked) {
-      console.log('si');
+      // console.log('si');
       $(this).parent().parent().find('[name="user_id[]"]').prop('disabled',false);
 
     } else {
-      console.log('no');
+      // console.log('no');
       $(this).parent().parent().find('[name="user_id[]"]').prop('disabled',true);
     }
 });
@@ -237,7 +269,7 @@ $('.checkboxBla').change(function(){
       var row = $(this).parents('tr');
       var form = $(this).parents('form');
       var url = form.attr('action');
-     //alert(id);
+     // alert(form.attr('action'));
       swal({
           title: "Desea sacar a: "+$(this).data('name')+" de esta clase?",
           text: "",
@@ -253,10 +285,6 @@ $('.checkboxBla').change(function(){
             swal.close();
             $('#total').html(result.reserv_numbers);
             $('.easypie').data('easyPieChart').update(result.reserv_numbers*100/result.quota);
-
-            // $('#students-table').DataTable().columns.adjust().draw();
-            //dibujar nuevamente la tabla con draw()
-            //d
          }).fail(function(){
             $('#alert').html('no funcionó');
          });

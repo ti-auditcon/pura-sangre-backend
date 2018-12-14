@@ -18,7 +18,7 @@
                </tr>
             </thead>
             <tbody>
-            @foreach ($clase->reservations as $reservation)
+           {{--  @foreach ($clase->reservations as $reservation)
                <tr>
                   <td>
                      <a class="media-img" href="javascript:;">
@@ -39,7 +39,7 @@
                      <input hidden class="user_id_class" type="text" name="user_id[]" disabled value="{{$reservation->user->id}}">
                   </td>
                </tr>
-            @endforeach
+            @endforeach --}}
             </tbody>
          </table>
       </div>

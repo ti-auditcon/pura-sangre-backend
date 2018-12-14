@@ -115,4 +115,12 @@ class ClaseController extends Controller
         return Redirect::back();
     }
 
+
+     public function asistencia(Request $request)
+    {
+        $clase = Clase::find($request->id);
+        $reservs = $clase->reservations;
+        return $reservs;
+    }
+
 }
