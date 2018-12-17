@@ -10,17 +10,15 @@
       </div>
       <div class="modal-body">
          <table id="confirm-table" class="table table-hover">
-            <thead class="thead-default">
+       {{--      <thead class="thead-default">
                <tr>
-                  <th width="40%">id</th>
-                  <th width="10%">Estado</th>
-                  <th width="10%">Asistencia</th>
-                  <th width="10%">Asistencia</th>
-                  <th width="10%">Asistencia</th>
+                  <th width="70%">Usuario</th>
+                  <th width="15%">Estado</th>
+                  <th width="15%">Asistencia</th>
                </tr>
             </thead>
             <tbody>
-           {{--  @foreach ($clase->reservations as $reservation)
+            @foreach ($clase->reservations as $reservation)
                <tr>
                   <td>
                      <a class="media-img" href="javascript:;">
@@ -41,13 +39,13 @@
                      <input hidden class="user_id_class" type="text" name="user_id[]" disabled value="{{$reservation->user->id}}">
                   </td>
                </tr>
-            @endforeach --}}
-            </tbody>
+            @endforeach
+            </tbody> --}}
          </table>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button class="btn btn-primary" type="submit">Confirmarl lista</button>
+        <button class="btn btn-primary" type="submit">Confirmar lista</button>
       </div>
   		{{Form::close()}}
     </div>

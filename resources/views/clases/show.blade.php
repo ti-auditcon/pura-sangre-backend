@@ -217,39 +217,64 @@
 
 
 @section('scripts') {{-- scripts para esta vista --}}
-{{-- <script src="{{ asset('js/datatables.min.js') }}"></script> --}}
+
 <script>
-   var id = {!!$clase->id!!};
-   var url = '/asistencia-modal/'+id;
-   var result = '';
 
-   $('#button-modal').on('click',function(){
-      $.get(url, function(result){
-         console.log(result);
-         result = result;
-         $(document).ready(function() {
-            $('#confirm-table').DataTable( {
-               data: result,
-            } );
-         });
+$(document).ready(function(){
+   $('#button-modal').on("click",function(){
+      var id = {!!$clase->id!!};
+      var op ="";
+      var sid = $(this).val();
+
+      $.ajax({
+         type:'get',
+         url: '/asistencia-modal/'+id,
+         success: function(data2){
+            op+='<table class="table table-striped">';
+            op+='<tr><th width="60%">Alumno</th><th width="25%">Estado de reserva</th><th width="15%">Asistencia</th></tr>';
+            for(var i=0;i<data2.length;i++){
+               op += '<tr>';
+               op += '<td><a class="media-img" href="javascript:;"><img class="img-circle" src="'+data2[i].avatar+'" alt="image" width="54"></a><span class="badge-'+data2[i].user_status+' badge-point"></span>'+data2[i].alumno+'</td>'+
+                     '<td><span class="badge badge-'+data2[i].tipo+' badge-pill">'+data2[i].estado_reserva.toUpperCase()+'</td>'+
+                     '<td><label class="ui-switch switch-icon switch-large"><input name="asistencia[]" type="checkbox"  class="checkboxBla"><span></span></label><input hidden class="user_id_class" type="text" name="user_id[]" disabled value="'+data2[i].user_id+'"></td></tr>';
+            }
+            op+='</table>';
+            $('#confirm-table').html(op);
+                  $('.checkboxBla').change(function(){
+                        // alert('hola');
+                         if(this.checked) {
+                           // console.log('si');
+                           $(this).parent().parent().find('[name="user_id[]"]').prop('disabled',false);
+
+                         } else {
+                           // console.log('no');
+                           $(this).parent().parent().find('[name="user_id[]"]').prop('disabled',true);
+                         }
+                  });
+
+         },
+         error: function(){
+            console.log("Error Occurred");
+         }
       });
-   });
 
-   
+
+});
+
+
+});
+
+
+
+
+
+
+
 </script>
 
 <script>
 
-$('.checkboxBla').change(function(){
-    if(this.checked) {
-      // console.log('si');
-      $(this).parent().parent().find('[name="user_id[]"]').prop('disabled',false);
 
-    } else {
-      // console.log('no');
-      $(this).parent().parent().find('[name="user_id[]"]').prop('disabled',true);
-    }
-});
 
   // ELIMINAR A USUARIO DE LA CLASE
    $('.sweet-user-delete').click(function(e){

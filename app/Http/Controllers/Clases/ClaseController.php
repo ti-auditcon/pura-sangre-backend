@@ -119,8 +119,17 @@ class ClaseController extends Controller
     public function asistencia(Request $request)
     {
         $clase = Clase::find($request->id);
-        $reservs = $clase->reservations;
-        return $reservs;
+        // $reservs = $clase->reservations;
+        return $clase->reservations->map(function ($reserv) {
+            return [
+                'alumno' => $reserv->user->first_name.' '.$reserv->user->last_name,
+                'avatar' => $reserv->user->avatar,
+                'user_status' => $reserv->user->status_user->type,
+                'tipo' => $reserv->reservation_status->type,
+                'estado_reserva' => $reserv->reservation_status->reservation_status,
+                'user_id' => $reserv->user_id
+            ];
+        });
     }
 
 }
