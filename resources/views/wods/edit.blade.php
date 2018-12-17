@@ -28,9 +28,10 @@
       <br>
       <div class="ibox-footer">
       <button class="btn btn-primary btn-air" type="submit">Editar Workout</button>
-      {{-- <button class="" href="" type="btn btn-secondary"></button> --}}
       <a class="btn btn-secondary" href="{{ route('clases.index') }}">Volver</a>
-      <a class="btn btn-secondary btn-danger" href="">Eliminar</a>
+      {!! Form::open(['route' => ['wods.destroy', $wod->id], 'method' => 'delete']) !!}
+          <button type="submit" class="btn btn-secondary btn-danger"><i></i>Eliminar!</button>
+      {!! Form::close() !!}
       </div>
     </div>
 

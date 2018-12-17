@@ -116,6 +116,10 @@ class WodController extends Controller
    */
   public function destroy(Wod $wod)
   {
-
+    foreach ($wod->stages as $stg) {
+      $stg->delete();
+    }
+    $wod->delete();
+    return redirect('/clases')->with('success', 'Wod eliminado correctamente');
   }
 }
