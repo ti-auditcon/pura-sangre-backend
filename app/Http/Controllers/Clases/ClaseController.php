@@ -116,7 +116,7 @@ class ClaseController extends Controller
     }
 
 
-     public function asistencia(Request $request)
+    public function asistencia(Request $request)
     {
         $clase = Clase::find($request->id);
         $reservs = $clase->reservations;

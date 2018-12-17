@@ -25,12 +25,12 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 
     Route::resource('reservation', 'Clases\ReservationController')
            ->only('store', 'update', 'destroy');
-       
+
     Route::get('get-wods', 'Clases\ClaseController@wods');
     Route::get('get-clases', 'Clases\ClaseController@clases');
     Route::post('clases/type-select/', 'Clases\ClaseController@typeSelect')->name('clases.type');
 
-    Route::get('/asistencia-modal/{id}', 'Clases\ClaseController@asistencia');
+    Route::get('/asistencia-modal/{id}', 'Clases\ClaseController@asistencia')->name('asistencia');
 
     /**
      * BILLS Routes

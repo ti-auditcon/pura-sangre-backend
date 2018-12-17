@@ -9,11 +9,13 @@
         </button>
       </div>
       <div class="modal-body">
-         <table id="students-table" class="table table-hover">
+         <table id="confirm-table" class="table table-hover">
             <thead class="thead-default">
                <tr>
-                  <th width="70%">Alumno</th>
+                  <th width="40%">id</th>
                   <th width="10%">Estado</th>
+                  <th width="10%">Asistencia</th>
+                  <th width="10%">Asistencia</th>
                   <th width="10%">Asistencia</th>
                </tr>
             </thead>

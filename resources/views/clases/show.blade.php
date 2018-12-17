@@ -221,32 +221,20 @@
 <script>
    var id = {!!$clase->id!!};
    var url = '/asistencia-modal/'+id;
+   var result = '';
 
    $('#button-modal').on('click',function(){
       $.get(url, function(result){
-        console.log(result);
-          $('#confirm-assistance-modal').DataTable( {
-        data: result,
-        columns: [
-            { title: "Alumno" },
-            { title: "Estado" },
-            { title: "Asistencia" },
-
-        ]
-      });
+         console.log(result);
+         result = result;
+         $(document).ready(function() {
+            $('#confirm-table').DataTable( {
+               data: result,
+            } );
+         });
       });
    });
 
-   //  $(document).ready(function() {
-   //    $('#confirm-assistance-modal').DataTable( {
-   //      data: dataset,
-   //      columns: [
-   //          { title: "Alumno" },
-   //          { title: "Esvfgtado" },
-   //          { title: "Asistencia" },
-   //      ]
-   //    });
-   // });
    
 </script>
 
