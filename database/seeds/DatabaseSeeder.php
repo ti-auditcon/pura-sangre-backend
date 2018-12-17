@@ -93,3 +93,4 @@ class DatabaseSeeder extends Seeder
       //     // 'emergency_id' => 1,
       //     'status_user_id' => 1,
       // ]);
+
