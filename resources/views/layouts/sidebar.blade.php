@@ -36,7 +36,7 @@
             </a>
           </li>
           <li @if($page=="messages") class="active" @endif>
-            <a href="{{url('/messages')}}"><i class="sidebar-item-icon ti-email"></i>
+            <a ><i class="sidebar-item-icon ti-email"></i>
               <span class="nav-label">Mensajería</span>
             </a>
           </li>
@@ -46,12 +46,12 @@
             </a>
             <div class="nav-2-level">
               <ul>
-                <li><a href="form_layouts.html">Centro deportivo</a></li>
-                <li><a href="form_advanced.html">Roles y usuarios</a></li>
+                {{-- <li><a href="form_layouts.html">Centro deportivo</a></li> --}}
+                {{-- <li><a href="form_advanced.html">Roles y usuarios</a></li> --}}
                 <li><a href="{{ route('plans.index') }}">Planes</a></li>
                 <li><a href="{{ route('blocks.index') }}">Horarios</a></li>
-                <li><a href="{{ route('exercises.index') }}">Ejercicios</a></li>
-                <li><a href="form_masks.html">Facturación</a></li>
+                {{-- <li><a href="{{ route('exercises.index') }}">Ejercicios</a></li> --}}
+                {{-- <li><a href="form_masks.html">Facturación</a></li> --}}
               </ul>
             </div>
           </li>
