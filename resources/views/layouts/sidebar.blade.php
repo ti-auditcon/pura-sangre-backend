@@ -20,7 +20,7 @@
             </a>
          </li>
          @endif
-    
+
          @if (Auth::user()->hasRole(1))
          <li @if($page=="payments") class="active" @endif>
             <a href="{{ url('/payments') }}"><i class="sidebar-item-icon ti-money"></i>
@@ -31,10 +31,10 @@
             <a href="{{url('/reports')}}"><i class="sidebar-item-icon ti-bar-chart"></i>
                <span class="nav-label">Reportes</span>
             </a>
-         </li>
-         <li @if($page=="messages") class="active" @endif>
-            <a href="javascript:;"><i class="sidebar-item-icon ti-email"></i>
-               <span class="nav-label">Mensajería</span>
+          </li>
+          <li @if($page=="messages") class="active" @endif>
+            <a ><i class="sidebar-item-icon ti-email"></i>
+              <span class="nav-label">Mensajería</span>
             </a>
             <div class="nav-2-level">
                <ul>
@@ -50,14 +50,14 @@
                <span class="nav-label">Configuración<br /> del box</span>
             </a>
             <div class="nav-2-level">
-               <ul>
-                  <li><a href="form_layouts.html">Centro deportivo</a></li>
-                  <li><a href="form_advanced.html">Roles y usuarios</a></li>
-                  <li><a href="{{ route('plans.index') }}">Planes</a></li>
-                  <li><a href="{{ route('blocks.index') }}">Horarios</a></li>
-                  <li><a href="{{ route('exercises.index') }}">Ejercicios</a></li>
-                  <li><a href="form_masks.html">Facturación</a></li>
-               </ul>
+              <ul>
+                {{-- <li><a href="form_layouts.html">Centro deportivo</a></li> --}}
+                {{-- <li><a href="form_advanced.html">Roles y usuarios</a></li> --}}
+                <li><a href="{{ route('plans.index') }}">Planes</a></li>
+                <li><a href="{{ route('blocks.index') }}">Horarios</a></li>
+                {{-- <li><a href="{{ route('exercises.index') }}">Ejercicios</a></li> --}}
+                {{-- <li><a href="form_masks.html">Facturación</a></li> --}}
+              </ul>
             </div>
           </li>
          @endif
