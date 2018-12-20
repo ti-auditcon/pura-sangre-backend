@@ -33,6 +33,7 @@
                         </tr>
                      </thead>
                      <tbody>
+
                         @foreach ($plan_users->take(5) as $pu)
                         <tr>
                            <td>{{$pu->user->first_name}} {{$pu->user->last_name}}</td>
