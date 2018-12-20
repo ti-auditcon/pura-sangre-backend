@@ -12,6 +12,7 @@
                         @csrf
 
                         <div class="form-group row">
+
                             <label for="email" class="col-sm-4 col-form-label text-md-right">{{ __('Correo') }}</label>
 
                             <div class="col-md-6">
