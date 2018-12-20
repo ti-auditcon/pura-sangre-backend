@@ -24,29 +24,29 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            BlockTableSeeder::class,
-            StatusUsersTableSeeder::class,
-            PlanPeriodsTableSeeder::class,
-            PlansTableSeeder::class,
-            PaymentStatusesTableSeeder::class,
-            PaymentTypesTableSeeder::class,
-            RolesTableSeeder::class,
-            PlanStatusTableSeeder::class,
-            StageTypesTableSeeder::class,
-            ReservationStatusesTableSeeder::class,
-            OauthClientsTableSeeder::class,
-            RoleUserTableSeeder::class,
-            UsersTableSeeder::class,
-            PlanUserTableSeeder::class,
-            BillsTableSeeder::class,
-            ReservationsTableSeeder::class,
+            // BlockTableSeeder::class,
+            // StatusUsersTableSeeder::class,
+            // PlanPeriodsTableSeeder::class,
+            // PlansTableSeeder::class,
+            // PaymentStatusesTableSeeder::class,
+            // PaymentTypesTableSeeder::class,
+            // RolesTableSeeder::class,
+            // PlanStatusTableSeeder::class,
+            // StageTypesTableSeeder::class,
+            // ReservationStatusesTableSeeder::class,
+            // OauthClientsTableSeeder::class,
+            // RoleUserTableSeeder::class,
+            // UsersTableSeeder::class,
+            // PlanUserTableSeeder::class,
+            // BillsTableSeeder::class,
+            // ReservationsTableSeeder::class,
         ]);
-        
-        $users = User::all();
-        foreach ($users as $user) {
-            factory(Reservation::class, 150)->create(['user_id' => $user->id]);
-        $this->call(ReservationsTableSeeder::class);
-    }
+
+      //   $users = User::all();
+      //   foreach ($users as $user) {
+      //       factory(Reservation::class, 150)->create(['user_id' => $user->id]);
+      //   $this->call(ReservationsTableSeeder::class);
+      // }
     }
 }
       // $user = User::create([
@@ -93,4 +93,3 @@ class DatabaseSeeder extends Seeder
       //     // 'emergency_id' => 1,
       //     'status_user_id' => 1,
       // ]);
-
