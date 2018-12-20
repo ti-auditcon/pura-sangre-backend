@@ -31,20 +31,20 @@ class ClaseObserver
     public function deleting(Clase $clase)
     {
         $date_class = Carbon::parse($clase->date);
-        foreach ($clase->reservations as $reservation) {
+        foreach ($clase->reservations as $reservation){
             $user = User::find($reservation->user_id);
             $planusers = PlanUser::whereIn('plan_status_id', [1,3])->where('user_id', $user->id)->get();
 
             if(count($planusers) != 0){
                 $period_plan = null;
-                foreach ($planusers as $planuser) {
-                    foreach ($planuser->plan_user_periods as $pup) {
-                        if ($date_class->between(Carbon::parse($pup->start_date), Carbon::parse($pup->finish_date))) {
+                foreach ($planusers as $planuser){
+                    foreach ($planuser->plan_user_periods as $pup){
+                        if ($date_class->between(Carbon::parse($pup->start_date), Carbon::parse($pup->finish_date))){
                             $period_plan = $pup; 
                         }
                     }
                 }
-                if ($period_plan) {
+                if ($period_plan){
                     $period_plan->counter = $period_plan->counter + 1;
                     $period_plan->save();
                 }

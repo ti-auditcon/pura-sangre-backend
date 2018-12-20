@@ -88,7 +88,7 @@
 								</div>
 
 								<div class="form-group mb-4">
-										<label class="col-form-label">N° de Clases</label>
+										<label class="col-form-label">N° de Cupos</label>
 										<input type="number" class="form-control" value="" name="quota" required>
 								</div>
 
@@ -234,7 +234,7 @@
 					right:  'agendaWeek',
 			},
 			minTime: "07:00:00",
-			maxTime: "21:00:00",
+			maxTime: "22:00:00",
 			events: {!! $blocks !!},
 			editable: false,
 			defaultView: 'agendaWeek',

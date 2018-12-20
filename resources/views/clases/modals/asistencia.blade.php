@@ -10,7 +10,7 @@
       </div>
       <div class="modal-body">
          <table id="confirm-table" class="table table-hover">
-       {{--      <thead class="thead-default">
+       {{-- <thead class="thead-default">
                <tr>
                   <th width="70%">Usuario</th>
                   <th width="15%">Estado</th>
