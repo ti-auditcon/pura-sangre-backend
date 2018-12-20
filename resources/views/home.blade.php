@@ -6,14 +6,49 @@
 
 @section('content')
    <div class="row justify-content-center">
+
       <div class="col-4">
-         <div class="ibox">
-            <div class="ibox-head">
-               <div class="ibox-title">Clases de hoy</div>
+
+        <div class="ibox">
+          <div class="ibox-head">
+            <div class="ibox-title">Clases de hoy</div>
+          </div>
+          <div class="ibox-body" >
+            <div id="calendar"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="ibox">
+          <div class="ibox-head">
+            <div class="ibox-title">Alumnos con planes próximos a vencer</div>
+          </div>
+          <div class="ibox-body">
+            <div class="table-responsive">
+              <table id="students-table" class="table table-hover">
+                <thead class="thead-default thead-lg">
+                  <tr>
+                    <th>Alumno</th>
+                    <th>Plan</th>
+                    <th>Vence en</th>
+                    <th> Acciones </th>
+                  </tr>
+                </thead>
+                <tbody>
+                @foreach ($plan_users->take(5) as $pu)
+                <tr>
+                  <td>{{$pu->user->first_name}} {{$pu->user->last_name}}</td>
+                  <td>{{$pu->plan->plan}}</td>
+                  <td>{{$pu->finish_date->diffForHumans()}}</td>
+                  <td></td>
+                </tr>
+                @endforeach
+                </tbody>
+              </table>
             </div>
-            <div class="ibox-body" >
-               <div id="calendar"></div>
-            </div>
+          </div>
+
          </div>
       </div>
       <div class="col-5">
