@@ -25,6 +25,7 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
+    //REDIRIGIR A UN OK SIMPLE
     protected $redirectTo = '/';
 
     /**

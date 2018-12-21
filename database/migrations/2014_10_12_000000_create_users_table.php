@@ -49,7 +49,7 @@ class CreateUsersTable extends Migration
           $table->string('birthdate');
           $table->string('gender');
           $table->string('address')->nullable();
-          // $table->unsignedInteger('emergency_id')->nullable();
+          $table->unsignedInteger('emergency_id')->nullable();
           $table->unsignedInteger('status_user_id')->nullable();
           $table->rememberToken();
           $table->timestamps();

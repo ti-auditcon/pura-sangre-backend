@@ -2,10 +2,11 @@
 
 namespace App\Observers\Users;
 
+use App\Models\Plans\PlanUser;
+use App\Models\Users\User;
+use Illuminate\Support\Facades\Mail;
 use Redirect;
 use Session;
-use App\Models\Users\User;
-use App\Models\Plans\PlanUser;
 
 class UserObserver
 {
@@ -33,6 +34,8 @@ class UserObserver
      */
     public function created(User $user)
     {
+        // Mail::to($user->email)->send();
+
         if ($user->status_user_id == 3) {
             $planuser = new PlanUser;
             $planuser->plan_id = 1;
