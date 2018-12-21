@@ -12,7 +12,7 @@
             Pagos
           </div>
         </div>
-        <div class="ibox-body">
+        <div class="ibox-body pagos-body">
           <div class="table-responsive">
             <table id="payments-table" class="table table-hover">
               <thead class="thead-default">

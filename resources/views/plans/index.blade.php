@@ -5,7 +5,7 @@
 
 @section('content')
   <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-12">
       <div class="ibox ibox-fullheight">
         <div class="ibox-head">
           <div class="ibox-title">Planes</div>
@@ -13,15 +13,15 @@
             <a class="btn btn-success btn-air text-white" href="{{ route('plans.create')}}">Crear Plan</a>
           </div>
         </div>
-        <div class="ibox-body">
+        <div class="ibox-body plans-body">
           <div class="table-responsive">
             <table id="students-table" class="table table-hover">
               <thead class="thead-default">
                 <tr>
                   <th width="30%">Nombre</th>
                   <th width="20%">Período</th>
-                  <th width="10%">Número de Clases</th>
-                  <th width="10%">Acciones</th>
+                  <th width="13%">Número de Clases</th>
+                  <th width="7%">Acciones</th>
                 </tr>
               </thead>
               <tbody>
