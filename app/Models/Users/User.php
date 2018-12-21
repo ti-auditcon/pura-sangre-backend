@@ -2,22 +2,23 @@
 
 namespace App\Models\Users;
 
-use App\Models\Users\Role;
-use App\Models\Plans\Plan;
+use App\Models\Bills\Installment;
 use App\Models\Clases\Block;
 use App\Models\Clases\Clase;
-use App\Models\Plans\PlanUser;
-use App\Models\Users\RoleUser;
-use App\Models\Users\Emergency;
-use Freshwork\ChileanBundle\Rut;
-use App\Models\Users\Millestone;
-use App\Models\Users\StatusUser;
-use App\Models\Bills\Installment;
 use App\Models\Clases\Reservation;
-use Laravel\Passport\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
+use App\Models\Plans\Plan;
+use App\Models\Plans\PlanUser;
+use App\Models\Users\Emergency;
+use App\Models\Users\Millestone;
+use App\Models\Users\Role;
+use App\Models\Users\RoleUser;
+use App\Models\Users\StatusUser;
+use App\Notifications\NewUser;
+use Freshwork\ChileanBundle\Rut;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
 
 
 class User extends Authenticatable
@@ -33,17 +34,23 @@ class User extends Authenticatable
     protected $hidden = ['password', 'remember_token'];
     protected $dates = ['deleted_at'];
     protected $appends = ['full_name'];
+    
+    /**
+    * Send the password reset notification.
+    *
+    * @param  string  $token
+    * @return void
+    */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new NewUser($token));
+    }
 
-    // /**
-    //  * [getRutAttribute description]
-    //  * @param  [type] $value [description]
-    //  * @return [type]        [description]
-    //  */
-    // public function getRutAttribute($value)
-    // {
-    //   return Rut::set($value)->fix()->format();
-    // }
-
+    /**
+     * [hasRole description]
+     * @param  [type]  $role [description]
+     * @return boolean       [description]
+     */
     public function hasRole($role)
     {
         $role = RoleUser::where('role_id', $role)->where('user_id', $this->id)->get();

@@ -89,7 +89,7 @@
             <div class="ibox-title">Crossfiteros de esta clase</div>
             <div class="ibox-tools">
                @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
-                  <button id="button-modal" class="btn btn-warning btn-icon-only btn-air" data-toggle="modal" data-target="#confirm-assistance-modal"><i class="la la-check-square"></i></button>
+                  <button id="button-modal" class="btn btn-warning btn-icon-only" data-toggle="modal" data-target="#confirm-assistance-modal"><i class="la la-check-square"></i></button>
                @if (Auth::user()->hasRole(1))
                   <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
                @endif

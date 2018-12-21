@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers\Users;
 
-use Auth;
-use Session;
-use Redirect;
-use App\Models\Users\User;
-use Illuminate\Http\Request;
-use App\Models\Users\Emergency;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\UserRequest;
+use App\Models\Users\Emergency;
+use App\Models\Users\User;
+use App\Notifications\NewUser;
+use Auth;
+use Illuminate\Http\Request;
+use Redirect;
+use Session;
 
 /**
  * [UserController description]
  */
 class UserController extends Controller
-{
+{    
     public function __construct()
     {
         // parent::__construct();
@@ -58,6 +59,7 @@ class UserController extends Controller
         if ($user->save()) {
             Session::flash('success','El usuario ha sido creado correctamente');
             return view('users.show')->with('user', $user);
+            // Mail::to($user->email)->send(new PasswordResetEmail($user));
         }else {
             return Redirect::back();
         }
