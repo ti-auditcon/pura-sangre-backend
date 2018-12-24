@@ -13,7 +13,7 @@ use App\Models\Users\Millestone;
 use App\Models\Users\Role;
 use App\Models\Users\RoleUser;
 use App\Models\Users\StatusUser;
-use App\Notifications\NewUser;
+use App\Notifications\MyResetPassword;
 use Freshwork\ChileanBundle\Rut;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -43,7 +43,7 @@ class User extends Authenticatable
     */
     public function sendPasswordResetNotification($token)
     {
-        $this->notify(new NewUser($token));
+        $this->notify(new MyResetPassword($token));
     }
 
     /**

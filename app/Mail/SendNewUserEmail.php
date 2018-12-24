@@ -7,19 +7,18 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class PasswordResetEmail extends Mailable
+class SendNewUserEmail extends Mailable
 {
     use Queueable, SerializesModels;
-    private $user;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct()
     {
-        $this->user = $user;
+        //
     }
 
     /**
@@ -29,9 +28,6 @@ class PasswordResetEmail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Cambio de contraseña')
-                    ->view('users.welcome.new', [
-                        'user' => $this->user,
-                    ]);
+        return $this->view('users.welcome.new');
     }
 }

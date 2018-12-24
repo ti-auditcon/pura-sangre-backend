@@ -33,7 +33,7 @@
                     <th> Acciones </th>
                   </tr>
                 </thead>
-                <tbody>
+            {{--     <tbody>
                   @foreach ($plan_users->take(5) as $pu)
                   <tr>
                     <td>{{$pu->user->first_name}} {{$pu->user->last_name}}</td>
@@ -42,7 +42,7 @@
                     <td></td>
                   </tr>
                   @endforeach
-                </tbody>
+                </tbody> --}}
               </table>
             </div>
           </div>
@@ -65,13 +65,13 @@
                      </thead>
                      <tbody>
 
-                        @foreach ($plan_users->take(5) as $pu)
+               {{--          @foreach ($plan_users->take(5) as $pu)
                         <tr>
                            <td>{{$pu->user->first_name}} {{$pu->user->last_name}}</td>
                            <td>{{$pu->plan->plan}}</td>
                            <td>{{$pu->finish_date->diffForHumans()}}</td>
                         </tr>
-                        @endforeach
+                        @endforeach --}}
                      </tbody>
                   </table>
                </div>
