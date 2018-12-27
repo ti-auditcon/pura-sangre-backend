@@ -25,8 +25,8 @@
                   <th width="10%">Total</th>
                 </tr>
               </thead>
-              <tbody>
-                @foreach ($bills->sortByDesc('date') as $bill)
+              {{-- <tbody> --}}
+             {{--    @foreach ($bills->sortByDesc('date') as $bill)
                 <tr>
                   <td><a href="{{url('/users/'.$bill->plan_user->user->id)}}">
                     {{$bill->plan_user->user->first_name}} {{$bill->plan_user->user->last_name}}</a>
@@ -35,10 +35,10 @@
                   <td>{{Carbon\Carbon::parse($bill->date)->format('d-m-Y')}}</td>
                   <td>{{Carbon\Carbon::parse($bill->start_date)->format('d-m-Y')}}</td>
                   <td>{{Carbon\Carbon::parse($bill->finish_date)->format('d-m-Y')}}</td>
-                  <td>{{$bill->amount}}</td>
+                  <td>{{'$ '.number_format($bill->amount, $decimal = 0, '.', '.') ?? "no aplica"}}</td>
                 </tr>
-                @endforeach
-              </tbody>
+                @endforeach --}}
+              {{-- </tbody> --}}
             </table>
           </div>
         </div>
@@ -53,8 +53,8 @@
 @section('scripts') {{-- scripts para esta vista --}}
   {{--  datatable --}}
   <script src="{{ asset('js/datatables.min.js') }}"></script>
-  <script >
-    $(document).ready(function() {
+ {{--  <script> --}}
+{{--    $(document).ready(function() {
       table = $('#payments-table').DataTable({
         "paging": true,
         "ordering": true,
@@ -69,8 +69,42 @@
 
         },
       });
-    });
-  </script>
+    }); --}}
+  {{-- </script> --}}
   {{--  End datatable --}}
+
+
+<script>
+
+   $(document).ready(function() {
+      var data = [];
+      $.ajax({
+         type:'get',
+         url: '/bills/',
+         success: function(bills){
+            data = bills;
+
+         },
+         error: function(){
+            console.log("Hay al menos un error");
+         }
+      });
+                  console.log(data);
+      for ( var i=0 ; i<data.length ; i++ ) {
+         data.push( [ i, i, i, i, i ,i] );
+      }
+       
+      $('#payments-table').DataTable({
+         data:           data,
+         deferRender:    true,
+         scrollY:        200,
+         scrollCollapse: true,
+         scroller:       true
+      });
+   });
+
+
+</script>
+
 
 @endsection

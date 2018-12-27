@@ -136,14 +136,22 @@
                 @foreach($user->plan_users as $plan_user)
                 <tr>
                   <td><a href="{{url('/users/'.$user->id.'/plans/'.$plan_user->id)}}">{{$plan_user->plan->plan}}</a></td>
-                  <td>{{$plan_user->bill->date ?? "no aplica"}}</td>
+                  @if($plan_user->bill)
+                     <td>{{Carbon\Carbon::parse($plan_user->bill->date)->format('d-m-Y')}}</td>
+                  @else 
+                     <td>no aplica</td>
+                  @endif
                   <td>{{$plan_user->start_date->format('d-m-Y')}} al {{$plan_user->finish_date->format('d-m-Y')}}</td>
                   <td>{{$plan_user->plan->class_numbers}}</td>
                   <td>{{$plan_user->bill->payment_type->payment_type ?? "no aplica"}}</td>
-                  <td>{{$plan_user->bill->amount ?? "no aplica" }}</td>
+                  @if($plan_user->bill)
+                     <td>{{'$ '.number_format($plan_user->bill->amount, $decimal = 0, '.', '.')}}</td>
+                  @else 
+                     <td>no aplica</td>
+                  @endif
                   <td><span class="badge badge-{{$plan_user->plan_status->type}} badge-pill">
-                    {{strtoupper($plan_user->plan_status->plan_status)}}</span></td>
-
+                     {{strtoupper($plan_user->plan_status->plan_status)}}</span>
+                  </td>
                   <td>
                     @if (Auth::user()->hasRole(1) && $plan_user->plan_status->can_delete == true)
                       {!! Form::open(['route' => ['users.plans.annul', 'user' => $user->id, 'plan' => $plan_user->id], 'method' => 'post', 'class' => 'user-plan-annul',  'id'=>'annul'.$plan_user->id]) !!}
@@ -183,8 +191,8 @@
                <tbody>
                  @foreach($user->future_reservs as $reserv)
                  <tr>
-                   <td><a href="{{url('/clases/'.$reserv->clase->id)}}">{{$reserv->clase->date}}</a></td>
-                   <td>{{$reserv->clase->start_at}} {{$reserv->clase->finish_at}}</td>
+                   <td><a href="{{url('/clases/'.$reserv->clase->id)}}">{{Carbon\Carbon::parse($reserv->clase->date)->format('d-m-Y')}}</a></td>
+                   <td>{{Carbon\Carbon::parse($reserv->clase->start_at)->format('H:i')}}  a  {{Carbon\Carbon::parse($reserv->clase->finish_at)->format('H:i')}}</td>
                    <td>{{$reserv->reservation_status->reservation_status}}</td>
                  </tr>
                  @endforeach
@@ -204,7 +212,7 @@
          </div>
          <div class="ibox-body">
            <div class="table-responsive">
-             <table id="students-table" class="table table-hover">
+             <table id="past-classes-table" class="table table-hover">
                <thead class="thead-default thead-lg">
                  <tr>
                    <th width="35%">Fecha Clase</th>
@@ -215,8 +223,8 @@
                <tbody>
                  @foreach($user->past_reservs as $reserv)
                    <tr>
-                     <td><a href="{{url('/clases/'.$reserv->clase->id)}}">{{$reserv->clase->date}}</a></td>
-                     <td>{{$reserv->clase->start_at}} {{$reserv->clase->finish_at}}</td>
+                     <td><a href="{{url('/clases/'.$reserv->clase->id)}}">{{Carbon\Carbon::parse($reserv->clase->date)->format('d-m-Y')}}</a></td>
+                     <td>{{Carbon\Carbon::parse($reserv->clase->start_at)->format('H:i')}} a {{Carbon\Carbon::parse($reserv->clase->finish_at)->format('H:i')}}</td>
                      <td>{{$reserv->reservation_status->reservation_status}}</td>
                    </tr>
                  @endforeach
@@ -309,6 +317,35 @@
    <script>
       $(document).ready(function() {
          table = $('#next-clases-table').DataTable({
+            "paging": true,
+            "ordering": true,
+            "order": [[ 0, 'asc' ]],
+            "pageLength": 10,
+            "bLengthChange" : false,
+            "bpageLength": false,
+            "bPaginate": false,
+            "language": {
+               "lengthMenu": "Mostrar _MENU_ elementos",
+               "zeroRecords": "Sin Registros",
+               "info": "Mostrando página _PAGE_ de _PAGES_",
+               "infoEmpty": "Sin Registros",
+               "infoFiltered": "(filtrado de _MAX_ registros totales)",
+               "search": "<span>Filtrar:</span>",
+               "paginate": {
+                  "first": "Primero",
+                  "last": "Ultimo",
+                  "next": "Siguiente",
+                  "previous": "Anterior"
+               },
+            },
+
+         });
+      });
+   </script>
+
+   <script>
+      $(document).ready(function() {
+         table = $('#past-classes-table').DataTable({
             "paging": true,
             "ordering": true,
             "order": [[ 0, 'asc' ]],

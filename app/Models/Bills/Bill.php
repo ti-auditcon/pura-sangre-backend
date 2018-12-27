@@ -2,13 +2,13 @@
 
 namespace App\Models\Bills;
 
+use Carbon\Carbon;
+use App\Models\Users\User;
+use App\Models\Plans\PlanUser;
 use App\Models\Bills\Installment;
 use App\Models\Bills\PaymentType;
-use App\Models\Plans\PlanUser;
-use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-// use App\Models\Bills\Payment_status;
 
 /**
  * [Bill description]
@@ -19,6 +19,11 @@ class Bill extends Model
 
     protected $dates = ['deleted_at'];
     protected $fillable = ['payment_type_id', 'plan_user_id', 'date', 'start_date', 'finish_date', 'detail', 'amount']; 
+
+    public function getDateAttribute($value)
+    {
+        return Carbon::parse($value)->format('d-m-Y');
+    }
 
     /**
      * [installments description]

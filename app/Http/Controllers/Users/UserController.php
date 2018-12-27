@@ -8,7 +8,10 @@ use App\Models\Users\Emergency;
 use App\Models\Users\User;
 use App\Notifications\NewUser;
 use Auth;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 use Redirect;
 use Session;
 
@@ -59,7 +62,6 @@ class UserController extends Controller
         if ($user->save()) {
             Session::flash('success','El usuario ha sido creado correctamente');
             return view('users.show')->with('user', $user);
-            // Mail::to($user->email)->send(new PasswordResetEmail($user));
         }else {
             return Redirect::back();
         }
@@ -96,13 +98,25 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
+                // open an image file
+        // $img = Image::make($request->image)->resize(300, 300);
+        // dd($img);
+        // // insert a watermark
+        // $img->insert('public/watermark.png');
+
+            // (string) $image->encode()
+        // // save image in desired format
+        // $img->save('public/bar.jpg');
         if ($request->image) {
             request()->file('image')->storeAs('public/users', $user->id.$user->first_name.'.jpg');
+            Storage::putFile('public/users', $img);
             $user->avatar = url('/').'/storage/users/'.$user->id.$user->first_name.'.jpg';
         }
         $user->first_name = $request->first_name;
         $user->last_name = $request->last_name;
         $user->email = $request->email;
+        $user->birthdate = Carbon::parse($request->birthdate);
+        $user->since = Carbon::parse($request->since);
         $user->phone = $request->phone;
         $user->save();
         Session::flash('success','Los datos del usuario han sido actualizados');
@@ -144,5 +158,4 @@ class UserController extends Controller
         }
         return 'listoco';
     }
-
 }

@@ -240,28 +240,23 @@ $(document).ready(function(){
             }
             op+='</table>';
             $('#confirm-table').html(op);
-                  $('.checkboxBla').change(function(){
-                        // alert('hola');
-                         if(this.checked) {
-                           // console.log('si');
-                           $(this).parent().parent().find('[name="user_id[]"]').prop('disabled',false);
+            $('.checkboxBla').change(function(){
+                  // alert('hola');
+                   if(this.checked) {
+                     // console.log('si');
+                     $(this).parent().parent().find('[name="user_id[]"]').prop('disabled',false);
 
-                         } else {
-                           // console.log('no');
-                           $(this).parent().parent().find('[name="user_id[]"]').prop('disabled',true);
-                         }
-                  });
-
+                   } else {
+                     // console.log('no');
+                     $(this).parent().parent().find('[name="user_id[]"]').prop('disabled',true);
+                   }
+            });
          },
          error: function(){
             console.log("Error Occurred");
          }
       });
-
-
-});
-
-
+   });
 });
 
 

@@ -36,8 +36,8 @@ class UserObserver
      */
     public function created(User $user)
     {
-        Mail::to($user->email)->send(new SendNewUserEmail($user));
-        Password::sendResetLink(['email' => $user->email]);
+        // Mail::to($user->email)->send(new SendNewUserEmail($user));
+        // Password::sendResetLink(['email' => $user->email]);
 
         if ($user->status_user_id == 3) {
             $planuser = new PlanUser;

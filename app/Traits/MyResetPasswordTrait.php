@@ -112,7 +112,7 @@ trait MyResetPasswordTrait
 
         event(new MyResetPassword($user));
 
-        $this->guard()->login($user);
+        // $this->guard()->login($user);
     }
 
     /**
