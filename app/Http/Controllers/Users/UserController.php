@@ -54,10 +54,12 @@ class UserController extends Controller
      */
     public function store(UserRequest $request, User $user)
     {
-        $emergency = Emergency::create($request->all());
         $user = User::create(array_merge($request->all(), [
             'password' => bcrypt('purasangre'),
             'avatar' => url('/').'/storage/users/default.jpg'
+        ]));
+        $emergency = Emergency::create(array_merge($request->all(), [
+            'user_id' => $user->id
         ]));
         if ($user->save()) {
             Session::flash('success','El usuario ha sido creado correctamente');

@@ -96,10 +96,8 @@
               </div>
               <div class="row mb-2">
                 <div class="col-12 text-muted">Contacto de emergencia</div>
-                <div class="col-12">{{$user->emergency->contact_name}}  {{$user->emergency->contact_phone ?? 'No ingresado'}}</div>
+                <div class="col-12">{{$user->emergency->contact_name.'  -' ?? ''}}  {{'+56 9 '.$user->emergency->contact_phone ?? 'No ingresado'}}</div>
               </div>
-            {{-- </div>
-          </div> --}}
         </div>
       </div>
     </div>
