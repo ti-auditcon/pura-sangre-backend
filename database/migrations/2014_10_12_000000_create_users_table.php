@@ -55,8 +55,8 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
-        
-            $table->foreign('status_user_id')->references('id')->on('status_users')->onDelete('cascade');
+
+            // $table->foreign('status_user_id')->references('id')->on('status_users')->onDelete('cascade');
         });
 
         // contactos de emergencia
@@ -67,7 +67,7 @@ class CreateUsersTable extends Migration
           $table->integer('contact_phone')->nullable();
           $table->timestamps();
 
-          $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+          // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
         Schema::create('role_user', function (Blueprint $table) {
@@ -76,8 +76,8 @@ class CreateUsersTable extends Migration
           $table->timestamps();
           $table->softDeletes();
 
-          $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
-          $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+          // $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
+          // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
         // Schema::create('millestone_users', function (Blueprint $table) {

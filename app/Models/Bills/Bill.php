@@ -17,10 +17,11 @@ class Bill extends Model
 {
     use SoftDeletes;
 
-    protected $dates = ['deleted_at'];
-    protected $fillable = ['payment_type_id', 'plan_user_id', 'date', 'start_date', 'finish_date', 'detail', 'amount']; 
+    protected $dates = ['deleted_at','date'];
+    protected $fillable = ['payment_type_id', 'plan_user_id', 'date', 'start_date', 'finish_date', 'detail', 'amount'];
+    protected $appends = ['date_formated'];
 
-    public function getDateAttribute($value)
+    public function getDateFormatedAttribute($value)
     {
         return Carbon::parse($value)->format('d-m-Y');
     }
