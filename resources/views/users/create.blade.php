@@ -7,31 +7,28 @@
   <div class="row justify-content-center">
     <div class="col-6">
       <div class="ibox">
-            <div class="ibox-head">
-          <div class="ibox-title">Planes</div>
-        </div>
+         <div class="ibox-head">
+            <div class="ibox-title">Agregar usuario</div>
+         </div>
         {!! Form::open(['route' => 'users.store']) !!}
-        <div class="ibox-body">
-
-
-          <div class="col-12 p-0 my-0 mt-3">
-            <span class="col-form-label hidden">Por favor, ingrese un rut válido</span>
-          </div>
-
-        <div class="row">
-          <div class="col-sm-6 form-group mb-2">
-            <div class="form-group inline @if($errors->has('first_name')) has-warning  @endif">
-              <label class="col-form-label">Nombre</label>
-              <input class="form-control " name="first_name" value="{{ old('first_name') }}" required>
+         <div class="ibox-body">
+            <div class="col-12 p-0 my-0 mt-3">
+               <span class="col-form-label hidden">Por favor, ingrese un rut válido</span>
             </div>
-          </div>
-          <div class="col-sm-6 form-group mb-2">
-            <div class="form-group inline @if($errors->has('last_name')) has-warning  @endif">
-              <label class="col-form-label">Apellido</label>
-              <input class="form-control " name="last_name" value="{{ old('last_name') }}" required>
+         <div class="row">
+            <div class="col-sm-6 form-group mb-2">
+               <div class="form-group inline @if($errors->has('first_name')) has-warning  @endif">
+                  <label class="col-form-label">Nombre</label>
+                  <input class="form-control " name="first_name" value="{{ old('first_name') }}" required>
+               </div>
             </div>
-          </div>
-        </div>
+            <div class="col-sm-6 form-group mb-2">
+               <div class="form-group inline @if($errors->has('last_name')) has-warning  @endif">
+                  <label class="col-form-label">Apellido</label>
+                  <input class="form-control " name="last_name" value="{{ old('last_name') }}" required>
+               </div>
+            </div>
+         </div>
 
         <div class="row">
           <div class="col-sm-6 form-group mb-2">
