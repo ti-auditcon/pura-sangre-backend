@@ -7,14 +7,15 @@
   <div class="ibox flex-1">
     <div class="ibox-body">
       <div class="flexbox">
-        <div class="flexbox-b">
+        <div class="flexbox-b align-items-start">
             {{-- {{url('/storage/users/'.$user->avatar.'.jpg')}} --}}
-          <a class="media-img align-self-start">
+          {{-- <a class="media-img align-self-start">
             <img class="img-circle mr-3" src="{{$user->avatar}}" alt="image" width="72">
-          </a>
+          </a> --}}
+          <div class="img-avatar img-avatar-header align-self-start" style="background-image: url('{{$user->avatar}}');"></div>
           <div class="ml-1">
 
-            <h4 class="mt-1 mb-1">{{$user->first_name}} {{$user->last_name}}</h4>
+            <h4 class="mb-1">{{$user->first_name}} {{$user->last_name}}</h4>
             <span class="mr-3">{{$user->actual_plan->plan->plan ?? "sin plan actualmente" }}</span>
 
             <div class="text-left mt-2">
@@ -181,9 +182,9 @@
              <table id="next-clases-table" class="table table-hover">
                <thead class="thead-default thead-lg">
                  <tr>
-                   <th width="25%">Fecha Clase</th>
-                   <th width="25%">Hora</th>
-                   <th width="25%">Estado</th>
+                   <th width="33%">Fecha Clase</th>
+                   <th width="33%">Hora</th>
+                   <th width="33%">Estado</th>
                  </tr>
                </thead>
                <tbody>
@@ -204,7 +205,7 @@
 
       @if ($user->past_reservs)
       {{-- <div class="col-8"> --}}
-       <div class="ibox">
+       <div class="ibox clases-pasadas">
          <div class="ibox-head">
            <div class="ibox-title">Clases Anteriores</div>
          </div>
@@ -241,13 +242,12 @@
 
 @endsection
 
-
-@section('css') stylesheet para esta vista
+{{-- stylesheet para esta vista --}}
+@section('css')
 @endsection
 
-
-
-@section('scripts') scripts para esta vista
+{{-- scripts para esta vista --}}
+@section('scripts')
 
   <script>
 	$('.sweet-user-delete').click(function(e){
@@ -269,7 +269,6 @@
 	});
 	</script>
 
- ELIMINAR UN PLAN A UN USUARIO
   <script>
   $('.sweet-user-plan-annul').click(function(e){
     var id = $(this).data('id');
@@ -325,7 +324,7 @@
             "language": {
                "lengthMenu": "Mostrar _MENU_ elementos",
                "zeroRecords": "Sin Registros",
-               "info": "Mostrando página _PAGE_ de _PAGES_",
+               "info": "",
                "infoEmpty": "Sin Registros",
                "infoFiltered": "(filtrado de _MAX_ registros totales)",
                "search": "<span>Filtrar:</span>",
@@ -354,7 +353,7 @@
             "language": {
                "lengthMenu": "Mostrar _MENU_ elementos",
                "zeroRecords": "Sin Registros",
-               "info": "Mostrando página _PAGE_ de _PAGES_",
+               "info": "",
                "infoEmpty": "Sin Registros",
                "infoFiltered": "(filtrado de _MAX_ registros totales)",
                "search": "<span>Filtrar:</span>",

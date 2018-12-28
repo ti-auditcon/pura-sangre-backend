@@ -75,9 +75,10 @@
                    @foreach (App\Models\Users\User::all() as $user)
                    <tr class="{{$user->status_user->status_user}}" data-id="{{$user->id}}">
                       <td class="check-cell rowlink-skip row py-4">
-                        <div class="pr-3">
+                        <div class="pr-3 pl-1">
                           <a class="media-img" href="{{url('/users/'.$user->id)}}">
-                             <img class="img-circle" src="{{url($user->avatar)}}" alt="image" width="54">
+                             {{-- <img class="img-circle" src="{{url($user->avatar)}}" alt="image" width="54"> --}}
+                             <div class="img-avatar img-avatar-messages align-self-start" style="background-image: url('{{$user->avatar}}');"></div>
                           </a>
                         </div>
                         <div>

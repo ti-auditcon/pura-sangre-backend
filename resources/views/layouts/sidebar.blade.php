@@ -69,6 +69,10 @@
          </li>
          @endif
       </ul>
+
+      <ul class="brand">
+          <img src="{{asset('/img/asomic.png')}}">
+        </ul>
    </div>
 </nav>
 <!-- END SIDEBAR-->

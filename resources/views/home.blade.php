@@ -30,7 +30,7 @@
                     <th>Alumno</th>
                     <th>Plan</th>
                     <th>Vence en</th>
-                    <th> Acciones </th>
+                    <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -69,6 +69,7 @@
                            <td>{{$pu->user->first_name}} {{$pu->user->last_name}}</td>
                            <td>{{$pu->plan->plan}}</td>
                            <td>{{$pu->finish_date->diffForHumans()}}</td>
+                           <td></td>
                         </tr>
                         @endforeach
                      </tbody>

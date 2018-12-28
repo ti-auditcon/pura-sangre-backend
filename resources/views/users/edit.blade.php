@@ -26,22 +26,28 @@
                   </div>
                </div>
             </div>
-            <div class="row">
-               <div class="form-group col-md-4">
+            <div class="upload-box">
+               {{-- <div>
                   {{Session::get('error')}}
-                  <label class="btn btn-info btn-edit file-input mr-2">
-                     <span class="btn-icon"><i class="la la-upload"></i>Subir o cambiar imagen</span>
-                     <input style="display: none" name="image" id="photoinput" type="file" accept="image/*" max-file-size=1234>
-                  </label>
-                  <a class="media-img align-self-start">
-                  @if ($user->avatar)
-                     <img class="img-circle mr-3" src="{{$user->avatar}}" id="imgback" alt="image" width="72">
-                  @endif
+                  <a class="media-img">
+                    @if ($user->avatar)
+                      <img class="img-circle" src="{{$user->avatar}}" id="imgback" alt="image" width="72">
+                    @endif
                   </a>
-                  <span class="help-block"></span>
-               </div>
+               </div> --}}
+                 {{Session::get('error')}}
+                 @if ($user->avatar)
+                   <div class="img" style="background-image: url('{{$user->avatar}}');" id="imgback" alt="image"></div>
+                 @endif
                <div id="container-logo" class="pull-right" style="display: none">
                   <img class="img-responsive" width="200" id="logo-img" src="#" />
+               </div>
+               <div>
+                 <label class="btn btn-info btn-edit file-input">
+                    <span class="btn-icon"><i class="la la-upload"></i>Subir o cambiar Imagen</span>
+                    <input style="display: none" name="image" id="photoinput" type="file" accept="image/*" max-file-size=1234>
+                 </label>
+                 <span class="help-block"></span>
                </div>
             </div>
 
@@ -84,8 +90,8 @@
                      <input class="form-control" name="since" value="{{ Carbon\Carbon::parse($user->since)->format('d-m-Y') }}" type="text" value="{{ date('d/m/Y') }}">
                   </div>
                </div>
-            </div>    
-         </div>     
+            </div>
+         </div>
 
             <br>
             <div>

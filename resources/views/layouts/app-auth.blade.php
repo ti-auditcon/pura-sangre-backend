@@ -20,9 +20,8 @@
     <link href="{{asset('/css/sweetalert.css')}}" rel="stylesheet" />
     <link href="{{asset('/css/themify-icons.css')}}" rel="stylesheet" />
     <link href="{{asset('/css/toastr.min.css')}}" rel="stylesheet" />
-    <link href="{{asset('/css/bootstrap-datepicker.standalone.min.css')}}" rel="stylesheet" />
     <link href="{{asset('/css/bootstrap-datepicker.min.css')}}" rel="stylesheet" />
-    <link href="{{asset('/css/bootstrap-datepicker3.min.css')}}" rel="stylesheet" />
+    {{-- <link href="{{asset('/css/summernote.css')}}" rel="stylesheet" /> --}}
     <!-- PLUGINS STYLES-->
     <!-- THEME STYLES-->
     <link href="{{asset('/css/main.min.css')}}" rel="stylesheet" />
@@ -36,14 +35,11 @@
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
 
 </head>
-<body class="fixed-navbar">
+<body class="fixed-navbar body-auth">
   <div class="page-wrapper">
 
-    @include('layouts.header')
-    @yield('sidebar')
-
-    <div class="wrapper content-wrapper">
-      <div class="page-content " >
+    <div class="wrapper content-wrapper content-wrapper-login">
+      <div class="page-content">
         @yield('content')
       </div>
 
@@ -61,7 +57,6 @@
   <script src="{{asset('/js/jquery.validate.min.js')}}"></script>
   <script src="{{ asset('js/sweetalert.min.js') }}"></script>
   <script src="{{asset('/js/bootstrap-datepicker.min.js')}}"></script>
-  <script src="{{asset('/js/bootstrap-datepicker.es.min.js')}}"></script>
   <script src="{{asset('/js/toastr.min.js')}}"></script>
 {{--   <script src="{{asset('/js/summernote.min.js')}}"></script> --}}
 
