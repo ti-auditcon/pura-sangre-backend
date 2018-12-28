@@ -97,8 +97,10 @@
             <div class="col-sm-6 form-group mb-4">
                <div class="form-group inline @if($errors->has('contact_phone')) has-warning  @endif">
                  <label class="col-form-label">Teléfono de Contacto</label>
+                       <div class="input-group mb-3">
+                <span class="input-group-addon">+56 9</span>
                  <input class="form-control " name="contact_phone" value="{{ old('contact_phone')}}">
-               </div>
+               </div></div>
             </div>
          </div>
 
