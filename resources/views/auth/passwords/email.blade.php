@@ -1,13 +1,17 @@
-@extends('layouts.app')
+@extends('layouts.app-auth')
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Reestablecer Contraseña') }}</div>
+                <div class="card-header">
+                  <a href="/login">
+                    <img src="/img/logo_login.png">
+                  </a>
+                </div>
 
-                <div class="card-body my-3">
+                <div class="card-body my-4">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
