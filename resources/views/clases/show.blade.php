@@ -58,30 +58,27 @@
          </div>
       </div>
       </div>
-    <div class="ibox">
-      <div class="ibox-head">
-        <div class="ibox-title">Workout</div>
-        {{-- <div class="ibox-tools">
-          <a href=""><i class="ti-pencil"></i></a>
-        </div> --}}
-      </div>
-      <div class="ibox-body">
-        <div class="row">
-          @foreach(App\Models\Wods\StageType::all() as $st)
-            <div class="col-12">
-              <div class="ibox">
-                <div class="ibox-body">
-                  <h5 class="font-strong">{{$st->stage_type}}</h5>
-                  <div class="py-2">
-                    <textarea name="{{$st->id}}" class="form-control form-control-solid" rows="10" disabled>@if($clase->wod){{$clase->wod->stage($st->id)->description }} @else No hay {{$st->stage_type}} ingresado @endif</textarea>
-                  </div>
-                </div>
+      <div class="ibox">
+        <div class="ibox-head">
+          <div class="ibox-title">Workout</div>
+        </div>
+        <div class="ibox-body">
+          <div class="row">
+            @foreach(App\Models\Wods\StageType::all() as $st)
+              <div class="col-12 mb-4">
+                {{-- <div class="ibox"> --}}
+                  {{-- <div class="ibox-body"> --}}
+                    <h5 class="font-strong">{{$st->stage_type}}</h5>
+                    <div class="py-2">
+                      <textarea name="{{$st->id}}" class="form-control form-control-solid p-4" rows="10" disabled>@if($clase->wod){{$clase->wod->stage($st->id)->description }} @else No hay {{$st->stage_type}} ingresado @endif</textarea>
+                    </div>
+                  {{-- </div> --}}
+                {{-- </div> --}}
               </div>
-            </div>
-          @endforeach
+            @endforeach
+          </div>
         </div>
       </div>
-   </div>
   </div>
    <div class="col-8">
       <div class="ibox">
@@ -180,9 +177,10 @@
                   @foreach ($outclase as $usuario)
                   <tr>
                      <td>
-                        <a class="media-img" href="javascript:;">
+                        {{-- <a class="media-img" href="javascript:;">
                            <img class="img-circle" src="{{$usuario->avatar}}" alt="image" width="54">
-                        </a>
+                        </a> --}}
+                        <div class="img-avatar" style="background-image: url('{{$usuario->avatar}}');"></div>
                         <span class="badge-{{$usuario->status_user->type}} badge-point"></span>
                         <a href="{{url('/users/'.$usuario->id)}}">{{$usuario->first_name}} {{$usuario->last_name}}</a>
                      </td>
@@ -234,7 +232,8 @@ $(document).ready(function(){
             op+='<tr><th width="60%">Alumno</th><th width="25%">Estado de reserva</th><th width="15%">Asistencia</th></tr>';
             for(var i=0;i<data2.length;i++){
                op += '<tr>';
-               op += '<td><a class="media-img" href="javascript:;"><img class="img-circle" src="'+data2[i].avatar+'" alt="image" width="54"></a><span class="badge-'+data2[i].user_status+' badge-point"></span>'+data2[i].alumno+'</td>'+
+               op += '<td><div class="img-avatar" style="background-image: url(\''+data2[i].avatar+'\')"></div><span class="badge-'+data2[i].user_status+' badge-point"></span>'+data2[i].alumno+'</td>'+
+               // op += '<td><a class="media-img" href="javascripteeee:;"><img class="img-circle" src="'+data2[i].avatar+'" alt="image" width="54"></a><span class="badge-'+data2[i].user_status+' badge-point"></span>'+data2[i].alumno+'</td>'+
                      '<td><span class="badge badge-'+data2[i].tipo+' badge-pill">'+data2[i].estado_reserva.toUpperCase()+'</td>'+
                      '<td><label class="ui-switch switch-icon switch-large"><input name="asistencia[]" type="checkbox"  class="checkboxBla"><span></span></label><input hidden class="user_id_class" type="text" name="user_id[]" disabled value="'+data2[i].user_id+'"></td></tr>';
             }

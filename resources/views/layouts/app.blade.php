@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Pura Sangre CrossFit Admin</title>
 
     <!-- GLOBAL MAINLY STYLES-->
     <link href="{{asset('/css/bootstrap.min.css')}}" rel="stylesheet" />
@@ -62,7 +62,7 @@
   <script src="{{asset('/js/bootstrap-datepicker.min.js')}}"></script>
   <script src="{{asset('/js/toastr.min.js')}}"></script>
 {{--   <script src="{{asset('/js/summernote.min.js')}}"></script> --}}
-  
+
 
   <!-- PAGE LEVEL PLUGINS-->
 

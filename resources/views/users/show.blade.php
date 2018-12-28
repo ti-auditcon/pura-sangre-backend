@@ -184,9 +184,9 @@
              <table id="next-clases-table" class="table table-hover">
                <thead class="thead-default thead-lg">
                  <tr>
-                   <th width="25%">Fecha Clase</th>
-                   <th width="25%">Hora</th>
-                   <th width="25%">Estado</th>
+                   <th width="33%">Fecha Clase</th>
+                   <th width="33%">Hora</th>
+                   <th width="33%">Estado</th>
                  </tr>
                </thead>
                <tbody>
@@ -207,7 +207,7 @@
 
       @if ($user->past_reservs)
       {{-- <div class="col-8"> --}}
-       <div class="ibox">
+       <div class="ibox clases-pasadas">
          <div class="ibox-head">
            <div class="ibox-title">Clases Anteriores</div>
          </div>
@@ -244,13 +244,12 @@
 
 @endsection
 
-
-@section('css') stylesheet para esta vista
+{{-- stylesheet para esta vista --}}
+@section('css')
 @endsection
 
-
-
-@section('scripts') scripts para esta vista
+{{-- scripts para esta vista --}}
+@section('scripts')
 
   <script>
 	$('.sweet-user-delete').click(function(e){
@@ -272,7 +271,6 @@
 	});
 	</script>
 
- ELIMINAR UN PLAN A UN USUARIO
   <script>
   $('.sweet-user-plan-annul').click(function(e){
     var id = $(this).data('id');
@@ -328,7 +326,7 @@
             "language": {
                "lengthMenu": "Mostrar _MENU_ elementos",
                "zeroRecords": "Sin Registros",
-               "info": "Mostrando página _PAGE_ de _PAGES_",
+               "info": "",
                "infoEmpty": "Sin Registros",
                "infoFiltered": "(filtrado de _MAX_ registros totales)",
                "search": "<span>Filtrar:</span>",
@@ -357,7 +355,7 @@
             "language": {
                "lengthMenu": "Mostrar _MENU_ elementos",
                "zeroRecords": "Sin Registros",
-               "info": "Mostrando página _PAGE_ de _PAGES_",
+               "info": "",
                "infoEmpty": "Sin Registros",
                "infoFiltered": "(filtrado de _MAX_ registros totales)",
                "search": "<span>Filtrar:</span>",
