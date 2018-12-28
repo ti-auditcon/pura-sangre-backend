@@ -66,11 +66,10 @@
               <tbody>
                 @foreach ($users as $user)
                 <tr>
-                  <td>
-                     <a class="media-img" href="javascript:;">
-                      <img class="img-circle" src="{{$user->avatar}}" alt="image" width="54">
-                    </a>
-                      <span class="badge-{{$user->status_user->type}} badge-point"></span>
+                  <td style="vertical-align: middle;">
+                    {{-- <img class="img-circle" src="{{$user->avatar}}" alt="image" width="54"> --}}
+                    <div class="img-avatar" style="background-image: url('{{$user->avatar}}');"></div>
+                    <span class="badge-{{$user->status_user->type}} badge-point"></span>
                     <a href="{{url('/users/'.$user->id)}}">
                       {{$user->first_name}} {{$user->last_name}}
                     </a>

@@ -119,8 +119,8 @@
                   @foreach ($clase->reservations as $reservation)
                      <tr>
                         <td>
-                           <a class="media-img" href="javascript:;">
-                           <img class="img-circle" src="{{$reservation->user->avatar}}" alt="image" width="54"></a>
+                           {{-- <img class="img-circle" src="{{$reservation->user->avatar}}" alt="image" width="54"> --}}
+                           <div class="img-avatar" style="background-image: url('{{$reservation->user->avatar}}');"></div>
                            <span class="badge-{{$reservation->user->status_user->type}} badge-point"></span>
                            <a @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2)) href="{{url('/users/'.$reservation->user->id)}}" @endif>
                               {{$reservation->user->first_name}} {{$reservation->user->last_name}}

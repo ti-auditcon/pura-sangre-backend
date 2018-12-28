@@ -64,13 +64,14 @@
                   <span class="mr-1">
                     {{Auth::user()->first_name}} {{Auth::user()->last_name}}
                   </span>
-                  <img src="{{Auth::user()->avatar}}" alt="image" />
+                  {{-- <img src="{{Auth::user()->avatar}}" alt="image" /> --}}
+                  <div class="img-avatar img-avatar-mini" style="background-image: url('{{Auth::user()->avatar}}');"></div>
               </a>
               <div class="dropdown-menu dropdown-arrow dropdown-menu-right admin-dropdown-menu">
                   <div class="dropdown-arrow"></div>
                   <div class="dropdown-header">
-                    <div class="admin-avatar">
-                      <img src="{{Auth::user()->avatar}}" alt="image" />
+                    <div>
+                      <div class="img-avatar img-avatar-admin" style="background-image: url('{{Auth::user()->avatar}}');"></div>
                     </div>
                     <div>
                       <h5 class="font-strong text-white">{{Auth::user()->first_name}} {{Auth::user()->last_name}}</h5>

@@ -7,14 +7,15 @@
   <div class="ibox flex-1">
     <div class="ibox-body">
       <div class="flexbox">
-        <div class="flexbox-b">
+        <div class="flexbox-b align-items-start">
             {{-- {{url('/storage/users/'.$user->avatar.'.jpg')}} --}}
-          <a class="media-img align-self-start">
+          {{-- <a class="media-img align-self-start">
             <img class="img-circle mr-3" src="{{$user->avatar}}" alt="image" width="72">
-          </a>
+          </a> --}}
+          <div class="img-avatar img-avatar-header align-self-start" style="background-image: url('{{$user->avatar}}');"></div>
           <div class="ml-1">
 
-            <h4 class="mt-1 mb-1">{{$user->first_name}} {{$user->last_name}}</h4>
+            <h4 class="mb-1">{{$user->first_name}} {{$user->last_name}}</h4>
             <span class="mr-3">{{$user->actual_plan->plan->plan ?? "sin plan actualmente" }}</span>
 
             <div class="text-left mt-2">
