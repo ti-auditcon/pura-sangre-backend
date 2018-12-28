@@ -38,28 +38,28 @@ class CreateUsersTable extends Migration
         });
 
         Schema::create('users', function (Blueprint $table) {
-          $table->increments('id');
-          $table->unsignedInteger('rut');
-          $table->string('first_name');
-          $table->string('last_name');
-          $table->string('email')->unique();
-          $table->string('password');
-          $table->string('avatar')->nullable();
-          $table->unsignedInteger('phone')->nullable();
-          $table->string('birthdate');
-          $table->string('gender');
-          $table->string('address')->nullable();
-          $table->unsignedInteger('emergency_id')->nullable();
-          $table->unsignedInteger('status_user_id')->nullable();
-          $table->rememberToken();
-          $table->timestamps();
-          $table->softDeletes();
-
-
-          $table->foreign('status_user_id')->references('id')->on('status_users')->onDelete('cascade');
+            $table->increments('id');
+            $table->unsignedInteger('rut');
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->string('avatar')->nullable();
+            $table->unsignedInteger('phone')->nullable();
+            $table->date('birthdate');
+            $table->string('gender');
+            $table->string('address')->nullable();
+            $table->date('since')->nullable();
+            $table->unsignedInteger('emergency_id')->nullable();
+            $table->unsignedInteger('status_user_id')->nullable();
+            $table->rememberToken();
+            $table->timestamps();
+            $table->softDeletes();
+        
+            $table->foreign('status_user_id')->references('id')->on('status_users')->onDelete('cascade');
         });
 
-// contactos de emergencia
+        // contactos de emergencia
         Schema::create('emergencies', function (Blueprint $table) {
           $table->increments('id');
           $table->unsignedInteger('user_id')->nullable();

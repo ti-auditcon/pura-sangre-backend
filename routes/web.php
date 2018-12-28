@@ -3,6 +3,9 @@
 Auth::routes();
 
 Route::get('/', 'HomeController@index');
+Route::get('/success-reset-password', function () {
+    return view('guest.success-reset-password');
+});
 
 Route::middleware(['auth'])->prefix('/')->group(function () {
 
@@ -36,6 +39,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
      * BILLS Routes
      */
     Route::resource('payments', 'Bills\BillController')->middleware('role:1');
+    Route::get('/bills', 'Bills\BillController@bills')->name('bills');
 
     /**
      * Plans Routes

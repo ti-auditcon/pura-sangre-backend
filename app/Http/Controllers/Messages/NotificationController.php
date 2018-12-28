@@ -16,6 +16,6 @@ class NotificationController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('messages.alerts')->with('users', $users);
+        return view('messages.notifications')->with('users', $users);
     }
 }

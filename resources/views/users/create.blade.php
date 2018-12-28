@@ -7,6 +7,9 @@
   <div class="row justify-content-center">
     <div class="col-6">
       <div class="ibox">
+            <div class="ibox-head">
+          <div class="ibox-title">Planes</div>
+        </div>
         {!! Form::open(['route' => 'users.store']) !!}
         <div class="ibox-body">
 
@@ -46,7 +49,6 @@
               </div>
             </div>
           </div>
-
         </div>
 
         <div class="row">
@@ -67,6 +69,18 @@
           </div>
         </div>
 
+        <div class="row">
+          <div class="col-sm-6 form-group mb-2">
+            <div class="form-group @if($errors->has('since')) has-warning  @endif" id="since">
+              <label class="font-normal">Atleta desde</label>
+              <div class="input-group date">
+                <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
+                <input class="form-control" name="since" value="{{ old('since') }}" type="text" value="{{ date('d/m/Y') }}">
+              </div>
+            </div>
+          </div>
+        </div>
+
       <div class="row">
          <div class="col-sm-12 form-group mb-4">
             <div class="form-group inline @if($errors->has('address')) has-warning  @endif">
@@ -76,33 +90,30 @@
          </div>
       </div>
 
-        <div class="row">
-          <div class="col-sm-6 form-group mb-4">
-            <div class="form-group inline @if($errors->has('contact_name')) has-warning  @endif">
-              <label class="col-form-label">Contacto de Emergencia</label>
-              <input class="form-control " name="contact_name" value="{{ old('contact_name') }}">
+         <div class="row">
+            <div class="col-sm-6 form-group mb-4">
+               <div class="form-group inline @if($errors->has('contact_name')) has-warning  @endif">
+                 <label class="col-form-label">Contacto de Emergencia</label>
+                 <input class="form-control " name="contact_name" value="{{ old('contact_name') }}">
+               </div>
             </div>
-          </div>
-          <div class="col-sm-6 form-group mb-4">
-            <div class="form-group inline @if($errors->has('contact_phone')) has-warning  @endif">
-              <label class="col-form-label">Teléfono de Contacto</label>
-              <input class="form-control " name="contact_phone" value="{{ old('contact_phone')}}">
+            <div class="col-sm-6 form-group mb-4">
+               <div class="form-group inline @if($errors->has('contact_phone')) has-warning  @endif">
+                 <label class="col-form-label">Teléfono de Contacto</label>
+                 <input class="form-control " name="contact_phone" value="{{ old('contact_phone')}}">
+               </div>
             </div>
-          </div>
-        </div>
+         </div>
 
-
-     
-
-          <div class="form-group  @if($errors->has('status_user_id')) has-warning  @endif">
-            <label class="form-control-label">Estado del Usuario*</label>
-            <select class="selectpicker form-control"  name="status_user_id" data-live-search="true" required>
-             <option value="">Asignar estado...</option>
-             @foreach (App\Models\Users\StatusUser::all() as $status_user)
-             <option value="{{$status_user->id}}" @if(old('status_user_id')==$status_user->id) selected @endif >{{$status_user->status_user}}</option>
-             @endforeach
-            </select>
-          </div>
+         <div class="form-group  @if($errors->has('status_user_id')) has-warning  @endif">
+           <label class="form-control-label">Estado del Usuario*</label>
+           <select class="selectpicker form-control"  name="status_user_id" data-live-search="true" required>
+            <option value="">Asignar estado...</option>
+            @foreach (App\Models\Users\StatusUser::all() as $status_user)
+            <option value="{{$status_user->id}}" @if(old('status_user_id')==$status_user->id) selected @endif >{{$status_user->status_user}}</option>
+            @endforeach
+           </select>
+         </div>
 
           <div class="form-group my-4">
             <label class="mr-3">Género</label>
@@ -139,6 +150,17 @@
   <script defer>
   // Bootstrap datepicker
   $('#start_date .input-group.date').datepicker({
+    todayBtn: "linked",
+    keyboardNavigation: false,
+    forceParse: false,
+    calendarWeeks: true,
+    autoclose: true
+  });
+  </script>
+
+  <script defer>
+  // Bootstrap datepicker
+  $('#since .input-group.date').datepicker({
     todayBtn: "linked",
     keyboardNavigation: false,
     forceParse: false,

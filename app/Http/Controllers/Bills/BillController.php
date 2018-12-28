@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Bills;
 
-use App\Models\Bills\Bill;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Bills\Bill;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 /**
  * [BillController description]
@@ -27,9 +28,23 @@ class BillController extends Controller
      */
     public function index()
     {
-        // return Bill::all()->toJson();
+        return view('payments.index');
+    }
+
+    public function bills()
+    {
         $bills = Bill::all();
-        return view('payments.index')->with('bills', $bills);
+        return $bills->map(function ($bill) {
+            return [
+                'user_id' => $bill->plan_user->user->id,
+                'alumno' => $bill->plan_user->user->first_name.' '.$bill->plan_user->user->last_name,
+                'Plan' => $bill->plan_user->plan->plan,
+                'Fecha boleta' => Carbon::parse($bill->date)->format('d-m-Y'),
+                'Fecha de inicio' => Carbon::parse($bill->start_date)->format('d-m-Y'),
+                'Fecha de termino' => Carbon::parse($bill->finish_date)->format('d-m-Y'),
+                'Total' => '$ '.number_format($bill->amount, $decimal = 0, '.', '.') ?? "no aplica"
+            ];
+        });
     }
 
     /**

@@ -7,18 +7,25 @@
 <div class="row justify-content-center">
    <div class="col-6">
       <div class="ibox">
+         <div class="ibox-head">
+            <div class="ibox-title">Editar datos de {{$user->first_name}} {{$user->last_name}}</div>
+         </div>
       {!! Form::open(['route' => ['users.update', $user->id], 'method' => 'put', 'files' => true]) !!}
          <div class="ibox-body">
-            <div class="form-group inline @if($errors->has('first_name')) has-warning  @endif">
-               <label class="col-form-label">Nombre</label>
-               <input class="form-control " name="first_name" value="{{ $user->first_name }}" required>
+            <div class="row">
+               <div class="col-sm-6 form-group mb-2">
+                  <div class="form-group inline @if($errors->has('first_name')) has-warning  @endif">
+                     <label class="col-form-label">Nombre</label>
+                     <input class="form-control " name="first_name" value="{{ $user->first_name }}" required>
+                  </div>
+               </div>
+               <div class="col-sm-6 form-group mb-2">
+                  <div class="form-group inline @if($errors->has('last_name')) has-warning  @endif">
+                     <label class="col-form-label">Apellido</label>
+                     <input class="form-control " name="last_name" value="{{ $user->last_name }}" required>
+                  </div>
+               </div>
             </div>
-
-            <div class="form-group inline @if($errors->has('last_name')) has-warning  @endif">
-               <label class="col-form-label">Apellido</label>
-               <input class="form-control " name="last_name" value="{{ $user->last_name }}" required>
-            </div>
-
             <div class="row">
                <div class="form-group col-md-4">
                   {{Session::get('error')}}
@@ -38,18 +45,45 @@
                </div>
             </div>
 
-            <div class="form-group inline @if($errors->has('phone')) has-warning  @endif">
-               <label class="col-form-label">Numero de Celular</label>
-               <div class="input-group mb-3">
-                  <span class="input-group-addon">+56 9</span>
+         <div class="row">
+            <div class="col-sm-6 form-group mb-2">
+               <div class="form-group inline @if($errors->has('phone')) has-warning  @endif">
+                  <label class="col-form-label">Numero de Celular</label>
+                  <div class="input-group mb-3">
+                     <span class="input-group-addon">+56 9</span>
                   <input class="form-control " name="phone" value="{{ $user->phone }}" type="tel">
+                  </div>
                </div>
             </div>
-
-            <div class="form-group inline @if($errors->has('email')) has-warning  @endif">
-               <label class="col-form-label">email</label>
-               <input class="form-control" name="email" value="{{ $user->email }}" @if (!Auth::user()->hasRole(1)) readonly @endif required>
+            <div class="col-sm-6 form-group mb-2">
+               <div class="form-group inline @if($errors->has('email')) has-warning  @endif">
+                  <label class="col-form-label">email</label>
+                  <input class="form-control" name="email" value="{{ $user->email }}" @if (!Auth::user()->hasRole(1)) readonly @endif required>
+               </div>
             </div>
+         </div>
+
+         <div class="row">
+            <div class="col-sm-6 form-group mb-2">
+               <div class="form-group" id="start_date">
+                  <label class="font-normal">Fecha de Nacimiento</label>
+                  <div class="input-group date">
+                     <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
+                     <input class="form-control" name="birthdate" value="{{ Carbon\Carbon::parse($user->birthdate)->format('d-m-Y') }}" type="text" value="{{ date('d/m/Y') }}">
+                  </div>
+               </div>
+            </div>
+            <div class="col-sm-6 form-group mb-2">
+               <div class="form-group" id="since">
+                  <label class="font-normal">Atleta desde</label>
+                  <div class="input-group date">
+                     <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
+                     <input class="form-control" name="since" value="{{ Carbon\Carbon::parse($user->since)->format('d-m-Y') }}" type="text" value="{{ date('d/m/Y') }}">
+                  </div>
+               </div>
+            </div>    
+         </div>     
+
             <br>
             <div>
                <button class="btn btn-primary mr-2" type="submit">Actualizar datos</button>
@@ -73,6 +107,28 @@
 
 
 @section('scripts') {{-- scripts para esta vista --}}
+
+  <script defer>
+  // Bootstrap datepicker
+  $('#start_date .input-group.date').datepicker({
+    todayBtn: "linked",
+    keyboardNavigation: false,
+    forceParse: false,
+    calendarWeeks: true,
+    autoclose: true
+  });
+  </script>
+
+  <script defer>
+  // Bootstrap datepicker
+  $('#since .input-group.date').datepicker({
+    todayBtn: "linked",
+    keyboardNavigation: false,
+    forceParse: false,
+    calendarWeeks: true,
+    autoclose: true
+  });
+  </script>
 
 <script>
 jQuery(function ()

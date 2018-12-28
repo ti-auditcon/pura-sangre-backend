@@ -13,7 +13,8 @@ use App\Models\Users\Millestone;
 use App\Models\Users\Role;
 use App\Models\Users\RoleUser;
 use App\Models\Users\StatusUser;
-use App\Notifications\NewUser;
+use App\Notifications\MyResetPassword;
+use Carbon\Carbon;
 use Freshwork\ChileanBundle\Rut;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -25,16 +26,29 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable, SoftDeletes;
 
+    protected $dates = ['birthdate','since','deleted_at'];
     protected $fillable = [
-      'rut', 'first_name', 'last_name',
-      'birthdate', 'gender', 'email', 'avatar',
-      'address', 'password', 'phone',
-      'emergency_id', 'status_user_id'];
-
+        'rut', 'first_name', 'last_name',
+        'birthdate', 'gender', 'email', 'avatar',
+        'address', 'password', 'phone', 'since',
+        'emergency_id', 'status_user_id'
+    ];
     protected $hidden = ['password', 'remember_token'];
-    protected $dates = ['deleted_at'];
     protected $appends = ['full_name'];
-    
+
+
+    public function setBirthdateAttribute($value)
+    {
+        // dd(Carbon::parse($value)->format('Y-m-d'));
+        $this->attributes['birthdate'] = Carbon::parse($value)->format('Y-m-d');
+    }
+
+    public function setSinceAttribute($value)
+    {
+        // dd(Carbon::parse($value)->format('Y-m-d'));
+        $this->attributes['since'] = Carbon::parse($value)->format('Y-m-d');
+    }
+
     /**
     * Send the password reset notification.
     *
@@ -43,7 +57,7 @@ class User extends Authenticatable
     */
     public function sendPasswordResetNotification($token)
     {
-        $this->notify(new NewUser($token));
+        $this->notify(new MyResetPassword($token));
     }
 
     /**

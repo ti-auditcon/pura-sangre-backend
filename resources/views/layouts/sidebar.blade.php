@@ -39,7 +39,7 @@
             <div class="nav-2-level">
                <ul>
                   <li><a href="{{url('/messages')}}">Correos</a></li>
-                  <li><a href="{{url('/alerts')}}">Mensajes</a></li>
+                  <li><a href="{{url('/alerts')}}">Alertas</a></li>
                   <li><a href="{{url('/notifications')}}">Notificaciones</a></li>
                </ul>
             </div>
