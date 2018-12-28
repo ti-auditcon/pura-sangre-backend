@@ -109,7 +109,7 @@ class UserController extends Controller
         // $img->save('public/bar.jpg');
         if ($request->image) {
             request()->file('image')->storeAs('public/users', $user->id.$user->first_name.'.jpg');
-            Storage::putFile('public/users', $img);
+            // Storage::putFile('public/users', $img);
             $user->avatar = url('/').'/storage/users/'.$user->id.$user->first_name.'.jpg';
         }
         $user->first_name = $request->first_name;
