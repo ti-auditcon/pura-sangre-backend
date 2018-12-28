@@ -30,7 +30,7 @@ class UserRequest extends FormRequest
                     'first_name' => 'required',
                     'last_name' => 'required',
                     'rut' => 'unique:users',
-                    // 'email' => 'required|email|unique:users',
+                    'email' => 'required|email|unique:users',
                     'phone' => $this->phone != null ? 'digits:8': '',
                 ];
             }

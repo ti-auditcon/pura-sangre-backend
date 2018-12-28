@@ -30,7 +30,7 @@
                <div class="form-group col-md-4">
                   {{Session::get('error')}}
                   <label class="btn btn-info btn-edit file-input mr-2">
-                     <span class="btn-icon"><i class="la la-upload"></i>Subir o cambiar Imagen</span>
+                     <span class="btn-icon"><i class="la la-upload"></i>Subir o cambiar imagen</span>
                      <input style="display: none" name="image" id="photoinput" type="file" accept="image/*" max-file-size=1234>
                   </label>
                   <a class="media-img align-self-start">
@@ -48,16 +48,17 @@
          <div class="row">
             <div class="col-sm-6 form-group mb-2">
                <div class="form-group inline @if($errors->has('phone')) has-warning  @endif">
-                  <label class="col-form-label">Numero de Celular</label>
+                  <label class="col-form-label">Número de celular</label>
                   <div class="input-group mb-3">
                      <span class="input-group-addon">+56 9</span>
                   <input class="form-control " name="phone" value="{{ $user->phone }}" type="tel">
                   </div>
                </div>
             </div>
+            {{-- {{dd($user->emergency)}} --}}
             <div class="col-sm-6 form-group mb-2">
                <div class="form-group inline @if($errors->has('email')) has-warning  @endif">
-                  <label class="col-form-label">email</label>
+                  <label class="col-form-label">Email</label>
                   <input class="form-control" name="email" value="{{ $user->email }}" @if (!Auth::user()->hasRole(1)) readonly @endif required>
                </div>
             </div>
@@ -65,14 +66,16 @@
 
          <div class="row">
             <div class="col-sm-6 form-group mb-2">
-               <div class="form-group" id="start_date">
-                  <label class="font-normal">Fecha de Nacimiento</label>
+               <div class="form-group">
+                  <label class="font-normal">Fecha de nacimiento</label>
                   <div class="input-group date">
                      <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
-                     <input class="form-control" name="birthdate" value="{{ Carbon\Carbon::parse($user->birthdate)->format('d-m-Y') }}" type="text" value="{{ date('d/m/Y') }}">
+                     <input class="form-control" id="sandbox-container" name="birthdate" value="{{ Carbon\Carbon::parse($user->birthdate)->format('d-m-Y') }}" type="text" value="{{ date('d/m/Y') }}">
                   </div>
                </div>
             </div>
+
+
             <div class="col-sm-6 form-group mb-2">
                <div class="form-group" id="since">
                   <label class="font-normal">Atleta desde</label>
@@ -108,27 +111,50 @@
 
 @section('scripts') {{-- scripts para esta vista --}}
 
-  <script defer>
-  // Bootstrap datepicker
-  $('#start_date .input-group.date').datepicker({
-    todayBtn: "linked",
-    keyboardNavigation: false,
-    forceParse: false,
-    calendarWeeks: true,
-    autoclose: true
-  });
-  </script>
+   <script>
+   // Bootstrap datepicker
+   // $('#start_date .input-group.date').datepicker({
+   //    todayBtn: "linked",
+   //    format: "dd/mm/yyyy",
+   //    language: "es",
+   //    autoclose: true
+   //    keyboardNavigation: false,
+   //    forceParse: false,
+   //    calendarWeeks: true,
+   //    autoclose: true
+   // });
 
-  <script defer>
-  // Bootstrap datepicker
-  $('#since .input-group.date').datepicker({
-    todayBtn: "linked",
-    keyboardNavigation: false,
-    forceParse: false,
-    calendarWeeks: true,
-    autoclose: true
-  });
-  </script>
+$('#sandbox-container .input-group.date').datepicker({
+    format: "dd/mm/yyyy",
+    weekStart: 1,
+    language: "es",
+    autoclose: true,
+    todayHighlight: true
+});
+
+   </script>
+   <script>
+      $('#sandbox-container input').datepicker({
+          format: "dd/mm/yyyy",
+          weekStart: 1,
+          language: "es",
+          autoclose: true,
+          todayHighlight: true
+      });
+   </script>
+{{--    <script defer>
+   // Bootstrap datepicker
+   $('#since .input-group.date').datepicker({
+      todayBtn: "linked",
+      format: "dd/mm/yyyy",
+      language: "es",
+      autoclose: true
+      keyboardNavigation: false,
+      forceParse: false,
+      calendarWeeks: true,
+      autoclose: true
+   });
+  </script> --}}
 
 <script>
 jQuery(function ()

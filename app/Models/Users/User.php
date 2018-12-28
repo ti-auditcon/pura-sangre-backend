@@ -189,7 +189,7 @@ class User extends Authenticatable
 
     public function emergency()
     {
-        return $this->belongsTo(Emergency::class)->withDefault();
+        return $this->hasOne(Emergency::class)->withDefault();
     }
 
     public function reservations()
