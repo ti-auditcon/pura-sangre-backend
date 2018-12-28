@@ -138,15 +138,15 @@
                   <td><a href="{{url('/users/'.$user->id.'/plans/'.$plan_user->id)}}">{{$plan_user->plan->plan}}</a></td>
                   @if($plan_user->bill)
                      <td>{{Carbon\Carbon::parse($plan_user->bill->date)->format('d-m-Y')}}</td>
-                  @else 
+                  @else
                      <td>no aplica</td>
                   @endif
                   <td>{{$plan_user->start_date->format('d-m-Y')}} al {{$plan_user->finish_date->format('d-m-Y')}}</td>
-                  <td>{{$plan_user->plan->class_numbers}}</td>
+                  <td>{{$plan_user->counter}}/{{$plan_user->plan->class_numbers}}</td>
                   <td>{{$plan_user->bill->payment_type->payment_type ?? "no aplica"}}</td>
                   @if($plan_user->bill)
                      <td>{{'$ '.number_format($plan_user->bill->amount, $decimal = 0, '.', '.')}}</td>
-                  @else 
+                  @else
                      <td>no aplica</td>
                   @endif
                   <td><span class="badge badge-{{$plan_user->plan_status->type}} badge-pill">
