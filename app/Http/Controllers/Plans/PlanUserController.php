@@ -22,7 +22,7 @@ class planuserController extends Controller
       // parent::__construct();
       $this->middleware('can:view,user')->only('show');
     }
-    
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -74,9 +74,9 @@ class planuserController extends Controller
 	        $planuser->counter = $plan->class_numbers * $plan->plan_period->period_number;
 	    }
 	    // $planuser->plan_status_id = 3;
-		
+
 		if($planuser->save()){
-			if($plan->custom == 0){
+			if(($plan->custom == 0) && ($request->amount > 0) ){
 				Bill::create([
 					'plan_user_id' => $planuser->id,
 					'payment_type_id' => $request->payment_type_id,
