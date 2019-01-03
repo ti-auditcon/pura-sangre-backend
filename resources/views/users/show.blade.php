@@ -8,10 +8,7 @@
     <div class="ibox-body">
       <div class="flexbox">
         <div class="flexbox-b align-items-start">
-            {{-- {{url('/storage/users/'.$user->avatar.'.jpg')}} --}}
-          {{-- <a class="media-img align-self-start">
-            <img class="img-circle mr-3" src="{{$user->avatar}}" alt="image" width="72">
-          </a> --}}
+
           <div class="img-avatar img-avatar-header align-self-start" style="background-image: url('{{$user->avatar}}');"></div>
           <div class="ml-1">
 
@@ -21,20 +18,9 @@
             <div class="text-left mt-2">
               <span class="badge badge-{{$user->status_user->type}} badge-pills">{{$user->status_user->status_user}}</span>
             </div>
-
-            {{-- <div class="text-muted font-13">
-              <span class="mr-3"><i class="mr-2"></i></span>
-            </div> --}}
-
-
           </div>
         </div>
         <div class="flexbox-b align-self-start">
-          {{-- <div class="px-4 text-center">
-              <span class="badge  badge-{{$user->status_user->type}} badge-pills">{{$user->status_user->status_user}}</span>
-          </div> --}}
-
-  {{--         {{dd($user->actual_plan)}} --}}
           @if ($user->actual_plan != null)
             @if ($user->actual_plan->plan->has_clases == true)
               <div class="pr-2 text-right">
@@ -45,8 +31,6 @@
               </div>
             @endif
           @endif
-
-
         </div>
       </div>
     </div>
@@ -58,23 +42,16 @@
         <div class="ibox-head d-flex">
           <div class="ibox-title">Mis Datos</div>
           <div class="ibox-tools">
-            {{-- <div class="row"> --}}
-              {{-- <div class="col-sm-6 form-groplan_user"> --}}
-              <a class="btn btn-success text-white mr-1" style="display: inline-block;" href="{{ route('users.edit', $user->id) }}">Editar</a>
-              {{-- </div> --}}
+            <a class="btn btn-success text-white mr-1" style="display: inline-block;" href="{{ route('users.edit', $user->id) }}">Editar</a>
+
               @if (Auth::user()->hasRole(1))
-              {{-- <div class="col-sm-6 form-groplan_user"> --}}
                  <button class="btn btn-info btn-danger sweet-user-delete" style="display: inline-block;" data-id="{{$user->id}}" data-name="{{$user->first_name}} {{$user->last_name}}"><i class="la la-trash"></i></button>
                  {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'delete', 'class' => 'user-delete']) !!}
                  {!! Form::close() !!}
-              {{-- </div> --}}
               @endif
-            {{-- </div> --}}
           </div>
         </div>
         <div class="ibox-body">
-          {{-- <div class="card">
-            <div class="card-body"> --}}
               <div class="row mb-2">
                 <div class="col-12 text-muted">Rut:</div>
                 <div class="col-12">{{Rut::set($user->rut)->fix()->format()}}</div>
@@ -97,7 +74,9 @@
               </div>
               <div class="row mb-2">
                 <div class="col-12 text-muted">Contacto de emergencia</div>
+                @if ($user->emergency)
                 <div class="col-12">{{$user->emergency->contact_name.'  -' ?? ''}}  {{'+56 9 '.$user->emergency->contact_phone ?? 'No ingresado'}}</div>
+                @endif
               </div>
         </div>
       </div>

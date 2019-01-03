@@ -45,17 +45,17 @@
                 <label class="font-normal">Fecha de inicio del plan</label>
                 <div class="input-group date form-control-air">
                   <span class="input-group-addon bg-white"><i class="la la-calendar"></i></span>
-                  <input class="form-control" name="fecha_inicio" type="text" value="{{ date('m/d/Y') }}">
+                  <input class="form-control" name="fecha_inicio" type="text" value="{{ date('d-m-Y') }}">
                 </div>
               </div>
             </div>
 
-            <div class="col-sm-6 form-group mb-4">
+            <div class="col-sm-6 form-group mb-4 is-not-custom">
               <div class="form-group" id="date">
                 <label class="font-normal">Fecha del pago del plan</label>
                 <div class="input-group date form-control-air">
                   <span class="input-group-addon bg-white"><i class="la la-calendar"></i></span>
-                  <input class="form-control" name="date" type="text" value="{{ date('m/d/Y') }}">
+                  <input class="form-control" name="date" type="text" value="{{ date('d-m-Y') }}">
                 </div>
               </div>
             </div>
@@ -65,7 +65,7 @@
                 <label class="font-normal">Fecha de término del plan</label>
                 <div class="input-group date form-control-air">
                   <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
-                  <input class="form-control " name="fecha_termino" type="text" value="{{ date('m/d/Y') }}">
+                  <input class="form-control " name="fecha_termino" type="text" value="{{ date('d-m-Y') }}">
                 </div>
               </div>
             </div>
@@ -118,51 +118,71 @@
 
 <script defer>
 // Bootstrap datepicker
-$('#start_date .input-group.date').datepicker({
-  todayBtn: "linked",
-  keyboardNavigation: false,
-  forceParse: false,
-  calendarWeeks: true,
-  autoclose: true
-});
+   $('#start_date .input-group.date').datepicker({
+      todayBtn: "linked",
+      keyboardNavigation: false,
+      forceParse: false,
+      calendarWeeks: true,
+      format: "dd-mm-yyyy",
+      startDate: "01-01-1910",
+      endDate: "01-01-2030",
+      language: "es",
+      orientation: "bottom auto",
+      autoclose: true,
+      maxViewMode: 3,
+      daysOfWeekDisabled: "6",
+      todayHighlight: true
+   });
 
-$('#date .input-group.date').datepicker({
-  todayBtn: "linked",
-  keyboardNavigation: false,
-  forceParse: false,
-  calendarWeeks: true,
-  autoclose: true
-});
+   $('#date .input-group.date').datepicker({
+      todayBtn: "linked",
+      keyboardNavigation: false,
+      forceParse: false,
+      calendarWeeks: true,
+      format: "dd-mm-yyyy",
+      startDate: "01-01-1910",
+      endDate: "01-01-2030",
+      language: "es",
+      orientation: "bottom auto",
+      autoclose: true,
+      maxViewMode: 3,
+      daysOfWeekDisabled: "6",
+      todayHighlight: true
+   });
 
-$('#finish_date .input-group.date').datepicker({
-  todayBtn: "linked",
-  keyboardNavigation: false,
-  forceParse: false,
-  calendarWeeks: true,
-  autoclose: true
-});
+   $('#finish_date .input-group.date').datepicker({
+       todayBtn: "linked",
+      keyboardNavigation: false,
+      forceParse: false,
+      calendarWeeks: true,
+      format: "dd-mm-yyyy",
+      startDate: "01-01-1910",
+      endDate: "01-01-2030",
+      language: "es",
+      orientation: "bottom auto",
+      autoclose: true,
+      maxViewMode: 3,
+      daysOfWeekDisabled: "6",
+      todayHighlight: true
+   });
 
-$('#plan-select').change(function() {
+   $('#plan-select').change(function() {
+      var data = $('#plan-select').find('option:selected').data('amount');
+      var custom = $('#plan-select').find('option:selected').data('custom');
+      $('#plan-amount').val(data);
+      $('#payment').show();
 
-var data = $('#plan-select').find('option:selected').data('amount');
-var custom = $('#plan-select').find('option:selected').data('custom');
-$('#plan-amount').val(data);
-$('#payment').show();
-
-if(custom != 0)
-{
-  console.log('es custom');
-  $('.is-custom').show();
-  $('.is-not-custom').hide();
-
-}
-else {
-    console.log('no es custom');
-  $('.is-custom').hide();
-  $('.is-not-custom').show();
-}
-
-});
+      if(custom != 0){
+         console.log('es custom');
+         $('.is-custom').show();
+         $('.is-not-custom').hide();
+      }
+      else {
+         console.log('no es custom');
+         $('.is-custom').hide();
+         $('.is-not-custom').show();
+      }
+   });
 
 </script>
 

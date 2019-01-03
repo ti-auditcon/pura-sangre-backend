@@ -39,7 +39,7 @@
           </div>
           <div class="col-sm-6 form-group mb-2">
             <div class="form-group">
-              <label class="font-normal">Fecha de Nacimiento</label>
+              <label class="font-normal">Fecha de nacimiento</label>
               <div class="input-group date">
                 <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
                 <input class="form-control datepicker-birthdate" name="birthdate" value="{{ old('birthdate') }}" type="text" value="{{ date('d/m/Y') }}">
@@ -90,13 +90,13 @@
          <div class="row">
             <div class="col-sm-6 form-group mb-4">
                <div class="form-group inline @if($errors->has('contact_name')) has-warning  @endif">
-                 <label class="col-form-label">Contacto de Emergencia</label>
+                 <label class="col-form-label">Contacto de emergencia</label>
                  <input class="form-control " name="contact_name" value="{{ old('contact_name') }}">
                </div>
             </div>
             <div class="col-sm-6 form-group mb-4">
                <div class="form-group inline @if($errors->has('contact_phone')) has-warning  @endif">
-                 <label class="col-form-label">Teléfono de Contacto</label>
+                 <label class="col-form-label">Teléfono de contacto de emergencia</label>
                        <div class="input-group mb-3">
                 <span class="input-group-addon">+56 9</span>
                  <input class="form-control " name="contact_phone" value="{{ old('contact_phone')}}">
@@ -105,7 +105,7 @@
          </div>
 
          <div class="form-group  @if($errors->has('status_user_id')) has-warning  @endif">
-           <label class="form-control-label">Estado del Usuario*</label>
+           <label class="form-control-label">Estado del usuario*</label>
            <select class="selectpicker form-control"  name="status_user_id" data-live-search="true" required>
             <option value="">Asignar estado...</option>
             @foreach (App\Models\Users\StatusUser::all() as $status_user)
@@ -148,18 +148,36 @@
 
    <script>
       $('.datepicker-birthdate').datepicker({
+         todayBtn: "linked",
+         keyboardNavigation: false,
+         forceParse: false,
+         calendarWeeks: true,
          format: "dd/mm/yyyy",
+         startDate: "01-01-1910",
+         endDate: "01-01-2030",
          language: "es",
          orientation: "bottom auto",
-         autoclose: true
+         autoclose: true,
+         maxViewMode: 3,
+         daysOfWeekDisabled: "6",
+         todayHighlight: true
       });
    </script>
 
    <script>
       $('.datepicker-since').datepicker({
+         todayBtn: "linked",
+         keyboardNavigation: false,
+         forceParse: false,
+         calendarWeeks: true,
          format: "dd/mm/yyyy",
+         startDate: "01-01-1910",
+         endDate: "01-01-2030",
          language: "es",
-         autoclose: true
+         autoclose: true,
+         maxViewMode: 3,
+         daysOfWeekDisabled: "6",
+         todayHighlight: true
       });
    </script>
 

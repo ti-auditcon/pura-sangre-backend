@@ -2,21 +2,20 @@
 
 namespace App\Observers\Users;
 
-use App\Mail\SendNewUserEmail;
-use App\Models\Plans\PlanUser;
+use Session;
+use Redirect;
 use App\Models\Users\User;
+use App\Models\Plans\PlanUser;
+use App\Mail\SendNewUserEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
-use Redirect;
-use Session;
 
 class UserObserver
 {
-
     public function retrieved(User $user)
     {
         if($user->status_user_id == 1 || $user->status_user_id == 3) {
-            if(!$user->reservable_plans->first()) {
+            if(!$user->actual_plan) {
                 $user->status_user_id = 2;
                 $user->save();
             }

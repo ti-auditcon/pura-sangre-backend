@@ -27,15 +27,7 @@
                </div>
             </div>
             <div class="upload-box">
-               {{-- <div>
-                  {{Session::get('error')}}
-                  <a class="media-img">
-                    @if ($user->avatar)
-                      <img class="img-circle" src="{{$user->avatar}}" id="imgback" alt="image" width="72">
-                    @endif
-                  </a>
-               </div> --}}
-                 {{Session::get('error')}}
+               {{Session::get('error')}}
                  @if ($user->avatar)
                    <div class="img" style="background-image: url('{{$user->avatar}}');" id="imgback" alt="image"></div>
                  @endif
@@ -72,24 +64,49 @@
 
          <div class="row">
             <div class="col-sm-6 form-group mb-2">
-               <div class="form-group">
+               <div class="form-group" id="birthdate-picker">
                   <label class="font-normal">Fecha de nacimiento</label>
                   <div class="input-group date">
                      <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
-                     <input class="form-control" id="sandbox-container" name="birthdate" value="{{ Carbon\Carbon::parse($user->birthdate)->format('d-m-Y') }}" type="text" value="{{ date('d/m/Y') }}">
+                     <input class="form-control"  name="birthdate" value="{{ Carbon\Carbon::parse($user->birthdate)->format('d-m-Y') }}" type="text" value="{{ date('d/m/Y') }}">
                   </div>
                </div>
             </div>
 
-
             <div class="col-sm-6 form-group mb-2">
-               <div class="form-group" id="since">
+               <div class="form-group" id="since-picker">
                   <label class="font-normal">Atleta desde</label>
                   <div class="input-group date">
                      <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
                      <input class="form-control" name="since" value="{{ Carbon\Carbon::parse($user->since)->format('d-m-Y') }}" type="text" value="{{ date('d/m/Y') }}">
                   </div>
                </div>
+            </div>
+         </div>
+
+          <div class="row">
+         <div class="col-sm-12 form-group mb-4">
+            <div class="form-group inline @if($errors->has('address')) has-warning  @endif">
+               <label class="col-form-label">Dirección</label>
+               <input class="form-control" placeholder="Ejemplo: Longitudinal Sur Km 188,9, Curicó" name="address" value="{{$user->address }}">
+            </div>
+         </div>
+      </div>
+
+         <div class="row">
+            <div class="col-sm-6 form-group mb-4">
+               <div class="form-group inline @if($errors->has('contact_name')) has-warning  @endif">
+                 <label class="col-form-label">Contacto de emergencia</label>
+                 <input class="form-control " name="contact_name" @if($user->emergency) value="{{ $user->emergency->contact_name }}" @endif >
+               </div>
+            </div>
+            <div class="col-sm-6 form-group mb-4">
+               <div class="form-group inline @if($errors->has('contact_phone')) has-warning  @endif">
+                 <label class="col-form-label">Teléfono de contacto de emergencia</label>
+                       <div class="input-group mb-3">
+                <span class="input-group-addon">+56 9</span>
+                 <input class="form-control " name="contact_phone" @if($user->emergency) value="{{ $user->emergency->contact_phone }}" @endif>
+               </div></div>
             </div>
          </div>
 
@@ -114,53 +131,42 @@
 @endsection
 
 
-
 @section('scripts') {{-- scripts para esta vista --}}
 
-   <script>
-   // Bootstrap datepicker
-   // $('#start_date .input-group.date').datepicker({
-   //    todayBtn: "linked",
-   //    format: "dd/mm/yyyy",
-   //    language: "es",
-   //    autoclose: true
-   //    keyboardNavigation: false,
-   //    forceParse: false,
-   //    calendarWeeks: true,
-   //    autoclose: true
-   // });
-
-$('#sandbox-container .input-group.date').datepicker({
-    format: "dd/mm/yyyy",
-    weekStart: 1,
-    language: "es",
-    autoclose: true,
-    todayHighlight: true
-});
-
-   </script>
-   <script>
-      $('#sandbox-container input').datepicker({
-          format: "dd/mm/yyyy",
-          weekStart: 1,
-          language: "es",
-          autoclose: true,
-          todayHighlight: true
-      });
-   </script>
-{{--    <script defer>
-   // Bootstrap datepicker
-   $('#since .input-group.date').datepicker({
+<script>
+   $('#birthdate-picker .input-group.date').datepicker({
       todayBtn: "linked",
-      format: "dd/mm/yyyy",
-      language: "es",
-      autoclose: true
       keyboardNavigation: false,
       forceParse: false,
       calendarWeeks: true,
-      autoclose: true
+      format: "dd/mm/yyyy",
+      startDate: "01-01-1910",
+      endDate: "01-01-2030",
+      language: "es",
+      orientation: "bottom auto",
+      autoclose: true,
+      maxViewMode: 3,
+      daysOfWeekDisabled: "6",
+      todayHighlight: true
    });
-  </script> --}}
+
+   $('#since-picker .input-group.date').datepicker({
+      todayBtn: "linked",
+      keyboardNavigation: false,
+      forceParse: false,
+      calendarWeeks: true,
+      format: "dd/mm/yyyy",
+      startDate: "01-01-1910",
+      endDate: "01-01-2030",
+      language: "es",
+      orientation: "bottom auto",
+      autoclose: true,
+      maxViewMode: 3,
+      daysOfWeekDisabled: "6",
+      todayHighlight: true
+   });
+</script>
+
 
 <script>
 jQuery(function ()

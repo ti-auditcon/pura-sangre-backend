@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Users;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Users\UserRequest;
-use App\Models\Users\Emergency;
-use App\Models\Users\User;
-use App\Notifications\NewUser;
 use Auth;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Facades\Image;
-use Redirect;
 use Session;
+use Redirect;
+use Carbon\Carbon;
+use App\Models\Users\User;
+use Illuminate\Http\Request;
+use App\Notifications\NewUser;
+use App\Models\Users\Emergency;
+use App\Http\Controllers\Controller;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\Users\UserRequest;
 
 /**
  * [UserController description]
@@ -67,7 +67,6 @@ class UserController extends Controller
         }else {
             return Redirect::back();
         }
-       
     }
 
     /**
@@ -100,31 +99,38 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
-                // open an image file
-        // $img = Image::make($request->image)->resize(300, 300);
-        // dd($img);
-        // // insert a watermark
-        // $img->insert('public/watermark.png');
-
-            // (string) $image->encode()
-        // // save image in desired format
-        // $img->save('public/bar.jpg');
         if ($request->image) {
             request()->file('image')->storeAs('public/users', $user->id.$user->first_name.'.jpg');
-            // Storage::putFile('public/users', $img);
-            $user->avatar = url('/').'/storage/users/'.$user->id.$user->first_name.'.jpg';
         }
-        $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
-        $user->email = $request->email;
-        $user->birthdate = Carbon::parse($request->birthdate);
-        $user->since = Carbon::parse($request->since);
-        $user->phone = $request->phone;
-        $user->save();
-        Session::flash('success','Los datos del usuario han sido actualizados');
-        return view('users.show')->with('user', $user);
+        $user->update(array_merge($request->all(), [
+            'birthdate' => Carbon::parse($request->birthdate),
+            'since' => Carbon::parse($request->since),
+            'avatar' => url('/').'/storage/users/'.$user->id.$user->first_name.'.jpg',
+        ]));
+
+        if ($user->emergency) {
+            $user->emergency()->update([
+               'contact_name' => $request->contact_name,
+               'contact_phone' => $request->contact_phone,
+            ]);
+        }else{
+            Emergency::create([
+                'user_id' => $user->id,
+                'contact_name' => $request->contact_name,
+                'contact_phone' => $request->contact_phone,
+            ]);
+        }
+           
+        Session::flash('success', 'Los datos del usuario han sido actualizados');
+        return redirect('/users/'.$user->id)->with('user', $user);
     }
 
+    /**
+     * [image description]
+     * @param  Request $request [description]
+     * @param  User    $user    [description]
+     * @return [type]           [description]
+     */
     public function image(Request $request, User $user)
     {
         if ($request->hasFile('image')) {
@@ -150,7 +156,10 @@ class UserController extends Controller
         return redirect('/users')->with('success', 'El usuario ha sido borrado correctamente');
     }
 
-
+    /**
+     * [updateAvatar description]
+     * @return [type] [description]
+     */
     public function updateAvatar()
     {
         $users = User::all();
