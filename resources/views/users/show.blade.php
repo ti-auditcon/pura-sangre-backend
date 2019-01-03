@@ -62,7 +62,7 @@
               </div>
               <div class="row mb-2">
                 <div class="col-12 text-muted">Fecha de nacimiento:</div>
-                <div class="col-12">22-07-1985</div>
+                <div class="col-12">{{$user->birthdate->format('d-m-Y')}}</div>
               </div>
               <div class="row mb-2">
                 <div class="col-12 text-muted">Teléfono</div>
