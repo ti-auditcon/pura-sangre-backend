@@ -137,7 +137,7 @@ class UserController extends Controller
             request()->file('image')->storeAs('public/users', $user->id.$user->first_name.'.jpg');
             $user->avatar = url('/').'/storage/users/'.$user->id.$user->first_name.'.jpg';
             $user->save();
-            return response()->json(['success' =>'imagen subida'], 200);
+            return response()->json(['success' =>'imagen subida correctamente'], 200);
         }
         else {
             return response()->json(['error' =>'no hay imagen'], 400);
