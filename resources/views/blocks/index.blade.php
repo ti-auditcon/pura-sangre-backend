@@ -34,7 +34,7 @@
 		</div>
 	</div>
 
-	{{-- modal para agrergar horario  --}}
+	{{-- ////// MODAL PARA AGREGAR HORARIO  //////// --}}
 					<div class="modal fade" id="blockadd" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
 						<div class="modal-dialog ">
 							{{Form::open(['route'=>'blocks.store'])}}
@@ -88,8 +88,8 @@
 								</div>
 
 								<div class="form-group mb-4">
-										<label class="col-form-label">N° de Cupos</label>
-										<input type="number" class="form-control" value="" name="quota" required>
+									<label class="col-form-label">N° de Cupos</label>
+									<input type="number" class="form-control" value="" name="quota" required>
 								</div>
 
 									<div class="form-group mb-4">
@@ -206,10 +206,11 @@
 
 
 @section('scripts') {{-- scripts para esta vista --}}
-	{{--  full caslendar --}}
-	<script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+	{{--  Full calendar --}}
 	<script src="{{ asset('js/moment.min.js') }}"></script>
-	<script src="{{ asset('js/fullcalendar.min.js') }}"></script>
+	{{-- <script src="{{asset('/js/fullcalendar/jquery-ui.min.js')}}"></script> --}}
+	<script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
+	<script src="{{ asset('js/fullcalendar/lang/es.js') }}"></script>
 	<script src="{{ asset('js/bootstrap-clockpicker.min.js') }}"></script>
 	<script src="{{ asset('js/jquery.multi-select.js') }}"></script>
 
@@ -217,12 +218,19 @@
 	$(document).ready(function() {
 		$('.clockpicker').clockpicker({autoclose: true});
 		$('#unique-tab .form-group').datepicker({
-			format: 'dd/mm/yyyy',
-			todayBtn: "linked",
-			keyboardNavigation: false,
-			forceParse: false,
-			calendarWeeks: true,
-			autoclose: true
+		   todayBtn: "linked",
+	      keyboardNavigation: false,
+	      forceParse: false,
+	      calendarWeeks: true,
+	      format: "dd-mm-yyyy",
+	      startDate: "01-01-1910",
+	      endDate: "01-01-2030",
+	      language: "es",
+	      orientation: "bottom auto",
+	      autoclose: true,
+	      maxViewMode: 3,
+	      daysOfWeekDisabled: "6",
+	      todayHighlight: true
 		});
 
 		$('#plan-select-add').multiSelect();
@@ -283,25 +291,20 @@
 	});
 	$('#recurrent').prop('checked', true);
 	$('#unique-tab').hide();
-	$('#recurrent').change(function()
-	 {
-		 if(this.checked == true)
-		 {
-					console.log('recurrente');
-					$('#recurrent-tab').show();
-					$('#unique-tab').hide();
-		 }
-	 });
-	 $('#unique').change(function()
-		{
-			if(this.checked == true)
-			{
-					 console.log('unico');
-					 $('#unique-tab').show();
-					 $('#recurrent-tab').hide();
-			}
-		});
-
+	$('#recurrent').change(function(){
+		if(this.checked == true){
+			console.log('recurrente');
+			$('#recurrent-tab').show();
+			$('#unique-tab').hide();
+		}
+	});
+	$('#unique').change(function(){
+		if(this.checked == true){
+			console.log('unico');
+			$('#unique-tab').show();
+			$('#recurrent-tab').hide();
+		}
+	});
 	</script>
 
 

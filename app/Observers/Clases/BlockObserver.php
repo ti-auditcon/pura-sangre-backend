@@ -18,13 +18,13 @@ class BlockObserver
     {
       //creamos las 12 clases siguientes por cada bloque
       if($block->date == null){
-        $first_date = now()->subYear()->startOfWeek()->addDays($block->dow[0]-1);
+        $first_date = now()->startOfWeek()->addDays($block->dow[0]-1);
        // dd($first_date);
         $date = $first_date;
-        for ($i=0; $i < 60; $i++) {
+        for ($i=0; $i < 12; $i++) {
           Clase::create([
             'block_id' => $block->id,
-            'date' => $first_date,
+            'date' => $date,
             'start_at' => $block->start,
             'finish_at' => $block->end,
             'profesor_id' => $block->profesor_id,
