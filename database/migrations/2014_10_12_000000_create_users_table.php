@@ -56,7 +56,7 @@ class CreateUsersTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('emergency_id')->references('id')->on('emergencies')->onDelete('cascade');
+            // $table->foreign('emergency_id')->references('id')->on('emergencies')->onDelete('cascade');
         });
 
         // contactos de emergencia
