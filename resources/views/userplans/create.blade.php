@@ -167,6 +167,7 @@
    });
 
    $('#plan-select').change(function() {
+     console.log('estoy vivo!!!');
       var data = $('#plan-select').find('option:selected').data('amount');
       var custom = $('#plan-select').find('option:selected').data('custom');
       $('#plan-amount').val(data);
