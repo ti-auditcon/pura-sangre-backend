@@ -3,6 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Models\Clases\Block;
+use App\Models\Clases\Clase;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class CreateClases extends Command
@@ -42,7 +44,7 @@ class CreateClases extends Command
             $clases = $block->clases->sortByDesc('date');
             if (count($clases) > 1) {
                 $clase =  $block->clases->sortByDesc('date')->first();
-                $fecha = Carbon\Carbon::parse($clase->date)->addWeek();
+                $fecha = Carbon::parse($clase->date)->addWeek();
                 if($block->date == null){
                     $first_date = $fecha->startOfWeek()->addDays($block->dow[0]-1);
                     $date = $first_date;
