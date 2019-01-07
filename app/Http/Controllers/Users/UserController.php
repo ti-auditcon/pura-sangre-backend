@@ -19,7 +19,7 @@ use App\Http\Requests\Users\UserRequest;
  * [UserController description]
  */
 class UserController extends Controller
-{    
+{
     public function __construct()
     {
         // parent::__construct();
@@ -120,7 +120,7 @@ class UserController extends Controller
                 'contact_phone' => $request->contact_phone,
             ]);
         }
-           
+
         Session::flash('success', 'Los datos del usuario han sido actualizados');
         return redirect('/users/'.$user->id)->with('user', $user);
     }
@@ -137,10 +137,10 @@ class UserController extends Controller
             request()->file('image')->storeAs('public/users', $user->id.$user->first_name.'.jpg');
             $user->avatar = url('/').'/storage/users/'.$user->id.$user->first_name.'.jpg';
             $user->save();
-            return response()->json(['success' =>'imagen subida'], 200);
+            return response()->json(['success' =>'imagen subida correctamente'], 200);
         }
         else {
-            return response()->json(['error' =>'nooooooooooooooo'], 400);
+            return response()->json(['error' =>'no hay imagen'], 400);
         }
     }
 
