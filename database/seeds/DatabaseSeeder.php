@@ -42,6 +42,7 @@ class DatabaseSeeder extends Seeder
             ReservationsTableSeeder::class,
         ]);
 
+
       //   $users = User::all();
       //   foreach ($users as $user) {
       //       factory(Reservation::class, 150)->create(['user_id' => $user->id]);
@@ -93,3 +94,9 @@ class DatabaseSeeder extends Seeder
       //     // 'emergency_id' => 1,
       //     'status_user_id' => 1,
       // ]);
+
+
+
+       // echo now()->startOfHour(); 
+       // echo "\n";
+       // echo today();

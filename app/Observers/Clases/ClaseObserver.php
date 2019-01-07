@@ -14,12 +14,12 @@ class ClaseObserver
 {
     public function retrieved(Clase $clase)
     {
-      $date = $clase->date;
-      $time = $clase->start_at;
-      $dateTime = $date.' '.$time;
-      if ($dateTime < now()) {
-        $clase->reservations()->update(['reservation_status_id' => 3]);
-      }
+      // $date = $clase->date;
+      // $time = $clase->start_at;
+      // $dateTime = $date.' '.$time;
+      // if ($dateTime < now()) {
+      //   $clase->reservations()->update(['reservation_status_id' => 3]);
+      // }
 
     }
     /**
@@ -38,10 +38,8 @@ class ClaseObserver
             if(count($planusers) != 0){
                 $period_plan = null;
                 foreach ($planusers as $planuser){
-                    foreach ($planuser->plan_user_periods as $pup){
-                        if ($date_class->between(Carbon::parse($pup->start_date), Carbon::parse($pup->finish_date))){
-                            $period_plan = $pup; 
-                        }
+                    if ($date_class->between(Carbon::parse($planuser->start_date), Carbon::parse($planuser->finish_date))){
+                        $period_plan = $planuser; 
                     }
                 }
                 if ($period_plan){
@@ -55,3 +53,6 @@ class ClaseObserver
         }
     }
 }
+
+                    // foreach ($planuser->plan_user_periods as $pup){
+                    // }
