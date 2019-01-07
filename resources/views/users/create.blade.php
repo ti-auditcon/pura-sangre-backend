@@ -118,10 +118,10 @@
             <label class="mr-3">Género</label>
             {{-- <div> --}}
               <label class="radio radio-inline radio-info">
-                <input type="radio" name="gender" required value="male">
+                <input type="radio" name="gender" required value="hombre">
                 <span class="input-span"></span>Masculino</label>
               <label class="radio radio-inline radio-info">
-                <input type="radio" name="gender" value="female">
+                <input type="radio" name="gender" value="mujer">
                 <span class="input-span"></span>Femenino</label>
 
           </div>
