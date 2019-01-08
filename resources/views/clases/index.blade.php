@@ -65,7 +65,9 @@
 	{{--  full caslendar --}}
   <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
   <script src="{{ asset('js/moment.min.js') }}"></script>
-	<script src="{{ asset('js/fullcalendar.min.js') }}"></script>
+  {{-- <script src="{{asset('/js/fullcalendar/jquery-ui.min.js')}}"></script> --}}
+  <script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
+  <script src="{{ asset('js/fullcalendar/lang/es.js') }}"></script>
   <script src="{{ asset('js/bootstrap-clockpicker.min.js') }}"></script>
   <script src="{{ asset('js/jquery.multi-select.js') }}"></script>
   <script src="{{ asset('js/jquery.easypiechart.min') }}"></script>

@@ -52,6 +52,7 @@
 
   <!-- CORE PLUGINS-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.5/umd/popper.min.js"></script>
+  
   <script src="{{asset('/js/jquery.min.js')}}"></script>
   <script src="{{asset('/js/bootstrap.min.js')}}"></script>
   <script src="{{asset('/js/bootstrap-select.min.js')}}"></script>
