@@ -40,13 +40,13 @@ class User extends Authenticatable
     public function setBirthdateAttribute($value)
     {
         // dd(Carbon::parse($value)->format('Y-m-d'));
-        $this->attributes['birthdate'] = Carbon::parse($value)->format('Y-m-d');
+        $this->attributes['birthdate'] = Carbon::createFromFormat('d/m/Y', $value);
     }
 
     public function setSinceAttribute($value)
     {
         // dd(Carbon::parse($value)->format('Y-m-d'));
-        $this->attributes['since'] = Carbon::parse($value)->format('Y-m-d');
+        $this->attributes['since'] = Carbon::createFromFormat('d/m/Y', $value);
     }
 
     /**
