@@ -163,7 +163,6 @@
       orientation: "bottom auto",
       autoclose: true,
       maxViewMode: 3,
-      daysOfWeekDisabled: "6",
       todayHighlight: true
    });
 
@@ -179,7 +178,6 @@
       orientation: "bottom auto",
       autoclose: true,
       maxViewMode: 3,
-      daysOfWeekDisabled: "6",
       todayHighlight: true
    });
 
@@ -195,7 +193,6 @@
       orientation: "bottom auto",
       autoclose: true,
       maxViewMode: 3,
-      daysOfWeekDisabled: "6",
       todayHighlight: true
    });
 

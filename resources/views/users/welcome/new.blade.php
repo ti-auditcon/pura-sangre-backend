@@ -2,15 +2,7 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
     <head>
-        <!-- NAME: 1 COLUMN -->
-        <!--[if gte mso 15]>
-        <xml>
-            <o:OfficeDocumentSettings>
-            <o:AllowPNG/>
-            <o:PixelsPerInch>96</o:PixelsPerInch>
-            </o:OfficeDocumentSettings>
-        </xml>
-        <![endif]-->
+
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -106,245 +98,165 @@
 		.mcnDividerBlock{
 			table-layout:fixed !important;
 		}
-	/*
-	@tab Page
-	@section Background Style
-	@tip Set the background color and top border for your email. You may want to choose colors that match your company's branding.
-	*/
+
 		body,#bodyTable{
-			/*@editable*/background-color:#;
+			background-color:#;
 		}
-	/*
-	@tab Page
-	@section Background Style
-	@tip Set the background color and top border for your email. You may want to choose colors that match your company's branding.
-	*/
+
 		#bodyCell{
-			/*@editable*/border-top:1px none ;
+			border-top:1px none ;
 		}
-	/*
-	@tab Page
-	@section Email Border
-	@tip Set the border for your email.
-	*/
+
 		.templateContainer{
-			/*@editable*/border:1px none #cfcece;
+			border:1px none #cfcece;
 		}
-	/*
-	@tab Page
-	@section Heading 1
-	@tip Set the styling for all first-level headings in your emails. These should be the largest of your headings.
-	@style heading 1
-	*/
+
 		h1{
-			/*@editable*/color:#202020;
-			/*@editable*/font-family:'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-			/*@editable*/font-size:26px;
-			/*@editable*/font-style:normal;
-			/*@editable*/font-weight:bold;
-			/*@editable*/line-height:125%;
-			/*@editable*/letter-spacing:normal;
-			/*@editable*/text-align:left;
+			color:#202020;
+			font-family:'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			font-size:26px;
+			font-style:normal;
+			font-weight:bold;
+			line-height:125%;
+			letter-spacing:normal;
+			text-align:left;
 		}
-	/*
-	@tab Page
-	@section Heading 2
-	@tip Set the styling for all second-level headings in your emails.
-	@style heading 2
-	*/
+
 		h2{
-			/*@editable*/color:#202020;
-			/*@editable*/font-family:'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-			/*@editable*/font-size:22px;
-			/*@editable*/font-style:normal;
-			/*@editable*/font-weight:bold;
-			/*@editable*/line-height:125%;
-			/*@editable*/letter-spacing:normal;
-			/*@editable*/text-align:left;
+			color:#202020;
+			font-family:'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			font-size:22px;
+			font-style:normal;
+			font-weight:bold;
+			line-height:125%;
+			letter-spacing:normal;
+			text-align:left;
 		}
-	/*
-	@tab Page
-	@section Heading 3
-	@tip Set the styling for all third-level headings in your emails.
-	@style heading 3
-	*/
+
 		h3{
-			/*@editable*/color:#202020;
-			/*@editable*/font-family:'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-			/*@editable*/font-size:20px;
-			/*@editable*/font-style:normal;
-			/*@editable*/font-weight:bold;
-			/*@editable*/line-height:125%;
-			/*@editable*/letter-spacing:normal;
-			/*@editable*/text-align:left;
+			color:#202020;
+			font-family:'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			font-size:20px;
+			font-style:normal;
+			font-weight:bold;
+			line-height:125%;
+			letter-spacing:normal;
+			text-align:left;
 		}
-	/*
-	@tab Page
-	@section Heading 4
-	@tip Set the styling for all fourth-level headings in your emails. These should be the smallest of your headings.
-	@style heading 4
-	*/
+
 		h4{
-			/*@editable*/color:#202020;
-			/*@editable*/font-family:'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-			/*@editable*/font-size:18px;
-			/*@editable*/font-style:normal;
-			/*@editable*/font-weight:bold;
-			/*@editable*/line-height:125%;
-			/*@editable*/letter-spacing:normal;
-			/*@editable*/text-align:left;
+			color:#202020;
+			font-family:'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			font-size:18px;
+			font-style:normal;
+			font-weight:bold;
+			line-height:125%;
+			letter-spacing:normal;
+			text-align:left;
 		}
-	/*
-	@tab Preheader
-	@section Preheader Style
-	@tip Set the background color and borders for your email's preheader area.
-	*/
+
 		#templatePreheader{
-			/*@editable*/background-color:#fafafa;
-			/*@editable*/background-image:none;
-			/*@editable*/background-repeat:no-repeat;
-			/*@editable*/background-position:center;
-			/*@editable*/background-size:cover;
-			/*@editable*/border-top:0;
-			/*@editable*/border-bottom:0;
-			/*@editable*/padding-top:9px;
-			/*@editable*/padding-bottom:9px;
+			background-color:#fafafa;
+			background-image:none;
+			background-repeat:no-repeat;
+			background-position:center;
+			background-size:cover;
+			border-top:0;
+			border-bottom:0;
+			padding-top:9px;
+			padding-bottom:9px;
 		}
-	/*
-	@tab Preheader
-	@section Preheader Text
-	@tip Set the styling for your email's preheader text. Choose a size and color that is easy to read.
-	*/
+
 		#templatePreheader .mcnTextContent,#templatePreheader .mcnTextContent p{
-			/*@editable*/color:#656565;
-			/*@editable*/font-family:'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-			/*@editable*/font-size:12px;
-			/*@editable*/line-height:150%;
-			/*@editable*/text-align:left;
+			color:#656565;
+			font-family:'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			font-size:12px;
+			line-height:150%;
+			text-align:left;
 		}
-	/*
-	@tab Preheader
-	@section Preheader Link
-	@tip Set the styling for your email's preheader links. Choose a color that helps them stand out from your text.
-	*/
+
 		#templatePreheader .mcnTextContent a,#templatePreheader .mcnTextContent p a{
-			/*@editable*/color:#656565;
-			/*@editable*/font-weight:normal;
-			/*@editable*/text-decoration:underline;
+			color:#656565;
+			font-weight:normal;
+			text-decoration:underline;
 		}
-	/*
-	@tab Header
-	@section Header Style
-	@tip Set the background color and borders for your email's header area.
-	*/
+
 		#templateHeader{
-			/*@editable*/background-color:#FFFFFF;
-			/*@editable*/background-image:none;
-			/*@editable*/background-repeat:no-repeat;
-			/*@editable*/background-position:center;
-			/*@editable*/background-size:cover;
-			/*@editable*/border-top:0;
-			/*@editable*/border-bottom:0;
-			/*@editable*/padding-top:9px;
-			/*@editable*/padding-bottom:0;
+			background-color:#FFFFFF;
+			background-image:none;
+			background-repeat:no-repeat;
+			background-position:center;
+			background-size:cover;
+			border-top:0;
+			border-bottom:0;
+			padding-top:9px;
+			padding-bottom:0;
 		}
-	/*
-	@tab Header
-	@section Header Text
-	@tip Set the styling for your email's header text. Choose a size and color that is easy to read.
-	*/
+
 		#templateHeader .mcnTextContent,#templateHeader .mcnTextContent p{
-			/*@editable*/color:#202020;
-			/*@editable*/font-family:Helvetica;
-			/*@editable*/font-size:16px;
-			/*@editable*/line-height:150%;
-			/*@editable*/text-align:left;
+			color:#202020;
+			font-family:Helvetica;
+			font-size:16px;
+			line-height:150%;
+			text-align:left;
 		}
-	/*
-	@tab Header
-	@section Header Link
-	@tip Set the styling for your email's header links. Choose a color that helps them stand out from your text.
-	*/
+
 		#templateHeader .mcnTextContent a,#templateHeader .mcnTextContent p a{
-			/*@editable*/color:#2BAADF;
-			/*@editable*/font-weight:normal;
-			/*@editable*/text-decoration:underline;
+			color:#2BAADF;
+			font-weight:normal;
+			text-decoration:underline;
 		}
-	/*
-	@tab Body
-	@section Body Style
-	@tip Set the background color and borders for your email's body area.
-	*/
+
 		#templateBody{
-			/*@editable*/background-color:#ffffff;
-			/*@editable*/background-image:none;
-			/*@editable*/background-repeat:no-repeat;
-			/*@editable*/background-position:center;
-			/*@editable*/background-size:cover;
-			/*@editable*/border-top:0;
-			/*@editable*/border-bottom:2px solid #EAEAEA;
-			/*@editable*/padding-top:0;
-			/*@editable*/padding-bottom:9px;
+			background-color:#ffffff;
+			background-image:none;
+			background-repeat:no-repeat;
+			background-position:center;
+			background-size:cover;
+			border-top:0;
+			border-bottom:2px solid #EAEAEA;
+			padding-top:0;
+			padding-bottom:9px;
 		}
-	/*
-	@tab Body
-	@section Body Text
-	@tip Set the styling for your email's body text. Choose a size and color that is easy to read.
-	*/
+
 		#templateBody .mcnTextContent,#templateBody .mcnTextContent p{
-			/*@editable*/color:#202020;
-			/*@editable*/font-family:Helvetica;
-			/*@editable*/font-size:16px;
-			/*@editable*/line-height:150%;
-			/*@editable*/text-align:left;
+			color:#202020;
+			font-family:Helvetica;
+			font-size:16px;
+			line-height:150%;
+			text-align:left;
 		}
-	/*
-	@tab Body
-	@section Body Link
-	@tip Set the styling for your email's body links. Choose a color that helps them stand out from your text.
-	*/
+
 		#templateBody .mcnTextContent a,#templateBody .mcnTextContent p a{
-			/*@editable*/color:#2BAADF;
-			/*@editable*/font-weight:normal;
-			/*@editable*/text-decoration:underline;
+			color:#2BAADF;
+			font-weight:normal;
+			text-decoration:underline;
 		}
-	/*
-	@tab Footer
-	@section Footer Style
-	@tip Set the background color and borders for your email's footer area.
-	*/
+
 		#templateFooter{
-			/*@editable*/background-color:#000000;
-			/*@editable*/background-image:none;
-			/*@editable*/background-repeat:no-repeat;
-			/*@editable*/background-position:center;
-			/*@editable*/background-size:cover;
-			/*@editable*/border-top:0;
-			/*@editable*/border-bottom:1px groove ;
-			/*@editable*/padding-top:9px;
-			/*@editable*/padding-bottom:9px;
+			background-color:#000000;
+			background-image:none;
+			background-repeat:no-repeat;
+			background-position:center;
+			background-size:cover;
+			border-top:0;
+			border-bottom:1px groove ;
+			padding-top:9px;
+			padding-bottom:9px;
 		}
-	/*
-	@tab Footer
-	@section Footer Text
-	@tip Set the styling for your email's footer text. Choose a size and color that is easy to read.
-	*/
+
 		#templateFooter .mcnTextContent,#templateFooter .mcnTextContent p{
-			/*@editable*/color:#656565;
-			/*@editable*/font-family:'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-			/*@editable*/font-size:12px;
-			/*@editable*/line-height:150%;
-			/*@editable*/text-align:center;
+			color:#656565;
+			font-family:'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			font-size:12px;
+			line-height:150%;
+			text-align:center;
 		}
-	/*
-	@tab Footer
-	@section Footer Link
-	@tip Set the styling for your email's footer links. Choose a color that helps them stand out from your text.
-	*/
+
 		#templateFooter .mcnTextContent a,#templateFooter .mcnTextContent p a{
-			/*@editable*/color:#a54f9e;
-			/*@editable*/font-weight:bold;
-			/*@editable*/text-decoration:underline;
+			color:#a54f9e;
+			font-weight:bold;
+			text-decoration:underline;
 		}
 	@media only screen and (min-width:768px){
 		.templateContainer{
@@ -440,129 +352,83 @@
 		}
 
 }	@media only screen and (max-width: 480px){
-	/*
-	@tab Mobile Styles
-	@section Heading 1
-	@tip Make the first-level headings larger in size for better readability on small screens.
-	*/
+
 		h1{
-			/*@editable*/font-size:22px !important;
-			/*@editable*/line-height:125% !important;
+			font-size:22px !important;
+			line-height:125% !important;
 		}
 
 }	@media only screen and (max-width: 480px){
-	/*
-	@tab Mobile Styles
-	@section Heading 2
-	@tip Make the second-level headings larger in size for better readability on small screens.
-	*/
+
 		h2{
-			/*@editable*/font-size:20px !important;
-			/*@editable*/line-height:125% !important;
+			font-size:20px !important;
+			line-height:125% !important;
 		}
 
 }	@media only screen and (max-width: 480px){
-	/*
-	@tab Mobile Styles
-	@section Heading 3
-	@tip Make the third-level headings larger in size for better readability on small screens.
-	*/
+
 		h3{
-			/*@editable*/font-size:18px !important;
-			/*@editable*/line-height:125% !important;
+			font-size:18px !important;
+			line-height:125% !important;
 		}
 
 }	@media only screen and (max-width: 480px){
-	/*
-	@tab Mobile Styles
-	@section Heading 4
-	@tip Make the fourth-level headings larger in size for better readability on small screens.
-	*/
+
 		h4{
-			/*@editable*/font-size:16px !important;
-			/*@editable*/line-height:150% !important;
+			font-size:16px !important;
+			line-height:150% !important;
 		}
 
 }	@media only screen and (max-width: 480px){
-	/*
-	@tab Mobile Styles
-	@section Boxed Text
-	@tip Make the boxed text larger in size for better readability on small screens. We recommend a font size of at least 16px.
-	*/
+
 		.mcnBoxedTextContentContainer .mcnTextContent,.mcnBoxedTextContentContainer .mcnTextContent p{
-			/*@editable*/font-size:14px !important;
-			/*@editable*/line-height:150% !important;
+			font-size:14px !important;
+			line-height:150% !important;
 		}
 
 }	@media only screen and (max-width: 480px){
-	/*
-	@tab Mobile Styles
-	@section Preheader Visibility
-	@tip Set the visibility of the email's preheader on small screens. You can hide it to save space.
-	*/
+
 		#templatePreheader{
-			/*@editable*/display:block !important;
+			display:block !important;
 		}
 
 }	@media only screen and (max-width: 480px){
-	/*
-	@tab Mobile Styles
-	@section Preheader Text
-	@tip Make the preheader text larger in size for better readability on small screens.
-	*/
+
 		#templatePreheader .mcnTextContent,#templatePreheader .mcnTextContent p{
-			/*@editable*/font-size:14px !important;
-			/*@editable*/line-height:150% !important;
+			font-size:14px !important;
+			line-height:150% !important;
 		}
 
 }	@media only screen and (max-width: 480px){
-	/*
-	@tab Mobile Styles
-	@section Header Text
-	@tip Make the header text larger in size for better readability on small screens.
-	*/
+
 		#templateHeader .mcnTextContent,#templateHeader .mcnTextContent p{
-			/*@editable*/font-size:16px !important;
-			/*@editable*/line-height:150% !important;
+			font-size:16px !important;
+			line-height:150% !important;
 		}
 
 }	@media only screen and (max-width: 480px){
-	/*
-	@tab Mobile Styles
-	@section Body Text
-	@tip Make the body text larger in size for better readability on small screens. We recommend a font size of at least 16px.
-	*/
+
 		#templateBody .mcnTextContent,#templateBody .mcnTextContent p{
-			/*@editable*/font-size:16px !important;
-			/*@editable*/line-height:150% !important;
+			font-size:16px !important;
+			line-height:150% !important;
 		}
 
 }	@media only screen and (max-width: 480px){
-	/*
-	@tab Mobile Styles
-	@section Footer Text
-	@tip Make the footer content text larger in size for better readability on small screens.
-	*/
+
 		#templateFooter .mcnTextContent,#templateFooter .mcnTextContent p{
-			/*@editable*/font-size:14px !important;
-			/*@editable*/line-height:150% !important;
+			font-size:14px !important;
+			line-height:150% !important;
 		}
 
 }</style></head>
     <body style="height: 100%;margin: 0;padding: 0;width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #;">
-        <!--*|IF:MC_PREVIEW_TEXT|*-->
-        <!--[if !gte mso 9]><!----><span class="mcnPreviewText" style="display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;">*|MC_PREVIEW_TEXT|*</span><!--<![endif]-->
-        <!--*|END:IF|*-->
+<span class="mcnPreviewText" style="display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;">*|MC_PREVIEW_TEXT|*</span><!--<![endif]-->
+
         <center>
             <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;height: 100%;margin: 0;padding: 0;width: 100%;background-color: #;">
                 <tr>
                     <td align="center" valign="top" id="bodyCell" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;height: 100%;margin: 0;padding: 10px;width: 100%;border-top: 1px none;">
-                        <!-- BEGIN TEMPLATE // -->
-                        <!--[if (gte mso 9)|(IE)]>
-                        <table align="center" border="0" cellspacing="0" cellpadding="0" width="600" style="width:600px;">
-                        <tr>
-                        <td align="center" valign="top" width="600" style="width:600px;">
-                        <![endif]-->
+                   
                         <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;border: 1px none #cfcece;max-width: 600px !important;">
                             <tr>
                                 <td valign="top" id="templatePreheader" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #fafafa;background-image: none;background-repeat: no-repeat;background-position: center;background-size: cover;border-top: 0;border-bottom: 0;padding-top: 9px;padding-bottom: 9px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnImageBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
@@ -593,14 +459,7 @@
     <tbody class="mcnTextBlockOuter">
         <tr>
             <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-              	<!--[if mso]>
-				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
-				<tr>
-				<![endif]-->
-			    
-				<!--[if mso]>
-				<td valign="top" width="600" style="width:600px;">
-				<![endif]-->
+          
                 <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
                     <tbody><tr>
                         
@@ -618,14 +477,7 @@ Para empezar, debes cambiar tu contraseña que por defecto es </span></font><str
                         </td>
                     </tr>
                 </tbody></table>
-				<!--[if mso]>
-				</td>
-				<![endif]-->
-                
-				<!--[if mso]>
-				</tr>
-				</table>
-				<![endif]-->
+		
             </td>
         </tr>
     </tbody>

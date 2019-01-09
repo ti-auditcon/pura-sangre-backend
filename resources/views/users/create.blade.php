@@ -159,7 +159,6 @@
          orientation: "bottom auto",
          autoclose: true,
          maxViewMode: 3,
-         daysOfWeekDisabled: "6",
          todayHighlight: true
       });
    </script>
@@ -176,7 +175,6 @@
          language: "es",
          autoclose: true,
          maxViewMode: 3,
-         daysOfWeekDisabled: "6",
          todayHighlight: true
       });
    </script>
