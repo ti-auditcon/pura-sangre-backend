@@ -42,7 +42,7 @@
               <label class="font-normal">Fecha de nacimiento</label>
               <div class="input-group date">
                 <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
-                <input class="form-control datepicker-birthdate" name="birthdate" value="{{ old('birthdate') }}" type="text" value="{{ date('d/m/Y') }}">
+                <input class="form-control datepicker-birthdate" name="birthdate" value="{{ old('birthdate') }}" type="text" value="{{ date('d-m-Y') }}">
               </div>
             </div>
           </div>
@@ -72,7 +72,7 @@
               <label class="font-normal">Atleta desde</label>
               <div class="input-group date">
                 <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
-                <input class="form-control datepicker-since" name="since" value="{{ old('since') }}" type="text" value="{{ date('d/m/Y') }}">
+                <input class="form-control datepicker-since" name="since" value="{{ old('since') }}" type="text" value="{{ date('d-m-Y') }}">
               </div>
             </div>
           </div>
@@ -152,7 +152,7 @@
          keyboardNavigation: false,
          forceParse: false,
          calendarWeeks: true,
-         format: "dd/mm/yyyy",
+         format: "dd-mm-yyyy",
          startDate: "01-01-1910",
          endDate: "01-01-2030",
          language: "es",
@@ -170,9 +170,9 @@
          keyboardNavigation: false,
          forceParse: false,
          calendarWeeks: true,
-         format: "dd/mm/yyyy",
-         startDate: "01/01/1910",
-         endDate: "01/01/2030",
+         format: "dd-mm-yyyy",
+         startDate: "01-01-1910",
+         endDate: "01-01-2030",
          language: "es",
          autoclose: true,
          maxViewMode: 3,

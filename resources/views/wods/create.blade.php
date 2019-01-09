@@ -19,7 +19,7 @@
               <label class="font-normal">Fecha Workout</label>
               <div class="input-group date">
                 <span class="input-group-addon bg-white"><i class="la la-calendar"></i></span>
-                <input class="form-control form-control-air" name="date" type="text" value="{{ date('m/d/Y') }}">
+                <input class="form-control form-control-air" name="date" type="text" value="{{ date('d-m-Y') }}">
               </div>
             </div>
           </div>
@@ -63,11 +63,18 @@
 <script defer>
 // Bootstrap datepicker
 $('#start_date .input-group.date').datepicker({
-  todayBtn: "linked",
-  keyboardNavigation: false,
-  forceParse: false,
-  calendarWeeks: true,
-  autoclose: true
+   todayBtn: "linked",
+   keyboardNavigation: false,
+   forceParse: false,
+   calendarWeeks: true,
+   format: "dd-mm-yyyy",
+   startDate: "01-01-2010",
+   endDate: "01-01-2030",
+   language: "es",
+   autoclose: true,
+   maxViewMode: 3,
+   daysOfWeekDisabled: "6",
+   todayHighlight: true
 });
 </script>
 

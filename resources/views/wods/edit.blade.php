@@ -9,7 +9,7 @@
   <div class="col-10">
     <div class="ibox form-control-air">
       <div class="ibox-head">
-        <div class="ibox-title"> Workout {{Session::get('clase-type-id')}} día {{$wod->date}}</div>
+        <div class="ibox-title"> Workout {{Session::get('clase-type-id')}} día {{Carbon\Carbon::parse($wod->date)->format('d-m-Y')}}</div>
       </div>
       {!! Form::open(['route' => ['wods.update',$wod->id],'method' => 'PUT']) !!}
       <div class="ibox-body">

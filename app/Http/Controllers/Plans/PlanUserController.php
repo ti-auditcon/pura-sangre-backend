@@ -58,11 +58,6 @@ class planuserController extends Controller
 		$planuser->user_id = $user->id;
 		$planuser->start_date = Carbon::parse($request->fecha_inicio);
 
-		if ($plan->custom == 1) {
-			$planuser->finish_date = Carbon::parse($request->fecha_termino);
-			$planuser->counter = $request->counter;
-		}
-
 		if($plan->id == 1){
         	$planuser->finish_date = Carbon::parse($request->fecha_inicio)->addWeeks(1);
         	$planuser->counter = $plan->class_numbers;
@@ -73,6 +68,10 @@ class planuserController extends Controller
 	                                       ->subDay();
 	        $planuser->counter = $plan->class_numbers * $plan->plan_period->period_number;
 	    }
+		if ($plan->custom == 1) {
+			$planuser->finish_date = Carbon::parse($request->fecha_termino);
+			$planuser->counter = $request->counter;
+		}
 	    // $planuser->plan_status_id = 3;
 
 		if($planuser->save()){

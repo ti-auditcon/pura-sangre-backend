@@ -2,49 +2,54 @@
 
 namespace App\Models\Wods;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Clases\Clase;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 
 class Wod extends Model
 {
-  protected $fillable = ['date','clase_type_id'];
-  protected $appends = ['start','allDay','title','url'];
+    protected $dates = ['date'];
+    protected $fillable = ['date','clase_type_id'];
+    protected $appends = ['start','allDay','title','url'];
 
+    public function setDateAttribute($value)
+    {
+        $this->attributes['date'] = Carbon::parse($value)->format('Y-m-d');
+    }
 
-  public function clases()
-  {
-    return $this->hasMany(Clase::class);
-  }
+    public function clases()
+    {
+        return $this->hasMany(Clase::class);
+    }
 
-  public function stages()
-  {
-    return $this->hasMany(Stage::class);
-  }
+    public function stages()
+    {
+        return $this->hasMany(Stage::class);
+    }
 
-  //etapa por id
-  public function stage($id)
-  {
-    return $this->hasMany(Stage::class)->where('stage_type_id',$id)->first() ?? null;
-  }
+    //ETAPA POR ID
+    public function stage($id)
+    {
+        return $this->hasMany(Stage::class)->where('stage_type_id',$id)->first() ?? null;
+    }
 
+    public function getAllDayAttribute()
+    {
+        return true;
+    }
 
-  public function getAllDayAttribute()
-  {
-    return true;
-  }
+    public function getStartAttribute()
+    {
+        return $this->date->format('Y-m-d');
+    }
 
-  public function getStartAttribute()
-  {
-    return $this->date;
-  }
-  public function getTitleAttribute()
-  {
-    return 'WorkOut';
-  }
-  public function getUrlAttribute()
-  {
-    return url('/wods/'.$this->id.'/edit');
-  }
+    public function getTitleAttribute()
+    {
+        return 'WorkOut';
+    }
 
-
+    public function getUrlAttribute()
+    {
+        return url('/wods/'.$this->id.'/edit');
+    }
 }
