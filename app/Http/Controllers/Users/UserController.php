@@ -54,6 +54,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request, User $user)
     {
+
         $user = User::create(array_merge($request->all(), [
             'password' => bcrypt('purasangre'),
             'avatar' => url('/').'/storage/users/default.jpg'
