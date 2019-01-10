@@ -410,7 +410,7 @@
 
 														<p style="margin: 10px 0;padding: 0;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #202020;font-family: Helvetica;font-size: 16px;line-height: 150%;text-align: left;"><br>
 															<font face="lato, helvetica neue, helvetica, arial, sans-serif"><span style="font-size:17px">Estamos felices de que te unas a nuestra familia, estamos aquí para apoyarte y para que cumplas tus objetivos.<br>
-														<br>Para empezar, debes cambiar tu contraseña que por defecto es </span></font><strong style="font-family:lato,helvetica neue,helvetica,arial,sans-serif; font-size:17px">purasangre</strong><font face="lato, helvetica neue, helvetica, arial, sans-serif"><span style="font-size:17px">, te enviamos un&nbsp;correo con&nbsp;las instrucciones para realizar este proceso.</span></font></p>
+														<br>Para empezar, debes cambiar tu contraseña que por defecto es </span></font><strong style="font-family:lato,helvetica neue,helvetica,arial,sans-serif; font-size:17px">purasangre</strong><font face="lato, helvetica neue, helvetica, arial, sans-serif"><span style="font-size:17px">, acá abajo haya un enlace para que puedas actualizarla.</span></font></p>
 												</td>
 											</tr>
 										</tbody>

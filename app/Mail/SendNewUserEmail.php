@@ -34,6 +34,6 @@ class SendNewUserEmail extends Mailable
     {
         return $this->view('users.welcome.new')
                     ->subject('Bienvenido a PuraSangre!')
-                    ->from('raul.berrios@auditcon.cl');
+                    ->from('contacto@purasangrecrossfit.cl');
     }
 }
