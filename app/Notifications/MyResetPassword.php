@@ -45,14 +45,12 @@ class MyResetPassword extends Notification
      */
     public function toMail($notifiable)
     {
-                if (static::$toMailCallback) {
+        if (static::$toMailCallback) {
             return call_user_func(static::$toMailCallback, $notifiable, $this->token);
         }
-            return (new MailMessage)
-            ->subject(Lang::getFromJson('Cambio de Contraseña'))
-            ->line(Lang::getFromJson('Hola, en el siguiente enlace podras cambiar tu contraseña.'))
-            ->action(Lang::getFromJson('Reset Password'), url(config('app.url').route('password.reset', $this->token, false)))
-            ->line(Lang::getFromJson('Si no has pedido cambio o actualización de contraseña solo ignora este correo.'));
+        return (new MailMessage)
+            ->subject(Lang::getFromJson('Pura Sangre - Cambio de Contraseña!'))
+            ->markdown('mail.passresets.resetpass', ['token' => $this->token]);
     }
 
     /**
@@ -73,3 +71,9 @@ class MyResetPassword extends Notification
         static::$toMailCallback = $callback;
     }
 }
+
+            // return (new MailMessage)
+            // ->subject(Lang::getFromJson('Cambio de Contraseña'))
+            // ->line(Lang::getFromJson('Hola, en el siguiente enlace podras cambiar tu contraseña.'))
+            // ->action(Lang::getFromJson('Reset Password'), url(config('app.url').route('password.reset', $this->token, false)))
+            // ->line(Lang::getFromJson('Si no has pedido cambio o actualización de contraseña solo ignora este correo.'));

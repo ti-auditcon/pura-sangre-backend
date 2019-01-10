@@ -11,14 +11,18 @@ class SendNewUserEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $user;
+    public $token;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($user, $token)
     {
-        //
+        $this->user = $user;
+        $this->token = $token;
     }
 
     /**
@@ -28,6 +32,8 @@ class SendNewUserEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('users.welcome.new');
+        return $this->view('users.welcome.new')
+                    ->subject('Bienvenido a PuraSangre!')
+                    ->from('raul.berrios@auditcon.cl');
     }
 }

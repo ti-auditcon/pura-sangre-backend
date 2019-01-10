@@ -30,9 +30,9 @@ class SendEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('messages.template')
-                    ->subject($this->demo->subject)
-                    ->from('raul.berrios@auditcon.cl');
+        // return $this->view('messages.template')
+        //             ->subject($this->demo->subject)
+        //             ->from('raul.berrios@auditcon.cl');
     }
 }
         //text define la plantilla que se usará
