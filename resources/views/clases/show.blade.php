@@ -117,7 +117,9 @@
                      <tr>
                         <td>
                            {{-- <img class="img-circle" src="{{$reservation->user->avatar}}" alt="image" width="54"> --}}
-                           <div class="img-avatar" style="background-image: url('{{$reservation->user->avatar}}');"></div>
+                           {{-- <div class="img-avatar" style="background-image: url('{{$reservation->user->avatar}}');"></div> --}}
+
+                           <div class="img-avatar" style="background-image:  @if ($reservation->user->avatar) url('{{$reservation->user->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"></div>
                            <span class="badge-{{$reservation->user->status_user->type}} badge-point"></span>
                            <a @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2)) href="{{url('/users/'.$reservation->user->id)}}" @endif>
                               {{$reservation->user->first_name}} {{$reservation->user->last_name}}
@@ -180,7 +182,8 @@
                         {{-- <a class="media-img" href="javascript:;">
                            <img class="img-circle" src="{{$usuario->avatar}}" alt="image" width="54">
                         </a> --}}
-                        <div class="img-avatar" style="background-image: url('{{$usuario->avatar}}');"></div>
+                        {{-- <div class="img-avatar" style="background-image: url('{{$usuario->avatar}}');"></div> --}}
+                        <div class="img-avatar" style="background-image:  @if ($usuario->avatar) url('{{$usuario->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"></div>
                         <span class="badge-{{$usuario->status_user->type}} badge-point"></span>
                         <a href="{{url('/users/'.$usuario->id)}}">{{$usuario->first_name}} {{$usuario->last_name}}</a>
                      </td>

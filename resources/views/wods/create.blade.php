@@ -31,7 +31,7 @@
         <div class="col">
           <div class="form-group mb-4">
             <label>{{$st->stage_type}}</label>
-            <textarea name="{{$st->id}}" class="form-control form-control-solid" rows="6"></textarea>
+            <textarea name="{{$st->id}}" class="form-control form-control-solid" rows="11"></textarea>
           </div>
         </div>
         @endforeach
