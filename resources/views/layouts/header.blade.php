@@ -65,13 +65,14 @@
                     {{Auth::user()->first_name}} {{Auth::user()->last_name}}
                   </span>
                   {{-- <img src="{{Auth::user()->avatar}}" alt="image" /> --}}
-                  <div class="img-avatar img-avatar-mini" style="background-image: url('{{Auth::user()->avatar}}');"></div>
+                  {{-- <div class="img-avatar img-avatar-mini" style="background-image: url('{{Auth::user()->avatar}}');"></div> --}}
+                  <div class="img-avatar img-avatar-mini" style="background-image: @if (Auth::user()->avatar) url('{{Auth::user()->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif "></div>
               </a>
               <div class="dropdown-menu dropdown-arrow dropdown-menu-right admin-dropdown-menu">
                   <div class="dropdown-arrow"></div>
                   <div class="dropdown-header">
                     <div>
-                      <div class="img-avatar img-avatar-admin" style="background-image: url('{{Auth::user()->avatar}}');"></div>
+                      <div class="img-avatar img-avatar-admin" style="background-image: @if (Auth::user()->avatar) url('{{Auth::user()->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"></div>
                     </div>
                     <div>
                       <h5 class="font-strong text-white">{{Auth::user()->first_name}} {{Auth::user()->last_name}}</h5>
