@@ -9,7 +9,6 @@ use Illuminate\Auth\Passwords\TokenRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Password;
 use Redirect;
 use Session;
 
@@ -46,7 +45,6 @@ class UserObserver
             'token' => Hash::make($token),
         ]);
         Mail::to($user->email)->send(new SendNewUserEmail($user, $token));
-        // Password::sendResetLink(['email' => $user->email]);
 
         if ($user->status_user_id == 3) {
             $planuser = new PlanUser;

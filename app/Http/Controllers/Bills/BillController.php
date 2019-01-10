@@ -13,15 +13,6 @@ use Illuminate\Http\Request;
 class BillController extends Controller
 {
     /**
-     * [__construct description]
-     */
-    // public function __construct()
-    // {
-    //     parent::__construct();
-    //     // $this->cMIDLLEWARWE
-    // }
-
-    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -34,19 +25,23 @@ class BillController extends Controller
     public function bills()
     {
         $bills = Bill::all();
+        // return $bills;
         return $bills->map(function ($bill) {
             return [
-                'user_id' => $bill->plan_user->user->id,
-                'alumno' => $bill->plan_user->user->first_name.' '.$bill->plan_user->user->last_name,
-                'Plan' => $bill->plan_user->plan->plan,
-                'Fecha boleta' => Carbon::parse($bill->date)->format('d-m-Y'),
-                'Fecha de inicio' => Carbon::parse($bill->start_date)->format('d-m-Y'),
-                'Fecha de termino' => Carbon::parse($bill->finish_date)->format('d-m-Y'),
-                'Total' => '$ '.number_format($bill->amount, $decimal = 0, '.', '.') ?? "no aplica"
+                'user_id' => isset($bill->plan_user) ? $bill->plan_user->user->id : "no aplica",
+                'alumno' => isset($bill->plan_user) ? $bill->plan_user->user->first_name.' '.$bill->plan_user->user->last_name : "no aplica",
+                'plan' => isset($bill->plan_user) ? $bill->plan_user->plan->plan : "no aplica",
+                'fecha_boleta' => Carbon::parse($bill->date)->format('d-m-Y') ?? "no aplica",
+                'fecha_de_inicio' => Carbon::parse($bill->start_date)->format('d-m-Y') ?? "no aplica",
+                'fecha_de_termino' => Carbon::parse($bill->finish_date)->format('d-m-Y') ?? "no aplica",
+                'total' => '$ '.number_format($bill->amount, $decimal = 0, '.', '.') ?? "no aplica",
             ];
         });
     }
 
+     // 'user_id' => $bill->plan_user->user->id,
+     //            'alumno' => $bill->plan_user->user->first_name.' '.$bill->plan_user->user->last_name,
+     //            'Plan' => $bill->plan_user->plan->plan,
     /**
      * Store a newly created resource in storage.
      *
@@ -92,3 +87,27 @@ class BillController extends Controller
         //
     }
 }
+
+
+           // if (!$bill->plan_user) {
+           //      $id = 'sin dato';
+           //      $first_name = 'sin dato';
+           //      $plan = 'sin dato';
+           //  }else{
+           //      $id = $bill->plan_user->user->id;
+           //      $first_name = $bill->plan_user->user->first_name.' '.$bill->plan_user->user->last_name;
+           //      $plan = $bill->plan_user->plan->plan;
+           //  }
+            // 
+           //  
+      // return $bills->map(function ($bill) {
+      //          return [
+      //           'user_id' => $bill->plan_user->user->id,
+      //           'alumno' => $bill->plan_user->user->first_name.' '.$bill->plan_user->user->last_name,
+      //           'Plan' => $bill->plan_user->plan->plan,
+      //           'Fecha boleta' => Carbon::parse($bill->date)->format('d-m-Y'),
+      //           'Fecha de inicio' => Carbon::parse($bill->start_date)->format('d-m-Y'),
+      //           'Fecha de termino' => Carbon::parse($bill->finish_date)->format('d-m-Y'),
+      //           'Total' => '$ '.number_format($bill->amount, $decimal = 0, '.', '.') ?? "no aplica"
+      //       ];
+      //   });
