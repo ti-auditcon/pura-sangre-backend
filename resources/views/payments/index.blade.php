@@ -25,8 +25,8 @@
                   <th width="10%">Total</th>
                 </tr>
               </thead>
-              {{-- <tbody> --}}
-             {{--    @foreach ($bills->sortByDesc('date') as $bill)
+              <tbody>
+               {{--  @foreach ($bills->sortByDesc('date') as $bill)
                 <tr>
                   <td><a href="{{url('/users/'.$bill->plan_user->user->id)}}">
                     {{$bill->plan_user->user->first_name}} {{$bill->plan_user->user->last_name}}</a>
@@ -38,7 +38,7 @@
                   <td>{{'$ '.number_format($bill->amount, $decimal = 0, '.', '.') ?? "no aplica"}}</td>
                 </tr>
                 @endforeach --}}
-              {{-- </tbody> --}}
+              </tbody>
             </table>
           </div>
         </div>
@@ -53,55 +53,67 @@
 @section('scripts') {{-- scripts para esta vista --}}
   {{--  datatable --}}
   <script src="{{ asset('js/datatables.min.js') }}"></script>
- {{--  <script> --}}
-{{--    $(document).ready(function() {
+  <script>
+   $(document).ready(function() {
       table = $('#payments-table').DataTable({
-        "paging": true,
-        "ordering": true,
-        "order": [[ 3, "asc" ]],
-        "language": {
-          "lengthMenu": "Mostrar _MENU_ elementos",
-          "zeroRecords": "Sin resultados",
-          "info": "Mostrando página _PAGE_ de _PAGES_",
-          "infoEmpty": "Sin resultados",
-          "infoFiltered": "(filtrado de _MAX_ registros totales)",
-          "search": "Filtrar:"
-
-        },
+         "paging": true,
+         "ordering": true,
+         "order": [[ 3, "asc" ]],
+         // "data": data,
+         "deferRender":    true,
+         "scrollY":        200,
+         "scrollCollapse": true,
+         "scroller":       true,
+         "lengthMenu": "Mostrar _MENU_ elementos",
+         "zeroRecords": "Sin resultados",
+         "info": "Mostrando página _PAGE_ de _PAGES_",
+         "infoEmpty": "Sin resultados",
+         "infoFiltered": "(filtrado de _MAX_ registros totales)",
+         "search": "Filtrar:"
       });
-    }); --}}
-  {{-- </script> --}}
+   });
+   </script> 
   {{--  End datatable --}}
 
 
 <script>
 
    $(document).ready(function() {
+      var pushItemsToList = function(bills) {
+         var tbody = $('#payments-table tbody'),
+            props = ["alumno", "plan", "fecha_boleta", "fecha_de_inicio", "fecha_de_termino", "total"];
+         $.each(bills, function(i, bill) {
+             var tr = $('<tr>');
+            $.each(props, function(i, prop) {
+               $('<td>').html(bill[prop]).appendTo(tr);  
+            });
+            tbody.append(tr);
+         });
+      }
+
       var data = [];
       $.ajax({
-         type:'get',
-         url: '/bills/',
+         type:'GET',
+         url: '/bills',
          success: function(bills){
-            data = bills;
-
+            pushItemsToList(bills);
          },
          error: function(){
             console.log("Hay al menos un error");
          }
       });
-                  console.log(data);
-      for ( var i=0 ; i<data.length ; i++ ) {
-         data.push( [ i, i, i, i, i ,i] );
-      }
-       
-      $('#payments-table').DataTable({
-         data:           data,
-         deferRender:    true,
-         scrollY:        200,
-         scrollCollapse: true,
-         scroller:       true
-      });
    });
+            // for ( var i=0 ; i<data.length ; i++ ) {
+            //    data.push( [ i, i, i, i, i ,i] );
+            // }
+       
+            // $('#payments-table').DataTable({
+            //    data:           data,
+            //    deferRender:    true,
+            //    scrollY:        200,
+            //    scrollCollapse: true,
+            //    scroller:       true
+            // });
 
 
 </script>

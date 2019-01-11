@@ -2,16 +2,20 @@
 
 namespace App\Observers\Users;
 
-use Session;
-use Redirect;
-use App\Models\Users\User;
-use App\Models\Plans\PlanUser;
 use App\Mail\SendNewUserEmail;
+use App\Models\Plans\PlanUser;
+use App\Models\Users\User;
+use Illuminate\Auth\Passwords\TokenRepositoryInterface;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Password;
+use Redirect;
+use Session;
 
 class UserObserver
 {
+    
+    
     public function retrieved(User $user)
     {
         if($user->status_user_id == 1 || $user->status_user_id == 3) {
@@ -35,8 +39,12 @@ class UserObserver
      */
     public function created(User $user)
     {
-        // Mail::to($user->email)->send(new SendNewUserEmail($user));
-        // Password::sendResetLink(['email' => $user->email]);
+        $token = str_random(64);
+        DB::table('password_resets')->insert([
+            'email' => $user->email, 
+            'token' => Hash::make($token),
+        ]);
+        Mail::to($user->email)->send(new SendNewUserEmail($user, $token));
 
         if ($user->status_user_id == 3) {
             $planuser = new PlanUser;
@@ -48,6 +56,11 @@ class UserObserver
             $planuser->finish_date = today()->addDays(7);
             $planuser->save();
         }
+    }
+
+    public function createToken($tokens, $user)
+    {
+        return $tokens->create($user);
     }
 
     /**
