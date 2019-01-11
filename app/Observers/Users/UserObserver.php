@@ -39,12 +39,12 @@ class UserObserver
      */
     public function created(User $user)
     {
-        $token = str_random(64);
-        DB::table('password_resets')->insert([
-            'email' => $user->email, 
-            'token' => Hash::make($token),
-        ]);
-        Mail::to($user->email)->send(new SendNewUserEmail($user, $token));
+        // $token = str_random(64);
+        // DB::table('password_resets')->insert([
+        //     'email' => $user->email, 
+        //     'token' => Hash::make($token),
+        // ]);
+        // Mail::to($user->email)->send(new SendNewUserEmail($user, $token));
 
         if ($user->status_user_id == 3) {
             $planuser = new PlanUser;
