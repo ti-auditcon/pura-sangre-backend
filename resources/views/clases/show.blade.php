@@ -167,34 +167,30 @@
                <span aria-hidden="true">&times;</span>
             </button>
          </div>
-         <div class="modal-body pr-0 pl-4 pb-5">
-            <table id="students-table-search" class="table table-hover m-0 mr-0">
+         <div class="modal-body pl-4 pb-5">
+            <table id="students-table-search" class="table table-hover">
                <thead class="thead-default">
                   <tr>
-                     <th width="80%">Alumnos</th>
-                     <th width="20%">Accion</th>
+                     <th width="90%">Alumnos</th>
+                     <th width="10%">Accion</th>
                   </tr>
                </thead>
                <tbody>
                   @foreach ($outclase as $usuario)
                   <tr>
-                     <td>
-                        {{-- <a class="media-img" href="javascript:;">
-                           <img class="img-circle" src="{{$usuario->avatar}}" alt="image" width="54">
-                        </a> --}}
-                        {{-- <div class="img-avatar" style="background-image: url('{{$usuario->avatar}}');"></div> --}}
-                        <div class="img-avatar" style="background-image:  @if ($usuario->avatar) url('{{$usuario->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"></div>
-                        <span class="badge-{{$usuario->status_user->type}} badge-point"></span>
-                        <a href="{{url('/users/'.$usuario->id)}}">{{$usuario->first_name}} {{$usuario->last_name}}</a>
-                     </td>
-                     <td>
-                        {!! Form::open(['route' => ['reservation.store'], 'method' => 'post']) !!}
-                        <input type="hidden" value="{{$usuario->id}}" name="user_id">
-                        <input type="hidden" value="{{$clase->id}}" name="clase_id">
-                        <input type="hidden" value="1" name="by_god">
-                        <button type="button" class="btn btn-primary button-little" type="submit" onClick="this.form.submit();">Agregar</button>
-                        {!! Form::close() !!}
-                     </td>
+                    <td>
+                      <div class="img-avatar" style="background-image:  @if ($usuario->avatar) url('{{$usuario->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"></div>
+                      <span class="badge-{{$usuario->status_user->type}} badge-point"></span>
+                      <a href="{{url('/users/'.$usuario->id)}}">{{$usuario->first_name}} {{$usuario->last_name}}</a>
+                    </td>
+                    <td>
+                      {!! Form::open(['route' => ['reservation.store'], 'method' => 'post']) !!}
+                      <input type="hidden" value="{{$usuario->id}}" name="user_id">
+                      <input type="hidden" value="{{$clase->id}}" name="clase_id">
+                      <input type="hidden" value="1" name="by_god">
+                      <button type="button" class="btn btn-primary button-little" type="submit" onClick="this.form.submit();">Agregar</button>
+                      {!! Form::close() !!}
+                    </td>
                  </tr>
                  @endforeach
                </tbody>

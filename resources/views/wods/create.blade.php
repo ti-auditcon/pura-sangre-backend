@@ -25,26 +25,25 @@
           </div>
         </div>
 
-    <div class="contaner">
-      <div class="row">
-        @foreach(App\Models\Wods\StageType::all() as $st)
-        <div class="col">
-          <div class="form-group mb-4">
-            <label>{{$st->stage_type}}</label>
-            <textarea name="{{$st->id}}" class="form-control form-control-solid" rows="11"></textarea>
+        <div class="contaner">
+          <div class="row">
+            @foreach(App\Models\Wods\StageType::all() as $st)
+            <div class="col">
+              <div class="form-group mb-4">
+                <label>{{$st->stage_type}}</label>
+                <textarea name="{{$st->id}}" class="form-control form-control-solid" rows="11"></textarea>
+              </div>
+            </div>
+            @endforeach
           </div>
         </div>
-        @endforeach
-      </div>
-    </div>
 
-
-      <br>
-      {{-- <div class="ibox-footer"> --}}
-      <button class="btn btn-primary btn-air mr-2" type="submit">Crear WOD</button>
-      {{-- <button class="" href="" type="btn btn-secondary"></button> --}}
-      <a class="btn btn-secondary" href="{{ route('clases.index') }}">Volver</a>
-      {{-- </div> --}}
+        <br>
+        {{-- <div class="ibox-footer"> --}}
+        <button class="btn btn-primary btn-air mr-2" type="submit">Crear WOD</button>
+        {{-- <button class="" href="" type="btn btn-secondary"></button> --}}
+        <a class="btn btn-secondary" href="{{ route('clases.index') }}">Volver</a>
+        {{-- </div> --}}
     </div>
 
     </div>
