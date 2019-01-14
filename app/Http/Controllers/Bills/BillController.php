@@ -25,7 +25,6 @@ class BillController extends Controller
     public function bills()
     {
         $bills = Bill::all();
-        // return $bills;
         return ['data' => $bills->map(function ($bill) {
             return [
                 'user_id' => isset($bill->plan_user) ? $bill->plan_user->user->id : "no aplica",
@@ -39,9 +38,6 @@ class BillController extends Controller
         })];
     }
 
-     // 'user_id' => $bill->plan_user->user->id,
-     //            'alumno' => $bill->plan_user->user->first_name.' '.$bill->plan_user->user->last_name,
-     //            'Plan' => $bill->plan_user->plan->plan,
     /**
      * Store a newly created resource in storage.
      *
