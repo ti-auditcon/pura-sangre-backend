@@ -54,67 +54,72 @@
   {{--  datatable --}}
   <script src="{{ asset('js/datatables.min.js') }}"></script>
   <script>
-   $(document).ready(function() {
-      table = $('#payments-table').DataTable({
-         "paging": true,
-         "ordering": true,
-         "order": [[ 3, "asc" ]],
-         // "data": data,
-         "deferRender":    true,
-         "scrollY":        200,
-         "scrollCollapse": true,
-         "scroller":       true,
-         "lengthMenu": "Mostrar _MENU_ elementos",
-         "zeroRecords": "Sin resultados",
-         "info": "Mostrando página _PAGE_ de _PAGES_",
-         "infoEmpty": "Sin resultados",
-         "infoFiltered": "(filtrado de _MAX_ registros totales)",
-         "search": "Filtrar:"
+
+      $(document).ready(function() {
+         $('#payments-table').DataTable( {
+            "paging": true,
+            "ordering": true,
+            "order": [[ 3, "asc" ]],
+            "language": {
+               "loadingRecords": "Cargando datos...",
+               "lengthMenu": "Mostrar _MENU_ elementos",
+               "zeroRecords": "Sin resultados",
+               "info": "Mostrando página _PAGE_ de _PAGES_",
+               "infoEmpty": "Sin resultados",
+               "infoFiltered": "(filtrado de _MAX_ registros totales)",
+               "search": "Filtrar:",
+               "paginate": {
+                  "first":      "Primero",
+                  "last":       "último",
+                  "next":       "Siguiente",
+                  "previous":   "Anterior"
+               },
+            },
+            "ajax": {
+                "url": "/bills",
+                "type": "GET"
+            },
+            "columns": [
+                { "data": "alumno" },
+                { "data": "plan" },
+                { "data": "fecha_boleta" },
+                { "data": "fecha_de_inicio" },
+                { "data": "fecha_de_termino" },
+                { "data": "total" }
+            ]
+         });
       });
-   });
    </script> 
   {{--  End datatable --}}
 
 
 <script>
 
-   $(document).ready(function() {
-      var pushItemsToList = function(bills) {
-         var tbody = $('#payments-table tbody'),
-            props = ["alumno", "plan", "fecha_boleta", "fecha_de_inicio", "fecha_de_termino", "total"];
-         $.each(bills, function(i, bill) {
-             var tr = $('<tr>');
-            $.each(props, function(i, prop) {
-               $('<td>').html(bill[prop]).appendTo(tr);  
-            });
-            tbody.append(tr);
-         });
-      }
+   // $(document).ready(function() {
+   //    var pushItemsToList = function(bills) {
+   //       var tbody = $('#payments-table tbody'),
+   //          props = ["alumno", "plan", "fecha_boleta", "fecha_de_inicio", "fecha_de_termino", "total"];
+   //       $.each(bills, function(i, bill) {
+   //           var tr = $('<tr>');
+   //          $.each(props, function(i, prop) {
+   //             $('<td>').html(bill[prop]).appendTo(tr);  
+   //          });
+   //          tbody.append(tr);
+   //       });
+   //    }
 
-      var data = [];
-      $.ajax({
-         type:'GET',
-         url: '/bills',
-         success: function(bills){
-            pushItemsToList(bills);
-         },
-         error: function(){
-            console.log("Hay al menos un error");
-         }
-      });
-   });
-            // for ( var i=0 ; i<data.length ; i++ ) {
-            //    data.push( [ i, i, i, i, i ,i] );
-            // }
-       
-            // $('#payments-table').DataTable({
-            //    data:           data,
-            //    deferRender:    true,
-            //    scrollY:        200,
-            //    scrollCollapse: true,
-            //    scroller:       true
-            // });
-
+   //    var data = [];
+   //    $.ajax({
+   //       type:'GET',
+   //       url: '/bills',
+   //       success: function(bills){
+   //          pushItemsToList(bills);
+   //       },
+   //       error: function(){
+   //          console.log("Hay al menos un error");
+   //       }
+   //    });
+   // });
 
 </script>
 

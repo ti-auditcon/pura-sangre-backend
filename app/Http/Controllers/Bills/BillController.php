@@ -26,7 +26,7 @@ class BillController extends Controller
     {
         $bills = Bill::all();
         // return $bills;
-        return $bills->map(function ($bill) {
+        return ['data' => $bills->map(function ($bill) {
             return [
                 'user_id' => isset($bill->plan_user) ? $bill->plan_user->user->id : "no aplica",
                 'alumno' => isset($bill->plan_user) ? $bill->plan_user->user->first_name.' '.$bill->plan_user->user->last_name : "no aplica",
@@ -36,7 +36,7 @@ class BillController extends Controller
                 'fecha_de_termino' => Carbon::parse($bill->finish_date)->format('d-m-Y') ?? "no aplica",
                 'total' => '$ '.number_format($bill->amount, $decimal = 0, '.', '.') ?? "no aplica",
             ];
-        });
+        })];
     }
 
      // 'user_id' => $bill->plan_user->user->id,
