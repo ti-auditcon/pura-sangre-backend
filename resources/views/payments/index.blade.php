@@ -19,10 +19,10 @@
                 <tr>
                   <th width="20%">Alumno</th>
                   <th width="20%">Plan</th>
-                  <th width="15%">Date</th>
-                  <th width="15%">Start Date</th>
-                  <th width="15%">Finish Date</th>
-                  <th width="15%">Amount</th>
+                  <th width="15%">Fecha Boleta</th>
+                  <th width="15%">Fecha de Inicio</th>
+                  <th width="15%">Fecha de Término</th>
+                  <th width="15%">Total</th>
                 </tr>
               </thead>
               <tbody>

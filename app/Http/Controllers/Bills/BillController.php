@@ -24,37 +24,17 @@ class BillController extends Controller
     {
         $plans = Plan::all();
         return view('payments.index');
-
     }
 
-    public function bills()
-    {
-        $bills = Bill::all();
-
-        return ['data' => $bills->map(function ($bill) {
-            return [
-                'user_id' => isset($bill->plan_user) ? $bill->plan_user->user->id : "no aplica",
-                'alumno' => isset($bill->plan_user) ? $bill->plan_user->user->first_name.' '.$bill->plan_user->user->last_name : "no aplica",
-                'plan' => isset($bill->plan_user) ? $bill->plan_user->plan->plan : "no aplica",
-                'fecha_boleta' => Carbon::parse($bill->date)->format('d-m-Y') ?? "no aplica",
-                'fecha_de_inicio' => Carbon::parse($bill->start_date)->format('d-m-Y') ?? "no aplica",
-                'fecha_de_termino' => Carbon::parse($bill->finish_date)->format('d-m-Y') ?? "no aplica",
-                'total' => '$ '.number_format($bill->amount, $decimal = 0, '.', '.') ?? "no aplica",
-            ];
-        })];
-    }
-
-
+    /**
+     * [getPagos description]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
     public function getPagos(Request $request)
     {
-        // print_r($request->all());
-        $columns = array(
-            0 => 'student',
-            1 => 'plan',
-            0 => 'date',
-            1 => 'start_date',
-            2 => 'finish_date',
-            3 => 'amount'
+        $columns = array(0 => 'payment_type_id', 1 => 'plan_user_id',
+            2 => 'date', 3 => 'start_date', 4 => 'finish_date', 5 => 'amount',
         );
         
         $totalData = Bill::count();
@@ -64,32 +44,57 @@ class BillController extends Controller
         $dir = $request->input('order.0.dir');
 
         if(empty($request->input('search.value'))){
-            $bills = Bill::offset($start)
+            if ($request->input('order.0.column') == 0) {
+                $bills = Bill::offset($start)
+                    ->limit($limit)
+                    ->join('plan_user', 'plan_user.id', '=', 'bills.plan_user_id')
+                    ->join('users', 'users.id', '=', 'plan_user.user_id')
+                    ->orderBy('users.first_name', $dir)
+                    ->get();
+                $totalFiltered = Bill::count();
+            }
+            elseif ($request->input('order.0.column') == 1) {
+                $bills = Bill::offset($start)
+                    ->limit($limit)
+                    ->join('plan_user', 'plan_user.id', '=', 'bills.plan_user_id')
+                    ->join('plans', 'plans.id', '=', 'plan_user.plan_id')
+                    ->orderBy('plans.plan', $dir)
+                    ->get();
+                $totalFiltered = Bill::count();
+            }else{
+                $bills = Bill::offset($start)
                     ->limit($limit)
                     ->orderBy($order, $dir)
                     ->get();
-            $totalFiltered = Bill::count();
+                $totalFiltered = Bill::count();
+            }   
         }else{
             $search = $request->input('search.value');
-            $bills = Bill::where('date', 'like', "%{$search}%")
-                            ->orWhere('start_date','like',"%{$search}%")
-                            ->orWhere('finish_date','like',"%{$search}%")
+            $bills = Bill::where('date', 'like', date("Y-m-d",strtotime($search)))
+                            ->orWhere('start_date','like', Carbon::parse($search)->format('Y-m-d').'%')
+                            ->orWhere('finish_date','like', date("Y-m-d",strtotime($search)))
                             ->orWhere('amount','like',"%{$search}%")
                             ->orWhereHas('plan_user.user', function ($user) use ($search) {
                                 $user->where('first_name', 'like', "%{$search}%")
                                 ->orWhere('last_name', 'like', "%{$search}%");
                             })
+                            ->orWhereHas('plan_user.plan', function ($plan) use ($search) {
+                                $plan->where('plan', 'like', "%{$search}%");
+                            })
                             ->offset($start)
                             ->limit($limit)
                             ->orderBy($order, $dir)
                             ->get();
-            $totalFiltered = Bill::where('date', 'like', "%{$search}%")
-                            ->orWhere('start_date','like',"%{$search}%")
-                            ->orWhere('finish_date','like',"%{$search}%")
+            $totalFiltered = Bill::where('date', 'like', date("Y-m-d",strtotime($search)))
+                            ->orWhere('start_date','like', date("Y-m-d",strtotime($search)))
+                            ->orWhere('finish_date','like', date("Y-m-d",strtotime($search)))
                             ->orWhere('amount','like',"%{$search}%")
                             ->orWhereHas('plan_user.user', function ($user) use ($search) {
                                 $user->where('first_name', 'like', "%{$search}%")
                                 ->orWhere('last_name', 'like', "%{$search}%");
+                            })
+                            ->orWhereHas('plan_user.plan', function ($plan) use ($search) {
+                                $plan->where('plan', 'like', "%{$search}%");
                             })
                             ->count();
         }
@@ -98,7 +103,7 @@ class BillController extends Controller
         
         if($bills){
             foreach($bills as $bill){
-                $nestedData['alumno'] = isset($bill->plan_user) ? $bill->plan_user->user->first_name.' '.$bill->plan_user->user->last_name : "no aplica";
+                $nestedData['alumno'] = isset($bill->plan_user) ? '<a href="'.url('/users/'.$bill->plan_user->user->id).'">'.$bill->plan_user->user->first_name.' '.$bill->plan_user->user->last_name.'</a>' : "no aplica";
                 $nestedData['plan'] = isset($bill->plan_user) ? $bill->plan_user->plan->plan : "no aplica";
                 $nestedData['date'] = date('d-m-Y',strtotime($bill->date));
                 $nestedData['start_date'] = date('d-m-Y',strtotime($bill->start_date));
@@ -181,3 +186,23 @@ class BillController extends Controller
       //           'Total' => '$ '.number_format($bill->amount, $decimal = 0, '.', '.') ?? "no aplica"
       //       ];
       //   });
+      //   
+      //   
+      //   
+      //   
+    // public function bills()
+    // {
+    //     $bills = Bill::all();
+
+    //     return ['data' => $bills->map(function ($bill) {
+    //         return [
+    //             'user_id' => isset($bill->plan_user) ? $bill->plan_user->user->id : "no aplica",
+    //             'alumno' => isset($bill->plan_user) ? $bill->plan_user->user->first_name.' '.$bill->plan_user->user->last_name : "no aplica",
+    //             'plan' => isset($bill->plan_user) ? $bill->plan_user->plan->plan : "no aplica",
+    //             'fecha_boleta' => Carbon::parse($bill->date)->format('d-m-Y') ?? "no aplica",
+    //             'fecha_de_inicio' => Carbon::parse($bill->start_date)->format('d-m-Y') ?? "no aplica",
+    //             'fecha_de_termino' => Carbon::parse($bill->finish_date)->format('d-m-Y') ?? "no aplica",
+    //             'total' => '$ '.number_format($bill->amount, $decimal = 0, '.', '.') ?? "no aplica",
+    //         ];
+    //     })];
+    // }
