@@ -18,27 +18,13 @@ class ReportController extends Controller
      */
     public function index()
     {
-        // dd(now()->year);
-        // $year_income = $this->yearIncome();
-        // $month_income = $this->monthIncome();
-        // $plans_month = $this->totalPlansMonth();
-        // $plans_sub_month = $this->totalPlansSubMonth();
-        // $plans_sub_year = $this->totalPlansSubYear();
-        // $plans_year = $this->totalPlansbeforeYear();
-        // $new_students = $this->newStudents();
-        // $day_reservations = $this->reservationsOfDay();
-        // $month_reservations = $this->reservationsOfMonth();
-        // dd($new_students);
-
-
-
+        // dd($this->monthIncomeAnual());
+        $chartjs = $this->firstChart();
         $summaries = PlanIncomeSummary::all();
 
-        return view('reports.index')->with('summaries', $summaries);
-                                    // ->with('day_reservations', $day_reservations)
-                                    // ->with('month_reservations', $month_reservations)
-                                    // ->with('plans_sub_month', $plans_sub_month)
-                                    // ->with('plans_sub_year', $plans_sub_year);
+        return view('reports.index')->with('summaries', $summaries)
+                                    ->with(compact('chartjs'));
+                       
     }
 
     //INGRESOS EN EL AÑO
@@ -57,6 +43,31 @@ class ReportController extends Controller
         $month_summ = PlanIncomeSummary::where('month', now()->month)
                                        ->get()
                                        ->sum('amount');
+        return $month_summ;
+    }
+
+    //INGRESOS POR MES AÑO ACTUAL
+    public function monthIncomeAnual()
+    {
+        for ($i=1; $i < 13; $i++) { 
+            $month_summ[] = PlanIncomeSummary::where('month', $i)
+                                             ->where('year', now()->year)
+                                             ->get()
+                                             ->sum('amount');
+        }
+        return $month_summ;
+    }
+
+        //INGRESOS POR MES AÑO ANTERIOR
+    public function monthIncomeAnualSub()
+    {
+        for ($i=1; $i < 13; $i++) { 
+            $month_summ[] = PlanIncomeSummary::where('month', $i)
+                                             ->where('year', now()->subYear()->year)
+                                             ->get()
+                                             ->sum('amount');
+        }
+        // dd($month_summ);
         return $month_summ;
     }
 
@@ -154,6 +165,62 @@ class ReportController extends Controller
         }
         // dd($month_reservations);
         return $month_reservations;
+    }
+
+    public function firstChart()
+    {
+        $actual_year = $this->monthIncomeAnual();
+        $past_year = $this->monthIncomeAnualSub();
+        $chartjs = app()->chartjs
+            ->name('barChartTest')
+            ->type('bar')
+            ->size(['width' => 400, 'height' => 200])
+            ->labels(['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'])
+            ->datasets([
+                [
+                    "label" => "Año 2019",
+                    'backgroundColor' => ['rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)'],
+                    'data' => $actual_year,
+                ],
+                [
+                    "label" => "Año 2018",
+                    'backgroundColor' => ['rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)',],
+                    'data' => $past_year,
+                ],
+            ])
+            ->optionsRaw("{
+
+            }");
+
+        return $chartjs;
+    }
+
+    public function secondChart()
+    {
+        $actual_year = $this->monthIncomeAnual();
+        $past_year = $this->monthIncomeAnualSub();
+        $secondchart = app()->chartjs
+            ->name('barChartTest')
+            ->type('bar')
+            ->size(['width' => 400, 'height' => 200])
+            ->labels(['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'])
+            ->datasets([
+                [
+                    "label" => "Año 2019",
+                    'backgroundColor' => ['rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)', 'rgba(54, 162, 235, 0.5)'],
+                    'data' => $actual_year,
+                ],
+                [
+                    "label" => "Año 2018",
+                    'backgroundColor' => ['rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)', 'rgba(255, 99, 132, 0.5)',],
+                    'data' => $past_year,
+                ],
+            ])
+            ->optionsRaw("{
+
+            }");
+
+        return $secondchart;
     }
 
 }

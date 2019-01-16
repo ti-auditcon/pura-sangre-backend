@@ -8,12 +8,12 @@
       <div class="col-md-6">
         <div class="ibox">
           <div class="ibox-head">
-            <div class="ibox-title">Acomulado</div>
+            <div class="ibox-title">Total de Ingresos de todos los planes</div>
           </div>
           <div class="ibox-body">
-              <div>
-                  <canvas id="acumulative" ></canvas>
-              </div>
+              <div style="width:100%;">
+                {!! $chartjs->render() !!}
+            </div>
           </div>
         </div>
       </div>

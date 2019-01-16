@@ -128,7 +128,7 @@ class planuserController extends Controller
 	public function update(Request $request, User $user, planuser $plan)
 	{
 		if ($plan->finish_date->lt(today())) {
-			Session::flash('warning','No se puede modificar el estado de un plan que cuya fecha de termino es anterior a hoy');
+			Session::flash('warning','No se puede modificar el estado de un plan cuya fecha de término es anterior a hoy');
 			return view('userplans.show')->with(['user' => $user, 'plan_user' => $plan]);
 		}else{
 			$plan->update($request->all());
