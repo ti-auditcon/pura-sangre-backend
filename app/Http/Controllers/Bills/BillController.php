@@ -71,7 +71,7 @@ class BillController extends Controller
         }else{
             $search = $request->input('search.value');
             $bills = Bill::where('date', 'like', date("Y-m-d",strtotime($search)))
-                            ->orWhere('start_date','like', Carbon::parse($search)->format('Y-m-d').'%')
+                            ->orWhere('start_date','like', date("Y-m-d",strtotime($search)))
                             ->orWhere('finish_date','like', date("Y-m-d",strtotime($search)))
                             ->orWhere('amount','like',"%{$search}%")
                             ->orWhereHas('plan_user.user', function ($user) use ($search) {
