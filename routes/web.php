@@ -72,4 +72,6 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('messages', 'Messages\MessageController@index')->middleware('role:1');
     Route::post('messages/send', 'Messages\MessageController@send')->middleware('role:1');
     Route::get('notifications', 'Messages\NotificationController@index')->middleware('role:1');
+
+    //test
 });

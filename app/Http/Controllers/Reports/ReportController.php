@@ -28,8 +28,8 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $summaries = PlanIncomeSummary::all();
-        return view('reports.index')->with('summaries', $summaries);
+        $quantity_plans_year_by_month = $this->quantityPlansYearByMonth();
+        return view('reports.index')->with('quantity_plans_year_by_month', $quantity_plans_year_by_month);
     }
 
     public function firstchart()
@@ -113,9 +113,9 @@ class ReportController extends Controller
                                            ->where('year', now()->year)
                                            ->get()
                                            ->sum('quantity');
-            $plans_by_years[$i] = ['plan' => $plans[$i], 'quantity' => $quantity[$i]];
+            $plans_by_years[$i] = [$plans[$i], $quantity[$i]];
         }
-        $plans_by_years = array_merge(['data' => $plans_by_years, 'draw' => 1, 'recordsFiltered' => 12, 'recordsTotal' => 12]);
+        $plans_by_years = array_merge(['data' => $plans_by_years, 'year' => now()->year]);
         return $plans_by_years;
     }
 
