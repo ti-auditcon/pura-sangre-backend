@@ -4,55 +4,156 @@
 @endsection
 
 @section('content')
-  <div class="row">
+   <div class="row">
       <div class="col-md-6">
-        <div class="ibox">
-          <div class="ibox-head">
-            <div class="ibox-title">Total de Ingresos de todos los planes</div>
-          </div>
-          <div class="ibox-body">
-              <canvas id="canvas" height="280" width="600"></canvas>
-          </div>
-        </div>
-      </div>
-
-       <div class="col-md-6">
-        <div class="ibox">
-          <div class="ibox-head">
-            <div class="ibox-title">Cantidad total de planes vendidos en el año</div>
-          </div>
-          <div class="ibox-body">
-              <canvas id="quantity-plans" height="280" width="600"></canvas>
-          </div>
-        </div>
+         <div class="ibox">
+            <div class="ibox-head">
+               <div class="ibox-title">Total de Ingresos de todos los planes</div>
+             </div>
+            <div class="ibox-body">
+               <canvas id="canvas" height="280" width="600"></canvas>
+            </div>
+         </div>
       </div>
 
       <div class="col-md-6">
-          <div class="ibox">
-        <div class="ibox-head">
-          <div class="ibox-title">
-            Cantidad de alumnos por Plan
-          </div>
-        </div>
-        <div class="ibox-body pagos-body">
-          <div class="table-responsive">
-            <table id="quantity-plans-table" class="table table-hover">
-              <thead class="thead-default">
-                <tr>
-                  <th width="60%">Tipo de Plan</th>
-                  <th width="40%">Total de Alumnos</th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+         <div class="ibox">
+            <div class="ibox-head">
+               <div class="ibox-title">Cantidad total de planes vendidos en el año</div>
+            </div>
+            <div class="ibox-body">
+               <canvas id="quantity-plans" height="280" width="600"></canvas>
+            </div>
+         </div>
       </div>
 
+    {{--   <div class="col-md-6">
+         <div class="ibox">
+             <div class="ibox-head">
+               <div class="ibox-title">
+                  Cantidad de alumnos por Plan año: {{$quantity_plans_year_by_month['year']}}
+               </div>
+            </div>
+            <div class="ibox-body pagos-body">
+               <div class="table-responsive">
+                  <table id="quantity-plans-table" class="table table-hover">
+                     <thead class="thead-default">
+                        <tr>
+                           <th width="60%">Tipo de Plan</th>
+                           <th width="40%">Total de Alumnos</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        @foreach ($quantity_plans_year_by_month['data'] as $q_plan)
+                           <tr>
+                              <td>{{$q_plan['plan'] ?? ''}}</td>
+                              <td>{{$q_plan['quantity'] ?? ''}}</td>
+                           </tr>
+                        @endforeach
+                    </tbody>
+                  </table>
+               </div>
+            </div>
+         </div>
+      </div> --}}
 
-  </div>
+{{-- 
+
+   <div class="col-md-6">
+      <div class="ibox">
+         <div class="ibox-head">
+            <div class="ibox-title">
+               Tabs
+            </div>
+         </div>
+         <div class="ibox-body pagos-body">
+
+            <ul class="nav nav-tabs" role="tablist">
+               <li class="active">
+                  <a href="#tab-table1" data-toggle="tab" aria-expanded="true">Table 1</a>
+               </li>
+               <li class="">
+                  <a href="#tab-table2" data-toggle="tab" aria-expanded="false">Table 2</a>
+               </li>
+            </ul>
+
+
+
+            <div class="table-responsive">
+               <table id="myTable1" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                  <thead>
+                     <tr>
+                        <th width="60%">Tipo de Plan</th>
+                        <th width="40%">Total de Alumnos</th>
+                     </tr>
+                  </thead>
+               </table>
+               <table id="myTable2" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                  <thead>
+                     <tr>
+                        <th width="60%">Tipo de Plan</th>
+                        <th width="40%">Total de Alumnos</th>
+                     </tr>
+                  </thead>
+               </table>
+            </div>
+         </div>
+      </div>
+   </div>
+
+ --}}
+
+
+
+
+   <div class="col-md-6">
+      <div class="ibox">
+
+  
+     {{--     <div class="d-flex justify-content-between mb-4">
+               <div>
+                  <h3 class="m-0">Cantidad de Planes</h3>
+                  <div>Por tipo de Plan a nivel anual</div>
+               </div>
+               <ul class="nav nav-pills nav-pills-rounded nav-pills-air" id="sales_tabs">
+                  <li class="nav-item ml-1">
+                     <a class="nav-link active" data-toggle="tab" data-id="1" href="javascript:;" aria-expanded="true">{{now()->year}}</a>
+                  </li>
+                  <li class="nav-item ml-1">
+                     <a class="nav-link" data-toggle="tab" data-id="2" href="javascript:;" aria-expanded="false">{{now()->subYear()->year}}</a>
+                  </li>
+               </ul>
+            </div> --}}
+
+         <div class="ibox-body">
+            <div class="table-responsive">
+               <table id="quantity-plans-table" class="table table-hover">
+                  <thead class="thead-default ">
+                     <tr>
+                        <th width="60%">Tipo de Plan</th>
+                        <th width="40%">Total de Alumnos</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+               </table>
+       {{--         <table id="myTable2" class="table-dos table-striped table-bordered" cellspacing="0" width="100%">
+                  <thead>
+                     <tr>
+                        <th width="60%">Tipo de Plan</th>
+                        <th width="40%">Total de Alumnos</th>
+                     </tr>
+                  </thead>
+               </table> --}}
+            </div>
+         </div>
+      </div>
+   </div>
+
+
+   
+
+   </div>
 @endsection
 
 
@@ -64,50 +165,63 @@
 
 @section('scripts') {{-- scripts para esta vista --}}
 
- {{--  datatable --}}
-  <script src="{{ asset('js/datatables.min.js') }}"></script>
-  <script>
-
-      $('#quantity-plans-table').DataTable({
-         "processing": true,
-         "serverSide": true,
-         "ajax": {
-            "url": "<?= route('totalplans') ?>",
-            "dataType": "json",
-            "type": "GET",
-            "data": {"_token": "<?= csrf_token() ?>"}
-         },
-         "language": {
-               "loadingRecords": "Cargando datos...",
-               "processing": "Cargando datos...",
+   <script src="{{ asset('js/datatables.min.js') }}"></script>
+  {{--  <script>
+      $(document).ready(function() {
+         table = $('#quantity-plans-table').DataTable({
+            "ordering": true,
+            "searching": false,
+            "pageLength": 12,
+            "bLengthChange" : false,
+            "bpageLength": false,
+            "bPaginate": false,
+            "language": {
                "lengthMenu": "Mostrar _MENU_ elementos",
                "zeroRecords": "Sin resultados",
                "info": "Mostrando página _PAGE_ de _PAGES_",
                "infoEmpty": "Sin resultados",
                "infoFiltered": "(filtrado de _MAX_ registros totales)",
-               "search": "Filtrar:",
-               "paginate": {
-                  "first":      "Primero",
-                  "last":       "último",
-                  "next":       "Siguiente",
-                  "previous":   "Anterior"
-               },
+               "search": "Filtrar:"
             },
-         "columns":[
-            {"data": "plan"},
-            {"data": "quantity"}, 
-         ]
-    } );
+         });
+      });
+   </script> --}}
 
-   </script> 
-  {{--  End datatable --}}
+   <script>
+   $(document).ready(function() {
+    $('a[data-toggle="tab"]').on( 'shown.bs.tab', function (e) {
+        $.fn.dataTable.tables( {visible: true, api: true} ).columns.adjust();
+      });     
+      $('#quantity-plans-table').DataTable( {
+         "ajax": {
+            "url": '{{route("totalplans")}}',
+            "dataType": "json",
+            "type": "get",
+            "data": {"_token": "<?= csrf_token() ?>"}
+         },
+         "language": {
+            "lengthMenu": "Mostrar _MENU_ elementos",
+            "zeroRecords": "Sin resultados",
+            "info": "Mostrando página _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin resultados",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Filtrar:"
+         },
+         "bLengthChange" : false,
+         "bpageLength": false,
+         "bPaginate": false,
+         "searching": false,
+       } );
+   } );
+</script>
+
 
 <script src="{{ asset('js/Chart.min.js') }}"></script>
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script> --}}
 
-{{--     //////////////////  TOTAL INCOMES PLAN ANUAL BY MONTH  VS PAST YEAR  ////////////////////////////////// --}}
+{{--     //////////////////  TOTAL INCOMES PLAN ANUAL BY MONTH  VS PAST YEAR  /////////////////////// --}}
   <script>
   var url = "{{url('report/firstchart')}}";
   var meses =  new Array();
@@ -115,7 +229,6 @@
   var Prices_sub = new Array();
   $(document).ready(function(){
     $.get(url, function(response){
-      console.log(response);
       response.anual.forEach(function(data){
           meses.push(data.month);
           Prices.push(data.amount);
@@ -142,7 +255,6 @@
             }]
       };
       var ctx = document.getElementById("canvas").getContext('2d');
-                 // console.log(ctx);
           var myChart = new Chart(ctx, {
             type: 'line',
             data: barChartData,
@@ -186,7 +298,6 @@
    var Quantities = new Array();
    var SubQuantities = new Array();
     $.get(urltwo, function(respuesta){
-      console.log(respuesta);
       respuesta.q_anual.forEach(function(data){
           Months.push(data.month);
           Quantities.push(data.quantity);
