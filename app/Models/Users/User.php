@@ -202,7 +202,7 @@ class User extends Authenticatable
 
     public function getAvatarAttribute($value)
     {
-      if($value)
+      if(!$value)
       {
         return public_path('img/default_user.png');
       } else {
