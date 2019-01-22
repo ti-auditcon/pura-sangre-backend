@@ -204,7 +204,7 @@ class User extends Authenticatable
     {
       if($value)
       {
-        return 'hola';
+        return public_path('img/default_user.png');
       } else {
         return $value;
       }
