@@ -10,37 +10,8 @@
       </div>
       <div class="modal-body">
          <table id="confirm-table" class="table table-hover">
-       {{-- <thead class="thead-default">
-               <tr>
-                  <th width="70%">Usuario</th>
-                  <th width="15%">Estado</th>
-                  <th width="15%">Asistencia</th>
-               </tr>
-            </thead>
-            <tbody>
-            @foreach ($clase->reservations as $reservation)
-               <tr>
-                  <td>
-                     <a class="media-img" href="javascript:;">
-                     <img class="img-circle" src="{{$reservation->user->avatar}}" alt="image" width="54"></a>
-                     <span class="badge-{{$reservation->user->status_user->type}} badge-point"></span>
-                     <a href="{{url('/users/'.$reservation->user->id)}}">
-                        {{$reservation->user->first_name}} {{$reservation->user->last_name}}
-                     </a>
-                  </td>
-                  <td>
-                     <span class="badge badge-{{$reservation->reservation_status->type}} badge-pill">{{strtoupper($reservation->reservation_status->reservation_status)}}</span>
-                  </td>
-                  <td>
-                     <label class="ui-switch switch-icon switch-large">
-                        <input name="asistencia[]" type="checkbox"  class="checkboxBla">
-                        <span></span>
-                     </label>
-                     <input hidden class="user_id_class" type="text" name="user_id[]" disabled value="{{$reservation->user->id}}">
-                  </td>
-               </tr>
-            @endforeach
-            </tbody> --}}
+
+
          </table>
       </div>
       <div class="modal-footer">

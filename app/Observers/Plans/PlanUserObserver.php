@@ -28,7 +28,7 @@ class PlanUserObserver
       foreach ($plan_users as $plan_user) {
         if (($fecha_inicio->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date))) || ($fecha_termino->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date)))) {
 
-          Session::flash('error','El usuario tiene un plan activo que choca con la fecha de inicio y período seleccionados');
+          Session::flash('error','El usuario tiene un plan que choca con la fecha de inicio y período seleccionados');
           return false;
         }
 
@@ -54,26 +54,34 @@ class PlanUserObserver
     */
     public function created(PlanUser $planUser)
     {
-        // $planUser->user->actual_plan->id != $planUser->id ?????
-        if ($planUser->user->actual_plan && $planUser->start_date > today()) {
+        $actl_pln_usr = isset($planUser->user->actual_plan) ? $planUser->user->actual_plan : null;
+        $sttus_usr = $planUser->user->status_user_id;
+        if ($actl_pln_usr && $planUser->start_date > today()) {
             $planUser->plan_status_id = 3;
+            $sttus_usr = 1;
+        }elseif ($actl_pln_usr && $planUser->finish_date < today()) {
+            $planUser->plan_status_id = 4;
+            $sttus_usr = 1;
         }
-        if (!$planUser->user->actual_plan && $planUser->start_date <= today() && $planUser->finish_date >= today()) {
+        if (!$actl_pln_usr && $planUser->start_date <= today() && $planUser->finish_date >= today()) {
+            if ($planUser->plan_id == 1) {
+                $sttus_usr = 3;
+            }else{
+                $sttus_usr = 1;
+            }
             $planUser->plan_status_id = 1;
         }
-        $planUser->user->status_user_id = 1;
         $planUser->user->save();
 
         if (!$planUser->user->actual_plan && $planUser->start_date > today()) {
             $planUser->plan_status_id = 3;
             $planUser->user->status_user_id = 2;
             $planUser->user->save();
-        }elseif ($planUser->finish_date < today()) {
+        }elseif (!$planUser->user->actual_plan && $planUser->finish_date < today()) {
             $planUser->plan_status_id = 4;
             $planUser->user->status_user_id = 2;
             $planUser->user->save();
         }
- 
         $planUser->save();
     }
 

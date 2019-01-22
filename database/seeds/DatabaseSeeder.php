@@ -2,6 +2,8 @@
 
 use App\Models\Bills\Bill;
 use App\Models\Bills\Installment;
+use App\Models\Clases\Block;
+use App\Models\Clases\Clase;
 use App\Models\Clases\ClaseStage;
 use App\Models\Clases\Reservation;
 use App\Models\Clases\ReservationStatisticStage;
@@ -41,6 +43,8 @@ class DatabaseSeeder extends Seeder
             BillsTableSeeder::class,
             ReservationsTableSeeder::class,
         ]);
+
+
 
       //   $users = User::all();
       //   foreach ($users as $user) {
@@ -93,3 +97,9 @@ class DatabaseSeeder extends Seeder
       //     // 'emergency_id' => 1,
       //     'status_user_id' => 1,
       // ]);
+
+
+
+       // echo now()->startOfHour(); 
+       // echo "\n";
+       // echo today();

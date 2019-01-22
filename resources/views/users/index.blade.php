@@ -59,7 +59,7 @@
                   <th width="10%">Plan Activo</th>
                   <th width="15%">Vencimiento</th>
                   <th width="20%">Período</th>
-                  <th width="10%">acciones</th>
+                  <th width="10%">Acciones</th>
                   <th width="10%">status</th>
                 </tr>
               </thead>
@@ -68,9 +68,7 @@
                 <tr>
                   <td style="vertical-align: middle;">
                     {{-- <img class="img-circle" src="{{$user->avatar}}" alt="image" width="54"> --}}
-                    <a href="{{url('/users/'.$user->id)}}">
-                      <div class="img-avatar" style="background-image: url('{{$user->avatar}}');"></div>
-                    </a>
+                    <div class="img-avatar" style="background-image: @if ($user->avatar) url('{{$user->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif "></div>
                     <span class="badge-{{$user->status_user->type}} badge-point"></span>
                     <a href="{{url('/users/'.$user->id)}}">
                       {{$user->first_name}} {{$user->last_name}}

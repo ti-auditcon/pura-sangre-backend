@@ -7,31 +7,28 @@
   <div class="row justify-content-center">
     <div class="col-6">
       <div class="ibox">
-            <div class="ibox-head">
-          <div class="ibox-title">Planes</div>
-        </div>
+         <div class="ibox-head">
+            <div class="ibox-title">Agregar usuario</div>
+         </div>
         {!! Form::open(['route' => 'users.store']) !!}
-        <div class="ibox-body">
-
-
-          <div class="col-12 p-0 my-0 mt-3">
-            <span class="col-form-label hidden">Por favor, ingrese un rut válido</span>
-          </div>
-
-        <div class="row">
-          <div class="col-sm-6 form-group mb-2">
-            <div class="form-group inline @if($errors->has('first_name')) has-warning  @endif">
-              <label class="col-form-label">Nombre</label>
-              <input class="form-control " name="first_name" value="{{ old('first_name') }}" required>
+         <div class="ibox-body">
+            <div class="col-12 p-0 my-0 mt-3">
+               <span class="col-form-label hidden">Por favor, ingrese un rut válido</span>
             </div>
-          </div>
-          <div class="col-sm-6 form-group mb-2">
-            <div class="form-group inline @if($errors->has('last_name')) has-warning  @endif">
-              <label class="col-form-label">Apellido</label>
-              <input class="form-control " name="last_name" value="{{ old('last_name') }}" required>
+         <div class="row">
+            <div class="col-sm-6 form-group mb-2">
+               <div class="form-group inline @if($errors->has('first_name')) has-warning  @endif">
+                  <label class="col-form-label">Nombre</label>
+                  <input class="form-control " name="first_name" value="{{ old('first_name') }}" required>
+               </div>
             </div>
-          </div>
-        </div>
+            <div class="col-sm-6 form-group mb-2">
+               <div class="form-group inline @if($errors->has('last_name')) has-warning  @endif">
+                  <label class="col-form-label">Apellido</label>
+                  <input class="form-control " name="last_name" value="{{ old('last_name') }}" required>
+               </div>
+            </div>
+         </div>
 
         <div class="row">
           <div class="col-sm-6 form-group mb-2">
@@ -41,11 +38,11 @@
             </div>
           </div>
           <div class="col-sm-6 form-group mb-2">
-            <div class="form-group" id="start_date">
-              <label class="font-normal">Fecha de Nacimiento</label>
+            <div class="form-group">
+              <label class="font-normal">Fecha de nacimiento</label>
               <div class="input-group date">
                 <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
-                <input class="form-control" name="birthdate" value="{{ old('birthdate') }}" type="text" value="{{ date('d/m/Y') }}">
+                <input class="form-control datepicker-birthdate" name="birthdate" value="{{ old('birthdate') }}" type="text" value="{{ date('d-m-Y') }}">
               </div>
             </div>
           </div>
@@ -71,11 +68,11 @@
 
         <div class="row">
           <div class="col-sm-6 form-group mb-2">
-            <div class="form-group @if($errors->has('since')) has-warning  @endif" id="since">
+            <div class="form-group @if($errors->has('since')) has-warning  @endif">
               <label class="font-normal">Atleta desde</label>
               <div class="input-group date">
                 <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
-                <input class="form-control" name="since" value="{{ old('since') }}" type="text" value="{{ date('d/m/Y') }}">
+                <input class="form-control datepicker-since" name="since" value="{{ old('since') }}" type="text" value="{{ date('d-m-Y') }}">
               </div>
             </div>
           </div>
@@ -85,7 +82,7 @@
          <div class="col-sm-12 form-group mb-4">
             <div class="form-group inline @if($errors->has('address')) has-warning  @endif">
                <label class="col-form-label">Dirección</label>
-               <input class="form-control" placeholder="Ejemplo: Longitudinal Sur Km 188,9, Curicó" name="address" value="{{ old('address') }}" required>
+               <input class="form-control" placeholder="Ejemplo: Longitudinal Sur Km 188,9, Curicó" name="address" value="{{ old('address') }}">
             </div>
          </div>
       </div>
@@ -93,20 +90,22 @@
          <div class="row">
             <div class="col-sm-6 form-group mb-4">
                <div class="form-group inline @if($errors->has('contact_name')) has-warning  @endif">
-                 <label class="col-form-label">Contacto de Emergencia</label>
+                 <label class="col-form-label">Contacto de emergencia</label>
                  <input class="form-control " name="contact_name" value="{{ old('contact_name') }}">
                </div>
             </div>
             <div class="col-sm-6 form-group mb-4">
                <div class="form-group inline @if($errors->has('contact_phone')) has-warning  @endif">
-                 <label class="col-form-label">Teléfono de Contacto</label>
+                 <label class="col-form-label">Teléfono de contacto de emergencia</label>
+                       <div class="input-group mb-3">
+                <span class="input-group-addon">+56 9</span>
                  <input class="form-control " name="contact_phone" value="{{ old('contact_phone')}}">
-               </div>
+               </div></div>
             </div>
          </div>
 
          <div class="form-group  @if($errors->has('status_user_id')) has-warning  @endif">
-           <label class="form-control-label">Estado del Usuario*</label>
+           <label class="form-control-label">Estado del usuario*</label>
            <select class="selectpicker form-control"  name="status_user_id" data-live-search="true" required>
             <option value="">Asignar estado...</option>
             @foreach (App\Models\Users\StatusUser::all() as $status_user)
@@ -119,10 +118,10 @@
             <label class="mr-3">Género</label>
             {{-- <div> --}}
               <label class="radio radio-inline radio-info">
-                <input type="radio" name="gender" required value="male">
+                <input type="radio" name="gender" required value="hombre">
                 <span class="input-span"></span>Masculino</label>
               <label class="radio radio-inline radio-info">
-                <input type="radio" name="gender" value="female">
+                <input type="radio" name="gender" value="mujer">
                 <span class="input-span"></span>Femenino</label>
 
           </div>
@@ -147,27 +146,38 @@
 
 @section('scripts') {{-- scripts para esta vista --}}
 
-  <script defer>
-  // Bootstrap datepicker
-  $('#start_date .input-group.date').datepicker({
-    todayBtn: "linked",
-    keyboardNavigation: false,
-    forceParse: false,
-    calendarWeeks: true,
-    autoclose: true
-  });
-  </script>
+   <script>
+      $('.datepicker-birthdate').datepicker({
+         todayBtn: "linked",
+         keyboardNavigation: false,
+         forceParse: false,
+         calendarWeeks: true,
+         format: "dd-mm-yyyy",
+         startDate: "01-01-1910",
+         endDate: "01-01-2030",
+         language: "es",
+         orientation: "bottom auto",
+         autoclose: true,
+         maxViewMode: 3,
+         todayHighlight: true
+      });
+   </script>
 
-  <script defer>
-  // Bootstrap datepicker
-  $('#since .input-group.date').datepicker({
-    todayBtn: "linked",
-    keyboardNavigation: false,
-    forceParse: false,
-    calendarWeeks: true,
-    autoclose: true
-  });
-  </script>
+   <script>
+      $('.datepicker-since').datepicker({
+         todayBtn: "linked",
+         keyboardNavigation: false,
+         forceParse: false,
+         calendarWeeks: true,
+         format: "dd-mm-yyyy",
+         startDate: "01-01-1910",
+         endDate: "01-01-2030",
+         language: "es",
+         autoclose: true,
+         maxViewMode: 3,
+         todayHighlight: true
+      });
+   </script>
 
    {{-- RUT --}}
 <script src="{{ asset('js/jquery.rut.min.js') }}"></script>

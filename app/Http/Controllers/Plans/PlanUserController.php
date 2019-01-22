@@ -22,7 +22,7 @@ class planuserController extends Controller
       // parent::__construct();
       $this->middleware('can:view,user')->only('show');
     }
-    
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -58,11 +58,6 @@ class planuserController extends Controller
 		$planuser->user_id = $user->id;
 		$planuser->start_date = Carbon::parse($request->fecha_inicio);
 
-		if ($plan->custom == 1) {
-			$planuser->finish_date = Carbon::parse($request->fecha_termino);
-			$planuser->counter = $request->counter;
-		}
-
 		if($plan->id == 1){
         	$planuser->finish_date = Carbon::parse($request->fecha_inicio)->addWeeks(1);
         	$planuser->counter = $plan->class_numbers;
@@ -73,10 +68,14 @@ class planuserController extends Controller
 	                                       ->subDay();
 	        $planuser->counter = $plan->class_numbers * $plan->plan_period->period_number;
 	    }
+		if ($plan->custom == 1) {
+			$planuser->finish_date = Carbon::parse($request->fecha_termino);
+			$planuser->counter = $request->counter;
+		}
 	    // $planuser->plan_status_id = 3;
-		
+
 		if($planuser->save()){
-			if($plan->custom == 0){
+			if(($plan->custom == 0) && ($request->amount > 0) ){
 				Bill::create([
 					'plan_user_id' => $planuser->id,
 					'payment_type_id' => $request->payment_type_id,
@@ -129,7 +128,7 @@ class planuserController extends Controller
 	public function update(Request $request, User $user, planuser $plan)
 	{
 		if ($plan->finish_date->lt(today())) {
-			Session::flash('warning','No se puede modificar el estado de un plan que cuya fecha de termino es anterior a hoy');
+			Session::flash('warning','No se puede modificar el estado de un plan cuya fecha de término es anterior a hoy');
 			return view('userplans.show')->with(['user' => $user, 'plan_user' => $plan]);
 		}else{
 			$plan->update($request->all());

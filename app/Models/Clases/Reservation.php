@@ -37,7 +37,7 @@ class Reservation extends Model
 
     public function clase()
     {
-      return $this->belongsTo(Clase::class);
+        return $this->belongsTo(Clase::class);
     }
 
     public function reservation_status()

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Wods;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Wods\Wod;
 use App\Models\Wods\Stage;
 use App\Models\Wods\StageType;
+use App\Models\Wods\Wod;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Session;
 
 class WodController extends Controller
@@ -42,8 +43,8 @@ class WodController extends Controller
     $haywod = $this->hayWod($request);
     if ($haywod == true) {
       $wod = Wod::create([
-      'date' => date('Y-m-d',strtotime($request->date)),
-      'clase_type_id' => Session::get('clases-type-id')
+        'date' => $request->date,
+        'clase_type_id' => Session::get('clases-type-id')
      ]);
 
      foreach (StageType::all() as $st) {
@@ -53,7 +54,7 @@ class WodController extends Controller
          'stage_type_id' => $id,
          'description' => $request->$id,
        ]);
-     }
+    }
      return redirect('/clases');
     }
     return redirect()->back()->with('warning', 'Ya ha sido asignado un Wod para la fecha seleccionada');

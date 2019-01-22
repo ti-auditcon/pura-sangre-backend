@@ -39,6 +39,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
      * BILLS Routes
      */
     Route::resource('payments', 'Bills\BillController')->middleware('role:1');
+        Route::post('payments/pagos', 'Bills\BillController@getPagos')->name('datapagos');
     Route::get('/bills', 'Bills\BillController@bills')->name('bills');
 
     /**
@@ -50,6 +51,9 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
      * Reports routes
      */
     Route::resource('reports', 'Reports\ReportController')->middleware('role:1')->only('index');
+        Route::get('report/firstchart','Reports\ReportController@firstchart');
+        Route::get('report/secondchart','Reports\ReportController@secondchart');
+        Route::get('reports/totalplans', 'Reports\ReportController@totalplans')->name('totalplans');
 
     /**
     * Users Routes (alumnos, profes, admins)
@@ -68,4 +72,6 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('messages', 'Messages\MessageController@index')->middleware('role:1');
     Route::post('messages/send', 'Messages\MessageController@send')->middleware('role:1');
     Route::get('notifications', 'Messages\NotificationController@index')->middleware('role:1');
+
+    //test
 });

@@ -53,9 +53,9 @@ class ClaseController extends Controller
         $wod = $clase->wod;
 
         return view('clases.show')
-        ->with('clase', $clase)
-        ->with('outclase', $outclase)
-        ->with('wod',$wod);
+             ->with('clase', $clase)
+             ->with('outclase', $outclase)
+             ->with('wod',$wod);
     }
 
     public function confirm(Request $request, Clase $clase)

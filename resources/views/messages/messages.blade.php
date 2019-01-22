@@ -78,7 +78,7 @@
                         <div class="pr-3 pl-1">
                           <a class="media-img" href="{{url('/users/'.$user->id)}}">
                              {{-- <img class="img-circle" src="{{url($user->avatar)}}" alt="image" width="54"> --}}
-                             <div class="img-avatar img-avatar-messages align-self-start" style="background-image: url('{{$user->avatar}}');"></div>
+                             <div class="img-avatar img-avatar-messages align-self-start" style="background-image: @if ($user->avatar) url('{{$user->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"></div>
                           </a>
                         </div>
                         <div>
@@ -91,18 +91,7 @@
                             {{$user->status_user->status_user}}
                           </span>
                         </div>
-                         {{-- <a class="media-img" href="{{url('/users/'.$user->id)}}">
-                            <img class="img-circle" src="{{url($user->avatar)}}" alt="image" width="54">
-                         </a>
-                         <a class="media-img" href="{{url('/users/'.$user->id)}}">
-                           {{$user->first_name}} {{$user->last_name}}
-                         </a><br>
-                         <small class="text-muted">
-                           {{$user->email}}
-                         </small> <br>
-                         <span class="badge badge-{{$user->status_user->type}} badge-pill ml-2">
-                           {{$user->status_user->status_user}}
-                         </span> --}}
+
                       </td>
                       <td>{{$user->status_user_id}}</td>
                       <td id="users_ids">{{$user->id}}</td>

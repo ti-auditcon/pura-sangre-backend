@@ -29,8 +29,8 @@ class User extends Authenticatable
     protected $dates = ['birthdate','since','deleted_at'];
     protected $fillable = [
         'rut', 'first_name', 'last_name',
-        'birthdate', 'gender', 'email', 'avatar',
-        'address', 'password', 'phone', 'since',
+        'email', 'password', 'avatar', 'phone',
+        'birthdate', 'gender', 'address', 'since',
         'emergency_id', 'status_user_id'
     ];
     protected $hidden = ['password', 'remember_token'];
@@ -39,13 +39,11 @@ class User extends Authenticatable
 
     public function setBirthdateAttribute($value)
     {
-        // dd(Carbon::parse($value)->format('Y-m-d'));
         $this->attributes['birthdate'] = Carbon::parse($value)->format('Y-m-d');
     }
 
     public function setSinceAttribute($value)
     {
-        // dd(Carbon::parse($value)->format('Y-m-d'));
         $this->attributes['since'] = Carbon::parse($value)->format('Y-m-d');
     }
 
@@ -142,7 +140,7 @@ class User extends Authenticatable
 
     public function reservable_plans()
     {
-        return $this->hasMany(PlanUser::class)->where('plan_status_id',[1,3]);
+        return $this->hasMany(PlanUser::class)->whereIn('plan_status_id', [1,3]);
     }
 
     /**
@@ -189,7 +187,7 @@ class User extends Authenticatable
 
     public function emergency()
     {
-        return $this->belongsTo(Emergency::class)->withDefault();
+        return $this->hasOne(Emergency::class);
     }
 
     public function reservations()

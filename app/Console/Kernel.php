@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        'App\Console\Commands\ClosedClass',
+        'App\Console\Commands\CreateClases',
     ];
 
     /**
@@ -24,8 +25,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
+        $schedule->command('closed:clase')->hourlyAt(15);
+        // $schedule->command('closed:clase')
         //          ->hourly();
+        
     }
 
     /**

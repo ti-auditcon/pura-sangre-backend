@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Clases;
 
 use Session;
 use Redirect;
-use App\Models\Clases\Block;
 use App\Models\Users\Role;
+use App\Models\Clases\Block;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Clases\BlockRequest;
