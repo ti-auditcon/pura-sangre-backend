@@ -200,6 +200,15 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class)->using(RoleUser::class);
     }
 
+    public function setAvatarAttribute($value)
+    {
+        if($this->attributes['avatar'] == null )
+        {
+          $this->attributes['avatar'] = public_path('img/default_user.png');
+        }
+
+    }
+
 }
     // public function active_plan()
     // {
