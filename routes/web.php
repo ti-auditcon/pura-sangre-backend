@@ -53,7 +53,9 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::resource('reports', 'Reports\ReportController')->middleware('role:1')->only('index');
         Route::get('report/firstchart','Reports\ReportController@firstchart');
         Route::get('report/secondchart','Reports\ReportController@secondchart');
+        Route::get('report/thirdchart','Reports\ReportController@thirdchart');
         Route::get('reports/totalplans', 'Reports\ReportController@totalplans')->name('totalplans');
+        Route::get('reports/totalplanssub', 'Reports\ReportController@totalplanssub')->name('totalplanssub');
 
     /**
     * Users Routes (alumnos, profes, admins)
