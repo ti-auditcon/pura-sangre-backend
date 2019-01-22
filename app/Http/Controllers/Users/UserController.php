@@ -57,7 +57,7 @@ class UserController extends Controller
 
         $user = User::create(array_merge($request->all(), [
             'password' => bcrypt('purasangre'),
-            'avatar' => public_path('img/default_user.png')
+            'avatar' => public_path('img/default_user.png'),
         ]));
         $emergency = Emergency::create(array_merge($request->all(), [
             'user_id' => $user->id
