@@ -17,7 +17,13 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-
+        Schema::create('alerts', function (Blueprint $table) {
+            $table->increments('id');
+            $table->longText('message');
+            $table->date('from');
+            $table->date('to');
+            $table->timestamps();
+        });
         Schema::create('status_users', function (Blueprint $table) {
           $table->increments('id');
           $table->string('status_user');
@@ -102,6 +108,7 @@ class CreateUsersTable extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
+        Schema::dropIfExists('alerts');
         Schema::dropIfExists('status_users');
         Schema::dropIfExists('roles');
         Schema::dropIfExists('users');

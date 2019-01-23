@@ -12,6 +12,7 @@
                Alertas
              </div>
            </div>
+           {!! Form::open(['route' => 'alerts.store']) !!}
            	<div class="ibox-body">
           			<div class="row">
                    <div class="col-sm-6 form-group mb-2">
@@ -19,7 +20,7 @@
                         	<label class="font-normal">Desde</label>
                         	<div class="input-group date">
                           	<span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
-                          	<input class="form-control form-control-air" name="birthdate" value="{{ old('birthdate') }}" type="text" value="{{ date('d/m/Y') }}">
+                          	<input class="form-control" name="from" value="{{ old('from') }}" type="text" value="{{ date('d/m/Y') }}">
                         	</div>
                       </div>
                    </div>
@@ -29,7 +30,7 @@
                         	<label class="font-normal">Hasta</label>
                         	<div class="input-group date">
                           	<span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
-                          	<input class="form-control form-control-air" name="birthdate" value="{{ old('birthdate') }}" type="text" value="{{ date('d/m/Y') }}">
+                          	<input class="form-control" name="to" value="{{ old('to') }}" type="text" value="{{ date('d-m-Y') }}">
                         	</div>
                       </div>
                    </div>
@@ -37,15 +38,15 @@
 
                 <div class="row">
                   <div class="col-sm-12">
-          					        <label class="font-normal">Contenido</label>
-                          <textarea rows="8" id="summernote" class="form-control form-control-air" name="content" required></textarea>
+          			   <label class="font-normal">Contenido</label>
+                     <textarea rows="8" id="summernote" class="form-control form-control-air" name="message" required></textarea>
                  	</div>
               	</div>
 
           	         <br>
                 <button class="btn btn-primary" type="submit">Publicar Anuncio</button>
           		</div>
-        		{{-- {!! Form::close() !!} --}}
+        		 {!! Form::close() !!}
       	</div>
       </div>
    </div>
@@ -94,7 +95,3 @@
 	</script>
 
 @endsection
-
-{{--  if($('input[type=checkbox]').prop('checked');){
-      console.log('si esta checkeado');
-   } --}}
