@@ -55,19 +55,18 @@ class PlanUserObserver
     public function created(PlanUser $planUser)
     {
         $actl_pln_usr = isset($planUser->user->actual_plan) ? $planUser->user->actual_plan : null;
-        $sttus_usr = $planUser->user->status_user_id;
         if ($actl_pln_usr && $planUser->start_date > today()) {
             $planUser->plan_status_id = 3;
-            $sttus_usr = 1;
+            $planUser->user->status_user_id = 1;
         }elseif ($actl_pln_usr && $planUser->finish_date < today()) {
             $planUser->plan_status_id = 4;
-            $sttus_usr = 1;
+            $planUser->user->status_user_id = 1;
         }
         if (!$actl_pln_usr && $planUser->start_date <= today() && $planUser->finish_date >= today()) {
             if ($planUser->plan_id == 1) {
-                $sttus_usr = 3;
+                $planUser->user->status_user_id = 3;
             }else{
-                $sttus_usr = 1;
+                $planUser->user->status_user_id = 1;
             }
             $planUser->plan_status_id = 1;
         }
