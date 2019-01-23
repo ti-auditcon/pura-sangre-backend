@@ -2,8 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Plans\PlanUser;
 use Carbon\Carbon;
+use App\Models\Users\User;
+use App\Models\Plans\PlanUser;
 use Illuminate\Console\Command;
 
 class RefreshPlans extends Command
