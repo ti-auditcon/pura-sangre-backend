@@ -30,23 +30,27 @@
             </div>
          </div>
 
-        <div class="row">
-          <div class="col-sm-6 form-group mb-2">
-            <div class="form-group inline @if($errors->has('rut')) has-warning  @endif">
-              <label class="col-form-label">Rut</label>
-              <input class="form-control" id="rut-src" name="rut" type="text" value="{{ old('rut') }}" required>
+         <div class="row">
+            <div class="col-sm-6 form-group mb-2">
+               <div id="rut-group" class="form-group inline @if($errors->has('rut')) has-warning  @endif">
+                  <label class="col-form-label">Rut</label>
+                  <input class="form-control" id="rut-src" name="rut" type="text" value="{{ old('rut') }}" required>
+                  <div class="col-12 p-0 my-0 mt-3">
+                     <span class="col-form-label hidden">Por favor, ingrese un rut válido</span>
+                  </div>
+               </div>
             </div>
-          </div>
-          <div class="col-sm-6 form-group mb-2">
-            <div class="form-group">
-              <label class="font-normal">Fecha de nacimiento</label>
-              <div class="input-group date">
-                <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
-                <input class="form-control datepicker-birthdate" name="birthdate" value="{{ old('birthdate') }}" type="text" value="{{ date('d-m-Y') }}">
-              </div>
+
+            <div class="col-sm-6 form-group mb-2">
+               <div class="form-group">
+                  <label class="font-normal">Fecha de nacimiento</label>
+                  <div class="input-group date">
+                     <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
+                     <input class="form-control datepicker-birthdate" name="birthdate" value="{{ old('birthdate') }}" type="text" value="{{ date('d-m-Y') }}">
+                  </div>
+               </div>
             </div>
-          </div>
-        </div>
+         </div>
 
         <div class="row">
           <div class="col-sm-6 form-group mb-4">

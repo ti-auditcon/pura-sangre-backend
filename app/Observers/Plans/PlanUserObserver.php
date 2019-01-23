@@ -93,11 +93,6 @@ class PlanUserObserver
                     $reserv->delete();
                 }
             }
-            // $planUser->reservations()->each(function ($reserv){
-            //     if ($reserv->reservation_status_id == 1 || $reserv->reservation_status_id == 2){
-            //         $reserv->delete();
-            //     }
-            // });
             if ($planUser->user->actual_plan) {
               $planUser->user->status_user_id = 1;
             }else {
