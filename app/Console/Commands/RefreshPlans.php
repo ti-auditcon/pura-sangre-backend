@@ -39,12 +39,29 @@ class RefreshPlans extends Command
      */
     public function handle()
     {
-        $plans = PlanUser::whereIn('plan_status_id' ,[1, 3])->get();
-        foreach ($plans as $plan) {
-            if (Carbon::parse($plan->finish_date) < today()) {
-                $plan->plan_status_id = 4;
-                $plan->save();
+        $users = User::all();
+        foreach ($users as $user) {
+            $plans = PlanUser::where('user_id', $user->id)->whereIn('plan_status_id', [1,3])->get();
+            foreach ($plans as $plan) {
+                if ($plan->plan_status_id == 1) {
+                    if (Carbon::parse($plan->finish_date) < today()) {
+                        $plan->plan_status_id = 4;
+                        $plan->save();
+                    }
+                }
+                if ($plan->plan_status_id == 3) {
+                    if (Carbon::parse($plan->start_date) <= today() && Carbon::parse($plan->finish_date) >= today()) {
+                        $plan->plan_status_id = 1;
+                        $plan->save();
+                    }
+                }
             }
+            if ($user->actual_plan) {
+                $user->status_user_id = 1;
+            }else{
+                $user->status_user_id = 2;
+            }
+            $user->save();
         }
     }
 }

@@ -1,26 +1,11 @@
 <?php
 
-use App\Models\Bills\Bill;
-use App\Models\Bills\Installment;
-use App\Models\Clases\Block;
-use App\Models\Clases\Clase;
-use App\Models\Clases\ClaseStage;
-use App\Models\Clases\Reservation;
-use App\Models\Clases\ReservationStatisticStage;
-use App\Models\Clases\ReservationStatus;
-use App\Models\Exercises\Exercise;
-use App\Models\Exercises\ExerciseStage;
-use App\Models\Exercises\Stage;
-use App\Models\Exercises\Statistic;
 use App\Models\Plans\PlanUser;
-use App\Models\Users\Emergency;
-use App\Models\Users\Millestone;
 use App\Models\Users\User;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
-/**
- * [DatabaseSeeder description]
- */
+
 class DatabaseSeeder extends Seeder
 {
     public function run()
@@ -45,12 +30,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-
-      //   $users = User::all();
-      //   foreach ($users as $user) {
-      //       factory(Reservation::class, 150)->create(['user_id' => $user->id]);
-      //   $this->call(ReservationsTableSeeder::class);
-      // }
     }
 }
       // $user = User::create([
