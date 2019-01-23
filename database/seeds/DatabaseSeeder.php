@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\Plans\PlanUser;
-use App\Models\Users\User;
 use Carbon\Carbon;
+use App\Models\Clases\Block;
+use App\Models\Clases\Clase;
 use Illuminate\Database\Seeder;
 
 
@@ -10,25 +10,24 @@ class DatabaseSeeder extends Seeder
 {
     public function run()
     {
-        $this->call([
-            BlockTableSeeder::class,
-            StatusUsersTableSeeder::class,
-            PlanPeriodsTableSeeder::class,
-            PlansTableSeeder::class,
-            PaymentStatusesTableSeeder::class,
-            PaymentTypesTableSeeder::class,
-            RolesTableSeeder::class,
-            PlanStatusTableSeeder::class,
-            StageTypesTableSeeder::class,
-            ReservationStatusesTableSeeder::class,
-            OauthClientsTableSeeder::class,
-            RoleUserTableSeeder::class,
-            UsersTableSeeder::class,
-            PlanUserTableSeeder::class,
-            BillsTableSeeder::class,
-            ReservationsTableSeeder::class,
-        ]);
-
+        // $this->call([
+        //     BlockTableSeeder::class,
+        //     StatusUsersTableSeeder::class,
+        //     PlanPeriodsTableSeeder::class,
+        //     PlansTableSeeder::class,
+        //     PaymentStatusesTableSeeder::class,
+        //     PaymentTypesTableSeeder::class,
+        //     RolesTableSeeder::class,
+        //     PlanStatusTableSeeder::class,
+        //     StageTypesTableSeeder::class,
+        //     ReservationStatusesTableSeeder::class,
+        //     OauthClientsTableSeeder::class,
+        //     RoleUserTableSeeder::class,
+        //     UsersTableSeeder::class,
+        //     PlanUserTableSeeder::class,
+        //     BillsTableSeeder::class,
+        //     ReservationsTableSeeder::class,
+        // ]);
 
     }
 }

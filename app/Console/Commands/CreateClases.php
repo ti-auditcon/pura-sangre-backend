@@ -46,20 +46,15 @@ class CreateClases extends Command
                 $clase =  $block->clases->sortByDesc('date')->first();
                 $fecha = Carbon::parse($clase->date)->addWeek();
                 if($block->date == null){
-                    $first_date = $fecha->startOfWeek()->addDays($block->dow[0]-1);
-                    $date = $first_date;
-                    for ($i=0; $i < 1; $i++) {
-                      Clase::create([
-                        'block_id' => $block->id,
-                        'date' => $date,
-                        'start_at' => $block->start,
-                        'finish_at' => $block->end,
-                        'profesor_id' => $block->profesor_id,
-                        'clase_type_id' => $block->clase_type_id,
-                        'quota' => $block->quota,
-                        ]);
-                      $date->addWeek();
-                    }
+                    Clase::create([
+                       'block_id' => $block->id,
+                       'date' => $fecha,
+                       'start_at' => $block->start,
+                       'finish_at' => $block->end,
+                       'profesor_id' => $block->profesor_id,
+                       'clase_type_id' => $block->clase_type_id,
+                       'quota' => $block->quota,
+                    ]);
                 }
             }
         }    
