@@ -53,10 +53,12 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::resource('reports', 'Reports\ReportController')->middleware('role:1')->only('index');
         Route::get('report/firstchart','Reports\ReportController@firstchart');
         Route::get('report/secondchart','Reports\ReportController@secondchart');
+        Route::get('report/thirdchart','Reports\ReportController@thirdchart');
         Route::get('reports/totalplans', 'Reports\ReportController@totalplans')->name('totalplans');
+        Route::get('reports/totalplanssub', 'Reports\ReportController@totalplanssub')->name('totalplanssub');
 
     /**
-    * Users Routes (alumnos, profes, admins)
+    * Users Routes (ALUMNOS, PROFES, ADMINS, ALERTAS)
     */
     Route::resource('users', 'Users\UserController');
         Route::get('update-avatar', 'Users\UserController@updateAvatar')->name('user.update.avatar');
@@ -64,11 +66,11 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
         Route::post('users/{user}/plans/{plan}/annul', 'Plans\PlanUserController@annul')->name('users.plans.annul');
     Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
 
-
     /**
      * Messages Routes
      */
-    Route::get('alerts', 'Messages\AlertController@index')->middleware('role:1');
+    Route::resource('alerts', 'Messages\AlertController')->only(['index', 'store'])->middleware('role:1');
+    // Route::post('alerts/store', 'Messages\AlertController@store')->middleware('role:1');
     Route::get('messages', 'Messages\MessageController@index')->middleware('role:1');
     Route::post('messages/send', 'Messages\MessageController@send')->middleware('role:1');
     Route::get('notifications', 'Messages\NotificationController@index')->middleware('role:1');

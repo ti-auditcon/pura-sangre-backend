@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Messages;
 
-use App\Http\Controllers\Controller;
-use App\Models\Users\User;
+use Session;
+use App\Models\Users\Alert;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+
 
 class AlertController extends Controller
 {
@@ -15,18 +17,7 @@ class AlertController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return view('messages.alerts')->with('users', $users);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('messages.alerts');
     }
 
     /**
@@ -37,12 +28,8 @@ class AlertController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
-
-
-    public function destroy($id)
-    {
-        //
+        Alert::create($request->all());
+        Session::flash('success','La alerta ha sido creada exitosamente');
+        return view('messages.alerts');
     }
 }

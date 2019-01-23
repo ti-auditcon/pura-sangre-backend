@@ -28,8 +28,7 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $quantity_plans_year_by_month = $this->quantityPlansYearByMonth();
-        return view('reports.index')->with('quantity_plans_year_by_month', $quantity_plans_year_by_month);
+        return view('reports.index');
     }
 
     public function firstchart()
@@ -46,9 +45,22 @@ class ReportController extends Controller
         return response()->json(array('q_anual' => $q_anual, 'q_sub_anual' => $q_sub_anual));
     }
 
+    public function thirdchart()
+    {
+        $rsrvs_anual = $this->quantityAnualReservationsByMonth();
+        $rsrvs_sub_anual = $this->quantitySubAnualReservationsByMonth();
+        return response()->json(array('rsrvs_anual' => $rsrvs_anual, 'rsrvs_sub_anual' => $rsrvs_sub_anual));
+    }
+
     public function totalplans()
     {
         $data = $this->quantityPlansYearByMonth();
+        echo json_encode($data);
+    }
+
+    public function totalplanssub()
+    {
+        $data = $this->quantityPlansSubYearByMonth();
         echo json_encode($data);
     }
 
@@ -57,9 +69,9 @@ class ReportController extends Controller
     {
         for ($i=1; $i < 13; $i++) { 
             $amount[] = PlanIncomeSummary::where('month', $i)
-                                             ->where('year', now()->year)
-                                             ->get()
-                                             ->sum('amount');
+                                         ->where('year', now()->year)
+                                         ->get()
+                                         ->sum('amount');
             $month_summ[$i-1] = ['month' => $this->months[$i-1], 'amount' => $amount[$i-1]];
         }
         return $month_summ;
@@ -118,6 +130,48 @@ class ReportController extends Controller
         $plans_by_years = array_merge(['data' => $plans_by_years, 'year' => now()->year]);
         return $plans_by_years;
     }
+
+    // CANTIDAD DE PLANES EN EL AÑO POR MES
+    public function quantityPlansSubYearByMonth()
+    {
+        $plans = $this->plans(); 
+        for ($i=0; $i < 12 ; $i++) {
+            $quantity[] = PlanIncomeSummary::where('plan_id', $i+1)
+                                           ->where('year', now()->subYear()->year)
+                                           ->get()
+                                           ->sum('quantity');
+            $plans_by_years[$i] = [$plans[$i], $quantity[$i]];
+        }
+        $plans_by_years = array_merge(['data' => $plans_by_years, 'year' => now()->subYear()->year]);
+        return $plans_by_years;
+    }
+
+    public function quantityAnualReservationsByMonth()
+    {
+        for ($i=0; $i < 12; $i++) { 
+            $reservations[] = Reservation::join('clases', 'clases.id', 'reservations.clase_id')
+                                         ->whereMonth('clases.date', $i+1)
+                                         ->whereYear('clases.date', now()->year)
+                                         ->get()
+                                         ->count();
+            $q_reservations[$i] = ['month' => $this->months[$i], 'reservations' => $reservations[$i]];
+        }
+        return $q_reservations;
+    }
+
+    public function quantitySubAnualReservationsByMonth()
+    {
+        for ($i=0; $i < 12; $i++) { 
+            $reservations[] = Reservation::join('clases', 'clases.id', 'reservations.clase_id')
+                                         ->whereMonth('clases.date', $i+1)
+                                         ->whereYear('clases.date', now()->subYear()->year)
+                                         ->get()
+                                         ->count();
+            $q_reservations[$i] = ['reservations' => $reservations[$i]];
+        }
+        return $q_reservations;
+    }
+
 
     // //INGRESOS EN EL AÑO
     // public function yearIncome()
