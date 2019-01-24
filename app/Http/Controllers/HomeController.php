@@ -68,8 +68,23 @@ class HomeController extends Controller
                 $actives += 1;
             }
         }
-        $no_renoval = array_merge(['inactives' => $inactives, 'actives' => $actives]);
+        $no_renoval = array_merge(['actives' => $actives, 'inactives' => $inactives]);
         echo json_encode($no_renoval);
+    }
+
+    public function genders()
+    {
+        $women = 0;
+        $men = 0;
+        foreach (User::all() as $user) {
+            if ($user->gender == 'hombre' && $user->actual_plan) {
+                $men += 1;
+            }elseif ($user->gender == 'mujer' && $user->actual_plan) {
+                $women += 1;
+            }
+        }
+        $genders = array_merge(['mujeres' => $women, 'hombres' => $men]);
+        echo json_encode($genders);
     }
 
 }

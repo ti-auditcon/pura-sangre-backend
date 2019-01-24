@@ -18,7 +18,6 @@
         </div>
       </div>
       <div class="col-4">
-        
          <div class="ibox">
             <div class="ibox-head">
                <div class="ibox-title">Alumnos con planes próximos a vencer</div>
@@ -39,7 +38,7 @@
                         <tr>
                            <td><a href="{{url('/users/'.$pu->user->id)}}">{{$pu->user->first_name}} {{$pu->user->last_name}}</a></td>
                            <td>{{$pu->plan->plan}}</td>
-                           <td>{{$pu->finish_date->diffForHumans()}}</td>
+                           <td>{{Date::parse($pu->finish_date)->diffForHumans()}}</td>
                            {{-- <td></td> --}}
                         </tr>
                         @endforeach
@@ -69,7 +68,7 @@
                       <tr>
                          <td><a href="{{url('/users/'.$expired_plan->user->id)}}">{{$expired_plan->user->first_name}} {{$expired_plan->user->last_name}}</a></td>
                          <td>{{$expired_plan->plan->plan}}</td>
-                         <td>{{$expired_plan->finish_date->diffForHumans()}}</td>
+                         <td>{{Date::parse($expired_plan->finish_date)->diffForHumans()}}</td>
                          <td>{{$expired_plan->user->phone}}</td>
                       </tr>
                       @endforeach
@@ -87,7 +86,25 @@
                   <canvas id="renewal-chart" height="280" width="600"></canvas>
                </div>
          </div>
+
+  <div class="ibox">
+            <div class="ibox-head">
+               <div class="ibox-title">Crossfiteros del box</div>
+               <label id="my-label"></label>
+            </div>
+               <div class="ibox-body">
+                  <canvas id="gender-chart" height="280" width="600"></canvas>
+               </div>
+         </div>
+
       </div>
+
+       
+
+
+
+
+
    </div>
 
 @endsection
@@ -144,10 +161,10 @@
          console.log(JSON.parse(respuesta).actives);
 
       var chartdata = {
-         labels: ["Inactivos", "Activos"],
+         labels: ["Activos", "Inactivos"],
          datasets: [{
-            data: [JSON.parse(respuesta).inactives, JSON.parse(respuesta).actives],
-            backgroundColor: ["#FA0F0C","#29AC0B"]
+            data: [JSON.parse(respuesta).actives, JSON.parse(respuesta).inactives],
+            backgroundColor: ["#009900", "#9EB1D1"]
          }]
       } ;
        var doughnutOptions = {
@@ -158,6 +175,34 @@
        new Chart(ctx4, {type: 'doughnut', data: chartdata, options:doughnutOptions});
 
 
+      });
+   });
+  </script>
+
+   <script>
+   var url = "{{url('genders')}}";
+   $(document).ready(function(){
+      $.get(url, function(respuesta){
+      var chartdata = {
+         labels: ["Mujeres", "Hombres"],
+         datasets: [{
+            data: [JSON.parse(respuesta).mujeres, JSON.parse(respuesta).hombres],
+            backgroundColor: ["#E74694", "#1F87EF"]
+         }]
+      } ;
+      var doughnutOptions = {
+         responsive: true,
+         rotation: -Math.PI,
+         cutoutPercentage: 30,
+         circumference: Math.PI,
+         legend: {
+            position: 'right'
+        }
+      };
+      var ctx4 = document.getElementById("gender-chart").getContext("2d");
+      new Chart(ctx4, {type: 'doughnut', data: chartdata, options:doughnutOptions});
+      var crossfiteros = JSON.parse(respuesta).mujeres + JSON.parse(respuesta).hombres;
+      $('#my-label').html(crossfiteros + " crossfiteros");
       });
    });
   </script>
