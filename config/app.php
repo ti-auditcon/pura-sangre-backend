@@ -21,10 +21,12 @@ return [
     'timezone' => 'America/Santiago',
 
 
-    'locale' => 'es',
+    'locale' => 'es_ES',
+
+    // setlocale(LC_ALL, 'es_ES');
 
 
-    'fallback_locale' => 'es',
+    'fallback_locale' => 'es_ES',
 
 
     'key' => env('APP_KEY'),

@@ -81,10 +81,7 @@
       <div class="col-4">
          <div class="ibox">
             <div class="ibox-head">
-               <div class="ibox-title">alumnos Avtivos/Inactivos de</div>
-            {{--    {{setlocale(LC_TIME, 'es_ES.UTF-8')}}
-               {{dd(today()->formatLocalized('%d %B %Y'))}} --}}
-
+               <div class="ibox-title">Alumnos activos e inactivos de {{today()->formatLocalized('%B')}} de {{today()->formatLocalized('%Y')}}</div>
             </div>
                <div class="ibox-body">
                   <canvas id="renewal-chart" height="280" width="600"></canvas>

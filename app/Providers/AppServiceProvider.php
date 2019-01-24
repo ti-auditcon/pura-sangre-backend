@@ -18,7 +18,6 @@ use App\Observers\Plans\PlanUserObserver;
 use App\Observers\Users\UserObserver;
 use App\Observers\Wods\StageObserver;
 use App\Observers\Wods\WodObserver;
-use Carbon\Carbon;
 use Illuminate\Support\ServiceProvider;
 use Session;
 
@@ -42,9 +41,7 @@ class AppServiceProvider extends ServiceProvider
       Bill::observe(BillObserver::class);
 
 
-      Carbon::setLocale(config('app.locale'));
-
-
+      setlocale(LC_ALL, "es_CL.UTF-8");
     }
 
     /**
