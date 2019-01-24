@@ -82,8 +82,8 @@
          <div class="ibox">
             <div class="ibox-head">
                <div class="ibox-title">alumnos Avtivos/Inactivos de</div>
-               {{setlocale(LC_TIME, 'es_ES.UTF-8')}}
-               {{dd(today()->formatLocalized('%d %B %Y'))}}
+            {{--    {{setlocale(LC_TIME, 'es_ES.UTF-8')}}
+               {{dd(today()->formatLocalized('%d %B %Y'))}} --}}
 
             </div>
                <div class="ibox-body">
