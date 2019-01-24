@@ -3,6 +3,7 @@
 Auth::routes();
 
 Route::get('/', 'HomeController@index');
+    Route::get('/withoutrenewal', 'HomeController@withoutrenewal');
 Route::get('/success-reset-password', function () {
     return view('guest.success-reset-password');
 });
