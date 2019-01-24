@@ -19,7 +19,7 @@
       <div class="col-md-6">
          <div class="ibox">
             <div class="ibox-head">
-               <div class="ibox-title">Cantidad de reservas por mes en el año</div>
+               <div class="ibox-title">Cantidad total de planes vendidos por Mes</div>
             </div>
             <div class="ibox-body">
                <canvas id="quantity-plans" height="280" width="600"></canvas>
@@ -30,7 +30,7 @@
       <div class="col-md-6">
          <div class="ibox">
             <div class="ibox-head">
-               <div class="ibox-title">Cantidad total de planes vendidos en el año</div>
+               <div class="ibox-title">Cantidad de reservas por mes en el año</div>
             </div>
             <div class="ibox-body">
                <canvas id="quantity-rsrvs" height="280" width="600"></canvas>
@@ -49,7 +49,6 @@
                   <ul class="nav nav-pills nav-pills-rounded nav-pills-air" id="myTab" role="tablist">
                      <li class="nav-item">
                         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{{now()->year}}</a>
-                        {{--  --}}
                      </li>
                      <li class="nav-item">
                         <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">{{now()->subYear()->year}}</a>
@@ -62,8 +61,8 @@
                         <table id="quantity-plans-table" class="table table-hover">
                            <thead class="thead-default">
                               <tr>
-                                 <th width="60%">Tipo de Plan</th>
-                                 <th width="40%">Total de Alumnos</th>
+                                 <th width="51%">Tipo de Plan</th>
+                                 <th width="49%">Total de Alumnos</th>
                               </tr>
                            </thead>
                            <tbody>
@@ -78,7 +77,8 @@
                                  <th width="40%">Total de Alumnos</th>
                               </tr>
                            </thead>
-                           <tbody></tbody>
+                           <tbody>
+                           </tbody>
                         </table>
                      </div>
                   </div>
