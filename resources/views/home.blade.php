@@ -81,10 +81,11 @@
       <div class="col-4">
          <div class="ibox">
             <div class="ibox-head">
-               <div class="ibox-title">Reporte de Julio</div>
+               <div class="ibox-title">Alumnos activos e inactivos de {{today()->formatLocalized('%B')}} de {{today()->formatLocalized('%Y')}}</div>
             </div>
-            <div class="ibox-body">
-            </div>
+               <div class="ibox-body">
+                  <canvas id="renewal-chart" height="280" width="600"></canvas>
+               </div>
          </div>
       </div>
    </div>
@@ -110,8 +111,8 @@
   <script src="{{ asset('js/moment.min.js') }}"></script>
 	<script src="{{ asset('js/fullcalendar.min.js') }}"></script>
 
-  <script>
-  $(document).ready(function() {
+  {{-- <script> --}}
+  {{-- $(document).ready(function() {
     $('#calendar').fullCalendar({
       header: {
           left: 'prev,next today',
@@ -131,8 +132,36 @@
         element.find('.fc-title').append('<span > '+event.reservation_count+'/25</span> ');
       },
     });
-  });
+  }); --}}
+  {{-- </script> --}}
+
+  <script src="{{ asset('js/Chart.min.js') }}"></script>
+
+  <script>
+   var uri = "{{url('withoutrenewal')}}";
+   $(document).ready(function(){
+      $.get(uri, function(respuesta){
+         console.log(JSON.parse(respuesta).actives);
+
+      var chartdata = {
+         labels: ["Inactivos", "Activos"],
+         datasets: [{
+            data: [JSON.parse(respuesta).inactives, JSON.parse(respuesta).actives],
+            backgroundColor: ["#FA0F0C","#29AC0B"]
+         }]
+      } ;
+       var doughnutOptions = {
+              responsive: true
+          };
+
+      var ctx4 = document.getElementById("renewal-chart").getContext("2d");
+       new Chart(ctx4, {type: 'doughnut', data: chartdata, options:doughnutOptions});
+
+
+      });
+   });
   </script>
+
 
 
 @endsection
