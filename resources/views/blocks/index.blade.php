@@ -149,41 +149,39 @@
 						</div>
 					</div>
 
-				<div class="modal fade" id="blockedit" tabindex="-1" role="dialog" aria-hidden="true">
-					<div class="modal-dialog ">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title">Editar horario</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<div class="form-group mb-4">
-									{{Form::open(['route' => ['blocks.update', 1 ],'method' => 'put', 'id' => 'block-update', 'class' => 'styles-select'])}}
-										<select multiple="multiple" id="plan-select-edit" name="plans[]">
-											@foreach (App\Models\Plans\Plan::all() as $plan)
-												<option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period ?? "no aplica"}}</option>
-											@endforeach
-										</select>
-										<button type="submit" class="btn btn-primary mt-2" onClick="this.disabled=true; this.value='Editando…';this.form.submit(); ">Editar planes</button>
-									{{Form::close()}}
-								</div>
-								<div class="form-group mt-2 mb-4">
-									{{Form::open(['route' => ['blocks.destroy', 1 ],'method' => 'delete' , 'id' => 'block-delete'])}}
-										Eliminar la clase? </br>
-										<button  class ="btn btn-danger mt-2" onClick="this.disabled=true; this.value='Eliminando…';this.form.submit();" >Eliminar</button>
-									{{Form::close()}}
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-							</div>
-
-						</div>
-
+	<div class="modal fade" id="blockedit" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog ">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Editar horario</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group mb-4">
+						{{Form::open(['route' => ['blocks.update', 1 ],'method' => 'put', 'id' => 'block-update', 'class' => 'styles-select'])}}
+						<select multiple="multiple" id="plan-select-edit" name="plans[]">
+							@foreach (App\Models\Plans\Plan::all() as $plan)
+								<option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period ?? "no aplica"}}</option>
+							@endforeach
+						</select>
+						<button type="submit" class="btn btn-primary mt-2" onClick="this.disabled=true; this.value='Editando…';this.form.submit(); ">Editar planes</button>
+						{{Form::close()}}
+					</div>
+					<div class="form-group mt-2 mb-4">
+						{{Form::open(['route' => ['blocks.destroy', 1],'method' => 'delete' , 'id' => 'block-delete'])}}
+							Eliminar la clase?
+							<button  class ="btn btn-danger mt-2" onClick="this.disabled=true; this.value='Eliminando…';this.form.submit();" >Eliminar</button>
+						{{Form::close()}}
 					</div>
 				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 @endsection
 
@@ -252,22 +250,20 @@
 			hiddenDays: [0],
 			eventColor: '#4c6c8b',
 			eventClick: function(calEvent, jsEvent, view) {
-
-
 				ids = Object.values(calEvent.plans_id);
+				//traer todos los ids de los planes que pueden tomar clase de la hora que se seleccionó
 				console.log(Object.values(calEvent.plans_id));
 				console.log(calEvent.id);
 				$('#plan-select-edit').multiSelect('deselect_all');
 				$('#plan-select-edit').multiSelect('select',ids.map(String));
-				//console.log( );
 				update_url = $('#blockedit #block-update').attr('action');
-
-				update_newurl = update_url.replace(/[0-9]/g, calEvent.id);
+				console.log(update_url);
+				update_newurl = update_url.replace(/[0-9]+/g, calEvent.id);
 				console.log(update_newurl);
 				$('#blockedit #block-update').attr('action',update_newurl);
 
 				delete_url = $('#blockedit #block-delete').attr('action');
-				delete_newurl = delete_url.replace(/[0-9]/g, calEvent.id);
+				delete_newurl = delete_url.replace(/[0-9]+/g, calEvent.id);
 
 				console.log(delete_newurl);
 				$('#blockedit #block-delete').attr('action',delete_newurl);
