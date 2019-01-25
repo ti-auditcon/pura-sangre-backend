@@ -58,6 +58,10 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
         Route::get('report/thirdchart','Reports\ReportController@thirdchart');
         Route::get('reports/totalplans', 'Reports\ReportController@totalplans')->name('totalplans');
         Route::get('reports/totalplanssub', 'Reports\ReportController@totalplanssub')->name('totalplanssub');
+        Route::get('reports/inactive_users', function () {
+            return view('reports.inactives_users');
+        });
+        Route::post('inactive_users', 'Reports\InactiveUserController@inactive_users')->name('inactive_users');
 
     /**
     * Users Routes (ALUMNOS, PROFES, ADMINS, ALERTAS)
@@ -76,6 +80,4 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('messages', 'Messages\MessageController@index')->middleware('role:1');
     Route::post('messages/send', 'Messages\MessageController@send')->middleware('role:1');
     Route::get('notifications', 'Messages\NotificationController@index')->middleware('role:1');
-
-    //test
 });

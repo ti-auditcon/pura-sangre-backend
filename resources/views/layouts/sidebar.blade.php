@@ -27,11 +27,27 @@
                <span class="nav-label">Pagos</span>
             </a>
          </li>
-         <li @if($page=="reports") class="active" @endif>
+       {{--   <li @if($page=="reports") class="active" @endif>
             <a href="{{url('/reports')}}"><i class="sidebar-item-icon ti-bar-chart"></i>
                <span class="nav-label">Reportes</span>
             </a>
-          </li>
+          </li> --}}
+
+          <li @if($page=="reports") class="active" @endif>
+            <a ><i class="sidebar-item-icon ti-email"></i>
+              <span class="nav-label">Reportes</span>
+            </a>
+            <div class="nav-2-level">
+               <ul>
+                  <li><a href="{{url('/reports')}}">Gráficos</a></li>
+                  <li><a href="{{url('/reports/inactive_users')}}">Usuarios Inactivos</a></li>
+               </ul>
+            </div>
+         </li>
+
+
+
+
           <li @if($page=="messages") class="active" @endif>
             <a ><i class="sidebar-item-icon ti-email"></i>
               <span class="nav-label">Mensajería</span>

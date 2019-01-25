@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Plans\PlanUser;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
+use App\Traits\ExpiredPlans;
+use App\Models\Plans\PlanUser;
 
 class HomeController extends Controller
 {
+    use ExpiredPlans;
     /**
      * Create a new controller instance.
      *
@@ -29,26 +31,6 @@ class HomeController extends Controller
         $expired_plans = $this->ExpiredPlan();
         return view('home')->with('plan_users', $plan_users)->with('expired_plans', $expired_plans);
     }
-
-    public function ExpiredPlan()
-    {
-        $expired_plans = collect(new PlanUser);
-        foreach (User::all() as $user){
-            if (!$user->actual_plan){
-                $plan_user = $user->plan_users->whereIn('plan_status_id', [3, 4])
-                                              ->where('plan_id', '!=', 1)
-                                              ->where('finish_date', '<', today())
-                                              ->sortByDesc('finish_date')
-                                              ->first();
-                if ($plan_user){
-                    $expired_plans->push($plan_user);
-                }
-            }
-        }
-        return $expired_plans->sortByDesc('finish_date');
-    }
-
-
 
     public function withoutrenewal()
     {

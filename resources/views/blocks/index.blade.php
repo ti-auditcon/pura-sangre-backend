@@ -205,6 +205,7 @@
 
 @section('scripts') {{-- scripts para esta vista --}}
 	{{--  Full calendar --}}
+	  <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
 	<script src="{{ asset('js/moment.min.js') }}"></script>
 	{{-- <script src="{{asset('/js/fullcalendar/jquery-ui.min.js')}}"></script> --}}
 	<script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
