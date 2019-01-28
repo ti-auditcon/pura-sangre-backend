@@ -30,16 +30,16 @@
                            <th>Alumno</th>
                            <th>Plan</th>
                            <th>Vencimiento</th>
-                           {{-- <th>Acciones</th> --}}
+                           <th>Teléfono</th>
                         </tr>
                      </thead>
                      <tbody>
                         @foreach ($plan_users->take(5) as $pu)
                         <tr>
-                           <td><a href="{{url('/users/'.$pu->user->id)}}">{{$pu->user->first_name}} {{$pu->user->last_name}}</a></td>
-                           <td>{{$pu->plan->plan}}</td>
-                           <td>{{Date::parse($pu->finish_date)->diffForHumans()}}</td>
-                           {{-- <td></td> --}}
+                           <td><a href="{{url('/users/'.$pu['user_id'])}}">{{$pu['alumno']}}</a></td>
+                           <td>{{$pu['plan']}}</td>
+                           <td>{{$pu['fecha_termino']}}</td>
+                           <td>{{$pu['telefono']}}</td>
                         </tr>
                         @endforeach
                      </tbody>
@@ -66,10 +66,11 @@
                    <tbody>
                       @foreach ($expired_plans->take(5) as $expired_plan)
                       <tr>
-                         <td><a href="{{url('/users/'.$expired_plan->user->id)}}">{{$expired_plan->user->first_name}} {{$expired_plan->user->last_name}}</a></td>
-                         <td>{{$expired_plan->plan->plan}}</td>
-                         <td>{{Date::parse($expired_plan->finish_date)->diffForHumans()}}</td>
-                         <td>{{$expired_plan->user->phone}}</td>
+                        {{-- {{dd($expired_plan['alumno'])}} --}}
+                         <td><a href="{{url('/users/'.$expired_plan['user_id'])}}">{{$expired_plan['alumno']}}</a></td>
+                         <td>{{$expired_plan['plan']}}</td>
+                         <td>{{$expired_plan['fecha_termino']}}</td>
+                         <td>{{$expired_plan['telefono']}}</td>
                       </tr>
                       @endforeach
                    </tbody>
