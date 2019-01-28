@@ -25,9 +25,27 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $plan_users = PlanUser::where('plan_status_id', 1)->where('finish_date','>=', now())->orderBy('finish_date')->get();
+        $plan_users = $this->expiredNext();
         $expired_plans = $this->ExpiredPlan();
         return view('home')->with('plan_users', $plan_users)->with('expired_plans', $expired_plans);
+    }
+
+    public function expiredNext()
+    {
+        $plan_users = PlanUser::where('plan_status_id', 1)
+                              ->where('finish_date','>=', now())
+                              ->orderBy('finish_date')
+                              ->get();
+
+        return $plan_users->map(function ($plan){
+            return [
+                'user_id' => isset($plan->user) ? $plan->user->id : '',
+                'alumno' => isset($plan->user) ? $plan->user->first_name.' '.$plan->user->last_name: '',
+                'plan' => isset($plan->plan) ? $plan->plan->plan : '',
+                'fecha_termino' => \Date::parse($plan->finish_date)->diffForHumans(),
+                'telefono' => isset($plan->user) ? $plan->user->phone : '',
+            ]
+        })
     }
 
     public function ExpiredPlan()

@@ -30,7 +30,6 @@
                            <th>Alumno</th>
                            <th>Plan</th>
                            <th>Vencimiento</th>
-                           {{-- <th>Acciones</th> --}}
                         </tr>
                      </thead>
                      <tbody>
@@ -39,7 +38,6 @@
                            <td><a href="{{url('/users/'.$pu->user->id)}}">{{$pu->user->first_name}} {{$pu->user->last_name}}</a></td>
                            <td>{{$pu->plan->plan}}</td>
                            <td>{{Date::parse($pu->finish_date)->diffForHumans()}}</td>
-                           {{-- <td></td> --}}
                         </tr>
                         @endforeach
                      </tbody>
