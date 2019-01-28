@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\ClosedClass',
         'App\Console\Commands\CreateClases',
         'App\Console\Commands\RefreshPlans',
+        'App\Console\Commands\PushClases',
     ];
 
     /**
@@ -26,6 +27,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('push:clases')->hourly();
         $schedule->command('closed:clase')->hourlyAt(15);
         $schedule->command('refresh:plans')->daily();
         $schedule->command('create:clases')->weekly();
