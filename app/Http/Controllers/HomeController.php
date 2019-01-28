@@ -40,7 +40,7 @@ class HomeController extends Controller
         return $plan_users->map(function ($plan){
             return [
                 'user_id' => isset($plan->user) ? $plan->user->id : '',
-                'alumno' => isset($plan->user) ? $plan->user->first_name.' '.$plan->user->last_name: '',
+                'alumno' => isset($plan->user) ? $plan->user->first_name.' '.$plan->user->last_name : '',
                 'plan' => isset($plan->plan) ? $plan->plan->plan : '',
                 'fecha_termino' => \Date::parse($plan->finish_date)->diffForHumans(),
                 'telefono' => isset($plan->user) ? $plan->user->phone : '',
