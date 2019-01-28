@@ -132,4 +132,19 @@ class ClaseController extends Controller
         });
     }
 
+    public function clasesdehoy(Request $request)
+    {
+        $clases = Clase::where('date', toDay())->get();
+        return $clases->map(function ($clase) {
+            return [
+                'date' => $reserv->user->first_name.' '.$reserv->user->last_name,
+                'start' => $reserv->user->avatar,
+                'end' => $reserv->user->status_user->type,
+                'counter' => $reserv->reservation_status->type,
+                'estado_reserva' => $reserv->reservation_status->reservation_status,
+                'user_id' => $reserv->user_id
+            ];
+        });
+    }
+
 }

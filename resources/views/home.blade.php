@@ -127,31 +127,69 @@
 	{{--  datatable --}}
   <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
   <script src="{{ asset('js/moment.min.js') }}"></script>
-	<script src="{{ asset('js/fullcalendar.min.js') }}"></script>
+	  <script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
+  <script src="{{ asset('js/fullcalendar/lang/es.js') }}"></script>  
 
-  {{-- <script> --}}
-  {{-- $(document).ready(function() {
+  <script>
+  $(document).ready(function() {
     $('#calendar').fullCalendar({
       header: {
           left: 'prev,next today',
           center: 'title',
       },
+      // console.log();
       minTime: "07:00:00",
       maxTime: "21:00:00",
-      // events:{json_encode(App\Models\Clases\Clase::all())!!},
+
+
+
+     events: function(start, end, timezone, callback) {
+       $.ajax({
+         url: url(''),
+         dataType: 'json',
+         type : 'POST',
+         data: {
+           // our hypothetical feed requires UNIX timestamps
+           start: start.unix(),
+           end: end.unix()
+         },
+         success: function(doc) {
+           var events = [];
+           $(doc).find('event').each(function() {
+             events.push({
+               title: $(this).attr('title'),
+               start: $(this).attr('start') // will be parsed
+             });
+           });
+           callback(events);
+         }
+       });
+     }
+
+
+
+
+
+
+
+
+
+
+
+      events:{!! json_encode(App\Models\Clases\Clase::all()->take(5))!!},
       editable: false,
       defaultView: 'agendaDay',
-      // allDaySlot: false,
+      // allDaySlot: false,   
       slotDuration: '00:30:00',
       slotLabelFormat: 'h(:mm)a',
       hiddenDays: [0],
       eventColor: '#4c6c8b',
       eventRender: function( event, element, view ) {
-        element.find('.fc-title').append('<span > '+event.reservation_count+'/25</span> ');
+        element.find('.fc-title').append('<span > '+event.reservation_count+'/24</span> ');
       },
     });
-  }); --}}
-  {{-- </script> --}}
+  });
+  </script>
 
   <script src="{{ asset('js/Chart.min.js') }}"></script>
 
@@ -159,7 +197,7 @@
    var uri = "{{url('withoutrenewal')}}";
    $(document).ready(function(){
       $.get(uri, function(respuesta){
-         console.log(JSON.parse(respuesta).actives);
+         // console.log(JSON.parse(respuesta).actives);
 
       var chartdata = {
          labels: ["Activos", "Inactivos"],

@@ -94,7 +94,7 @@ class Clase extends Model
      */
     public function getReservationCountAttribute()
     {
-      return $this->hasMany(Reservation::class)->count();
+        return $this->hasMany(Reservation::class)->count();
     }
 
     /**
