@@ -44,8 +44,8 @@ class HomeController extends Controller
                 'plan' => isset($plan->plan) ? $plan->plan->plan : '',
                 'fecha_termino' => \Date::parse($plan->finish_date)->diffForHumans(),
                 'telefono' => isset($plan->user) ? $plan->user->phone : '',
-            ]
-        })
+            ];
+        });
     }
 
     public function ExpiredPlan()
