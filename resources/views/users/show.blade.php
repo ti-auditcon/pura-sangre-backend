@@ -37,10 +37,10 @@
   </div>
 
   <div class="row justify-content-center">
-    <div class="col-4">
+    <div class="col-12 col-xl-4">
       <div class="ibox">
         <div class="ibox-head d-flex">
-          <div class="ibox-title">Mis Datos</div>
+          <div class="ibox-title">Datos</div>
           <div class="ibox-tools">
             <a class="btn btn-success text-white mr-1" style="display: inline-block;" href="{{ route('users.edit', $user->id) }}">Editar</a>
 
@@ -82,11 +82,11 @@
       </div>
     </div>
 
-    <div class="col-8">
+    <div class="col-12 col-xl-8">
 
       <div class="ibox">
         <div class="ibox-head">
-          <div class="ibox-title">Mis Planes</div>
+          <div class="ibox-title">Planes</div>
             @if (Auth::user()->hasRole(1))
             <div class="ibox-tools">
               <a class="btn btn-success text-white" href="{{ route('users.plans.create', $user->id) }}">Asignar Plan</a>

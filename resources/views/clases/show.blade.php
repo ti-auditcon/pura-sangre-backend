@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="row justify-content-center">
-   <div class="col-4">
+   <div class="col-12 col-xl-4">
       <div class="ibox">
          <div class="ibox-head">
          <div class="ibox-title">Clase</div>
@@ -61,11 +61,16 @@
       <div class="ibox">
         <div class="ibox-head">
           <div class="ibox-title">Workout</div>
+          <div class="ibox-tools">
+            <a class="ibox-collapse">
+              <i class="la la-angle-down" style="color: black;"></i>
+            </a>
+          </div>
         </div>
         <div class="ibox-body">
           <div class="row">
             @foreach(App\Models\Wods\StageType::all() as $st)
-              <div class="col-12 mb-4">
+              <div class="col-12 col-md-4 mb-4">
                 {{-- <div class="ibox"> --}}
                   {{-- <div class="ibox-body"> --}}
                     <h5 class="font-strong">{{$st->stage_type}}</h5>
@@ -80,7 +85,7 @@
         </div>
       </div>
   </div>
-   <div class="col-8">
+   <div class="col-12 col-xl-8">
       <div class="ibox">
          <div class="ibox-head">
             <div class="ibox-title">Crossfiteros de esta clase</div>
