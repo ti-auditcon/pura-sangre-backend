@@ -9,26 +9,6 @@
       <div class="col-12 col-md-5">
 
         <div class="ibox">
-           <div class="ibox-head">
-              <div class="ibox-title">Actividad de alumnos <span style="text-transform: capitalize;">{{today()->formatLocalized('%B')}}</span></div>
-           </div>
-              <div class="ibox-body">
-                 <canvas id="renewal-chart" height="280" width="600"></canvas>
-              </div>
-        </div>
-
-       <div class="ibox">
-           <div class="ibox-head">
-              <div class="ibox-title">Crossfiteros del box</div>
-              <label id="my-label"></label>
-           </div>
-            <div class="ibox-body">
-               <canvas id="gender-chart" height="280" width="600"></canvas>
-            </div>
-        </div>
-
-
-        <div class="ibox">
           <div class="ibox-head">
             <div class="ibox-title">Clases de hoy</div>
           </div>
@@ -39,65 +19,95 @@
       </div>
 
       <div class="col-12 col-md-7">
-         <div class="ibox">
-            <div class="ibox-head">
-               <div class="ibox-title">Alumnos con planes próximos a vencer</div>
-            </div>
-            <div class="ibox-body">
-               <div class="table-responsive">
-                  <table id="students-table" class="table table-hover">
-                     <thead class="thead-default thead-lg">
-                        <tr>
-                           <th>Alumno</th>
-                           <th>Plan</th>
-                           <th>Vencimiento</th>
-                           <th>Teléfono</th>
-                        </tr>
-                     </thead>
-                     <tbody>
-                        @foreach ($plan_users->take(5) as $pu)
-                        <tr>
-                           <td><a href="{{url('/users/'.$pu['user_id'])}}">{{$pu['alumno']}}</a></td>
-                           <td>{{$pu['plan']}}</td>
-                           <td>{{$pu['fecha_termino']}}</td>
-                           <td>{{$pu['telefono']}}</td>
-                        </tr>
-                        @endforeach
-                     </tbody>
-                  </table>
+        <div class="row">
+          <div class=" col-md-6 col-sm-12">
+                  <div class="ibox">
+                     <div class="ibox-head">
+                        <div class="ibox-title">Actividad de alumnos <span style="text-transform: capitalize;">{{today()->formatLocalized('%B')}}</span></div>
+                     </div>
+                        <div class="ibox-body">
+                           <canvas id="renewal-chart"></canvas>
+                        </div>
+                  </div>
+          </div>
+          <div class="col-md-6 col-sm-12 ">
+                 <div class="ibox">
+                     <div class="ibox-head">
+                        <div class="ibox-title">Crossfiteros del box</div>
+                        <label id="my-label"></label>
+                     </div>
+                      <div class="ibox-body">
+                         <canvas id="gender-chart" ></canvas>
+                      </div>
+                  </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="ibox">
+               <div class="ibox-head">
+                  <div class="ibox-title">Alumnos con planes próximos a vencer</div>
+               </div>
+               <div class="ibox-body">
+                  <div class="table-responsive">
+                     <table id="students-table" class="table table-hover">
+                        <thead class="thead-default thead-lg">
+                           <tr>
+                              <th>Alumno</th>
+                              <th>Plan</th>
+                              <th>Vencimiento</th>
+                              <th>Teléfono</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           @foreach ($plan_users->take(5) as $pu)
+                           <tr>
+                              <td><a href="{{url('/users/'.$pu['user_id'])}}">{{$pu['alumno']}}</a></td>
+                              <td>{{$pu['plan']}}</td>
+                              <td>{{$pu['fecha_termino']}}</td>
+                              <td>{{$pu['telefono']}}</td>
+                           </tr>
+                           @endforeach
+                        </tbody>
+                     </table>
+                  </div>
                </div>
             </div>
-         </div>
-         <div class="ibox">
-            <div class="ibox-head">
-               <div class="ibox-title">Alumnos recientemente inactivos</div>
-            </div>
-            <div class="ibox-body">
-                <table id="students-table" class="table table-hover">
-                   <thead class="thead-default">
-                      <tr>
+            <div class="ibox">
+               <div class="ibox-head">
+                  <div class="ibox-title">Alumnos recientemente inactivos</div>
+               </div>
+               <div class="ibox-body">
+                   <table id="students-table" class="table table-hover">
+                      <thead class="thead-default">
                          <tr>
-                            <th>Alumno</th>
-                            <th>Plan</th>
-                            <th>Fecha</th>
-                            <th>N° Teléfono</th>
+                            <tr>
+                               <th>Alumno</th>
+                               <th>Plan</th>
+                               <th>Fecha</th>
+                               <th>N° Teléfono</th>
+                            </tr>
                          </tr>
-                      </tr>
-                   </thead>
-                   <tbody>
-                      @foreach ($expired_plans->take(5) as $expired_plan)
-                      <tr>
-                        {{-- {{dd($expired_plan['alumno'])}} --}}
-                         <td><a href="{{url('/users/'.$expired_plan['user_id'])}}">{{$expired_plan['alumno']}}</a></td>
-                         <td>{{$expired_plan['plan']}}</td>
-                         <td>{{$expired_plan['fecha_termino']}}</td>
-                         <td>{{$expired_plan['telefono']}}</td>
-                      </tr>
-                      @endforeach
-                   </tbody>
-                </table>
-            </div>
+                      </thead>
+                      <tbody>
+                         @foreach ($expired_plans->take(5) as $expired_plan)
+                         <tr>
+                           {{-- {{dd($expired_plan['alumno'])}} --}}
+                            <td><a href="{{url('/users/'.$expired_plan['user_id'])}}">{{$expired_plan['alumno']}}</a></td>
+                            <td>{{$expired_plan['plan']}}</td>
+                            <td>{{$expired_plan['fecha_termino']}}</td>
+                            <td>{{$expired_plan['telefono']}}</td>
+                         </tr>
+                         @endforeach
+                      </tbody>
+                   </table>
+               </div>
+             </div>
           </div>
+
+        </div>
+
+
       </div>
 
       {{-- <div class="col-4">
@@ -146,65 +156,53 @@
 	  <script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
   <script src="{{ asset('js/fullcalendar/lang/es.js') }}"></script>
 
-  <script>
-  $(document).ready(function() {
-    $('#calendar').fullCalendar({
-      header: {
-          left: 'prev,next today',
-          center: 'title',
-      },
-      // console.log();
-      minTime: "07:00:00",
-      maxTime: "21:00:00",
+  <script defer>
+    $(document).ready(function() {
+        $('#calendar').fullCalendar({
+          header: {
+              right:  'today',
+          },
+          minTime: "07:00:00",
+          maxTime: "22:00:00",
+          editable: false,
+
+          defaultView: 'agendaDay',
+          // allDaySlot: false,
+          slotDuration: '00:30:00',
+          slotLabelFormat: 'h(:mm)a',
+          hiddenDays: [0],
+          eventColor: '#4c6c8b',
+          eventRender: function( event, element, view ) {
+            element.find('.fc-time').append('<div> reservas: ' +event.reservation_count+'/'+event.quota+'</div> ');
+          },
+          viewRender: function (view, element,start,end) {
+             var b = $('#calendar').fullCalendar('getDate');
+             console.log(b.startOf('week').format('Y-M-D'));
+             $('#calendar').fullCalendar( 'removeEventSources');
+             //alert(b.format('Y-M-D'));
+
+            $('#calendar').fullCalendar( 'addEventSource',
+             {
+               url: '/get-clases?datestart='+b.startOf('week').format('Y-M-D')+'&dateend='+b.endOf('week').format('Y-M-D'), // use the `url` property
+               textColor: 'black'  // an option!
+             }
+            );
+            $('#calendar').fullCalendar( 'addEventSource',
+              {
+                url: '/get-wods?datestart='+b.startOf('week').format('Y-M-D')+'&dateend='+b.endOf('week').format('Y-M-D'), // use the `url` property
+                color: 'yellow',    // an option!
+                textColor: 'black'  // an option!
+              }
+            );
+          },
+          // eventClick: function(calEvent, jsEvent, view) {
+          //   $('#clase-resume').modal();
+          // },
+
+        });
 
 
-
-     events: function(start, end, timezone, callback) {
-       $.ajax({
-         url: url(''),
-         dataType: 'json',
-         type : 'POST',
-         data: {
-           // our hypothetical feed requires UNIX timestamps
-           start: start.unix(),
-           end: end.unix()
-         },
-         success: function(doc) {
-           var events = [];
-           $(doc).find('event').each(function() {
-             events.push({
-               title: $(this).attr('title'),
-               start: $(this).attr('start') // will be parsed
-             });
-           });
-           callback(events);
-         }
-       });
-     }
-
-
-
-
-
-
-
-
-
-
-
-      events:{!! json_encode(App\Models\Clases\Clase::all()->take(5))!!},
-      editable: false,
-      defaultView: 'agendaDay',
-      // allDaySlot: false,
-      slotDuration: '00:30:00',
-      slotLabelFormat: 'h(:mm)a',
-      hiddenDays: [0],
-      eventColor: '#4c6c8b',
-      eventRender: function( event, element, view ) {
-        element.find('.fc-title').append('<span > '+event.reservation_count+'/24</span> ');
-      },
     });
-  });
   </script>
 
   <script src="{{ asset('js/Chart.min.js') }}"></script>
