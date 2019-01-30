@@ -5,7 +5,7 @@
 
 @section('content')
    <div class="row">
-      <div class="col-md-6">
+      <div class="col-12 col-xl-6">
          <div class="ibox">
             <div class="ibox-head">
                <div class="ibox-title">Total de Ingresos de todos los planes</div>
@@ -16,7 +16,7 @@
          </div>
       </div>
 
-      <div class="col-md-6">
+      <div class="col-12 col-xl-6">
          <div class="ibox">
             <div class="ibox-head">
                <div class="ibox-title">Cantidad total de planes vendidos por Mes</div>
@@ -27,7 +27,7 @@
          </div>
       </div>
 
-      <div class="col-md-6">
+      <div class="col-12 col-xl-6">
          <div class="ibox">
             <div class="ibox-head">
                <div class="ibox-title">Cantidad de reservas por mes en el año</div>
@@ -99,7 +99,7 @@
 
    <script src="{{ asset('js/datatables.min.js') }}"></script>
 
-   <script> 
+   <script>
       $('#quantity-plans-table').DataTable( {
          "ajax": {
             "url": '{{route("totalplans")}}',
@@ -123,7 +123,7 @@
       } );
    </script>
 
-   <script> 
+   <script>
       $('#quantity-plans-sub-table').DataTable( {
          "ajax": {
             "url": '{{route("totalplanssub")}}',
@@ -201,7 +201,7 @@
                         return datasetLabel + ': ' + label;
                      },
                      // Use the footer callback to display the sum of the items showing in the tooltip
-                     beforeFooter: function(tooltipItems, data) {                
+                     beforeFooter: function(tooltipItems, data) {
                         var sum = 0;
                         tooltipItems.forEach(function(tooltipItem) {
                            if (sum == 0){ sum += tooltipItem.yLabel;

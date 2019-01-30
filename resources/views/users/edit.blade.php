@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="row justify-content-center">
-   <div class="col-6">
+   <div class="col-12 col-xl-6">
       <div class="ibox">
          <div class="ibox-head">
             <div class="ibox-title">Editar datos de {{$user->first_name}} {{$user->last_name}}</div>
