@@ -97,8 +97,8 @@ class ClaseController extends Controller
     }
 
     /**
-     * [outClass recibe la clase, obtiene todas las reservaaciones, luego obtiene
-     * todos los usurios del sistema que no tienen reservación a la clase, y los devuelve en una colección]
+     * [outClass recibe la clase, obtiene todas las reservaciones, luego obtiene
+     * todos los usuarios del sistema que no tienen reservación a la clase, y los devuelve en una colección]
      * @param  [model] $clase [description]
      * @return [collection]        [description]
      */
@@ -118,9 +118,11 @@ class ClaseController extends Controller
 
     public function asistencia(Request $request)
     {
-        $clase = Clase::find($request->id);
-        // $reservs = $clase->reservations;
-        return $clase->reservations->map(function ($reserv) {
+        $reservations = Reservation::where('clase_id', $request->id)
+                                   ->orderBy('updated_at')
+                                   ->orderBy('reservation_status_id')
+                                   ->get();
+        return $reservations->map(function ($reserv) {
             return [
                 'alumno' => $reserv->user->first_name.' '.$reserv->user->last_name,
                 'avatar' => $reserv->user->avatar,

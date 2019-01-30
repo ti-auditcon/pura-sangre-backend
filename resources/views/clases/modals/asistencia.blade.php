@@ -10,8 +10,6 @@
       </div>
       <div class="modal-body">
          <table id="confirm-table" class="table table-hover">
-
-
          </table>
       </div>
       <div class="modal-footer">
