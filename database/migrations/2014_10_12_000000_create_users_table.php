@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->date('to');
             $table->timestamps();
         });
+        
         Schema::create('status_users', function (Blueprint $table) {
           $table->increments('id');
           $table->string('status_user');

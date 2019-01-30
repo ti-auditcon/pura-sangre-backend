@@ -20,7 +20,7 @@
                         	<label class="font-normal">Desde</label>
                         	<div class="input-group date">
                           	<span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
-                          	<input class="form-control" name="from" value="{{ old('from') }}" type="text" value="{{ date('d/m/Y') }}">
+                          	<input class="form-control" name="from" value="{{ old('from') }}" type="text" value="{{ date('d-m-Y') }}">
                         	</div>
                       </div>
                    </div>
@@ -73,25 +73,37 @@
 	</script>
 
 	<script>
-	// Bootstrap datepicker
-	$('#start_date .input-group.date').datepicker({
-  		todayBtn: "linked",
-  		keyboardNavigation: false,
-  		forceParse: false,
-  		calendarWeeks: true,
-  		autoclose: true
-	});
-	</script>
+   $('#start_date .input-group.date').datepicker({
+      todayBtn: "linked",
+      keyboardNavigation: false,
+      forceParse: false,
+      calendarWeeks: true,
+      format: "dd-mm-yyyy",
+      startDate: "01-01-1910",
+      endDate: "01-01-2030",
+      language: "es",
+      orientation: "bottom auto",
+      autoclose: true,
+      maxViewMode: 3,
+      todayHighlight: true
+   });
+   </script>
 
-	<script>
-	// Bootstrap datepicker
-	$('#finish_date .input-group.date').datepicker({
-  		todayBtn: "linked",
-  		keyboardNavigation: false,
-  		forceParse: false,
-  		calendarWeeks: true,
-  		autoclose: true
-	});
-	</script>
+   <script>
+   $('#finish_date .input-group.date').datepicker({
+      todayBtn: "linked",
+      keyboardNavigation: false,
+      forceParse: false,
+      calendarWeeks: true,
+      format: "dd-mm-yyyy",
+      startDate: "01-01-1910",
+      endDate: "01-01-2030",
+      language: "es",
+      orientation: "bottom auto",
+      autoclose: true,
+      maxViewMode: 3,
+      todayHighlight: true
+   });
+   </script>
 
 @endsection
