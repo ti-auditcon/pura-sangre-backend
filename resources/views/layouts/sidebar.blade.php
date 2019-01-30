@@ -34,7 +34,7 @@
           </li> --}}
 
           <li @if($page=="reports") class="active" @endif>
-            <a ><i class="sidebar-item-icon ti-email"></i>
+            <a ><i class="sidebar-item-icon ti-bar-chart"></i>
               <span class="nav-label">Reportes</span>
             </a>
             <div class="nav-2-level">

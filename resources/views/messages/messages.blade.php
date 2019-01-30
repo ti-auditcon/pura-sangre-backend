@@ -77,7 +77,6 @@
                       <td class="check-cell rowlink-skip row py-4">
                         <div class="pr-3 pl-1">
                           <a class="media-img" href="{{url('/users/'.$user->id)}}">
-                             {{-- <img class="img-circle" src="{{url($user->avatar)}}" alt="image" width="54"> --}}
                              <div class="img-avatar img-avatar-messages align-self-start" style="background-image: @if ($user->avatar) url('{{$user->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"></div>
                           </a>
                         </div>

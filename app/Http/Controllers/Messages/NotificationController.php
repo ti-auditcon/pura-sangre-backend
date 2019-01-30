@@ -27,10 +27,10 @@ class NotificationController extends Controller
 
     public function store(Request $request)
     {
-        // $input = array_except($request->all(), array('_token'));
-        $user = User::find(14);
-        $this->notification($user->fcm_token, $request->get('title'));
-
+        $users = User::whereIn('id', $request->users_id)->get();
+        foreach ($users as $user) {
+            $this->notification($user->fcm_token, $request->get('title'));
+        }
         Session::flash('success','Notificación enviada correctamente');
         return redirect()->route('messages.notifications');
     }
