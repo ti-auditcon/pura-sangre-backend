@@ -6,7 +6,27 @@
 
 @section('content')
    <div class="row justify-content-center">
-      <div class="col-4">
+      <div class="col-12 col-md-5">
+
+        <div class="ibox">
+           <div class="ibox-head">
+              <div class="ibox-title">Actividad de alumnos <span style="text-transform: capitalize;">{{today()->formatLocalized('%B')}}</span></div>
+           </div>
+              <div class="ibox-body">
+                 <canvas id="renewal-chart" height="280" width="600"></canvas>
+              </div>
+        </div>
+
+       <div class="ibox">
+           <div class="ibox-head">
+              <div class="ibox-title">Crossfiteros del box</div>
+              <label id="my-label"></label>
+           </div>
+            <div class="ibox-body">
+               <canvas id="gender-chart" height="280" width="600"></canvas>
+            </div>
+        </div>
+
 
         <div class="ibox">
           <div class="ibox-head">
@@ -17,7 +37,8 @@
           </div>
         </div>
       </div>
-      <div class="col-4">
+
+      <div class="col-12 col-md-7">
          <div class="ibox">
             <div class="ibox-head">
                <div class="ibox-title">Alumnos con planes próximos a vencer</div>
@@ -78,7 +99,8 @@
             </div>
           </div>
       </div>
-      <div class="col-4">
+
+      {{-- <div class="col-4">
          <div class="ibox">
             <div class="ibox-head">
                <div class="ibox-title">Alumnos activos e inactivos de {{today()->formatLocalized('%B')}} de {{today()->formatLocalized('%Y')}}</div>
@@ -88,23 +110,17 @@
                </div>
          </div>
 
-  <div class="ibox">
+        <div class="ibox">
             <div class="ibox-head">
                <div class="ibox-title">Crossfiteros del box</div>
                <label id="my-label"></label>
             </div>
-               <div class="ibox-body">
-                  <canvas id="gender-chart" height="280" width="600"></canvas>
-               </div>
+             <div class="ibox-body">
+                <canvas id="gender-chart" height="280" width="600"></canvas>
+             </div>
          </div>
 
-      </div>
-
-       
-
-
-
-
+      </div> --}}
 
    </div>
 
@@ -128,7 +144,7 @@
   <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
   <script src="{{ asset('js/moment.min.js') }}"></script>
 	  <script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
-  <script src="{{ asset('js/fullcalendar/lang/es.js') }}"></script>  
+  <script src="{{ asset('js/fullcalendar/lang/es.js') }}"></script>
 
   <script>
   $(document).ready(function() {
@@ -179,7 +195,7 @@
       events:{!! json_encode(App\Models\Clases\Clase::all()->take(5))!!},
       editable: false,
       defaultView: 'agendaDay',
-      // allDaySlot: false,   
+      // allDaySlot: false,
       slotDuration: '00:30:00',
       slotLabelFormat: 'h(:mm)a',
       hiddenDays: [0],
