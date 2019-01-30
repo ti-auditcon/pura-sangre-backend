@@ -115,15 +115,13 @@
                         <th width="80%">Alumno</th>
                         <th width="10%">Estado</th>
                         <th width="10%">Acciones</th>
+                        <th width="10%">otro</th>
                      </tr>
                   </thead>
                   <tbody>
                   @foreach ($clase->reservations as $reservation)
                      <tr>
                         <td>
-                           {{-- <img class="img-circle" src="{{$reservation->user->avatar}}" alt="image" width="54"> --}}
-                           {{-- <div class="img-avatar" style="background-image: url('{{$reservation->user->avatar}}');"></div> --}}
-
                            <div class="img-avatar" style="background-image:  @if ($reservation->user->avatar) url('{{$reservation->user->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"></div>
                            <span class="badge-{{$reservation->user->status_user->type}} badge-point"></span>
                            <a @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2)) href="{{url('/users/'.$reservation->user->id)}}" @endif>
@@ -136,9 +134,7 @@
 
                      @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
                         <td>
-                           {{-- 'url' => 'foo/bar' --}}
-                            {!! Form::open(['action' => ['Clases\ReservationController@destroy', $reservation->id], 'method' => 'delete', 'id' => 'delete'.$reservation->user->id]) !!}
-                       {{--  {!! Form::open(['route' => ['reservation.destroy', $reservation->id], 'method' => 'delete', 'id'=>'delete'.$reservation->user->id]) !!} --}}
+                           {!! Form::open(['action' => ['Clases\ReservationController@destroy', $reservation->id], 'method' => 'delete', 'id' => 'delete'.$reservation->user->id]) !!}
                               <input type="hidden" value="1" name="by_god">
                               <button class="btn btn-info btn-icon-only btn-danger sweet-user-delete" type="button" data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash"></i></button>
                            {!! Form::close() !!}
@@ -151,11 +147,11 @@
                            {!! Form::close() !!}
                         </td>
                      @endif
+                        <td>{{$reservation->updated_at}}</td>
                      </tr>
                   @endforeach
                   </tbody>
                </table>
-               {{-- {!! Form::close() !!} --}}
             </div>
          </div>
       </div>
@@ -225,7 +221,7 @@
 $(document).ready(function(){
    $('#button-modal').on("click",function(){
       var id = {!!$clase->id!!};
-      var op ="";
+      var op = "";
       var sid = $(this).val();
 
       $.ajax({
@@ -236,10 +232,17 @@ $(document).ready(function(){
             op+='<tr><th width="60%">Alumno</th><th width="25%">Estado de reserva</th><th width="15%">Asistencia</th></tr>';
             for(var i=0;i<data2.length;i++){
                op += '<tr>';
+                 if (data2[i].estado_reserva == 'Consumida') {
+                  var estado = 'checked';
+                  var disabled = '';
+               }else{
+                  var estado = '';
+                  var disabled = 'disabled';
+               }
                op += '<td><div class="img-avatar" style="background-image: url(\''+data2[i].avatar+'\')"></div><span class="badge-'+data2[i].user_status+' badge-point"></span>'+data2[i].alumno+'</td>'+
-               // op += '<td><a class="media-img" href="javascripteeee:;"><img class="img-circle" src="'+data2[i].avatar+'" alt="image" width="54"></a><span class="badge-'+data2[i].user_status+' badge-point"></span>'+data2[i].alumno+'</td>'+
+
                      '<td><span class="badge badge-'+data2[i].tipo+' badge-pill">'+data2[i].estado_reserva.toUpperCase()+'</td>'+
-                     '<td><label class="ui-switch switch-icon switch-large"><input name="asistencia[]" type="checkbox"  class="checkboxBla"><span></span></label><input hidden class="user_id_class" type="text" name="user_id[]" disabled value="'+data2[i].user_id+'"></td></tr>';
+                     '<td><label class="ui-switch switch-icon switch-large"><input name="asistencia[]" '+estado+' type="checkbox"  class="checkboxBla"><span></span></label><input hidden class="user_id_class" type="text" name="user_id[]" '+disabled+' value="'+data2[i].user_id+'"></td></tr>';
             }
             op+='</table>';
             $('#confirm-table').html(op);
@@ -261,11 +264,6 @@ $(document).ready(function(){
       });
    });
 });
-
-
-
-
-
 
 
 </script>
@@ -330,6 +328,14 @@ $(document).ready(function(){
          table = $('#students-table').DataTable({
             "paging": true,
             "ordering": true,
+            "order": [[ 1, "asc" ], [3, 'asc']],
+            "columnDefs": [
+               {
+                   "targets": [ 3 ],
+                   "visible": false,
+                   "searchable": false
+               }
+            ],
             "pageLength": 12,
             "bLengthChange" : false, //thought this line could hide the LengthMenu
             "bpageLength": false,
@@ -340,8 +346,15 @@ $(document).ready(function(){
                "info": "Mostrando página _PAGE_ de _PAGES_",
                "infoEmpty": "Sin Alumnos",
                "infoFiltered": "(filtrado de _MAX_ registros totales)",
-               "search": "Filtrar:"
+               "search": "Filtrar:",
+               "paginate": {
+                  "first": "Primero",
+                  "last": "Último",
+                  "next": "Siguiente",
+                  "previous": "Anterior"
+               },
             },
+
          });
 
          table_search = $('#students-table-search').DataTable({
@@ -357,7 +370,13 @@ $(document).ready(function(){
                "info": "Mostrando página _PAGE_ de _PAGES_",
                "infoEmpty": "Sin resultados",
                "infoFiltered": "(filtrado de _MAX_ registros totales)",
-               "search": "Buscar Alumno:"
+               "search": "Buscar Alumno:",
+               "paginate": {
+                  "first": "Primero",
+                  "last": "Último",
+                  "next": "Siguiente",
+                  "previous": "Anterior"
+               },
             },
          });
          //foco al input al abrir el modal
