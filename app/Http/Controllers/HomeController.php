@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Users\User;
-use Illuminate\Http\Request;
-use App\Traits\ExpiredPlans;
+use App\Models\Plans\PlanIncomeSummary;
 use App\Models\Plans\PlanUser;
+use App\Models\Users\User;
+use App\Traits\ExpiredPlans;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -114,6 +115,30 @@ class HomeController extends Controller
         }
         $genders = array_merge(['mujeres' => $women, 'hombres' => $men]);
         echo json_encode($genders);
+    }
+
+    public function incomessummary()
+    {
+        $mes['periodo'] = 'mensual';
+        $mes['ingresos'] = PlanIncomeSummary::where('month', now()->month)
+                                            ->where('year', now()->year)
+                                            ->get()
+                                            ->sum('amount');
+        $mes['cantidad'] = PlanIncomeSummary::where('month', now()->month)
+                                            ->where('year', now()->year)
+                                            ->get()
+                                            ->count();
+        $dia['periodo'] = 'hoy';
+        $dia['ingresos'] = PlanUser::where('plan_user.created_at', toDay())
+                                   ->join('bills', 'bills.plan_user_id', '=', 'plan_user.id')
+                                   ->get()
+                                   ->sum('amount');
+        $dia['cantidad'] = PlanUser::where('created_at', toDay())
+                                   ->get()
+                                   ->count();
+
+        $in_sum = array_merge([$dia, $mes]);
+        echo json_encode($in_sum);
     }
 
 }

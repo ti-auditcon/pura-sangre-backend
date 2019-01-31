@@ -20,26 +20,35 @@
 
       <div class="col-12 col-md-7">
         <div class="row">
-          <div class=" col-md-6 col-sm-12">
-                  <div class="ibox">
-                     <div class="ibox-head">
-                        <div class="ibox-title">Actividad de alumnos <span style="text-transform: capitalize;">{{today()->formatLocalized('%B')}}</span></div>
-                     </div>
-                        <div class="ibox-body">
-                           <canvas id="renewal-chart"></canvas>
-                        </div>
+          <div class=" col-md-4 col-sm-12">
+            <div class="ibox">
+               <div class="ibox-head">
+                  <div class="ibox-title">Actividad de alumnos <span style="text-transform: capitalize;">{{today()->formatLocalized('%B')}}</span></div>
+               </div>
+                  <div class="ibox-body">
+                     <canvas id="renewal-chart"></canvas>
                   </div>
+            </div>
           </div>
-          <div class="col-md-6 col-sm-12 ">
-                 <div class="ibox">
-                     <div class="ibox-head">
-                        <div class="ibox-title">Crossfiteros del box</div>
-                        <label id="my-label"></label>
-                     </div>
-                      <div class="ibox-body">
-                         <canvas id="gender-chart" ></canvas>
-                      </div>
+          <div class="col-md-4 col-sm-12 ">
+             <div class="ibox">
+                 <div class="ibox-head">
+                    <div class="ibox-title">Crossfiteros del box</div>
+                    <label id="my-label"></label>
+                 </div>
+                  <div class="ibox-body">
+                     <canvas id="gender-chart" ></canvas>
                   </div>
+              </div>
+          </div>
+          <div class="col-md-4 col-sm-12 ">
+             <div class="ibox">
+                  <div class="ibox-body" id="incomes-summary">
+                   {{--  <table id="incomes-summary">
+                    </table> --}}
+                     {{-- <canvas id="gender-chart" ></canvas> --}}
+                  </div>
+              </div>
           </div>
         </div>
         <div class="row">
@@ -104,33 +113,9 @@
                </div>
              </div>
           </div>
-
         </div>
-
-
       </div>
 
-      {{-- <div class="col-4">
-         <div class="ibox">
-            <div class="ibox-head">
-               <div class="ibox-title">Alumnos activos e inactivos de {{today()->formatLocalized('%B')}} de {{today()->formatLocalized('%Y')}}</div>
-            </div>
-               <div class="ibox-body">
-                  <canvas id="renewal-chart" height="280" width="600"></canvas>
-               </div>
-         </div>
-
-        <div class="ibox">
-            <div class="ibox-head">
-               <div class="ibox-title">Crossfiteros del box</div>
-               <label id="my-label"></label>
-            </div>
-             <div class="ibox-body">
-                <canvas id="gender-chart" height="280" width="600"></canvas>
-             </div>
-         </div>
-
-      </div> --}}
 
    </div>
 
@@ -260,6 +245,41 @@
    });
   </script>
 
+  <script>
 
+$(document).ready(function(){
+      var op = "";
+      $.ajax({
+         type:'get',
+         url: '/incomes-summary/',
+         success: function(resp){
+            op+='<table class="table table-striped">';
+            op+='<tr><th width="60%">Período</th><th width="25%">Ingresos</th><th width="15%">Cantidad</th></tr>';
+
+
+            $(resp).each(function( value ) {
+                console.log( value.data );
+            });
+
+
+            // for(var i=0;i<resp.length;i++){
+            //   // console.log(resp.length);
+            //    op += '<tr>';
+            //    op += '<td>'+resp[i].periodo+'</td>'+
+            //          '<td>'+resp[i].ingresos+'</td>'+
+            //          '<td>'+resp[i].cantidad+'"></td></tr>';
+            // }
+            op+='</table>';
+            $('#incomes-summary').html(op);
+         },
+         error: function(){
+            console.log("Error Occurred");
+         }
+      });
+
+});
+
+
+</script>
 
 @endsection
