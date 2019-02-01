@@ -83,6 +83,9 @@
 	$(document).ready(function() {
   		$('#summernote').summernote({
   			height: 250,
+         toolbar: [
+          ["font", ["bold"]],
+        ],
   		});
 	});
 	</script>
@@ -135,7 +138,7 @@
             op += '<tr>';
             op += '<td>'+resp[i].message+'</td>'+
               '<td>'+resp[i].from+'</td>'+
-              '<td>'+resp[i].to+'</td><td data-id="'+resp[i].id+'"><button class="btn btn-danger remove-item">Eliminar</button></td></tr>';
+              '<td>'+resp[i].to+'</td><td><button class="btn btn-danger remove-item" data-id="'+resp[i].id+'" data-name="'+resp[i].message+'">Eliminar</button></td></tr>';
           }
           op+='</table>';
           $('#alert-list-table').html(op);
@@ -152,22 +155,30 @@
     }
 });
 
-  /* Remove Post */
-  $("body").on("click",".remove-item",function() {
-      var id = $(this).parent("td").data('id');
-      var c_obj = $(this).parents("tr");
-      console.log(id);
-      $.ajax({
+    /* REMOVE ALERT */
+    $("body").on("click",".remove-item",function() {
+    var id = $(this).data('id');
+    var c_obj = $(this).parents("tr");
+      swal({
+          title: "Seguro desea eliminar esta alerta?",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonClass: 'btn-danger',
+          cancelButtonText: 'Cancelar',
+          confirmButtonText: 'Eliminar',
+          closeOnConfirm: false,
+      },function(){
+        $.ajax({
           dataType: 'json',
           type:'delete',
           url: '/alert-list/' + id,
-      }).done(function(data) {
+        }).done(function(data) {
           c_obj.remove();
-          toastr.success('Alerta eliminada', {timeOut: 4000});
+          swal.close();
+          toastr.success('Alerta eliminada', {timeOut: 5000});
+        });
       });
   });
-
-
 
 </script>
 
