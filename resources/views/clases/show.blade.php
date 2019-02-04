@@ -70,7 +70,7 @@
         <div class="ibox-body">
           <div class="row">
             @foreach(App\Models\Wods\StageType::all() as $st)
-              <div class="col-12 col-md-4 mb-4">
+              <div class="col-12 col-md-4 col-xl-12 mb-4">
                 {{-- <div class="ibox"> --}}
                   {{-- <div class="ibox-body"> --}}
                     <h5 class="font-strong">{{$st->stage_type}}</h5>
