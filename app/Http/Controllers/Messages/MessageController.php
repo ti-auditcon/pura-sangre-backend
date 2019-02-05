@@ -30,17 +30,12 @@ class MessageController extends Controller
     public function send(Request $request)
     {
         $users = User::whereIn('id', $request->users_id)->get();
-        // dd($users->id);
-        // 
         foreach ($users as $user) {
         $token = str_random(64);
         \DB::table('password_resets')->insert([
             'email' => $user->email, 
             'token' => Hash::make($token),
         ]);
-        // Mail::to($user->email)->send(new SendNewUserEmail($user, $token));
-        // 
-        // 
             $mail = new \stdClass();
             $mail->subject = $request->subject;
             $mail->text = $request->text;

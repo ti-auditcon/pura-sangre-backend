@@ -67,7 +67,7 @@ trait MyResetPasswordTrait
     {
         return [
             'token' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|exists:users',
             'password' => 'required|confirmed|min:6',
         ];
     }
@@ -79,7 +79,15 @@ trait MyResetPasswordTrait
      */
     protected function validationErrorMessages()
     {
-        return [];
+        return [
+            'token.required' => 'No hay un token para un cambio de contraseña.',
+            'email.required' => 'Debe ingresar un email.',
+            'email.email' => 'El formato del email es incorrecto.',
+            'password.required' => 'Debe ingresar una contraseña',
+            'password.confirmed' => 'deben coincidir los campos de contraseña',
+            'password.min' => 'la contraseña debe tener un mínimo de 6 dígitos',
+            'email.exists' => 'Email incorrecto'
+        ];
     }
 
     /**

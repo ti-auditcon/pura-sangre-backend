@@ -457,7 +457,7 @@ Para comenzar, puedes&nbsp;cambiar tu contraseña que por defecto es:&nbsp;</spa
                     <tbody>
                         <tr>
                             <td align="center" valign="middle" class="mcnButtonContent" style="font-family: Arial; font-size: 16px; padding: 15px;">
-                                <a class="mcnButton " title="Cambiar Contraseña" href="{{url('https://admin.purasangrecrossfit.cl').route('password.reset', $token, false)}}" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">Cambiar Contraseña</a>
+                                <a class="mcnButton " title="Cambiar Contraseña" href="{{url(config('app.url').route('password.reset', $token, false))}}" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">Cambiar Contraseña</a>
                             </td>
                         </tr>
                     </tbody>
