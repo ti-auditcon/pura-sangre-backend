@@ -14,8 +14,6 @@ use Session;
 
 class UserObserver
 {
-    
-    
     public function retrieved(User $user)
     {
         if($user->status_user_id == 1 || $user->status_user_id == 3) {

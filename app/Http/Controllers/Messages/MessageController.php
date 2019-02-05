@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Messages;
 
 use Session;
 use Redirect;
+use Illuminate\Support\Facades\Hash;
 use App\Mail\SendEmail;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
@@ -30,12 +31,21 @@ class MessageController extends Controller
     {
         $users = User::whereIn('id', $request->users_id)->get();
         // dd($users->id);
+        // 
         foreach ($users as $user) {
+        $token = str_random(64);
+        \DB::table('password_resets')->insert([
+            'email' => $user->email, 
+            'token' => Hash::make($token),
+        ]);
+        // Mail::to($user->email)->send(new SendNewUserEmail($user, $token));
+        // 
+        // 
             $mail = new \stdClass();
             $mail->subject = $request->subject;
             $mail->text = $request->text;
             $mail->user = $user->first_name;
-            Mail::to($user->email)->send(new SendEmail($mail));
+            Mail::to($user->email)->send(new SendEmail($mail, $user, $token));
         }
         Session::flash('success', 'Correos enviados correctamente');
         return redirect()->back();

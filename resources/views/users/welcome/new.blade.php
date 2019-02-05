@@ -408,9 +408,13 @@
 															Bienvenido a la comunidad<br>
 														Pura Sangre CrossFit&nbsp;&nbsp;<img data-file-id="450793" height="22" src="https://gallery.mailchimp.com/0e8c674a05adecbecad2ee1b4/images/cbaccfcc-ca00-489f-a4b5-0f58b474adb1.png" style="border: 0px initial;width: 22px;height: 22px;margin: 0px;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" width="22">&nbsp;<img data-file-id="450793" height="22" src="https://gallery.mailchimp.com/0e8c674a05adecbecad2ee1b4/images/cbaccfcc-ca00-489f-a4b5-0f58b474adb1.png" style="border: 0px initial;width: 22px;height: 22px;margin: 0px;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" width="22"></span></span></strong></span></h1>
 
-														<p style="margin: 10px 0;padding: 0;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #202020;font-family: Helvetica;font-size: 16px;line-height: 150%;text-align: left;"><br>
+														{{-- <p style="margin: 10px 0;padding: 0;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #202020;font-family: Helvetica;font-size: 16px;line-height: 150%;text-align: left;"><br>
 															<font face="lato, helvetica neue, helvetica, arial, sans-serif"><span style="font-size:17px">Estamos felices de que te unas a nuestra familia, estamos aquí para apoyarte y para que cumplas tus objetivos.<br>
-														<br>Para empezar, debes cambiar tu contraseña que por defecto es </span></font><strong style="font-family:lato,helvetica neue,helvetica,arial,sans-serif; font-size:17px">purasangre</strong><font face="lato, helvetica neue, helvetica, arial, sans-serif"><span style="font-size:17px">, acá abajo haya un enlace para que puedas actualizarla.</span></font></p>
+														<br>Para empezar, puedes cambiar tu contraseña que por defecto es </span></font><strong style="font-family:lato,helvetica neue,helvetica,arial,sans-serif; font-size:17px">purasangre</strong><font face="lato, helvetica neue, helvetica, arial, sans-serif"><span style="font-size:17px">, acá abajo haya un enlace para que puedas actualizarla.</span></font></p> --}}
+														<p style="margin: 10px 0;padding: 0;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #202020;font-family: Helvetica;font-size: 16px;line-height: 150%;text-align: left;"><br>
+<font face="lato, helvetica neue, helvetica, arial, sans-serif"><span style="font-size:17px">Estamos felices de que te unas a nuestra familia, estamos aquí para apoyarte y para que cumplas tus objetivos.<br>
+<br>
+Para comenzar, puedes&nbsp;cambiar tu contraseña que por defecto es:&nbsp;</span></font><span style="font-size:18px"><strong style="font-family:lato,helvetica neue,helvetica,arial,sans-serif; font-size:17px">purasangre</strong></span><font face="lato, helvetica neue, helvetica, arial, sans-serif"><span style="font-size:17px">,&nbsp;acá abajo te dejaremos un enlace para que puedas actualizarla.</span></font></p>
 												</td>
 											</tr>
 										</tbody>
@@ -419,6 +423,32 @@
 							</tr>
 						</tbody>
 					</table>
+
+
+
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+                        
+                <td valign="top" class="mcnTextContent" style="padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;font-family: Helvetica;font-size: 16px;line-height: 150%;text-align: left;">
+                        
+                <div style="text-align: center;"><span style="color:#cc0099"><span style="font-size:18px"><strong><span style="font-family:lato,helvetica neue,helvetica,arial,sans-serif">#SeUnPuraSangre</span></strong></span></span></div>
+                        </td>
+                    </tr>
+                </tbody></table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+
+
 					<table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnButtonBlock" style="min-width:100%;">
     <tbody class="mcnButtonBlockOuter">
         <tr>

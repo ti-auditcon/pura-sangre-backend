@@ -43,10 +43,10 @@
           </div>
           <div class="col-md-4 col-sm-12 ">
              <div class="ibox">
+                  <div class="ibox-head">
+                  <div class="ibox-title">Planes vendidos hoy vs. mes <span style="text-transform: capitalize;">{{today()->formatLocalized('%B')}}</span></div>
+               </div>
                   <div class="ibox-body" id="incomes-summary">
-                   {{--  <table id="incomes-summary">
-                    </table> --}}
-                     {{-- <canvas id="gender-chart" ></canvas> --}}
                   </div>
               </div>
           </div>
@@ -101,7 +101,6 @@
                       <tbody>
                          @foreach ($expired_plans->take(5) as $expired_plan)
                          <tr>
-                           {{-- {{dd($expired_plan['alumno'])}} --}}
                             <td><a href="{{url('/users/'.$expired_plan['user_id'])}}">{{$expired_plan['alumno']}}</a></td>
                             <td>{{$expired_plan['plan']}}</td>
                             <td>{{$expired_plan['fecha_termino']}}</td>
@@ -183,10 +182,7 @@
           // eventClick: function(calEvent, jsEvent, view) {
           //   $('#clase-resume').modal();
           // },
-
         });
-
-
     });
   </script>
 
@@ -196,8 +192,6 @@
    var uri = "{{url('withoutrenewal')}}";
    $(document).ready(function(){
       $.get(uri, function(respuesta){
-         // console.log(JSON.parse(respuesta).actives);
-
       var chartdata = {
          labels: ["Activos", "Inactivos"],
          datasets: [{
@@ -253,22 +247,15 @@ $(document).ready(function(){
          type:'get',
          url: '/incomes-summary/',
          success: function(resp){
+            var obj = JSON.parse(resp);
             op+='<table class="table table-striped">';
             op+='<tr><th width="60%">Período</th><th width="25%">Ingresos</th><th width="15%">Cantidad</th></tr>';
-
-
-            $(resp).each(function( value ) {
-                console.log( value.data );
-            });
-
-
-            // for(var i=0;i<resp.length;i++){
-            //   // console.log(resp.length);
-            //    op += '<tr>';
-            //    op += '<td>'+resp[i].periodo+'</td>'+
-            //          '<td>'+resp[i].ingresos+'</td>'+
-            //          '<td>'+resp[i].cantidad+'"></td></tr>';
-            // }
+            for(var i=0;i<obj.length;i++){
+               op += '<tr>';
+               op += '<td>'+obj[i].periodo+'</td>'+
+                     '<td>'+obj[i].ingresos+'</td>'+
+                     '<td>'+obj[i].cantidad+'</td></tr>';
+            }
             op+='</table>';
             $('#incomes-summary').html(op);
          },

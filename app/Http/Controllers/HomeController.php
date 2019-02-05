@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Session;
+use App\Models\Clases\ClaseType;
 use App\Models\Plans\PlanIncomeSummary;
 use App\Models\Plans\PlanUser;
 use App\Models\Users\User;
@@ -28,6 +30,11 @@ class HomeController extends Controller
      */
     public function index()
     {
+        if(!Session::has('clases-type-id'))
+        {
+            Session::put('clases-type-id',1);
+            Session::put('clases-type-name',ClaseType::find(1)->clase_type);
+        }
         $plan_users = $this->expiredNext();
         $expired_plans = $this->ExpiredPlan();
         return view('home')->with('plan_users', $plan_users)->with('expired_plans', $expired_plans);

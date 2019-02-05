@@ -12,15 +12,19 @@ class SendEmail extends Mailable
     use Queueable, SerializesModels;
 
     public $demo;
+    public $user;
+    public $token;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($demo)
+    public function __construct($demo, $user, $token)
     {
         $this->demo = $demo;
+        $this->user = $user;
+        $this->token = $token;
     }
 
     /**
@@ -30,8 +34,11 @@ class SendEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('messages.template')
-                    ->subject($this->demo->subject)
+        // return $this->view('messages.template')
+        //             ->subject($this->demo->subject)
+        //             ->from('contacto@purasangrecrossfit.cl');
+                return $this->view('users.welcome.new')
+                    ->subject('Bienvenido a PuraSangre!')
                     ->from('contacto@purasangrecrossfit.cl');
     }
 }
