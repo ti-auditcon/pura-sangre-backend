@@ -113,7 +113,8 @@
               <tbody>
                 @foreach($user->plan_users as $plan_user)
                 <tr>
-                  <td><a href="{{url('/users/'.$user->id.'/plans/'.$plan_user->id)}}">{{$plan_user->plan->plan}}</a></td>
+                  <td><a href="{{url('/users/'.$user->id.'/plans/'.$plan_user->id)}}">{{$plan_user->plan->plan}}</a> - <a href="{{url('/users/'.$user->id.'/plans/'.$plan_user->id.'/edit')}}"><span class="la la-edit"></span></a></td>
+
                   @if($plan_user->bill)
                      <td>{{Carbon\Carbon::parse($plan_user->bill->date)->format('d-m-Y')}}</td>
                   @else

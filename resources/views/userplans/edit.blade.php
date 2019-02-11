@@ -4,40 +4,54 @@
 @endsection
 
 @section('content')
-  <div class="row justify-content-center">
-    <div class="col-4">
-      <div class="ibox form-control-air">
-        <div class="ibox-head">
-          <div class="ibox-title">Editar Plan {{$plan_user->plan->plan}}
-              a {{$user->first_name}} {{$user->last_name}}</div>
-        </div>
-        {!! Form::open(['route' => ['users.plans.update', $user->id, $plan_user->id], 'method' => 'put']) !!}
-        <div class="ibox-body">
-          <div class="row">
-            <div class="col-sm-12 form-group mb-4">
-              <div class="form-group">
-                <label class="col-form-label">Estado del Plan</label>
-                <select class="selectpicker form-control form-control-air" name="plan_status_id" required>
-                 <option value="">Elegir estado...</option>
-                 @foreach (App\Models\Plans\PlanStatus::all() as $ps)
-                 <option value="{{$ps->id}}" @if($plan_user->plan_status_id == $ps->id) selected @endif>
-                    {{$ps->plan_status}}
-                  </option>
-                 @endforeach
-                </select>
-              </div>
+   <div class="row justify-content-center">
+      <div class="col-6">
+         <div class="ibox form-control-air">
+            <div class="ibox-head">
+               <div class="ibox-title">Editar Plan {{$plan_user->plan->plan}}
+                 a {{$user->first_name}} {{$user->last_name}}</div>
             </div>
-          </div>
-        {{-- <div class="ibox-footer"> --}}
-        <button class="btn btn-primary btn-air mr-2" type="submit">Actualizar Plan</button>
-        {{-- <button class="" href="" type="btn btn-secondary"></button> --}}
-        <a class="btn btn-secondary" href="{{ route('users.plans.show', ['user' => $user->id, 'plan' => $plan_user->id]) }}">Volver</a>
-        {{-- </div> --}}
+            {!! Form::open(['route' => ['users.plans.update', $user->id, $plan_user->id], 'method' => 'put']) !!}
+            <div class="ibox-body">
+               <div class="row">
+                  <div class="col-sm-6 form-group mb-4">
+                     <div class="form-group" id="start_date">
+                        <label class="form-control-label">Fecha de inicio del plan</label>
+                        <div class="input-group date">
+                           <span class="input-group-addon bg-white"><i class="la la-calendar"></i></span>
+                           <input class="form-control" name="start_date" type="text" value="{{ $plan_user->start_date->format('d-m-Y') }}" required>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div class="col-sm-6 form-group mb-2 is-custom">
+                     <div class="form-group"  id="finish_date">
+                        <label class="form-control-label">Fecha de término del plan</label>
+                        <div class="input-group date">
+                           <span class="input-group-addon bg-white"><i class="la la-calendar"></i></span>
+                           <input class="form-control" name="finish_date" type="text" value="{{ $plan_user->finish_date->format('d-m-Y') }}" required>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div class="col-sm-6 form-group mb-2 is-not-custom">
+                     <div class="form-group">
+                        <label class="form-control-label">Total</label>
+                        <div class="input-group-icon input-group-icon-left">
+                           <span class="input-icon input-icon-left"><i class="la la-dollar"></i></span>
+                           <input class="form-control" id="plan-amount" name="amount" value="@if ($plan_user->bill){{$plan_user->bill->amount}}@endif" type="text" placeholder="solo números" required/>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <button class="btn btn-primary btn-air mr-2" type="submit">Actualizar Plan</button>
+               <a class="btn btn-secondary" href="{{ route('users.show', ['user' => $user->id]) }}">Perfirl de {{$user->first_name}}</a>
+            </div>
+         </div>
+            {!! Form::close() !!}
       </div>
-      {!! Form::close() !!}
-      </div>
-    </div>
-  </div>
+   </div>
+
 
 
 
@@ -54,39 +68,39 @@
 
 
   {{-- // BOOTSTRAP DATEPICKER // --}}
-  <script defer>
-  $('#start_date .input-group.date').datepicker({
-    todayBtn: "linked",
-    keyboardNavigation: false,
-    forceParse: false,
-    calendarWeeks: true,
-    autoclose: true
-  });
+   <script defer>
+      $('#start_date .input-group.date').datepicker({
+         todayBtn: "linked",
+         keyboardNavigation: false,
+         forceParse: false,
+         calendarWeeks: true,
+         format: "dd-mm-yyyy",
+         startDate: "01-01-1910",
+         endDate: "01-01-2030",
+         language: "es",
+         orientation: "bottom auto",
+         autoclose: true,
+         maxViewMode: 3,
+         todayHighlight: true
+     });
+   </script>
 
-  </script>
+   <script defer>
+      $('#finish_date .input-group.date').datepicker({
+         todayBtn: "linked",
+         keyboardNavigation: false,
+         forceParse: false,
+         calendarWeeks: true,
+         format: "dd-mm-yyyy",
+         startDate: "01-01-1910",
+         endDate: "01-01-2030",
+         language: "es",
+         orientation: "bottom auto",
+         autoclose: true,
+         maxViewMode: 3,
+         todayHighlight: true
+      });
+   </script>
 
-{{--   <script>
- $.datepicker.regional['es'] = {
- closeText: 'Cerrar',
- prevText: '< Ant',
- nextText: 'Sig >',
- currentText: 'Hoy',
- monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
- monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
- dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
- dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
- dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
- weekHeader: 'Sm',
- dateFormat: 'dd/mm/yy',
- firstDay: 1,
- isRTL: false,
- showMonthAfterYear: false,
- yearSuffix: ''
- };
- $.datepicker.setDefaults($.datepicker.regional['es']);
-$(function () {
-$("#fecha").datepicker();
-});
-</script> --}}
 
 @endsection

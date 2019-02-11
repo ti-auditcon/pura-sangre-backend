@@ -129,12 +129,10 @@ class HomeController extends Controller
         $mes['periodo'] = 'mensual';
         $mes['ingresos'] = PlanIncomeSummary::where('month', now()->month)
                                             ->where('year', now()->year)
-                                            ->get()
                                             ->sum('amount');
         $mes['cantidad'] = PlanIncomeSummary::where('month', now()->month)
                                             ->where('year', now()->year)
-                                            ->get()
-                                            ->count();
+                                            ->sum('quantity');
         $dia['periodo'] = 'hoy';
         $dia['ingresos'] = PlanUser::where('plan_user.created_at', toDay())
                                    ->join('bills', 'bills.plan_user_id', '=', 'plan_user.id')

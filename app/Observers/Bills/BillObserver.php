@@ -21,7 +21,7 @@ class BillObserver
     */
    public function created(Bill $bill)
    {
-     $month = $bill->date->month;
+      $month = $bill->date->month;
      $year = $bill->date->year;
      $plan_id = $bill->plan_user->plan->id;
      $amount = $bill->amount;
@@ -44,8 +44,28 @@ class BillObserver
 
    }
 
-    public function deleting(Bill $bill)
-    {
-        //
-    }
+   public function updated(Bill $bill)
+   {
+        $month = $bill->date->month;
+        $year = $bill->date->year;
+        $plan_id = $bill->plan_user->plan->id;
+        $amount = $bill->amount;
+
+     $plan_income_sum = PlanIncomeSummary::where('month',$month)->where('year',$year)->where('plan_id', $plan_id)->first();
+
+     if($plan_income_sum){
+       $plan_income_sum->amount += $amount;
+       $plan_income_sum->quantity += 1;
+     } else {
+        $plan_income_sum = new PlanIncomeSummary;
+        $plan_income_sum->amount = $amount;
+        $plan_income_sum->plan_id = $plan_id;
+        $plan_income_sum->month = $month;
+        $plan_income_sum->year = $year;
+        $plan_income_sum->quantity = 1;
+     }
+
+     $plan_income_sum->save();
+
+   }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Plans;
 use App\Http\Controllers\Controller;
 use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
+use App\Models\Plans\PlanIncomeSummary;
 use App\Models\Plans\PlanUser;
 use App\Models\Plans\PlanUserPeriod;
 use App\Models\Users\User;
@@ -52,6 +53,9 @@ class planuserController extends Controller
 	 */
 	public function store(Request $request, User $user)
 	{
+		if ($request->plan_id == 2 && !$request->counter) {
+        	return back()->with('warning', 'Campo Numero de Clases vacío');
+        }
 		$plan = Plan::find($request->plan_id);
 		$planuser = new PlanUser;
 		$planuser->plan_id = $plan->id;
@@ -72,7 +76,6 @@ class planuserController extends Controller
 			$planuser->finish_date = Carbon::parse($request->fecha_termino);
 			$planuser->counter = $request->counter;
 		}
-	    // $planuser->plan_status_id = 3;
 
 		if($planuser->save()){
 			if(($plan->custom == 0) && ($request->amount > 0) ){
@@ -131,10 +134,35 @@ class planuserController extends Controller
 			Session::flash('warning','No se puede modificar el estado de un plan cuya fecha de término es anterior a hoy');
 			return view('userplans.show')->with(['user' => $user, 'plan_user' => $plan]);
 		}else{
-			$plan->update($request->all());
-			Session::flash('success','Se actualizó correctamente');
-			return view('userplans.show')->with(['user' => $user, 'plan_user' => $plan]);
+			if ($plan_saved = $plan->update([
+				'start_date' => Carbon::parse($request->start_date),
+				'finish_date' => Carbon::parse($request->finish_date),
+			])) {
+				$plan_saved = $this->updateBillIncome($plan);
+				if ($plan_saved->plan_id != 1 && $plan_saved->plan_id != 2) {
+					$plan_saved->bill->update(['amount' => $request->amount]); 
+				}
+				Session::flash('success','Se actualizó correctamente');
+				return view('userplans.show')->with(['user' => $user, 'plan_user' => $plan]);
+			}else{
+				return redirect()->with('error', 'No se pudo actualizar plan');
+			}
 		}
+	}
+
+	public function updateBillIncome($plan_saved)
+	{
+		// dd($plan_saved);
+		if ($plan_saved->bill) {
+     		$plan_income_sum = PlanIncomeSummary::where('month', $plan_saved->bill->date->month)
+     											->where('year', $plan_saved->bill->date->year)
+     											->where('plan_id', $plan_saved->bill->plan_user->plan->id)
+     											->first();
+			$plan_income_sum->amount -= $plan_saved->bill->amount;
+       		$plan_income_sum->quantity -= 1;
+       		$plan_income_sum->save();
+		}
+		return $plan_saved;
 	}
 
 	/**

@@ -15,6 +15,7 @@
              de {{$user->first_name}} {{$user->last_name}} @endif </div>
           @if (Auth::user()->hasRole(1))
             <div class="ibox-tools">
+              <a class="btn btn-secondary" href="{{ route('users.show', $user->id) }}">Perfil de {{$user->first_name}}</a>
               <a class="btn btn-success text-white" href="{{ route('users.plans.edit', ['user' => $user->id, 'plan' => $plan_user->id]) }}">Editar</a>
             </div>
           @endif

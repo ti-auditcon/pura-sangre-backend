@@ -5,6 +5,7 @@
 
 @section('content')
   <div class="row justify-content-center">
+
     <div class="col-6">
       <div class="ibox ">
         <div class="ibox-head">
@@ -12,6 +13,7 @@
         </div>
         {!! Form::open(['route' => ['users.plans.store', $user->id]]) !!}
         <div class="ibox-body">
+          {{old('plan_id')}}
           <input class="form-control" name="user_id" type="hidden" value="{{ $user->id }}" hidden>
           <div class="row">
             <div class="col-sm-6 form-group mb-2">
@@ -28,6 +30,7 @@
                 </div>
               </div>
             </div>
+
 
             <div class="col-sm-6 form-group mb-2 is-custom" style="display: none;">
                 <label class="form-control-label">Número de Clases</label>
@@ -53,8 +56,9 @@
                 <label class="form-control-label">Fecha de inicio del plan</label>
                 <div class="input-group date">
                   <span class="input-group-addon bg-white"><i class="la la-calendar"></i></span>
-                  <input class="form-control" name="fecha_inicio" type="text" value="{{ date('d-m-Y') }}">
+                  <input class="form-control" name="fecha_inicio" type="text" value="@isset ($user->last_plan){{$user->last_plan->finish_date->addDay()->format('d-m-Y')}} @else {{date('d-m-Y')}} @endisset">
                 </div>
+                <span class="bg-white"><i class="la la-calendar"></i><i>Fecha término último plan: @isset ($user->last_plan) {{$user->last_plan->finish_date->format('d-m-Y')}} @else Sin referencia @endisset</i></span>
               </div>
             </div>
 
@@ -63,7 +67,7 @@
                 <label class="form-control-label">Fecha de término del plan</label>
                 <div class="input-group date">
                   <span class="input-group-addon bg-white"><i class="fa fa-calendar"></i></span>
-                  <input class="form-control" name="fecha_termino" type="text" value="{{ date('d-m-Y') }}">
+                  <input class="form-control" name="fecha_termino" type="text" value="@isset ($user->last_plan){{$user->last_plan->finish_date->addDay()->format('d-m-Y')}} @else {{date('d-m-Y')}} @endisset">
                 </div>
               </div>
             </div>
@@ -89,7 +93,7 @@
                 <label class="font-normal">Fecha del pago</label>
                 <div class="input-group date ">
                   <span class="input-group-addon bg-white"><i class="la la-calendar"></i></span>
-                  <input class="form-control" name="date" type="text" value="{{ date('d-m-Y') }}">
+                  <input class="form-control" name="date" type="text" value="@isset ($user->last_plan){{$user->last_plan->finish_date->addDay()->format('d-m-Y')}} @else {{date('d-m-Y')}} @endisset">
                 </div>
               </div>
             </div>
@@ -197,7 +201,7 @@
    });
 
    $('#plan-select').change(function() {
-     console.log('estoy vivo!!!');
+     // console.log('estoy vivo!!!');
       var data = $('#plan-select').find('option:selected').data('amount');
       var custom = $('#plan-select').find('option:selected').data('custom');
       $('#plan-amount').val(data);

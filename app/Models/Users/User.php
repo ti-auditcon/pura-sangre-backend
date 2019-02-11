@@ -128,6 +128,11 @@ class User extends Authenticatable
                                              ->where('finish_date','>=', today());
     }
 
+    public function last_plan()
+    {
+        return $this->hasOne(PlanUser::class)->orderByDesc('finish_date');
+    }
+
     public function future_reservs()
     {
         return $this->HasMany(Reservation::class)->whereIn('reservation_status_id', [1,2])->take(10);
