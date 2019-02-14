@@ -32,6 +32,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('closed:clase')->hourlyAt(15);
         $schedule->command('refresh:plans')->daily();
         $schedule->command('create:clases')->weekly();
+        $schedule->command('toexpire:plan')->dailyAt('9:10');
     }
 
     /**
