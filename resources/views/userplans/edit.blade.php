@@ -36,7 +36,7 @@
 
                   <div class="col-sm-6 form-group mb-2 is-not-custom">
                      <div class="form-group">
-                        <label class="form-control-label">Total</label>
+                        <label class="form-control-label">Total**</label>
                         <div class="input-group-icon input-group-icon-left">
                            <span class="input-icon input-icon-left"><i class="la la-dollar"></i></span>
                            <input class="form-control" id="plan-amount" name="amount" value="@if ($plan_user->bill){{$plan_user->bill->amount}}@endif" type="text" placeholder="solo números" required/>
@@ -47,6 +47,7 @@
                <button class="btn btn-primary btn-air mr-2" type="submit">Actualizar Plan</button>
                <a class="btn btn-secondary" href="{{ route('users.show', ['user' => $user->id]) }}">Perfirl de {{$user->first_name}}</a>
             </div>
+             <div class="ibox-footer pt-3 pb-2 my-1 is-not-custom">**Si el plan es de invitado, el total debe ser dejado en 0</div>
          </div>
             {!! Form::close() !!}
       </div>

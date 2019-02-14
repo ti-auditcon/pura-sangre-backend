@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\CreateClases',
         'App\Console\Commands\RefreshPlans',
         'App\Console\Commands\PushClases',
+         'App\Console\Commands\ToExpiredPlan',
     ];
 
     /**

@@ -113,7 +113,12 @@
               <tbody>
                 @foreach($user->plan_users as $plan_user)
                 <tr>
-                  <td><a href="{{url('/users/'.$user->id.'/plans/'.$plan_user->id)}}">{{$plan_user->plan->plan}}</a> - <a href="{{url('/users/'.$user->id.'/plans/'.$plan_user->id.'/edit')}}"><span class="la la-edit"></span></a></td>
+                  <td>
+                        {{-- <button ><i class="la la-info"></i></button> --}}
+                    <a class="sweet-user-plan-info" data-user-id="{{$user->id}}" data-plan-id="{{$plan_user->id}}">{{$plan_user->plan->plan}}</a>@if (\Carbon\Carbon::parse($plan_user->finish_date)->gte(toDay()))
+                    - <a href="{{url('/users/'.$user->id.'/plans/'.$plan_user->id.'/edit')}}"><span class="la la-edit"></span></a>
+                    @endif
+                  </td>
 
                   @if($plan_user->bill)
                      <td>{{Carbon\Carbon::parse($plan_user->bill->date)->format('d-m-Y')}}</td>
@@ -216,10 +221,7 @@
       @endif
     </div>
 
-
-
   </div>
-
 @endsection
 
 {{-- stylesheet para esta vista --}}
@@ -349,11 +351,33 @@
       });
    </script>
 
-  {{--  <script>
-      $("#next-clases-table thead tr th").each(function(){
-        alert(this.innerHTML); //This executes once per column showing your column names!
+   <script>
+
+
+  $('.sweet-user-plan-info').click(function(e){
+      var user_id = $(this).data('user-id');
+      var plan_id = $(this).data('plan-id');
+    $.ajax({
+      url: '/users/'+user_id+'/plans/'+plan_id+'/info',
+      method: "GET",
+      dataType: 'json',
+      success: function(response) {
+        response = response;
+        var htmlcontent = '<div class="container"> <br/> <div class="row">Plan desde el '+response.dates+'</div>  <div class="row">Total: '+response.amount+'</div><div class="row">Estado del plan: '+response.status_plan+'</div><div class="row">Clases restantes: '+response.left_clases+'</div> </div>';
+        swal({
+          title: 'Plan '+response.plan,
+          text: htmlcontent,
+          // type: 'info',
+          showCancelButton: false,
+          confirmButtonClass: 'btn-info',
+          confirmButtonText: 'Ok',
+          closeOnConfirm: false,
+          html: true,
+        });
+      }
+        });
     });
-   </script> --}}
+   </script>
 
 
 @endsection

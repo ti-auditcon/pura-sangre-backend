@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Plans;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NewPlanUserEmail;
 use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
 use App\Models\Plans\PlanIncomeSummary;
@@ -11,6 +12,7 @@ use App\Models\Plans\PlanUserPeriod;
 use App\Models\Users\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Redirect;
 use Session;
 
@@ -88,6 +90,7 @@ class planuserController extends Controller
 					'detail' => $request->detalle,
 					'amount' => $request->amount,
 				]);
+			Mail::to($user->email)->send(new NewPlanUserEmail($user, $planuser));
 			}
 			Session::flash('success','Guardado con éxito');
 			return redirect('/users/'.$user->id);
@@ -143,7 +146,7 @@ class planuserController extends Controller
 					$plan_saved->bill->update(['amount' => $request->amount]); 
 				}
 				Session::flash('success','Se actualizó correctamente');
-				return view('userplans.show')->with(['user' => $user, 'plan_user' => $plan]);
+				return view('users.show')->with('user', $user);
 			}else{
 				return redirect()->with('error', 'No se pudo actualizar plan');
 			}

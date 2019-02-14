@@ -130,7 +130,7 @@ class User extends Authenticatable
 
     public function last_plan()
     {
-        return $this->hasOne(PlanUser::class)->orderByDesc('finish_date');
+        return $this->hasOne(PlanUser::class)->where('plan_status_id', '!=', 5)->orderByDesc('finish_date');
     }
 
     public function future_reservs()

@@ -7,22 +7,22 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendNewUserEmail extends Mailable
+class NewPlanUserEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $user;
-    public $token;
+    public $planuser;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user, $token)
+    public function __construct($user, $planuser)
     {
         $this->user = $user;
-        $this->token = $token;
+        $this->planuser = $planuser;
     }
 
     /**
@@ -32,7 +32,7 @@ class SendNewUserEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('users.welcome.new')
-                    ->subject('Bienvenido a PuraSangre!');
+        return $this->view('messages.plan_bought_template')
+                    ->subject('Se registró un pago en PuraSangre');
     }
 }

@@ -34,7 +34,7 @@ class MessageController extends Controller
                 $mail->subject = $request->subject;
                 $mail->text = $request->text;
                 $mail->user = $user->first_name;
-                Mail::to($user->email)->send(new SendEmail($mail, $user, $token));
+                Mail::to($user->email)->send(new SendEmail($mail, $user));
         }
         Session::flash('success', 'Correos enviados correctamente');
         return redirect()->back();

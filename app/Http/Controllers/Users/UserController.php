@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Users;
 
-use Auth;
-use Session;
-use Redirect;
-use Carbon\Carbon;
-use App\Models\Users\User;
-use Illuminate\Http\Request;
-use App\Notifications\NewUser;
-use App\Models\Users\Emergency;
 use App\Http\Controllers\Controller;
-use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Users\UserRequest;
+use App\Models\Plans\PlanUser;
+use App\Models\Users\Emergency;
+use App\Models\Users\User;
+use App\Notifications\NewUser;
+use Auth;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
+use Redirect;
+use Session;
 
 /**
  * [UserController description]
@@ -168,5 +169,18 @@ class UserController extends Controller
             $user->save();
         }
         return 'listoco';
+    }
+
+    public function userinfo(User $user, planuser $plan)
+    {
+        $response = [
+            'user_name' => $user->first_name. ' ' .$user->last_name,
+            'plan' => $plan->plan->plan,
+            'dates' => $plan->start_date->format('d/m/Y'). ' al ' .$plan->finish_date->format('d/m/Y'),
+            'amount' => $plan->bill ? '$ '.number_format($plan->bill->amount, $decimal = 0, '.', '.') : 'No aplica',
+            'left_clases' => $plan->counter ? : '',
+            'status_plan' => $plan->plan_status->plan_status,
+        ];
+        echo json_encode($response);
     }
 }

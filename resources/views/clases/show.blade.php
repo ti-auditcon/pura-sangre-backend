@@ -14,7 +14,7 @@
                @if (Carbon\Carbon::parse($clase->date)->gte(today()))
                   {!! Form::open(['route' => ['clases.destroy', $clase->id], 'method' => 'delete', 'class' => 'clase-delete']) !!}
                   {!! Form::close() !!}
-                  <button class="btn btn-danger sweet-clase-delete" data-id="{{$clase->id}}" data-name="{{$clase->date}}"><i>
+                  <button class="btn btn-danger sweet-clase-delete" data-id="{{$clase->id}}" data-name="{{Carbon\Carbon::parse($clase->date)->format('d-m-Y')}}"><i>
                   </i>Cerrar Clase</button>
                @endif
             @endif
@@ -90,7 +90,8 @@
          <div class="ibox-head">
             <div class="ibox-title">Crossfiteros de esta clase</div>
             <div class="ibox-tools">
-               @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
+              {{-- {{dd($clase->start_at <= now()->subMinute())}} --}}
+               @if ((Auth::user()->hasRole(1) || Auth::user()->hasRole(2)) && ($clase->start_at <= now()->subMinute()->format('H:i:s') && $clase->date == toDay()->format('Y-m-d')))
                   <button id="button-modal" class="btn btn-warning btn-icon-only" data-toggle="modal" data-target="#confirm-assistance-modal"><i class="la la-check-square"></i></button>
                @if (Auth::user()->hasRole(1))
                   <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
