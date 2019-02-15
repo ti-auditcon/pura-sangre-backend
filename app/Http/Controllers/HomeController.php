@@ -127,21 +127,22 @@ class HomeController extends Controller
     public function incomessummary()
     {
         $mes['periodo'] = 'mensual';
-        $mes['ingresos'] = PlanIncomeSummary::where('month', now()->month)
+        $month_amount = PlanIncomeSummary::where('month', now()->month)
                                             ->where('year', now()->year)
                                             ->sum('amount');
+        $mes['ingresos'] = '$ '.number_format($month_amount, $decimal = 0, '.', '.');
         $mes['cantidad'] = PlanIncomeSummary::where('month', now()->month)
                                             ->where('year', now()->year)
                                             ->sum('quantity');
         $dia['periodo'] = 'hoy';
-        $dia['ingresos'] = PlanUser::where('plan_user.created_at', toDay())
+        $day_amount = PlanUser::where('plan_user.created_at', toDay())
                                    ->join('bills', 'bills.plan_user_id', '=', 'plan_user.id')
                                    ->get()
                                    ->sum('amount');
+        $dia['ingresos'] = '$ '.number_format($day_amount, $decimal = 0, '.', '.');
         $dia['cantidad'] = PlanUser::where('created_at', toDay())
                                    ->get()
                                    ->count();
-
         $in_sum = array_merge([$dia, $mes]);
         echo json_encode($in_sum);
     }

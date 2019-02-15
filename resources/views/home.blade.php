@@ -247,14 +247,15 @@ $(document).ready(function(){
          type:'get',
          url: '/incomes-summary/',
          success: function(resp){
+            // console.log(resp);
             var obj = JSON.parse(resp);
             op+='<table class="table table-striped">';
-            op+='<tr><th width="60%">Período</th><th width="25%">Ingresos</th><th width="15%">Cantidad</th></tr>';
+            op+='<tr><th width="40%">Período</th><th width="15%">Cantidad</th><th width="45%">Ingresos</th></tr>';
             for(var i=0;i<obj.length;i++){
                op += '<tr>';
                op += '<td>'+obj[i].periodo+'</td>'+
-                     '<td>'+obj[i].ingresos+'</td>'+
-                     '<td>'+obj[i].cantidad+'</td></tr>';
+                     '<td>'+obj[i].cantidad+'</td>'+
+                     '<td>'+obj[i].ingresos+'</td></tr>';
             }
             op+='</table>';
             $('#incomes-summary').html(op);

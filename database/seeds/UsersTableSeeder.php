@@ -24,7 +24,7 @@ class UsersTableSeeder extends Seeder
               'first_name' => 'Admin',
               'last_name' => 'Pura Sangre',
               'email' => 'contacto@purasangrecrossfit.cl',
-              'password' => '$2y$10$cU/YuF9UTn36s.5Vm.44Pu7Wbf7RQZcUAfUbiIAO2iF3rI6Pmv.6G',
+              'password' => bcrypt('123123'),
               'avatar' => 'http://adminps.test/storage/users/u (17).jpg',
               'phone' => 59154977,
               'birthdate' => '2000-08-18',

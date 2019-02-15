@@ -91,13 +91,15 @@
             <div class="ibox-title">Crossfiteros de esta clase</div>
             <div class="ibox-tools">
               {{-- {{dd($clase->start_at <= now()->subMinute())}} --}}
-               @if ((Auth::user()->hasRole(1) || Auth::user()->hasRole(2)) && ($clase->start_at <= now()->subMinute()->format('H:i:s') && $clase->date == toDay()->format('Y-m-d')))
+              @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
+                  @if($clase->start_at <= now()->subMinute()->format('H:i:s') && $clase->date == toDay()->format('Y-m-d'))
                   <button id="button-modal" class="btn btn-warning btn-icon-only" data-toggle="modal" data-target="#confirm-assistance-modal"><i class="la la-check-square"></i></button>
-               @if (Auth::user()->hasRole(1))
+                  @endif
+                @if (Auth::user()->hasRole(1))
                   <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">Agregar alumno a la clase</button>
-               @endif
-               @else
-               {!! Form::open(['route' => ['reservation.store'], 'method' => 'post' ,'id' => 'user-join']) !!}
+                @endif
+                @else
+                  {!! Form::open(['route' => ['reservation.store'], 'method' => 'post' ,'id' => 'user-join']) !!}
                   <input type="hidden" value="{{Auth::user()->id}}" name="user_id">
                   <input type="hidden" value="{{$clase->id}}" name="clase_id">
                   <button class="btn btn-success sweet-user-join" data-id="{{$clase->id}}" data-name="{{$clase->date}}">  <i></i>Reservar esta clase
