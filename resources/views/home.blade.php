@@ -20,7 +20,7 @@
 
       <div class="col-12 col-md-7">
         <div class="row">
-          <div class=" col-md-6 col-sm-12">
+          <div class=" col-xl-6 col-sm-12">
             <div class="ibox">
                <div class="ibox-head">
                   <div class="ibox-title">Actividad de alumnos <span style="text-transform: capitalize;">{{today()->formatLocalized('%B')}}</span></div>
@@ -30,7 +30,7 @@
                   </div>
             </div>
           </div>
-          <div class="col-md-6 col-sm-12 ">
+          <div class="col-xl-6 col-sm-12 ">
              <div class="ibox">
                  <div class="ibox-head">
                     <div class="ibox-title">Crossfiteros del box</div>
