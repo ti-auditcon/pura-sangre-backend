@@ -65,6 +65,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     * Users Routes (ALUMNOS, PROFES, ADMINS, ALERTAS)
     */
     Route::resource('users', 'Users\UserController');
+        Route::get('export', 'Users\UserController@export')->name('users.export');
         Route::get('update-avatar', 'Users\UserController@updateAvatar')->name('user.update.avatar');
     Route::resource('users.plans', 'Plans\PlanUserController');
         Route::post('users/{user}/plans/{plan}/annul', 'Plans\PlanUserController@annul')->name('users.plans.annul');
@@ -84,9 +85,9 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 });
 
 
-Route::get('mailable', function () {
-    $user = App\Models\Users\User::find(15);
-    $plan = App\Models\Plans\PlanUser::whereUserId($user->id)
-                                     ->first();
-    return new App\Mail\ToExpireEmail($user, $plan);
-});
+// Route::get('mailable', function () {
+//     $user = App\Models\Users\User::find(15);
+//     $plan = App\Models\Plans\PlanUser::whereUserId($user->id)
+//                                      ->first();
+//     return new App\Mail\ToExpireEmail($user, $plan);
+// });

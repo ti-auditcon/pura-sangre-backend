@@ -48,6 +48,9 @@
                   <span class="btn-label-out btn-label-out-right btn-label-out-primary pointing">{{$users->count()}}</span>
                 </div>
               </span>
+              {{-- <button class="btn btn-info btn-labeled btn-labeled-left btn-icon"> --}}
+                                    {{-- <span class="btn-label"><i class="la la-cloud-download"></i></span>Labeled</button> --}}
+                <a class="btn btn-info btn-labeled btn-labeled-left btn-icon" style="display: inline-block;" href="{{ route('users.export')}}"><span class="btn-label"><i class="la la-cloud-download"></i></span> Excel alumnos</a>
             </div>
           </div>
           <div class="table-responsive">

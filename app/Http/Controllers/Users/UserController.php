@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Users;
 
+use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\UserRequest;
 use App\Models\Plans\PlanUser;
@@ -13,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use Maatwebsite\Excel\Facades\Excel;
 use Redirect;
 use Session;
 
@@ -35,6 +37,12 @@ class UserController extends Controller
     {
         $users = User::all();
         return view('users.index')->with('users', $users);
+    }
+
+
+    public function export() 
+    {
+        return Excel::download(new UsersExport, toDay()->format('d-m-Y').'_usuarios.xls');
     }
 
     /**
