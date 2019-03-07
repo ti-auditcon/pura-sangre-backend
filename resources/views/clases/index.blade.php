@@ -17,11 +17,13 @@
           @endif
         </div>
         <div class="ibox-body">
+
           {{Form::open(['route'=>'clases.type'])}}
           <div class="form-group m-0 mt-2 mb-4 row align-items-center">
 
             <span>Tipo de clase:</span>
             <div class="col-sm-4">
+
               <select class="form-control" name="type">
                 @foreach(App\Models\Clases\ClaseType::all() as $type)
                   <option value="{{$type->id}}" @if($type->id == Session::get('clases-type-id')) selected @endif>
@@ -36,7 +38,13 @@
 
           </div>
           {{Form::close()}}
-          <div id="calendar"></div>
+
+          <div id="calendar" style="position: relative;">
+            <div class="loading-box d-none">
+              <div class="spinner"></div>
+              <h1>Cargando...</h1>
+            </div>
+          </div>
         </div>
       </div>
     </div>
