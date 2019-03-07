@@ -101,6 +101,7 @@
             element.find('.fc-time').append('<div> reservas: ' +event.reservation_count+'/'+event.quota+'</div> ');
           },
           viewRender: function (view, element,start,end) {
+             $('div.loading-box').toggleClass('d-none');
              var b = $('#calendar').fullCalendar('getDate');
              console.log(b.startOf('week').format('Y-M-D'));
              $('#calendar').fullCalendar( 'removeEventSources');
@@ -118,7 +119,9 @@
                 color: 'yellow',    // an option!
                 textColor: 'black'  // an option!
               }
+
             );
+            $('div.loading-box').toggleClass('d-none');
           },
           // eventClick: function(calEvent, jsEvent, view) {
           //   $('#clase-resume').modal();
