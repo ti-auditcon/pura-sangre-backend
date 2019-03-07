@@ -40,8 +40,8 @@
           {{Form::close()}}
 
           <div id="calendar" style="position: relative;">
-            <div class="loading-box">
-              <div id="calendar-spinner" class="spinner d-none"></div>
+            <div id="calendar-spinner" class="loading-box d-none">
+              <div  class="spinner "></div>
               <h1>Cargando...</h1>
             </div>
           </div>
