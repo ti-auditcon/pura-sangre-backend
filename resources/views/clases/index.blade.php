@@ -121,14 +121,14 @@
               }
 
             );
-            $('div.loading-box').removeClass('d-none');
+            $('#calendar .loading-box').removeClass('d-none');
           },
           loading: function (bool) {
-             $('div.loading-box').addClass('d-none');// Add your script to show loading
+             $('#calendar .loading-box').addClass('d-none');// Add your script to show loading
           },
           eventAfterAllRender: function (view) {
             console.log('listo');
-            $('div.loading-box').removeClass('d-none'); // remove your loading
+            $('#calendar .loading-box').removeClass('d-none'); // remove your loading
           }
           // eventClick: function(calEvent, jsEvent, view) {
           //   $('#clase-resume').modal();
