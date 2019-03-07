@@ -123,6 +123,12 @@
             );
             $('div.loading-box').toggleClass('d-none');
           },
+          loading: function (bool) {
+             alert('events are being rendered'); // Add your script to show loading
+          },
+          eventAfterAllRender: function (view) {
+              alert('all events are rendered'); // remove your loading
+          }
           // eventClick: function(calEvent, jsEvent, view) {
           //   $('#clase-resume').modal();
           // },
