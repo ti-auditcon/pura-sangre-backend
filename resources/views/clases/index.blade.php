@@ -40,7 +40,7 @@
           {{Form::close()}}
 
           <div id="calendar" style="position: relative;">
-            <div class="loading-box">
+            <div class="loading-box d-none">
               <div class="spinner"></div>
               <h1>Cargando...</h1>
             </div>
@@ -121,13 +121,13 @@
               }
 
             );
-            $('div.loading-box').toggleClass('d-none');
+
           },
           loading: function (bool) {
-             alert('events are being rendered'); // Add your script to show loading
+             $('div.loading-box').toggleClass('d-none');// Add your script to show loading
           },
           eventAfterAllRender: function (view) {
-              alert('all events are rendered'); // remove your loading
+            $('div.loading-box').toggleClass('d-none'); // remove your loading
           }
           // eventClick: function(calEvent, jsEvent, view) {
           //   $('#clase-resume').modal();
