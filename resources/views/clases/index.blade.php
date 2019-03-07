@@ -41,7 +41,7 @@
 
           <div id="calendar" style="position: relative;">
             <div class="loading-box">
-              <div id="calendar-spinner" class="spinner"></div>
+              <div id="calendar-spinner" class="spinner d-none"></div>
               <h1>Cargando...</h1>
             </div>
           </div>
@@ -121,14 +121,14 @@
               }
 
             );
-            $('#calendar-spinner').removeClass('d-none');
+            //$('#calendar-spinner').addClass('d-none');
           },
           loading: function (bool) {
-             $('#calendar-spinner').addClass('d-none');// Add your script to show loading
+             $('#calendar-spinner').removeClass('d-none');// Add your script to show loading
           },
           eventAfterAllRender: function (view) {
             console.log('listo');
-            $('#calendar-spinner').removeClass('d-none'); // remove your loading
+            $('#calendar-spinner').addClass('d-none'); // remove your loading
           }
           // eventClick: function(calEvent, jsEvent, view) {
           //   $('#clase-resume').modal();
