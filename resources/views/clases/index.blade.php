@@ -40,7 +40,7 @@
           {{Form::close()}}
 
           <div id="calendar" style="position: relative;">
-            <div class="loading-box d-none">
+            <div class="loading-box">
               <div class="spinner"></div>
               <h1>Cargando...</h1>
             </div>
@@ -101,7 +101,7 @@
             element.find('.fc-time').append('<div> reservas: ' +event.reservation_count+'/'+event.quota+'</div> ');
           },
           viewRender: function (view, element,start,end) {
-             $('div.loading-box').toggleClass('d-none');
+
              var b = $('#calendar').fullCalendar('getDate');
              console.log(b.startOf('week').format('Y-M-D'));
              $('#calendar').fullCalendar( 'removeEventSources');
