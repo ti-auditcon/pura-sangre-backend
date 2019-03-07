@@ -121,7 +121,7 @@
               }
 
             );
-
+            $('div.loading-box').removeClass('d-none');
           },
           loading: function (bool) {
              $('div.loading-box').addClass('d-none');// Add your script to show loading
