@@ -17,11 +17,13 @@
           @endif
         </div>
         <div class="ibox-body">
+
           {{Form::open(['route'=>'clases.type'])}}
           <div class="form-group m-0 mt-2 mb-4 row align-items-center">
 
             <span>Tipo de clase:</span>
             <div class="col-sm-4">
+
               <select class="form-control" name="type">
                 @foreach(App\Models\Clases\ClaseType::all() as $type)
                   <option value="{{$type->id}}" @if($type->id == Session::get('clases-type-id')) selected @endif>
@@ -36,7 +38,13 @@
 
           </div>
           {{Form::close()}}
-          <div id="calendar"></div>
+
+          <div id="calendar" style="position: relative;">
+            <div id="calendar-spinner" class="loading-box d-none">
+              <div  class="spinner "></div>
+              <h1>Cargando...</h1>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -93,6 +101,7 @@
             element.find('.fc-time').append('<div> reservas: ' +event.reservation_count+'/'+event.quota+'</div> ');
           },
           viewRender: function (view, element,start,end) {
+
              var b = $('#calendar').fullCalendar('getDate');
              console.log(b.startOf('week').format('Y-M-D'));
              $('#calendar').fullCalendar( 'removeEventSources');
@@ -110,8 +119,17 @@
                 color: 'yellow',    // an option!
                 textColor: 'black'  // an option!
               }
+
             );
+            //$('#calendar-spinner').addClass('d-none');
           },
+          loading: function (bool) {
+             $('#calendar-spinner').removeClass('d-none');// Add your script to show loading
+          },
+          eventAfterAllRender: function (view) {
+            console.log('listo');
+            $('#calendar-spinner').addClass('d-none'); // remove your loading
+          }
           // eventClick: function(calEvent, jsEvent, view) {
           //   $('#clase-resume').modal();
           // },
