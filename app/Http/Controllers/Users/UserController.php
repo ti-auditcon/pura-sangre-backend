@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Users;
 use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\UserRequest;
+use App\Models\Clases\Reservation;
 use App\Models\Plans\PlanUser;
 use App\Models\Users\Emergency;
 use App\Models\Users\User;
@@ -190,5 +191,22 @@ class UserController extends Controller
             'status_plan' => $plan->plan_status->plan_status,
         ];
         echo json_encode($response);
+    }
+
+    public function putIdPlan()
+    {
+        foreach (Reservation::all() as $reserv) {
+            if ( $reserv->plan_user_id == null) {
+                $fecha_clase = $reserv->clase->date;
+                $plan = PlanUser::where('start_date', '<=', $fecha_clase)
+                                ->where('finish_date', '>=', $fecha_clase)
+                                ->where('user_id', $reserv->user_id)
+                                ->first();
+                if ($plan) {
+                    $reserv->update(['plan_user_id' => $plan->id]);
+                }
+            }
+        }
+        return 'All successfully updated!!';
     }
 }

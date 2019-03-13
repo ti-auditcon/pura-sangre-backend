@@ -140,7 +140,7 @@ class User extends Authenticatable
 
     public function past_reservs()
     {
-        return $this->HasMany(Reservation::class)->whereIn('reservation_status_id', [3,4])->take(10);
+        return $this->HasMany(Reservation::class)->whereIn('reservation_status_id', [3,4]);
     }
 
     public function reservable_plans()

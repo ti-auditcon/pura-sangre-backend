@@ -166,18 +166,29 @@
            <div class="table-responsive">
              <table id="next-clases-table" class="table table-hover">
                <thead class="thead-default thead-lg">
-                 <tr>
-                   <th width="33%">Fecha Clase</th>
-                   <th width="33%">Hora</th>
-                   <th width="33%">Estado</th>
+                  <tr>
+                     <th width="10%">ID</th>
+                     <th width="20%">Fecha Clase</th>
+                     <th width="20%">Hora</th>
+                     <th width="20%">Estado</th>
+                     <th width="10%">N° Plan</th>
+                     <th width="20%">Plan</th>
                  </tr>
                </thead>
                <tbody>
                  @foreach($user->future_reservs as $reserv)
                  <tr>
-                   <td><a href="{{url('/clases/'.$reserv->clase->id)}}">{{Carbon\Carbon::parse($reserv->clase->date)->format('d-m-Y')}}</a></td>
-                   <td>{{Carbon\Carbon::parse($reserv->clase->start_at)->format('H:i')}}  a  {{Carbon\Carbon::parse($reserv->clase->finish_at)->format('H:i')}}</td>
-                   <td>{{$reserv->reservation_status->reservation_status}}</td>
+                     <td><a href="{{url('/clases/'.$reserv->clase->id)}}">{{$reserv->clase->id}}</a></td>
+                     <td>{{ $reserv->clase->date }}</td>
+                     <td>{{Carbon\Carbon::parse($reserv->clase->start_at)->format('H:i')}}  a  {{Carbon\Carbon::parse($reserv->clase->finish_at)->format('H:i')}}</td>
+                     <td>{{$reserv->reservation_status->reservation_status}}</td>
+                     @if ($reserv->plan_user)
+                        <td>{{ $reserv->plan_user->id }}</td>
+                        <td>{{ $reserv->plan_user->plan->plan }}</td>
+                     @else
+                        <td>{{ 'No aplica' }}</td>
+                        <td>{{ 'No aplica' }}</td>
+                     @endif
                  </tr>
                  @endforeach
                </tbody>
@@ -198,18 +209,29 @@
            <div class="table-responsive">
              <table id="past-classes-table" class="table table-hover">
                <thead class="thead-default thead-lg">
-                 <tr>
-                   <th width="35%">Fecha Clase</th>
-                   <th width="35%">Hora</th>
-                   <th width="30%">Estado</th>
-                 </tr>
+                  <tr>
+                     <th width="10%">ID</th>
+                     <th width="20%">Fecha Clase</th>
+                     <th width="20%">Hora</th>
+                     <th width="20%">Estado</th>
+                     <th width="10%">N° Plan</th>
+                     <th width="20%">Plan</th>
+                  </tr>
                </thead>
                <tbody>
                  @foreach($user->past_reservs as $reserv)
                    <tr>
-                     <td><a href="{{url('/clases/'.$reserv->clase->id)}}">{{Carbon\Carbon::parse($reserv->clase->date)->format('d-m-Y')}}</a></td>
+                     <td><a href="{{url('/clases/'.$reserv->clase->id)}}">{{$reserv->clase->id}}</a></td>
+                     <td>{{$reserv->clase->date}}</td>
                      <td>{{Carbon\Carbon::parse($reserv->clase->start_at)->format('H:i')}} a {{Carbon\Carbon::parse($reserv->clase->finish_at)->format('H:i')}}</td>
                      <td>{{$reserv->reservation_status->reservation_status}}</td>
+                  @if ($reserv->plan_user)
+                        <td>{{ $reserv->plan_user->id }}</td>
+                        <td>{{ $reserv->plan_user->plan->plan }}</td>
+                     @else
+                        <td>{{ 'No aplica' }}</td>
+                        <td>{{ 'No aplica' }}</td>
+                     @endif
                    </tr>
                  @endforeach
                </tbody>
@@ -233,8 +255,7 @@
 
   <script>
 	$('.sweet-user-delete').click(function(e){
-	  var id = $(this).data('id');
-		//alert(id);
+	   var id = $(this).data('id');
 			swal({
 					title: "Desea eliminar al usuario: "+$(this).data('name')+"?",
 					text: "(Se borrarán todas las cuotas o planes futuros, manteniendo los ya consumidos)",
@@ -247,14 +268,13 @@
 			},function(){
 				//redirección para eliminar usuario
          $('form.user-delete').submit();
-			});
+		});
 	});
 	</script>
 
   <script>
   $('.sweet-user-plan-annul').click(function(e){
     var id = $(this).data('id');
-    // alert(id);
       swal({
           title: "Desea cancelar el plan: "+$(this).data('name')+"?",
           text: "(Se borrarán todas las cuotas futuras de este plan, manteniendo los ya consumidos)",
@@ -293,9 +313,16 @@
   </script>
 
    <script src="{{ asset('js/datatables.min.js') }}"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+      <script src="//cdn.datatables.net/plug-ins/1.10.19/dataRender/datetime.js"></script>
+   
    <script>
       $(document).ready(function() {
-         table = $('#next-clases-table').DataTable({
+         $('#next-clases-table').DataTable({
+            columnDefs: [{
+               targets: 1,
+                  render: $.fn.dataTable.render.moment('', 'DD-MM-YYYY')
+            }],
             "paging": true,
             "ordering": true,
             "order": [[ 0, 'asc' ]],
@@ -317,17 +344,20 @@
                   "previous": "Anterior"
                },
             },
-
          });
       });
    </script>
 
    <script>
       $(document).ready(function() {
-         table = $('#past-classes-table').DataTable({
+         $('#past-classes-table').DataTable({
+            columnDefs: [ {
+               targets: 1,
+                  render: $.fn.dataTable.render.moment('', 'DD-MM-YYYY')
+            } ],
             "paging": true,
             "ordering": true,
-            "order": [[ 0, 'asc' ]],
+            "order": [[ 0, 'desc' ]],
             "pageLength": 10,
             "bLengthChange" : false,
             "bpageLength": false,
@@ -346,7 +376,6 @@
                   "previous": "Anterior"
                },
             },
-
          });
       });
    </script>
@@ -367,7 +396,6 @@
         swal({
           title: 'Plan '+response.plan,
           text: htmlcontent,
-          // type: 'info',
           showCancelButton: false,
           confirmButtonClass: 'btn-info',
           confirmButtonText: 'Ok',

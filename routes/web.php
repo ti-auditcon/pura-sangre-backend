@@ -11,6 +11,7 @@ Route::get('/success-reset-password', function () {
 });
 
 Route::middleware(['auth'])->prefix('/')->group(function () {
+    Route::get('update-reservations-plans', 'Users\UserController@putIdPlan')->middleware('role:1');
 
     /**
      * Exercises Routes (exercises)
@@ -83,6 +84,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('notifications', 'Messages\NotificationController@index')->middleware('role:1')->name('messages.notifications');
     Route::post('notifications', 'Messages\NotificationController@store')->middleware('role:1');
 });
+
 
 
 // Route::get('mailable', function () {
