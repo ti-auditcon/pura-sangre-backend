@@ -114,7 +114,6 @@
                 @foreach($user->plan_users as $plan_user)
                 <tr>
                   <td>
-                        {{-- <button ><i class="la la-info"></i></button> --}}
                     <a class="sweet-user-plan-info" data-user-id="{{$user->id}}" data-plan-id="{{$plan_user->id}}">{{$plan_user->plan->plan}}</a>@if (\Carbon\Carbon::parse($plan_user->finish_date)->gte(toDay()))
                     - <a href="{{url('/users/'.$user->id.'/plans/'.$plan_user->id.'/edit')}}"><span class="la la-edit"></span></a>
                     @endif
