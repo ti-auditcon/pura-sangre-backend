@@ -58,7 +58,11 @@ class RefreshPlans extends Command
                 }
             }
             if ($user->actual_plan) {
-                $user->status_user_id = 1;
+                if ($user->actual_plan->plan->id == 1) {
+                    $user->status_user_id = 3;
+                }else{
+                    $user->status_user_id = 1;
+                }
             }else{
                 $user->status_user_id = 2;
             }

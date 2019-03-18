@@ -154,7 +154,7 @@
       $('.datepicker-birthdate').datepicker({
          todayBtn: "linked",
          keyboardNavigation: false,
-         forceParse: false,
+         forceParse: true,
          calendarWeeks: true,
          format: "dd-mm-yyyy",
          startDate: "01-01-1910",
@@ -171,7 +171,7 @@
       $('.datepicker-since').datepicker({
          todayBtn: "linked",
          keyboardNavigation: false,
-         forceParse: false,
+         forceParse: true,
          calendarWeeks: true,
          format: "dd-mm-yyyy",
          startDate: "01-01-1910",

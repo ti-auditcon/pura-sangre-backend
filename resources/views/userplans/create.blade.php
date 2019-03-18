@@ -158,7 +158,7 @@
    $('#start_date .input-group.date').datepicker({
       todayBtn: "linked",
       keyboardNavigation: false,
-      forceParse: false,
+      forceParse: true,
       calendarWeeks: true,
       format: "dd-mm-yyyy",
       startDate: "01-01-1910",
@@ -173,7 +173,7 @@
    $('#date .input-group.date').datepicker({
       todayBtn: "linked",
       keyboardNavigation: false,
-      forceParse: false,
+      forceParse: true,
       calendarWeeks: true,
       format: "dd-mm-yyyy",
       startDate: "01-01-1910",
@@ -188,7 +188,7 @@
    $('#finish_date .input-group.date').datepicker({
        todayBtn: "linked",
       keyboardNavigation: false,
-      forceParse: false,
+      forceParse: true,
       calendarWeeks: true,
       format: "dd-mm-yyyy",
       startDate: "01-01-1910",

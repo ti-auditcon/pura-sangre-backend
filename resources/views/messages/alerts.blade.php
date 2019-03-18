@@ -136,7 +136,8 @@
             op += '<tr>';
             op += '<td>'+resp[i].message+'</td>'+
               '<td>'+resp[i].from+'</td>'+
-              '<td>'+resp[i].to+'</td><td><button class="btn btn-danger remove-item" data-id="'+resp[i].id+'" data-name="'+resp[i].message+'">Eliminar</button></td></tr>';
+              '<td>'+resp[i].to+'</td>'+
+              '<td><button class="btn btn-danger remove-item" data-id="'+resp[i].id+'">Eliminar</button></td></tr>';
           }
           op+='</table>';
           $('#alert-list-table').html(op);
