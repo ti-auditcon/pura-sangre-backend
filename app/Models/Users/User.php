@@ -215,36 +215,18 @@ class User extends Authenticatable
       }
     }
 
+    public function birthdate_users()
+    {
+        return User::whereMonth('birthdate', toDay()->month)->whereDay('birthdate', toDay()->day)->get();
+    }
+
+    public function itsBirthDay()
+    {
+        if ($this->birthdate->month == toDay()->month && $this->birthdate->day == toDay()->day) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }
-    // public function active_plan()
-    // {
-    //     $plan = PlanUser::where('plan_status_id', 1)
-    //                     ->where('user_id', $this->id)
-    //                     ->where('start_date','<=', today())
-    //                     ->where('finish_date','>=', today())
-    //                     ->first();
-    //     if ($plan) {
-    //         return $this->hasOne(PlanUser::class)->where('id', $plan->id);
-    //     }
-    //     return false;
-    // }
-
-    // /**
-    //  * [emergency description]
-    //  * @method emergency
-    //  * @return [Model]    [description]
-    //  */
-
-    // /**
-    //  * [installments description]
-    //  * @return [type] [description]
-    //  */
-    // public function installments()
-    // {
-    //     return $this->hasManyThrough(
-    //         Installment::class,
-    //         PlanUser::class,
-    //         'user_id',
-    //         'plan_user_id'
-    //     );
-    // }

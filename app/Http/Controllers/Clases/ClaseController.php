@@ -125,6 +125,7 @@ class ClaseController extends Controller
         return $reservations->map(function ($reserv) {
             return [
                 'alumno' => $reserv->user->first_name.' '.$reserv->user->last_name,
+                'birthdate' => $reserv->user->itsBirthDay() ? '<span class="badge badge-primary" style="margin-left: 4px;"><i class="la la-birthday-cake"></i> Cumpleañero</span>' : '',
                 'avatar' => $reserv->user->avatar,
                 'user_status' => $reserv->user->status_user->type,
                 'tipo' => $reserv->reservation_status->type,

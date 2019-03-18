@@ -105,26 +105,26 @@
 										<div id="recurrent-tab" >
 											<div class="form-group" id="daycheckbox">
 													<div class="mb-2">
-															<label class="checkbox checkbox-inline mb-2">
-																	<input type="checkbox" name="day[]" value="1">
-																	<span class="input-span"></span>Lunes</label>
-															<label class="checkbox checkbox-inline mb-2">
-																	<input type="checkbox" name="day[]" value="2">
-																	<span class="input-span"></span>Martes</label>
-															<label class="checkbox checkbox-inline mb-2">
-																	<input type="checkbox" name="day[]" value="3">
-																	<span class="input-span"></span>Miercoles</label>
-															<label class="checkbox checkbox-inline mb-2">
-																	<input type="checkbox" name="day[]" value="4">
-																	<span class="input-span"></span>Jueves</label>
-															<label class="checkbox checkbox-inline mb-2">
-																	<input type="checkbox" name="day[]" value="5">
-																	<input type="checkbox" >
-																	<span class="input-span"></span>Viernes</label>
-															<label class="checkbox checkbox-inline mb-2">
-																	<input type="checkbox" name="day[]" value="6">
-																	<input type="checkbox" >
-																	<span class="input-span"></span>Sabado</label>
+														<label class="checkbox checkbox-inline mb-2">
+																<input type="checkbox" name="day[]" value="1">
+																<span class="input-span"></span>Lunes</label>
+														<label class="checkbox checkbox-inline mb-2">
+																<input type="checkbox" name="day[]" value="2">
+																<span class="input-span"></span>Martes</label>
+														<label class="checkbox checkbox-inline mb-2">
+																<input type="checkbox" name="day[]" value="3">
+																<span class="input-span"></span>Miercoles</label>
+														<label class="checkbox checkbox-inline mb-2">
+																<input type="checkbox" name="day[]" value="4">
+																<span class="input-span"></span>Jueves</label>
+														<label class="checkbox checkbox-inline mb-2">
+																<input type="checkbox" name="day[]" value="5">
+																<input type="checkbox" >
+																<span class="input-span"></span>Viernes</label>
+														<label class="checkbox checkbox-inline mb-2">
+																<input type="checkbox" name="day[]" value="6">
+																<input type="checkbox" >
+																<span class="input-span"></span>Sabado</label>
 													</div>
 											</div>
 										</div>
@@ -160,19 +160,21 @@
 				</div>
 				<div class="modal-body">
 					<div class="form-group mb-4">
-						{{Form::open(['route' => ['blocks.update', 1 ],'method' => 'put', 'id' => 'block-update', 'class' => 'styles-select'])}}
+						{{Form::open(['route' => ['blocks.update', 1], 'method' => 'put', 'id' => 'block-update', 'class' => 'styles-select'])}}
 						<select multiple="multiple" id="plan-select-edit" name="plans[]">
 							@foreach (App\Models\Plans\Plan::all() as $plan)
-								<option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period ?? "no aplica"}}</option>
+								<option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period ?? "(sin período)"}}</option>
 							@endforeach
 						</select>
+						<label class="col-form-label">N° de Cupos</label>
+						<input id="block-quota-input" type="number" class="form-control" name="quota" required>
 						<button type="submit" class="btn btn-primary mt-2" onClick="this.disabled=true; this.value='Editando…';this.form.submit(); ">Editar planes</button>
 						{{Form::close()}}
 					</div>
 					<div class="form-group mt-2 mb-4">
 						{{Form::open(['route' => ['blocks.destroy', 1],'method' => 'delete' , 'id' => 'block-delete'])}}
-							Eliminar la clase?
-							<button  class ="btn btn-danger mt-2" onClick="this.disabled=true; this.value='Eliminando…';this.form.submit();" >Eliminar</button>
+							Eliminar el bloque?
+							<button  class ="btn btn-danger mt-2" onClick="this.disabled=true; this.value='Eliminando…';this.form.submit();">Eliminar</button>
 						{{Form::close()}}
 					</div>
 				</div>
@@ -205,7 +207,7 @@
 
 @section('scripts') {{-- scripts para esta vista --}}
 	{{--  Full calendar --}}
-	  <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+	<script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
 	<script src="{{ asset('js/moment.min.js') }}"></script>
 	{{-- <script src="{{asset('/js/fullcalendar/jquery-ui.min.js')}}"></script> --}}
 	<script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
@@ -252,27 +254,23 @@
 			eventColor: '#4c6c8b',
 			eventClick: function(calEvent, jsEvent, view) {
 				ids = Object.values(calEvent.plans_id);
+				// console.log(calEvent.quota);
 				//traer todos los ids de los planes que pueden tomar clase de la hora que se seleccionó
-				console.log(Object.values(calEvent.plans_id));
-				console.log(calEvent.id);
+				$('#block-quota-input').val(calEvent.quota);
 				$('#plan-select-edit').multiSelect('deselect_all');
 				$('#plan-select-edit').multiSelect('select',ids.map(String));
 				update_url = $('#blockedit #block-update').attr('action');
-				console.log(update_url);
 				update_newurl = update_url.replace(/[0-9]+/g, calEvent.id);
-				console.log(update_newurl);
+
 				$('#blockedit #block-update').attr('action',update_newurl);
 
 				delete_url = $('#blockedit #block-delete').attr('action');
 				delete_newurl = delete_url.replace(/[0-9]+/g, calEvent.id);
 
-				console.log(delete_newurl);
 				$('#blockedit #block-delete').attr('action',delete_newurl);
 				$('#blockedit').modal();
 			},
 			dayClick: function(date, jsEvent, view) {
-
-				console.log('dayClick:'+date.format());
 				$('#plan-select-add').multiSelect('deselect_all');
 				$('#unique-tab input[name="date"]').val(date.format('D/M/Y'));
 				$('#blockadd input[name="start"]').val(date.format('H:mm'));
@@ -280,24 +278,20 @@
 				$('#daycheckbox input').prop('checked', false);
 				$('#daycheckbox input[value="'+date.day()+'"]').prop('checked', true);
 				$('#blockadd').modal();
-				console.log('dow:'+date.day());
 			},
-
-
 		});
 	});
 	$('#recurrent').prop('checked', true);
 	$('#unique-tab').hide();
 	$('#recurrent').change(function(){
 		if(this.checked == true){
-			console.log('recurrente');
+			// console.log('recurrente');
 			$('#recurrent-tab').show();
 			$('#unique-tab').hide();
 		}
 	});
 	$('#unique').change(function(){
 		if(this.checked == true){
-			console.log('unico');
 			$('#unique-tab').show();
 			$('#recurrent-tab').hide();
 		}

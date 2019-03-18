@@ -126,7 +126,7 @@
             <div class="col-sm-12 form-group mb-2">
               <label>Observaciones</label>
               <div class="input-group date ">
-                <textarea class="form-control " rows="5" name="detalle" placeholder="Detalle..."></textarea>
+                <textarea class="form-control " rows="5" name="observations" placeholder="Detalle..."></textarea>
               </div>
             </div>
           </div>

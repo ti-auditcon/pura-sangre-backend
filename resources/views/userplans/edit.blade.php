@@ -43,6 +43,13 @@
                         </div>
                      </div>
                   </div>
+                  
+                  <div class="col-sm-6 form-group mb-4">
+                     <label>Observaciones</label>
+                     <div class="input-group date ">
+                        <textarea class="form-control " rows="5" name="observations" placeholder="Detalle...">{{$plan_user->observations}}</textarea>
+                     </div>
+                  </div>
                </div>
                <button class="btn btn-primary btn-air mr-2" type="submit">Actualizar Plan</button>
                <a class="btn btn-secondary" href="{{ route('users.show', ['user' => $user->id]) }}">Perfirl de {{$user->first_name}}</a>

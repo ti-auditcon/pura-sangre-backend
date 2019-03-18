@@ -124,6 +124,7 @@
                   <tbody>
                   @foreach ($clase->reservations as $reservation)
                      <tr>
+                      {{-- {{dd(Auth::user()->itsBirthDay())}} --}}
                         <td>
                            <div class="img-avatar" style="background-image:  @if ($reservation->user->avatar) url('{{$reservation->user->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"></div>
                            <span class="badge-{{$reservation->user->status_user->type}} badge-point"></span>
@@ -242,7 +243,7 @@ $(document).ready(function(){
                   var estado = '';
                   var disabled = 'disabled';
                }
-               op += '<td><div class="img-avatar" style="background-image: url(\''+data2[i].avatar+'\')"></div><span class="badge-'+data2[i].user_status+' badge-point"></span>'+data2[i].alumno+'</td>'+
+               op += '<td><div class="img-avatar" style="background-image: url(\''+data2[i].avatar+'\')"></div><span class="badge-'+data2[i].user_status+' badge-point"></span>'+data2[i].alumno+' '+ data2[i].birthdate +'</td>'+
 
                      '<td><span class="badge badge-'+data2[i].tipo+' badge-pill">'+data2[i].estado_reserva.toUpperCase()+'</td>'+
                      '<td><label class="ui-switch switch-icon switch-large"><input name="asistencia[]" '+estado+' type="checkbox"  class="checkboxBla"><span></span></label><input hidden class="user_id_class" type="text" name="user_id[]" '+disabled+' value="'+data2[i].user_id+'"></td></tr>';

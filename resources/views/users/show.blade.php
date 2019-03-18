@@ -391,7 +391,7 @@
       dataType: 'json',
       success: function(response) {
         response = response;
-        var htmlcontent = '<div class="container"> <br/> <div class="row">Plan desde el '+response.dates+'</div>  <div class="row">Total: '+response.amount+'</div><div class="row">Estado del plan: '+response.status_plan+'</div><div class="row">Clases restantes: '+response.left_clases+'</div> </div>';
+        var htmlcontent = '<div class="container"> <br/> <div class="row">Plan desde el '+response.dates+'</div>  <div class="row">Total: '+response.amount+'</div><div class="row">Estado del plan: '+response.status_plan+'</div><div class="row">Clases restantes: '+response.left_clases+'</div><div class="row">Observaciones: '+response.observations+'</div> </div>';
         swal({
           title: 'Plan '+response.plan,
           text: htmlcontent,

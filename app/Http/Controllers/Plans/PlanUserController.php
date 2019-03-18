@@ -56,11 +56,12 @@ class planuserController extends Controller
 	public function store(Request $request, User $user)
 	{
 		if ($request->plan_id == 2 && !$request->counter) {
-        	return back()->with('warning', 'Campo Numero de Clases vacío');
+        	return back()->with('warning', 'Campo Número de Clases vacío');
         }
 		$plan = Plan::find($request->plan_id);
 		$planuser = new PlanUser;
 		$planuser->plan_id = $plan->id;
+		$planuser->observations = $request->observations;
 		$planuser->user_id = $user->id;
 		$planuser->start_date = Carbon::parse($request->fecha_inicio);
 
@@ -90,7 +91,9 @@ class planuserController extends Controller
 					'detail' => $request->detalle,
 					'amount' => $request->amount,
 				]);
-			Mail::to($user->email)->send(new NewPlanUserEmail($user, $planuser));
+				if (!\App::environment('local')) {
+					Mail::to($user->email)->send(new NewPlanUserEmail($user, $planuser));
+				}
 			}
 			Session::flash('success','Guardado con éxito');
 			return redirect('/users/'.$user->id);
@@ -140,6 +143,7 @@ class planuserController extends Controller
 			if ($plan_saved = $plan->update([
 				'start_date' => Carbon::parse($request->start_date),
 				'finish_date' => Carbon::parse($request->finish_date),
+				'observations' => $request->observations
 			])) {
 				$plan_saved = $this->updateBillIncome($plan);
 				if ($plan_saved->plan_id != 1 && $plan_saved->plan_id != 2) {
@@ -155,7 +159,6 @@ class planuserController extends Controller
 
 	public function updateBillIncome($plan_saved)
 	{
-		// dd($plan_saved);
 		if ($plan_saved->bill) {
      		$plan_income_sum = PlanIncomeSummary::where('month', $plan_saved->bill->date->month)
      											->where('year', $plan_saved->bill->date->year)

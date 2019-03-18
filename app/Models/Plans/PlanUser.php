@@ -18,18 +18,9 @@ class PlanUser extends Model
     use SoftDeletes;
 
     protected $table = 'plan_user';
-    protected $dates = ['start_date','finish_date','deleted_at'];
+    protected $dates = ['start_date', 'finish_date', 'deleted_at'];
     protected $fillable = ['start_date', 'finish_date',
-    'counter', 'plan_status_id', 'plan_id', 'user_id'];
-
-    // *
-    //  * [boot description]
-    //  * @return [model] [description]
-     
-    // public static function boot()
-    // {
-    //     parent::boot();
-    // }
+    'counter', 'plan_status_id', 'plan_id', 'user_id', 'observations'];
 
     /**
      * [getStartDateAttribute description]

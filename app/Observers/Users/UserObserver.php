@@ -42,8 +42,9 @@ class UserObserver
             'email' => $user->email, 
             'token' => Hash::make($token),
         ]);
-        Mail::to($user->email)->send(new SendNewUserEmail($user, $token));
-
+        if (!\App::environment('local')) {
+            Mail::to($user->email)->send(new SendNewUserEmail($user, $token));
+        }
         if ($user->status_user_id == 3) {
             $planuser = new PlanUser;
             $planuser->plan_id = 1;

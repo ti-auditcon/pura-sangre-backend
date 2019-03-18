@@ -189,6 +189,7 @@ class UserController extends Controller
             'amount' => $plan->bill ? '$ '.number_format($plan->bill->amount, $decimal = 0, '.', '.') : 'No aplica',
             'left_clases' => $plan->counter ? : '',
             'status_plan' => $plan->plan_status->plan_status,
+            'observations' => $plan->observations ? : ''
         ];
         echo json_encode($response);
     }

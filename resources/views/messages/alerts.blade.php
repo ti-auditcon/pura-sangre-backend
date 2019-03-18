@@ -11,6 +11,7 @@
              <div class="ibox-title">
                Alertas
              </div>
+
            </div>
            {!! Form::open(['route' => 'alerts.store']) !!}
            	<div class="ibox-body">
@@ -56,14 +57,11 @@
           <div class="ibox-tools">
         </div>
       </div>
-      <div class="ibox-body" id="alert-list-table">
+      <div class="ibox-body" >
+        <div class="table-responsive" id="alert-list-table"></div>
       </div>
     </div>
   </div>
-
-
-
-
 
 
 @endsection
