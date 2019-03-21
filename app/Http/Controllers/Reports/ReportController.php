@@ -18,7 +18,7 @@ class ReportController extends Controller
 
     public function plans()
     {
-        $plans = Plan::all()->pluck('plan');
+        $plans = Plan::all();
         return $plans;
     }
     /**
@@ -119,13 +119,13 @@ class ReportController extends Controller
     // CANTIDAD DE PLANES EN EL AÑO POR MES
     public function quantityPlansYearByMonth()
     {
-        $plans = $this->plans(); 
-        for ($i=0; $i < 12 ; $i++) {
-            $quantity[] = PlanIncomeSummary::where('plan_id', $i+1)
+        $plans = $this->plans();
+        foreach ($plans as $plan) {
+            $quantity[] = PlanIncomeSummary::where('plan_id', $plan->id)
                                            ->where('year', now()->year)
                                            ->get()
                                            ->sum('quantity');
-            $plans_by_years[$i] = [$plans[$i], $quantity[$i]];
+            $plans_by_years[$plan->id - 1] = [$plan->plan, $quantity[$plan->id - 1]];
         }
         $plans_by_years = array_merge(['data' => $plans_by_years, 'year' => now()->year]);
         return $plans_by_years;
@@ -134,13 +134,13 @@ class ReportController extends Controller
     // CANTIDAD DE PLANES EN EL AÑO POR MES
     public function quantityPlansSubYearByMonth()
     {
-        $plans = $this->plans(); 
-        for ($i=0; $i < 12 ; $i++) {
-            $quantity[] = PlanIncomeSummary::where('plan_id', $i+1)
+        $plans = $this->plans();
+        foreach ($plans as $plan) {
+            $quantity[] = PlanIncomeSummary::where('plan_id', $plan->id)
                                            ->where('year', now()->subYear()->year)
                                            ->get()
                                            ->sum('quantity');
-            $plans_by_years[$i] = [$plans[$i], $quantity[$i]];
+            $plans_by_years[$plan->id - 1] = [$plan->plan, $quantity[$plan->id - 1]];
         }
         $plans_by_years = array_merge(['data' => $plans_by_years, 'year' => now()->subYear()->year]);
         return $plans_by_years;

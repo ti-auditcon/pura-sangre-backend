@@ -126,29 +126,36 @@ class HomeController extends Controller
 
     public function incomessummary()
     {
+        //obtener todos los planes del mes actual que tengan anexada una boleta
+        //sin contar boletas eliminadas
         $mes['periodo'] = 'mensual';
-        $month_amount = PlanIncomeSummary::where('month', now()->month)
-                                            ->where('year', now()->year)
-                                            ->sum('amount');
+        $month_amount = PlanUser::whereDate('plan_user.created_at', '>=', today()->startOfMonth())
+                                ->whereDate('plan_user.created_at', '<=', today()->endOfMonth())
+                                ->join('bills', 'bills.plan_user_id', '=', 'plan_user.id')
+                                ->get()
+                                ->sum('amount');
         $mes['ingresos'] = '$ '.number_format($month_amount, $decimal = 0, '.', '.');
-        $mes['cantidad'] = PlanIncomeSummary::where('month', now()->month)
-                                            ->where('year', now()->year)
-                                            ->sum('quantity');
-        $dia['periodo'] = 'hoy';
-        $day_amount = PlanUser::where('plan_user.created_at', toDay())
+        $mes['cantidad'] = PlanUser::whereDate('plan_user.created_at', '>=', today()->startOfMonth())
+                                   ->whereDate('plan_user.created_at', '<=', today()->endOfMonth())
                                    ->join('bills', 'bills.plan_user_id', '=', 'plan_user.id')
-                                   ->get()
-                                   ->sum('amount');
+                                   ->count();
+
+        //obtener todos los planes de este día que tengan anexada una boleta
+        //sin contar boletas eliminadas
+        $dia['periodo'] = 'hoy';
+        $day_amount = PlanUser::whereDate('plan_user.created_at', today())
+                              ->join('bills', 'bills.plan_user_id', '=', 'plan_user.id')
+                              ->get()
+                              ->sum('amount');
         $dia['ingresos'] = '$ '.number_format($day_amount, $decimal = 0, '.', '.');
-        $dia['cantidad'] = PlanUser::where('created_at', toDay())
-                                   ->get()
+        $dia['cantidad'] = PlanUser::whereDate('plan_user.created_at', today())
+                                   ->join('bills', 'bills.plan_user_id', '=', 'plan_user.id')
                                    ->count();
         $in_sum = array_merge([$dia, $mes]);
         echo json_encode($in_sum);
     }
 
 }
-
         // foreach (User::all() as $user) {
         //     $plan_users = $user->plan_users->whereIn('plan_status_id', [3, 4])
         //                                    ->where('finish_date' '<=', today()->subDays(15))

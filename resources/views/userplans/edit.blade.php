@@ -34,15 +34,26 @@
                      </div>
                   </div>
 
-                  <div class="col-sm-6 form-group mb-2 is-not-custom">
-                     <div class="form-group">
+                  <div class="col-sm-6 form-group mb-2">
+                     <div class="form-group is-not-custom">
                         <label class="form-control-label">Total**</label>
                         <div class="input-group-icon input-group-icon-left">
                            <span class="input-icon input-icon-left"><i class="la la-dollar"></i></span>
                            <input class="form-control" id="plan-amount" name="amount" value="@if ($plan_user->bill){{$plan_user->bill->amount}}@endif" type="text" placeholder="solo números" required/>
                         </div>
                      </div>
-                  </div>
+                           
+                     <div class="form-group">
+                        <label class="form-control-label">Clases totales</label>
+                           <input class="form-control" name="counter" value="{{ $plan_user->counter }}" type="text"/>
+                        </div>
+                     </div>
+
+                  {{-- <div class="col-sm-6 form-group mb-2 is-not-custom">
+                     <div class="form-group">
+                       
+                     </div>
+                  </div> --}}
                   
                   <div class="col-sm-6 form-group mb-4">
                      <label>Observaciones</label>

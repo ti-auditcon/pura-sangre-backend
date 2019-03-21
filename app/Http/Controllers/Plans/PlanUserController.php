@@ -143,7 +143,8 @@ class planuserController extends Controller
 			if ($plan_saved = $plan->update([
 				'start_date' => Carbon::parse($request->start_date),
 				'finish_date' => Carbon::parse($request->finish_date),
-				'observations' => $request->observations
+				'observations' => $request->observations,
+				'counter' => $request->counter
 			])) {
 				$plan_saved = $this->updateBillIncome($plan);
 				if ($plan_saved->plan_id != 1 && $plan_saved->plan_id != 2) {
