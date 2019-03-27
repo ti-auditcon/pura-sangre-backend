@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Messages;
 
-use Session;
-use Redirect;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Messages\MessageRequest;
 use App\Mail\SendEmail;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Http\Controllers\Controller;
+use Redirect;
+use Session;
 
 class MessageController extends Controller
 {
@@ -18,23 +19,47 @@ class MessageController extends Controller
      */
     public function index()
     {
+        return view('messages.messages');
+    }
+
+    public function usersJson()
+    {
         $users = User::all();
-        return view('messages.messages')->with('users', $users);
+        $json_data = array(
+            "recordsTotal"  => intval($users->count()),
+            "data"          => $users
+        );
+        echo json_encode($json_data);
     }
 
     /**
      * [send description]
      * @return [type] [description]
      */
-    public function send(Request $request)
+    public function send(MessageRequest $request)
     {
-        $users = User::whereIn('id', $request->users_id)->get();
+        $errors = null;
+        $users = User::whereIn('id', explode (",", $request->to[0]))->get();
         foreach ($users as $user) {
-                $mail = new \stdClass();
-                $mail->subject = $request->subject;
-                $mail->text = $request->text;
-                $mail->user = $user->first_name;
+            $mail = new \stdClass();
+            $mail->subject = $request->subject;
+            $mail->text = $request->text;
+            $mail->user = $user->first_name;
+            try{
                 Mail::to($user->email)->send(new SendEmail($mail, $user));
+            }
+            catch(\Exception $e){
+                \DB::table('errors')->insert([
+                    'error' => $e,
+                    'where' => 'email',
+                    'created_at' => now(),
+                ]);
+                $errors += 1;
+            }
+        }
+        if ($errors) {
+            Session::flash('warning', 'Hay error(es) en al menos '.$errors.' correo(s)');
+            return redirect()->back();
         }
         Session::flash('success', 'Correos enviados correctamente');
         return redirect()->back();

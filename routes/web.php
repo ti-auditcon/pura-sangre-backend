@@ -80,6 +80,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
         Route::get('/alert-list', 'Messages\AlertController@alerts');
         Route::delete('/alert-list/{alert}', 'Messages\AlertController@destroy')->name('alerts.destroy')->middleware('role:1');
     Route::get('messages', 'Messages\MessageController@index')->middleware('role:1');
+    Route::get('messages/users_Json', 'Messages\MessageController@usersJson')->middleware('role:1');
     Route::post('messages/send', 'Messages\MessageController@send')->middleware('role:1');
     Route::get('notifications', 'Messages\NotificationController@index')->middleware('role:1')->name('messages.notifications');
     Route::post('notifications', 'Messages\NotificationController@store')->middleware('role:1');

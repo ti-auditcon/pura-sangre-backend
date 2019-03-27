@@ -24,12 +24,16 @@
     <link href="{{asset('/css/bootstrap-datepicker.min.css')}}" rel="stylesheet" />
     <link href="{{asset('/css/bootstrap-datepicker3.min.css')}}" rel="stylesheet" />
     <!-- PLUGINS STYLES-->
+    <link href="{{asset('/css/datatables.min.css')}}" rel="stylesheet" />
+
+    <!-- PAGE CSS-->
+    @yield('css')
+
     <!-- THEME STYLES-->
     <link href="{{asset('/css/main.min.css')}}" rel="stylesheet" />
     <link href="{{asset('/css/ps-app.css')}}" rel="stylesheet" />
 
-   <!-- PAGE CSS-->
-    @yield('css')
+
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
