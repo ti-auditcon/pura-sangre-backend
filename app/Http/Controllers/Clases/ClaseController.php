@@ -41,7 +41,8 @@ class ClaseController extends Controller
     {
       $wods = Wod::where('clase_type_id',Session::get('clases-type-id'))->where('date','>=',$request->datestart)->where('date','<=',$request->dateend)->get();
       return response()->json($wods, 200);
-    }    /**
+    } 
+       /**
      * Display the specified resource.
      *
      * @param  \App\Models\Clases\Clase  $clase
