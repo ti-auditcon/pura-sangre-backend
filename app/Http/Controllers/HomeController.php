@@ -89,23 +89,24 @@ class HomeController extends Controller
 
     public function withoutrenewal()
     {
-        $plan_users = PlanUser::whereIn('plan_status_id', [1,4])
-                          ->whereBetween('finish_date', [now()->subMonth()->endOfMonth(), now()->today()->subDay()])
-                          ->orderBy('finish_date')
-                          ->get();
         $inactives = 0;
-        foreach ($plan_users as $plan_user) {
-            if (!$plan_user->user->actual_plan) {
+        foreach (User::all() as $user) {
+            if (!$user->actual_plan) {
                 $inactives += 1;
             }
         }
         $actives = 0;
+        $tests = 0;
         foreach (User::all() as $user) {
             if ($user->actual_plan) {
-                $actives += 1;
+                if ($user->status_user_id === 3) {
+                    $tests += 1;
+                }else{
+                    $actives += 1;
+                }
             }
         }
-        $no_renoval = array_merge(['actives' => $actives, 'inactives' => $inactives]);
+        $no_renoval = array_merge(['actives' => $actives, 'inactives' => $inactives, 'tests' => $tests]);
         echo json_encode($no_renoval);
     }
 

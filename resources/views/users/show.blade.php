@@ -224,6 +224,7 @@
                      <td>{{$reserv->clase->date}}</td>
                      <td>{{Carbon\Carbon::parse($reserv->clase->start_at)->format('H:i')}} a {{Carbon\Carbon::parse($reserv->clase->finish_at)->format('H:i')}}</td>
                      <td>{{$reserv->reservation_status->reservation_status}}</td>
+                     {{-- {{dd($reserv->plan_user)}} --}}
                   @if ($reserv->plan_user)
                         <td>{{ $reserv->plan_user->id }}</td>
                         <td>{{ $reserv->plan_user->plan->plan }}</td>

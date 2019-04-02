@@ -2,6 +2,7 @@
 
 namespace App\Observers\Plans;
 
+use App\Models\Clases\Reservation;
 use App\Models\Plans\Plan;
 use App\Models\Plans\PlanIncomeSummary;
 use App\Models\Plans\PlanUser;
@@ -69,6 +70,16 @@ class PlanUserObserver
                 $planUser->user->status_user_id = 1;
             }
             $planUser->plan_status_id = 1;
+            $reservations = Reservation::join('clases', 'reservations.clase_id', '=', 'clases.id')
+                                       ->where('reservations.user_id', $planUser->user_id)
+                                       ->whereBetween('date', [Carbon::parse($planUser->start_date)->format('Y-m-d'), Carbon::parse($planUser->finish_date)->format('Y-m-d')])->pluck('reservations.id');
+            foreach ($reservations as $reserv) {
+                $reservation = Reservation::whereId($reserv)->first();
+                if ($reservation->plan_user_id != $planUser->id) {
+                    $reservation->update(['plan_user_id' => $planUser->id]);
+                    $planUser->counter -= 1;
+                }
+            }
         }
         $planUser->user->save();
 
@@ -86,15 +97,17 @@ class PlanUserObserver
 
     public function updated(PlanUser $planUser)
     {
-        //este update es para cancelar el plan
+        //UPDATE PARA CANCELAR EL PLAN
         if ($planUser->plan_status_id == 5){
             foreach ($planUser->reservations as $key => $reserv) {
-                if ($reserv->reservation_status_id == 1 || $reserv->reservation_status_id == 2){
-                    $reserv->delete();
-                }
+               if ($reserv->reservation_status_id == 1 || $reserv->reservation_status_id == 2){
+                  $reserv->delete();
+               }elseif ($reserv->reservation_status_id == 3 || $reserv->reservation_status_id == 4) {
+                  $reserv->update(['plan_user_id' => null]);
+               }
             }
             if ($planUser->user->actual_plan) {
-              $planUser->user->status_user_id = 1;
+                $planUser->user->status_user_id = 1;
             }else {
               $planUser->user->status_user_id = 2;
             }

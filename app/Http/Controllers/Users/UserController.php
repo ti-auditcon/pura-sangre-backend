@@ -205,6 +205,8 @@ class UserController extends Controller
                                 ->first();
                 if ($plan) {
                     $reserv->update(['plan_user_id' => $plan->id]);
+                    $plan->counter -= 1;
+                    $plan->save();
                 }
             }
         }

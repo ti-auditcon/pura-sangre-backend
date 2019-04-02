@@ -33,7 +33,7 @@
           <div class="col-md-6 col-sm-12 ">
              <div class="ibox">
                  <div class="ibox-head">
-                    <div class="ibox-title">Crossfiteros del box</div>
+                    <div class="ibox-title">Crossfiteros activos del box</div>
                     <label id="my-label"></label>
                  </div>
                   <div class="ibox-body">
@@ -196,10 +196,10 @@
    $(document).ready(function(){
       $.get(uri, function(respuesta){
       var chartdata = {
-         labels: ["Activos", "Inactivos"],
+         labels: ["Activos", "Inactivos", "Prueba"],
          datasets: [{
-            data: [JSON.parse(respuesta).actives, JSON.parse(respuesta).inactives],
-            backgroundColor: ["#009900", "#9EB1D1"]
+            data: [JSON.parse(respuesta).actives, JSON.parse(respuesta).inactives, JSON.parse(respuesta).tests],
+            backgroundColor: ["#009900", "#9EB1D1", "#F49D36"]
          }]
       } ;
        var doughnutOptions = {
