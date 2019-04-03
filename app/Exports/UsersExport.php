@@ -31,6 +31,7 @@ class UsersExport implements FromCollection, WithHeadings
         	return [
 	        	$user->full_name,
 	        	Rut::set($user->rut)->fix()->format(),
+                $user->birthdate->format('d/m/Y'),
 	        	$plan,
 	        	$vence,
 	        	$inicio,
@@ -44,6 +45,7 @@ class UsersExport implements FromCollection, WithHeadings
         return [
             'Alumno',
             'RUN',
+            'Fecha de Nacimiento',
             'Plan Activo',
             'Vencimiento',
             'inicio',

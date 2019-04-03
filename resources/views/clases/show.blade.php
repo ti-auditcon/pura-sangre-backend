@@ -278,7 +278,7 @@ $(document).ready(function(){
 
   // ELIMINAR A USUARIO DE LA CLASE
    $('.sweet-user-delete').click(function(e){
-      var id = $(this).data('id');
+      // var id = $(this).data('id');
       var row = $(this).parents('tr');
       var form = $(this).parents('form');
       var url = form.attr('action');
