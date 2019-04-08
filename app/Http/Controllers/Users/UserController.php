@@ -9,11 +9,8 @@ use App\Models\Clases\Reservation;
 use App\Models\Plans\PlanUser;
 use App\Models\Users\Emergency;
 use App\Models\Users\User;
-use App\Notifications\NewUser;
-use Auth;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\Facades\Image;
 use Maatwebsite\Excel\Facades\Excel;
 use Redirect;
@@ -40,10 +37,9 @@ class UserController extends Controller
         return view('users.index')->with('users', $users);
     }
 
-
-    public function export() 
+    public function export()
     {
-        return Excel::download(new UsersExport, toDay()->format('d-m-Y').'_usuarios.xls');
+        return Excel::download(new UsersExport, toDay()->format('d-m-Y') . '_usuarios.xls');
     }
 
     /**
@@ -69,12 +65,12 @@ class UserController extends Controller
             'avatar' => url('img/default_user.png'),
         ]));
         $emergency = Emergency::create(array_merge($request->all(), [
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]));
         if ($user->save()) {
-            Session::flash('success','El usuario ha sido creado correctamente');
+            Session::flash('success', 'El usuario ha sido creado correctamente');
             return view('users.show')->with('user', $user);
-        }else {
+        } else {
             return Redirect::back();
         }
     }
@@ -110,20 +106,20 @@ class UserController extends Controller
     public function update(UserRequest $request, User $user)
     {
         if ($request->image) {
-            request()->file('image')->storeAs('public/users', $user->id.$user->first_name.'.jpg');
+            request()->file('image')->storeAs('public/users', $user->id . $user->first_name . '.jpg');
         }
         $user->update(array_merge($request->all(), [
             'birthdate' => $request->birthdate,
             'since' => $request->since,
-            'avatar' => url('/').'/storage/users/'.$user->id.$user->first_name.'.jpg',
+            'avatar' => url('/') . '/storage/users/' . $user->id . $user->first_name . '.jpg',
         ]));
 
         if ($user->emergency) {
             $user->emergency()->update([
-               'contact_name' => $request->contact_name,
-               'contact_phone' => $request->contact_phone,
+                'contact_name' => $request->contact_name,
+                'contact_phone' => $request->contact_phone,
             ]);
-        }else{
+        } else {
             Emergency::create([
                 'user_id' => $user->id,
                 'contact_name' => $request->contact_name,
@@ -132,7 +128,7 @@ class UserController extends Controller
         }
 
         Session::flash('success', 'Los datos del usuario han sido actualizados');
-        return redirect('/users/'.$user->id)->with('user', $user);
+        return redirect('/users/' . $user->id)->with('user', $user);
     }
 
     /**
@@ -144,13 +140,18 @@ class UserController extends Controller
     public function image(Request $request, User $user)
     {
         if ($request->hasFile('image')) {
-            request()->file('image')->storeAs('public/users', $user->id.$user->first_name.'.jpg');
-            $user->avatar = url('/').'/storage/users/'.$user->id.$user->first_name.'.jpg';
+            try {
+                request()->file('image')->storeAs('public/users', $user->id . $user->first_name . '.jpg');
+            } catch (\Exception $e) {
+                Log::error('siguiente error: ' . $e);
+                return response()->json(['error' => 'Problema al subir la imagen.']);
+            }
+            // request()->file('image')->storeAs('public/users', $user->id . $user->first_name . '.jpg');
+            $user->avatar = url('/') . '/storage/users/' . $user->id . $user->first_name . '.jpg';
             $user->save();
-            return response()->json(['success' =>'imagen subida correctamente'], 200);
-        }
-        else {
-            return response()->json(['error' =>'no hay imagen'], 400);
+            return response()->json(['success' => 'imagen subida correctamente'], 200);
+        } else {
+            return response()->json(['error' => 'no hay imagen'], 400);
         }
     }
 
@@ -174,7 +175,7 @@ class UserController extends Controller
     {
         $users = User::all();
         foreach ($users as $user) {
-            $user->avatar = url('/').'/storage/users/u ('.rand ( 1, 54 ).').jpg';
+            $user->avatar = url('/') . '/storage/users/u (' . rand(1, 54) . ').jpg';
             $user->save();
         }
         return 'listoco';
@@ -183,13 +184,13 @@ class UserController extends Controller
     public function userinfo(User $user, planuser $plan)
     {
         $response = [
-            'user_name' => $user->first_name. ' ' .$user->last_name,
+            'user_name' => $user->first_name . ' ' . $user->last_name,
             'plan' => $plan->plan->plan,
-            'dates' => $plan->start_date->format('d/m/Y'). ' al ' .$plan->finish_date->format('d/m/Y'),
-            'amount' => $plan->bill ? '$ '.number_format($plan->bill->amount, $decimal = 0, '.', '.') : 'No aplica',
-            'left_clases' => $plan->counter ? : '',
+            'dates' => $plan->start_date->format('d/m/Y') . ' al ' . $plan->finish_date->format('d/m/Y'),
+            'amount' => $plan->bill ? '$ ' . number_format($plan->bill->amount, $decimal = 0, '.', '.') : 'No aplica',
+            'left_clases' => $plan->counter ?: '',
             'status_plan' => $plan->plan_status->plan_status,
-            'observations' => $plan->observations ? : ''
+            'observations' => $plan->observations ?: '',
         ];
         echo json_encode($response);
     }
@@ -197,12 +198,12 @@ class UserController extends Controller
     public function putIdPlan()
     {
         foreach (Reservation::all() as $reserv) {
-            if ( $reserv->plan_user_id == null) {
+            if ($reserv->plan_user_id == null) {
                 $fecha_clase = $reserv->clase->date;
                 $plan = PlanUser::where('start_date', '<=', $fecha_clase)
-                                ->where('finish_date', '>=', $fecha_clase)
-                                ->where('user_id', $reserv->user_id)
-                                ->first();
+                    ->where('finish_date', '>=', $fecha_clase)
+                    ->where('user_id', $reserv->user_id)
+                    ->first();
                 if ($plan) {
                     $reserv->update(['plan_user_id' => $plan->id]);
                     $plan->counter -= 1;
