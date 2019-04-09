@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Plans;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Plans\PlanUserRequest;
 use App\Mail\NewPlanUserEmail;
 use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
@@ -51,31 +52,32 @@ class planuserController extends Controller
      * @param  User    $user    [description]
      * @return [type]           [description]
      */
-    public function store(Request $request, User $user)
+    public function store(PlanUserRequest $request, User $user)
     {
-        if ($request->plan_id == 2 && !$request->counter) {
-            return back()->with('warning', 'Campo Número de Clases vacío');
-        }
         $plan = Plan::find($request->plan_id);
-        $planuser = new PlanUser;
-        $planuser->plan_id = $plan->id;
-        $planuser->observations = $request->observations;
-        $planuser->user_id = $user->id;
-        $planuser->start_date = Carbon::parse($request->fecha_inicio);
-
+        $finish_date = null;
+        $counter = null;
         if ($plan->id == 1) {
-            $planuser->finish_date = Carbon::parse($request->fecha_inicio)->addWeeks(1);
-            $planuser->counter = $plan->class_numbers;
+            $finish_date = Carbon::parse($request->fecha_inicio)->addWeeks(1);
+            $counter = $plan->class_numbers;
         } else {
-            $planuser->finish_date = Carbon::parse($request->fecha_inicio)
+            $finish_date = Carbon::parse($request->fecha_inicio)
                 ->addMonths($plan->plan_period->period_number)
                 ->subDay();
-            $planuser->counter = $plan->class_numbers * $plan->plan_period->period_number;
+            $counter = $plan->class_numbers * $plan->plan_period->period_number;
         }
         if ($plan->custom == 1) {
-            $planuser->finish_date = Carbon::parse($request->fecha_termino);
-            $planuser->counter = $request->counter;
+            $finish_date = Carbon::parse($request->fecha_termino);
+            $counter = $request->counter;
         }
+        $planuser = new PlanUser;
+        $planuser->start_date = Carbon::parse($request->fecha_inicio);
+        $planuser->finish_date = $finish_date;
+        $planuser->counter = $counter;
+        $planuser->plan_status_id = 1;
+        $planuser->user_id = $user->id;
+        $planuser->plan_id = $plan->id;
+        $planuser->observations = $request->observations;
 
         if ($planuser->save()) {
             if (($plan->custom == 0) && ($request->amount > 0)) {
@@ -145,9 +147,9 @@ class planuserController extends Controller
                     $plan_saved->bill->update(['amount' => $request->amount]);
                 }
                 Session::flash('success', 'El plan se actualizó correctamente');
-                return view('users.show')->with('user', $user);
+                return redirect('users/' . $user->id);
             } else {
-                return redirect()->with('error', 'No se pudo actualizar plan');
+                return redirect('users/' . $user->id);
             }
         }
     }

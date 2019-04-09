@@ -40,7 +40,7 @@ class PlanUserObserver
                 return false;
             }
         }
-        return true;
+        $planUser->plan_status_id = $this->checkActualPlan($planUser);
     }
 
     /**
@@ -51,50 +51,38 @@ class PlanUserObserver
      */
     public function created(PlanUser $planUser)
     {
-        $actl_pln_usr = isset($planUser->user->actual_plan) ? $planUser->user->actual_plan : null;
-        if ($actl_pln_usr && $planUser->start_date > today()) {
-            $planUser->plan_status_id = 3;
-            $planUser->user->status_user_id = 1;
-        } elseif ($actl_pln_usr && $planUser->finish_date < today()) {
-            $planUser->plan_status_id = 4;
-            $planUser->user->status_user_id = 1;
-        }
-        if (!$actl_pln_usr && $planUser->start_date <= today() && $planUser->finish_date >= today()) {
-            if ($planUser->plan_id == 1) {
-                $planUser->user->status_user_id = 3;
-            } else {
-                $planUser->user->status_user_id = 1;
-            }
-            $planUser->plan_status_id = 1;
-            $reservations = Reservation::join('clases', 'reservations.clase_id', '=', 'clases.id')
-                ->where('reservations.user_id', $planUser->user_id)
-                ->whereBetween('date', [Carbon::parse($planUser->start_date)->format('Y-m-d'), Carbon::parse($planUser->finish_date)->format('Y-m-d')])
-                ->pluck('reservations.id');
-            foreach ($reservations as $reserv) {
-                $reservation = Reservation::whereId($reserv)->first();
-                if ($reservation->plan_user_id != $planUser->id) {
-                    $reservation->update(['plan_user_id' => $planUser->id]);
-                    $planUser->counter -= 1;
-                }
-            }
-        }
-        $planUser->user->save();
-        if (!$planUser->user->actual_plan && $planUser->start_date > today()) {
-            $planUser->plan_status_id = 3;
-            $planUser->user->status_user_id = 2;
-            $planUser->user->save();
-        } elseif (!$planUser->user->actual_plan && $planUser->finish_date < today()) {
-            $planUser->plan_status_id = 4;
-            $planUser->user->status_user_id = 2;
-            $planUser->user->save();
-        }
-        $planUser->save();
+        $this->fixReservations($planUser);
+        $this->updateStatusUser($planUser);
     }
 
+    public function updating(PlanUser $planUser)
+    {
+        $user = User::findOrFail($planUser->user_id);
+        $fecha_inicio = Carbon::parse($planUser->start_date);
+        $fecha_termino = Carbon::parse($planUser->finish_date);
+        $plan_users = PlanUser::whereIn('plan_status_id', [1, 3])->where('user_id', $user->id)->where('id', '!=', $planUser->id)->get();
+        foreach ($plan_users as $plan_user) {
+            if (($fecha_inicio->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date))) || ($fecha_termino->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date)))) {
+
+                Session::flash('error-tap', 'No se pudo actualizar las fechas, debido a que el plan ' . $plan_user->plan->plan . ' que va desde el ' . Carbon::parse($plan_user->start_date)->format('d-m-Y') . ' al ' . Carbon::parse($plan_user->finish_date)->format('d-m-Y') . ' choca con una fecha del plan que intentas modificar');
+                return false;
+            } elseif (($fecha_inicio->lt(Carbon::parse($plan_user->start_date))) && ($fecha_termino->gt(Carbon::parse($plan_user->finish_date)))) {
+
+                Session::flash('error-tap', 'No se pudo actualizar las fechas, debido a que el plan ' . $plan_user->plan->plan . ' que va desde el ' . Carbon::parse($plan_user->start_date)->format('d-m-Y') . ' al ' . Carbon::parse($plan_user->finish_date)->format('d-m-Y') . ', choca fecha del plan que intentas modificar');
+                return false;
+            } elseif (($fecha_inicio->gt(Carbon::parse($plan_user->start_date))) && ($fecha_termino->lt(Carbon::parse($plan_user->finish_date)))) {
+                Session::flash('error-tap', 'No se pudo actualizar las fechas, debido a que el plan ' . $plan_user->plan->plan . ' que va desde el ' . Carbon::parse($plan_user->start_date)->format('d-m-Y') . ' al ' . Carbon::parse($plan_user->finish_date)->format('d-m-Y') . ', choca con una fecha del plan que intentas modificar');
+                return false;
+            }
+        }
+        if ($planUser->plan_status_id != 5) {
+            $planUser->plan_status_id = $this->checkActualPlan($planUser);
+        }
+    }
+
+    //UPDATE PARA CANCELAR EL PLAN
     public function updated(PlanUser $planUser)
     {
-        dd('hola');
-        //UPDATE PARA CANCELAR EL PLAN
         if ($planUser->plan_status_id == 5) {
             foreach ($planUser->reservations as $key => $reserv) {
                 if ($reserv->reservation_status_id == 1 || $reserv->reservation_status_id == 2) {
@@ -103,12 +91,10 @@ class PlanUserObserver
                     $reserv->update(['plan_user_id' => null]);
                 }
             }
-            if ($planUser->user->actual_plan) {
-                $planUser->user->status_user_id = 1;
-            } else {
-                $planUser->user->status_user_id = 2;
-            }
-            $planUser->user->save();
+            $this->updateStatusUser($planUser);
+        } else {
+            $this->fixReservations($planUser);
+            $this->updateStatusUser($planUser);
         }
     }
 
@@ -131,17 +117,60 @@ class PlanUserObserver
             }
             $planUser->bill->delete();
         }
-
     }
 
-    /**
-     * Handle the plan user "force deleted" event.
-     *
-     * @param  \App\Models\Plans\PlanUser  $planUser
-     * @return void
-     */
-    public function forceDeleted(PlanUser $planUser)
+    public function checkActualPlan(PlanUser $planUser)
     {
-        //
+        if ($planUser->start_date > today()) {
+            $planUser->plan_status_id = 3;
+        } elseif ($planUser->finish_date < today()) {
+            $planUser->plan_status_id = 4;
+        }
+        if (!$planUser->user->actual_plan && $planUser->start_date <= today() && $planUser->finish_date >= today()) {
+            $planUser->plan_status_id = 1;
+        }
+        return $planUser->plan_status_id;
+    }
+
+    public function fixReservations(PlanUser $planUser)
+    {
+        $reservations = Reservation::join('clases', 'reservations.clase_id', '=', 'clases.id')
+            ->where('reservations.user_id', $planUser->user_id)
+            ->whereBetween('date', [Carbon::parse($planUser->start_date)->format('Y-m-d'), Carbon::parse($planUser->finish_date)->format('Y-m-d')])
+            ->pluck('reservations.id');
+        $reservations_out = Reservation::join('clases', 'reservations.clase_id', '=', 'clases.id')
+            ->where('reservations.user_id', $planUser->user_id)
+            ->whereNotBetween('date', [Carbon::parse($planUser->start_date)->format('Y-m-d'), Carbon::parse($planUser->finish_date)->format('Y-m-d')])
+            ->pluck('reservations.id');
+        foreach ($reservations as $reserv) {
+            $reservation = Reservation::find($reserv);
+            if ($reservation->plan_user_id !== $planUser->id) {
+                $reservation->update(['plan_user_id' => $planUser->id]);
+                $planUser->counter -= 1;
+                $planUser->save();
+            }
+        }
+        foreach ($reservations_out as $reserv) {
+            $reservation = Reservation::whereId($reserv)->first();
+            if ($reservation->plan_user_id === $planUser->id) {
+                $reservation->update(['plan_user_id' => null]);
+                $planUser->counter += 1;
+                $planUser->save();
+            }
+        }
+        return $planUser;
+    }
+
+    public function updateStatusUser(PlanUser $planUser)
+    {
+        $user = $planUser->user;
+        if (today()->between(Carbon::parse($planUser->start_date), Carbon::parse($planUser->finish_date)) && $planUser->plan_status_id === 1) {
+            $user->status_user_id = ($planUser->plan->id === 1) ? 3 : 1;
+        } elseif ($user->actual_plan && $user->actual_plan->id != $planUser->id) {
+            $user->status_user_id = $user->actual_plan->plan->id === 1 ? 3 : 1;
+        } else {
+            $user->status_user_id = 2;
+        }
+        $user->save();
     }
 }

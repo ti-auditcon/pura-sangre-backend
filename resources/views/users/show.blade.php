@@ -166,7 +166,7 @@
              <table id="next-clases-table" class="table table-hover">
                <thead class="thead-default thead-lg">
                   <tr>
-                     <th width="10%">ID</th>
+                     <th width="10%">ID Clase</th>
                      <th width="20%">Fecha Clase</th>
                      <th width="20%">Hora</th>
                      <th width="20%">Estado</th>
@@ -209,7 +209,7 @@
              <table id="past-classes-table" class="table table-hover">
                <thead class="thead-default thead-lg">
                   <tr>
-                     <th width="10%">ID</th>
+                     <th width="10%">ID Clase</th>
                      <th width="20%">Fecha Clase</th>
                      <th width="20%">Hora</th>
                      <th width="20%">Estado</th>
@@ -315,7 +315,7 @@
    <script src="{{ asset('js/datatables.min.js') }}"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
       <script src="//cdn.datatables.net/plug-ins/1.10.19/dataRender/datetime.js"></script>
-   
+
    <script>
       $(document).ready(function() {
          $('#next-clases-table').DataTable({
