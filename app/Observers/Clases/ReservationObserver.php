@@ -2,11 +2,11 @@
 
 namespace App\Observers\Clases;
 
-use Auth;
-use Session;
-use Carbon\Carbon;
 use App\Models\Clases\Clase;
 use App\Models\Clases\Reservation;
+use Auth;
+use Carbon\Carbon;
+use Session;
 
 class ReservationObserver
 {
@@ -23,7 +23,7 @@ class ReservationObserver
 
         if ($reservation->by_god) {
             return true;
-        }else{
+        } else {
             $period_plan = null;
             foreach ($plans as $planuser) {
                 if ($date_class->between(Carbon::parse($planuser->start_date), Carbon::parse($planuser->finish_date))) {
@@ -49,8 +49,8 @@ class ReservationObserver
         $clases = Clase::where('date', $clase->date)->get();
         foreach ($clases as $clase) {
             $reservations = Reservation::where('clase_id', $clase->id)
-                                       ->where('user_id', $reservation->user_id)
-                                       ->get();
+                ->where('user_id', $reservation->user_id)
+                ->get();
             if (count($reservations) != 0) {
                 $response = 'Ya tiene clase tomada este día';
             }
@@ -93,8 +93,10 @@ class ReservationObserver
                 $period_plan = $planuser;
             }
         }
-        if ($period_plan){
-            $period_plan->update(['counter' => $period_plan->counter - 1]);
+        if ($period_plan) {
+            // $period_plan->update(['counter' => $period_plan->counter]);
+            $period_plan->updated_at = now();
+            $period_plan->save();
             $reservation->update(['plan_user_id' => $period_plan->id]);
         }
         return true;
@@ -108,13 +110,13 @@ class ReservationObserver
 
         if ($reservation->by_god) {
             return true;
-        }else{
+        } else {
             if (!Auth::user()->hasRole(1)) {
                 $response = $this->badGetOut($clase);
                 if ($response) {
                     Session::flash('warning', $response);
                     return false;
-                }    
+                }
             }
         }
     }
@@ -125,12 +127,10 @@ class ReservationObserver
         $class_hour = Carbon::parse($clase->start_at);
         if ($clase->date < toDay()->format('Y-m-d')) {
             $badGetOut = 'No puede votar una clase de un día anterior a hoy';
-        }
-        elseif ($clase->date == toDay()->format('Y-m-d')){
+        } elseif ($clase->date == toDay()->format('Y-m-d')) {
             if ($class_hour->diffInMinutes(now()->format('H:i')) < 40 && $class_hour > now()->format('H:i')) {
                 $badGetOut = 'Ya no puede votar la clase, por que esta pronto a comenzar';
-            }
-            elseif ($class_hour < now()) {
+            } elseif ($class_hour < now()) {
                 $badGetOut = 'No puede votar una clase que ya pasó';
             }
         }
@@ -149,11 +149,10 @@ class ReservationObserver
                 $period_plan = $planuser;
             }
         }
-        if ($period_plan){
+        if ($period_plan) {
             $period_plan->update(['counter' => $period_plan->counter + 1]);
         }
         return true;
     }
 
 }
-
