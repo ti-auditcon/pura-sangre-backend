@@ -1,10 +1,6 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\Clases\Block;
-use App\Models\Clases\Clase;
 use Illuminate\Database\Seeder;
-
 
 class DatabaseSeeder extends Seeder
 {
@@ -31,53 +27,51 @@ class DatabaseSeeder extends Seeder
 
     }
 }
-      // $user = User::create([
-      //     'rut' => 11111111,
-      //     'first_name' => 'Audito',
-      //     'last_name' => 'Asomic',
-      //     'birthdate' => '1985-01-01',
-      //     'gender' => 'male',
-      //     'email' => 'sa@auditcon.cl',
-      //     'password' => bcrypt('123123'),
-      //     'phone' => '87654321',
-      //     'avatar' => url('/').'/storage/users/u (22).jpg',
-      //     'address' => 'Estado, Esquina Membrillar, Oficina 208',
-      //     // 'emergency_id' => 1,
-      //     'status_user_id' => 1,
-      // ]);
+// $user = User::create([
+//     'rut' => 11111111,
+//     'first_name' => 'Audito',
+//     'last_name' => 'Asomic',
+//     'birthdate' => '1985-01-01',
+//     'gender' => 'male',
+//     'email' => 'sa@auditcon.cl',
+//     'password' => bcrypt('123123'),
+//     'phone' => '87654321',
+//     'avatar' => url('/').'/storage/users/u (22).jpg',
+//     'address' => 'Estado, Esquina Membrillar, Oficina 208',
+//     // 'emergency_id' => 1,
+//     'status_user_id' => 1,
+// ]);
 
-      // $user = User::create([
-      //     'rut' => 22222222,
-      //     'first_name' => 'User',
-      //     'last_name' => 'Asomic',
-      //     'birthdate' => '1985-01-02',
-      //     'gender' => 'male',
-      //     'email' => 'user@auditcon.cl',
-      //     'password' => bcrypt('123123'),
-      //     'avatar' => url('/').'/storage/users/u (23).jpg',
-      //     'phone' => '76543211',
-      //     'address' => 'Estado, Esquina Membrillar, Oficina 208',
-      //     // 'emergency_id' => 1,
-      //     'status_user_id' => 1,
-      // ]);
+// $user = User::create([
+//     'rut' => 22222222,
+//     'first_name' => 'User',
+//     'last_name' => 'Asomic',
+//     'birthdate' => '1985-01-02',
+//     'gender' => 'male',
+//     'email' => 'user@auditcon.cl',
+//     'password' => bcrypt('123123'),
+//     'avatar' => url('/').'/storage/users/u (23).jpg',
+//     'phone' => '76543211',
+//     'address' => 'Estado, Esquina Membrillar, Oficina 208',
+//     // 'emergency_id' => 1,
+//     'status_user_id' => 1,
+// ]);
 
-      // $user = User::create([
-      //     'rut' => 33333333,
-      //     'first_name' => 'Student',
-      //     'last_name' => 'Crossfit',
-      //     'birthdate' => '1994-01-02',
-      //     'gender' => 'male',
-      //     'email' => 'student@auditcon.cl',
-      //     'password' => bcrypt('123123'),
-      //     'avatar' => url('/').'/storage/users/u (25).jpg',
-      //     'phone' => '76543211',
-      //     'address' => 'Estado, Esquina Membrillar, Oficina 208',
-      //     // 'emergency_id' => 1,
-      //     'status_user_id' => 1,
-      // ]);
+// $user = User::create([
+//     'rut' => 33333333,
+//     'first_name' => 'Student',
+//     'last_name' => 'Crossfit',
+//     'birthdate' => '1994-01-02',
+//     'gender' => 'male',
+//     'email' => 'student@auditcon.cl',
+//     'password' => bcrypt('123123'),
+//     'avatar' => url('/').'/storage/users/u (25).jpg',
+//     'phone' => '76543211',
+//     'address' => 'Estado, Esquina Membrillar, Oficina 208',
+//     // 'emergency_id' => 1,
+//     'status_user_id' => 1,
+// ]);
 
-
-
-       // echo now()->startOfHour(); 
-       // echo "\n";
-       // echo today();
+// echo now()->startOfHour();
+// echo "\n";
+// echo today();

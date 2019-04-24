@@ -17,7 +17,8 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\CreateClases',
         'App\Console\Commands\RefreshPlans',
         'App\Console\Commands\PushClases',
-         'App\Console\Commands\ToExpiredPlan',
+        'App\Console\Commands\ToExpiredPlan',
+        'App\Console\Commands\CleanClases',
     ];
 
     /**
@@ -33,6 +34,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('refresh:plans')->daily();
         $schedule->command('create:clases')->weekly();
         $schedule->command('toexpire:plan')->dailyAt('9:10');
+        $schedule->command('clean:clase')->hourlyAt(15);
     }
 
     /**
@@ -42,7 +44,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
