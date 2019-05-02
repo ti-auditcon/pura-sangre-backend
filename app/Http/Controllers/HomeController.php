@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Session;
+use App\Models\Bills\Bill;
 use App\Models\Clases\ClaseType;
+use App\Models\Plans\Plan;
 use App\Models\Plans\PlanIncomeSummary;
 use App\Models\Plans\PlanUser;
 use App\Models\Users\User;
 use App\Traits\ExpiredPlans;
-use Illuminate\Http\Request;
+use Session;
 
 class HomeController extends Controller
 {
@@ -30,10 +31,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if(!Session::has('clases-type-id'))
-        {
-            Session::put('clases-type-id',1);
-            Session::put('clases-type-name',ClaseType::find(1)->clase_type);
+        if (!Session::has('clases-type-id')) {
+            Session::put('clases-type-id', 1);
+            Session::put('clases-type-name', ClaseType::find(1)->clase_type);
         }
         $plan_users = $this->expiredNext();
         $expired_plans = $this->ExpiredPlan();
@@ -43,14 +43,14 @@ class HomeController extends Controller
     public function expiredNext()
     {
         $plan_users = PlanUser::where('plan_status_id', 1)
-                              ->where('finish_date','>=', now())
-                              ->orderBy('finish_date')
-                              ->get();
+            ->where('finish_date', '>=', now())
+            ->orderBy('finish_date')
+            ->get();
 
-        return $plan_users->map(function ($plan){
+        return $plan_users->map(function ($plan) {
             return [
                 'user_id' => isset($plan->user) ? $plan->user->id : '',
-                'alumno' => isset($plan->user) ? $plan->user->first_name.' '.$plan->user->last_name : '',
+                'alumno' => isset($plan->user) ? $plan->user->first_name . ' ' . $plan->user->last_name : '',
                 'plan' => isset($plan->plan) ? $plan->plan->plan : '',
                 'fecha_termino' => \Date::parse($plan->finish_date)->diffForHumans(),
                 'telefono' => isset($plan->user) ? $plan->user->phone : '',
@@ -61,23 +61,23 @@ class HomeController extends Controller
     public function ExpiredPlan()
     {
         $expired_plans = collect(new PlanUser);
-        foreach (User::all() as $user){
-            if (!$user->actual_plan){
+        foreach (User::all() as $user) {
+            if (!$user->actual_plan) {
                 $plan_user = $user->plan_users->whereIn('plan_status_id', [3, 4])
-                                              ->where('plan_id', '!=', 1)
-                                              ->where('finish_date', '<', today())
-                                              ->sortByDesc('finish_date')
-                                              ->first();
-                if ($plan_user){
+                    ->where('plan_id', '!=', 1)
+                    ->where('finish_date', '<', today())
+                    ->sortByDesc('finish_date')
+                    ->first();
+                if ($plan_user) {
                     $expired_plans->push($plan_user);
                 }
             }
         }
 
         return $expired_plans->sortByDesc('finish_date')->map(function ($plan) {
-               return [
+            return [
                 'user_id' => isset($plan->user) ? $plan->user->id : '',
-                'alumno' => isset($plan->user) ? $plan->user->first_name.' '.$plan->user->last_name: '',
+                'alumno' => isset($plan->user) ? $plan->user->first_name . ' ' . $plan->user->last_name : '',
                 'plan' => isset($plan->plan) ? $plan->plan->plan : '',
                 'fecha_termino' => \Date::parse($plan->finish_date)->diffForHumans(),
                 'telefono' => isset($plan->user) ? $plan->user->phone : '',
@@ -101,7 +101,7 @@ class HomeController extends Controller
             if ($user->actual_plan) {
                 if ($user->status_user_id === 3) {
                     $tests += 1;
-                }else{
+                } else {
                     $actives += 1;
                 }
             }
@@ -117,7 +117,7 @@ class HomeController extends Controller
         foreach (User::all() as $user) {
             if ($user->gender == 'hombre' && $user->actual_plan) {
                 $men += 1;
-            }elseif ($user->gender == 'mujer' && $user->actual_plan) {
+            } elseif ($user->gender == 'mujer' && $user->actual_plan) {
                 $women += 1;
             }
         }
@@ -130,45 +130,65 @@ class HomeController extends Controller
         //obtener todos los planes del mes actual que tengan anexada una boleta
         //sin contar boletas eliminadas
         $mes['periodo'] = 'mensual';
-        $month_amount = PlanUser::whereDate('plan_user.created_at', '>=', today()->startOfMonth())
-                                ->whereDate('plan_user.created_at', '<=', today()->endOfMonth())
-                                ->join('bills', 'bills.plan_user_id', '=', 'plan_user.id')
-                                ->get()
-                                ->sum('amount');
-        $mes['ingresos'] = '$ '.number_format($month_amount, $decimal = 0, '.', '.');
-        $mes['cantidad'] = PlanUser::whereDate('plan_user.created_at', '>=', today()->startOfMonth())
-                                   ->whereDate('plan_user.created_at', '<=', today()->endOfMonth())
-                                   ->join('bills', 'bills.plan_user_id', '=', 'plan_user.id')
-                                   ->count();
+        $month_amount = PlanUser::join('bills', 'bills.plan_user_id', '=', 'plan_user.id')
+            ->whereDate('bills.date', '>=', today()->startOfMonth())
+            ->whereDate('bills.date', '<=', today()->endOfMonth())
+            ->get()
+            ->sum('amount');
+        $mes['ingresos'] = '$ ' . number_format($month_amount, $decimal = 0, '.', '.');
+        $mes['cantidad'] = PlanUser::join('bills', 'bills.plan_user_id', '=', 'plan_user.id')
+            ->whereDate('bills.date', '>=', today()->startOfMonth())
+            ->whereDate('bills.date', '<=', today()->endOfMonth())
+            ->count();
 
         //obtener todos los planes de este día que tengan anexada una boleta
         //sin contar boletas eliminadas
         $dia['periodo'] = 'hoy';
-        $day_amount = PlanUser::whereDate('plan_user.created_at', today())
-                              ->join('bills', 'bills.plan_user_id', '=', 'plan_user.id')
-                              ->get()
-                              ->sum('amount');
-        $dia['ingresos'] = '$ '.number_format($day_amount, $decimal = 0, '.', '.');
-        $dia['cantidad'] = PlanUser::whereDate('plan_user.created_at', today())
-                                   ->join('bills', 'bills.plan_user_id', '=', 'plan_user.id')
-                                   ->count();
+        $day_amount = PlanUser::join('bills', 'bills.plan_user_id', '=', 'plan_user.id')
+            ->whereDate('bills.date', today())
+            ->get()
+            ->sum('amount');
+        $dia['ingresos'] = '$ ' . number_format($day_amount, $decimal = 0, '.', '.');
+        $dia['cantidad'] = PlanUser::join('bills', 'bills.plan_user_id', '=', 'plan_user.id')
+            ->whereDate('bills.date', today())
+            ->count();
         $in_sum = array_merge([$dia, $mes]);
         echo json_encode($in_sum);
     }
 
+    public function updateIncomeSummary()
+    {
+        $years = [2017, 2018, 2019];
+        $plans = Plan::all();
+        foreach ($years as $year) {
+            for ($i = 1; $i < 13; $i++) {
+                foreach ($plans as $plan) {
+                    $amount = Bill::join('plan_user', 'plan_user.id', 'bills.plan_user_id')
+                        ->where('plan_user.plan_id', $plan->id)
+                        ->whereMonth('date', $i)
+                        ->whereYear('date', $year)
+                        ->get()
+                        ->sum('amount');
+                    $quantity = Bill::join('plan_user', 'plan_user.id', 'bills.plan_user_id')
+                        ->where('plan_user.plan_id', $plan->id)
+                        ->whereMonth('date', $i)
+                        ->whereYear('date', $year)
+                        ->count();
+                    $income = new PlanIncomeSummary;
+                    $income->plan_id = $plan->id;
+                    $income->amount = $amount;
+                    $income->quantity = $quantity;
+                    $income->month = $i;
+                    $income->year = $year;
+                    $income->save();
+                }
+            }
+        }
+    }
 }
-        // foreach (User::all() as $user) {
-        //     $plan_users = $user->plan_users->whereIn('plan_status_id', [3, 4])
-        //                                    ->where('finish_date' '<=', today()->subDays(15))
-        //                                    ->orderBy('finish_date')
-        //                                    ->get();
-        //     if ($plan_users->count()) {
-        //         $expired_plans = $user->plan_users->sortByDesc('finish_date')->first();
-        //     }
-        // }
-       
-        // ----------------ORDENAR UN ARRAY DE MANERA DESCENDENTE---------------------
-        // $expired_plans = array_values(array_reverse(array_sort($expired_plans, function ($value) {
-        //     return $value['finish_date'];
-        // })));
-        // --------------------------           ---                -------------------------
+
+// ----------------ORDENAR UN ARRAY DE MANERA DESCENDENTE---------------------
+// $expired_plans = array_values(array_reverse(array_sort($expired_plans, function ($value) {
+//     return $value['finish_date'];
+// })));
+// --------------------------           ---                -------------------------

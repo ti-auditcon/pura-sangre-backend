@@ -33,7 +33,6 @@ class ReservationObserver
                 Session::flash('warning', 'No tiene un plan que le permita tomar esta clase');
                 return false;
             }
-            // dd($period_plan);
             $response = $this->userBadReserve($clase, $period_plan);
             if ($response) {
                 Session::flash('warning', $response);
@@ -93,7 +92,6 @@ class ReservationObserver
             }
         }
         if ($period_plan) {
-            // $period_plan->update(['counter' => $period_plan->counter]);
             $period_plan->updated_at = now();
             $period_plan->save();
             $reservation->update(['plan_user_id' => $period_plan->id]);
@@ -141,14 +139,12 @@ class ReservationObserver
         $clase = $reservation->clase;
         $plans = $reservation->user->reservable_plans;
         $date_class = Carbon::parse($clase->date);
-        // dd('hola');
         $period_plan = null;
         foreach ($plans as $planuser) {
             if ($date_class->between(Carbon::parse($planuser->start_date), Carbon::parse($planuser->finish_date))) {
                 $period_plan = $planuser;
             }
         }
-        // dd($period_plan);
         if ($period_plan) {
             $period_plan->update(['counter' => $period_plan->counter + 1]);
         }
