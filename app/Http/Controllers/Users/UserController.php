@@ -144,7 +144,7 @@ class UserController extends Controller
                 request()->file('image')->storeAs('public/users', $user->id . $user->first_name . '.jpg');
             } catch (\Exception $e) {
                 Log::error('siguiente error: ' . $e);
-                return response()->json(['error' => 'Problema al subir la imagen.']);
+                return response()->json(['error' => 'Problema al subir la imagen, si vuelve a suceder por favor comuniquese con el administrador de purasangre.']);
             }
             // request()->file('image')->storeAs('public/users', $user->id . $user->first_name . '.jpg');
             $user->avatar = url('/') . '/storage/users/' . $user->id . $user->first_name . '.jpg';

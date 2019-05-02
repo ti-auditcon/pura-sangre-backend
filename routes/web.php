@@ -12,7 +12,7 @@ Route::get('/success-reset-password', function () {
 
 Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('update-reservations-plans', 'Users\UserController@putIdPlan')->middleware('role:1');
-    Route::get('update-income', 'HomeController@updateIncomeSummary')->middleware('role:1');
+    // Route::get('update-income', 'HomeController@updateIncomeSummary')->middleware('role:1');
 
     /**
      * Exercises Routes (exercises)
