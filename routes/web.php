@@ -32,6 +32,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 
     Route::resource('reservation', 'Clases\ReservationController')
            ->only('store', 'update', 'destroy');
+        Route::post('/reservation/{reservation}/confirm', 'Clases\ReservationController@confirm');
 
     Route::get('get-wods', 'Clases\ClaseController@wods');
     Route::get('get-clases', 'Clases\ClaseController@clases');

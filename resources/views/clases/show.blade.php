@@ -133,7 +133,8 @@
                            </a>
                         </td>
                         <td>
-                           <span class="badge badge-{{$reservation->reservation_status->type}} badge-pill">{{strtoupper($reservation->reservation_status->reservation_status)}}</span>
+                           <span id="status-user-badge-{{$reservation->id}}" class="badge badge-{{$reservation->reservation_status->type}} badge-pill">{{strtoupper($reservation->reservation_status->reservation_status)}}</span>
+                           <span id="status-user-badge-two-{{$reservation->id}}" style="display: none" class="badge badge-success badge-pill">CONFIRMADA</span>
                         </td>
 
                      @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
@@ -142,6 +143,13 @@
                               <input type="hidden" value="1" name="by_god">
                               <button class="btn btn-info btn-icon-only btn-danger sweet-user-delete" type="button" data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash"></i></button>
                            {!! Form::close() !!}
+                           @if ($reservation->reservation_status_id === 1)
+                             {!! Form::open(['action' => ['Clases\ReservationController@confirm', $reservation->id], 'method' => 'POST', 'id' => 'update'.$reservation->user->id]) !!}
+                              <input type="hidden" value="1" name="by_god">
+                              <button class="btn btn-info btn-icon-only btn-success sweet-user-confirm" type="button" data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-check-circle"></i></button>
+                            {!! Form::close() !!}
+                           @endif
+                           
                         </td>
                      @elseif (Auth::user()->hasRole(3) && Auth::id() == $reservation->user->id)
                         <td>
@@ -274,8 +282,6 @@ $(document).ready(function(){
 
 <script>
 
-
-
   // ELIMINAR A USUARIO DE LA CLASE
    $('.sweet-user-delete').click(function(e){
       var id = $(this).data('id');
@@ -303,6 +309,40 @@ $(document).ready(function(){
          });
       });
    });
+
+
+     // CONFIRM A USUARIO DE LA CLASE
+   $('.sweet-user-confirm').click(function(e){
+      var id = $(this).data('id');
+      var row = $(this).parents('tr');
+      var form = $(this).parents('form');
+      var url = form.attr('action');
+     // alert(form.attr('action'));
+      swal({
+          title: "Desea confirmar a: "+$(this).data('name')+" en esta clase?",
+          text: "",
+          type: 'success',
+          showCancelButton: true,
+          confirmButtonClass: 'btn-success',
+          cancelButtonText: 'Cancelar',
+          confirmButtonText: 'Confirmar',
+          closeOnConfirm: false,
+      },function(){
+        console.log(url);
+         $.post(url, form.serialize(), function(result){
+          console.log(result.reservation_id);
+            form.hide();
+            $('#status-user-badge-'+result.reservation_id).hide();
+            $('#status-user-badge-two-'+result.reservation_id).show();
+            swal.close();
+            toastr.success('Confirmado correctamente');
+         }).fail(function(){
+            $('#alert').html('No se ha podido confirmar, por favor contactese con el encargado');
+         });
+      });
+   });
+
+
   </script>
 
 {{-- RESERVAR CUPO A LA CLASE (VISTA DEL USUARIO) --}}

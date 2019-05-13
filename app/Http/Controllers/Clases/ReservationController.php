@@ -34,6 +34,16 @@ class ReservationController extends Controller
 
     }
 
+    public function confirm(Request $request, Reservation $reservation)
+    {
+        if ($request->ajax()) {
+            $reservation->update(['reservation_status_id' => 2]);
+            return response()->json([
+                'reservation_id' => $reservation->id 
+            ]);
+        }
+    }
+
     public function destroy(Request $request, Reservation $reservation)
     {
         if ($request->ajax()) {
