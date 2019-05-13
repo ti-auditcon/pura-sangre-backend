@@ -13,7 +13,7 @@
         </div>
         {!! Form::open(['route' => ['users.plans.store', $user->id]]) !!}
         <div class="ibox-body">
-          {{old('plan_id')}}
+          {{-- {{old('plan_id')}} --}}
           <input class="form-control" name="user_id" type="hidden" value="{{ $user->id }}" hidden>
           <div class="row">
             <div class="col-sm-6 form-group mb-2">

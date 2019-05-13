@@ -9,6 +9,7 @@
 			<div class="ibox">
 				<div class="ibox-head">
 					<div class="ibox-title">Horarios</div>
+					{{-- {{dd($blocks)}} --}}
 				</div>
 					<div class="ibox-body">
 						{{Form::open(['route'=>'clases.type'])}}

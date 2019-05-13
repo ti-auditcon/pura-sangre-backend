@@ -15,7 +15,7 @@
                   {!! Form::open(['route' => ['clases.destroy', $clase->id], 'method' => 'delete', 'class' => 'clase-delete']) !!}
                   {!! Form::close() !!}
                   <button class="btn btn-danger sweet-clase-delete" data-id="{{$clase->id}}" data-name="{{Carbon\Carbon::parse($clase->date)->format('d-m-Y')}}"><i>
-                  </i>Cerrar Clase</button>
+                  </i>Eliminar Clase</button>
                @endif
             @endif
             </div>
@@ -284,7 +284,7 @@ $(document).ready(function(){
 
   // ELIMINAR A USUARIO DE LA CLASE
    $('.sweet-user-delete').click(function(e){
-      var id = $(this).data('id');
+      // var id = $(this).data('id');
       var row = $(this).parents('tr');
       var form = $(this).parents('form');
       var url = form.attr('action');
@@ -435,9 +435,9 @@ $(document).ready(function(){
   <script>
   $('.sweet-clase-delete').click(function(e){
     var id = $(this).data('id');
-    //alert(id);
+
       swal({
-          title: "Seguro desea cerrar la clase del: "+$(this).data('name')+"?",
+          title: "Seguro desea ELIMINAR la clase del: "+$(this).data('name')+"?",
           text: "(Se sacarán a todos los usuarios ya inscritos a esta clase)",
           type: 'warning',
           showCancelButton: true,
