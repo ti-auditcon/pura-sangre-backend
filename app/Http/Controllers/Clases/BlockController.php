@@ -41,7 +41,6 @@ class BlockController extends Controller
     public function store(BlockRequest $request)
     {
         //si es bloque multiple o unico
-        dd($request->all());
         if ($request->repetition == 'multiple') {
             foreach ($request->day as $day) {
                 $block = Block::create([
