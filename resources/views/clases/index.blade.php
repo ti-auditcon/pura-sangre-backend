@@ -123,14 +123,14 @@
             );
             //$('#calendar-spinner').addClass('d-none');
           },
-          loading: function (bool) {
-             $('#calendar-spinner').removeClass('d-none');// Add your script to show loading
-          },
-          eventAfterAllRender: function (view) {
-            console.log('listo');
-            $('#calendar-spinner').addClass('d-none');
-            $('#calendar-spinner').addClass('d-none'); // remove your loading
-          }
+          // loading: function (bool) {
+          //    $('#calendar-spinner').removeClass('d-none');// Add your script to show loading
+          // },
+          // eventAfterAllRender: function (view) {
+          //   console.log('listo');
+          //   $('#calendar-spinner').addClass('d-none');
+          //   $('#calendar-spinner').addClass('d-none'); // remove your loading
+          // }
           // eventClick: function(calEvent, jsEvent, view) {
           //   $('#clase-resume').modal();
           // },
