@@ -27,25 +27,27 @@ class NotificationController extends Controller
 
     public function store(Request $request)
     {
-        $users = User::whereIn('id', $request->users_id)->get();
+        // dd($request->all());
+        $users = User::whereIn('id', $request->to)->get();
         foreach ($users as $user) {
-            $this->notification($user->fcm_token, $request->get('title'));
+            $this->notification($user->fcm_token, $request->get('subject'), $request->get('text'));
         }
         Session::flash('success','Notificación enviada correctamente');
         return redirect()->route('messages.notifications');
     }
 
-    public function notification($token, $title)
+    public function notification($token, $title, $body)
     {
         $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
         $token=$token;
 
         $notification = [
             'title' => $title,
+            'body' => $body,
             'sound' => true,
         ];
         
-        $extraNotificationData = ["message" => $notification,"moredata" =>'dd'];
+        $extraNotificationData = ["message" => $notification, "moredata" =>'dd'];
 
         $fcmNotification = [
             //'registration_ids' => $tokenList, //multple token array

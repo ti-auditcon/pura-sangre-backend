@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Messages;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Messages\AlertRequest;
 use App\Models\Users\Alert;
 use Illuminate\Http\Request;
 use Session;
+use redirect;
 
 
 class AlertController extends Controller
@@ -26,7 +28,7 @@ class AlertController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AlertRequest $request)
     {
         Alert::create($request->all());
         return redirect('/alerts')->with('success','La alerta ha sido creada exitosamente');
@@ -34,15 +36,16 @@ class AlertController extends Controller
 
     public function alerts()
     {
-        $alerts = Alert::orderBy('from', 'desc')->get();
-        return $alerts->map(function ($alert){
+        $alerts = Alert::orderByDesc('from')->get();
+        $alerts = $alerts->map(function ($alert){
             return [
-                'id' => $alert->id,
                 'message' => $alert->message,
                 'from' => date('d-m-Y', strtotime($alert->from)),
                 'to' => date('d-m-Y', strtotime($alert->to)),
+                'id' => $alert->id
             ];
         });
+        return json_encode(['data' => $alerts]);
     }
 
     public function destroy($id)
