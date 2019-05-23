@@ -15,7 +15,6 @@
       <div class="ibox-body messages">
         <div class="flexbox mb-4">
           <div class="row">
-             <div class="row">
                <div class="flexbox">
                 <label class="mb-0 mr-2">Estados:</label>
                 <div class="btn-group bootstrap-select show-tick form-control" style="width: 150px;">
@@ -32,15 +31,19 @@
               <label class="mb-0 mr-2">&nbsp; Mostrar: </label>
               <div class="btn-group bootstrap-select show-tick form-control" style="width: 150px;">
                 <select class="selectpicker show-tick form-control" id="length-filter" data-style="btn-solid" data-width="150px" tabindex="-98">
-                  <option value="10">10</option>
-                  <option value="25">25</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
+                  <option value="10">10 alumnos</option>
+                  <option value="25">25 alumnos</option>
+                  <option value="50">50 alumnos</option>
+                  <option value="100">100 alumnos</option>
                 </select>
               </div>
-              <label class="mb-0 mr-2">&nbsp; alumnos</label>
+              <label class="mb-0 mr-2">&nbsp;</label>
             </div>
-            </div>
+
+            <div class="flexbox">
+              <label class="mb-0 mr-2"><h4 class="font-strong">
+                <span class="text-primary" id="filtered">sin</span> registros <span id="filtered-from"></span></h4></label>
+            </div>  
           </div>
 
           <div class="input-group-icon input-group-icon-left mr-3">
@@ -162,7 +165,11 @@
           {"data": "status_user_id"},
         ],
         'select': {'style': 'multi'},
-        'order': [[1, 'asc']]
+        'order': [[1, 'asc']],
+        "infoCallback": function( settings, start, end, max, total, pre ) {
+          $('#filtered').html(total);
+          $('#filtered-from').html('de ' + max);
+        }
       });
 
       var form = document.getElementById('form-input');

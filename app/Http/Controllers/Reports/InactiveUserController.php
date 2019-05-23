@@ -17,6 +17,7 @@ class InactiveUserController extends Controller
     public function index()
     {
         $inactive_users = $this->ExpiredPlan();
+        // dd($inactive_users->count());
         return view('reports.inactives_users')->with('inactive_users', $inactive_users);
     }
 }
