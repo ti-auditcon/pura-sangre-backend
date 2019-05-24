@@ -13,7 +13,6 @@ trait ExpiredPlans
         foreach (User::all() as $user){
             if (!$user->actual_plan){
                 $plan_user = $user->plan_users->whereIn('plan_status_id', [3, 4])
-                                              ->where('plan_id', '!=', 1)
                                               ->where('finish_date', '<', today())
                                               ->sortByDesc('finish_date')
                                               ->first();

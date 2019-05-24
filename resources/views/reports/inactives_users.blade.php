@@ -60,6 +60,7 @@
                   <th width="30%">Plan</th>
                   <th width="20%">Fecha de término del plan</th>
                   <th width="20%">N° teléfono</th>
+                  <th>date</th>
                 </tr>
               </thead>
               <tbody>
@@ -69,6 +70,7 @@
                    <td>{{$plan->plan->plan}}</td>
                    <td>{{Date::parse($plan->finish_date)->format('d-m-Y')}}</td>
                    <td>{{'+56 9 '.$plan->user->phone}}</td>
+                   <td>{{ $plan->finish_date }}</td>
                 </tr>
                 @endforeach
               </tbody>
@@ -82,13 +84,17 @@
 @endsection
 
 @section('scripts') {{-- scripts para esta vista --}}
-  {{--  datatable --}}
   <script src="{{ asset('js/datatables.min.js') }}"></script>
   <script>
 
-      var table = $('#inactives-table').DataTable({
+    {{--  datatable --}}
+    var table = $('#inactives-table').DataTable({
         "dom": '<"top">rt<"bottom"ilp><"clear">',
         "lengthChange": false,
+        "columnDefs": [
+          { "targets": [ 4 ], "visible": false },
+          { "targets": [ 2 ], "orderData": [ 4 ] }
+        ],
          "language": {
             "lengthMenu": "Mostrar _MENU_ elementos",
             "zeroRecords": "Sin resultados",
