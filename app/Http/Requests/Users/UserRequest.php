@@ -3,11 +3,11 @@
 namespace App\Http\Requests\Users;
 
 use App\Models\Users\User;
+use App\Rules\RutUnique;
 use Auth;
 use Freshwork\ChileanBundle\Rut;
-// use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
@@ -28,15 +28,12 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-      $rut = Rut::parse(request('rut'))->number();
         switch ($this->method()){
           case 'POST': {
             return [
               'first_name' => 'required',
               'last_name' => 'required',
-              'rut' => Rule::exists('users')->where(function ($query) use ($rut) {
-                            $query->whereRut($rut);
-                        }),
+              'rut' => new RutUnique,
               'email' => 'required|email|unique:users',
               'phone' => $this->phone != null ? 'digits:8': '',
               ];
@@ -80,8 +77,7 @@ class UserRequest extends FormRequest
        'phone.digits' => 'El número de teléfono debe contener :digits dígitos.',
        'image.mimes' => 'El formato de imagen debe ser jpeg o png',
        'image.max' => 'La imagen no debe se mas grande que 1 MB',
-       'rut.exists' => 'El rut ya ha sido tomado'
-       // $this->$unique => 'El email ya ha sido tomado.',
      ];
    }
  }
+
