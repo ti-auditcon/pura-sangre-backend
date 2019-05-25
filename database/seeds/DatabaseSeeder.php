@@ -7,7 +7,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run()
     {
-        $user = User::create([
+  /*      $user = User::create([
     'rut' => 22222222,
     'first_name' => 'User',
     'last_name' => 'Asomic',
@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
     'address' => 'Estado, Esquina Membrillar, Oficina 208',
     // 'emergency_id' => 1,
     'status_user_id' => 1,
-]);
+]);*/
 
         // $this->call([
         //     BlockTableSeeder::class,
