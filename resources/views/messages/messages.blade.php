@@ -99,7 +99,8 @@
               <input class="form-control" type="text" value="" name="subject" required>
               <label class="col-form-label">Contenido</label>
               <textarea name="text" class="form-control" required></textarea>
-              <button type="button" class="btn btn-primary" type="submit" onClick="this.form.submit();">Enviar Correo</button>
+              <button type="button" id="submit-emails-button" class="btn btn-primary" type="submit" onClick="this.form.submit();">Enviar Correo</button>
+              <p> </p>
             </tbody>
             <div id="form-input">
               {{-- <input type="text" name="id[]"> --}}
@@ -173,7 +174,8 @@
       });
 
       var form = document.getElementById('form-input');
-      $('#save_value').click(function(e){
+
+        $('#save_value').click(function(e){
         var form = this;
         var rows_selected = table.rows('.selected').data();
         $.each(rows_selected, function(index, rowId){
@@ -216,6 +218,14 @@
     $('.tass').tagsinput({
       itemValue: 'id',
       itemText: 'text',
+    });
+
+    $('#submit-emails-button').click( function(e) {
+      var table = $('#example').DataTable();
+        $("#submit-emails-button").prop("disabled", true);
+        if(table.rows('.selected').data().count() >= 18) {
+          $( "p" ).text( "Estás enviando un correo masivo, por lo que el sistema se encargará de enviar los correos a sus correspondientes destinatarios, si deseas puedes cerrar esta ventana y seguir trabajando normalmente" );
+        }
     });
             
   </script>
