@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Messages;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Messages\MessageRequest;
+use Session;
+use Redirect;
 use App\Mail\SendEmail;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Redirect;
-use Session;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Messages\MessageRequest;
 
 class MessageController extends Controller
 {
@@ -40,6 +40,7 @@ class MessageController extends Controller
     {
         $errors = null;
         $users = User::whereIn('id', explode (",", $request->to[0]))->get();
+        
         foreach ($users as $user) {
             $mail = new \stdClass();
             $mail->subject = $request->subject;
@@ -57,11 +58,18 @@ class MessageController extends Controller
                 $errors += 1;
             }
         }
+
         if ($errors) {
             Session::flash('warning', 'Hay error(es) en al menos '.$errors.' correo(s)');
             return redirect()->back();
         }
-        Session::flash('success', 'Correos enviados correctamente');
+
+        if (count($users) > 15) {
+            Session::flash('success', 'Parece que has enviado un correo masivo, dependiendo de la cantidad de personas es lo que tomará la entrega de cada uno de los correos');
+        } else {
+            Session::flash('success', 'Correos enviados correctamente');
+        }
+
         return redirect()->back();
     }
 }
