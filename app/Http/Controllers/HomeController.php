@@ -130,28 +130,23 @@ class HomeController extends Controller
         //obtener todos los planes del mes actual que tengan anexada una boleta
         //sin contar boletas eliminadas
         $mes['periodo'] = 'mensual';
-        $month_amount = PlanUser::join('bills', 'bills.plan_user_id', '=', 'plan_user.id')
-            ->whereDate('bills.date', '>=', today()->startOfMonth())
-            ->whereDate('bills.date', '<=', today()->endOfMonth())
-            ->get()
-            ->sum('amount');
+        $month_amount = Bill::whereDate('bills.date', '>=', today()->startOfMonth())
+                            ->whereDate('bills.date', '<=', today()->endOfMonth())
+                            ->get()
+                            ->sum('amount');
         $mes['ingresos'] = '$ ' . number_format($month_amount, $decimal = 0, '.', '.');
-        $mes['cantidad'] = PlanUser::join('bills', 'bills.plan_user_id', '=', 'plan_user.id')
-            ->whereDate('bills.date', '>=', today()->startOfMonth())
+        $mes['cantidad'] = Bill::whereDate('bills.date', '>=', today()->startOfMonth())
             ->whereDate('bills.date', '<=', today()->endOfMonth())
             ->count();
 
         //obtener todos los planes de este día que tengan anexada una boleta
         //sin contar boletas eliminadas
         $dia['periodo'] = 'hoy';
-        $day_amount = PlanUser::join('bills', 'bills.plan_user_id', '=', 'plan_user.id')
-            ->whereDate('bills.date', today())
+        $day_amount = Bill::whereDate('bills.date', today())
             ->get()
             ->sum('amount');
         $dia['ingresos'] = '$ ' . number_format($day_amount, $decimal = 0, '.', '.');
-        $dia['cantidad'] = PlanUser::join('bills', 'bills.plan_user_id', '=', 'plan_user.id')
-            ->whereDate('bills.date', today())
-            ->count();
+        $dia['cantidad'] = Bill::whereDate('bills.date', today())->count();
         $in_sum = array_merge([$dia, $mes]);
         echo json_encode($in_sum);
     }
