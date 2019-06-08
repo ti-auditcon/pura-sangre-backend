@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Session;
+use Carbon\Carbon;
 use App\Models\Bills\Bill;
-use App\Models\Clases\ClaseType;
 use App\Models\Plans\Plan;
-use App\Models\Plans\PlanIncomeSummary;
-use App\Models\Plans\PlanUser;
 use App\Models\Users\User;
 use App\Traits\ExpiredPlans;
-use Session;
+use App\Models\Plans\PlanUser;
+use App\Models\Clases\ClaseType;
+use App\Models\Plans\PlanIncomeSummary;
 
 class HomeController extends Controller
 {
@@ -52,7 +53,7 @@ class HomeController extends Controller
                 'user_id' => isset($plan->user) ? $plan->user->id : '',
                 'alumno' => isset($plan->user) ? $plan->user->first_name . ' ' . $plan->user->last_name : '',
                 'plan' => isset($plan->plan) ? $plan->plan->plan : '',
-                'fecha_termino' => \Date::parse($plan->finish_date)->diffForHumans(),
+                'fecha_termino' => Carbon::parse($plan->finish_date)->diffForHumans(),
                 'telefono' => isset($plan->user) ? $plan->user->phone : '',
             ];
         });
@@ -79,7 +80,7 @@ class HomeController extends Controller
                 'user_id' => isset($plan->user) ? $plan->user->id : '',
                 'alumno' => isset($plan->user) ? $plan->user->first_name . ' ' . $plan->user->last_name : '',
                 'plan' => isset($plan->plan) ? $plan->plan->plan : '',
-                'fecha_termino' => \Date::parse($plan->finish_date)->diffForHumans(),
+                'fecha_termino' => Carbon::parse($plan->finish_date)->diffForHumans(),
                 'telefono' => isset($plan->user) ? $plan->user->phone : '',
             ];
         });

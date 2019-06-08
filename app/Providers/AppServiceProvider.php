@@ -19,7 +19,6 @@ use App\Observers\Users\UserObserver;
 use App\Observers\Wods\StageObserver;
 use App\Observers\Wods\WodObserver;
 use Illuminate\Support\ServiceProvider;
-use Jenssegers\Date\Date;
 use Session;
 
 /** [AppServiceProvider description]*/
@@ -43,7 +42,6 @@ class AppServiceProvider extends ServiceProvider
 
 
       setlocale(LC_ALL, "es_CL.UTF-8");
-      Date::setLocale('es');
     }
 
     /**
