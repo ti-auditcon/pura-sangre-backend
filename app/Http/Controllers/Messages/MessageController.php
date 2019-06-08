@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Messages;
 
-use Session;
-use Redirect;
-use App\Mail\SendEmail;
-use App\Models\Users\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Messages\MessageRequest;
+use App\Mail\SendEmail;
+use App\Mail\SendEmailQueue;
+use App\Models\Users\User;
+use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Mail;
+use Redirect;
+use Session;
 
 class MessageController extends Controller
 {
@@ -41,15 +44,16 @@ class MessageController extends Controller
         $errors = null;
         $users = User::whereIn('id', explode (",", $request->to[0]))->get();
         
+        $mailable = count($users) > 18 ? SendEmailQueue::class : SendEmail::class; 
+
         foreach ($users as $user) {
             $mail = new \stdClass();
             $mail->subject = $request->subject;
             $mail->text = $request->text;
             $mail->user = $user->first_name;
             try{
-                Mail::to($user->email)->send(new SendEmail($mail, $user));
-            }
-            catch(\Exception $e){
+                Mail::to($user->email)->send(new $mailable($mail, $user));
+            } catch(\Exception $e){
                 \DB::table('errors')->insert([
                     'error' => $e,
                     'where' => 'email',
@@ -64,12 +68,18 @@ class MessageController extends Controller
             return redirect()->back();
         }
 
-        if (count($users) > 15) {
+        if (count($users) > 18) {
+            $exitCode = Artisan::call('queue:work', ['--sleep' => 3]);
             Session::flash('success', 'Parece que has enviado un correo masivo, dependiendo de la cantidad de personas es lo que tomará la entrega de cada uno de los correos');
-        } else {
-            Session::flash('success', 'Correos enviados correctamente');
+            return redirect()->back();
         }
-
+        
+        Session::flash('success', 'Correos enviados correctamente');
         return redirect()->back();
+    }
+
+    protected function dispatchJobsFromDB(Schedule $schedule)
+    {
+        $schedule->command('queue:work');
     }
 }
