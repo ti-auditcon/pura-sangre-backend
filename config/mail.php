@@ -9,6 +9,10 @@ return [
         'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
+    'to' => [
+        'address' => 'raul.berrios@asomic.com',
+        'name' => 'TestPuraSangre'
+    ],
     'encryption' => env('MAIL_ENCRYPTION', 'tls'),
     'username' => env('MAIL_USERNAME'),
     'password' => env('MAIL_PASSWORD'),

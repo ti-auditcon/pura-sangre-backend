@@ -84,10 +84,3 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('notifications', 'Messages\NotificationController@index')->middleware('role:1')->name('messages.notifications');
     Route::post('notifications', 'Messages\NotificationController@store')->middleware('role:1');
 });
-
-// Route::get('mailable', function () {
-//     $user = App\Models\Users\User::find(15);
-//     $plan = App\Models\Plans\PlanUser::whereUserId($user->id)
-//                                      ->first();
-//     return new App\Mail\ToExpireEmail($user, $plan);
-// });
