@@ -30,18 +30,33 @@ class AppServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot()
-    {
-      PlanUser::observe(PlanUserObserver::class);
-      Block::observe(BlockObserver::class);
-      Clase::observe(ClaseObserver::class);
-      Reservation::observe(ReservationObserver::class);
-      Stage::observe(StageObserver::class);
-      Wod::observe(WodObserver::class);
-      User::observe(UserObserver::class);
-      Bill::observe(BillObserver::class);
+    {   
+        /** observer */
+        Wod::observe(WodObserver::class);
+        
+        /** observer */
+        Bill::observe(BillObserver::class);
+        
+        /** observer */
+        User::observe(UserObserver::class);
+        
+        /** observer */
+        Block::observe(BlockObserver::class);
+        
+        /** observer */
+        Clase::observe(ClaseObserver::class);
+        
+        /** observer */
+        Stage::observe(StageObserver::class);
+        
+        /** observer */
+        PlanUser::observe(PlanUserObserver::class);
+        
+        /** observer */
+        Reservation::observe(ReservationObserver::class);
 
-
-      setlocale(LC_ALL, "es_CL.UTF-8");
+        /** Set language to Spanish Chile from Carbon */
+        setlocale(LC_ALL, "es_CL.UTF-8");
     }
 
     /**
@@ -51,12 +66,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        /**
-         * Register telescope to assist only local development
-         */
-        if ($this->app->isLocal()) {
-            $this->app->register(TelescopeServiceProvider::class);
-        }
-
+        //
     }
 }

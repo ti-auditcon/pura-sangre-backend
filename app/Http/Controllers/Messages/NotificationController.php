@@ -25,9 +25,8 @@ class NotificationController extends Controller
         return view('messages.notifications')->with('users', $users);
     }
 
-    public function store(Request $request)
+    public function manageNotification(Request $request)
     {
-        // dd($request->all());
         $users = User::whereIn('id', $request->to)->get();
         foreach ($users as $user) {
             $this->notification($user->fcm_token, $request->get('subject'), $request->get('text'));
@@ -71,7 +70,6 @@ class NotificationController extends Controller
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmNotification));
         $result = curl_exec($ch);
         curl_close($ch);
-
 
         return true;
     }
