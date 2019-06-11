@@ -69,7 +69,6 @@ class MessageController extends Controller
         }
 
         if (count($users) > 18) {
-            $exitCode = Artisan::call('queue:work', ['--sleep' => 3]);
             Session::flash('success', 'Parece que has enviado un correo masivo, dependiendo de la cantidad de personas es lo que tomará la entrega de cada uno de los correos');
             return redirect()->back();
         }
