@@ -161,7 +161,7 @@
                                 class="tass form-control"
                             />
                         </div>
-                        
+
                         <label class="col-form-label">Título</label>
                         
                         <input class="form-control" name="title" type="text" required />
@@ -262,11 +262,7 @@
             var form = document.getElementById('form-input');
 
             $('#save_value').click(function(e) {
-                // var form = this;
-
                 var rows_selected = table.rows('.selected').data();
-
-                console.log(form);
             
                 $.each(rows_selected, function(index, rowId) {
                     if ($('#' + rowId.id).length === 0) {
@@ -278,7 +274,7 @@
 
                         $('.tass').tagsinput('add', {
                             "id"  : rowId.id,
-                            "text": rowId.email
+                            "text": rowId.first_name + ' ' + rowId.last_name
                         });
                     }
                 });

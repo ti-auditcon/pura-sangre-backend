@@ -661,6 +661,7 @@ table .media-img {
 
 .bootstrap-tagsinput span.label{
     background-color: #3e7cb3;
+    padding: 3px 15px;
 }
 
 .bootstrap-tagsinput .tag {
