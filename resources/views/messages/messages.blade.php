@@ -4,78 +4,76 @@
 @endsection
 @section('content')
 <div class="page-content fade-in-up">
-  <div class="ibox">
-    <div class="ibox-head">
-      <div class="ibox-title"> <h3 class="font-strong"><i class="fa fa-envelope" aria-hidden="true"></i> Enviar correos a alumnos</h3></div>
-      <div class="ibox-tools">
-        <button class="btn btn-success text-white" id="save_value" name="save_value">Redactar Correo</button>
-      </div>
-    </div>
-    <div class="ibox-body">
-      <div class="ibox-body messages">
-        <div class="flexbox mb-4">
-          <div class="row">
-               <div class="flexbox">
-                <label class="mb-0 mr-2">Estados:</label>
-                <div class="btn-group bootstrap-select show-tick form-control" style="width: 150px;">
-                  <select class="selectpicker show-tick form-control" id="type-filter" title="Elegir estado" data-style="btn-solid" data-width="150px" tabindex="-98">
-                    <option value="">Todos</option>
-                    <option value="1">Activo</option>
-                    <option value="2">Inactivo</option>
-                    <option value="3">Prueba</option>
-                  </select>
+    <div class="ibox">
+        <div class="ibox-head">
+            <div class="ibox-title"> <h3 class="font-strong"><i class="fa fa-envelope" aria-hidden="true"></i> Enviar correos a alumnos</h3></div>
+            <div class="ibox-tools">
+                <button class="btn btn-success text-white" id="save_value" name="save_value">Redactar Correo</button>
+            </div>
+        </div>
+        <div class="ibox-body">
+            <div class="ibox-body messages">
+                <div class="flexbox mb-4">
+                    <div class="row">
+                        <div class="flexbox">
+                            <label class="mb-0 mr-2">Estados:</label>
+                            <div class="btn-group bootstrap-select show-tick form-control" style="width: 150px;">
+                                <select class="selectpicker show-tick form-control" id="type-filter" title="Elegir estado" data-style="btn-solid" data-width="150px" tabindex="-98">
+                                    <option value="">Todos</option>
+                                    <option value="1">Activo</option>
+                                    <option value="2">Inactivo</option>
+                                    <option value="3">Prueba</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="flexbox">
+                            <label class="mb-0 mr-2">&nbsp; Mostrar: </label>
+                            <div class="btn-group bootstrap-select show-tick form-control" style="width: 150px;">
+                                <select class="selectpicker show-tick form-control" id="length-filter" data-style="btn-solid" data-width="150px" tabindex="-98">
+                                    <option value="10">10 alumnos</option>
+                                    <option value="25">25 alumnos</option>
+                                    <option value="50">50 alumnos</option>
+                                    <option value="100">100 alumnos</option>
+                                </select>
+                            </div>
+                            <label class="mb-0 mr-2">&nbsp;</label>
+                        </div>
+                        <div class="flexbox">
+                            <label class="mb-0 mr-2"><h4 class="font-strong">
+                                <span class="text-primary" id="filtered">sin</span> registros <span id="filtered-from"></span></h4>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="input-group-icon input-group-icon-left mr-3">
+                        <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
+                        
+                        <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Buscar ...">
+                    </div>
+                </div>
+                    <div class="table-responsive row">
+                        <div id="datatable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+                            <table class="table table-bordered table-hover dataTable no-footer dtr-inline collapsed" id="example" role="grid" aria-describedby="datatable_info" style="width: 1592px;">
+                                <thead class="thead-default thead-lg">
+                                    <tr role="row">
+                                        <th class="checkboxes-select-all sorting_disabled" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 20px;" aria-label="">
+                                            <input type="checkbox">
+                                        </th>
+                                        <th class="sorting_asc" width="10">ID</th>
+                                        <th class="sorting">Nombre</th>
+                                        <th class="sorting">Correo</th>
+                                        <th class="sorting">status_user</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="flexbox">
-              <label class="mb-0 mr-2">&nbsp; Mostrar: </label>
-              <div class="btn-group bootstrap-select show-tick form-control" style="width: 150px;">
-                <select class="selectpicker show-tick form-control" id="length-filter" data-style="btn-solid" data-width="150px" tabindex="-98">
-                  <option value="10">10 alumnos</option>
-                  <option value="25">25 alumnos</option>
-                  <option value="50">50 alumnos</option>
-                  <option value="100">100 alumnos</option>
-                </select>
-              </div>
-              <label class="mb-0 mr-2">&nbsp;</label>
-            </div>
-
-            <div class="flexbox">
-              <label class="mb-0 mr-2"><h4 class="font-strong">
-                <span class="text-primary" id="filtered">sin</span> registros <span id="filtered-from"></span></h4></label>
-            </div>  
-          </div>
-
-          <div class="input-group-icon input-group-icon-left mr-3">
-            <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
-            <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Buscar ...">
-          </div>
-
         </div>
-        <div class="table-responsive row">
-          <div id="datatable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
-            <table class="table table-bordered table-hover dataTable no-footer dtr-inline collapsed" id="example" role="grid" aria-describedby="datatable_info" style="width: 1592px;">
-              <thead class="thead-default thead-lg">
-                <tr role="row">
-                  <th class="checkboxes-select-all sorting_disabled" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 20px;" aria-label="">
-                    <input type="checkbox">
-                  </th>
-                  <th class="sorting_asc" width="10">ID</th>
-                  <th class="sorting">Nombre</th>
-                  <th class="sorting">Correo</th>
-                  <th class="sorting">status_user</th>
-                </tr>
-              </thead>
-              <tbody>
-     
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
-</div>
 
     {{--  ................ M O D A L ...................... --}}
     <div class="modal fade bd-example-modal-xl" id="user-assign" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -124,33 +122,34 @@
     <script src="{{ asset('/js/datatables.min.js') }}"></script>
     <script src="{{ asset('/js/dataTables.checkboxes.min.js') }}"></script>
     <script src="{{ asset('/js/bootstrap-tagsinput.min.js') }}"></script>
-  <script>
+  
+<script>
     $(document).ready(function() {
-      var table = $('#example').DataTable({
-        "ajax": {
-          "url": '{{url("/messages/users_Json")}}',
-          "dataType": "json",
-          "type": "GET",
-          "data": {"_token": "<?= csrf_token() ?>"},
-        },
+        var table = $('#example').DataTable({
+            "ajax": {
+                "url": '{{url("/messages/users_Json")}}',
+                "dataType": "json",
+                "type": "GET",
+                "data": {"_token": "<?= csrf_token() ?>"},
+            },
         "language": {
-          "lengthMenu": "<p>Mostrar</p> _MENU_ <p>elementos</p>",
-          "zeroRecords": "Sin resultados",
-          "info": " ",
-          "infoEmpty": "Sin resultados",
-          "infoFiltered": "(filtrado de _MAX_ registros totales)",
-          "search": "Filtrar:  ",
-          "paginate": {
-            "next":     "Siguiente",
-            "previous": "Anterior"
-          },
-          "select": {
-            "rows": {
-              _: "%d alumnos seleccionados",
-              0: "",
-              1: "1 alumno seleccionado"
+            "lengthMenu": "<p>Mostrar</p> _MENU_ <p>elementos</p>",
+            "zeroRecords": "Sin resultados",
+            "info": " ",
+            "infoEmpty": "Sin resultados",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Filtrar:  ",
+            "paginate": {
+                "next":     "Siguiente",
+                "previous": "Anterior"
+            },
+            "select": {
+                "rows": {
+                    _: "%d alumnos seleccionados",
+                    0: "",
+                    1: "1 alumno seleccionado"
+                }
             }
-          }
         },
         "dom": '<"top">rt<"bottom"ilp><"clear">',
         "lengthChange": false,
@@ -159,11 +158,11 @@
           { "targets": [ 4 ], "visible": false, "searchable": true},
         ],
         "columns":[
-          {"data": "id"},
-          {"data": "id"},
-          {"data": "full_name"},
-          {"data": "email"}, 
-          {"data": "status_user_id"},
+            {"data": "id"},
+            {"data": "id"},
+            {"data": "full_name"},
+            {"data": "email"}, 
+            {"data": "status_user_id"},
         ],
         'select': {'style': 'multi'},
         'order': [[1, 'asc']],
@@ -230,4 +229,4 @@
             
   </script>
 
-    @endsection
+@endsection
