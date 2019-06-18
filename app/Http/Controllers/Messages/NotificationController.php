@@ -31,9 +31,7 @@ class NotificationController extends Controller
         $users = User::whereIn('id', request('users_id'))->get();
 
         foreach ($users as $user) {
-            for ($i = 0; $i < 100; $i++) {
-                SendPushNotification::dispatch($user->fcm_token, request('title'), request('body'));
-            }
+            SendPushNotification::dispatch($user->fcm_token, request('title'), request('body'));
         }
 
         $response = count($users) > 1 ?
