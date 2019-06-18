@@ -26,13 +26,19 @@ class SendPushNotification implements ShouldQueue
      */
     public $timeout = 120;
 
-    /** @var string [fcm_token user] */
+    /**
+     *  @var string [fcm_token user] 
+    */
     protected $token;
 
-    /** @var string [title notification] */
+    /** 
+     * @var string [title notification] 
+    */
     protected $title;
 
-    /** @var string [body notification] */
+    /** 
+     * @var string [body notification]
+     */
     protected $body;
 
     /**
