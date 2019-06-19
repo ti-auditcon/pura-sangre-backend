@@ -1,16 +1,23 @@
 <?php
 
-use App\Models\Users\User;
-use Faker\Generator as Faker;
 use App\Models\Users\Emergency;
 use App\Models\Users\Millestone;
-use Freshwork\ChileanBundle\Rut;
+use App\Models\Users\Role;
 use App\Models\Users\StatusUser;
+use App\Models\Users\User;
+use Faker\Generator as Faker;
+use Freshwork\ChileanBundle\Rut;
 
 
 $factory->define(StatusUser::class, function (Faker $faker) {
     return [
         'status_user' => $faker->word,
+    ];
+});
+
+$factory->define(Role::class, function (Faker $faker) {
+    return [
+        'role' => $faker->word,
     ];
 });
 

@@ -668,3 +668,7 @@ table .media-img {
     color: #fdfff4;
 }
 
+.select-over {
+    z-index: 1003;
+}
+
