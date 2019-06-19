@@ -20,7 +20,7 @@
               <div class="flexbox">
                 <label class="mb-0 mr-2">Planes:</label>
                 <div class="btn-group bootstrap-select show-tick form-control" style="width: 150px;">
-                  <select class="selectpicker show-tick form-control" id="plan-filter" title="Elegir plan" data-style="btn-solid" data-width="150px" tabindex="-98">
+                  <select class="selectpicker show-tick form-control select-over" id="plan-filter" title="Elegir plan" data-style="btn-solid" data-width="150px" tabindex="-98">
                     <option value="">Todos</option>
                     @foreach (App\Models\Plans\Plan::all() as $plan)
                       <option value="{{ $plan->plan }}">{{ $plan->plan }}</option>
@@ -68,7 +68,7 @@
                 <tr>
                    <td><a href="{{url('/users/'.$plan->user->id)}}">{{$plan->user->first_name}} {{$plan->user->last_name}}</a></td>
                    <td>{{$plan->plan->plan}}</td>
-                   <td>{{Date::parse($plan->finish_date)->format('d-m-Y')}}</td>
+                   <td>{{ Carbon\Carbon::parse($plan->finish_date)->format('d-m-Y') }}</td>
                    <td>{{'+56 9 '.$plan->user->phone}}</td>
                    <td>{{ $plan->finish_date }}</td>
                 </tr>
