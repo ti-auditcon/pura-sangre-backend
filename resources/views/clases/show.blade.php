@@ -367,6 +367,7 @@ $(document).ready(function(){
 
    {{--  datatable --}}
    <script src="{{ asset('js/datatables.min.js') }}"></script>
+   
    <script >
       $(document).ready(function() {
          table = $('#students-table').DataTable({
