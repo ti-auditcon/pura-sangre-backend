@@ -60,6 +60,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('reports/totalplans', 'Reports\ReportController@totalplans')->name('totalplans');
     Route::get('reports/totalplanssub', 'Reports\ReportController@totalplanssub')->name('totalplanssub');
     Route::get('reports/inactive_users', 'Reports\InactiveUserController@index');
+    Route::get('reports/inactive_users/export', 'Reports\InactiveUserController@export')->name('inactive_users.export');
 
     /**
      * Users Routes (ALUMNOS, PROFES, ADMINS, ALERTAS)

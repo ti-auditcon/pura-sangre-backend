@@ -9,30 +9,53 @@ use Illuminate\Contracts\Validation\Rule;
 class RutUnique implements Rule
 {
     /**
+     * User to be cheched
+     * 
+     * @var collection
+     */
+    protected $user;
+
+    /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(User $user = null)
     {
-        //
+        $this->user = $user;
     }
 
     /**
      * Determine if the validation rule passes.
      *
      * @param  string  $attribute
-     * @param  mixed  $value
-     * @return bool
+     * @param  mixed  $rut
+     * @return boolean
      */
-    public function passes($attribute, $value)
+    public function passes($attribute, $rut)
     {
-        $rut = Rut::parse($value)->number();
-        if (User::where('rut', $rut)->first()) {
+        // Parse rut to number to check with the DataBase
+        $number_rut = (int) Rut::parse($rut)->number();
+
+        if ( is_null($this->user) && User::where('rut', $number_rut)->first()) {
+
             return false;
-        } else {
-            return true;
-        } 
+        
+        }
+
+        // Get a user whose rut is equal to $number_rut
+        // otherwise, assign a 0 to avoid errors
+        $id_user_checked = optional(User::where('rut', $number_rut)->first())->id;
+
+        if ( ! is_null($this->user) &&
+             ! is_null($id_user_checked) &&
+             $this->user->id !== $id_user_checked ) {
+
+            return false;
+
+        }
+
+        return true;
     }
 
     /**

@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests\Users;
 
-use App\Models\Users\User;
 use App\Rules\RutUnique;
-use Auth;
+use App\Models\Users\User;
+use Illuminate\Validation\Rule;
 use Freshwork\ChileanBundle\Rut;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
@@ -28,30 +27,32 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
+        // dd($this->user);
         switch ($this->method()){
-          case 'POST': {
-            return [
-              'first_name' => 'required',
-              'last_name' => 'required',
-              'rut' => new RutUnique,
-              'email' => 'required|email|unique:users',
-              'phone' => $this->phone != null ? 'digits:8': '',
-              ];
-            }
-            case 'PUT': {
-                if($this->route('user')->email != $this->email){
-                    $case = '|unique:users,email';
-                }else {
-                    $case = '';
-                }
-                if (Auth::user()->hasRole(1)) {
-                    $required = 'required';
-                }else {
-                    $required = '';
-                }
+            case 'POST': {
                 return [
                     'first_name' => 'required',
                     'last_name' => 'required',
+                    'rut' => new RutUnique,
+                    'email' => 'required|email|unique:users',
+                    'phone' => $this->phone != null ? 'digits:8': '',
+                ];
+            }
+
+            case 'PUT': {
+                // dd(request()->all());
+                $case = $this->route('user')->email != $this->email ?
+                        '|unique:users,email' :
+                        null;
+
+                $required = auth()->user()->hasRole(1) ?
+                            'required' :
+                            '';
+
+                return [
+                    'first_name' => 'required',
+                    'last_name' => 'required',
+                    'rut' => new RutUnique($this->user),
                     'image' => 'mimes:jpeg,png|max:1024',
                     'email' => $required.'|email'.$case,
                     'phone' => $this->phone != null ? 'digits:8': '',
