@@ -19,7 +19,6 @@ use App\Observers\Clases\BlockObserver;
 use App\Observers\Clases\ClaseObserver;
 use Illuminate\Support\ServiceProvider;
 use App\Observers\Plans\PlanUserObserver;
-use App\Providers\TelescopeServiceProvider;
 use App\Observers\Clases\ReservationObserver;
 
 /** [AppServiceProvider description]*/
@@ -32,19 +31,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {   
-        /** observer */
+        /** Wod observer */
         Wod::observe(WodObserver::class);
         
-        /** observer */
+        /** Bill observer */
         Bill::observe(BillObserver::class);
         
-        /** observer */
+        /** User observer */
         User::observe(UserObserver::class);
         
-        /** observer */
+        /** Block observer */
         Block::observe(BlockObserver::class);
         
-        /** observer */
+        /** Clase observer */
         Clase::observe(ClaseObserver::class);
         
         /** observer */
@@ -67,8 +66,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        if ($this->app->isLocal()) {
-            $this->app->register(TelescopeServiceProvider::class);
-        }
+        //
     }
 }
