@@ -26,7 +26,7 @@
 
                 <div class="form-group mt-2">
                             
-                    <label class="font-normal">Fecha a eliminar</label>
+                    <label class="font-normal">Fecha a Eliminar</label>
                         
                         <div class="input-group date datepicker-delete-entire-day">
 
@@ -37,9 +37,9 @@
                             </span>
 
                             <input
+                                id="input-date-day"
                                 class="form-control"
                                 name="day_delete"
-                                value="{{ old('day_delete') }}"
                                 type="text"
                                 value="{{ date('d-m-Y') }}"
                             >
@@ -52,7 +52,7 @@
     
             <div class="modal-footer">
 
-                <button class="btn btn-danger" id="sweet-clase-delete">Eliminar!</button>
+                <button class="btn btn-danger" id="sweet-confirm-day-delete">Eliminar!</button>
     
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
     

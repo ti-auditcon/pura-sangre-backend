@@ -438,7 +438,7 @@ $(document).ready(function(){
     var id = $(this).data('id');
 
       swal({
-          title: "Seguro desea ELIMINAR la clase del: "+$(this).data('name')+"?",
+          title: "Seguro desea ELIMINAR la clase del: " + $(this).data('name') + "?",
           text: "(Se sacarán a todos los usuarios ya inscritos a esta clase)",
           type: 'warning',
           showCancelButton: true,

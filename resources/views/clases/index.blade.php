@@ -116,7 +116,7 @@
 
 {{-- SCRIPTS PARA ESTA VISTA --}}
 @section('scripts') 
-    {{--  full caslendar --}}
+    {{--  Full Calendar --}}
     {{-- <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script> --}}
     
     <script src="{{ asset('js/moment.min.js') }}"></script>
@@ -187,10 +187,7 @@
           // eventClick: function(calEvent, jsEvent, view) {
           //   $('#clase-resume').modal();
           // },
-
         });
-
-
     });
   </script>
 
@@ -213,45 +210,83 @@
         maxViewMode: 3,
         todayHighlight: true
     });
-    
-    $('#sweet-clase-delete').click(function() {
-            Swal.fire({
-        title: '¿Esta seguro que quiere eliminar el día completo?',
-        text: 'Para eliminar definitivamente por favor ingresa la palabra que aparece en el campo de abajo',
-        input: 'text',
-        inputAttributes: {
-            autocapitalize: 'off',
-            placeholder: 'ELIMINAR'
-        },
-        showCancelButton: true,
-        confirmButtonText: 'Eliminar!',
-        showLoaderOnConfirm: true,
-        preConfirm: (input) => {
-            if (input !== 'ELIMINAR') {
-                Swal.showValidationMessage(
-                  `Palabra incorrecta`
-                )
-            }
-        },
-        allowOutsideClick: () => !Swal.isLoading()
-    }).then((result) => {
 
-        // console.log(result);
-        //   if (result.value) {
-        //     Swal.fire({
-        //       title: `${result.value.login}'s avatar`,
-        //       imageUrl: result.value.avatar_url
-        //     })
-        //   }
-    })
+    // Allow to get focus in the input text modal
+    $('#delete-entire-day-modal').on('shown.bs.modal', function() {
+    
+        $(document).off('focusin.modal');
+    
+    });
+
+    $("#input-date-day").change(function() {
+        
+        if ( this.value.length != 0 ) {
+        
+            $('#sweet-confirm-day-delete').attr( "disabled", false );
+        
+        } else {
+        
+            $("#sweet-confirm-day-delete").attr("disabled", true);
+        
+        }
+    
+    });
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    
+    $('#sweet-confirm-day-delete').click(function() {
+        Swal.fire({
+            title: '¿Esta seguro que quiere eliminar el día completo?',
+            text: 'Para eliminar definitivamente por favor ingresa la palabra que aparece en el campo de abajo',
+            input: "text",
+            inputAttributes: {
+                autocapitalize: 'off',
+                placeholder: 'ELIMINAR'
+            },
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Eliminar!',
+            showLoaderOnConfirm: true,
+            preConfirm: (input) => {
+                if (input !== 'ELIMINAR') {
+                    Swal.showValidationMessage(
+                      `Palabra incorrecta`
+                    )
+                } else {          
+                    var date = $("#input-date-day").val();
+
+                    let remove_day_url = '{{ url('calendar/clases/delete') }}';
+
+                    return $.post(remove_day_url, { date: date })
+                        .fail(error => {
+                            Swal.showValidationMessage(
+                                `Algo ha fallado: ${error}`
+                            )
+                        })
+                }
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((response) => {
+
+            if (response.value.success) {
+                Swal.fire({ 
+                    title: response.value.success,
+                    text: 'Presiona "OK" para recargar la página',
+                    confirmButtonText: 'OK!',
+                }).then(() => {
+                    // Refresh page
+                    location.reload();
+                })
+            }
+            
+        })
     });
 
 
-
-
-
 </script>
-
-
 
 @endsection
