@@ -47,6 +47,13 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
      */
     Route::post('calendar/clases/delete', 'Clases\CalendarClasesController@destroy')->name('admin.calendar.clasesday.destroy');
 
+    /**
+     *  POSTPONE PLANS ROUTE
+     */
+    Route::resource('plan-user.postpones', 'Plans\PlanUserPostponesController')
+         ->only('store', 'destroy')
+         ->middleware('role:1');
+
     /**   
      * BILLS Routes
      */
