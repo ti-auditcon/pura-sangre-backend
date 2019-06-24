@@ -89,6 +89,10 @@ class PlanUser extends Model
         return $this->hasMany(PlanUserPeriod::class);
     }
 
+    /**
+     * [reservations description]
+     * @return [type] [description]
+     */
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
