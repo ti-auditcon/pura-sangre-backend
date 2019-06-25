@@ -11,7 +11,6 @@
     <div class="ibox-body">
         <div class="flexbox">
             <div class="flexbox-b align-items-start">
-                
                 <div
                     class="img-avatar img-avatar-header align-self-start"
                     style="background-image: @if ($user->avatar) url('{{$user->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"
