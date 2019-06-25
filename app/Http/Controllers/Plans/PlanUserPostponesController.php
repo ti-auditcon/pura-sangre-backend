@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Plans\PlanUser;
 use App\Models\Users\User;
 use Carbon\Carbon;
+use Session;
 use Illuminate\Http\Request;
 
 class PlanUserPostponesController extends Controller
@@ -29,35 +30,26 @@ class PlanUserPostponesController extends Controller
         }
 
         $diff_in_days = $start->diffInDays($finish) + 1; 
+        
+        $planes_posteriores = $plan_user->user->plan_users->where('start_date', '>', $plan_user->start_date)
+                                                          ->where('id', '!=', $plan_user->id)
+                                                          ->sortBy('finish_date');
 
-        // Cambiar la fecha de termino del plan con la nueva de acuerdo a los días que se corrieron
-        $first_try = $plan_user->update([
+        foreach ($planes_posteriores as $plan) {
+            $plan->update([
+                'start_date' =>$plan->start_date->addDays($diff_in_days),
+                'finish_date' => $plan->finish_date->addDays($diff_in_days)
+            ]);
+        }
+
+        $plan_user->update([
             'plan_status_id' => 2,
             'finish_date' => $plan_user->finish_date->addDays($diff_in_days)
         ]);
 
-        if ($first_try == false) {
-            $planes_posteriores = $plan_user->user->plan_users->where('start_date', '>', $plan_user->start_date)
-                                                              ->where('id', '!=', $plan_user->id)
-                                                              ->sortBy('finish_date');
-
-            // dd($planes_posteriores);
-
-            foreach ($planes_posteriores as $plan) {
-                $plan->update([
-                   'start_date' => $plan->start_date->addDays($diff_in_days),
-                   'finish_date' => $plan->finish_date->addDays($diff_in_days)
-                ]);
-                
-                // $plan->save();
-                // dd($plan);
-            }
-
-            // $plan_user->plan_status_id = 2;
-            
-            // $plan_user->finish_date = $plan_user->finish_date->addDays($diff_in_days);
-
-        }
+        // $plan_user->plan_status_id = 2;
+        // $plan_user->finish_date = $plan_user->finish_date->addDays($diff_in_days);
+        // $plan_user->save();
 
         Session::flash('success', 'Plan Congelado Correctamente');
         return back();
@@ -74,6 +66,12 @@ class PlanUserPostponesController extends Controller
         //
     }
 }
+
+        // Cambiar la fecha de termino del plan con la nueva de acuerdo a los días que se corrieron
+        // $first_try = $plan_user->update([
+        //     'plan_status_id' => 2,
+        //     'finish_date' => $plan_user->finish_date->addDays($diff_in_days)
+        // ]);
 
             // $diff_in_days_plan = $plan_que_choca->start_date->diffInDays($plan_user->finish_date->addDays($diff_in_days));
 
