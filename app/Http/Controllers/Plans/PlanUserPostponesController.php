@@ -65,16 +65,16 @@ class PlanUserPostponesController extends Controller
     }
 }
 
-        // Cambiar la fecha de termino del plan con la nueva de acuerdo a los días que se corrieron
-        // $first_try = $plan_user->update([
-        //     'plan_status_id' => 2,
-        //     'finish_date' => $plan_user->finish_date->addDays($diff_in_days)
-        // ]);
+    // Cambiar la fecha de termino del plan con la nueva de acuerdo a los días que se corrieron
+    // $first_try = $plan_user->update([
+    //     'plan_status_id' => 2,
+    //     'finish_date' => $plan_user->finish_date->addDays($diff_in_days)
+    // ]);
 
-            // $diff_in_days_plan = $plan_que_choca->start_date->diffInDays($plan_user->finish_date->addDays($diff_in_days));
+    // $diff_in_days_plan = $plan_que_choca->start_date->diffInDays($plan_user->finish_date->addDays($diff_in_days));
 
-            // $plan_que_choca->start_date->addDays($diff_in_days_plan + 1); 
-            
-            // $plan_que_choca->finish_date->addDays($diff_in_days_plan + 1);
+    // $plan_que_choca->start_date->addDays($diff_in_days_plan + 1); 
+    
+    // $plan_que_choca->finish_date->addDays($diff_in_days_plan + 1);
 
-            // $plan_que_choca->save();
+    // $plan_que_choca->save();

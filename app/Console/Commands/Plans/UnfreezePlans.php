@@ -2,6 +2,9 @@
 
 namespace App\Console\Commands\Plans;
 
+use App\Models\Plans\PlanStatus;
+use App\Models\Plans\PlanUser;
+use App\Models\Plans\PostponePlan;
 use Illuminate\Console\Command;
 
 class UnfreezePlans extends Command
@@ -37,6 +40,11 @@ class UnfreezePlans extends Command
      */
     public function handle()
     {
-        //
+        $yesterday_plans = PostponePlan::whereFinishDate(today()->subDay())
+                                   ->pluck('plan_user_id')
+                                   ->toArray();
+
+        $plans = PlanUser::whereIn('id', array_values($yesterday_plans))
+                         ->update(['plan_status_id' => PlanStatus::ACTIVO]);
     }
 }
