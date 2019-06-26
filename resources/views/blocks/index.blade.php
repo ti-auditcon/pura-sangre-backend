@@ -9,7 +9,20 @@
 			<div class="ibox">
 				<div class="ibox-head">
 					<div class="ibox-title">Horarios</div>
-					{{-- {{dd($blocks)}} --}}
+					
+					<div class="ibox-tools">
+
+		                <button
+		                    id="clases-type-button-modal"
+		                    class="btn btn-info"
+		                    data-toggle="modal"
+		                    data-target="#clases-types-modal"
+		                >
+		                    <i class="la la-calendar-o"></i>
+		                    Tipos de clases
+		                </button>
+
+					</div>
 				</div>
 					<div class="ibox-body">
 						{{Form::open(['route'=>'clases.type'])}}
@@ -186,6 +199,10 @@
 		</div>
 	</div>
 
+<!-- Modal de confirmacion de clase-->
+@include('blocks.modals.clases-types')
+<!-- END Modal de confirmacion de clase-->
+
 @endsection
 
 
@@ -208,12 +225,19 @@
 
 @section('scripts') {{-- scripts para esta vista --}}
 	{{--  Full calendar --}}
+	
 	<script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+	
 	<script src="{{ asset('js/moment.min.js') }}"></script>
+	
 	{{-- <script src="{{asset('/js/fullcalendar/jquery-ui.min.js')}}"></script> --}}
+	
 	<script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
+	
 	<script src="{{ asset('js/fullcalendar/lang/es.js') }}"></script>
+	
 	<script src="{{ asset('js/bootstrap-clockpicker.min.js') }}"></script>
+	
 	<script src="{{ asset('js/jquery.multi-select.js') }}"></script>
 
 	<script defer>
@@ -298,6 +322,55 @@
 		}
 	});
 	</script>
+
+<script>
+
+
+	/** Get all type classes */
+	$('#clases-type-button-modal').click(function () {
+		$.get("/clases-types/").done( function (response) {
+			response.forEach( function (el) {
+				$('#type-clase-select').append(
+			        $('<option></option>').val(el.id).html(el.clase_type)
+			    );
+			});
+		});
+	});
+
+	/** Get an specific type clase */
+	$('#type-clase-select').change(function () {
+		// Check if select has a value different to 0
+		if (this.value) {
+			$.get("/clases-types/" + this.value)
+			.done( function( data ) {
+				$("#clase_type_name").val(data.clase_type);
+
+				// Show the inputs with the filled data
+				$('#div-clase-type-name').show();
+			});
+		}
+	});
+
+	/** Delete a type clase */
+	$('#sweet-confirm-clase-type-delete').click(function () {
+		var selected_clase = $('#type-clase-select').children("option:selected").val();
+
+		if (selected_clase) {
+			$.ajax({
+			    url: "/clases-types/" + selected_clase,
+			    type: 'post',
+			    data: {
+                	_method: 'delete',
+			    	_token: $('meta[name=csrf-token]').attr("content")
+			    },
+			    success: function(result) {
+			    	console.log(result);
+			    }
+			});
+		}
+	});
+
+</script>
 
 
 @endsection

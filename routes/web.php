@@ -41,6 +41,10 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 
     Route::get('/asistencia-modal/{id}', 'Clases\ClaseController@asistencia')->name('asistencia');
 
+    /**
+     * Clases types routes
+     */
+    Route::resource('clases-types', 'Clases\ClaseTypeController')->except('create', 'edit');
 
     /**
      * CALENDAR CLASES ROUTES

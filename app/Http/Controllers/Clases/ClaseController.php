@@ -22,8 +22,7 @@ class ClaseController extends Controller
      */
     public function index()
     {
-        if(!Session::has('clases-type-id'))
-        {
+        if (!Session::has('clases-type-id')) {
             Session::put('clases-type-id',1);
             Session::put('clases-type-name',ClaseType::find(1)->clase_type);
         }
@@ -31,16 +30,26 @@ class ClaseController extends Controller
         return view('clases.index');
     }
 
-    public function clases(request $request)
+    /**
+     * Get all the classes for a given type class
+     * @param  request $request [description]
+     * @return json
+     */
+    public function clases(Request $request)
     {
-      $clases =  Clase::where('clase_type_id',Session::get('clases-type-id'))->where('date','>=',$request->datestart)->where('date','<=',$request->dateend)->get();
-      return response()->json($clases, 200);
+        $clases = Clase::where('clase_type_id', Session::get('clases-type-id'))
+                       ->where('date','>=',$request->datestart)
+                       ->where('date','<=',$request->dateend)
+                       ->get();
+
+        return response()->json($clases, 200);
     }
 
-    public function wods(request $request)
+    public function wods(Request $request)
     {
-      $wods = Wod::where('clase_type_id',Session::get('clases-type-id'))->where('date','>=',$request->datestart)->where('date','<=',$request->dateend)->get();
-      return response()->json($wods, 200);
+        $wods = Wod::where('clase_type_id',Session::get('clases-type-id'))->where('date','>=',$request->datestart)->where('date','<=',$request->dateend)->get();
+
+        return response()->json($wods, 200);
     } 
        /**
      * Display the specified resource.
@@ -51,12 +60,12 @@ class ClaseController extends Controller
     public function show(Clase $clase)
     {
         $outclase = $this->outClass($clase);
+        
         $wod = $clase->wod;
 
-        return view('clases.show')
-             ->with('clase', $clase)
-             ->with('outclase', $outclase)
-             ->with('wod',$wod);
+        return view('clases.show')->with('clase', $clase)
+                                  ->with('outclase', $outclase)
+                                  ->with('wod',$wod);
     }
 
     public function confirm(Request $request, Clase $clase)
