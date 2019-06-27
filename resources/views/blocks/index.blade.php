@@ -207,10 +207,15 @@
 
 
 @section('css') {{-- stylesheet para esta vista --}}
-	<link href="{{asset('css/bootstrap-datepicker.min.css')}}" rel="stylesheet" />
-	<link href="{{asset('css/fullcalendar.min.css')}}" rel="stylesheet" />
-	<link href="{{asset('css/bootstrap-clockpicker.min.css')}}" rel="stylesheet" />
-	<link href="{{asset('css/multi-select.css')}}" rel="stylesheet" />
+	
+	<link href="{{ asset('css/bootstrap-datepicker.min.css')}}" rel="stylesheet" />
+	
+	<link href="{{ asset('css/fullcalendar.min.css') }}" rel="stylesheet" />
+	
+	<link href="{{ asset('css/bootstrap-clockpicker.min.css') }}" rel="stylesheet" />
+	
+	<link href="{{ asset('css/multi-select.css') }}" rel="stylesheet" />
+	
 	<style>
 		.fc-axis.fc-widget-header{width:59px !important;}
 		.fc-axis.fc-widget-content{width:51px !important;}
@@ -219,6 +224,7 @@
 		.datepicker {z-index: 1151 !important;}
 		/*Date picker container*/ bs-datepicker-container { z-index: 3000; }
 	</style>
+
 @endsection
 
 
@@ -239,6 +245,9 @@
 	<script src="{{ asset('js/bootstrap-clockpicker.min.js') }}"></script>
 	
 	<script src="{{ asset('js/jquery.multi-select.js') }}"></script>
+	
+	{{-- PuraSangre customized javascripts --}}
+	<script src="{{ asset('js/purasangreJS/ClasesTypes.js') }}"></script>
 
 	<script defer>
 	$(document).ready(function() {
@@ -322,55 +331,6 @@
 		}
 	});
 	</script>
-
-<script>
-
-
-	/** Get all type classes */
-	$('#clases-type-button-modal').click(function () {
-		$.get("/clases-types/").done( function (response) {
-			response.forEach( function (el) {
-				$('#type-clase-select').append(
-			        $('<option></option>').val(el.id).html(el.clase_type)
-			    );
-			});
-		});
-	});
-
-	/** Get an specific type clase */
-	$('#type-clase-select').change(function () {
-		// Check if select has a value different to 0
-		if (this.value) {
-			$.get("/clases-types/" + this.value)
-			.done( function( data ) {
-				$("#clase_type_name").val(data.clase_type);
-
-				// Show the inputs with the filled data
-				$('#div-clase-type-name').show();
-			});
-		}
-	});
-
-	/** Delete a type clase */
-	$('#sweet-confirm-clase-type-delete').click(function () {
-		var selected_clase = $('#type-clase-select').children("option:selected").val();
-
-		if (selected_clase) {
-			$.ajax({
-			    url: "/clases-types/" + selected_clase,
-			    type: 'post',
-			    data: {
-                	_method: 'delete',
-			    	_token: $('meta[name=csrf-token]').attr("content")
-			    },
-			    success: function(result) {
-			    	console.log(result);
-			    }
-			});
-		}
-	});
-
-</script>
 
 
 @endsection

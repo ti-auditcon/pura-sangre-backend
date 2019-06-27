@@ -28,7 +28,15 @@ class ClaseTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $clase_type = ClaseType::create([
+            'clase_type' => $request->clase_type,
+            'clase_color' => '#27b0b6'
+        ]);
+        
+        return response()->json([
+            'success' => 'Tipo de clase creada correctamente', 
+            'data' => $clase_type->id
+        ], 200);
     }
 
     /**
@@ -50,7 +58,14 @@ class ClaseTypeController extends Controller
      */
     public function update(Request $request, ClaseType $clases_type)
     {
-        //
+        $clases_type->update([
+            'clase_type' => $request->clase_type
+        ]);
+
+        return response()->json([
+            'success' => 'Tipo de clase actualizada correctamente', 
+            'data' => $clases_type->id
+        ], 200);
     }
 
     /**
@@ -61,7 +76,11 @@ class ClaseTypeController extends Controller
      */
     public function destroy(ClaseType $clases_type)
     {
-        $clases_type->delete();
-        return response()->json('Tipo de clase eliminada correctamente', 201);
+        // dd('0hhhh');
+            $clases_type->delete();
+        // if ($clases_type->clase_type == request()->word_confirm) {
+        
+        //     return response()->json('Tipo de clase eliminada correctamente', 201);
+        // }
     }
 }

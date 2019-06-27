@@ -56,9 +56,11 @@ class BlockObserver
      * @return void
      */
     public function deleted(Block $block)
-    {
+    {   
         $block->clases()->each(function ($clase) {
+        
             $clase->delete();
+        
         });
     }
 }

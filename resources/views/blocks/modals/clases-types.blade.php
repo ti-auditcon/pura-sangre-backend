@@ -28,11 +28,7 @@
 
                     <div class="input-group">
 
-                        <select class="form-control" id="type-clase-select" name="clase_type" required>
-                            
-                            <option value="">Eliga un tipo de clase...</option>
-                        
-                        </select>
+                        <select class="form-control" id="type-clase-select" name="clase_type" required></select>
                     
                     </div>
                     
@@ -48,7 +44,7 @@
 
                         <div class="input-group-prepend">
                             
-                            <button>Actualizar</button>
+                            <button id="update-clase-type-name" class="btn btn-primary">Actualizar</button>
                         
                         </div>
                        
@@ -58,12 +54,37 @@
             
             </div>
     
-            <div class="modal-footer">
 
-                <button class="btn btn-danger" id="sweet-confirm-clase-type-delete">Eliminar!</button>
-    
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-    
+            <div class="modal-body">
+                
+                <div class=""> 
+                
+                    <button class="btn btn-success" id="button-add-clase-type">+ Tipo de Clase</button>
+
+                </div>
+                    
+                <div class="">
+                    
+                    <button class="btn btn-danger" id="sweet-confirm-clase-type-delete" disabled>Eliminar!</button>
+                    
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                
+                </div>
+
+            </div>
+
+            <div class="modal-body" id="div-new-clase-type" style="display: none;">
+                
+                <div class="">
+                    
+                    <label>Nombre del nuevo Tipo de Clase</label>
+
+                    <input class="form-control" type="text" id="new_clase_type" name="new_clase_type"/>
+                
+                </div>
+
+                <button class="btn btn-success mt-3" id="button-store-new-clase-type" disabled>Agregar Tipo de Clase</button>
+            
             </div>
     
         </div>
