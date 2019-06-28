@@ -23,8 +23,8 @@ class ClaseController extends Controller
     public function index()
     {
         if (!Session::has('clases-type-id')) {
-            Session::put('clases-type-id',1);
-            Session::put('clases-type-name',ClaseType::find(1)->clase_type);
+            Session::put('clases-type-id', 1);
+            Session::put('clases-type-name', ClaseType::find(1)->clase_type);
         }
         //Session::put('clases-type-name',ClaseType::find($request->type)->clase_type);
         return view('clases.index');

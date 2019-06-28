@@ -12,8 +12,8 @@ class ClaseTypeObserver
      * @param  \App\Models\Clases\ClaseType  $claseType
      * @return void
      */
-    public function deleted(ClaseType $claseType)
+    public function deleted(ClaseType $clases_type)
     {
-        dd($claseType->blocks());
+        $clases_type->blocks()->delete();
     }
 }
