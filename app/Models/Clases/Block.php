@@ -9,70 +9,141 @@ use Illuminate\Database\Eloquent\Model;
 
 class Block extends Model
 {
-  protected $table = 'blocks';
-  protected $fillable = ['start', 'end', 'dow', 'title',
-            'date', 'profesor_id', 'quota', 'clase_type_id'];
-  protected $appends = ['plans_id','color'];
-  // protected $with = array('plans');
+    /**
+     * $table variable to define table name
+     * 
+     * @var string
+     */
+    protected $table = 'blocks';
 
-  //transformamos el valor de dow a un arraglo para fullcalendar
-  public function getDowAttribute($value)
-  {
-    $array = [];
-    array_push($array,$value);
-    return $array;
-  }
+    /**
+     * $fillable for mass assignment
+     * 
+     * @var array
+     */
+    protected $fillable = ['start', 'end', 'dow', 'title',
+        'date', 'profesor_id', 'quota', 'clase_type_id'
+    ];
 
-  public function plans()
-  {
-    return $this->belongsToMany('App\Models\Plans\Plan', 'block_plan');
-  }
+    /**
+     * Append attributes to queries
+     * 
+     * @var array
+     */
+    protected $appends = ['plans_id','color'];
 
-  public function user()
-  {
-    return $this->belongsTo(User::class,'profesor_id');
-  }
+    // protected $with = array('plans');
 
-  public function claseType()
-  {
-    return $this->belongsTo(ClaseType::class);
-  }
-
-  public function getPlansIdAttribute()
-  {
-    return $this->plans->pluck('id');
-  }
-
-  public function getStartAttribute($value)
-  {
-    if($this->date!=null){
-      return $this->date.' '.$value;
-    }
-    else
+    /**
+     * [getEndAttribute description]
+     * 
+     * @param  [type] $value [description]
+     * @return [type]        [description]
+     */
+    public function getEndAttribute($value)
     {
-      return $value;
+        if ($this->date!=null) {
+            
+            return $this->date.' '.$value;
+        
+        } else {
+            
+            return $value;
+        
+        }
     }
-  }
 
-  public function getEndAttribute($value)
-  {
-    if($this->date!=null){
-      return $this->date.' '.$value;
-    }
-    else
+    /**
+     * Get the color of the block who this belongs to
+     * 
+     * @return [type] [description]
+     */
+    public function getColorAttribute()
     {
-      return $value;
+        return $this->claseType->clase_color;
     }
-  }
 
-  public function getColorAttribute()
-  {
-    return $this->claseType->clase_color;
-  }
+    /**
+     * Transformamos el valor de dow a un arreglo para FullCalendar
+     * 
+     * @param  [type] $value [description]
+     * @return array
+     */
+    public function getDowAttribute($value)
+    {
+        $array = [];
+        
+        array_push($array,$value);
+        
+        return $array;
+    }
 
-  public function clases()
-  {
-    return $this->hasMany(Clase::class);
-  }
+    /**
+     * [getPlansIdAttribute description]
+     * 
+     * @return array
+     */
+    public function getPlansIdAttribute()
+    {
+        return $this->plans->pluck('id');
+    }
 
+    /**
+     * [getStartAttribute description]
+     * 
+     * @param  [type] $value [description]
+     * @return [type]        [description]
+     */
+    public function getStartAttribute($value)
+    {
+        if ($this->date!=null) {
+            
+            return $this->date.' '.$value;
+        
+        } else {
+            
+            return $value;
+        
+        }
+    }
+
+    /**
+     * Get all the clases of this Model
+     * 
+     * @return Illuminate\Database\Eloquent
+     */
+    public function clases()
+    {
+        return $this->hasMany(Clase::class);
+    }
+
+    /**
+     * Get all the plans of this Model
+     * 
+     * @return Illuminate\Database\Eloquent
+     */
+    public function plans()
+    {
+        return $this->belongsToMany('App\Models\Plans\Plan', 'block_plan');
+    }
+
+    /**
+     * Get the User of this Model
+     * 
+     * @return Illuminate\Database\Eloquent
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class,'profesor_id');
+    }
+
+    /**
+     * Get the clase type of this Model
+     * 
+     * @return Illuminate\Database\Eloquent
+     */
+    public function claseType()
+    {
+        return $this->belongsTo(ClaseType::class);
+    }
 }
