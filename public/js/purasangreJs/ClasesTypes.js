@@ -241,16 +241,6 @@ $('#update-clase-type-name').click(function () {
 
 
 
-
-
-
-
-
-
-
-
-
-
             },
             allowOutsideClick: () => !Swal.isLoading()
         }).then((response) => {

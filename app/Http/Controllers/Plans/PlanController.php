@@ -40,6 +40,7 @@ class PlanController extends Controller
     public function store(Request $request, Plan $plan)
     {
         $plan = Plan::create(array_merge($request->all(), ['has_clases' => 1, 'custom' => 0]));
+        
         return redirect()->route('plans.show', $plan->id)->with('success', 'El plan ha sido creado correctamente');
     }
 

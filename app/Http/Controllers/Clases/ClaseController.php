@@ -45,13 +45,7 @@ class ClaseController extends Controller
         return response()->json($clases, 200);
     }
 
-    public function wods(Request $request)
-    {
-        $wods = Wod::where('clase_type_id',Session::get('clases-type-id'))->where('date','>=',$request->datestart)->where('date','<=',$request->dateend)->get();
-
-        return response()->json($wods, 200);
-    } 
-       /**
+    /**
      * Display the specified resource.
      *
      * @param  \App\Models\Clases\Clase  $clase
@@ -68,6 +62,48 @@ class ClaseController extends Controller
                                   ->with('wod',$wod);
     }
 
+    public function store(Request $request)
+    {
+        dd('hola store', $request->all());
+        
+        // $plan = Clase::create([
+        //     // '' => ,
+        // ]);
+        
+        // return redirect()->route('clases.index', $plan->id)
+        //                  ->with('success', 'El plan ha sido creado correctamente');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Clases\Clase  $clase
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Clase $clase)
+    {
+        $clase->delete();
+        return redirect('/clases')->with('success', 'La clase ha sido borrada correctamente');
+    }
+    
+    /**
+     * [wods description]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
+    public function wods(Request $request)
+    {
+        $wods = Wod::where('clase_type_id',Session::get('clases-type-id'))->where('date','>=',$request->datestart)->where('date','<=',$request->dateend)->get();
+
+        return response()->json($wods, 200);
+    } 
+
+    /**
+     * [confirm description]
+     * @param  Request $request [description]
+     * @param  Clase   $clase   [description]
+     * @return [type]           [description]
+     */
     public function confirm(Request $request, Clase $clase)
     {
         if (!$request->user_id) {
@@ -95,18 +131,6 @@ class ClaseController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Clases\Clase  $clase
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Clase $clase)
-    {
-        $clase->delete();
-        return redirect('/clases')->with('success', 'La clase ha sido borrada correctamente');
-    }
-
-    /**
      * [outClass recibe la clase, obtiene todas las reservaciones, luego obtiene
      * todos los usuarios del sistema que no tienen reservación a la clase, y los devuelve en una colección]
      * @param  [model] $clase [description]
@@ -118,6 +142,11 @@ class ClaseController extends Controller
         return $consulta;
     }
 
+    /**
+     * [typeSelect description]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
     public function typeSelect(Request $request){
         Session::put('clases-type-id',$request->type);
         Session::put('clases-type-name',ClaseType::find($request->type)->clase_type);
@@ -125,7 +154,11 @@ class ClaseController extends Controller
         return Redirect::back();
     }
 
-
+    /**
+     * [asistencia description]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
     public function asistencia(Request $request)
     {
         $reservations = Reservation::where('clase_id', $request->id)
@@ -145,6 +178,11 @@ class ClaseController extends Controller
         });
     }
 
+    /**
+     * [clasesdehoy description]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
     public function clasesdehoy(Request $request)
     {
         $clases = Clase::where('date', toDay())->get();

@@ -25,7 +25,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
      */
     Route::resource('blocks', 'Clases\BlockController')->middleware('role:1');
 
-    Route::resource('clases', 'Clases\ClaseController')->except('create', 'edit', 'store', 'update');
+    Route::resource('clases', 'Clases\ClaseController')->except('create', 'edit', 'update');
         
         Route::post('clases/{clase}/confirm', 'Clases\ClaseController@confirm')->name('clase.confirm');
 

@@ -59,7 +59,7 @@
 	{{-- ////// MODAL PARA AGREGAR HORARIO  //////// --}}
 	<div class="modal fade" id="blockadd" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
 		<div class="modal-dialog ">
-			{{Form::open(['route'=>'blocks.store'])}}
+			{{ Form::open(['route'=>'blocks.store']) }}
 			<input type="text" hidden class="form-control" value="" name="date">
 			<input type="text" hidden class="form-control" value="{{Session::get('clases-type-id')}}" name="clase_type_id">
 
@@ -260,22 +260,24 @@
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 	<script defer>
+		
 	$(document).ready(function() {
-		$('.clockpicker').clockpicker({autoclose: true});
+		$('.clockpicker').clockpicker({ autoclose: true });
+
 		$('#unique-tab .form-group').datepicker({
-		   todayBtn: "linked",
-	      keyboardNavigation: false,
-	      forceParse: false,
-	      calendarWeeks: true,
-	      format: "dd-mm-yyyy",
-	      startDate: "01-01-1910",
-	      endDate: "01-01-2030",
-	      language: "es",
-	      orientation: "bottom auto",
-	      autoclose: true,
-	      maxViewMode: 3,
-	      daysOfWeekDisabled: "6",
-	      todayHighlight: true
+			todayBtn: "linked",
+	      	keyboardNavigation: false,
+	      	forceParse: false,
+	      	calendarWeeks: true,
+	      	format: "dd-mm-yyyy",
+	      	startDate: "01-01-1910",
+	      	endDate: "01-01-2030",
+	      	language: "es",
+	      	orientation: "bottom auto",
+	      	autoclose: true,
+	      	maxViewMode: 3,
+	      	daysOfWeekDisabled: "6",
+	      	todayHighlight: true
 		});
 
 		$('#plan-select-add').multiSelect();
