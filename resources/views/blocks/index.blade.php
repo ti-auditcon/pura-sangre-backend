@@ -361,6 +361,7 @@
 			});
 
 		}).done( function () {
+
 			var clase_type_session_id = {!! Session::get('clases-type-id') !!};
 
 			$('#type-clase-select-calendar option[value="' + clase_type_session_id + '"]').attr("selected", true);

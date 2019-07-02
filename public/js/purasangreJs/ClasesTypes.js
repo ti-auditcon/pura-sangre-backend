@@ -183,40 +183,36 @@ $('#update-clase-type-name').click(function () {
 	////////////////////////////////////////////////
 	// 		DELETE an specific ClaseType SWAL     //
 	////////////////////////////////////////////////
-    $('#sweet-confirm-clase-type-delete').click(function() {
-        Swal.fire({
-            title: '¿Esta seguro que quiere eliminar el día completo?',
-            text: 'Para eliminar definitivamente por favor ingresa el nombre del tipo de clase. ATENCIÓN, Al eliminar un tipo de clase se eliminan todos sus bloques asociados; todas las clases asociadas a dichos boques; todas las reservaciones asociadas a dichas clases, se devuelven todos los cupos de las reservaciones cuyas clases no se hayan realizado aún ',
-            input: "text",
-            inputAttributes: {
-                autocapitalize: 'off',
-                placeholder: 'Nombre del tipo de clase'
-            },
-            showCancelButton: true,
-            cancelButtonText: 'Cancelar',
-            confirmButtonText: 'Eliminar!',
-            showLoaderOnConfirm: true,
-            preConfirm: (input) => {
-                if (input !== 'ELIMINAR') {
-                    Swal.showValidationMessage(
-                      `Palabra incorrecta`
-                    )
-                } else {  
-                    // var date = $("#input-date-day").val();
+    // $('#sweet-confirm-clase-type-delete').click(function() {
+    //     Swal.fire({
+    //         title: '¿Esta seguro que quiere eliminar el día completo?',
+    //         text: 'Para eliminar definitivamente por favor ingresa el nombre del tipo de clase. ATENCIÓN, Al eliminar un tipo de clase se eliminan todos sus bloques asociados; todas las clases asociadas a dichos boques; todas las reservaciones asociadas a dichas clases, se devuelven todos los cupos de las reservaciones cuyas clases no se hayan realizado aún ',
+    //         input: "text",
+    //         inputAttributes: {
+    //             autocapitalize: 'off',
+    //             placeholder: 'Nombre del tipo de clase'
+    //         },
+    //         showCancelButton: true,
+    //         cancelButtonText: 'Cancelar',
+    //         confirmButtonText: 'Eliminar!',
+    //         showLoaderOnConfirm: true,
+    //         preConfirm: (input) => {
+    //             if (input !== 'ELIMINAR') {
+    //                 Swal.showValidationMessage(
+    //                   `Palabra incorrecta`
+    //                 )
+    //             } else {  
+    //                 // var date = $("#input-date-day").val();
 
-                    // let remove_day_url = '{{ url('calendar/clases/delete') }}';
+    //                 // let remove_day_url = '{{ url('calendar/clases/delete') }}';
 
-                    // return $.post(remove_day_url, { date: date })
-                    //     .fail(error => {
-                    //         Swal.showValidationMessage(
-                    //             `Algo ha fallado: ${error}`
-                    //         )
-                    //     })
-                }
-
-
-
-
+    //                 // return $.post(remove_day_url, { date: date })
+    //                 //     .fail(error => {
+    //                 //         Swal.showValidationMessage(
+    //                 //             `Algo ha fallado: ${error}`
+    //                 //         )
+    //                 //     })
+    //             }
 
 
 	// var selected_clase = $('#type-clase-select').children("option:selected").val();
@@ -240,21 +236,20 @@ $('#update-clase-type-name').click(function () {
 	// }
 
 
+    //         },
+    //         allowOutsideClick: () => !Swal.isLoading()
+    //     }).then((response) => {
 
-            },
-            allowOutsideClick: () => !Swal.isLoading()
-        }).then((response) => {
-
-            if (response.value.success) {
-                Swal.fire({ 
-                    title: response.value.success,
-                    text: 'Presiona "OK" para recargar la página',
-                    confirmButtonText: 'OK!',
-                }).then(() => {
-                    // Refresh page
-                    location.reload();
-                })
-            }
+    //         if (response.value.success) {
+    //             Swal.fire({ 
+    //                 title: response.value.success,
+    //                 text: 'Presiona "OK" para recargar la página',
+    //                 confirmButtonText: 'OK!',
+    //             }).then(() => {
+    //                 // Refresh page
+    //                 location.reload();
+    //             })
+    //         }
             
-        })
-    });
+    //     })
+    // });
