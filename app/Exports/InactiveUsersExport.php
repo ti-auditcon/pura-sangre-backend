@@ -34,7 +34,7 @@ class InactiveUsersExport implements FromCollection, WithHeadings
     }
 
     /**
-     * [headings description]
+     * headings for excel export
      * @return [type] [description]
      */
     public function headings(): array
