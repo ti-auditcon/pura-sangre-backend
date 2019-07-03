@@ -13,8 +13,9 @@ class InactiveUserController extends Controller
     use ExpiredPlans;
 
     /**
-     * [inactive_users show users with expired plans]
-     * @return [array] [description]
+     * Show all the users who has expired plans
+     * 
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -23,9 +24,13 @@ class InactiveUserController extends Controller
         return view('reports.inactives_users')->with('inactive_users', $inactive_users);
     }
 
+    /**
+     * Export Excel of Inactive System Users
+     * 
+     * @return Maatwebsite\Excel\Facades\Excel
+     */
     public function export()
     {
-        dd($this->ExpiredPlan());
-        return Excel::download(new InactiveUsersExport, toDay()->format('d-m-Y') . '_usuarios_inactivos.xls');
+        return Excel::download(new InactiveUsersExport, toDay()->format('d-m-Y') . '_usuarios_inactivos.xlsx');
     }
 }
