@@ -37,6 +37,10 @@
                 <div class="col-12 text-muted">Valor del plan</div>
                 <div class="col-12">{{$plan->amount}}</div>
               </div>
+              <div class="row mb-3">
+                <div class="col-12 text-muted">clases diarias unicas</div>
+                <div class="col-12">{{$plan->daily_clases}}</div>
+              </div>
 
         </div>
       </div>
