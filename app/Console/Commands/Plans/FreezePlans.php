@@ -49,5 +49,4 @@ class FreezePlans extends Command
 
                          ->update(['plan_status_id' => PlanStatus::INACTIVO]);
     }
-    
 }
