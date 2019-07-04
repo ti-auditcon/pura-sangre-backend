@@ -25,7 +25,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
      */
     Route::resource('blocks', 'Clases\BlockController')->middleware('role:1');
 
-    Route::resource('clases', 'Clases\ClaseController')->except('create', 'edit', 'store', 'update');
+    Route::resource('clases', 'Clases\ClaseController')->except('create', 'edit', 'update');
         
         Route::post('clases/{clase}/confirm', 'Clases\ClaseController@confirm')->name('clase.confirm');
 
@@ -41,11 +41,16 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 
     Route::get('/asistencia-modal/{id}', 'Clases\ClaseController@asistencia')->name('asistencia');
 
+    /**
+     * Clases types routes
+     */
+    Route::resource('clases-types', 'Clases\ClaseTypeController')->except('create', 'edit');
 
     /**
      * CALENDAR CLASES ROUTES
      */
-    Route::post('calendar/clases/delete', 'Clases\CalendarClasesController@destroy')->name('admin.calendar.clasesday.destroy');
+    Route::post('calendar/clases/delete', 'Clases\CalendarClasesController@destroy')
+         ->name('admin.calendar.clasesday.destroy');
 
     /**
      *  POSTPONE PLANS ROUTE

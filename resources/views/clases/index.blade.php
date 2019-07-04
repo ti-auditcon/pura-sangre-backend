@@ -8,7 +8,9 @@
 
 @section('content')
 <div class="row justify-content-center">
+    
     <div class="col-12">
+        
         <div class="ibox">
             
             <div class="ibox-head">
@@ -28,6 +30,16 @@
                         <i class="la la-trash-o"></i>
                         Eliminar un día
                     </button>
+
+{{--                     <button
+                        id="button-new-clase-modal"
+                        class="btn btn-info"
+                        data-toggle="modal"
+                        data-target="#new-clase-modal"
+                    >
+                        <i class="la la-calendar-o"></i>
+                        Agregar una Clase
+                    </button> --}}
             
                     <a class="btn btn-primary" href="{{ route('wods.create') }}">Asignar Workout</a>
             
@@ -39,7 +51,7 @@
             
             </div>
             <div class="ibox-body">
-                {{ Form::open(['route'=>'clases.type']) }}
+                {{ Form::open(['route' => 'clases.type']) }}
                 
                 <div class="form-group m-0 mt-2 mb-4 row align-items-center">
                 
@@ -51,9 +63,12 @@
                 
                             @foreach(App\Models\Clases\ClaseType::all() as $type)
                 
-                            <option value="{{$type->id}}" @if($type->id == Session::get('clases-type-id')) selected @endif>
+                            <option
+                                value="{{ $type->id }}"
+                                @if($type->id == Session::get('clases-type-id')) selected @endif
+                            >
                 
-                                {{$type->clase_type}}
+                                {{ $type->clase_type }}
                 
                             </option>
                 
@@ -71,7 +86,7 @@
                 
                 </div>
                 
-                {{Form::close()}}
+                {{ Form::close() }}
                 
                 <div id="calendar" style="position: relative;">
                 
@@ -89,9 +104,11 @@
     </div>
 </div>
 
-<!-- Modal de confirmacion de clase-->
+<!--   Modal de Confirmación de Clase   -->
 @include('clases.modals.delete-day-modal')
-<!-- END Modal de confirmacion de clase-->
+
+<!--   Modal para Agregar una Clase   -->
+{{-- @include('clases.modals.new-clase-modal') --}}
 
 
 @endsection
@@ -100,8 +117,11 @@
 @section('css') 
 
     <link href="{{asset('css/bootstrap-datepicker.min.css')}}" rel="stylesheet" />
+    
     <link href="{{asset('css/fullcalendar.min.css')}}" rel="stylesheet" />
+    
     <link href="{{asset('css/bootstrap-clockpicker.min.css')}}" rel="stylesheet" />
+    
     <link href="{{asset('css/multi-select.css')}}" rel="stylesheet" />
     
     <style>
@@ -116,25 +136,23 @@
 
 {{-- SCRIPTS PARA ESTA VISTA --}}
 @section('scripts') 
-    {{--  Full Calendar --}}
-    {{-- <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script> --}}
+
+<script src="{{ asset('js/moment.min.js') }}"></script>
+
+<script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
+
+<script src="{{ asset('js/fullcalendar/lang/es.js') }}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
+<script src="{{ asset('js/bootstrap-clockpicker.min.js') }}"></script>
     
-    <script src="{{ asset('js/moment.min.js') }}"></script>
+<script src="{{ asset('js/jquery.multi-select.js') }}"></script>
   
-    <script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
-  
-    <script src="{{ asset('js/fullcalendar/lang/es.js') }}"></script>
-    
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-  
-    {{-- <script src="{{ asset('js/bootstrap-clockpicker.min.js') }}"></script> --}}
-  
-    {{-- <script src="{{ asset('js/jquery.multi-select.js') }}"></script> --}}
-  
-    {{-- <script src="{{ asset('js/jquery.easypiechart.min') }}"></script> --}}
+{{-- <script src="{{ asset('js/jquery.easypiechart.min') }}"></script> --}}
 
 
-  <script defer>
+<script defer>
     $(document).ready(function() {
         $('#calendar').fullCalendar({
           header: {
@@ -189,7 +207,17 @@
           // },
         });
     });
-  </script>
+</script>
+
+<script>
+    
+    $('.clockpicker').clockpicker({ autoclose: true });
+
+    $('#plan-select-add').multiSelect();
+
+    // $('#plan-select-edit').multiSelect();
+
+</script>
 
 <script>
     let start_date = moment().format("DD-MM-YYYY");
@@ -285,6 +313,29 @@
             
         })
     });
+
+    // $('.datepicker-calendar-clase-create').datepicker({
+    //     todayBtn: "linked",
+    //     keyboardNavigation: false,
+    //     forceParse: true,
+    //     calendarWeeks: true,
+    //     format: "dd-mm-yyyy",
+    //     startDate: "01-01-2010",
+    //     endDate: "01-01-2035",
+    //     language: "es",
+    //     orientation: "bottom auto",
+    //     autoclose: true,
+    //     maxViewMode: 3,
+    //     todayHighlight: true
+    // });
+
+    // let start_at = moment().startOf('hour').format("HH:mm");
+
+    // let finish_at = moment().startOf('hour').add(1, 'hour').format("HH:mm");
+
+    // $('#start_at').val(start_at);
+    
+    // $('#finish_at').val(finish_at);
 
 
 </script>

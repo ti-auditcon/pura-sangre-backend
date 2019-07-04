@@ -19,6 +19,8 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\PushClases',
         'App\Console\Commands\ToExpiredPlan',
         'App\Console\Commands\CleanClases',
+        'App\Console\Commands\Plans\FreezePlans',
+        'App\Console\Commands\Plans\UnfreezePlans',
     ];
 
     /**
@@ -35,6 +37,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('create:clases')->weekly();
         $schedule->command('toexpire:plan')->dailyAt('9:10');
         $schedule->command('clean:clase')->hourlyAt(15);
+
+        $schedule->command('plans:freeze')->dailyAt('00:10');
+        $schedule->command('plans:unfreeze')->dailyAt('00:15');
         // $schedule->command('queue:work')->hourly();
     }
 

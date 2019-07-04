@@ -25,41 +25,42 @@
 
                         <label class="font-normal">Fecha de inicio de Congelamiento</label>
 
-                            <span
-                                class="badge badge-default badge-circle"
-                                data-toggle="popover"
-                                data-trigger="hover"
-                                data-placement="right"
-                                data-content="La fecha de inicio de congelamiento del plan, es la fecha en que empezará a contar el plan como &#8221;Inactivo&#8221;."
-                            >
-                                ?
+                        <span
+                            class="badge badge-default badge-circle"
+                            data-toggle="popover"
+                            data-trigger="hover"
+                            data-placement="right"
+                            data-content="La fecha de inicio de congelamiento del plan, es la fecha en que empezará a contar el plan como &#8221;Inactivo&#8221;."
+                        >
+                            ?
+                        </span>
+                        
+                        <div class="input-group date datepicker-date-start-freeze @if ($errors->has('start_freeze_date')) has-warning @endif">
+
+                            <span class="input-group-addon bg-white">
+                                
+                                <i class="fa fa-calendar"></i>
+                           
                             </span>
-                            
-                            <div class="input-group date datepicker-date-start-freeze">
 
-                                <span class="input-group-addon bg-white">
-                                    
-                                    <i class="fa fa-calendar"></i>
-                               
-                                </span>
-
-                                <input
-                                    id="input-date-start-freeze"
-                                    class="form-control"
-                                    name="start_freeze_date"
-                                    type="text"
-                                    value="{{ date('d-m-Y') }}"
-                                >
-                            
-                            </div>
+                            <input
+                                id="input-date-start-freeze"
+                                class="form-control"
+                                name="start_freeze_date"
+                                type="text"
+                                value="{{ old('start_freeze_date', date('d-m-Y')) }}"
+                            >
+                        
+                        </div>
                         
                     </div>
 
                     <div class="form-group py-3">
+                      
                                 
                         <label class="font-normal">Fecha de término de Congelamiento</label>
 
-                        <div class="input-group date datepicker-date-end-freeze">
+                        <div class="input-group date datepicker-date-end-freeze @if ($errors->has('end_freeze_date')) has-warning @endif">
 
                             <span class="input-group-addon bg-white">
                                 
@@ -72,7 +73,7 @@
                                 class="form-control"
                                 name="end_freeze_date"
                                 type="text"
-                                value="{{ date('d-m-Y') }}"
+                                value="{{ old('end_freeze_date', date('d-m-Y')) }}"
                             >
                         
                         </div>

@@ -94,6 +94,18 @@ class CreatePlansTable extends Migration
             // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
+        Schema::create('freeze_plans', function (Blueprint $table) {
+            $table->mediumIncrements('id');
+            
+            $table->unsignedInteger('plan_user_id');
+            
+            $table->date('start_date');
+
+            $table->date('finish_date');
+       
+            $table->timestamps();
+        });
+
         // Schema::create('plan_user_periods', function (Blueprint $table) {
         //     $table->increments('id');
         //     $table->date('start_date');

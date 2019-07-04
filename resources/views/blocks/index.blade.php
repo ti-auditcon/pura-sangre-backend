@@ -1,6 +1,9 @@
 @extends('layouts.app')
+
 @section('sidebar')
+	
 	@include('layouts.sidebar',['page'=>'student'])
+
 @endsection
 
 @section('content')
@@ -9,17 +12,35 @@
 			<div class="ibox">
 				<div class="ibox-head">
 					<div class="ibox-title">Horarios</div>
-					{{-- {{dd($blocks)}} --}}
+					
+					<div class="ibox-tools">
+
+		                <button
+		                    id="clases-type-button-modal"
+		                    class="btn btn-info"
+		                    data-toggle="modal"
+		                    data-target="#clases-types-modal"
+		                >
+		                    <i class="la la-calendar-o"></i>
+		                    Tipos de clases
+		                </button>
+
+					</div>
 				</div>
 					<div class="ibox-body">
-						{{Form::open(['route'=>'clases.type'])}}
+						{{ Form::open(['route'=>'clases.type']) }}
 						<div class="form-group mb-4 row">
 							<label class="col-sm-1 col-form-label">Tipo de clase:</label>
 							<div class="col-sm-4">
+							{{-- 	<select class="form-control" id="type-clase-select-calendar" name="type">
+								</select> --}}
 								<select class="form-control" name="type">
 									@foreach(App\Models\Clases\ClaseType::all() as $type)
-										<option value="{{$type->id}}" @if($type->id == Session::get('clases-type-id')) selected @endif>
-											{{$type->clase_type}}
+										<option
+											value="{{ $type->id }}"
+											@if($type->id == Session::get('clases-type-id')) selected @endif
+										>
+											{{ $type->clase_type }}
 										</option>
 									@endforeach
 								</select>
@@ -36,119 +57,119 @@
 	</div>
 
 	{{-- ////// MODAL PARA AGREGAR HORARIO  //////// --}}
-					<div class="modal fade" id="blockadd" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-						<div class="modal-dialog ">
-							{{Form::open(['route'=>'blocks.store'])}}
-							<input type="text" hidden class="form-control" value="" name="date">
-							<input type="text" hidden class="form-control" value="{{Session::get('clases-type-id')}}" name="clase_type_id">
+	<div class="modal fade" id="blockadd" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+		<div class="modal-dialog ">
+			{{ Form::open(['route'=>'blocks.store']) }}
+			<input type="text" hidden class="form-control" value="" name="date">
+			<input type="text" hidden class="form-control" value="{{Session::get('clases-type-id')}}" name="clase_type_id">
 
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title">Nuevo horario de {{Session::get('clases-type-name')}}</h5>
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<div class="modal-body">
-									<div class="form-group">
-										<div class="input-group clockpicker">
-											<label class="col-sm-2 col-form-label mr-1 pl-0">Inicio:</label>
-											<input type="text" class="form-control" value="" name="start">
-											<span class="input-group-addon">
-												<span class="la la-clock-o"></span>
-											</span>
-										</div>
-									</div>
-
-									<div class="form-group mb-4">
-										<div class="input-group clockpicker">
-											<label class="col-sm-2 col-form-label mr-1 pl-0">Termino:</label>
-											<input type="text" class="form-control" value="" name="end">
-											<span class="input-group-addon">
-												<span class="la la-clock-o"></span>
-											</span>
-										</div>
-									</div>
-									<div class="form-group mb-4">
-										<select multiple="multiple" id="plan-select-add" name="plans[]">
-											@foreach (App\Models\Plans\Plan::all() as $plan)
-												<option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period ?? "no aplica"}}</option>
-											@endforeach
-										</select>
-									</div>
-
-								<div class="form-group mb-12">
-									<label class="col-form-label">Profesor:</label>
-									<select name="profesor_id" class="form-control" required>
-										<option value="">Elegir un Profesor</option>
-										@foreach (App\Models\Users\Role::find(2)->users as $coach)
-											<option value="{{$coach->id}}">{{$coach->first_name}} {{$coach->last_name}}</option>
-										@endforeach
-									</select>
-								<span class="input-group-addon"></span>
-								</div>
-
-								<div class="form-group mb-4">
-									<label class="col-form-label">N° de Cupos</label>
-									<input type="number" class="form-control" value="" name="quota" required>
-								</div>
-
-									<div class="form-group mb-4">
-										<label class="radio radio-grey radio-primary">
-											<input id="recurrent" type="radio" name="repetition" value="multiple" checked><span class="input-span"></span>Recurrente
-										</label>
-											<label class="radio radio-grey radio-primary">
-											<input id="unique" type="radio" name="repetition" value="unique"><span class="input-span"></span>Unico
-										</label>
-									</div>
-
-									<div class="tab-content">
-										<div id="recurrent-tab" >
-											<div class="form-group" id="daycheckbox">
-													<div class="mb-2">
-														<label class="checkbox checkbox-inline mb-2">
-																<input type="checkbox" name="day[]" value="1">
-																<span class="input-span"></span>Lunes</label>
-														<label class="checkbox checkbox-inline mb-2">
-																<input type="checkbox" name="day[]" value="2">
-																<span class="input-span"></span>Martes</label>
-														<label class="checkbox checkbox-inline mb-2">
-																<input type="checkbox" name="day[]" value="3">
-																<span class="input-span"></span>Miercoles</label>
-														<label class="checkbox checkbox-inline mb-2">
-																<input type="checkbox" name="day[]" value="4">
-																<span class="input-span"></span>Jueves</label>
-														<label class="checkbox checkbox-inline mb-2">
-																<input type="checkbox" name="day[]" value="5">
-																<input type="checkbox" >
-																<span class="input-span"></span>Viernes</label>
-														<label class="checkbox checkbox-inline mb-2">
-																<input type="checkbox" name="day[]" value="6">
-																<input type="checkbox" >
-																<span class="input-span"></span>Sabado</label>
-													</div>
-											</div>
-										</div>
-										<div id="unique-tab">
-											<div class="form-group mb-12">
-												<div class="input-group date">
-													<input type="text" class="form-control" value="" name="date">
-													<span class="input-group-addon">
-														<span class="la la-clock-o"></span>
-													</span>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="modal-footer">
-									<button type="submit" class="btn btn-primary"  onClick="this.disabled=true; this.value='Guardando…';this.form.submit();">Guardar horario</button>
-									<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-								</div>
-							</div>
-							{{Form::close()}}
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Nuevo horario de {{ Session::get('clases-type-name') }}</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<div class="input-group clockpicker">
+							<label class="col-sm-2 col-form-label mr-1 pl-0">Inicio:</label>
+							<input type="text" class="form-control" value="" name="start">
+							<span class="input-group-addon">
+								<span class="la la-clock-o"></span>
+							</span>
 						</div>
 					</div>
+
+					<div class="form-group mb-4">
+						<div class="input-group clockpicker">
+							<label class="col-sm-2 col-form-label mr-1 pl-0">Termino:</label>
+							<input type="text" class="form-control" value="" name="end">
+							<span class="input-group-addon">
+								<span class="la la-clock-o"></span>
+							</span>
+						</div>
+					</div>
+					<div class="form-group mb-4">
+						<select multiple="multiple" id="plan-select-add" name="plans[]">
+							@foreach (App\Models\Plans\Plan::all() as $plan)
+								<option value="{{$plan->id}}">{{$plan->plan}} {{$plan->plan_period->period ?? "no aplica"}}</option>
+							@endforeach
+						</select>
+					</div>
+
+				<div class="form-group mb-12">
+					<label class="col-form-label">Profesor:</label>
+					<select name="profesor_id" class="form-control" required>
+						<option value="">Elegir un Profesor</option>
+						@foreach (App\Models\Users\Role::find(2)->users as $coach)
+							<option value="{{$coach->id}}">{{$coach->first_name}} {{$coach->last_name}}</option>
+						@endforeach
+					</select>
+				<span class="input-group-addon"></span>
+				</div>
+
+				<div class="form-group mb-4">
+					<label class="col-form-label">N° de Cupos</label>
+					<input type="number" class="form-control" value="" name="quota" required>
+				</div>
+
+					<div class="form-group mb-4">
+						<label class="radio radio-grey radio-primary">
+							<input id="recurrent" type="radio" name="repetition" value="multiple" checked><span class="input-span"></span>Recurrente
+						</label>
+							<label class="radio radio-grey radio-primary">
+							<input id="unique" type="radio" name="repetition" value="unique"><span class="input-span"></span>Unico
+						</label>
+					</div>
+
+					<div class="tab-content">
+						<div id="recurrent-tab" >
+							<div class="form-group" id="daycheckbox">
+									<div class="mb-2">
+										<label class="checkbox checkbox-inline mb-2">
+												<input type="checkbox" name="day[]" value="1">
+												<span class="input-span"></span>Lunes</label>
+										<label class="checkbox checkbox-inline mb-2">
+												<input type="checkbox" name="day[]" value="2">
+												<span class="input-span"></span>Martes</label>
+										<label class="checkbox checkbox-inline mb-2">
+												<input type="checkbox" name="day[]" value="3">
+												<span class="input-span"></span>Miercoles</label>
+										<label class="checkbox checkbox-inline mb-2">
+												<input type="checkbox" name="day[]" value="4">
+												<span class="input-span"></span>Jueves</label>
+										<label class="checkbox checkbox-inline mb-2">
+												<input type="checkbox" name="day[]" value="5">
+												<input type="checkbox" >
+												<span class="input-span"></span>Viernes</label>
+										<label class="checkbox checkbox-inline mb-2">
+												<input type="checkbox" name="day[]" value="6">
+												<input type="checkbox" >
+												<span class="input-span"></span>Sabado</label>
+									</div>
+							</div>
+						</div>
+						<div id="unique-tab">
+							<div class="form-group mb-12">
+								<div class="input-group date">
+									<input type="text" class="form-control" value="" name="date">
+									<span class="input-group-addon">
+										<span class="la la-clock-o"></span>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary"  onClick="this.disabled=true; this.value='Guardando…';this.form.submit();">Guardar horario</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+				</div>
+			</div>
+			{{Form::close()}}
+		</div>
+	</div>
 
 	<div class="modal fade" id="blockedit" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog ">
@@ -186,14 +207,23 @@
 		</div>
 	</div>
 
+<!-- Modal de confirmacion de clase-->
+@include('blocks.modals.clases-types')
+<!-- END Modal de confirmacion de clase-->
+
 @endsection
 
 
 @section('css') {{-- stylesheet para esta vista --}}
-	<link href="{{asset('css/bootstrap-datepicker.min.css')}}" rel="stylesheet" />
-	<link href="{{asset('css/fullcalendar.min.css')}}" rel="stylesheet" />
-	<link href="{{asset('css/bootstrap-clockpicker.min.css')}}" rel="stylesheet" />
-	<link href="{{asset('css/multi-select.css')}}" rel="stylesheet" />
+	
+	<link href="{{ asset('css/bootstrap-datepicker.min.css')}}" rel="stylesheet" />
+	
+	<link href="{{ asset('css/fullcalendar.min.css') }}" rel="stylesheet" />
+	
+	<link href="{{ asset('css/bootstrap-clockpicker.min.css') }}" rel="stylesheet" />
+	
+	<link href="{{ asset('css/multi-select.css') }}" rel="stylesheet" />
+	
 	<style>
 		.fc-axis.fc-widget-header{width:59px !important;}
 		.fc-axis.fc-widget-content{width:51px !important;}
@@ -202,37 +232,52 @@
 		.datepicker {z-index: 1151 !important;}
 		/*Date picker container*/ bs-datepicker-container { z-index: 3000; }
 	</style>
+
 @endsection
 
 
 
 @section('scripts') {{-- scripts para esta vista --}}
 	{{--  Full calendar --}}
+	
 	<script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+	
 	<script src="{{ asset('js/moment.min.js') }}"></script>
+	
 	{{-- <script src="{{asset('/js/fullcalendar/jquery-ui.min.js')}}"></script> --}}
+	
 	<script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
+	
 	<script src="{{ asset('js/fullcalendar/lang/es.js') }}"></script>
+	
 	<script src="{{ asset('js/bootstrap-clockpicker.min.js') }}"></script>
+	
 	<script src="{{ asset('js/jquery.multi-select.js') }}"></script>
+	
+	{{-- PuraSangre customized javascripts --}}
+	<script src="{{ asset('js/purasangreJS/ClasesTypes.js') }}"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 	<script defer>
+		
 	$(document).ready(function() {
-		$('.clockpicker').clockpicker({autoclose: true});
+		$('.clockpicker').clockpicker({ autoclose: true });
+
 		$('#unique-tab .form-group').datepicker({
-		   todayBtn: "linked",
-	      keyboardNavigation: false,
-	      forceParse: false,
-	      calendarWeeks: true,
-	      format: "dd-mm-yyyy",
-	      startDate: "01-01-1910",
-	      endDate: "01-01-2030",
-	      language: "es",
-	      orientation: "bottom auto",
-	      autoclose: true,
-	      maxViewMode: 3,
-	      daysOfWeekDisabled: "6",
-	      todayHighlight: true
+			todayBtn: "linked",
+	      	keyboardNavigation: false,
+	      	forceParse: false,
+	      	calendarWeeks: true,
+	      	format: "dd-mm-yyyy",
+	      	startDate: "01-01-1910",
+	      	endDate: "01-01-2030",
+	      	language: "es",
+	      	orientation: "bottom auto",
+	      	autoclose: true,
+	      	maxViewMode: 3,
+	      	daysOfWeekDisabled: "6",
+	      	todayHighlight: true
 		});
 
 		$('#plan-select-add').multiSelect();
@@ -298,6 +343,32 @@
 		}
 	});
 	</script>
+
+<script>
+	$(function () {
+		$('#type-clase-select-calendar').find('option').remove();
+	
+		$('#type-clase-select-calendar').append($('<option>Eliga un tipo de clase...</option>').val(null));
+		
+		$.get("/clases-types/").done( function (response) {
+			response.forEach( function (el) {
+				$('#type-clase-select').append(
+			        $('<option></option>').val(el.id).html(el.clase_type)
+			    );
+			    $('#type-clase-select-calendar').append(
+			        $('<option></option>').val(el.id).html(el.clase_type)
+			    );
+			});
+
+		}).done( function () {
+
+			var clase_type_session_id = {!! Session::get('clases-type-id') !!};
+
+			$('#type-clase-select-calendar option[value="' + clase_type_session_id + '"]').attr("selected", true);
+
+		});
+	});
+</script>
 
 
 @endsection
