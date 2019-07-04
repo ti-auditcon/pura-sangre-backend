@@ -47,6 +47,16 @@
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-sm-6 form-group mb-4">
+            <label class="col-form-label">Numero de clases unicas diarias</label>
+            <div class="input-group-icon input-group-icon-left">
+              <span class="input-icon input-icon-left"><i class="la la-dollar"></i></span>
+              <input class="form-control form-control-air"
+              name="daily_clases" type="number" value="1" required/>
+            </div>
+          </div>
+        </div>
       <br>
       {{-- <div class="ibox-footer"> --}}
       <button class="btn btn-primary btn-air mr-2" type="submit">Crear Plan</button>
