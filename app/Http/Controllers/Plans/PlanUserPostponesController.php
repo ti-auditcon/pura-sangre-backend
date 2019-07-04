@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Plans;
 
-use Session;
-use Carbon\Carbon;
-use App\Models\Users\User;
-use Illuminate\Http\Request;
-use App\Models\Plans\PlanUser;
-use App\Models\Plans\PostponePlan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Plans\PostponePlanRequest;
+use App\Models\Plans\PlanStatus;
+use App\Models\Plans\PlanUser;
+use App\Models\Plans\PostponePlan;
+use App\Models\Users\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Session;
 
 class PlanUserPostponesController extends Controller
 {
@@ -59,9 +60,16 @@ class PlanUserPostponesController extends Controller
      * @param  \App\Models\Plans\PlanUser  $planUser
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PlanUser $planUser)
+    public function destroy(PlanUser $plan_user, PostponePlan $postpone)
     {
-        //
+        $plan_user->update([
+            'plan_status_id' => PlanStatus::ACTIVO
+        ]);
+
+        $postpone->delete();
+
+        return redirect('users/' . $plan_user->user->id)
+                 ->with('success', 'Plan reanudado correctamente');
     }
 }
 

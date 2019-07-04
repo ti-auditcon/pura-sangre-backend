@@ -3,8 +3,8 @@
 namespace App\Console\Commands\Plans;
 
 use App\Models\Plans\PlanUser;
-use App\Models\Plans\PostponePlan;
 use Illuminate\Console\Command;
+use App\Models\Plans\PostponePlan;
 
 class FreezePlans extends Command
 {
@@ -35,13 +35,18 @@ class FreezePlans extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
     public function handle()
     {
-        $today_plans = PostponePlan::whereStartDate(today())->pluck('plan_user_id')->toArray();
+        $today_plans = PostponePlan::whereStartDate(today())
+
+                                   ->pluck('plan_user_id')
+
+                                   ->toArray();
 
         $plans = PlanUser::whereIn('id', array_values($today_plans))
+
                          ->update(['plan_status_id' => PlanStatus::INACTIVO]);
     }
 }

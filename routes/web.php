@@ -49,7 +49,8 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     /**
      * CALENDAR CLASES ROUTES
      */
-    Route::post('calendar/clases/delete', 'Clases\CalendarClasesController@destroy')->name('admin.calendar.clasesday.destroy');
+    Route::post('calendar/clases/delete', 'Clases\CalendarClasesController@destroy')
+         ->name('admin.calendar.clasesday.destroy');
 
     /**
      *  POSTPONE PLANS ROUTE

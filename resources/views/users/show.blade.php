@@ -241,12 +241,20 @@
                                             </button>
 
                                         @else
+                                            <form
+                                                action="{{ route('plan-user.postpones.destroy', ['plan_user' => $plan_user->id, 'postpone' => $plan_user->postpone]) }}"
+                                                method="POST"
+                                                class="user-plan-unfreeze"
+                                            >
+                                                @csrf @method('DELETE')
+                                            </form>
+
                                             <button
                                                 class="btn btn-info btn-icon-only btn-success sweet-user-plan-unfreeze"
-                                                data-id="{{$plan_user->id}}"
-                                                data-name="{{$plan_user->plan->plan}}"
+                                                data-plan-name="{{ $plan_user->plan->plan }}"
+                                                data-user-name="{{ $plan_user->user->first_name }}"
                                             >
-                                            <i class="la la-play-circle-o"></i>
+                                                <i class="la la-play-circle-o"></i>
                                             </button>
                                         @endif
                                     
@@ -419,6 +427,30 @@
 		});
 	});
 	</script>
+
+<script>
+    $( '.sweet-user-plan-unfreeze' ).click(function() {
+        // var id = $(this).data('id');
+        var plan_name = $( this ).data( 'plan-name' );
+
+        var user_name = $( this ).data( 'user-name' );
+
+        console.log('golad');
+        
+        swal({
+            title: "Desea reanudar el Plan "+ plan_name +" a: " + user_name + "?",
+            // text: "(Se borrarán todas las cuotas o planes futuros, manteniendo los ya consumidos)",
+            type: 'success',
+            showCancelButton: true,
+            confirmButtonClass: 'btn-success',
+            confirmButtonText: 'Reanudar',
+            cancelButtonText: 'Cancelar',
+            closeOnConfirm: false,
+        }, function() {
+            $('form.user-plan-unfreeze').submit();
+        });
+    });
+</script>
 
   <script>
   $('.sweet-user-plan-annul').click(function(e){

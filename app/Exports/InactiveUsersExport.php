@@ -23,6 +23,8 @@ class InactiveUsersExport implements FromCollection, WithHeadings
                 $plan->user->full_name,
 
                 '+56 9 ' . $plan->user->phone,
+
+                $plan->user->since->format('d-m-Y'),
                                 
                 $plan->plan->plan,
                 
@@ -42,6 +44,7 @@ class InactiveUsersExport implements FromCollection, WithHeadings
         return [
         	'Alumno',
             'N° de teléfono',
+            'Atleta desde',
         	'Último Plan',
         	'Fecha de término del plan',
         	'Clases restantes',
