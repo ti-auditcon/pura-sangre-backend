@@ -41,10 +41,16 @@ class UnfreezePlans extends Command
     public function handle()
     {
         $yesterday_plans = PostponePlan::whereFinishDate(today()->subDay())
-                                   ->pluck('plan_user_id')
-                                   ->toArray();
+                                       ->pluck('plan_user_id')
+                                       ->toArray();
 
-        $plans = PlanUser::whereIn('id', array_values($yesterday_plans))
-                         ->update(['plan_status_id' => PlanStatus::ACTIVO]);
+        $plans_to_unfreeze = PlanUser::whereIn('id', array_values($yesterday_plans))
+                                     ->get();
+
+        foreach ($plans_to_unfreeze as $plan) {
+            
+            $plan->update(['plan_status_id' => PlanStatus::ACTIVO]);
+        
+        }
     }
 }

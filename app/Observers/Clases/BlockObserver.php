@@ -15,7 +15,7 @@ class BlockObserver
      */
     public function created(Block $block)
     {
-        //creamos las 12 clases siguientes por cada bloque
+        //Creamos las 12 clases siguientes por cada bloque
         if ($block->date == null) {
             $first_date = now()->startOfWeek()->addDays($block->dow[0] - 1);
             // dd($first_date);

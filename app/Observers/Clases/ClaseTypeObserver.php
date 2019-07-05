@@ -14,6 +14,6 @@ class ClaseTypeObserver
      */
     public function deleted(ClaseType $clases_type)
     {
-        $clases_type->blocks()->delete();
+        // $clases_type->blocks()->delete();
     }
 }

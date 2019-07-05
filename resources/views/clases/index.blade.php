@@ -143,7 +143,7 @@
 
 <script src="{{ asset('js/fullcalendar/lang/es.js') }}"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script src="{{ asset('js/sweetalert2.8.js') }}"></script>
 
 <script src="{{ asset('js/bootstrap-clockpicker.min.js') }}"></script>
     

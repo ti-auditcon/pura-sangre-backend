@@ -6,11 +6,18 @@
 <div class="page-content fade-in-up">
     <div class="ibox">
         <div class="ibox-head">
-            <div class="ibox-title"> <h3 class="font-strong"><i class="fa fa-envelope" aria-hidden="true"></i> Enviar correos a alumnos</h3></div>
+            <div class="ibox-title">
+                <h3 class="font-strong">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    Enviar correos a alumnos
+                </h3>
+            </div>
+            
             <div class="ibox-tools">
                 <button class="btn btn-success text-white" id="save_value" name="save_value">Redactar Correo</button>
             </div>
         </div>
+
         <div class="ibox-body">
             <div class="ibox-body messages">
                 <div class="flexbox mb-4">

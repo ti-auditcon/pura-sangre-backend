@@ -52,6 +52,7 @@ class PlanUserObserver
     public function created(PlanUser $planUser)
     {
         $this->fixReservations($planUser);
+
         $this->updateStatusUser($planUser);
     }
 
@@ -167,12 +168,15 @@ class PlanUserObserver
             ->where('reservations.user_id', $planUser->user_id)
             ->whereBetween('date', [Carbon::parse($planUser->start_date)->format('Y-m-d'), Carbon::parse($planUser->finish_date)->format('Y-m-d')])
             ->pluck('reservations.id');
+
         $reservations_out = Reservation::join('clases', 'reservations.clase_id', '=', 'clases.id')
             ->where('reservations.user_id', $planUser->user_id)
             ->whereNotBetween('date', [Carbon::parse($planUser->start_date)->format('Y-m-d'), Carbon::parse($planUser->finish_date)->format('Y-m-d')])
             ->pluck('reservations.id');
+
         foreach ($reservations as $reserv) {
             $reservation = Reservation::find($reserv);
+            
             if ($reservation->plan_user_id !== $planUser->id) {
                 $reservation->update(['plan_user_id' => $planUser->id]);
                 $planUser->counter -= 1;
@@ -193,9 +197,15 @@ class PlanUserObserver
     public function updateStatusUser(PlanUser $planUser)
     {
         $user = $planUser->user;
-        if (today()->between(Carbon::parse($planUser->start_date), Carbon::parse($planUser->finish_date)) && $planUser->plan_status_id === 1) {
+
+        if (today()->between(Carbon::parse($planUser->start_date), Carbon::parse($planUser->finish_date)) &&
+            $planUser->plan_status_id === 1
+        ) {
+
             $user->status_user_id = ($planUser->plan->id === 1) ? 3 : 1;
+
         } elseif ($user->actual_plan && $user->actual_plan->id != $planUser->id) {
+
             $user->status_user_id = $user->actual_plan->plan->id === 1 ? 3 : 1;
         } else {
             $user->status_user_id = 2;

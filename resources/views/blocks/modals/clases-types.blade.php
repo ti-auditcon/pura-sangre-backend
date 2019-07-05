@@ -51,23 +51,31 @@
                     </div>
             
                 </div>
-            
-            </div>
-    
 
-            <div class="modal-body">
+                <div class="inline">
                 
-                <div class=""> 
-                
-                    <button class="btn btn-success" id="button-add-clase-type">+ Tipo de Clase</button>
-
-                </div>
+                    <button
+                        class="btn btn-success"
+                        id="button-add-clase-type"
+                    >
+                        Nuevo Tipo de Clase
+                    </button>
                     
-                <div class="">
+                    <button
+                        class="btn btn-danger"
+                        id="sweet-confirm-clase-type-delete"
+                        disabled
+                    >
+                        Eliminar!
+                    </button>
                     
-                    {{-- <button class="btn btn-danger" id="sweet-confirm-clase-type-delete" disabled>Eliminar!</button> --}}
-                    
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-dismiss="modal"
+                    >
+                        Cerrar
+                    </button>
                 
                 </div>
 

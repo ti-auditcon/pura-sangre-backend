@@ -31,14 +31,20 @@ function getAllClasesType(claseType = null) {
 	// Add default option to select
 	$('#type-clase-select').append($('<option>Eliga un tipo de clase...</option>').val(null));
 
+	/**  */
+	$('#calendar-type-clase-select').find('option').remove();
+
+	/**  */
+	$('#calendar-type-clase-select').append($('<option>Eliga un tipo de clase...</option>').val(null));
+
 	// Get all classes types
-	$.get("/clases-types/").done( function (response) {
+	$.get( "/clases-types/" ).done(function (response) {
 
 		response.forEach( function (el) {
 			$('#type-clase-select').append(
 		        $('<option></option>').val(el.id).html(el.clase_type)
 		    );
-		    $('#type-clase-select-calendar').append(
+		    $('#calendar-type-clase-select').append(
 		        $('<option></option>').val(el.id).html(el.clase_type)
 		    );
 		});
@@ -181,75 +187,61 @@ $('#update-clase-type-name').click(function () {
     });
 
 	////////////////////////////////////////////////
-	// 		DELETE an specific ClaseType SWAL     //
+	// 		SWAL DELETE an specific ClaseType     //
 	////////////////////////////////////////////////
-    // $('#sweet-confirm-clase-type-delete').click(function() {
-    //     Swal.fire({
-    //         title: '¿Esta seguro que quiere eliminar el día completo?',
-    //         text: 'Para eliminar definitivamente por favor ingresa el nombre del tipo de clase. ATENCIÓN, Al eliminar un tipo de clase se eliminan todos sus bloques asociados; todas las clases asociadas a dichos boques; todas las reservaciones asociadas a dichas clases, se devuelven todos los cupos de las reservaciones cuyas clases no se hayan realizado aún ',
-    //         input: "text",
-    //         inputAttributes: {
-    //             autocapitalize: 'off',
-    //             placeholder: 'Nombre del tipo de clase'
-    //         },
-    //         showCancelButton: true,
-    //         cancelButtonText: 'Cancelar',
-    //         confirmButtonText: 'Eliminar!',
-    //         showLoaderOnConfirm: true,
-    //         preConfirm: (input) => {
-    //             if (input !== 'ELIMINAR') {
-    //                 Swal.showValidationMessage(
-    //                   `Palabra incorrecta`
-    //                 )
-    //             } else {  
-    //                 // var date = $("#input-date-day").val();
+    $('#sweet-confirm-clase-type-delete').click(function() {
+        Swal.fire({
+            title: '¿Esta seguro que quiere eliminar el tipo de clase?',
+            text: 'Para eliminar definitivamente por favor ingresa la palabra "ELIMINAR", en el campo de abajo',
+            input: "text",
+            inputAttributes: {
+                autocapitalize: 'off',
+                placeholder: 'Nombre del tipo de clase'
+            },
+            showCancelButton: true,
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Eliminar!',
+            showLoaderOnConfirm: true,
+            preConfirm: (input) => {
+                if (input !== 'ELIMINAR') {
+                    Swal.showValidationMessage(
+                      `Palabra incorrecta`
+                    )
+                } else {  
+                    var selected_clase = $('#type-clase-select').children("option:selected").val();
 
-    //                 // let remove_day_url = '{{ url('calendar/clases/delete') }}';
+					var confirm = 'hola';
 
-    //                 // return $.post(remove_day_url, { date: date })
-    //                 //     .fail(error => {
-    //                 //         Swal.showValidationMessage(
-    //                 //             `Algo ha fallado: ${error}`
-    //                 //         )
-    //                 //     })
-    //             }
+					if (selected_clase) {
+						$.ajax({
+						    url: "/clases-types/" + selected_clase,
+						    type: 'post',
+						    data: {
+						    	word_confirm: confirm,
+				            	_method: 'delete',
+						    	_token: $('meta[name=csrf-token]').attr("content")
+						    },
+						    success: function(result) {
+						    	new getAllClasesType();
+						    	toastr.success(result);
+						    }
+						});
+					}
+                }
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((response) => {
 
-
-	// var selected_clase = $('#type-clase-select').children("option:selected").val();
-
-	// var confirm = 'hola';
-
-	// if (selected_clase) {
-	// 	$.ajax({
-	// 	    url: "/clases-types/" + selected_clase,
-	// 	    type: 'post',
-	// 	    data: {
-	// 	    	word_confirm: confirm,
- //            	_method: 'delete',
-	// 	    	_token: $('meta[name=csrf-token]').attr("content")
-	// 	    },
-	// 	    success: function(result) {
-	// 	    	new getAllClasesType();
-	// 	    	toastr.success(result);
-	// 	    }
-	// 	});
-	// }
-
-
-    //         },
-    //         allowOutsideClick: () => !Swal.isLoading()
-    //     }).then((response) => {
-
-    //         if (response.value.success) {
-    //             Swal.fire({ 
-    //                 title: response.value.success,
-    //                 text: 'Presiona "OK" para recargar la página',
-    //                 confirmButtonText: 'OK!',
-    //             }).then(() => {
-    //                 // Refresh page
-    //                 location.reload();
-    //             })
-    //         }
+            if (response.value) {
+                Swal.fire({ 
+                    title: response.value.success,
+                    text: 'Presiona "OK" para recargar la página',
+                    confirmButtonText: 'OK!',
+                }).then(() => {
+                    /** Refresh the Actual Page */
+                    location.reload();
+                })
+            }
             
-    //     })
-    // });
+        })
+    });

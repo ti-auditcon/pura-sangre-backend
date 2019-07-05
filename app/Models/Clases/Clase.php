@@ -28,6 +28,78 @@ class Clase extends Model
     //     parent::boot();
     // }
 
+
+    /**
+     * [getReservationCountAttribute description]
+     * @return [type] [description]
+     */
+    public function getReservationCountAttribute()
+    {
+        return $this->hasMany(Reservation::class)->count();
+    }
+
+    /**
+     * [getStartAttribute description]
+     * @return [type] [description]
+     */
+    public function getStartAttribute()
+    {
+        if($this->block->date==null){
+        
+          return $this->date." ".$this->block->start;
+        
+        } else {
+        
+          return $this->block->start;
+        
+        }
+    }
+
+    /**
+     * [getEndAttribute description]
+     * @return [type] [description]
+     */
+    public function getEndAttribute()
+    {
+        if ($this->block->date == null) {
+        
+          return $this->date . " " . $this->block->end;
+        
+        } else {
+        
+          return $this->block->end;
+        
+        }
+    }
+
+    /**
+     * [getTitleAttribute description]
+     * @return [type] [description]
+     */
+    public function getTitleAttribute()
+    {
+        return '';
+    }
+
+    /**
+     * [getUrlAttribute description]
+     * @return [type] [description]
+     */
+    public function getUrlAttribute()
+    {
+        return url('clases/'.$this->id);
+    }
+
+    /**
+     * [getColorAttribute description]
+     * @return [type] [description]
+     */
+    public function getColorAttribute()
+    {
+        return $this->claseType->clase_color;
+    }
+
+
     /**
      * [reservations description]
      * @return [type] [description]
@@ -96,65 +168,4 @@ class Clase extends Model
         return $this->belongsTo(Block::class);
     }
 
-    /**
-     * [getReservationCountAttribute description]
-     * @return [type] [description]
-     */
-    public function getReservationCountAttribute()
-    {
-        return $this->hasMany(Reservation::class)->count();
-    }
-
-    /**
-     * [getStartAttribute description]
-     * @return [type] [description]
-     */
-    public function getStartAttribute()
-    {
-        if($this->block->date==null){
-          return $this->date." ".$this->block->start;
-        } else {
-          return $this->block->start;
-        }
-    }
-
-    /**
-     * [getEndAttribute description]
-     * @return [type] [description]
-     */
-    public function getEndAttribute()
-    {
-        if($this->block->date==null){
-          return $this->date." ".$this->block->end;
-        } else {
-          return $this->block->end;
-        }
-    }
-
-    /**
-     * [getTitleAttribute description]
-     * @return [type] [description]
-     */
-    public function getTitleAttribute()
-    {
-      return '';
-    }
-
-    /**
-     * [getUrlAttribute description]
-     * @return [type] [description]
-     */
-    public function getUrlAttribute()
-    {
-      return url('clases/'.$this->id);
-    }
-
-    /**
-     * [getColorAttribute description]
-     * @return [type] [description]
-     */
-    public function getColorAttribute()
-    {
-      return $this->claseType->clase_color;
-    }
 }

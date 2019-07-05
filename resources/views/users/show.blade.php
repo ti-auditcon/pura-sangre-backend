@@ -7,6 +7,12 @@
 @endsection
 
 @section('content')
+
+{{-- ///////////////////////////////////////////////////////////////// --}}
+{{--                                                                   --}}
+{{-- //                      HEADER USER INFO                        //--}}
+{{--                                                                   --}}
+{{-- ///////////////////////////////////////////////////////////////// --}}
 <div class="ibox flex-1">
     <div class="ibox-body">
         <div class="flexbox">
@@ -57,6 +63,12 @@
 </div>
 
 <div class="row justify-content-center">
+
+    {{-- ///////////////////////////////////////////////////////////////// --}}
+    {{--                                                                   --}}
+    {{-- //                      USER PERSONAL DATA                      //--}}
+    {{--                                                                   --}}
+    {{-- ///////////////////////////////////////////////////////////////// --}}
     <div class="col-12 col-xl-3">
         <div class="ibox">
             <div class="ibox-head d-flex">
@@ -124,6 +136,12 @@
     </div>
 
     <div class="col-12 col-xl-9">
+
+        {{-- ///////////////////////////////////////////////////////////////// --}}
+        {{--                                                                   --}}
+        {{-- //                      USER PLANS TABLE                        //--}}
+        {{--                                                                   --}}
+        {{-- ///////////////////////////////////////////////////////////////// --}}
         <div class="ibox">
             <div class="ibox-head">
                 <div class="ibox-title">Planes</div>
@@ -281,6 +299,11 @@
             </div>
         </div>
 
+        {{-- ///////////////////////////////////////////////////////////////// --}}
+        {{--                                                                   --}}
+        {{-- //                      PPROXIMAS CLASES                        //--}}
+        {{--                                                                   --}}
+        {{-- ///////////////////////////////////////////////////////////////// --}}
         @if ($user->future_reservs)
 
             <div class="ibox proximas-clases">
@@ -337,6 +360,11 @@
 
         @endif
 
+        {{-- ///////////////////////////////////////////////////////////////// --}}
+        {{--                                                                   --}}
+        {{-- //                         PAST RESERVS                         //--}}
+        {{--                                                                   --}}
+        {{-- ///////////////////////////////////////////////////////////////// --}}
         @if ($user->past_reservs)
             <div class="ibox clases-pasadas">
                 <div class="ibox-head">
@@ -393,11 +421,12 @@
                 </div>
             </div>
         @endif
+
     </div>
 </div>
 
 <!-- Modal para congelar plan -->
-@include('users.modals.freeze-plan', [])
+@include('users.modals.freeze-plan')
 <!-- END Modal para congelar plan -->
 
 @endsection
@@ -411,19 +440,20 @@
 
   <script>
 	$('.sweet-user-delete').click(function(e){
-	   var id = $(this).data('id');
-			swal({
-					title: "Desea eliminar al usuario: "+$(this).data('name')+"?",
-					text: "(Se borrarán todas las cuotas o planes futuros, manteniendo los ya consumidos)",
-					type: 'warning',
-					showCancelButton: true,
-					confirmButtonClass: 'btn-danger',
-					cancelButtonText: 'Cancelar',
-					confirmButtonText: 'Eliminar',
-					closeOnConfirm: false,
-			},function(){
-				//redirección para eliminar usuario
-         $('form.user-delete').submit();
+        var id = $(this).data('id');
+		
+        swal({
+			title: "Desea eliminar al usuario: "+$(this).data('name')+"?",
+			text: "(Se borrarán todas las cuotas o planes futuros, manteniendo los ya consumidos)",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonClass: 'btn-danger',
+			cancelButtonText: 'Cancelar',
+			confirmButtonText: 'Eliminar',
+			closeOnConfirm: false
+        },function(){
+			//redirección para eliminar usuario
+            $('form.user-delete').submit();
 		});
 	});
 	</script>
@@ -452,7 +482,7 @@
     });
 </script>
 
-  <script>
+<script>
   $('.sweet-user-plan-annul').click(function(e){
     var id = $(this).data('id');
       swal({
@@ -469,7 +499,7 @@
          $('form#annul'+id).submit();
       });
   });
-  </script>
+</script>
 
   {{-- ELIMINAR UN PLAN A UN USUARIO --}}
 <script>

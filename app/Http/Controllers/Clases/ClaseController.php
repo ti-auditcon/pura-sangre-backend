@@ -136,7 +136,8 @@ class ClaseController extends Controller
      * @param  [model] $clase [description]
      * @return [collection]        [description]
      */
-    public function outClass($clase){
+    public function outClass($clase) 
+    {
         $otro = Reservation::where('clase_id', $clase->id)->get();
         $consulta = User::whereNotIn('id', $otro->pluck('user_id'))->get();
         return $consulta;
@@ -147,9 +148,11 @@ class ClaseController extends Controller
      * @param  Request $request [description]
      * @return [type]           [description]
      */
-    public function typeSelect(Request $request){
-        Session::put('clases-type-id',$request->type);
-        Session::put('clases-type-name',ClaseType::find($request->type)->clase_type);
+    public function typeSelect(Request $request)
+    {
+        Session::put('clases-type-id', $request->type);
+
+        Session::put('clases-type-name', ClaseType::find($request->type)->clase_type);
 
         return Redirect::back();
     }
@@ -165,6 +168,7 @@ class ClaseController extends Controller
                                    ->orderBy('updated_at')
                                    ->orderBy('reservation_status_id')
                                    ->get();
+                                   
         return $reservations->map(function ($reserv) {
             return [
                 'alumno' => $reserv->user->first_name.' '.$reserv->user->last_name,

@@ -76,10 +76,8 @@ class ClaseTypeController extends Controller
      */
     public function destroy(ClaseType $clases_type)
     {
-        if ($clases_type->clase_type == request('word_confirm')) {
-            $clases_type->delete();
+        $clases_type->delete();
         
-            return response()->json('Tipo de clase eliminada correctamente', 201);
-        }
+        return response()->json('Tipo de clase eliminada correctamente', 201);
     }
 }

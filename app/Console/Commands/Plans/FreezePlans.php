@@ -4,6 +4,7 @@ namespace App\Console\Commands\Plans;
 
 use App\Models\Plans\PlanUser;
 use Illuminate\Console\Command;
+use App\Models\Plans\PlanStatus;
 use App\Models\Plans\PostponePlan;
 
 class FreezePlans extends Command
@@ -45,8 +46,12 @@ class FreezePlans extends Command
 
                                    ->toArray();
 
-        $plans = PlanUser::whereIn('id', array_values($today_plans))
+        $plans_to_freeze = PlanUser::whereIn('id', array_values($today_plans))->get();
 
-                         ->update(['plan_status_id' => PlanStatus::INACTIVO]);
+        foreach ($plans_to_freeze as $plan) {
+            
+            $plan->update(['plan_status_id' => PlanStatus::INACTIVO]);
+        
+        }
     }
 }

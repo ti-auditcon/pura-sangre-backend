@@ -127,4 +127,11 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('notifications', 'Messages\NotificationController@index')->middleware('role:1')->name('messages.notifications');
     
     Route::post('notifications', 'Messages\NotificationController@store')->middleware('role:1');
+
+    /**
+     *  Parameters Routes
+     */
+    Route::resource('density-parameters', 'Settings\DensityParameterController')->only('index', 'store');
+    
+    Route::get('/configurations/config-options', 'Settings\DensityParameterController@configOptions')->name('parameters.options');
 });

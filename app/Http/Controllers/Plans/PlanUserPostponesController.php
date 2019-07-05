@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Plans;
 
+use Session;
+use Carbon\Carbon;
+use App\Models\Users\User;
+use Illuminate\Http\Request;
+use App\Models\Plans\PlanUser;
+use App\Models\Plans\PlanStatus;
+use App\Models\Plans\PostponePlan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Plans\PostponePlanRequest;
-use App\Models\Plans\PlanStatus;
-use App\Models\Plans\PlanUser;
-use App\Models\Plans\PostponePlan;
-use App\Models\Users\User;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Session;
 
 class PlanUserPostponesController extends Controller
 {
@@ -27,12 +27,16 @@ class PlanUserPostponesController extends Controller
         $finish = Carbon::parse($request->end_freeze_date);
 
         PostponePlan::create([
+
             'plan_user_id' => $plan_user->id,
+
             'start_date' => $start,
+
             'finish_date' => $finish
+
         ]);
 
-        $diff_in_days = $start->diffInDays($finish) + 1; 
+        $diff_in_days = $start->diffInDays($finish) + 1;
         
         $planes_posteriores = $plan_user->user->plan_users->where('start_date', '>', $plan_user->start_date)
                                                           ->where('id', '!=', $plan_user->id)
@@ -40,17 +44,24 @@ class PlanUserPostponesController extends Controller
 
         foreach ($planes_posteriores as $plan) {
             $plan->update([
+            
                 'start_date' =>$plan->start_date->addDays($diff_in_days),
+            
                 'finish_date' => $plan->finish_date->addDays($diff_in_days)
+            
             ]);
         }
 
         $plan_user->update([
+            
             'plan_status_id' => $start->isToday() ? 2 : $plan_user->plan_status_id,
+            
             'finish_date' => $plan_user->finish_date->addDays($diff_in_days)
+        
         ]);
 
         Session::flash('success', 'Plan Congelado Correctamente');
+        
         return back();
     }
 
@@ -63,7 +74,9 @@ class PlanUserPostponesController extends Controller
     public function destroy(PlanUser $plan_user, PostponePlan $postpone)
     {
         $plan_user->update([
+            
             'plan_status_id' => PlanStatus::ACTIVO
+        
         ]);
 
         $postpone->delete();
@@ -72,17 +85,3 @@ class PlanUserPostponesController extends Controller
                  ->with('success', 'Plan reanudado correctamente');
     }
 }
-
-    // Cambiar la fecha de termino del plan con la nueva de acuerdo a los días que se corrieron
-    // $first_try = $plan_user->update([
-    //     'plan_status_id' => 2,
-    //     'finish_date' => $plan_user->finish_date->addDays($diff_in_days)
-    // ]);
-
-    // $diff_in_days_plan = $plan_que_choca->start_date->diffInDays($plan_user->finish_date->addDays($diff_in_days));
-
-    // $plan_que_choca->start_date->addDays($diff_in_days_plan + 1); 
-    
-    // $plan_que_choca->finish_date->addDays($diff_in_days_plan + 1);
-
-    // $plan_que_choca->save();

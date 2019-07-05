@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Plans;
 
+use App\Models\Plans\PostponePlan;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PostponePlanRequest extends FormRequest
@@ -23,8 +24,11 @@ class PostponePlanRequest extends FormRequest
      */
     public function rules()
     {
+        // if (! PostponePlan::first()) {
+        //     return redirect('blocks')->with('error', 'No se puede eliminar');
+        // }
         return [
-            'start_freeze_date' => 'required|before_or_equal:end_freeze_date',
+            'start_freeze_date' => 'required | before_or_equal:end_freeze_date',
             'end_freeze_date' => 'required'
         ];
     }
