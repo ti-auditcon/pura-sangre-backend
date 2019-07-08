@@ -131,6 +131,8 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     /**
      *  Parameters Routes
      */
+    Route::get('json-density-parameters', 'Settings\DensityParameterController@clasesDensities');
+
     Route::resource('density-parameters', 'Settings\DensityParameterController')->only('index', 'store');
     
     Route::get('/configurations/config-options', 'Settings\DensityParameterController@configOptions')->name('parameters.options');

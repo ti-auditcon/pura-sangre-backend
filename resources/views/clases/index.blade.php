@@ -30,16 +30,6 @@
                         <i class="la la-trash-o"></i>
                         Eliminar un día
                     </button>
-
-{{--                     <button
-                        id="button-new-clase-modal"
-                        class="btn btn-info"
-                        data-toggle="modal"
-                        data-target="#new-clase-modal"
-                    >
-                        <i class="la la-calendar-o"></i>
-                        Agregar una Clase
-                    </button> --}}
             
                     <a class="btn btn-primary" href="{{ route('wods.create') }}">Asignar Workout</a>
             
@@ -129,6 +119,7 @@
         .fc-axis.fc-widget-content{width:51px !important;}
         .fc-scroller.fc-time-grid-container{height:100% !important;}
         .fc-time-grid.fc-event-container {left:10px}
+        .closeon { float: right; }
     </style>
 
 @endsection
@@ -151,60 +142,82 @@
   
 {{-- <script src="{{ asset('js/jquery.easypiechart.min') }}"></script> --}}
 
+<script>
+    var densities = [];
+    $.get( "json-density-parameters", function(response) {
+        response.forEach(function (e) {
+            densities.push(e);
+        });        // response.
+    }).done(() => {
+        console.log(densities);
+    });
+</script>
 
 <script defer>
     $(document).ready(function() {
         $('#calendar').fullCalendar({
-          header: {
-              right:  'today prev,next',
-          },
-          minTime: "07:00:00",
-          maxTime: "22:00:00",
-          editable: false,
+            header: {
+                right:  'today prev,next',
+            },
+            minTime: "07:00:00",
+            maxTime: "22:00:00",
+            editable: false,
+            defaultView: 'agendaWeek',
+            // allDaySlot: false,
+            slotDuration: '00:30:00',
+            slotLabelFormat: 'h(:mm)a',
+            hiddenDays: [0],
+            // eventColor: '#4c6c8b',
+            eventRender: function( event, element, view ) {
+                let percent = (event.reservation_count * 100) / event.quota;
+                let colorPercentage = null;
+                densities.forEach(function (density) {
+                    if (percent <= density.percentage) {
+                        colorPercentage = density.color;
+                    }
+                });
 
-          defaultView: 'agendaWeek',
-          // allDaySlot: false,
-          slotDuration: '00:30:00',
-          slotLabelFormat: 'h(:mm)a',
-          hiddenDays: [0],
-          eventColor: '#4c6c8b',
-          eventRender: function( event, element, view ) {
-            element.find('.fc-time').append('<div> reservas: ' +event.reservation_count+'/'+event.quota+'</div> ');
-          },
-          viewRender: function (view, element,start,end) {
+                element.find('.fc-time').append(
+                    '<div> reservas: ' + event.reservation_count +'/' +event.quota + '</div> ' +
+                    '<span class="closeon text-' + colorPercentage + '">&#10005;</span>');
+            },
+            viewRender: function (view, element, start, end) {
+                var b = $('#calendar').fullCalendar('getDate');
+                // console.log(b.startOf('week').format('Y-M-D'));
+                $('#calendar').fullCalendar( 'removeEventSources');
+                //alert(b.format('Y-M-D'));
 
-             var b = $('#calendar').fullCalendar('getDate');
-             // console.log(b.startOf('week').format('Y-M-D'));
-             $('#calendar').fullCalendar( 'removeEventSources');
-             //alert(b.format('Y-M-D'));
+                // Add classes events to Calendar of the Week 
+                $('#calendar').fullCalendar('addEventSource', {
+                    url: '/get-clases?datestart='+b.startOf('week').format('Y-M-D')+'&dateend='+b.endOf('week').format('Y-M-D'),
+                    textColor: 'black',
+                });
 
-            $('#calendar').fullCalendar( 'addEventSource',
-             {
-               url: '/get-clases?datestart='+b.startOf('week').format('Y-M-D')+'&dateend='+b.endOf('week').format('Y-M-D'), // use the `url` property
-               textColor: 'black'  // an option!
-             }
-            );
-            $('#calendar').fullCalendar( 'addEventSource',
-              {
-                url: '/get-wods?datestart='+b.startOf('week').format('Y-M-D')+'&dateend='+b.endOf('week').format('Y-M-D'), // use the `url` property
-                color: 'yellow',    // an option!
-                textColor: 'black'  // an option!
-              }
+                // Add all the Workouts of the Day for the Calendar of the Week 
+                $('#calendar').fullCalendar( 'addEventSource', {
+                    url: '/get-wods?datestart='+b.startOf('week').format('Y-M-D')+'&dateend='+b.endOf('week').format('Y-M-D'), // use the `url` property
+                    color: 'yellow',    // an option!
+                    textColor: 'black'  // an option!
+                });
 
-            );
-            //$('#calendar-spinner').addClass('d-none');
-          },
-          // loading: function (bool) {
-          //    $('#calendar-spinner').removeClass('d-none');// Add your script to show loading
-          // },
-          // eventAfterAllRender: function (view) {
-          //   console.log('listo');
-          //   $('#calendar-spinner').addClass('d-none');
-          //   $('#calendar-spinner').addClass('d-none'); // remove your loading
-          // }
-          // eventClick: function(calEvent, jsEvent, view) {
-          //   $('#clase-resume').modal();
-          // },
+                // $('#calendar').fullCalendar( 'addEventSource', {
+                //     url: '/get-clases?datestart='+b.startOf('week').format('Y-M-D')+'&dateend='+b.endOf('week').format('Y-M-D'),
+                // });
+
+                //$('#calendar-spinner').addClass('d-none');
+            },
+          
+            // loading: function (bool) {
+            //    $('#calendar-spinner').removeClass('d-none');// Add your script to show loading
+            // },
+            // eventAfterAllRender: function (view) {
+            //   console.log('listo');
+            //   $('#calendar-spinner').addClass('d-none');
+            //   $('#calendar-spinner').addClass('d-none'); // remove your loading
+            // }
+            // eventClick: function(calEvent, jsEvent, view) {
+            //   $('#clase-resume').modal();
+            // },
         });
     });
 </script>

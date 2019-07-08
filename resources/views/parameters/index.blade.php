@@ -43,7 +43,7 @@
                                         <td>{{ ucfirst($density->level) }}</td>
                                         
                                         <td>
-                                            <div class="d-flex align-items-center mr-5">
+                                            <div class="d-flex align-items-center">
                                                 <input
                                                     type="number"
                                                     name="{{ $density->level }}"
