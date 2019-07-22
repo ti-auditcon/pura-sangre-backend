@@ -176,10 +176,10 @@
                         colorPercentage = density.color;
                     }
                 });
-
+ // +
+ //                    '<span class="closeon text-' + colorPercentage + '">&#10005;</span>'
                 element.find('.fc-time').append(
-                    '<div> reservas: ' + event.reservation_count +'/' +event.quota + '</div> ' +
-                    '<span class="closeon text-' + colorPercentage + '">&#10005;</span>');
+                    '<div> reservas: ' + event.reservation_count +'/' +event.quota + '</div> ');
             },
             viewRender: function (view, element, start, end) {
                 var b = $('#calendar').fullCalendar('getDate');
