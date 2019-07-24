@@ -407,7 +407,7 @@
 	<script src="{{ asset('js/jquery.multi-select.js') }}"></script>
 	
 	{{-- PuraSangre customized javascripts --}}
-	<script src="{{ asset('js/purasangreJS/ClasesTypes.js') }}"></script>
+	<script src="{{ asset('js/purasangre-js/clases-types.js') }}"></script>
 
 	<script src="{{ asset('js/sweetalert2.8.js') }}"></script>
 
