@@ -117,7 +117,7 @@ class HomeController extends Controller
                          ->where('plan_user.plan_id', '!=', 1)
                          ->where('plan_user.finish_date', '<', today())
                          ->orderByDesc('finish_date')
-                         ->select('users.first_name', 'users.last_name', 'plans.plan', 'plan_user.finish_date', 'users.phone')
+                         ->select('users.id', 'users.first_name', 'users.last_name', 'plans.plan', 'plan_user.finish_date', 'users.phone')
                          ->take(8)
                          ->get();
 
@@ -127,7 +127,7 @@ class HomeController extends Controller
         
         if ($users) {
             foreach ($users as $user) {
-                $nestedData['first_name'] = $user->first_name . ' ' . $user->last_name;
+                $nestedData['first_name'] = '<a href="'.url("/users/{$user->id}").'">'. $user->first_name . ' ' . $user->last_name.'</a>';
                 $nestedData['plan'] = $user->plan;
                 $nestedData['date'] = $user->finish_date->format('d-m-Y');
                 $nestedData['phone'] = $user->phone;
