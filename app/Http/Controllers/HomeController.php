@@ -15,6 +15,7 @@ use App\Models\Plans\PlanIncomeSummary;
 class HomeController extends Controller
 {
     use ExpiredPlans;
+
     /**
      * Create a new controller instance.
      *
@@ -36,9 +37,9 @@ class HomeController extends Controller
             Session::put('clases-type-id', 1);
             Session::put('clases-type-name', ClaseType::find(1)->clase_type);
         }
+
         $plan_users = $this->expiredNext();
-        $expired_plans = $this->ExpiredPlan();
-        return view('home')->with('plan_users', $plan_users)->with('expired_plans', $expired_plans);
+        return view('home')->with('plan_users', $plan_users);
     }
 
     public function expiredNext()
@@ -46,6 +47,7 @@ class HomeController extends Controller
         $plan_users = PlanUser::where('plan_status_id', 1)
             ->where('finish_date', '>=', now())
             ->orderBy('finish_date')
+            ->take(10)
             ->get();
 
         return $plan_users->map(function ($plan) {
@@ -59,68 +61,170 @@ class HomeController extends Controller
         });
     }
 
-    public function ExpiredPlan()
+    // public function ExpiredPlan()
+    // {
+    //     $expired_plans = collect(new PlanUser);
+    //     foreach (User::all() as $user) {
+    //         if ($user->status_user_id = 2) {
+    //             $plan_user = $user->plan_users->whereIn('plan_status_id', [3, 4])
+    //                                           ->where('plan_id', '!=', 1)
+    //                                           ->where('finish_date', '<', today())
+    //                                           ->sortByDesc('finish_date')
+    //                                           ->first();
+
+    //             if ($plan_user) {
+    //                 $expired_plans->push($plan_user);
+    //             }
+    //         }
+    //     }
+
+    //     $expired_plans->sortByDesc('finish_date')->take(10);
+
+    //     return $expired_plans->map(function ($plan) {
+    //         return [
+    //             'user_id' => isset($plan->user) ? $plan->user->id : '',
+    //             'alumno' => isset($plan->user) ? $plan->user->first_name . ' ' . $plan->user->last_name : '',
+    //             'plan' => isset($plan->plan) ? $plan->plan->plan : '',
+    //             'fecha_termino' => Carbon::parse($plan->finish_date)->diffForHumans(),
+    //             'telefono' => isset($plan->user) ? $plan->user->phone : '',
+    //         ];
+    //     });
+
+    //     return $expired_plans;
+    // }
+
+    /**
+     * Get expired plans
+     * 
+     * @param  Request $request [description]
+     * @return json
+     */
+    public function ExpiredPlan(Request $request)
     {
-        $expired_plans = collect(new PlanUser);
-        foreach (User::all() as $user) {
-            if (!$user->actual_plan) {
-                $plan_user = $user->plan_users->whereIn('plan_status_id', [3, 4])
-                    ->where('plan_id', '!=', 1)
-                    ->where('finish_date', '<', today())
-                    ->sortByDesc('finish_date')
-                    ->first();
-                if ($plan_user) {
-                    $expired_plans->push($plan_user);
-                }
+        $columns = array(
+            0 => 'users.first_name',
+            1 => 'plans.plan',
+            2 => 'users.date',
+            3 => 'users.phone'
+        );
+        
+        $totalData = User::count();
+        
+        $limit = $request->input('length');
+        
+        $start = $request->input('start');
+        
+        $order = $columns[$request->input('order.0.column')];
+        
+        $dir = $request->input('order.0.dir');
+
+        $users = User::join('plan_user', 'users.id', '=', 'plan_user.user_id')
+                     ->join('plans', 'plan_user.plan_id', '=', 'plans.id')
+                     ->offset($start)
+                     ->limit($limit)
+                     ->whereIn('plan_user.plan_status_id', [3, 4])
+                     ->where('plan_user.plan_id', '!=', 1)
+                     ->where('plan_user.finish_date', '<', today())
+                     ->orderBy($order, $dir)
+                     ->select('users.fullName', 'plans.plan', 'plan_user.date', 'users.phone')
+                     ->get();
+
+        $totalFiltered = User::count(); 
+
+        $data = array();
+        
+        if ($users) {
+            foreach ($users as $user) {
+                $nestedData['user_id'] = $user->id;
+                $nestedData['alumno'] = $user->fullName;
+                $nestedData['plan'] = $user->plan->plan;
+                $nestedData['fecha_termino'] = $user->plan_user->date;
+                $nestedData['telefono'] = $user->phone;
+
+                $data[] = $nestedData;
             }
         }
-
-        return $expired_plans->sortByDesc('finish_date')->map(function ($plan) {
-            return [
-                'user_id' => isset($plan->user) ? $plan->user->id : '',
-                'alumno' => isset($plan->user) ? $plan->user->first_name . ' ' . $plan->user->last_name : '',
-                'plan' => isset($plan->plan) ? $plan->plan->plan : '',
-                'fecha_termino' => Carbon::parse($plan->finish_date)->diffForHumans(),
-                'telefono' => isset($plan->user) ? $plan->user->phone : '',
-            ];
-        });
-
-        // return $expired_plans;
+        
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),
+            "recordsTotal"    => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data"            => $data
+        );
+        
+        echo json_encode($json_data);
     }
 
+    /**
+     * [withoutrenewal description]
+     * @return [type] [description]
+     */
     public function withoutrenewal()
     {
-        $inactives = 0;
-        foreach (User::all() as $user) {
-            if (!$user->actual_plan) {
-                $inactives += 1;
-            }
-        }
-        $actives = 0;
-        $tests = 0;
-        foreach (User::all() as $user) {
-            if ($user->actual_plan) {
-                if ($user->status_user_id === 3) {
-                    $tests += 1;
-                } else {
+        $users = User::all();
+        $inactives = $actives = $tests = 0; 
+        $women = $men = 0;
+        foreach ($users as $user) {
+            switch ($user->status_user_id) {
+                case 1:
                     $actives += 1;
-                }
+                    if ($user->gender == 'hombre') {
+                        $men += 1;
+                    } else {
+                        $women += 1;
+                    }
+                    break;
+
+                case 2:
+                    $inactives += 1;
+                    if ($user->gender == 'hombre') {
+                        $men += 1;
+                    } else {
+                        $women += 1;
+                    }
+                    break;
+
+                case 3:
+                    $tests += 1;
+                    if ($user->gender == 'hombre') {
+                        $men += 1;
+                    } else {
+                        $women += 1;
+                    }
+                    break;
+                
+                default:
+                    break;
             }
         }
-        $no_renoval = array_merge(['actives' => $actives, 'inactives' => $inactives, 'tests' => $tests]);
-        echo json_encode($no_renoval);
+        $data = array_merge([
+            'mujeres' => $women,
+            'hombres' => $men,
+            'actives' => $actives,
+            'inactives' => $inactives,
+            'tests' => $tests
+        ]);
+
+        return response()->json($data);
     }
 
     public function genders()
     {
-        $women = 0;
-        $men = 0;
+
         foreach (User::all() as $user) {
-            if ($user->gender == 'hombre' && $user->actual_plan) {
-                $men += 1;
-            } elseif ($user->gender == 'mujer' && $user->actual_plan) {
-                $women += 1;
+            if ($user->actual_plan) {
+                if ($user->gender == 'hombre') {
+                    $men += 1;
+                }
+                if ($user->gender == 'mujer') {
+                    $women += 1;
+                }
             }
+            // if ($user->gender == 'hombre' && $user->actual_plan) {
+                
+            // } elseif ( && $user->actual_plan) {
+                
+            // }
         }
         $genders = array_merge(['mujeres' => $women, 'hombres' => $men]);
         echo json_encode($genders);

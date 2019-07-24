@@ -74,10 +74,10 @@
                         <tbody>
                            @foreach ($plan_users->take(5) as $pu)
                            <tr>
-                              <td><a href="{{url('/users/'.$pu['user_id'])}}">{{$pu['alumno']}}</a></td>
-                              <td>{{$pu['plan']}}</td>
-                              <td>{{$pu['fecha_termino']}}</td>
-                              <td>{{$pu['telefono']}}</td>
+                              <td><a href="{{ url('/users/'.$pu['user_id']) }}">{{ $pu['alumno'] }}</a></td>
+                              <td>{{ $pu['plan'] }}</td>
+                              <td>{{ $pu['fecha_termino'] }}</td>
+                              <td>{{ $pu['telefono'] }}</td>
                            </tr>
                            @endforeach
                         </tbody>
@@ -102,14 +102,14 @@
                          </tr>
                       </thead>
                       <tbody>
-                         @foreach ($expired_plans->take(5) as $expired_plan)
-                         <tr>
-                            <td><a href="{{url('/users/'.$expired_plan['user_id'])}}">{{$expired_plan['alumno']}}</a></td>
-                            <td>{{$expired_plan['plan']}}</td>
-                            <td>{{$expired_plan['fecha_termino']}}</td>
-                            <td>{{$expired_plan['telefono']}}</td>
-                         </tr>
-                         @endforeach
+                       {{--   @foreach ($expired_plans->take(5) as $expired_plan)
+                           <tr>
+                              <td><a href="{{url('/users/'.$expired_plan['user_id'])}}">{{$expired_plan['alumno']}}</a></td>
+                              <td>{{$expired_plan['plan']}}</td>
+                              <td>{{$expired_plan['fecha_termino']}}</td>
+                              <td>{{$expired_plan['telefono']}}</td>
+                           </tr>
+                         @endforeach --}}
                       </tbody>
                    </table>
                </div>
@@ -138,10 +138,13 @@
 
 @section('scripts') {{-- scripts para esta vista --}}
 	{{--  datatable --}}
-  <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
-  <script src="{{ asset('js/moment.min.js') }}"></script>
-	  <script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
-  <script src="{{ asset('js/fullcalendar/lang/es.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+    
+    <script src="{{ asset('js/moment.min.js') }}"></script>
+	
+    <script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
+    
+    <script src="{{ asset('js/fullcalendar/lang/es.js') }}"></script>
 
   <script defer>
     $(document).ready(function() {
@@ -163,84 +166,93 @@
             element.find('.fc-time').append('<div> reservas: ' +event.reservation_count+'/'+event.quota+'</div> ');
           },
           viewRender: function (view, element,start,end) {
-             var b = $('#calendar').fullCalendar('getDate');
-             console.log(b.startOf('week').format('Y-M-D'));
+             // var b = $('#calendar').fullCalendar('getDate');
              $('#calendar').fullCalendar( 'removeEventSources');
-             //alert(b.format('Y-M-D'));
 
             $('#calendar').fullCalendar( 'addEventSource',
              {
-               url: '/get-clases?datestart='+b.startOf('week').format('Y-M-D')+'&dateend='+b.endOf('week').format('Y-M-D'), // use the `url` property
+               url: '/get-clases?datestart='+moment().startOf('day').format('Y-M-D')+'&dateend='+moment().startOf('day').format('Y-M-D'), // use the `url` property
                textColor: 'black'  // an option!
              }
             );
             $('#calendar').fullCalendar( 'addEventSource',
               {
-                url: '/get-wods?datestart='+b.startOf('week').format('Y-M-D')+'&dateend='+b.endOf('week').format('Y-M-D'), // use the `url` property
+                url: '/get-wods?datestart='+moment().startOf('day').format('Y-M-D')+'&dateend='+moment().startOf('day').format('Y-M-D'), // use the `url` property
                 color: 'yellow',    // an option!
                 textColor: 'black'  // an option!
               }
             );
           },
-          // eventClick: function(calEvent, jsEvent, view) {
-          //   $('#clase-resume').modal();
-          // },
         });
     });
   </script>
 
-  <script src="{{ asset('js/Chart.min.js') }}"></script>
+  {{-- <script src="{{ asset('js/Chart.min.js') }}"></script> --}}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.7.1/dist/Chart.min.js"></script>
 
-  <script>
-   var uri = "{{url('withoutrenewal')}}";
-   $(document).ready(function(){
-      $.get(uri, function(respuesta){
-      var chartdata = {
-         labels: ["Activos", "Inactivos", "Prueba"],
-         datasets: [{
-            data: [JSON.parse(respuesta).actives, JSON.parse(respuesta).inactives, JSON.parse(respuesta).tests],
-            backgroundColor: ["#009900", "#9EB1D1", "#F49D36"]
-         }]
-      } ;
-       var doughnutOptions = {
-              responsive: true
-          };
+<script>
+    var uri = "{{ url('withoutrenewal') }}";
+    
+    $(document).ready(function(){
+        $.get(uri, function(respuesta){
+            var chartdata = {
+                labels: ["Activos", "Inactivos", "Prueba"],
+                datasets: [{
+                    data: [
+                        respuesta.actives,
+                        respuesta.inactives,
+                        respuesta.tests
+                    ],
+                    backgroundColor: ["#009900", "#9EB1D1", "#F49D36"]
+                }]
+            };
 
-      var ctx4 = document.getElementById("renewal-chart").getContext("2d");
-       new Chart(ctx4, {type: 'doughnut', data: chartdata, options:doughnutOptions});
+            var doughnutOptions = {
+                responsive: true
+            };
 
-
-      });
-   });
+            var ctx4 = document.getElementById("renewal-chart").getContext("2d");
+            new Chart(ctx4, {type: 'doughnut', data: chartdata, options:doughnutOptions});
+        });
+    });
   </script>
 
-   <script>
-   var url = "{{url('genders')}}";
-   $(document).ready(function(){
-      $.get(url, function(respuesta){
-      var chartdata = {
-         labels: ["Mujeres", "Hombres"],
-         datasets: [{
-            data: [JSON.parse(respuesta).mujeres, JSON.parse(respuesta).hombres],
-            backgroundColor: ["#E74694", "#1F87EF"]
-         }]
-      } ;
-      var doughnutOptions = {
-         responsive: true,
-         rotation: -Math.PI,
-         cutoutPercentage: 30,
-         circumference: Math.PI,
-         legend: {
-            position: 'right'
-        }
-      };
-      var ctx4 = document.getElementById("gender-chart").getContext("2d");
-      new Chart(ctx4, {type: 'doughnut', data: chartdata, options:doughnutOptions});
-      var crossfiteros = JSON.parse(respuesta).mujeres + JSON.parse(respuesta).hombres;
-      $('#my-label').html(crossfiteros + " crossfiteros");
-      });
-   });
-  </script>
+<script>
+    var url = "{{ url('withoutrenewal') }}";
+    
+    $(document).ready(function(){
+        $.get(url, function(respuesta){
+            var chartdata = {
+                labels: ["Mujeres", "Hombres"],
+                datasets: [{
+                    data: [
+                        respuesta.mujeres, 
+                        respuesta.hombres
+                    ],
+                    backgroundColor: ["#E74694", "#1F87EF"]
+                }]
+            };
+            
+            var doughnutOptions = {
+                responsive: true,
+                rotation: -Math.PI,
+                cutoutPercentage: 30,
+                circumference: Math.PI,
+                legend: {
+                    position: 'right'
+                }
+            };
+
+            var ctx4 = document.getElementById("gender-chart").getContext("2d");
+            
+            new Chart(ctx4, {type: 'doughnut', data: chartdata, options:doughnutOptions});
+      
+            var crossfiteros = JSON.parse(respuesta).mujeres + JSON.parse(respuesta).hombres;
+      
+            $('#my-label').html(crossfiteros + " crossfiteros");
+        });
+    });
+</script>
 
   <script>
 
@@ -272,5 +284,47 @@ $(document).ready(function(){
 
 
 </script>
+
+  <script src="{{ asset('js/datatables.min.js') }}"></script>
+  <script>
+
+      $('#payments-table').DataTable({
+         "processing": true,
+         "serverSide": true,
+         "order": [[ 0, "desc" ]],
+         "ajax": {
+            "url": "<?= route('expiredplans') ?>",
+            "dataType": "json",
+            "type": "POST",
+            "data": {"_token": "<?= csrf_token() ?>"}
+         },
+         "language": {
+               "loadingRecords": "Cargando datos...",
+               "processing": "Cargando datos...",
+               "lengthMenu": "Mostrar _MENU_ elementos",
+               "zeroRecords": "Sin resultados",
+               "info": "Mostrando página _PAGE_ de _PAGES_",
+               "infoEmpty": "Sin resultados",
+               "infoFiltered": "(filtrado de _MAX_ registros totales)",
+               "search": "Filtrar:",
+               "paginate": {
+                  "first":      "Primero",
+                  "last":       "último",
+                  "next":       "Siguiente",
+                  "previous":   "Anterior"
+               },
+            },
+         "columns":[
+            {"data": "fecha_registro"},
+            {"data": "alumno"},
+            {"data": "plan"}, 
+            {"data": "date"},
+            {"data": "start_date"},
+            {"data": "finish_date"},
+            {"data": "amount"},
+         ]
+    } );
+
+   </script> 
 
 @endsection
