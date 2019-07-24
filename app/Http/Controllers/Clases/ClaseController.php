@@ -38,8 +38,8 @@ class ClaseController extends Controller
     public function clases(Request $request)
     {
         $clases = Clase::where('clase_type_id', Session::get('clases-type-id'))
-                       ->where('date','>=',$request->datestart)
-                       ->where('date','<=',$request->dateend)
+                       ->where('date', '>=', $request->datestart)
+                       ->where('date', '<=', $request->dateend)
                        ->get();
 
         return response()->json($clases, 200);

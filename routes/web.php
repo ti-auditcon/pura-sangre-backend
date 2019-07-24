@@ -9,6 +9,7 @@ Route::get('/incomes-summary', 'HomeController@incomessummary');
 Route::get('/success-reset-password', function () {
     return view('guest.success-reset-password');
 });
+Route::post('expired-plans', 'HomeController@ExpiredPlan')->name('expiredplans');
 
 Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('update-reservations-plans', 'Users\UserController@putIdPlan')->middleware('role:1');
