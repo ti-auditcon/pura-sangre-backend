@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
+use Illuminate\Http\Request;
 use App\Traits\ExpiredPlans;
 use App\Models\Plans\PlanUser;
 use App\Models\Clases\ClaseType;
@@ -61,6 +62,11 @@ class HomeController extends Controller
         });
     }
 
+    public function ExpiredPlan()
+    {
+        $this->ExpiredPlan();
+    }
+
     // public function ExpiredPlan()
     // {
     //     $expired_plans = collect(new PlanUser);
@@ -93,67 +99,63 @@ class HomeController extends Controller
     //     return $expired_plans;
     // }
 
-    /**
-     * Get expired plans
-     * 
-     * @param  Request $request [description]
-     * @return json
-     */
-    public function ExpiredPlan(Request $request)
-    {
-        $columns = array(
-            0 => 'users.first_name',
-            1 => 'plans.plan',
-            2 => 'users.date',
-            3 => 'users.phone'
-        );
+    // /**
+    //  * Get expired plans
+    //  * 
+    //  * @param  Request $request [description]
+    //  * @return json
+    //  */
+    // public function ExpiredPlan(Request $request)
+    // {
+    //     $columns = array(
+    //         0 => 'users.first_name',
+    //         1 => 'plans.plan',
+    //         2 => 'users.date',
+    //         3 => 'users.phone'
+    //     );
         
-        $totalData = User::count();
+    //     $totalData = User::count();
         
-        $limit = $request->input('length');
+    //     $order = $columns[$request->input('order.0.column')];
         
-        $start = $request->input('start');
-        
-        $order = $columns[$request->input('order.0.column')];
-        
-        $dir = $request->input('order.0.dir');
+    //     $dir = $request->input('order.0.dir');
 
-        $users = User::join('plan_user', 'users.id', '=', 'plan_user.user_id')
-                     ->join('plans', 'plan_user.plan_id', '=', 'plans.id')
-                     ->offset($start)
-                     ->limit($limit)
-                     ->whereIn('plan_user.plan_status_id', [3, 4])
-                     ->where('plan_user.plan_id', '!=', 1)
-                     ->where('plan_user.finish_date', '<', today())
-                     ->orderBy($order, $dir)
-                     ->select('users.fullName', 'plans.plan', 'plan_user.date', 'users.phone')
-                     ->get();
+    //     $users = User::join('plan_user', 'users.id', '=', 'plan_user.user_id')
+    //                  ->join('plans', 'plan_user.plan_id', '=', 'plans.id')
+    //                  ->offset(0)
+    //                  ->limit(8)
+    //                  ->whereIn('plan_user.plan_status_id', [3, 4])
+    //                  ->where('plan_user.plan_id', '!=', 1)
+    //                  ->where('plan_user.finish_date', '<', today())
+    //                  ->orderBy($order, $dir)
+    //                  ->select('users.first_name', 'users.last_name', 'plans.plan', 'plan_user.finish_date', 'users.phone')
+    //                  ->get();
 
-        $totalFiltered = User::count(); 
+    //     $totalFiltered = User::count(); 
 
-        $data = array();
+    //     $data = array();
         
-        if ($users) {
-            foreach ($users as $user) {
-                $nestedData['user_id'] = $user->id;
-                $nestedData['alumno'] = $user->fullName;
-                $nestedData['plan'] = $user->plan->plan;
-                $nestedData['fecha_termino'] = $user->plan_user->date;
-                $nestedData['telefono'] = $user->phone;
+    //     if ($users) {
+    //         foreach ($users as $user) {
+    //             // dd($user);
+    //             $nestedData['first_name'] = $user->first_name . ' ' . $user->last_name;
+    //             $nestedData['plan'] = $user->plan;
+    //             $nestedData['date'] = $user->finish_date;
+    //             $nestedData['phone'] = $user->phone;
 
-                $data[] = $nestedData;
-            }
-        }
+    //             $data[] = $nestedData;
+    //         }
+    //     }
         
-        $json_data = array(
-            "draw"            => intval($request->input('draw')),
-            "recordsTotal"    => intval($totalData),
-            "recordsFiltered" => intval($totalFiltered),
-            "data"            => $data
-        );
+    //     $json_data = array(
+    //         "draw"            => intval($request->input('draw')),
+    //         "recordsTotal"    => intval($totalData),
+    //         "recordsFiltered" => intval($totalFiltered),
+    //         "data"            => $data
+    //     );
         
-        echo json_encode($json_data);
-    }
+    //     echo json_encode($json_data);
+    // }
 
     /**
      * [withoutrenewal description]

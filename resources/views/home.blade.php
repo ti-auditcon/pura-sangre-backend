@@ -90,7 +90,7 @@
                   <div class="ibox-title">Alumnos recientemente inactivos</div>
                </div>
                <div class="ibox-body">
-                   <table id="students-table" class="table table-hover">
+                   <table id="inactive-users-table" class="table table-hover">
                       <thead class="thead-default">
                          <tr>
                             <tr>
@@ -247,7 +247,7 @@
             
             new Chart(ctx4, {type: 'doughnut', data: chartdata, options:doughnutOptions});
       
-            var crossfiteros = JSON.parse(respuesta).mujeres + JSON.parse(respuesta).hombres;
+            var crossfiteros = respuesta.mujeres + respuesta.hombres;
       
             $('#my-label').html(crossfiteros + " crossfiteros");
         });
@@ -285,46 +285,42 @@ $(document).ready(function(){
 
 </script>
 
-  <script src="{{ asset('js/datatables.min.js') }}"></script>
-  <script>
+<script src="{{ asset('js/datatables.min.js') }}"></script>
 
-      $('#payments-table').DataTable({
-         "processing": true,
-         "serverSide": true,
-         "order": [[ 0, "desc" ]],
-         "ajax": {
+<script>
+    $('#inactive-users-table').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "order": [[ 0, "desc" ]],
+        "ajax": {
             "url": "<?= route('expiredplans') ?>",
             "dataType": "json",
             "type": "POST",
             "data": {"_token": "<?= csrf_token() ?>"}
-         },
-         "language": {
-               "loadingRecords": "Cargando datos...",
-               "processing": "Cargando datos...",
-               "lengthMenu": "Mostrar _MENU_ elementos",
-               "zeroRecords": "Sin resultados",
-               "info": "Mostrando página _PAGE_ de _PAGES_",
-               "infoEmpty": "Sin resultados",
-               "infoFiltered": "(filtrado de _MAX_ registros totales)",
-               "search": "Filtrar:",
-               "paginate": {
-                  "first":      "Primero",
-                  "last":       "último",
-                  "next":       "Siguiente",
-                  "previous":   "Anterior"
-               },
+        },
+        "language": {
+            "loadingRecords": "Cargando datos...",
+            "processing": "Cargando datos...",
+            "lengthMenu": "Mostrar _MENU_ elementos",
+            "zeroRecords": "Sin resultados",
+            "info": "Mostrando página _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin resultados",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Filtrar:",
+            "paginate": {
+                "first":    "Primero",
+                "last":     "último",
+                "next":     "Siguiente",
+                "previous": "Anterior"
             },
-         "columns":[
-            {"data": "fecha_registro"},
-            {"data": "alumno"},
-            {"data": "plan"}, 
-            {"data": "date"},
-            {"data": "start_date"},
-            {"data": "finish_date"},
-            {"data": "amount"},
-         ]
-    } );
-
-   </script> 
+        },
+        "columns":[
+            { "data": "first_name" },
+            { "data": "plan" },
+            { "data": "date" }, 
+            { "data": "phone" }
+        ]
+    });
+</script> 
 
 @endsection

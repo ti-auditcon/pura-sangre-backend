@@ -142,7 +142,7 @@
   
 {{-- <script src="{{ asset('js/jquery.easypiechart.min') }}"></script> --}}
 
-<script>
+{{-- <script>
     var densities = [];
     $.get( "json-density-parameters", function(response) {
         response.forEach(function (e) {
@@ -151,7 +151,7 @@
     }).done(() => {
         console.log(densities);
     });
-</script>
+</script> --}}
 
 <script defer>
     $(document).ready(function() {
@@ -169,13 +169,13 @@
             hiddenDays: [0],
             // eventColor: '#4c6c8b',
             eventRender: function( event, element, view ) {
-                let percent = (event.reservation_count * 100) / event.quota;
-                let colorPercentage = null;
-                densities.forEach(function (density) {
-                    if (percent <= density.percentage) {
-                        colorPercentage = density.color;
-                    }
-                });
+                // let percent = (event.reservation_count * 100) / event.quota;
+                // let colorPercentage = null;
+                // densities.forEach(function (density) {
+                //     if (percent <= density.percentage) {
+                //         colorPercentage = density.color;
+                //     }
+                // });
  // +
  //                    '<span class="closeon text-' + colorPercentage + '">&#10005;</span>'
                 element.find('.fc-time').append(

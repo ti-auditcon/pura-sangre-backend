@@ -245,4 +245,3 @@ $('#update-clase-type-name').click(function () {
             
         })
     });
-    
