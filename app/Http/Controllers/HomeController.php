@@ -62,100 +62,89 @@ class HomeController extends Controller
         });
     }
 
-    public function ExpiredPlan()
-    {
-        $this->ExpiredPlan();
-    }
-
     // public function ExpiredPlan()
     // {
-    //     $expired_plans = collect(new PlanUser);
-    //     foreach (User::all() as $user) {
-    //         if ($user->status_user_id = 2) {
-    //             $plan_user = $user->plan_users->whereIn('plan_status_id', [3, 4])
-    //                                           ->where('plan_id', '!=', 1)
-    //                                           ->where('finish_date', '<', today())
-    //                                           ->sortByDesc('finish_date')
-    //                                           ->first();
-
-    //             if ($plan_user) {
-    //                 $expired_plans->push($plan_user);
-    //             }
-    //         }
-    //     }
-
-    //     $expired_plans->sortByDesc('finish_date')->take(10);
-
-    //     return $expired_plans->map(function ($plan) {
-    //         return [
-    //             'user_id' => isset($plan->user) ? $plan->user->id : '',
-    //             'alumno' => isset($plan->user) ? $plan->user->first_name . ' ' . $plan->user->last_name : '',
-    //             'plan' => isset($plan->plan) ? $plan->plan->plan : '',
-    //             'fecha_termino' => Carbon::parse($plan->finish_date)->diffForHumans(),
-    //             'telefono' => isset($plan->user) ? $plan->user->phone : '',
-    //         ];
-    //     });
-
-    //     return $expired_plans;
+    //     return $this->ExpiredPlan();
     // }
 
-    // /**
-    //  * Get expired plans
-    //  * 
-    //  * @param  Request $request [description]
-    //  * @return json
-    //  */
-    // public function ExpiredPlan(Request $request)
+    // public function ExpiredPlan()
+
     // {
-    //     $columns = array(
-    //         0 => 'users.first_name',
-    //         1 => 'plans.plan',
-    //         2 => 'users.date',
-    //         3 => 'users.phone'
-    //     );
-        
-    //     $totalData = User::count();
-        
-    //     $order = $columns[$request->input('order.0.column')];
-        
-    //     $dir = $request->input('order.0.dir');
+    //     // $expired_plans = collect(new PlanUser);
 
-    //     $users = User::join('plan_user', 'users.id', '=', 'plan_user.user_id')
-    //                  ->join('plans', 'plan_user.plan_id', '=', 'plans.id')
-    //                  ->offset(0)
-    //                  ->limit(8)
-    //                  ->whereIn('plan_user.plan_status_id', [3, 4])
-    //                  ->where('plan_user.plan_id', '!=', 1)
-    //                  ->where('plan_user.finish_date', '<', today())
-    //                  ->orderBy($order, $dir)
-    //                  ->select('users.first_name', 'users.last_name', 'plans.plan', 'plan_user.finish_date', 'users.phone')
-    //                  ->get();
+    //     // foreach (User::all() as $user) {
+    //     //     if (! $user->actual_plan) {
+    //     //         $plan_user = $user->plan_users->whereIn('plan_status_id', [3, 4])
+                                              
+    //     //                                       ->where('finish_date', '<', today())
+                                              
+    //     //                                       ->sortByDesc('finish_date')
+                                              
+    //     //                                       ->first();
+                
+    //     //         if ($plan_user) {
+                
+    //     //             $expired_plans->push($plan_user);
+                
+    //     //         }
+            
+    //     //     }
+    //     // }
 
-    //     $totalFiltered = User::count(); 
-
-    //     $data = array();
-        
-    //     if ($users) {
-    //         foreach ($users as $user) {
-    //             // dd($user);
-    //             $nestedData['first_name'] = $user->first_name . ' ' . $user->last_name;
-    //             $nestedData['plan'] = $user->plan;
-    //             $nestedData['date'] = $user->finish_date;
-    //             $nestedData['phone'] = $user->phone;
-
-    //             $data[] = $nestedData;
-    //         }
-    //     }
-        
-    //     $json_data = array(
-    //         "draw"            => intval($request->input('draw')),
-    //         "recordsTotal"    => intval($totalData),
-    //         "recordsFiltered" => intval($totalFiltered),
-    //         "data"            => $data
-    //     );
-        
-    //     echo json_encode($json_data);
+    //     // return $expired_plans->sortByDesc('finish_date')->take(10);
     // }
+
+    /**
+     * Get expired plans
+     * 
+     * @param  Request $request [description]
+     * @return json
+     */
+    public function ExpiredPlan(Request $request)
+    {
+        $columns = array(
+            0 => 'users.first_name',
+            1 => 'plans.plan',
+            2 => 'users.date',
+            3 => 'users.phone'
+        );
+        
+        $totalData = 8;
+
+        $users = PlanUser::join('users', 'plan_user.user_id', '=', 'users.id')
+                         ->join('plans', 'plan_user.plan_id', '=', 'plans.id')
+                         ->where('plan_user.plan_status_id', 4)
+                         ->where('plan_user.plan_id', '!=', 1)
+                         ->where('plan_user.finish_date', '<', today())
+                         ->orderByDesc('finish_date')
+                         ->select('users.first_name', 'users.last_name', 'plans.plan', 'plan_user.finish_date', 'users.phone')
+                         ->take(8)
+                         ->get();
+
+        $totalFiltered = 8; 
+
+        $data = array();
+        
+        if ($users) {
+            foreach ($users as $user) {
+                $nestedData['first_name'] = $user->first_name . ' ' . $user->last_name;
+                $nestedData['plan'] = $user->plan;
+                $nestedData['date'] = $user->finish_date->format('d-m-Y');
+                $nestedData['phone'] = $user->phone;
+
+                $data[] = $nestedData;
+            }
+        }
+        
+        $json_data = array(
+            "draw"            => intval($request->input('draw')),
+            "recordsTotal"    => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data"            => $data
+        );
+        
+        echo json_encode($json_data);
+    }
 
     /**
      * [withoutrenewal description]

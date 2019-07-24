@@ -290,8 +290,8 @@ $(document).ready(function(){
 <script>
     $('#inactive-users-table').DataTable({
         "processing": true,
-        "serverSide": true,
-        "order": [[ 0, "desc" ]],
+        "serverSide": false,
+        "order": [[ 2, "desc" ]],
         "ajax": {
             "url": "<?= route('expiredplans') ?>",
             "dataType": "json",
