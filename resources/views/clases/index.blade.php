@@ -280,6 +280,7 @@
     });
     
     $('#sweet-confirm-day-delete').click(function() {
+        var type_clase = $('select[name=type]').val();
         Swal.fire({
             title: '¿Esta seguro que quiere eliminar el día completo?',
             text: 'Para eliminar definitivamente por favor ingresa la palabra que aparece en el campo de abajo',
@@ -299,10 +300,11 @@
                     )
                 } else {          
                     var date = $("#input-date-day").val();
+                    var type_clase = $('select[name=type]').val();
 
                     let remove_day_url = '{{ url('calendar/clases/delete') }}';
 
-                    return $.post(remove_day_url, { date: date })
+                    return $.post(remove_day_url, { date: date, type_clase: type_clase })
                         .fail(error => {
                             Swal.showValidationMessage(
                                 `Algo ha fallado: ${error}`

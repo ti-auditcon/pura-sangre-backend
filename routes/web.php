@@ -6,9 +6,11 @@ Route::get('/', 'HomeController@index');
 Route::get('/withoutrenewal', 'HomeController@withoutrenewal');
 Route::get('/genders', 'HomeController@genders');
 Route::get('/incomes-summary', 'HomeController@incomessummary');
-Route::get('/success-reset-password', function () {
+
+Route::get('/success-reset-password', function ($e) {
     return view('guest.success-reset-password');
 });
+
 Route::post('expired-plans', 'HomeController@ExpiredPlan')->name('expiredplans');
 
 Route::middleware(['auth'])->prefix('/')->group(function () {
@@ -90,6 +92,8 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('reports/totalplanssub', 'Reports\ReportController@totalplanssub')->name('totalplanssub');
     
     Route::get('reports/inactive_users', 'Reports\InactiveUserController@index');
+
+    Route::post('reports/inactive_users_json', 'Reports\InactiveUserController@inactiveUsers')->name('inactiveusers');
     
     Route::get('reports/inactive_users/export', 'Reports\InactiveUserController@export')->name('inactive_users.export');
 

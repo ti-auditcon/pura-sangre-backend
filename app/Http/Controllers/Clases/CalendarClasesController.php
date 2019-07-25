@@ -17,7 +17,8 @@ class CalendarClasesController extends Controller
 	{
 		$date_converted = Carbon::parse(request('date'));
 
-		$classes_chosen_date = Clase::where('date', $date_converted)->get();
+		$classes_chosen_date = Clase::where('date', $date_converted)
+									->where('clase_type_id', request('type_clase'))->get();
 
 		foreach ($classes_chosen_date as $clase) {
 			$clase->delete();

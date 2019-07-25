@@ -113,6 +113,7 @@ class HomeController extends Controller
 
         $users = PlanUser::join('users', 'plan_user.user_id', '=', 'users.id')
                          ->join('plans', 'plan_user.plan_id', '=', 'plans.id')
+                         ->where('users.status_user_id', 2)
                          ->where('plan_user.plan_status_id', 4)
                          ->where('plan_user.plan_id', '!=', 1)
                          ->where('plan_user.finish_date', '<', today())

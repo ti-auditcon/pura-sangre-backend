@@ -24,17 +24,21 @@
             </li>
             
             @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
-            
                 <li @if($page=="users") class="active" @endif>
-                
-                    <a href="{{ url('/users') }}"><i class="sidebar-item-icon ti-id-badge"></i>
-                
+                    <a>
+                        <i class="sidebar-item-icon ti-id-badge"></i>
+                    
                         <span class="nav-label">Alumnos</span>
-                
                     </a>
-                
+
+                    <div class="nav-2-level">
+                        <ul>
+                            <li><a href="{{url('/users')}}">Todos los Alumnnos</a></li>
+                        
+                            <li><a href="{{url('/users/create')}}">Nuevo Alumno</a></li>
+                        </ul>
+                    </div>
                 </li>
-            
             @endif
             
             @if (Auth::user()->hasRole(1))

@@ -77,8 +77,13 @@ class BlockController extends Controller
      */
     public function update(Request $request, Block $block)
     {
-        $block->update(['quota' => $request->quota]);
+        $block->update([
+            'quota' => $request->quota,
+            'profesor_id' => $request->profesor_id
+        ]);
+        
         $block->plans()->sync($request->plans);
+        
         return Redirect::back();
     }
 

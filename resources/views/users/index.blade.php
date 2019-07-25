@@ -104,9 +104,6 @@
                                 </span>
                             </div>
                         </span>
-                        {{-- <button class="btn btn-info btn-labeled btn-labeled-left btn-icon"> --}}
-                        {{-- <span class="btn-label"><i class="la la-cloud-download"></i></span>Labeled</button> --}}
-                        
                         <a
                             class="btn btn-info btn-labeled btn-labeled-left btn-icon"
                             style="display: inline-block;" href="{{ route('users.export')}}"
@@ -122,9 +119,7 @@
                 <div class="table-responsive">
                     <table id="students-table" class="table table-hover">
                         <thead class="thead-default thead-lg">
-                            
                             <tr>
-                            
                                 <th width="30%">Alumno</th>
                             
                                 <th width="10%">RUN</th>
@@ -138,26 +133,24 @@
                                 <th width="10%">Acciones</th>
                             
                                 <th width="10%">status</th>
-                            
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($users as $user)
+                     {{--        @if ($user->id == 15)
+                            {{ dd( $user )}}
+
+                            @endif --}}
                             <tr>
                                 <td style="vertical-align: middle;">
-                                    
                                     <div
                                         class="img-avatar"
                                         style="background-image: @if ($user->avatar) url('{{ $user->avatar }}') @else url('{{ asset('/img/default_user.png') }}') @endif"
                                     >
                                     </div>
-                                    
-                                    <span class="badge-{{ $user->status_user->type }} badge-point"></span>
-                                    
+
                                     <a href="{{ url('/users/'.$user->id) }}">
-                                        
                                         {{ $user->first_name }} {{ $user->last_name }}
-                                    
                                     </a>
                                 </td>
                                 
@@ -165,27 +158,28 @@
                                 
                                 @if ($user->actual_plan)
                                 
-                                    <td>{{$user->actual_plan->plan->plan ?? 'No aplica'}}</td>
+                                    <td>{{ $user->actual_plan->plan->plan ?? 'No aplica' }}</td>
                                 
-                                @if ($user->actual_plan->finish_date >= (Carbon\Carbon::today()))
-                                
-                                    <td>{{ 'Quedan ' }}{{ $user->plan_users->first()->finish_date->diffInDays(Carbon\Carbon::now()) }}{{ ' días' }}
-                                    </td>
+                                    @if ($user->actual_plan->finish_date >= (Carbon\Carbon::today()))
+                                        <td>{{ 'Quedan ' }}{{ $user->plan_users->first()->finish_date->diffInDays(Carbon\Carbon::now()) }}{{ ' días' }}
+                                        </td>
+                                    @else
+                                        <td>{{ '--' }}</td>
+                                    @endif
+                                <td>{{ $user->actual_plan->start_date->format('d-m-Y') }} a {{ $user->actual_plan->finish_date->format('d-m-Y') }}</td>
                                 @else
-                                <td>{{ '--' }}</td>
-                                @endif
-                                <td>{{$user->actual_plan->start_date->format('d-m-Y')}} a {{$user->actual_plan->finish_date->format('d-m-Y')}}</td>
-                                @else
-                                <td>{{'Sin plan'}}</td>
-                                <td>{{'No aplica'}}</td>
-                                <td>{{'No aplica'}}</td>
+                                    <td>{{ 'Sin plan' }}</td>
+                                    
+                                    <td>{{ 'No aplica' }}</td>
+                                    
+                                    <td>{{ 'No aplica' }}</td>
                                 @endif
                                 <td>
                                     <a href="{{url('/users/'.$user->id)}}" class="btn btn-info btn-icon-only btn-success"><i class="la la-eye"></i></a>
                                     <a href="" class="btn btn-info btn-icon-only btn-message"><i class="la la-envelope"></i></a>
                                     <a href="" class="btn btn-info btn-icon-only btn-pay"><i class="la la-usd"></i></a>
                                 </td>
-                                <td>{{$user->status_user_id}}</td>
+                                <td>{{ $user->status_user_id }}</td>
                             </tr>
                             @endforeach
                         </tbody>

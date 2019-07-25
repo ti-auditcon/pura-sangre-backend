@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Users;
 
-use App\Exports\UsersExport;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Users\UserRequest;
-use App\Models\Clases\Reservation;
-use App\Models\Plans\PlanUser;
-use App\Models\Users\Emergency;
+use Session;
+use Redirect;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
+use App\Exports\UsersExport;
+use App\Models\Plans\PlanUser;
+use App\Models\Users\Emergency;
+use App\Models\Clases\Reservation;
 use Illuminate\Support\Facades\Log;
-use Intervention\Image\Facades\Image;
 use Maatwebsite\Excel\Facades\Excel;
-use Redirect;
-use Session;
+use App\Http\Controllers\Controller;
+use Intervention\Image\Facades\Image;
+use App\Http\Requests\Users\UserRequest;
 
 /**
  * [UserController description]
@@ -33,8 +33,17 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::with('actual_plan')
+            ->get(['id', 'rut', 'first_name', 'last_name', 'avatar', 'status_user_id']);
+
         return view('users.index')->with('users', $users);
+
+// avatar
+// status_user-> type
+// first_name last_name
+// rut
+// actual_plan->plan->plan
+// actual_plan->finish_date
     }
 
     public function export()

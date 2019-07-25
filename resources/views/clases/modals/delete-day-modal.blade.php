@@ -26,6 +26,33 @@
 
                 <div class="form-group mt-2">
                             
+                    <label class="font-normal">Tipo de Clase</label>
+                        
+                        <div class="">
+
+                            <select id="select-entire-day-delete" class="form-control" name="type">
+                    
+                                @foreach(App\Models\Clases\ClaseType::all() as $type)
+                    
+                                <option
+                                    value="{{ $type->id }}"
+                                    @if($type->id == Session::get('clases-type-id')) selected @endif
+                                >
+                    
+                                    {{ $type->clase_type }}
+                    
+                                </option>
+                    
+                                @endforeach
+                    
+                            </select>
+                        
+                        </div>
+                    
+                </div>
+
+                <div class="form-group mt-2">
+                            
                     <label class="font-normal">Fecha a Eliminar</label>
                         
                         <div class="input-group date datepicker-delete-entire-day">

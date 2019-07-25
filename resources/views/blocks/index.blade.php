@@ -299,6 +299,11 @@
 		</div>
 	</div>
 
+	{{--  ///////////////////////////////////////////////  --}}
+
+	{{--          MODAL PARA EDITAR HORARIO                --}}       
+
+	{{--  ///////////////////////////////////////////////  --}}
 	<div class="modal fade" id="blockedit" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog ">
 			<div class="modal-content">
@@ -334,7 +339,27 @@
 
 						<label class="col-form-label">N° de Cupos</label>
 						
-						<input id="block-quota-input" type="number" class="form-control" name="quota" required>
+						<input id="block-quota-input" type="number" class="form-control" name="quota" required/>
+
+						<div class="form-group mb-12">
+				
+							<label class="col-form-label">Profesor:</label>
+				
+							<select id="select-coach" name="profesor_id" class="form-control" required>
+					
+								<option value="">Elegir un Profesor</option>
+					
+								@foreach (App\Models\Users\Role::find(2)->users as $coach)
+					
+									<option value="{{ $coach->id }}">{{ $coach->first_name }} {{ $coach->last_name }}</option>
+					
+								@endforeach
+					
+							</select>
+						
+							<span class="input-group-addon"></span>
+					
+						</div>
 						
 						<button
 							type="submit"
@@ -451,10 +476,12 @@
 			hiddenDays: [0],
 			eventColor: '#4c6c8b',
 			eventClick: function(calEvent, jsEvent, view) {
+				// console.log(calEvent);
 				ids = Object.values(calEvent.plans_id);
-				// console.log(calEvent.quota);
+				console.log(calEvent.profesor_id);
 				//traer todos los ids de los planes que pueden tomar clase de la hora que se seleccionó
 				$('#block-quota-input').val(calEvent.quota);
+				$('#select-coach option[value="'+ calEvent.profesor_id +'"]').attr('selected', 'selected');
 				$('#plan-select-edit').multiSelect('deselect_all');
 				$('#plan-select-edit').multiSelect('select',ids.map(String));
 				update_url = $('#blockedit #block-update').attr('action');
