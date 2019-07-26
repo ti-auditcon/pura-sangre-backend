@@ -19,9 +19,13 @@ class Clase extends Model
     
     protected $dates = ['deleted_at'];
     
-    protected $fillable = ['date', 'start_at', 'finish_at', 'room', 'profesor_id', 'quota' ,'block_id','clase_type_id'];
+    protected $fillable = [
+        'date', 'start_at', 'finish_at',
+        'room', 'profesor_id', 'quota',
+        'wod_id', 'block_id', 'clase_type_id'
+    ];
     
-    protected $appends = ['start','end','url','reservation_count','title','color'];
+    protected $appends = ['start', 'end', 'url', 'reservation_count', 'title', 'color'];
 
     // protected static function boot()
     // {
@@ -87,7 +91,7 @@ class Clase extends Model
      */
     public function getUrlAttribute()
     {
-        return url('clases/'.$this->id);
+        return url('clases/' . $this->id);
     }
 
     /**

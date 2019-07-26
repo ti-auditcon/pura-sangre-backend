@@ -61,7 +61,7 @@
                          
                             <div class="col-12 text-muted">Coach:</div>
                          
-                            <div class="col-12">{{$clase->block->user->first_name}} {{$clase->block->user->last_name}}</div>
+                            <div class="col-12">{{ $clase->block->user->first_name }} {{ $clase->block->user->last_name }}</div>
                       
                         </div>
                       
@@ -116,7 +116,7 @@
         <div class="ibox">
             <div class="ibox-head">
 
-                <div class="ibox-title">Workout</div>
+                <div class="ibox-title">Rutina de la Clase</div>
           
                 <div class="ibox-tools">
 
@@ -131,22 +131,26 @@
             
             <div class="ibox-body">
                 <div class="row">
-                    @foreach(App\Models\Wods\StageType::all() as $st)
+                    @forelse($stages as $st)
                         <div class="col-12 col-md-4 col-xl-12 mb-4">
-                            <h5 class="font-strong">{{ $st->stage_type }}</h5>
+                            <h5 class="font-strong">{{ $st->stage_type->stage_type }}</h5>
 
                             <div class="py-2">
-
                                 <textarea
-                                    name="{{$st->id}}"
+                                    name="{{ $st->id }}"
                                     class="form-control form-control-solid p-4"
                                     rows="10"
                                     disabled
-                                >@if($clase->wod){{$clase->wod->stage($st->id)->description }} @else No hay {{$st->stage_type}} ingresado @endif
+                                >
+                                    {{ $st->description }}
                                 </textarea>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="col-12 col-md-4 col-xl-12 mb-4">
+                            Esta clase aún no tiene una rutina agregada
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>
@@ -259,45 +263,49 @@
 
 <!-- Modal -->
 <div class="modal fade" id="user-assign" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Agregar Alumno</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-               <span aria-hidden="true">&times;</span>
-            </button>
-         </div>
-         <div class="modal-body pl-4 pb-5">
-            <table id="students-table-search" class="table table-hover">
-               <thead class="thead-default">
-                  <tr>
-                     <th width="90%">Alumnos</th>
-                     <th width="10%">Accion</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  @foreach ($outclase as $usuario)
-                  <tr>
-                    <td>
-                      <div class="img-avatar" style="background-image:  @if ($usuario->avatar) url('{{$usuario->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"></div>
-                      <span class="badge-{{$usuario->status_user->type}} badge-point"></span>
-                      <a href="{{url('/users/'.$usuario->id)}}">{{$usuario->first_name}} {{$usuario->last_name}}</a>
-                    </td>
-                    <td>
-                      {!! Form::open(['route' => ['reservation.store'], 'method' => 'post']) !!}
-                      <input type="hidden" value="{{$usuario->id}}" name="user_id">
-                      <input type="hidden" value="{{$clase->id}}" name="clase_id">
-                      <input type="hidden" value="1" name="by_god">
-                      <button type="button" class="btn btn-primary button-little" type="submit" onClick="this.form.submit();">Agregar</button>
-                      {!! Form::close() !!}
-                    </td>
-                 </tr>
-                 @endforeach
-               </tbody>
-            </table>
-         </div>
-      </div>
-   </div>
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar Alumno</h5>
+                
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pl-4 pb-5">
+                <table id="students-table-search" class="table table-hover">
+                    <thead class="thead-default">
+                        <tr>
+                            <th width="90%">Alumnos</th>
+                            <th width="10%">Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($outclase as $usuario)
+                        <tr>
+                            <td>
+                                <div class="img-avatar" style="background-image:  @if ($usuario->avatar) url('{{$usuario->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"></div>
+                                <span class="badge-{{$usuario->status_user->type}} badge-point"></span>
+                                <a href="{{url('/users/'.$usuario->id)}}">{{$usuario->first_name}} {{$usuario->last_name}}</a>
+                            </td>
+                            <td>
+                                {!! Form::open(['route' => ['reservation.store'], 'method' => 'post']) !!}
+                                    <input type="hidden" value="{{$usuario->id}}" name="user_id">
+                                    
+                                    <input type="hidden" value="{{$clase->id}}" name="clase_id">
+                                    
+                                    <input type="hidden" value="1" name="by_god">
+                                    
+                                    <button type="button" class="btn btn-primary button-little" type="submit" onClick="this.form.submit();">Agregar</button>
+                                {!! Form::close() !!}
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Modal de confirmacion de clase-->
