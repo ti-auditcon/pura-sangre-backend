@@ -476,14 +476,17 @@
 			hiddenDays: [0],
 			eventColor: '#4c6c8b',
 			eventClick: function(calEvent, jsEvent, view) {
-				// console.log(calEvent);
 				ids = Object.values(calEvent.plans_id);
-				console.log(calEvent.profesor_id);
 				//traer todos los ids de los planes que pueden tomar clase de la hora que se seleccionó
 				$('#block-quota-input').val(calEvent.quota);
-				$('#select-coach option[value="'+ calEvent.profesor_id +'"]').attr('selected', 'selected');
+				
+				// $('#select-coach option[value="'+ calEvent.profesor_id +'"]').attr('selected', 'selected');
+				$('#select-coach').val(calEvent.profesor_id);
+				
 				$('#plan-select-edit').multiSelect('deselect_all');
+				
 				$('#plan-select-edit').multiSelect('select',ids.map(String));
+				
 				update_url = $('#blockedit #block-update').attr('action');
 				update_newurl = update_url.replace(/[0-9]+/g, calEvent.id);
 
@@ -497,11 +500,17 @@
 			},
 			dayClick: function(date, jsEvent, view) {
 				$('#plan-select-add').multiSelect('deselect_all');
+				
 				$('#unique-tab input[name="date"]').val(date.format('D/M/Y'));
+				
 				$('#blockadd input[name="start"]').val(date.format('H:mm'));
+				
 				$('#blockadd input[name="end"]').val(date.add(1, 'hours').format('H:mm'));
+				
 				$('#daycheckbox input').prop('checked', false);
+				
 				$('#daycheckbox input[value="'+date.day()+'"]').prop('checked', true);
+				
 				$('#blockadd').modal();
 			},
 		});
@@ -534,6 +543,7 @@
 				$('#type-clase-select').append(
 			        $('<option></option>').val(el.id).html(el.clase_type)
 			    );
+
 			    $('#calendar-type-clase-select').append(
 			        $('<option></option>').val(el.id).html(el.clase_type)
 			    );
