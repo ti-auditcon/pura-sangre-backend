@@ -33,8 +33,16 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('actual_plan')
-            ->get(['id', 'rut', 'first_name', 'last_name', 'avatar', 'status_user_id']);
+        $users = User::with([
+            'actual_plan' => function($q) {
+                $q->select('id', 'start_date', 'finish_date', 'user_id', 'plan_id')
+                  ->with([
+                    'plan' => function ($q) {
+                        $q->select('id', 'plan');
+                    }
+                  ]);
+            }])
+        ->get(['id', 'rut', 'first_name', 'last_name', 'avatar', 'status_user_id']);
 
         return view('users.index')->with('users', $users);
 
@@ -152,16 +160,18 @@ class UserController extends Controller
             try {
                 request()->file('image')->storeAs('public/users', $user->id . $user->first_name . '.jpg');
             } catch (\Exception $e) {
-                Log::error('siguiente error: ' . $e);
-                return response()->json(['error' => 'Problema al subir la imagen, si vuelve a suceder por favor comuniquese con el administrador de purasangre.']);
+                Log::error('Hemos tenido el siguiente error: ' . $e);
+
+                return response()->json(['error' => 'Problema al subir la imagen, si vuelve a suceder por favor comuniquese con PuraSangre.']);
             }
-            // request()->file('image')->storeAs('public/users', $user->id . $user->first_name . '.jpg');
+
             $user->avatar = url('/') . '/storage/users/' . $user->id . $user->first_name . '.jpg';
+            
             $user->save();
-            return response()->json(['success' => 'imagen subida correctamente'], 200);
-        } else {
-            return response()->json(['error' => 'no hay imagen'], 400);
+            
+            return response()->json(['success' => 'Imagen subida correctamente'], 200);
         }
+        return response()->json(['error' => 'No ha sido posible subir la imagen, si el problema persiste comuniquese con PuraSangre'], 400);
     }
 
     /**

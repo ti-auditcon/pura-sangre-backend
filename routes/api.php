@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 
 // Route::post('login', 'API\Auth\AuthController@login');
 
-// Route::post('users/{user}/image', 'Users\UserController@image');
+Route::post('users/{user}/image', 'Users\UserController@image');
 
 // Route::get('clases', 'API\Clases\ClaseController@index');
 

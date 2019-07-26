@@ -17,13 +17,6 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('update-reservations-plans', 'Users\UserController@putIdPlan')->middleware('role:1');
 
     /**
-     * Exercises Routes (exercises)
-     */
-    Route::resource('wods', 'Wods\WodController');
-    
-    Route::resource('exercises', 'Exercises\ExerciseController');
-
-    /**
      * Clases routes (clases, clases-alumnos, bloques)
      */
     Route::resource('blocks', 'Clases\BlockController')->middleware('role:1');
@@ -77,6 +70,43 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::resource('plans', 'Plans\PlanController')->middleware('role:1');
 
     /**
+     * Exercises Routes (exercises)
+     */
+    Route::resource('exercises', 'Exercises\ExerciseController');
+
+    Route::get('stage-types/{stage_type}', 'Wods\StageTypeController@show');
+    // Route::resource('stages-types', 'Exercises\ExerciseController');
+
+    /**
+     * Messages Routes
+     */    
+    Route::resource('alerts', 'Messages\AlertController')->only(['index', 'store'])->middleware('role:1');
+    
+    Route::get('/alert-list', 'Messages\AlertController@alerts');
+    
+    Route::delete('/alert-list/{alert}', 'Messages\AlertController@destroy')->name('alerts.destroy')->middleware('role:1');
+    
+    Route::get('messages', 'Messages\MessageController@index')->middleware('role:1');
+    
+    Route::get('messages/users_Json', 'Messages\MessageController@usersJson')->middleware('role:1');
+    
+    Route::post('messages/send', 'Messages\MessageController@send')->middleware('role:1');
+    
+    Route::get('notifications', 'Messages\NotificationController@index')->middleware('role:1')->name('messages.notifications');
+    
+    Route::post('notifications', 'Messages\NotificationController@store')->middleware('role:1');
+
+    /**
+     *  Settings Routes
+     */
+    Route::get('json-density-parameters', 'Settings\DensityParameterController@clasesDensities');
+
+    Route::resource('density-parameters', 'Settings\DensityParameterController')->only('index', 'store');
+    
+    Route::get('/configurations/config-options', 'Settings\DensityParameterController@configOptions')
+         ->name('parameters.options');
+
+    /**
      * Reports routes
      */
     Route::resource('reports', 'Reports\ReportController')->middleware('role:1')->only('index');
@@ -115,30 +145,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('users/{user}/plans/{plan}/info', 'Users\UserController@userinfo')->name('users.plans.info');
 
     /**
-     * Messages Routes
-     */    
-    Route::resource('alerts', 'Messages\AlertController')->only(['index', 'store'])->middleware('role:1');
-    
-    Route::get('/alert-list', 'Messages\AlertController@alerts');
-    
-    Route::delete('/alert-list/{alert}', 'Messages\AlertController@destroy')->name('alerts.destroy')->middleware('role:1');
-    
-    Route::get('messages', 'Messages\MessageController@index')->middleware('role:1');
-    
-    Route::get('messages/users_Json', 'Messages\MessageController@usersJson')->middleware('role:1');
-    
-    Route::post('messages/send', 'Messages\MessageController@send')->middleware('role:1');
-    
-    Route::get('notifications', 'Messages\NotificationController@index')->middleware('role:1')->name('messages.notifications');
-    
-    Route::post('notifications', 'Messages\NotificationController@store')->middleware('role:1');
-
-    /**
-     *  Parameters Routes
+     *  WODS Routes
      */
-    Route::get('json-density-parameters', 'Settings\DensityParameterController@clasesDensities');
-
-    Route::resource('density-parameters', 'Settings\DensityParameterController')->only('index', 'store');
-    
-    Route::get('/configurations/config-options', 'Settings\DensityParameterController@configOptions')->name('parameters.options');
+    Route::resource('wods', 'Wods\WodController')->except('index', 'show');
 });

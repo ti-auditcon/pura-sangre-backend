@@ -195,7 +195,7 @@
 
                 // Add all the Workouts of the Day for the Calendar of the Week 
                 $('#calendar').fullCalendar( 'addEventSource', {
-                    url: '/get-wods?datestart='+b.startOf('week').format('Y-M-D')+'&dateend='+b.endOf('week').format('Y-M-D'), // use the `url` property
+                    url: '/get-wods?datestart='+b.startOf('week').format('Y-M-D')+'&dateend='+b.endOf('week').format('Y-M-D'),
                     color: 'yellow',    // an option!
                     textColor: 'black'  // an option!
                 });
@@ -280,7 +280,6 @@
     });
     
     $('#sweet-confirm-day-delete').click(function() {
-        var type_clase = $('select[name=type]').val();
         Swal.fire({
             title: '¿Esta seguro que quiere eliminar el día completo?',
             text: 'Para eliminar definitivamente por favor ingresa la palabra que aparece en el campo de abajo',
@@ -300,7 +299,9 @@
                     )
                 } else {          
                     var date = $("#input-date-day").val();
-                    var type_clase = $('select[name=type]').val();
+                    var type_clase = $('#select-entire-day-delete').find(":selected").val();
+
+                    console.log(type_clase);
 
                     let remove_day_url = '{{ url('calendar/clases/delete') }}';
 
@@ -314,7 +315,6 @@
             },
             allowOutsideClick: () => !Swal.isLoading()
         }).then((response) => {
-
             if (response.value.success) {
                 Swal.fire({ 
                     title: response.value.success,
@@ -325,7 +325,6 @@
                     location.reload();
                 })
             }
-            
         })
     });
 

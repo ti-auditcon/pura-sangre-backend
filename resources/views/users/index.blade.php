@@ -137,10 +137,6 @@
                         </thead>
                         <tbody>
                             @foreach ($users as $user)
-                     {{--        @if ($user->id == 15)
-                            {{ dd( $user )}}
-
-                            @endif --}}
                             <tr>
                                 <td style="vertical-align: middle;">
                                     <div
@@ -161,7 +157,7 @@
                                     <td>{{ $user->actual_plan->plan->plan ?? 'No aplica' }}</td>
                                 
                                     @if ($user->actual_plan->finish_date >= (Carbon\Carbon::today()))
-                                        <td>{{ 'Quedan ' }}{{ $user->plan_users->first()->finish_date->diffInDays(Carbon\Carbon::now()) }}{{ ' días' }}
+                                        <td>{{ 'Quedan ' }}{{ $user->actual_plan->finish_date->diffInDays(Carbon\Carbon::now()) }}{{ ' días' }}
                                         </td>
                                     @else
                                         <td>{{ '--' }}</td>

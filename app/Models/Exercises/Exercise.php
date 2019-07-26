@@ -2,7 +2,7 @@
 
 namespace App\Models\Exercises;
 
-use App\Models\Exercises\Stage;
+use App\Models\Wods\Stage;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Exercises\ExerciseStage;
 
