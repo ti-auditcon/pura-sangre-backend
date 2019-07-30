@@ -9,16 +9,54 @@
       <div class="col-12 col-md-5">
 
         <div class="ibox">
-          <div class="ibox-head">
-            <div class="ibox-title">Clases de hoy</div>
-          </div>
-          <div class="ibox-body" >
-            <div id="calendar"></div>
-          </div>
-        </div>
-      </div>
+            <div class="ibox-head">
+                <div class="ibox-title">Clases de hoy</div>
 
-      <div class="col-12 col-md-7">
+                {{ Form::open(['route' => 'clases.type']) }}
+                
+                <div class="form-group m-0 row">
+                
+                    {{-- <span>Tipo de clase:</span> --}}
+                
+                    <div class="col-7">
+                
+                        <select class="form-control" name="type">
+                
+                            @foreach(App\Models\Clases\ClaseType::all() as $type)
+                
+                            <option
+                                value="{{ $type->id }}"
+                                @if($type->id == Session::get('clases-type-id')) selected @endif
+                            >
+                
+                                {{ $type->clase_type }}
+                
+                            </option>
+                
+                            @endforeach
+                
+                        </select>
+                
+                    </div>
+                
+                    <div class="col-sm-1 pl-0">
+                
+                        <button class="btn btn-default">seleccionar</button>
+                
+                    </div>
+                
+                </div>
+                
+                {{ Form::close() }}
+            </div>
+            <div class="ibox-body">
+                <div id="calendar"></div>
+            </div>
+        </div>
+    </div>
+
+    @if (auth()->user()->hasRole(1))
+              <div class="col-12 col-md-7">
         <div class="row">
           <div class=" col-md-6 col-sm-12">
             <div class="ibox">
@@ -117,6 +155,8 @@
           </div>
         </div>
       </div>
+    @endif
+
 
 
    </div>

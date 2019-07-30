@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('sidebar')
@@ -89,8 +90,8 @@
                         <button
                             class="btn btn-info btn-danger sweet-user-delete"
                             style="display: inline-block;"
-                            data-id="{{$user->id}}"
-                            data-name="{{$user->first_name}} {{$user->last_name}}"
+                            data-id="{{ $user->id }}"
+                            data-name="{{ $user->first_name }} {{ $user->last_name }}"
                         >
                             <i class="la la-trash"></i>
                         </button>
@@ -105,23 +106,23 @@
             <div class="ibox-body">
                 <div class="row mb-2">
                     <div class="col-12 text-muted">Rut:</div>
-                    <div class="col-12">{{Rut::set($user->rut)->fix()->format()}}</div>
+                    <div class="col-12">{{ Rut::set($user->rut)->fix()->format() }}</div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-12 text-muted">Email:</div>
-                    <div class="col-12">{{$user->email}}</div>
+                    <div class="col-12">{{ $user->email }}</div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-12 text-muted">Fecha de nacimiento:</div>
-                    <div class="col-12">{{$user->birthdate->format('d-m-Y')}}</div>
+                    <div class="col-12">{{ $user->birthdate->format('d-m-Y') }}</div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-12 text-muted">Teléfono</div>
-                    <div class="col-12">{{'+56 9 '.$user->phone ?? ''}}</div>
+                    <div class="col-12">{{ '+56 9 '.$user->phone ?? '' }}</div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-12 text-muted">Direccción:</div>
-                    <div class="col-12">{{$user->address}}</div>
+                    <div class="col-12">{{ $user->address }}</div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-12 text-muted">Contacto de emergencia</div>
@@ -194,10 +195,10 @@
                                 <td>
                                     <a
                                         class="sweet-user-plan-info"
-                                        data-user-id="{{$user->id}}"
-                                        data-plan-id="{{$plan_user->id}}"
+                                        data-user-id="{{ $user->id }}"
+                                        data-plan-id="{{ $plan_user->id }}"
                                     >
-                                        {{$plan_user->plan->plan}}
+                                        {{ $plan_user->plan->plan }}
                                     </a>
 
                                     @if (\Carbon\Carbon::parse($plan_user->finish_date)->gte(toDay()))

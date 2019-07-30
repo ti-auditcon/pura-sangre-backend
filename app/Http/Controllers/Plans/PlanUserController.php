@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Plans;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Plans\PlanUserRequest;
-use App\Mail\NewPlanUserEmail;
+use Session;
+use Redirect;
+use Carbon\Carbon;
 use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
-use App\Models\Plans\PlanIncomeSummary;
-use App\Models\Plans\PlanUser;
 use App\Models\Users\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Models\Plans\PlanUser;
+use App\Mail\NewPlanUserEmail;
 use Illuminate\Support\Facades\Mail;
-use Redirect;
-use Session;
+use App\Http\Controllers\Controller;
+use App\Models\Plans\PlanIncomeSummary;
+use App\Http\Requests\Plans\PlanUserRequest;
 
-/** [planuserController description] */
+
 class planuserController extends Controller
 {
     public function __construct()
@@ -64,11 +64,11 @@ class planuserController extends Controller
             $finish_date = Carbon::parse($request->fecha_inicio)
                 ->addMonths($plan->plan_period->period_number)
                 ->subDay();
-            $counter = $plan->class_numbers * $plan->plan_period->period_number;
+            $counter = $plan->class_numbers * $plan->plan_period->period_number * $plan->daily_clases;
         }
         if ($plan->custom == 1) {
             $finish_date = Carbon::parse($request->fecha_termino);
-            $counter = $request->counter;
+            $counter = $request->counter * $plan->daily_clases;
         }
         $planuser = new PlanUser;
         $planuser->start_date = Carbon::parse($request->fecha_inicio);

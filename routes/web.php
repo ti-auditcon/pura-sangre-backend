@@ -7,7 +7,7 @@ Route::get('/withoutrenewal', 'HomeController@withoutrenewal');
 Route::get('/genders', 'HomeController@genders');
 Route::get('/incomes-summary', 'HomeController@incomessummary');
 
-Route::get('/success-reset-password', function ($e) {
+Route::get('/success-reset-password', function () {
     return view('guest.success-reset-password');
 });
 
@@ -147,5 +147,5 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     /**
      *  WODS Routes
      */
-    Route::resource('wods', 'Wods\WodController')->except('index', 'show');
+    Route::resource('wods', 'Wods\WodController')->except('index', 'show')->middleware('role:1');
 });
