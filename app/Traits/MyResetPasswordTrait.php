@@ -2,14 +2,14 @@
 
 namespace App\Traits;
 
-use App\Notifications\MyResetPassword;
-use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Foundation\Auth\RedirectsUsers;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Notifications\MyResetPassword;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Str;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Foundation\Auth\RedirectsUsers;
 
 trait MyResetPasswordTrait
 {
@@ -39,23 +39,27 @@ trait MyResetPasswordTrait
      */
     public function reset(Request $request)
     {
-        $this->validate($request, $this->rules(), $this->validationErrorMessages());
+        $request->validate($this->myRules(), $this->validationErrorMessages());
 
         // Here we will attempt to reset the user's password. If it is successful we
         // will update the password on an actual user model and persist it to the
         // database. Otherwise we will parse the error and return the response.
         $response = $this->broker()->reset(
+
             $this->credentials($request), function ($user, $password) {
+
                 $this->resetPassword($user, $password);
+            
             }
+            
         );
 
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
-        return $response == Password::PASSWORD_RESET
-                    ? $this->sendResetResponse($response)
-                    : $this->sendResetFailedResponse($request, $response);
+        return $response == Password::PASSWORD_RESET ?
+                            $this->sendResetResponse($response) :
+                            $this->sendResetFailedResponse($request, $response);
     }
 
     /**
@@ -63,7 +67,7 @@ trait MyResetPasswordTrait
      *
      * @return array
      */
-    protected function rules()
+    protected function myRules()
     {
         return [
             'token' => 'required',

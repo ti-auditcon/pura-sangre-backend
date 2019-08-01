@@ -1,204 +1,239 @@
 @extends('layouts.app')
 @section('sidebar')
-   @include('layouts.sidebar', ['page'=>'messages'])
+@include('layouts.sidebar', ['page'=>'messages'])
 @endsection
-
 @section('content')
-   <div class="row justify-content-center">
+<div class="page-content fade-in-up">
+    <div class="ibox">
+        <div class="ibox-head">
+            <div class="ibox-title">
+                <h3 class="font-strong">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    Enviar correos a alumnos
+                </h3>
+            </div>
+            
+            <div class="ibox-tools">
+                <button class="btn btn-success text-white" id="save_value" name="save_value">Redactar Correo</button>
+            </div>
+        </div>
 
-      <div class="col-md-12">
-         <div class="ibox ibox-fullheight" id="mailbox-container">
+        <div class="ibox-body">
+            <div class="ibox-body messages">
+                <div class="flexbox mb-4">
+                    <div class="row">
+                        <div class="flexbox">
+                            <label class="mb-0 mr-2">Estados:</label>
+                            <div class="btn-group bootstrap-select show-tick form-control" style="width: 150px;">
+                                <select class="selectpicker show-tick form-control" id="type-filter" title="Elegir estado" data-style="btn-solid" data-width="150px" tabindex="-98">
+                                    <option value="">Todos</option>
+                                    <option value="1">Activo</option>
+                                    <option value="2">Inactivo</option>
+                                    <option value="3">Prueba</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="flexbox">
+                            <label class="mb-0 mr-2">&nbsp; Mostrar: </label>
+                            <div class="btn-group bootstrap-select show-tick form-control" style="width: 150px;">
+                                <select class="selectpicker show-tick form-control" id="length-filter" data-style="btn-solid" data-width="150px" tabindex="-98">
+                                    <option value="10">10 alumnos</option>
+                                    <option value="25">25 alumnos</option>
+                                    <option value="50">50 alumnos</option>
+                                    <option value="100">100 alumnos</option>
+                                </select>
+                            </div>
+                            <label class="mb-0 mr-2">&nbsp;</label>
+                        </div>
+                        <div class="flexbox">
+                            <label class="mb-0 mr-2"><h4 class="font-strong">
+                                <span class="text-primary" id="filtered">sin</span> registros <span id="filtered-from"></span></h4>
+                            </label>
+                        </div>
+                    </div>
 
-           <div class="ibox-head">
-             <div class="ibox-title">Enviar Correo</div>
-             <div class="ibox-tools">
-               <button class="btn btn-success text-white" id="save_value" name="save_value">Redactar Correo</button>
-             </div>
-           </div>
-
-          <div class="ibox-body messages">
-            {{-- Inicio Botones selectores --}}
-             <div class="flexbox mb-4">
-                <div class="flexbox">
-
-                   <span class="flexbox mr-3">
-                      <div class="btn-group">
-                         <button class="btn btn-outline-success user-filter" data-status="1">
-                            <span class="btn-icon">ACTIVOS</span>
-                         </button>
-                         <span class="btn-label-out btn-label-out-right btn-label-out-success pointing">{{$users->where('status_user_id', 1)->count()}}</span>
-                      </div>
-                   </span>
-
-                   <span class="flexbox mr-3" >
-                      <div class="btn-group">
-                         <button class="btn btn-outline-danger user-filter" data-status="2">
-                            <span class="btn-icon">INACTIVOS</span>
-                         </button>
-                         <span class="btn-label-out btn-label-out-right btn-label-out-danger pointing">{{$users->where('status_user_id', 2)->count()}}</span>
-                      </div>
-                   </span>
-
-                   <span class="flexbox mr-3">
-                      <div class="btn-group">
-                         <button class="btn btn-outline-warning user-filter" data-status="3">
-                            <span class="btn-icon">PRUEBA</span>
-                         </button>
-                         <span class="btn-label-out btn-label-out-right btn-label-out-warning pointing">{{$users->where('status_user_id', 3)->count()}}</span>
-                      </div>
-                   </span>
-
-                   <span class="flexbox mr-3">
-                      <div class="btn-group">
-                         <button class="btn btn-outline-primary user-filter" data-status="">
-                            <span class="btn-icon">TODOS</span>
-                         </button>
-                         <span class="btn-label-out btn-label-out-right btn-label-out-primary pointing">{{$users->count()}}</span>
-                      </div>
-                   </span>
-
+                    <div class="input-group-icon input-group-icon-left mr-3">
+                        <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
+                        
+                        <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Buscar ...">
+                    </div>
                 </div>
-             </div>
-             {{-- Fin Botones Selectores --}}
-
-             <table class="table table-hover table-inbox" id="table-inbox">
-
-                <thead class="rowlinkx">
-                   <tr>
-                      <th>Nombre</th>
-                      <th>Estado</th>
-                      <th>id</th>
-                   </tr>
-                </thead>
-
-                <tbody class="rowlinkx messages-body" data-link="row">
-                   @foreach (App\Models\Users\User::all() as $user)
-                   <tr class="{{$user->status_user->status_user}}" data-id="{{$user->id}}">
-                      <td class="check-cell rowlink-skip row py-4">
-                        <div class="pr-3 pl-1">
-                          <a class="media-img" href="{{url('/users/'.$user->id)}}">
-                             <div class="img-avatar img-avatar-messages align-self-start" style="background-image: @if ($user->avatar) url('{{$user->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"></div>
-                          </a>
+                    <div class="table-responsive row">
+                        <div id="datatable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+                            <table class="table table-bordered table-hover dataTable no-footer dtr-inline collapsed" id="example" role="grid" aria-describedby="datatable_info" style="width: 1592px;">
+                                <thead class="thead-default thead-lg">
+                                    <tr role="row">
+                                        <th class="checkboxes-select-all sorting_disabled" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 20px;" aria-label="">
+                                            <input type="checkbox">
+                                        </th>
+                                        <th class="sorting_asc" width="10">ID</th>
+                                        <th class="sorting">Nombre</th>
+                                        <th class="sorting">Correo</th>
+                                        <th class="sorting">status_user</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
-                        <div>
-                          <a class="media-img" href="{{url('/users/'.$user->id)}}">
-                            <h5>{{$user->first_name}} {{$user->last_name}}</h5>
-                          </a>
-                          <small class="text-muted">{{$user->email}}</small>
-                          {{-- <br> --}}
-                          <span class="badge badge-{{$user->status_user->type}} badge-pill">
-                            {{$user->status_user->status_user}}
-                          </span>
-                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                      </td>
-                      <td>{{$user->status_user_id}}</td>
-                      <td id="users_ids">{{$user->id}}</td>
-                   </tr>
-                   @endforeach
-                </tbody>
-
-                {{-- <button class="btn btn-sm btn-outline-secondary btn-rounded" id="save_value" name="save_value">Enviar Correo</button> --}}
-
-             </table>
-
-          </div>
-         </div>
-      </div>
-   </div>
-
-
-{{--  ................ M O D A L ...................... --}}
-
-<div class="modal fade" id="user-assign" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content col-10">
-         <div class="modal-header">
+    {{--  ................ M O D A L ...................... --}}
+    <div class="modal fade bd-example-modal-xl" id="user-assign" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog-email modal-dialog modal-xl " role="document">
+        <div class="modal-content">
+          <div class="modal-header">
             <h5 class="modal-title">Redactar correo</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-               <span aria-hidden="true">&times;</span>
+            <span aria-hidden="true">&times;</span>
             </button>
-         </div>
-         {!! Form::open(['url' => ['messages/send'], 'method' => 'post', 'id' => 'form-val']) !!}
-         <div class="modal-body messages-modal-body">
+          </div>
+          {!! Form::open(['url' => ['messages/send'], 'method' => 'post', 'id' => 'form-val']) !!}
+          <div class="modal-body messages-modal-body">
             <tbody>
-               <label class="col-form-label">Asunto</label>
-               <input type="text" value="" name="subject" required>
-               <label class="col-form-label">Contenido</label>
-               <textarea name="text" required></textarea>
-               <button type="button" class="btn btn-primary" type="submit" onClick="this.form.submit();">Enviar Correo</button>
+              <div class="ibox-body">
+                 <label class="col-form-label">Para</label>
+                  <input type="text" value="" name="to[]" data-role="tagsinput" id="tags" class="tass form-control">
+              </div>
+              </br>
+              <label class="col-form-label">Asunto</label>
+              <input class="form-control" type="text" value="" name="subject" required>
+              <label class="col-form-label">Contenido</label>
+              <textarea name="text" class="form-control" required></textarea>
+              <button type="button" id="submit-emails-button" class="btn btn-primary" type="submit" onClick="this.form.submit();">Enviar Correo</button>
+              <p> </p>
             </tbody>
             <div id="form-input">
-
+              {{-- <input type="text" name="id[]"> --}}
             </div>
-         </div>
-         {!! Form::close() !!}
+          </div>
+          {!! Form::close() !!}
+        </div>
       </div>
-   </div>
-</div>
+    </div>
+  @endsection
 
+  @section('css') {{-- stylesheet para esta vista --}}
+    {{-- <link href="{{ asset('css/summernote.css') }}" rel="stylesheet" /> --}}
+    {{-- <link href="{{ asset('css/jquery.dataTables.min.css') }}"/> --}}
+    <link href="{{asset('/css/bootstrap-tagsinput.css') }}" rel="stylesheet" />
 
-@endsection
+  @endsection
 
-
-@section('css') {{-- stylesheet para esta vista --}}
-<link href="{{asset('css/summernote.css')}}" rel="stylesheet" />
-@endsection
-
-
-
-@section('scripts') {{-- scripts para esta vista --}}
-
-  <script src="{{ asset('js/datatables.min.js') }}"></script>
-   <script >
-   $(document).ready(function() {
-      table = $('#table-inbox').DataTable({
-         "paging": true,
-         "ordering": true,
-         "select": true,
-         "language": {
+  @section('scripts') {{-- scripts para esta vista --}}
+    <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('/js/datatables.min.js') }}"></script>
+    <script src="{{ asset('/js/dataTables.checkboxes.min.js') }}"></script>
+    <script src="{{ asset('/js/bootstrap-tagsinput.min.js') }}"></script>
+  
+<script>
+    $(document).ready(function() {
+        var table = $('#example').DataTable({
+            "ajax": {
+                "url": '{{url("/messages/users_Json")}}',
+                "dataType": "json",
+                "type": "GET",
+                "data": {"_token": "<?= csrf_token() ?>"},
+            },
+        "language": {
             "lengthMenu": "<p>Mostrar</p> _MENU_ <p>elementos</p>",
             "zeroRecords": "Sin resultados",
             "info": " ",
             "infoEmpty": "Sin resultados",
             "infoFiltered": "(filtrado de _MAX_ registros totales)",
-            "search": "Filtrar:  "
-         },
-         "columnDefs": [
-            {
-               "targets": [ 1,2 ],
-               "visible": false,
-               "searchable": true
+            "search": "Filtrar:  ",
+            "paginate": {
+                "next":     "Siguiente",
+                "previous": "Anterior"
+            },
+            "select": {
+                "rows": {
+                    _: "%d alumnos seleccionados",
+                    0: "",
+                    1: "1 alumno seleccionado"
+                }
             }
-         ],
+        },
+        "dom": '<"top">rt<"bottom"ilp><"clear">',
+        "lengthChange": false,
+        'columnDefs': [
+          {'targets': 0, 'checkboxes': {'selectRow': true}},
+          { "targets": [ 4 ], "visible": false, "searchable": true},
+        ],
+        "columns":[
+            {"data": "id"},
+            {"data": "id"},
+            {"data": "full_name"},
+            {"data": "email"}, 
+            {"data": "status_user_id"},
+        ],
+        'select': {'style': 'multi'},
+        'order': [[1, 'asc']],
+        "infoCallback": function( settings, start, end, max, total, pre ) {
+          $('#filtered').html(total);
+          $('#filtered-from').html('de ' + max);
+        }
       });
-   });
 
-   $('button.user-filter').on("click", function(){
-      table.columns( 1 ).search( $(this).data('status') ).draw();
-   });
-   </script>
-
-   <script>
-
-   $(function(){
-      table = $('#table-inbox').DataTable();
       var form = document.getElementById('form-input');
 
-      $('#save_value').click(function(){
-         $('.form-input-user').remove();
-         table.rows( {search:'applied'} ).data().each(function(value, index){
-            var input = document.createElement("input");
-            input.type = "hidden";
-            input.name = "users_id[]";
-            input.value = value[2];
-            input.className = "form-input-user";
-            form.appendChild(input);
-            console.log(input);
-         });
-      $('#user-assign').modal('show');
+        $('#save_value').click(function(e){
+        var form = this;
+        var rows_selected = table.rows('.selected').data();
+        $.each(rows_selected, function(index, rowId){
+          if ($('#'+rowId.id).length === 0) {
+            $(form).append(
+              $('<input>')
+              .attr('type', 'hidden')
+              .attr('id', rowId.id)
+              .attr('name', 'id[]')
+              .val(rowId.id)
+            );
+          $('.tass').tagsinput('add', { "id": rowId.id, "text": rowId.email });
+          }
+        });
+        e.preventDefault();
+        $('#user-assign').modal('show');
       });
-   });
-   </script>>
+
+      $('#user-assign').on('hidden.bs.modal', function (e) {
+        var form = this;
+        var rows_selected = table.rows().data();
+        $.each(rows_selected, function(index, rowId){
+            $("input[id="+rowId.id+"]").remove();
+            $('.tass').tagsinput('remove', { "id": rowId.id, "text": rowId.email });
+        });
+      });
+
+      var table = $('#example').DataTable();
+      $('#key-search').on('keyup', function() {
+        table.search(this.value).draw();
+      });
+      $('#type-filter').on('change', function() {
+        table.column(4).search($(this).val()).draw();
+      }); 
+
+      $('#length-filter').on( 'change', function () {
+        table.page.len( $(this).val() ).draw();
+      } );
+    });
+    $('.tass').tagsinput({
+      itemValue: 'id',
+      itemText: 'text',
+    });
+
+    $('#submit-emails-button').click( function(e) {
+      var table = $('#example').DataTable();
+        $("#submit-emails-button").prop("disabled", true);
+        if(table.rows('.selected').data().count() >= 18) {
+          $( "p" ).text( "Estás enviando un correo masivo, por lo que el sistema se encargará de enviar los correos a sus correspondientes destinatarios, si deseas puedes cerrar esta ventana y seguir trabajando normalmente" );
+        }
+    });
+            
+  </script>
 
 @endsection

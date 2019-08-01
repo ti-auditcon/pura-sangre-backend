@@ -18,10 +18,11 @@
             <table id="students-table" class="table table-hover">
               <thead class="thead-default">
                 <tr>
-                  <th width="30%">Nombre</th>
+                  <th width="40%">Nombre</th>
                   <th width="20%">Período</th>
-                  <th width="13%">Número de Clases</th>
-                  <th width="7%">Acciones</th>
+                  <th width="10%">N° Clases</th>
+                  <th width="10%">Clases diarias</th>
+                  <th width="20%">Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -31,8 +32,9 @@
                     <span class="badge-success badge-point"></span>
                     <a class="media-img" href="{{url('/plans/'.$plan->id)}}">{{$plan->plan}}</a>
                   </td>
-                  <td>{{$plan->plan_period->period ?? "una semana"}}</td>
-                  <td> {{$plan->class_numbers}}</td>
+                  <td>{{ $plan->plan_period->period ?? "una semana"}}</td>
+                  <td>{{ $plan->class_numbers }}</td>
+                  <td>{{ $plan->daily_clases }}</td>
                   <td>
                     {{-- <button class="btn btn-info btn-icon-only btn-success"><a class="la la-eye" href="{{url('/plans/'.$plan->id)}}"></a></button> --}}
                     <a class="btn btn-info btn-icon-only btn-success" href="{{url('/plans/'.$plan->id)}}"><i class="la la-eye"></i> </a>
