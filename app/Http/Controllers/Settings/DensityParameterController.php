@@ -16,7 +16,7 @@ class DensityParameterController extends Controller
      */
     public function index()
     {
-        $densities = DensityParameter::all();
+        $densities = DensityParameter::all(['id', 'level', 'from', 'to', 'color']);
 
         return view('parameters.index')->with('densities', $densities);
     }
@@ -41,7 +41,22 @@ class DensityParameterController extends Controller
      */
     public function store(Request $request)
     {
-        foreach (DensityParameter::all() as $density) {
+        // dd($request->all());
+        for ($i = 1; $i < 6; $i++) {
+            if ( $request->level_.$i ) {
+                DensityParameter::create([
+                    'level' => request('level_'.$i),
+                    'from' => (int) request('from_'.$i),
+                    'to' => (int) request('to_'.$i),
+                    'color' => '#27b0b6'
+                ]);                
+            }
+        }
+    }
+
+    public function update()
+    {
+          foreach (DensityParameter::all() as $density) {
             $density->update([
                 'percentage' => request($density->level)
             ]);
