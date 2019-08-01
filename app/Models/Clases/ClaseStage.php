@@ -3,7 +3,7 @@
 namespace App\Models\Clases;
 
 use App\Models\Clases\Clase;
-use App\Models\Exercises\Stage;
+use App\Models\Wods\Stage;
 use Illuminate\Database\Eloquent\Model;
 
 class ClaseStage extends Model

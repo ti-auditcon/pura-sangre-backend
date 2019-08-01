@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Plans;
 
-use Session;
+use App\Http\Controllers\Controller;
 use App\Models\Plans\Plan;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Session;
 
 /** [PlanController description] */
 class PlanController extends Controller
@@ -17,8 +17,8 @@ class PlanController extends Controller
      */
     public function index()
     {
-      $plans = Plan::all();
-      return view('plans.index')->with('plans', $plans);
+        $plans = Plan::all();
+        return view('plans.index')->with('plans', $plans);
     }
 
     /**
@@ -28,7 +28,7 @@ class PlanController extends Controller
      */
     public function create(Plan $plan)
     {
-      return view('plans.create_plan')->with('plan', $plan);
+        return view('plans.create_plan')->with('plan', $plan);
     }
 
     /**
@@ -39,8 +39,9 @@ class PlanController extends Controller
      */
     public function store(Request $request, Plan $plan)
     {
-      $plan = Plan::create(array_merge($request->all(), ['has_clases' => 1, 'custom' => 0]));
-      return redirect()->route('plans.show', $plan->id)->with('success', 'El plan ha sido creado correctamente');
+        $plan = Plan::create(array_merge($request->all(), ['has_clases' => 1, 'custom' => 0]));
+        
+        return redirect()->route('plans.show', $plan->id)->with('success', 'El plan ha sido creado correctamente');
     }
 
     /**
@@ -62,7 +63,7 @@ class PlanController extends Controller
      */
     public function edit(Plan $plan)
     {
-      return view('plans.edit')->with('plan', $plan);
+        return view('plans.edit')->with('plan', $plan);
     }
 
     /**
@@ -74,9 +75,9 @@ class PlanController extends Controller
      */
     public function update(Request $request, Plan $plan)
     {
-      $plan->update($request->all());
-      Session::flash('success','Los datos del plan han sido actualizados correctamente');
-      return view('plans.show')->with('plan', $plan);
+        $plan->update($request->all());
+        Session::flash('success', 'Los datos del plan han sido actualizados correctamente');
+        return view('plans.show')->with('plan', $plan);
     }
 
     /**
@@ -87,8 +88,8 @@ class PlanController extends Controller
      */
     public function destroy(Plan $plan)
     {
-       $plan->delete();
-       return redirect('/plans')->with('success','El plan ha sido eliminado correctamente');
+        $plan->delete();
+        return redirect('/plans')->with('success', 'El plan ha sido eliminado correctamente');
     }
 
 }

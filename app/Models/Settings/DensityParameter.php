@@ -18,5 +18,9 @@ class DensityParameter extends Model
 	 * 
 	 * @var array
 	 */
+<<<<<<< HEAD
     protected $fillable = ['level', 'from', 'to', 'color'];
+=======
+    protected $fillable = ['level', 'percentage', 'color'];
+>>>>>>> parent of 17d130f... Revert "?"
 }

@@ -16,7 +16,11 @@ class DensityParameterController extends Controller
      */
     public function index()
     {
+<<<<<<< HEAD
         $densities = DensityParameter::all(['id', 'level', 'from', 'to', 'color']);
+=======
+        $densities = DensityParameter::all();
+>>>>>>> parent of 17d130f... Revert "?"
 
         return view('parameters.index')->with('densities', $densities);
     }
@@ -41,6 +45,7 @@ class DensityParameterController extends Controller
      */
     public function store(Request $request)
     {
+<<<<<<< HEAD
         // dd($request->all());
         for ($i = 1; $i < 6; $i++) {
             if ( $request->level_.$i ) {
@@ -57,6 +62,9 @@ class DensityParameterController extends Controller
     public function update()
     {
           foreach (DensityParameter::all() as $density) {
+=======
+        foreach (DensityParameter::all() as $density) {
+>>>>>>> parent of 17d130f... Revert "?"
             $density->update([
                 'percentage' => request($density->level)
             ]);

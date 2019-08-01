@@ -13,7 +13,6 @@ class SendEmail extends Mailable
 
     public $demo;
 
-
     /**
      * Create a new message instance.
      *

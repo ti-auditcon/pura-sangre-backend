@@ -405,7 +405,8 @@
 											<tr>
 												<td valign="top" class="mcnTextContent" style="padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;font-family: Helvetica;font-size: 16px;line-height: 150%;text-align: left;">
 													<h1 style="display: block;margin: 0;padding: 0;color: #202020;font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 26px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: normal;text-align: left;"><span style="color:#333333"><strong><span style="font-size:30px"><span style="font-family:lato,helvetica neue,helvetica,arial,sans-serif">Hola {{$user->first_name}}!<br>
-															Bienvenido a la comunidad<br>
+															@if ($user->gender == 'mujer') Bienvenida @else Bienvenido
+															@endif a la comunidad<br>
 														Pura Sangre CrossFit&nbsp;&nbsp;<img data-file-id="450793" height="22" src="https://gallery.mailchimp.com/0e8c674a05adecbecad2ee1b4/images/cbaccfcc-ca00-489f-a4b5-0f58b474adb1.png" style="border: 0px initial;width: 22px;height: 22px;margin: 0px;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" width="22">&nbsp;<img data-file-id="450793" height="22" src="https://gallery.mailchimp.com/0e8c674a05adecbecad2ee1b4/images/cbaccfcc-ca00-489f-a4b5-0f58b474adb1.png" style="border: 0px initial;width: 22px;height: 22px;margin: 0px;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" width="22"></span></span></strong></span></h1>
 
 														{{-- <p style="margin: 10px 0;padding: 0;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #202020;font-family: Helvetica;font-size: 16px;line-height: 150%;text-align: left;"><br>

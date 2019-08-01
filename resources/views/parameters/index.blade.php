@@ -11,6 +11,7 @@
     <div class="row">
         <div class="col-lg-4">
             <div class="ibox">
+<<<<<<< HEAD
                 <div class="ibox-head">
                     <div class="ibox-tittle">
                         <h5 class="font-strong mb-4">Configuraciones para densidad de Clases</h5>
@@ -103,6 +104,79 @@
             </div>
         </div>
     {{-- </div> --}}
+=======
+            
+            {{--   <div class="alert alert-warning" style="display: none;">
+            
+                    <strong>Por favor corrige los siguientes errores!</strong><br>
+            
+                    <ul class="errores-alertas"></ul>
+            
+                </div> --}}
+            <form action="{{ route('density-parameters.store') }}" method="POST">
+                @csrf
+                <div class="ibox-body">
+            
+                    <h5 class="font-strong mb-4">Configuraciones para densidad de Clases</h5>
+
+                    <div>
+                        <table class="table table-hover">
+                            <thead class="thead-default">
+                                <tr>
+                                    <th width="43%">Nivel</th>
+                                    
+                                    <th width="33%">Porcentaje</th>
+                                    
+                                    <th width="14%">Color</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach ($densities as $density)
+                                    <tr>
+                                        <td>{{ ucfirst($density->level) }}</td>
+                                        
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <input
+                                                    type="number"
+                                                    name="{{ $density->level }}"
+                                                    value="{{ $density->percentage }}"
+                                                    class="form-control"
+                                                    min="1"
+                                                    max="100"
+                                                />
+                                                
+                                                <label class="ml-2 mr-4">%</label>
+                                            </div>
+                                        </td>
+                                        
+                                        <td class="bg-{{ $density->color }}"></td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="text-right mt-3">
+                        <button
+                            type="submit"
+                            class="btn btn-success"
+                            onClick="this.disabled = true; this.value = 'Actualizando…'; this.form.submit();"
+                        >
+                            <i class="fa fa-floppy-o"></i> Actualizar
+                        </button>  
+                    </div>
+            
+                </div>
+            </form>
+
+            
+            </div>
+
+        </div>
+
+>>>>>>> parent of 17d130f... Revert "?"
         <div class="col-lg-8">
 
             <div class="ibox">
@@ -121,9 +195,12 @@
         </div>
     </div>
 </div>
+<<<<<<< HEAD
 
 @include('parameters.modals.create-density')
 
+=======
+>>>>>>> parent of 17d130f... Revert "?"
 @endsection
 
 @section('css')
@@ -133,6 +210,7 @@
 @section('scripts') {{-- scripts para esta vista --}}
 
 <script>
+<<<<<<< HEAD
     $( document ).ready(function () {
         // Create rows
         $( '#row-create' ).click(function () {
@@ -182,6 +260,10 @@
                 $( '#row-delete' ).prop('disabled', true);
             }
         });
+=======
+    $(function() {
+
+>>>>>>> parent of 17d130f... Revert "?"
     });
 </script>
 

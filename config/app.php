@@ -3,36 +3,25 @@
 
 return [
 
-
     'name' => env('APP_NAME', 'Laravel'),
-
-
 
     'env' => env('APP_ENV', 'production'),
 
-
-
     'debug' => env('APP_DEBUG', false),
-
 
     'url' => env('APP_URL', 'http://localhost'),
 
-
     'timezone' => 'America/Santiago',
-
 
     'locale' => 'es_ES',
 
     // setlocale(LC_ALL, 'es_ES');
 
-
     'fallback_locale' => 'es_ES',
-
 
     'key' => env('APP_KEY'),
 
     'cipher' => 'AES-256-CBC',
-
 
     'providers' => [
 
@@ -56,7 +45,11 @@ return [
         Illuminate\Pipeline\PipelineServiceProvider::class,
         Illuminate\Queue\QueueServiceProvider::class,
         Illuminate\Redis\RedisServiceProvider::class,
-        Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
+        //Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
+        
+        // MY OWN PasswordResetServiceProvider ...
+        App\Providers\CustomPasswordResetServiceProvider::class,
+
         Illuminate\Session\SessionServiceProvider::class,
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
@@ -66,8 +59,6 @@ return [
          * Package Service Providers...
          */
         Laravel\Passport\PassportServiceProvider::class,
-        Jenssegers\Date\DateServiceProvider::class,
-
 
         /*
          * Application Service Providers...
@@ -76,6 +67,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        // App\Providers\TelescopeServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
     ],
@@ -103,7 +95,6 @@ return [
         'Config' => Illuminate\Support\Facades\Config::class,
         'Cookie' => Illuminate\Support\Facades\Cookie::class,
         'Crypt' => Illuminate\Support\Facades\Crypt::class,
-        'Date' => Jenssegers\Date\DateServiceProvider::class,
         'DB' => Illuminate\Support\Facades\DB::class,
         'Eloquent' => Illuminate\Database\Eloquent\Model::class,
         'Event' => Illuminate\Support\Facades\Event::class,
@@ -127,8 +118,6 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'Date' => Jenssegers\Date\Date::class,
-
     ],
 
 ];

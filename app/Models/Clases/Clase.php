@@ -14,16 +14,95 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Clase extends Model
 {
     use SoftDeletes;
-
+    
     protected $table = 'clases';
+    
     protected $dates = ['deleted_at'];
-    protected $fillable = ['date', 'start_at', 'finish_at', 'room', 'profesor_id', 'quota' ,'block_id','clase_type_id'];
-    protected $appends = ['start','end','url','reservation_count','title','color'];
+    
+    protected $fillable = [
+        'date', 'start_at', 'finish_at',
+        'room', 'profesor_id', 'quota',
+        'wod_id', 'block_id', 'clase_type_id'
+    ];
+    
+    protected $appends = ['start', 'end', 'url', 'reservation_count', 'title', 'color'];
 
     // protected static function boot()
     // {
     //     parent::boot();
     // }
+
+
+    /**
+     * [getReservationCountAttribute description]
+     * @return [type] [description]
+     */
+    public function getReservationCountAttribute()
+    {
+        return $this->hasMany(Reservation::class)->count();
+    }
+
+    /**
+     * [getStartAttribute description]
+     * @return [type] [description]
+     */
+    public function getStartAttribute()
+    {
+        if($this->block->date==null){
+        
+          return $this->date." ".$this->block->start;
+        
+        } else {
+        
+          return $this->block->start;
+        
+        }
+    }
+
+    /**
+     * [getEndAttribute description]
+     * @return [type] [description]
+     */
+    public function getEndAttribute()
+    {
+        if ($this->block->date == null) {
+        
+          return $this->date . " " . $this->block->end;
+        
+        } else {
+        
+          return $this->block->end;
+        
+        }
+    }
+
+    /**
+     * [getTitleAttribute description]
+     * @return [type] [description]
+     */
+    public function getTitleAttribute()
+    {
+        return '';
+    }
+
+    /**
+     * [getUrlAttribute description]
+     * @return [type] [description]
+     */
+    public function getUrlAttribute()
+    {
+        return url('clases/' . $this->id);
+    }
+
+    /**
+     * [getColorAttribute description]
+     * @return [type] [description]
+     */
+    public function getColorAttribute()
+    {
+        return $this->claseType->clase_color;
+    }
+
 
     /**
      * [reservations description]
@@ -57,10 +136,15 @@ class Clase extends Model
     return $this->belongsToMany(User::Class)->using(Reservation::class);
     }
 
+    /**
+     * [claseType description]
+     * @return [type] [description]
+     */
     public function claseType()
     {
       return $this->belongsTo(ClaseType::class);
     }
+
     /**
      * [profresor relation to this model]
      * @return [model] [description]
@@ -76,7 +160,7 @@ class Clase extends Model
      */
     public function profesor()
     {
-    return $this->belongsToMany(User::Class)->using(Reservation::class);
+        return $this->belongsToMany(User::Class)->using(Reservation::class);
     }
 
     /**
@@ -85,64 +169,7 @@ class Clase extends Model
      */
     public function block()
     {
-      return $this->belongsTo(Block::class);
+        return $this->belongsTo(Block::class);
     }
 
-    /**
-     * [getReservationCountAttribute description]
-     * @return [type] [description]
-     */
-    public function getReservationCountAttribute()
-    {
-        return $this->hasMany(Reservation::class)->count();
-    }
-
-    /**
-     * [getStartAttribute description]
-     * @return [type] [description]
-     */
-    public function getStartAttribute()
-    {
-        if($this->block->date==null){
-          return $this->date." ".$this->block->start;
-        } else {
-          return $this->block->start;
-        }
-    }
-
-    /**
-     * [getEndAttribute description]
-     * @return [type] [description]
-     */
-    public function getEndAttribute()
-    {
-        if($this->block->date==null){
-          return $this->date." ".$this->block->end;
-        } else {
-          return $this->block->end;
-        }
-    }
-
-    /**
-     * [getTitleAttribute description]
-     * @return [type] [description]
-     */
-    public function getTitleAttribute()
-    {
-      return '';
-    }
-
-    /**
-     * [getUrlAttribute description]
-     * @return [type] [description]
-     */
-    public function getUrlAttribute()
-    {
-      return url('clases/'.$this->id);
-    }
-
-    public function getColorAttribute()
-    {
-      return $this->claseType->clase_color;
-    }
 }
