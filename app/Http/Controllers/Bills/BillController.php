@@ -33,9 +33,8 @@ class BillController extends Controller
      */
     public function getPagos(Request $request)
     {
-      // print_r($request->all());
-        $columns = array(0 => 'bills.created_at', 1 => 'users.first_name', 2 => 'plans.plan',
-            3 => 'bills.date', 4 => 'bills.start_date', 5 => 'bills.finish_date', 6 => 'amount',
+        $columns = array(0 => 'payment_type_id', 1 => 'plan_user_id',
+            2 => 'date', 3 => 'start_date', 4 => 'finish_date', 5 => 'amount',
         );
         
         $totalData = Bill::count();
@@ -45,15 +44,30 @@ class BillController extends Controller
         $dir = $request->input('order.0.dir');
 
         if(empty($request->input('search.value'))){
-            $bills = Bill::offset($start)
-                ->limit($limit)
-                ->join('plan_user', 'bills.plan_user_id', '=', 'plan_user.id')
-                ->join('users', 'plan_user.user_id', '=', 'users.id')
-                ->join('plans', 'plan_user.plan_id', '=', 'plans.id')
-                ->orderBy($order, $dir)
-                ->select('bills.*', 'users.first_name', 'users.last_name')
-                ->get();
-            $totalFiltered = Bill::count(); 
+            if ($request->input('order.0.column') == 0) {
+                $bills = Bill::offset($start)
+                    ->limit($limit)
+                    ->join('plan_user', 'plan_user.id', '=', 'bills.plan_user_id')
+                    ->join('users', 'users.id', '=', 'plan_user.user_id')
+                    ->orderBy('users.first_name', $dir)
+                    ->get();
+                $totalFiltered = Bill::count();
+            }
+            elseif ($request->input('order.0.column') == 1) {
+                $bills = Bill::offset($start)
+                    ->limit($limit)
+                    ->join('plan_user', 'plan_user.id', '=', 'bills.plan_user_id')
+                    ->join('plans', 'plans.id', '=', 'plan_user.plan_id')
+                    ->orderBy('plans.plan', $dir)
+                    ->get();
+                $totalFiltered = Bill::count();
+            }else{
+                $bills = Bill::offset($start)
+                    ->limit($limit)
+                    ->orderBy($order, $dir)
+                    ->get();
+                $totalFiltered = Bill::count();
+            }   
         }else{
             $search = $request->input('search.value');
             $bills = Bill::where('date', 'like', date("Y-m-d",strtotime($search)))
@@ -89,7 +103,6 @@ class BillController extends Controller
         
         if($bills){
             foreach($bills as $bill){
-                $nestedData['fecha_registro'] = $bill->created_at->format('d-m-Y');
                 $nestedData['alumno'] = isset($bill->plan_user) ? '<a href="'.url('/users/'.$bill->plan_user->user->id).'">'.$bill->plan_user->user->first_name.' '.$bill->plan_user->user->last_name.'</a>' : "no aplica";
                 $nestedData['plan'] = isset($bill->plan_user) ? $bill->plan_user->plan->plan : "no aplica";
                 $nestedData['date'] = date('d-m-Y',strtotime($bill->date));

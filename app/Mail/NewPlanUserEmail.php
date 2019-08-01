@@ -32,6 +32,7 @@ class NewPlanUserEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('messages.plan_bought_template')->subject('Se registró un pago en PuraSangre');
+        return $this->view('messages.plan_bought_template')
+                    ->subject('Se registró un pago en PuraSangre');
     }
 }

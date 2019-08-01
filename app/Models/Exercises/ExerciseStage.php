@@ -2,7 +2,7 @@
 
 namespace App\Models\Exercises;
 
-use App\Models\Wods\Stage;
+use App\Models\Exercises\Stage;
 use App\Models\Exercises\Exercise;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Clases\ReservationStatisticStage;

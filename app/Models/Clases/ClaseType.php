@@ -2,35 +2,20 @@
 
 namespace App\Models\Clases;
 
+//use App\Models\Clases\Clase;
 use Illuminate\Database\Eloquent\Model;
+
 
 
 class ClaseType extends Model
 {
 	/**
-	 * $fillable for mass assignment
-	 * 
-	 * @var array
+	 * [blocks description]
+	 * @return [model] [return block model]
 	 */
-	protected $fillable = ['clase_type', 'clase_color'];
+	// public function blocks()
+	// {
+	// 	return $this->hasMany(Block::class);
+	// }
 
-	/**
-	 * Return all the clases associated to this Model
-	 * 
-	 * @return Illuminate\Database\Eloquent
-	 */
-	public function clases()
-	{
-		return $this->hasMany('App\Models\Clases\Clase');
-	}
-
-	/**
-	 * Return all the blocks associated to this Model
-	 * 
-	 * @return Illuminate\Database\Eloquent
-	 */
-	public function blocks()
-	{
-		return $this->hasMany('App\Models\Clases\Block');
-	}
 }

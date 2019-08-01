@@ -13,10 +13,18 @@ class WodObserver
 
   }
 
-    public function created(Wod $wod)
-    {
-        Clase::where('date', $wod->date)
-             ->where('clase_type_id', $wod->clase_type_id)
-             ->update(['wod_id' => $wod->id]);
-    }
+  public function created(Wod $wod)
+  {
+      // $ssn_date = Carbon::parse(Session::get('date'))->format('Y-m-d');
+      // $clases = Clase::where('date', $ssn_date)->get();
+      // foreach ($clases as $clase) {
+      //     ClaseStage::create([
+      //         'clase_id' => $clase->id,
+      //         'stage_id' => $stage->id]);
+      // }
+      Clase::where('date', $wod->date)->update(['wod_id' => $wod->id]);
+
+
+
+  }
 }

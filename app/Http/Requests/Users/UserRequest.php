@@ -2,10 +2,7 @@
 
 namespace App\Http\Requests\Users;
 
-use App\Rules\RutUnique;
-use App\Models\Users\User;
-use Illuminate\Validation\Rule;
-use Freshwork\ChileanBundle\Rut;
+use Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
@@ -27,32 +24,30 @@ class UserRequest extends FormRequest
      */
     public function rules()
     {
-        // dd($this->user);
         switch ($this->method()){
             case 'POST': {
                 return [
                     'first_name' => 'required',
                     'last_name' => 'required',
-                    'rut' => new RutUnique,
-                    'email' => 'required|email|unique:users',
+                    'rut' => 'unique:users',
+                    // 'email' => 'required|email|unique:users',
                     'phone' => $this->phone != null ? 'digits:8': '',
                 ];
             }
-
             case 'PUT': {
-                // dd(request()->all());
-                $case = $this->route('user')->email != $this->email ?
-                        '|unique:users,email' :
-                        null;
-
-                $required = auth()->user()->hasRole(1) ?
-                            'required' :
-                            '';
-
+                if($this->route('user')->email != $this->email){
+                    $case = '|unique:users,email';
+                }else {
+                    $case = '';
+                }
+                if (Auth::user()->hasRole(1)) {
+                    $required = 'required';
+                }else {
+                    $required = '';
+                }
                 return [
                     'first_name' => 'required',
                     'last_name' => 'required',
-                    'rut' => new RutUnique($this->user),
                     'image' => 'mimes:jpeg,png|max:1024',
                     'email' => $required.'|email'.$case,
                     'phone' => $this->phone != null ? 'digits:8': '',
@@ -78,7 +73,7 @@ class UserRequest extends FormRequest
        'phone.digits' => 'El número de teléfono debe contener :digits dígitos.',
        'image.mimes' => 'El formato de imagen debe ser jpeg o png',
        'image.max' => 'La imagen no debe se mas grande que 1 MB',
+       // $this->$unique => 'El email ya ha sido tomado.',
      ];
    }
  }
-

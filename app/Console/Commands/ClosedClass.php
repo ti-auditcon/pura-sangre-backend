@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Clases\Clase;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class ClosedClass extends Command
@@ -38,9 +39,10 @@ class ClosedClass extends Command
      */
     public function handle()
     {
+        // $this_hour = Carbon::now()->startOfHour();
         $clases = Clase::where('date', today())
-            ->where('start_at', now()->startOfHour())
-            ->get();
+                       ->where('start_at', now()->startOfHour())
+                       ->get();
         if (count($clases) != 0) {
             foreach ($clases as $clase) {
                 foreach ($clase->reservations as $reservation) {
@@ -55,5 +57,6 @@ class ClosedClass extends Command
                 }
             }
         }
+
     }
 }

@@ -5,7 +5,6 @@ namespace App\Models\Clases;
 use App\Models\Clases\Clase;
 use App\Models\Clases\ReservationStatisticStage;
 use App\Models\Clases\ReservationStatus;
-use App\Models\Plans\PlanUser;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
 
@@ -44,10 +43,5 @@ class Reservation extends Model
     public function reservation_status()
     {
       return $this->belongsTo(ReservationStatus::class);
-    }
-
-    public function plan_user()
-    {
-      return $this->belongsTo(PlanUser::class);
     }
 }

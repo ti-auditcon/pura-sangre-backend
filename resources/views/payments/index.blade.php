@@ -17,13 +17,12 @@
             <table id="payments-table" class="table table-hover">
               <thead class="thead-default">
                 <tr>
-                  <th width="10%">Fecha registro</th>
                   <th width="20%">Alumno</th>
-                  <th width="15%">Plan</th>
+                  <th width="20%">Plan</th>
                   <th width="15%">Fecha Boleta</th>
                   <th width="15%">Fecha de Inicio</th>
                   <th width="15%">Fecha de Término</th>
-                  <th width="10%">Total</th>
+                  <th width="15%">Total</th>
                 </tr>
               </thead>
               <tbody>
@@ -47,7 +46,6 @@
       $('#payments-table').DataTable({
          "processing": true,
          "serverSide": true,
-         "order": [[ 0, "desc" ]],
          "ajax": {
             "url": "<?= route('datapagos') ?>",
             "dataType": "json",
@@ -71,7 +69,6 @@
                },
             },
          "columns":[
-            {"data": "fecha_registro"},
             {"data": "alumno"},
             {"data": "plan"}, 
             {"data": "date"},

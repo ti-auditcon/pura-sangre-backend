@@ -19,7 +19,7 @@
       <div class="col-12 col-xl-6">
          <div class="ibox">
             <div class="ibox-head">
-               <div class="ibox-title">N° de planes vendidos por Mes</div>
+               <div class="ibox-title">Cantidad total de planes vendidos por Mes</div>
             </div>
             <div class="ibox-body">
                <canvas id="quantity-plans" height="280" width="600"></canvas>
@@ -62,7 +62,7 @@
                            <thead class="thead-default">
                               <tr>
                                  <th width="51%">Tipo de Plan</th>
-                                 <th width="49%">Total vendidos</th>
+                                 <th width="49%">Total de Alumnos</th>
                               </tr>
                            </thead>
                            <tbody>
@@ -74,7 +74,7 @@
                            <thead class="thead-default">
                               <tr>
                                  <th width="60%">Tipo de Plan</th>
-                                 <th width="40%">Total vendidos</th>
+                                 <th width="40%">Total de Alumnos</th>
                               </tr>
                            </thead>
                            <tbody>

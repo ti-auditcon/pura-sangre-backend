@@ -9,9 +9,7 @@
          <div class="ibox">
            <div class="ibox-head">
              <div class="ibox-title">
-              <h3 class="font-strong">
-                <i class="fa fa-bell" aria-hidden="true"></i> Alertas en PuraSangre App
-              </h3>
+               Alertas
              </div>
            </div>
            {!! Form::open(['route' => 'alerts.store']) !!}
@@ -41,9 +39,7 @@
                 <div class="row">
                   <div class="col-sm-12">
           			   <label class="font-normal">Contenido</label>
-                     <textarea rows="8" id="summernote" class="form-control form-control-air" name="message" required>
-                       {{ old('message') }}
-                     </textarea>
+                     <textarea rows="8" id="summernote" class="form-control form-control-air" name="message" required></textarea>
                  	</div>
               	</div>
 
@@ -60,28 +56,14 @@
           <div class="ibox-tools">
         </div>
       </div>
-      <div class="ibox-body" >
-        <div class="table-responsive">
-        <div class="input-group-icon input-group-icon-left mr-3">
-          <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
-          <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Buscar ...">
-        </div>
-        <table class="table table-bordered table-hover table-striped collapsed" id="alert-list-table" style="width: 1592px;">
-            <thead class="thead-default thead-lg">
-              <tr role="row">
-                <th class="sorting" width="40%">Mensaje</th>
-                <th class="sorting">Desde</th>
-                <th class="sorting">Hasta</th>
-                <th class="sorting" width="10%">Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-            </tbody>
-          </table>
-        </div>
+      <div class="ibox-body" id="alert-list-table">
       </div>
     </div>
   </div>
+
+
+
+
 
 
 @endsection
@@ -92,11 +74,9 @@
 @endsection
 
 
-{{-- SCRIPTS PARA ESTA VISTA --}}
-@section('scripts') 
-  <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
-  <script src="{{ asset('/js/datatables.min.js') }}"></script>
-  <script src="{{ asset('/js/dataTables.checkboxes.min.js') }}"></script>
+
+@section('scripts') {{-- scripts para esta vista --}}
+
 	<script src="{{asset('/js/summernote.min.js')}}"></script>
 
 	<script>
@@ -145,57 +125,40 @@
    </script>
 
    <script>
+  $(document).ready(function(){
+    var op = "";
+    $.ajax({
+      type:'get',
+      url: '/alert-list',
+      success: function(resp){
+        console.log('0hola');
+        op+='<table class="table table-striped">';
+        op+='<tr><th width="50%">Mensaje</th><th width="20%">Desde</th><th width="20%">Hasta</th><th width="10%">Acciones</th></tr>';
+          for(var i=0;i<resp.length;i++){
+            op += '<tr>';
+            op += '<td>'+resp[i].message+'</td>'+
+              '<td>'+resp[i].from+'</td>'+
+              '<td>'+resp[i].to+'</td><td><button class="btn btn-danger remove-item" data-id="'+resp[i].id+'" data-name="'+resp[i].message+'">Eliminar</button></td></tr>';
+          }
+          op+='</table>';
+          $('#alert-list-table').html(op);
+      },
+      error: function(){
+        console.log("Error Occurred");
+      }
+    });
+  });
 
-      var table = $('#alert-list-table').DataTable({
-        "ajax": {
-          "url": '/alert-list',
-          "dataType": "json",
-          "type": "GET",
-          "data": {"_token": "<?= csrf_token() ?>"},
-        },
-        "language": {
-            "zeroRecords": "Sin resultados",
-            "info": " ",
-            "infoEmpty": "Sin resultados",
-            "paginate": {
-              "next":     "Siguiente",
-              "previous": "Anterior"
-            },
-          },
-        // "bFilter": false,
-        "dom": '<"top">rt<"bottom"ilp><"clear">',
-        "lengthChange": false,
-        "pageLength": 8,
-        "columnDefs": [ {
-            "targets": -1,
-            "orderable": false,
-            "data": "id",
-            "defaultContent": "<button class='btn btn-danger remove-item'>Borrar</button>",
-        } ],
-        "columns":[
-          {"data": "message"},
-          {"data": "from"},
-          {"data": "to"}, 
-          {"data": null}
-        ],
-      });
-
-      $.ajaxSetup({
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-      });
-    // $(document).ready(function() {
-      var table = $('#alert-list-table').DataTable();
-      $('#key-search').on('keyup', function() {
-        table.search(this.value).draw();
-      });
-    // });
+ $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 
     /* REMOVE ALERT */
     $("body").on("click",".remove-item",function() {
-      var data = table.row( $(this).parents('tr') ).data();
-      var c_obj = $(this).parents("tr");
+    var id = $(this).data('id');
+    var c_obj = $(this).parents("tr");
       swal({
           title: "Seguro desea eliminar esta alerta?",
           type: 'warning',
@@ -208,7 +171,7 @@
         $.ajax({
           dataType: 'json',
           type:'delete',
-          url: '/alert-list/' + data.id,
+          url: '/alert-list/' + id,
         }).done(function(data) {
           c_obj.remove();
           swal.close();

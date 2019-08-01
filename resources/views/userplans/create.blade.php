@@ -13,7 +13,7 @@
         </div>
         {!! Form::open(['route' => ['users.plans.store', $user->id]]) !!}
         <div class="ibox-body">
-          {{-- {{old('plan_id')}} --}}
+          {{old('plan_id')}}
           <input class="form-control" name="user_id" type="hidden" value="{{ $user->id }}" hidden>
           <div class="row">
             <div class="col-sm-6 form-group mb-2">
@@ -126,7 +126,7 @@
             <div class="col-sm-12 form-group mb-2">
               <label>Observaciones</label>
               <div class="input-group date ">
-                <textarea class="form-control " rows="5" name="observations" placeholder="Detalle..."></textarea>
+                <textarea class="form-control " rows="5" name="detalle" placeholder="Detalle..."></textarea>
               </div>
             </div>
           </div>
@@ -158,7 +158,7 @@
    $('#start_date .input-group.date').datepicker({
       todayBtn: "linked",
       keyboardNavigation: false,
-      forceParse: true,
+      forceParse: false,
       calendarWeeks: true,
       format: "dd-mm-yyyy",
       startDate: "01-01-1910",
@@ -173,7 +173,7 @@
    $('#date .input-group.date').datepicker({
       todayBtn: "linked",
       keyboardNavigation: false,
-      forceParse: true,
+      forceParse: false,
       calendarWeeks: true,
       format: "dd-mm-yyyy",
       startDate: "01-01-1910",
@@ -188,7 +188,7 @@
    $('#finish_date .input-group.date').datepicker({
        todayBtn: "linked",
       keyboardNavigation: false,
-      forceParse: true,
+      forceParse: false,
       calendarWeeks: true,
       format: "dd-mm-yyyy",
       startDate: "01-01-1910",

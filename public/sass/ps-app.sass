@@ -25,8 +25,6 @@ a:focus, a:hover
 
 // .login-box
 //   background: rgba(white, 0.7)
-.d-none
-  display: none
 
 // header
 header
@@ -120,7 +118,7 @@ table
 
 //Sidebar
 .page-sidebar
- // position: fixed
+  position: fixed
   background: #565353
   width: 120px
   // background: linear-gradient(95.73deg, #01BCC8 0.75%, #0396B6 81.3%)
@@ -167,60 +165,11 @@ table
   width: 120px
   // margin-bottom: 40px
   text-align: center
-  z-index: -1
   img
     padding-bottom: 20px
     width: 50px
     // text-align: center
 
-@media (max-height: 720px)
-  .brand
-    display: none
-
-
-@keyframes spinner
-  to
-    transform: rotate(360deg)
-
-// Clases Cargando
-.loading-box
-  position: absolute
-  background: rgba(white, 0.7)
-  padding: 30px
-  color: black
-  width: 100%
-  height: 95%
-  top: 60px
-  left: 0
-  right: 0
-  bottom: 0
-  display: flex
-  justify-content: center
-  align-items: center
-  z-index: 999
-  transition: all ease 0.3s
-  .spinner
-    display: inline-block
-    margin-right: 50px
-    &::before
-      content: ''
-      box-sizing: border-box
-      position: absolute
-      width: 26px
-      height: 26px
-      margin-top: -12px
-      border-radius: 50%
-      border-top: 2px solid black
-      border-right: 2px solid transparent
-      animation: spinner .6s linear infinite
-  h1
-    margin: 0
-    font-size: 24px
-    display: inline-block
-    // background: linear-gradient(95.73deg, #00CCDB 0.75%, #04ADD3 81.3%)
-    // background-clip: text
-    // text-fill-color: transparent
-    // -webkit-text-fill-color: transparent
 
 //buttons & badges
 

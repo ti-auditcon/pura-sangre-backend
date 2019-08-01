@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Users;
 
-use Session;
-use Redirect;
-use App\Models\Users\User;
-use Illuminate\Http\Request;
-use App\Exports\UsersExport;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Users\UserRequest;
 use App\Models\Plans\PlanUser;
 use App\Models\Users\Emergency;
-use App\Models\Clases\Reservation;
-use Illuminate\Support\Facades\Log;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Http\Controllers\Controller;
+use App\Models\Users\User;
+use App\Notifications\NewUser;
+use Auth;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
-use App\Http\Requests\Users\UserRequest;
+use Redirect;
+use Session;
 
 /**
  * [UserController description]
@@ -33,30 +33,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with([
-            'actual_plan' => function($q) {
-                $q->select('id', 'start_date', 'finish_date', 'user_id', 'plan_id')
-                  ->with([
-                    'plan' => function ($q) {
-                        $q->select('id', 'plan');
-                    }
-                  ]);
-            }])
-        ->get(['id', 'rut', 'first_name', 'last_name', 'avatar', 'status_user_id']);
-
+        $users = User::all();
         return view('users.index')->with('users', $users);
-
-// avatar
-// status_user-> type
-// first_name last_name
-// rut
-// actual_plan->plan->plan
-// actual_plan->finish_date
-    }
-
-    public function export()
-    {
-        return Excel::download(new UsersExport, toDay()->format('d-m-Y') . '_usuarios.xls');
     }
 
     /**
@@ -82,12 +60,12 @@ class UserController extends Controller
             'avatar' => url('img/default_user.png'),
         ]));
         $emergency = Emergency::create(array_merge($request->all(), [
-            'user_id' => $user->id,
+            'user_id' => $user->id
         ]));
         if ($user->save()) {
-            Session::flash('success', 'El usuario ha sido creado correctamente');
+            Session::flash('success','El usuario ha sido creado correctamente');
             return view('users.show')->with('user', $user);
-        } else {
+        }else {
             return Redirect::back();
         }
     }
@@ -123,20 +101,20 @@ class UserController extends Controller
     public function update(UserRequest $request, User $user)
     {
         if ($request->image) {
-            request()->file('image')->storeAs('public/users', $user->id . $user->first_name . '.jpg');
+            request()->file('image')->storeAs('public/users', $user->id.$user->first_name.'.jpg');
         }
         $user->update(array_merge($request->all(), [
             'birthdate' => $request->birthdate,
             'since' => $request->since,
-            'avatar' => url('/') . '/storage/users/' . $user->id . $user->first_name . '.jpg',
+            'avatar' => url('/').'/storage/users/'.$user->id.$user->first_name.'.jpg',
         ]));
 
         if ($user->emergency) {
             $user->emergency()->update([
-                'contact_name' => $request->contact_name,
-                'contact_phone' => $request->contact_phone,
+               'contact_name' => $request->contact_name,
+               'contact_phone' => $request->contact_phone,
             ]);
-        } else {
+        }else{
             Emergency::create([
                 'user_id' => $user->id,
                 'contact_name' => $request->contact_name,
@@ -145,7 +123,7 @@ class UserController extends Controller
         }
 
         Session::flash('success', 'Los datos del usuario han sido actualizados');
-        return redirect('/users/' . $user->id)->with('user', $user);
+        return redirect('/users/'.$user->id)->with('user', $user);
     }
 
     /**
@@ -157,21 +135,14 @@ class UserController extends Controller
     public function image(Request $request, User $user)
     {
         if ($request->hasFile('image')) {
-            try {
-                request()->file('image')->storeAs('public/users', $user->id . $user->first_name . '.jpg');
-            } catch (\Exception $e) {
-                Log::error('Hemos tenido el siguiente error: ' . $e);
-
-                return response()->json(['error' => 'Problema al subir la imagen, si vuelve a suceder por favor comuniquese con PuraSangre.']);
-            }
-
-            $user->avatar = url('/') . '/storage/users/' . $user->id . $user->first_name . '.jpg';
-            
+            request()->file('image')->storeAs('public/users', $user->id.$user->first_name.'.jpg');
+            $user->avatar = url('/').'/storage/users/'.$user->id.$user->first_name.'.jpg';
             $user->save();
-            
-            return response()->json(['success' => 'Imagen subida correctamente'], 200);
+            return response()->json(['success' =>'imagen subida correctamente'], 200);
         }
-        return response()->json(['error' => 'No ha sido posible subir la imagen, si el problema persiste comuniquese con PuraSangre'], 400);
+        else {
+            return response()->json(['error' =>'no hay imagen'], 400);
+        }
     }
 
     /**
@@ -194,7 +165,7 @@ class UserController extends Controller
     {
         $users = User::all();
         foreach ($users as $user) {
-            $user->avatar = url('/') . '/storage/users/u (' . rand(1, 54) . ').jpg';
+            $user->avatar = url('/').'/storage/users/u ('.rand ( 1, 54 ).').jpg';
             $user->save();
         }
         return 'listoco';
@@ -203,33 +174,13 @@ class UserController extends Controller
     public function userinfo(User $user, planuser $plan)
     {
         $response = [
-            'user_name' => $user->first_name . ' ' . $user->last_name,
+            'user_name' => $user->first_name. ' ' .$user->last_name,
             'plan' => $plan->plan->plan,
-            'dates' => $plan->start_date->format('d/m/Y') . ' al ' . $plan->finish_date->format('d/m/Y'),
-            'amount' => $plan->bill ? '$ ' . number_format($plan->bill->amount, $decimal = 0, '.', '.') : 'No aplica',
-            'left_clases' => $plan->counter ?: '',
+            'dates' => $plan->start_date->format('d/m/Y'). ' al ' .$plan->finish_date->format('d/m/Y'),
+            'amount' => $plan->bill ? '$ '.number_format($plan->bill->amount, $decimal = 0, '.', '.') : 'No aplica',
+            'left_clases' => $plan->counter ? : '',
             'status_plan' => $plan->plan_status->plan_status,
-            'observations' => $plan->observations ?: '',
         ];
         echo json_encode($response);
-    }
-
-    public function putIdPlan()
-    {
-        foreach (Reservation::all() as $reserv) {
-            if ($reserv->plan_user_id == null) {
-                $fecha_clase = $reserv->clase->date;
-                $plan = PlanUser::where('start_date', '<=', $fecha_clase)
-                    ->where('finish_date', '>=', $fecha_clase)
-                    ->where('user_id', $reserv->user_id)
-                    ->first();
-                if ($plan) {
-                    $reserv->update(['plan_user_id' => $plan->id]);
-                    $plan->counter -= 1;
-                    $plan->save();
-                }
-            }
-        }
-        return 'All successfully updated!!';
     }
 }

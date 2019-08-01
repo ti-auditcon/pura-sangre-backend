@@ -30,24 +30,15 @@
             </div>
          </div>
 
-        <div class="row">
-            
+         <div class="row">
             <div class="col-sm-6 form-group mb-2">
-            
-                <div id="rut-group" class="form-group inline @if($errors->has('rut')) has-warning  @endif">
-
-                     <label class="col-form-label">Rut</label>
-            
-                    <input class="form-control" id="rut-src" name="rut" type="text" value="{{ old('rut') }}" required>
-            
-                    <div class="col-12 p-0 my-0 mt-3">
-
-                        <span class="col-form-label hidden">Por favor, ingrese un rut válido</span>
-
-                    </div>
-            
-                </div>
-            
+               <div id="rut-group" class="form-group inline @if($errors->has('rut')) has-warning  @endif">
+                  <label class="col-form-label">Rut</label>
+                  <input class="form-control" id="rut-src" name="rut" type="text" value="{{ old('rut') }}" required>
+                  <div class="col-12 p-0 my-0 mt-3">
+                     <span class="col-form-label hidden">Por favor, ingrese un rut válido</span>
+                  </div>
+               </div>
             </div>
 
             <div class="col-sm-6 form-group mb-2">
@@ -163,7 +154,7 @@
       $('.datepicker-birthdate').datepicker({
          todayBtn: "linked",
          keyboardNavigation: false,
-         forceParse: true,
+         forceParse: false,
          calendarWeeks: true,
          format: "dd-mm-yyyy",
          startDate: "01-01-1910",
@@ -180,7 +171,7 @@
       $('.datepicker-since').datepicker({
          todayBtn: "linked",
          keyboardNavigation: false,
-         forceParse: true,
+         forceParse: false,
          calendarWeeks: true,
          format: "dd-mm-yyyy",
          startDate: "01-01-1910",
@@ -193,7 +184,7 @@
    </script>
 
    {{-- RUT --}}
-    <script src="{{ asset('js/jquery.rut.min.js') }}"></script>
+<script src="{{ asset('js/jquery.rut.min.js') }}"></script>
   <script>
     $(function()  {
       $("input#rut-src").rut({

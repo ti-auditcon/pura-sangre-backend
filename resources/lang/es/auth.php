@@ -15,7 +15,5 @@ return [
     
     'failed' => 'Usuario y/o contraseña incorrecta.',
     'throttle' => 'Demasiados intentos de inicio de sesión. Vuelva a intentarlo en :seconds segundos.',
-    'email' => 'Email o contraseña incorrecta',
-     'auth.email' => 'Email incorrect',
 
 ];
