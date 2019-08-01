@@ -156,6 +156,7 @@ class HomeController extends Controller
         $users = User::all();
         $inactives = $actives = $tests = 0; 
         $women = $men = 0;
+        
         foreach ($users as $user) {
             switch ($user->status_user_id) {
                 case 1:
@@ -169,20 +170,10 @@ class HomeController extends Controller
 
                 case 2:
                     $inactives += 1;
-                    if ($user->gender == 'hombre') {
-                        $men += 1;
-                    } else {
-                        $women += 1;
-                    }
                     break;
 
                 case 3:
                     $tests += 1;
-                    if ($user->gender == 'hombre') {
-                        $men += 1;
-                    } else {
-                        $women += 1;
-                    }
                     break;
                 
                 default:

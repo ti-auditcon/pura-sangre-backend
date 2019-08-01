@@ -56,31 +56,37 @@
     </div>
 
     @if (auth()->user()->hasRole(1))
-              <div class="col-12 col-md-7">
-        <div class="row">
-          <div class=" col-md-6 col-sm-12">
-            <div class="ibox">
-               <div class="ibox-head">
-                  <div class="ibox-title">Actividad de alumnos <span style="text-transform: capitalize;">{{today()->formatLocalized('%B')}}</span></div>
-               </div>
-                  <div class="ibox-body">
-                     <canvas id="renewal-chart"></canvas>
-                  </div>
-            </div>
-          </div>
-          <div class="col-md-6 col-sm-12 ">
-             <div class="ibox">
-                 <div class="ibox-head">
-                    <div class="ibox-title">Crossfiteros activos del box</div>
-                    <label id="my-label"></label>
-                 </div>
-                  <div class="ibox-body">
-                     <canvas id="gender-chart" ></canvas>
-                  </div>
-              </div>
-          </div>
+        <div class="col-12 col-md-7">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="ibox">
+                        <div class="ibox-head">
+                            <div class="ibox-title">
+                                Actividad de alumnos en
+                                <span style="text-transform: capitalize;">
+                                    {{ today()->formatLocalized('%B') }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="ibox-body">
+                            <canvas id="renewal-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
 
-        </div>
+                <div class="col-md-6 col-sm-12 ">
+                    <div class="ibox">
+                        <div class="ibox-head">
+                            <div class="ibox-title">Crossfiteros activos del box</div>
+                            <label id="my-label"></label>
+                        </div>
+                        <div class="ibox-body">
+                            <canvas id="gender-chart" ></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         <div class="row">
           <div class="col-12">
              <div class="ibox">
@@ -332,6 +338,7 @@ $(document).ready(function(){
         "processing": true,
         "serverSide": false,
         "order": [[ 2, "desc" ]],
+        "dom": '<"top"><"bottom"><"clear">',
         "ajax": {
             "url": "<?= route('expiredplans') ?>",
             "dataType": "json",
