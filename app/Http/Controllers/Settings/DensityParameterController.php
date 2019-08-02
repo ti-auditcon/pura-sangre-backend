@@ -41,37 +41,37 @@ class DensityParameterController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         for ($i = 1; $i < 6; $i++) {
-            if ( $request->level_.$i ) {
+            if ( request('level_'.$i) ) {
                 DensityParameter::create([
                     'level' => request('level_'.$i),
+                    
                     'from' => (int) request('from_'.$i),
+                    
                     'to' => (int) request('to_'.$i),
+                    
                     'color' => '#27b0b6'
                 ]);                
             }
         }
+
+        return back()->with('success', 'Datos guardados correctamente');
     }
 
-    public function update()
+    public function updateAll()
     {
-          foreach (DensityParameter::all() as $density) {
+        $densities = DensityParameter::all(['id', 'level', 'from', 'to', 'color']);
+
+        foreach ($densities as $key => $density) {
+            $key += 1;
+
             $density->update([
-                'percentage' => request($density->level)
+                'level' => request('level_' . $key),
+                'from' => (int) request('from_' . $key),
+                'to' => (int) request('to_' . $key),
+                'color' =>request('color_' . $key) 
             ]);
         }
         return back()->with('success', 'Datos actualizados correctamente');
     }
-
-    // *
-    //  * Loop over all density parameters,
-    //  * check if there is one who need to be updated and then do it
-    //  * 
-    //  * @return json
-     
-    // public function update(DensityParameterRequest $request)
-    // {
-    //     //
-    // }
 }

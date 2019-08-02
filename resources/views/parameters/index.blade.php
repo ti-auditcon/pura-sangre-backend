@@ -9,7 +9,7 @@
 @section('content')
 <div class="page-content">
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-5">
             <div class="ibox">
                 <div class="ibox-head">
                     <div class="ibox-tittle">
@@ -28,20 +28,20 @@
                     </div>
                 </div>
                 
-                <form action="{{ route('density-parameters.store') }}" method="POST">
+                <form action="{{ route('density-parameters.updateAll') }}" method="POST">
                     @csrf
                     <div class="ibox-body">
                         <div>
                             <table class="table table-hover">
                                 <thead class="thead-default">
                                     <tr>
-                                        <th width="25%">Nivel</th>
+                                        <th width="20%">Nivel</th>
                                         
-                                        <th width="30%">Desde</th>
+                                        <th width="20%">Desde</th>
 
-                                        <th width="30%">Hasta</th>
+                                        <th width="20%">Hasta</th>
                                         
-                                        <th width="15%">Color</th>
+                                        <th width="30%">Color</th>
                                     </tr>
                                 </thead>
 
@@ -49,14 +49,18 @@
                                     @foreach ($densities as $density)
                                         <tr>
                                             <td>
-                                                <p name="level">{{ ucfirst($density->level) }}</p>
+                                                <input
+                                                    class="form-control" 
+                                                    value="{{ $density->level }}"
+                                                    name="level_{{ $density->id }}"
+                                                />
                                             </td>
                                             
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     <input
                                                         type="number"
-                                                        name="{{ $density->level }}"
+                                                        name="from_{{ $density->id }}"
                                                         value="{{ $density->from }}"
                                                         class="form-control"
                                                         min="1"
@@ -71,7 +75,7 @@
                                                 <div class="d-flex align-items-center">
                                                     <input
                                                         type="number"
-                                                        name="{{ $density->level }}"
+                                                        name="to_{{ $density->id }}"
                                                         value="{{ $density->to }}"
                                                         class="form-control"
                                                         min="1"
@@ -82,7 +86,14 @@
                                                 </div>
                                             </td>
                                             
-                                            <td class="bg-{{ $density->color }}"></td>
+                                            <td>
+                                                <input
+                                                    class="form-control"
+                                                    type="text"
+                                                    name="color_{{ $density->id }}"
+                                                    value="{{ $density->color }}"
+                                                />
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -103,7 +114,7 @@
             </div>
         </div>
     {{-- </div> --}}
-        <div class="col-lg-8">
+        <div class="col-lg-7">
 
             <div class="ibox">
                 
@@ -128,9 +139,26 @@
 
 @section('css')
 
+<link href="https://farbelous.io/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css" rel="stylesheet">
+
 @endsection
 
 @section('scripts') {{-- scripts para esta vista --}}
+
+<script src="https://farbelous.io/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js"></script>
+
+{{-- <script>
+    $( document ).ready(function () {
+        $('.level-color').colorpicker('setValue', '#FFFFFF');
+        
+        $.each($('.level-color'), function (q) {
+            console.log(q);
+        })
+        // $('.level-color').colorpicker().on('change', function() {
+        //     console.log( $( '.level-color' ).val() );
+        // });
+    });
+</script> --}}
 
 <script>
     $( document ).ready(function () {
