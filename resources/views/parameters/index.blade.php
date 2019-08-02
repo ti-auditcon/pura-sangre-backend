@@ -46,7 +46,7 @@
                                 </thead>
 
                                 <tbody>
-                                    @foreach ($densities as $density)
+                                    @forelse ($densities as $density)
                                         <tr>
                                             <td>
                                                 <input
@@ -95,7 +95,9 @@
                                                 />
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        Sin densidades creadas para las clases...
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -114,7 +116,7 @@
             </div>
         </div>
     {{-- </div> --}}
-        <div class="col-lg-7">
+     {{--    <div class="col-lg-7">
 
             <div class="ibox">
                 
@@ -129,7 +131,7 @@
             
             </div>
         
-        </div>
+        </div> --}}
     </div>
 </div>
 
