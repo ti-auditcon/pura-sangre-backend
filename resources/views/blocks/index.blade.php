@@ -46,16 +46,6 @@
 						<div class="col-sm-4">
 							<select class="form-control" id="calendar-type-clase-select" name="type">
 							</select>
-							{{-- <select class="form-control" name="type">
-								@foreach(App\Models\Clases\ClaseType::all() as $type)
-									<option
-										value="{{ $type->id }}"
-										@if($type->id == Session::get('clases-type-id')) selected @endif
-									>
-										{{ $type->clase_type }}
-									</option>
-								@endforeach
-								</select> --}}
 						</div>
 
 						<div class="col-sm-1">
@@ -65,6 +55,7 @@
 					{{ Form::close() }}
 					<div id="calendar"></div>
 				</div>
+
 			</div>
 		</div>
 	</div>
@@ -249,6 +240,14 @@
 										<input type="checkbox" >
 					
 										<span class="input-span"></span>Sabado
+									</label>
+
+									<label class="checkbox checkbox-inline mb-2">
+										<input type="checkbox" name="day[]" value="0">
+					
+										<input type="checkbox" >
+					
+										<span class="input-span"></span>Domingo
 									</label>
 						
 								</div>
@@ -453,7 +452,7 @@
 	      	orientation: "bottom auto",
 	      	autoclose: true,
 	      	maxViewMode: 3,
-	      	daysOfWeekDisabled: "6",
+	      	// daysOfWeekDisabled: "6",
 	      	todayHighlight: true
 		});
 
@@ -473,7 +472,6 @@
 			// allDaySlot: false,
 			slotDuration: '00:30:00',
 			slotLabelFormat: 'h(:mm)a',
-			hiddenDays: [0],
 			eventColor: '#4c6c8b',
 			eventClick: function(calEvent, jsEvent, view) {
 				ids = Object.values(calEvent.plans_id);
@@ -485,7 +483,7 @@
 				
 				$('#plan-select-edit').multiSelect('deselect_all');
 				
-				$('#plan-select-edit').multiSelect('select',ids.map(String));
+				$('#plan-select-edit').multiSelect('select', ids.map(String));
 				
 				update_url = $('#blockedit #block-update').attr('action');
 				update_newurl = update_url.replace(/[0-9]+/g, calEvent.id);
@@ -495,7 +493,7 @@
 				delete_url = $('#blockedit #block-delete').attr('action');
 				delete_newurl = delete_url.replace(/[0-9]+/g, calEvent.id);
 
-				$('#blockedit #block-delete').attr('action',delete_newurl);
+				$('#blockedit #block-delete').attr('action', delete_newurl);
 				$('#blockedit').modal();
 			},
 			dayClick: function(date, jsEvent, view) {

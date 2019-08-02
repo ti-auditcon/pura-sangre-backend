@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('sidebar')
-  @include('layouts.sidebar',['page'=>'home'])
+
+    @include('layouts.sidebar',['page'=>'home'])
+
 @endsection
 
 @section('content')
@@ -10,44 +12,36 @@
 
         <div class="ibox">
             <div class="ibox-head">
-                <div class="ibox-title">Clases de hoy</div>
-
-                {{ Form::open(['route' => 'clases.type']) }}
-                
-                <div class="form-group m-0 row">
-                
-                    {{-- <span>Tipo de clase:</span> --}}
-                
-                    <div class="col-7">
-                
-                        <select class="form-control" name="type">
-                
-                            @foreach(App\Models\Clases\ClaseType::all() as $type)
-                
-                            <option
-                                value="{{ $type->id }}"
-                                @if($type->id == Session::get('clases-type-id')) selected @endif
-                            >
-                
-                                {{ $type->clase_type }}
-                
-                            </option>
-                
-                            @endforeach
-                
-                        </select>
-                
-                    </div>
-                
-                    <div class="col-sm-1 pl-0">
-                
-                        <button class="btn btn-default">seleccionar</button>
-                
-                    </div>
-                
+                <div class="ibox-title">
+                    Clases de hoy
                 </div>
-                
-                {{ Form::close() }}
+
+                <div class="ibox-tools">
+                    {{ Form::open(['route' => 'clases.type']) }}
+                        <div class="row mr-2">
+                            <div class="col-10">
+                                <select class="form-control" name="type">
+                                    @foreach(App\Models\Clases\ClaseType::all() as $type)
+
+                                    <option
+                                        value="{{ $type->id }}"
+                                        @if($type->id == Session::get('clases-type-id')) selected @endif
+                                    >
+
+                                        {{ $type->clase_type }}
+
+                                    </option>
+
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-2 pl-0">
+                                <button class="btn btn-default">Ir</button>
+                            </div>
+                        </div>
+                    {{ Form::close() }}
+                </div>
             </div>
             <div class="ibox-body">
                 <div id="calendar"></div>
@@ -177,6 +171,7 @@
     .fc-axis.fc-widget-content{width:51px !important;}
     .fc-scroller.fc-time-grid-container{height:100% !important;}
     .fc-time-grid.fc-event-container {left:10px}
+    .closeon { top: 0; right: 8px; bottom: 0; position: absolute; }
   </style>
 @endsection
 
@@ -185,12 +180,23 @@
 @section('scripts') {{-- scripts para esta vista --}}
 	{{--  datatable --}}
     <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
-    
+
     <script src="{{ asset('js/moment.min.js') }}"></script>
-	
+
     <script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
-    
+
     <script src="{{ asset('js/fullcalendar/lang/es.js') }}"></script>
+
+  <script>
+      var densities = [];
+      $.get( "json-density-parameters", function(response) {
+          response.forEach(function (e) {
+              densities.push(e);
+          });        // response.
+      }).done(() => {
+          console.log(densities);
+      });
+  </script>
 
   <script defer>
     $(document).ready(function() {
@@ -209,7 +215,17 @@
           hiddenDays: [0],
           eventColor: '#4c6c8b',
           eventRender: function( event, element, view ) {
-            element.find('.fc-time').append('<div> reservas: ' +event.reservation_count+'/'+event.quota+'</div> ');
+            let percent = (event.reservation_count * 100) / event.quota;
+            let colorPercentage = null;
+            densities.forEach(function (density) {
+                if (percent <= density.to) {
+                    colorPercentage = density.color;
+                }
+            });
+
+            element.find('.fc-time').append(
+              '<div> reservas: ' +event.reservation_count+'/'+event.quota+'</div> '+
+              '<div class="closeon circle-color" style="background-color: '+ colorPercentage +'"></div>');
           },
           viewRender: function (view, element,start,end) {
              // var b = $('#calendar').fullCalendar('getDate');
@@ -224,7 +240,7 @@
             $('#calendar').fullCalendar( 'addEventSource',
               {
                 url: '/get-wods?datestart='+moment().startOf('day').format('Y-M-D')+'&dateend='+moment().startOf('day').format('Y-M-D'), // use the `url` property
-                color: 'yellow',    // an option!
+                color: '#7DCCD1',    // an option!
                 textColor: 'black'  // an option!
               }
             );
@@ -238,7 +254,7 @@
 
 <script>
     var uri = "{{ url('withoutrenewal') }}";
-    
+
     $(document).ready(function(){
         $.get(uri, function(respuesta){
             var chartdata = {
@@ -265,20 +281,20 @@
 
 <script>
     var url = "{{ url('withoutrenewal') }}";
-    
+
     $(document).ready(function(){
         $.get(url, function(respuesta){
             var chartdata = {
                 labels: ["Mujeres", "Hombres"],
                 datasets: [{
                     data: [
-                        respuesta.mujeres, 
+                        respuesta.mujeres,
                         respuesta.hombres
                     ],
                     backgroundColor: ["#E74694", "#1F87EF"]
                 }]
             };
-            
+
             var doughnutOptions = {
                 responsive: true,
                 rotation: -Math.PI,
@@ -290,11 +306,11 @@
             };
 
             var ctx4 = document.getElementById("gender-chart").getContext("2d");
-            
+
             new Chart(ctx4, {type: 'doughnut', data: chartdata, options:doughnutOptions});
-      
+
             var crossfiteros = respuesta.mujeres + respuesta.hombres;
-      
+
             $('#my-label').html(crossfiteros + " crossfiteros");
         });
     });
@@ -364,10 +380,10 @@ $(document).ready(function(){
         "columns":[
             { "data": "first_name" },
             { "data": "plan" },
-            { "data": "date" }, 
+            { "data": "date" },
             { "data": "phone" }
         ]
     });
-</script> 
+</script>
 
 @endsection

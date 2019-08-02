@@ -78,7 +78,6 @@ $('#start_date .input-group.date').datepicker({
    language: "es",
    autoclose: true,
    maxViewMode: 3,
-   daysOfWeekDisabled: "0",
    todayHighlight: true
 });
 </script>
