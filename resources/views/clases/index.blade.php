@@ -95,8 +95,8 @@
                 {{-- Color: <div class="closeon circle-color" style="background-color: '#000'"></div></p> --}}
                 @forelse( $densities as $density )
                 <p style="display: inline-block;"> Nivel: {{ $density->level }}
-                    Desde: {{ $density->from }}
-                    Hasta: {{ $density->to }} 
+                    Desde: {{ $density->from }}%
+                    Hasta: {{ $density->to }}%
                     <div class="circle-color ml-2" style="background-color: {{ $density->color }}; display: inline-block;"></div>
                   </p>
                 @empty
