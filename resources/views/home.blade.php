@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('sidebar')
-  @include('layouts.sidebar',['page'=>'home'])
+
+    @include('layouts.sidebar',['page'=>'home'])
+
 @endsection
 
 @section('content')
@@ -10,44 +12,36 @@
 
         <div class="ibox">
             <div class="ibox-head">
-                <div class="ibox-title">Clases de hoy</div>
-
-                {{ Form::open(['route' => 'clases.type']) }}
-
-                <div class="form-group m-0 row">
-
-                    {{-- <span>Tipo de clase:</span> --}}
-
-                    <div class="col-7">
-
-                        <select class="form-control" name="type">
-
-                            @foreach(App\Models\Clases\ClaseType::all() as $type)
-
-                            <option
-                                value="{{ $type->id }}"
-                                @if($type->id == Session::get('clases-type-id')) selected @endif
-                            >
-
-                                {{ $type->clase_type }}
-
-                            </option>
-
-                            @endforeach
-
-                        </select>
-
-                    </div>
-
-                    <div class="col-sm-1 pl-0">
-
-                        <button class="btn btn-default">seleccionar</button>
-
-                    </div>
-
+                <div class="ibox-title">
+                    Clases de hoy
                 </div>
 
-                {{ Form::close() }}
+                <div class="ibox-tools">
+                    {{ Form::open(['route' => 'clases.type']) }}
+                        <div class="row mr-2">
+                            <div class="col-10">
+                                <select class="form-control" name="type">
+                                    @foreach(App\Models\Clases\ClaseType::all() as $type)
+
+                                    <option
+                                        value="{{ $type->id }}"
+                                        @if($type->id == Session::get('clases-type-id')) selected @endif
+                                    >
+
+                                        {{ $type->clase_type }}
+
+                                    </option>
+
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-2 pl-0">
+                                <button class="btn btn-default">Ir</button>
+                            </div>
+                        </div>
+                    {{ Form::close() }}
+                </div>
             </div>
             <div class="ibox-body">
                 <div id="calendar"></div>

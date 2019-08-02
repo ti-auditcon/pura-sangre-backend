@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Clases\Clase;
 use App\Models\Clases\ClaseType;
 use App\Models\Clases\Reservation;
+use App\Models\Settings\DensityParameter;
 use App\Models\Users\User;
 use App\Models\Wods\Stage;
 use App\Models\Wods\StageType;
@@ -28,8 +29,10 @@ class ClaseController extends Controller
             Session::put('clases-type-id', 1);
             Session::put('clases-type-name', ClaseType::find(1)->clase_type);
         }
-        //Session::put('clases-type-name',ClaseType::find($request->type)->clase_type);
-        return view('clases.index');
+
+        $densities = DensityParameter::all(['id', 'level', 'from', 'to', 'color']);
+
+        return view('clases.index', ['densities' => $densities]);
     }
 
     /**
