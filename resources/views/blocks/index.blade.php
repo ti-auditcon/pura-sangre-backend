@@ -474,7 +474,12 @@
 			slotLabelFormat: 'h(:mm)a',
 			eventColor: '#4c6c8b',
 			eventClick: function(calEvent, jsEvent, view) {
-				ids = Object.values(calEvent.plans_id);
+				var ids = [];
+				$.each(calEvent.plans, function(index, plan) {
+					ids[index] = plan.id;
+				});
+				// ids = Object.values(calEvent.plans);
+
 				//traer todos los ids de los planes que pueden tomar clase de la hora que se seleccionó
 				$('#block-quota-input').val(calEvent.quota);
 				

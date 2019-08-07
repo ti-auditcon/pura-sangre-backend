@@ -39,7 +39,7 @@ class Clase extends Model
      */
     public function getReservationCountAttribute()
     {
-        return $this->hasMany(Reservation::class)->count();
+        return $this->hasMany(Reservation::class)->count('id');
     }
 
     /**
@@ -48,7 +48,7 @@ class Clase extends Model
      */
     public function getStartAttribute()
     {
-        if($this->block->date==null){
+        if( $this->block->date==null ) {
         
           return $this->date." ".$this->block->start;
         

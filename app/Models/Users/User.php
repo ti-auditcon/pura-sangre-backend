@@ -87,7 +87,7 @@ class User extends Authenticatable
     {
         $role = RoleUser::where('role_id', $role)
                         ->where('user_id', $this->id)
-                        ->get();
+                        ->get('role_id');
 
         if (count($role) > 0) {
             return true;
@@ -280,7 +280,7 @@ class User extends Authenticatable
      */
     public function roles()
     {
-        return $this->belongsToMany(Role::class)->using(RoleUser::class);
+        return $this->belongsToMany(Role::class, 'role_user');
     }
 
     /**

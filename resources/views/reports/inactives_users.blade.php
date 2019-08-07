@@ -147,7 +147,7 @@
             },
         },        
         "columns":[
-            { "data": "first_name" },
+            { "data": "full_name" },
             { "data": "phone" },
             { "data": "plan" },
             { "data": "date" }, 

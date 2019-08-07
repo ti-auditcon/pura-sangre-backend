@@ -88,23 +88,24 @@ class ReservationObserver
     public function deleted(Reservation $reservation)
     {
         $clase = $reservation->clase;
-        
-        $plans = $reservation->user->reservable_plans;
-        
-        $date_class = Carbon::parse($clase->date);
-        
-        $period_plan = null;
-        
-        foreach ($plans as $planuser) {
-            if ($date_class->between(Carbon::parse($planuser->start_date), Carbon::parse($planuser->finish_date))) {
-                $period_plan = $planuser;
+
+        if ($reservation->user) {
+            $plans = $reservation->user->reservable_plans;
+            
+            $date_class = Carbon::parse($clase->date);
+            
+            $period_plan = null;
+            
+            foreach ($plans as $planuser) {
+                if ($date_class->between(Carbon::parse($planuser->start_date), Carbon::parse($planuser->finish_date))) {
+                    $period_plan = $planuser;
+                }
+            }
+
+            if ($period_plan) {
+                $period_plan->update(['counter' => $period_plan->counter + 1]);
             }
         }
-
-        if ($period_plan) {
-            $period_plan->update(['counter' => $period_plan->counter + 1]);
-        }
-
         return true;
     }
 

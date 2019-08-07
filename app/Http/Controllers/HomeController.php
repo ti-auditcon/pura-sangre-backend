@@ -153,7 +153,7 @@ class HomeController extends Controller
      */
     public function withoutrenewal()
     {
-        $users = User::all();
+        $users = User::all(['id', 'status_user_id', 'gender']);
         $inactives = $actives = $tests = 0; 
         $women = $men = 0;
         

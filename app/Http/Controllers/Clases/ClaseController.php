@@ -43,23 +43,15 @@ class ClaseController extends Controller
     public function clases(Request $request)
     {
         $clases = Clase::where('clase_type_id', Session::get('clases-type-id'))
+                       
                        ->where('date', '>=', $request->datestart)
+                       
                        ->where('date', '<=', $request->dateend)
-                       ->with(['claseType' => function ($clase_type) {
-                            $clase_type->select('id', 'clase_color');
-                       }])
-                       ->with(['block' => function ($clase_type) {
-                            $clase_type->select('id', 'start', 'end', 'quota', 'clase_type_id')
-                            ->with(['claseType' => function ($clase_type) {
-                                $clase_type->select('id', 'clase_color');
-                            }]);
-                       }])
-                       ->get(['id', 'start_at', 'finish_at',
-                            'date', 'quota', 'block_id', 'clase_type_id']);
-        // dd($clases);
-        // ['id', 'start_at', 'finish_at',
-                            // 'date', 'quota', 'block_id']
-                       //  'reservation_count', 'url', 'clase_color'
+                       
+                       ->with(['claseType:id,clase_color',
+                               'block:id,start,end,quota,clase_type_id',])
+
+                       ->get(['id', 'date', 'quota', 'block_id', 'clase_type_id']);
 
         return response()->json($clases, 200);
     }
@@ -72,19 +64,31 @@ class ClaseController extends Controller
      */
     public function show(Clase $clase)
     {
-        $outclase = $this->outClass($clase);
+        $outclase = $this->outClass($clase->id);
+
+        $reservations = Reservation::where('clase_id', $clase->id)
+                                   ->with(['user:id,first_name,last_name,avatar,status_user_id',
+                                           'user.status_user:id,type',
+                                           'user.status_user:id,type',
+                                           'reservation_status:id,reservation_status,type'])
+                                   ->get(['id', 'reservation_status_id', 'user_id', 'updated_at']);
+
+        $auth_roles = auth()->user(['id'])->roles()->pluck('id')->toArray();
 
         $stages = Stage::where('wod_id', $clase->wod_id)
-                      ->with(['stage_type' => function($type) {
-                            $type->select('id', 'stage_type');
-                        }])
+                       ->with('stage_type:id,stage_type')
                        ->get(['id', 'description', 'stage_type_id']);
+
+        $reservation_count = Reservation::where('clase_id', $clase->id)->count('id');
 
         return view('clases.show', [
             'clase' => $clase,
             'outclase' => $outclase,
             'wod' => $clase->wod,
-            'stages' => $stages
+            'stages' => $stages,
+            'reservation_count' => $reservation_count,
+            'reservations' => $reservations,
+            'auth_roles' => $auth_roles
         ]);
     }
 
@@ -109,6 +113,7 @@ class ClaseController extends Controller
     public function destroy(Clase $clase)
     {
         $clase->delete();
+
         return redirect('/clases')->with('success', 'La clase ha sido borrada correctamente');
     }
     
@@ -120,8 +125,8 @@ class ClaseController extends Controller
     public function wods(Request $request)
     {
         $wods = Wod::where('clase_type_id', Session::get('clases-type-id'))
-                   ->where('date','>=',$request->datestart)
-                   ->where('date','<=',$request->dateend)
+                   ->where('date', '>=', $request->datestart)
+                   ->where('date', '<=', $request->dateend)
                    ->get();
 
         return response()->json($wods, 200);
@@ -167,7 +172,7 @@ class ClaseController extends Controller
      */
     public function outClass($clase) 
     {
-        $otro = Reservation::where('clase_id', $clase->id)->pluck('user_id');
+        $otro = Reservation::where('clase_id', $clase)->pluck('user_id');
 
         $consulta = User::whereNotIn('id', $otro)
                         ->with(['status_user' => function ($status) {

@@ -52,7 +52,7 @@
                             <div class="col-12 text-muted">Horario:</div>
                             
                             <div class="col-12">
-                                {{ Carbon\Carbon::parse($clase->block->start)->format('H:i') }} - {{ Carbon\Carbon::parse($clase->block->end)->format('H:i') }}
+                                {{ Carbon\Carbon::parse($clase->start_at)->format('H:i') }} - {{ Carbon\Carbon::parse($clase->finish_at)->format('H:i') }}
                             </div>
                         
                         </div>
@@ -73,7 +73,7 @@
                             <div
                                 id="porcentaje"
                                 class="easypie col"
-                                data-percent="{{ ($clase->reservations->count() * 100) / $clase->quota }}"
+                                data-percent="{{ ($reservation_count * 100) / $clase->quota }}"
                                 data-bar-color="#5c6bc0"
                                 data-size="70"
                                 data-line-width="8"
@@ -89,7 +89,7 @@
                                    
                                    <span class="easypie-data font-26 text-primary icon-people"><i class="ti-user"></i></span>
                                    
-                                   <h3 id="total" class="font-strong text-primary">{{ $clase->reservations->count() }}</h3>
+                                   <h3 id="total" class="font-strong text-primary">{{ $reservation_count }}</h3>
 
                                    <h3 class="font-strong text-primary">/{{ $clase->quota }}</h3>
                                 
@@ -214,26 +214,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                          @foreach ($clase->reservations as $reservation)
+                          @foreach ($reservations as $reservation)
                              <tr>
                                 <td>
                                    <div class="img-avatar" style="background-image:  @if ($reservation->user->avatar) url('{{$reservation->user->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"></div>
                                    <span class="badge-{{$reservation->user->status_user->type}} badge-point"></span>
-                                   <a @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2)) href="{{url('/users/'.$reservation->user->id)}}" @endif>
+                                   <a @if (in_array(1, $auth_roles) || in_array(2, $auth_roles)) href="{{url('/users/'.$reservation->user->id)}}" @endif>
                                       {{$reservation->user->first_name}} {{$reservation->user->last_name}}
                                    </a>
                                 </td>
                                 <td>
-                                   <span id="status-user-badge-{{$reservation->id}}" class="badge badge-{{$reservation->reservation_status->type}} badge-pill">{{strtoupper($reservation->reservation_status->reservation_status)}}</span>
-                                   <span id="status-user-badge-two-{{$reservation->id}}" style="display: none" class="badge badge-success badge-pill">CONFIRMADA</span>
+                                   <span id="status-user-badge-{{ $reservation->id }}" class="badge badge-{{ $reservation->reservation_status->type }} badge-pill">{{ strtoupper($reservation->reservation_status->reservation_status) }}</span>
+                                   <span id="status-user-badge-two-{{ $reservation->id }}" style="display: none" class="badge badge-success badge-pill">CONFIRMADA</span>
                                 </td>
 
-                             @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
+                             @if (in_array(1, $auth_roles) || in_array(2, $auth_roles))
                                 <td>
                                    {!! Form::open(['action' => ['Clases\ReservationController@destroy', $reservation->id], 'method' => 'delete', 'id' => 'delete'.$reservation->user->id]) !!}
+
                                       <input type="hidden" value="1" name="by_god">
                                       <button class="btn btn-info btn-icon-only btn-danger sweet-user-delete" type="button" data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash"></i></button>
                                    {!! Form::close() !!}
+
                                    @if ($reservation->reservation_status_id === 1)
                                      {!! Form::open(['action' => ['Clases\ReservationController@confirm', $reservation->id], 'method' => 'POST', 'id' => 'update'.$reservation->user->id]) !!}
                                       <input type="hidden" value="1" name="by_god">
@@ -242,7 +244,7 @@
                                    @endif
                                    
                                 </td>
-                             @elseif (Auth::user()->hasRole(3) && Auth::id() == $reservation->user->id)
+                             @elseif (in_array(3, $auth_roles) && Auth::id() == $reservation->user->id)
                                 <td>
                                    {!! Form::open(['route' => ['reservation.destroy', $reservation->id], 'method' => 'delete', 'id'=> 'delete'.$reservation->user->id]) !!}
                                    <input type="hidden" value="1" name="by_god">
@@ -250,7 +252,7 @@
                                    {!! Form::close() !!}
                                 </td>
                              @endif
-                                <td>{{$reservation->updated_at}}</td>
+                                <td>{{ $reservation->updated_at }}</td>
                              </tr>
                           @endforeach
                         </tbody>

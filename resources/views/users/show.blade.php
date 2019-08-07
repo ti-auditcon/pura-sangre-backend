@@ -42,13 +42,13 @@
             </div>
             <div class="flexbox-b align-self-start">
                 
-                @if ($user->actual_plan && $user->actual_plan->plan->has_clases == true)
+                {{-- @if ($user->actual_plan && $user->actual_plan->plan->has_clases == true) --}}
                 
                     <div class="pr-2 text-right">
                 
                         <div class="h2 mt-2 mb-0 text-warning">
                 
-                            {{ $user->actual_plan->counter }}
+                            {{ $user->actual_plan->counter ?? '-' }}
                 
                         </div>
                 
@@ -56,7 +56,7 @@
                 
                     </div>
                 
-                @endif
+                {{-- @endif --}}
 
             </div>
         </div>

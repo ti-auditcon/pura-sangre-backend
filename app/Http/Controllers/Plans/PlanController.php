@@ -17,7 +17,9 @@ class PlanController extends Controller
      */
     public function index()
     {
-        $plans = Plan::all();
+        $plans = Plan::with('plan_period:id,period')
+                     ->get(['id', 'plan', 'class_numbers', 'daily_clases', 'plan_period_id']);
+        // dd($plans);
         return view('plans.index')->with('plans', $plans);
     }
 
@@ -39,7 +41,8 @@ class PlanController extends Controller
      */
     public function store(Request $request, Plan $plan)
     {
-        $plan = Plan::create(array_merge($request->all(), ['has_clases' => 1, 'custom' => 0]));
+        // $plan = Plan::create(array_merge($request->all(), ['has_clases' => 1, 'custom' => 0]));
+        $plan = Plan::create(array_merge($request->all(), ['custom' => 0]));
         
         return redirect()->route('plans.show', $plan->id)->with('success', 'El plan ha sido creado correctamente');
     }

@@ -15,41 +15,55 @@ trait ExpiredPlans
             2 => 'users.date',
             3 => 'users.phone'
         );
-        $plan_users = collect(new PlanUser);
 
-        foreach (User::all() as $user) {
-            if ($user->status_user_id == 2) {
-                $plan_user = $user->plan_users->whereIn('plan_status_id', [3, 4])
+        $users = User::where('status_user_id', 2)
+                     ->with(['last_plan:id,plan_status_id,finish_date,counter,user_id,plan_id', 'last_plan.plan:id,plan'])
+                     ->get(['id', 'first_name', 'last_name', 'status_user_id', 'phone']);
+
+        // dd($users->count());
+
+        // foreach (User::all() as $user) {
+        //     if ($user->status_user_id == 2) {
+        //         $user = $user->users->whereIn('plan_status_id', [3, 4])
                                               
-                                              ->where('finish_date', '<', today())
+        //                                       ->where('finish_date', '<', today())
                                               
-                                              ->sortByDesc('finish_date')
+        //                                       ->sortByDesc('finish_date')
                                               
-                                              ->first();
+        //                                       ->first();
                 
-                if ($plan_user) {
+        //         if ($user) {
                 
-                    $plan_users->push($plan_user);
+        //             $users->push($user);
                 
-                }
+        //         }
             
-            }
-        }
+        //     }
+        // }
 
-        $totalData = $plan_users->count();
+        $totalData = $users->count();
 
-        $totalFiltered = $plan_users->count(); 
+        $totalFiltered = $users->count(); 
 
         $data = array();
         
-        if ($plan_users) {
-            foreach ($plan_users as $plan_user) {
-                $nestedData['first_name'] = '<a href="'.url("/users/{$plan_user->user->id}").'">'. $plan_user->user->first_name . ' ' . $plan_user->user->last_name.'</a>';
-                $nestedData['phone'] = $plan_user->user->phone;
-                $nestedData['plan'] = $plan_user->plan->plan;
-                $nestedData['date'] = $plan_user->finish_date->format('d-m-Y');
-                $nestedData['remaining_clases'] = $plan_user->counter;
-                $nestedData['date_raw'] = $plan_user->finish_date;
+        if ($users) {
+            foreach ($users as $user) {
+                // dd($user);
+                $nestedData['full_name'] = '<a href="'.url("/users/{$user->id}").'">'. $user->full_name .'</a>';
+                $nestedData['phone'] = $user->phone;
+                if (! $user->last_plan) {
+                    $nestedData['plan'] = 'sin plan';
+                    $nestedData['date'] = 'no aplica';
+                    $nestedData['remaining_clases'] = 'no aplica';
+                    $nestedData['date_raw'] = '';
+                }else {
+                    $nestedData['plan'] = $user->last_plan->plan->plan;
+                    $nestedData['date'] = $user->last_plan->finish_date->format('d-m-Y');
+                    $nestedData['remaining_clases'] = $user->last_plan->counter;
+                    $nestedData['date_raw'] = $user->last_plan->finish_date;
+                }
+               
 
                 $data[] = $nestedData;
             }

@@ -18,7 +18,15 @@ class BlockController extends Controller
      */
     public function index()
     {
-        $blocks = Block::where('clase_type_id', Session::get('clases-type-id'))->get()->toArray();
+        $blocks = Block::where('clase_type_id', Session::get('clases-type-id'))
+                       ->with(['plans' => function ($q) {
+                            $q->select('plans.id')->withPivot('block_id', 'plan_id');
+                       }])
+                       ->get()
+                       ->toArray();
+
+        // dd($blocks->take(2));
+                       
         return view('blocks.index')->with('blocks', json_encode($blocks));
     }
 
