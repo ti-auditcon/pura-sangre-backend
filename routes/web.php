@@ -42,6 +42,9 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
      */
     Route::resource('clases-types', 'Clases\ClaseTypeController')->except('create', 'edit');
 
+    // Route::post('clases-types/update', 'Clases\ClaseTypeController@updateClaseTypeStage')
+    //      ->name('clases-types.update-all');
+
     /**
      * CALENDAR CLASES ROUTES
      */

@@ -19,7 +19,7 @@
         <!-- END TOP-LEFT TOOLBAR-->
         <!-- START TOP-RIGHT TOOLBAR-->
         <ul class="nav navbar-toolbar">
-            @auth()
+            {{-- @auth() --}}
             @if (Auth::user()->birthdate_users()->count() > 0)
             <li class="dropdown dropdown-notification">
                 <a class="nav-link dropdown-toggle toolbar-icon" data-toggle="dropdown" href="javascript:;" aria-expanded="false">
@@ -54,7 +54,7 @@
             @endif
             <li class="dropdown dropdown-user">
                 <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
-                    <span class="mr-1">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>
+                    <span class="mr-1">{{ Auth::user()->full_name }} {{-- {{ Auth::user()->last_name }} --}}</span>
                     <div class="img-avatar img-avatar-mini" style="background-image: @if (Auth::user()->avatar) url('{{ Auth::user()->avatar }}') @else url('{{ asset('/img/default_user.png') }}') @endif "></div>
                 </a>
                 <div class="dropdown-menu dropdown-arrow dropdown-menu-right admin-dropdown-menu">
@@ -77,7 +77,7 @@
                     </div>
                 </div>
             </li>
-            @endauth
+            {{-- @endauth --}}
         </ul>
         <!-- END TOP-RIGHT TOOLBAR-->
     </div>

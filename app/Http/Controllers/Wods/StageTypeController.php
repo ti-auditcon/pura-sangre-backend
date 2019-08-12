@@ -16,7 +16,7 @@ class StageTypeController extends Controller
     public function show($stage_type)
     {
         $stages = StageType::where('clase_type_id', $stage_type)
-                       ->get(['id', 'stage_type', 'clase_type_id', 'featured']);
+                           ->get(['id', 'stage_type', 'clase_type_id', 'featured']);
 
         return response()->json($stages);
     }

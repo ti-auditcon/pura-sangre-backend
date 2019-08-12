@@ -554,7 +554,7 @@
 
 		}).done( function () {
 
-			var clase_type_session_id = {!! Session::get('clases-type-id') !!};
+			var clase_type_session_id = {!! Session::get('clases-type-id') ?? 1 !!};
 
 			$('#calendar-type-clase-select option[value="' + clase_type_session_id + '"]').attr("selected", true);
 

@@ -305,7 +305,7 @@
         {{-- //                      PPROXIMAS CLASES                        //--}}
         {{--                                                                   --}}
         {{-- ///////////////////////////////////////////////////////////////// --}}
-        @if ($user->future_reservs)
+        {{-- @if ($user->future_reservs) --}}
 
             <div class="ibox proximas-clases">
                 <div class="ibox-head">
@@ -332,7 +332,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($user->future_reservs as $reserv)
+                                @forelse($user->future_reservs as $reserv)
                                 <tr>
                                     <td>
                                         <a href="{{ url('/clases/'.$reserv->clase->id) }}">
@@ -352,14 +352,16 @@
                                     <td>{{ $reserv->plan_user ? $reserv->plan_user->plan->plan : 'No Aplica' }}</td>
 
                                 </tr>
-                                @endforeach
+                                @empty
+                                    {{-- Sin Clases que mostrar --}}
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-        @endif
+        {{-- @endif --}}
 
         {{-- ///////////////////////////////////////////////////////////////// --}}
         {{--                                                                   --}}

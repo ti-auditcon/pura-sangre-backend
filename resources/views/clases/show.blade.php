@@ -20,7 +20,7 @@
                 </div>
             
                 <div class="ibox-tools">
-                    @if (Carbon\Carbon::parse($clase->date)->gte(today()) && Auth::user()->hasRole(1))
+                    @if (Carbon\Carbon::parse($clase->date)->gte(today()) && in_array(1, $auth_roles))
                         {!! Form::open([
                             'route' => ['clases.destroy', $clase->id],
                             'method' => 'delete', 'class' => 'clase-delete'
@@ -169,14 +169,14 @@
                 
                 <div class="ibox-tools">
                 
-                    @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
+                    @if (in_array(1, $auth_roles) || in_array(2, $auth_roles))
 
                         @if($clase->start_at <= now()->subMinute()->format('H:i:s') && $clase->date == toDay()->format('Y-m-d'))
 
                             <button id="button-modal" class="btn btn-warning btn-icon-only" data-toggle="modal" data-target="#confirm-assistance-modal"><i class="la la-check-square"></i></button>
                         @endif
 
-                        @if (Auth::user()->hasRole(1))
+                        @if (in_array(1, $auth_roles))
 
                             <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">
                                 Agregar un Alumno
