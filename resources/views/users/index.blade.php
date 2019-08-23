@@ -41,7 +41,7 @@
                 
                                 <span class="btn-label-out btn-label-out-right btn-label-out-success pointing">
 
-                                    {{ $users->where('status_user_id', 1)->count() }}
+                                    {{ $status_users->where('status_user_id', 1)->pluck('total')->pull(0) }}
                                 
                                 </span>
                             
@@ -61,7 +61,7 @@
                                 
                                 <span class="btn-label-out btn-label-out-right btn-label-out-danger pointing">
 
-                                    {{ $users->where('status_user_id', 2)->count() }}
+                                    {{ $status_users->where('status_user_id', 2)->pluck('total')->pull(0) }}
                                 
                                 </span>
                             
@@ -81,7 +81,7 @@
                                 
                                 <span class="btn-label-out btn-label-out-right btn-label-out-warning pointing">
 
-                                    {{ $users->where('status_user_id', 3)->count() }}
+                                    {{ $status_users->where('status_user_id', 3)->pluck('total')->pull(0) }}
                                 
                                 </span>
                             
@@ -100,7 +100,7 @@
                                 </button>
                                 
                                 <span class="btn-label-out btn-label-out-right btn-label-out-primary pointing">
-                                    {{ $users->count() }}
+                                    {{ $status_users->sum('total') }}
                                 </span>
                             </div>
                         </span>
@@ -126,7 +126,7 @@
                             
                                 <th width="10%">Plan Activo</th>
                             
-                                <th width="15%">Vencimiento</th>
+                                <th width="10%">Vencimiento</th>
                             
                                 <th width="20%">Período</th>
                             
@@ -136,7 +136,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $user)
+                    {{--         @foreach ($users as $user)
                             <tr>
                                 <td style="vertical-align: middle;">
                                     <div
@@ -177,7 +177,7 @@
                                 </td>
                                 <td>{{ $user->status_user_id }}</td>
                             </tr>
-                            @endforeach
+                            @endforeach --}}
                         </tbody>
                     </table>
                 </div>
@@ -201,13 +201,22 @@
 	{{--  datatable --}}
 	<script src="{{ asset('js/datatables.min.js') }}"></script>
 
+    <script src="{{ asset('js/moment.min.js') }}"></script>
+
 	<script >
 		$(document).ready(function() {
 			table = $('#students-table').DataTable({
+                "ajax": {
+                    "url": "<?= route('users-json') ?>",
+                    "dataType": "json",
+                    "type": "GET",
+                },
 				"paging": true,
+                "processing": true,
 				"ordering": true,
-            "order": [[ 3, "asc" ]],
+                "order": [[ 3, "asc" ]],
 				"language": {
+                    "processing": "Cargando...",
 					"lengthMenu": "Mostrar _MENU_ elementos",
 					"zeroRecords": "Sin resultados",
 					"info": "Mostrando página _PAGE_ de _PAGES_",
@@ -215,13 +224,50 @@
 					"infoFiltered": "(filtrado de _MAX_ registros totales)",
 					"search": "Filtrar:"
 				},
-        "columnDefs": [
-          {
-              "targets": [ 6 ],
-              "visible": false,
-              "searchable": true
-          }
-        ],
+                "columns":[
+                    { "data": "full_name",
+                      "render": function (data, other, row) {
+                            return '<div class="img-avatar" style="background-image: url('+ row.avatar +')"></div>'+
+                                   '<a href="/users/'+ row.id +'">'+
+                                   data + '</a>';
+                      }
+                    },
+                    { "data": "rut_formated" },
+                    {  "data": "actual_plan",
+                        "render": function (data, other, row) {
+                            return data && data.plan ? data.plan.plan : 'no aplica';
+                        },
+                    },
+                    { "data": "actual_plan",
+                        "render": function (data, other, row) {
+                            return data && data.plan ? moment(data.finish_date).format("DD-MM-YYYY") : 'no aplica';
+                        },
+                     },
+                    { "data": "actual_plan",
+                        "render": function (data, other, row) {
+                            return data && data.plan ?
+                                   moment(data.start_date).format("DD-MM-YYYY") +' al '+ moment(data.finish_date).format("DD-MM-YYYY") :
+                                   'no aplica';
+                        }
+                    }, 
+                    { "data": "actions",
+                        "render": function (data, other, row) {
+                            return '<a href="/users/'+ row.id +'" class="btn btn-info btn-icon-only btn-success"><i class="la la-eye"></i></a>';
+                        }
+                    },
+                    { "data": "status",
+                      "render": function ( data, other, row ) {
+                        return row.id;
+                      }
+                    }
+                ],
+                "columnDefs": [
+                    {
+                        "targets": [ 6 ],
+                        "visible": false,
+                        "searchable": true
+                    }
+                ],
 			});
 		});
 

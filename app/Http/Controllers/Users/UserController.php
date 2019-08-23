@@ -33,25 +33,16 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with([
-            'actual_plan' => function($q) {
-                $q->select('id', 'start_date', 'finish_date', 'user_id', 'plan_id')
-                  ->with([
-                    'plan' => function ($q) {
-                        $q->select('id', 'plan');
-                    }
-                  ]);
-            }])
-        ->get(['id', 'rut', 'first_name', 'last_name', 'avatar', 'status_user_id']);
+        $status_users = User::CountStatusUsers()->get();
 
-        return view('users.index')->with('users', $users);
+        return view('users.index', ['status_users' => $status_users]);
+    }
 
-// avatar
-// status_user-> type
-// first_name last_name
-// rut
-// actual_plan->plan->plan
-// actual_plan->finish_date
+    public function usersJson()
+    {
+        $users = User::allUsers()->get();
+
+        return response()->json(['data' => $users]);
     }
 
     public function export()
@@ -100,7 +91,10 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('users.show')->with('user', $user);
+        return view('users.show', [
+            'user' => $user,
+            'past_reservations' => $user->past_reservations()
+        ]);
     }
 
     /**

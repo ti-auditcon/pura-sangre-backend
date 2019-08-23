@@ -368,7 +368,7 @@
         {{-- //                         PAST RESERVS                         //--}}
         {{--                                                                   --}}
         {{-- ///////////////////////////////////////////////////////////////// --}}
-        @if ($user->past_reservs)
+        @if ($past_reservations)
             <div class="ibox clases-pasadas">
                 <div class="ibox-head">
                     <div class="ibox-title">Clases Anteriores</div>
@@ -395,9 +395,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($user->past_reservs as $reserv)
+                                @foreach($past_reservations as $reserv)
                                 <tr>
-                                    
+                                    {{-- {{ dd($reserv) }} --}}
                                     <td>
                                         <a href="{{url('/clases/'.$reserv->clase->id)}}">
                                             {{$reserv->clase->id}}

@@ -25,7 +25,7 @@ class Clase extends Model
         'wod_id', 'block_id', 'clase_type_id'
     ];
     
-    protected $appends = ['start', 'end', 'url', 'reservation_count', 'title', 'color'];
+    protected $appends = ['start', 'end', 'url', 'reservation_count', 'color'];
 
     // protected static function boot()
     // {
@@ -48,15 +48,13 @@ class Clase extends Model
      */
     public function getStartAttribute()
     {
-        if( $this->block->date==null ) {
+        if ( $this->block->date == null ) {
         
           return $this->date." ".$this->block->start;
         
-        } else {
-        
-          return $this->block->start;
-        
         }
+        
+        return $this->block->start;
     }
 
     /**
@@ -80,10 +78,10 @@ class Clase extends Model
      * [getTitleAttribute description]
      * @return [type] [description]
      */
-    public function getTitleAttribute()
-    {
-        return '';
-    }
+    // public function getTitleAttribute()
+    // {
+    //     return '';
+    // }
 
     /**
      * [getUrlAttribute description]

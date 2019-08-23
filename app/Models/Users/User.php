@@ -47,7 +47,7 @@ class User extends Authenticatable
     
     protected $hidden = ['password', 'remember_token'];
     
-    protected $appends = ['full_name'];
+    protected $appends = ['full_name', 'rut_formated'];
 
     /**
      * [setBirthdateAttribute description]
@@ -111,6 +111,40 @@ class User extends Authenticatable
     public function getFullNameAttribute()
     {
         return $this->first_name.' '.$this->last_name;
+    }
+
+    /**
+     * [getFullNameAttribute description]
+     * @return [type] [description]
+     */
+    public function getRutFormatedAttribute()
+    {
+        return Rut::set($this->rut)->fix()->format();
+    }
+
+    /**
+     * Scope a query to get all the users.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeAllUsers($query)
+    {
+        $query->select(['id', 'rut', 'first_name', 'last_name', 'avatar', 'status_user_id'])
+              ->with(['actual_plan:id,start_date,finish_date,user_id,plan_id',
+                      'actual_plan.plan:id,plan'
+                     ]);
+    }
+
+    /**
+     * [scopeCountStatusUsers description]
+     * @param  [type] $users [description]
+     * @return [type]        [description]
+     */
+    public function scopeCountStatusUsers($users)
+    {
+        $users->groupBy('status_user_id')
+              ->selectRaw('count(*) as total, status_user_id');
     }
 
     /**
@@ -181,17 +215,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Return the past reservations this User
-     * 
-     * @return App\Models\Plans\Plan
-     */
-    public function past_reservs()
-    {
-        return $this->HasMany(Reservation::class)
-                    ->whereIn('reservation_status_id', [3,4]);
-    }
-
-    /**
      * Return all the plans of the user,
      * with plan status: 'activo' and 'precompra'
      * 
@@ -229,7 +252,6 @@ class User extends Authenticatable
     }
 
     /**
-     * [--------- CHECK IF IT'S REPEATED ------------]
      * Return all the plans of this User,
      * ordered by plan status and start date of the plan
      * 
@@ -244,6 +266,7 @@ class User extends Authenticatable
 
     /**
      * [regular_users description]
+     * 
      * @return [collection] [description]
      */
     public function regular_users()
@@ -293,7 +316,6 @@ class User extends Authenticatable
         if (!$value) {
             
             return url('img/default_user.png');
-        
         }
         
         return $value;
@@ -320,9 +342,24 @@ class User extends Authenticatable
             $this->birthdate->day == toDay()->day) {
             
             return true;
-
         }
 
         return false;
+    }
+
+    /**
+     * Reservations 'Consumidas' and 'perdidas'
+     * 
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function past_reservations()
+    {
+        return Reservation::where('user_id', $this->id)
+                   ->whereIn('reservation_status_id', [3,4])
+                   ->with(['clase:id,date,start_at,finish_at',
+                           'reservation_status:id,reservation_status',
+                           'plan_user:id,plan_id',
+                           'plan_user.plan:id,plan'])
+                   ->get(['id', 'clase_id', 'user_id', 'plan_user_id', 'reservation_status_id']);
     }
 }

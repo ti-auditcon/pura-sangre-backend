@@ -196,9 +196,7 @@
             },
             viewRender: function (view, element, start, end) {
                 var b = $('#calendar').fullCalendar('getDate');
-                // console.log(b.startOf('week').format('Y-M-D'));
                 $('#calendar').fullCalendar( 'removeEventSources');
-                //alert(b.format('Y-M-D'));
 
                 // Add classes events to Calendar of the Week
                 $('#calendar').fullCalendar('addEventSource', {

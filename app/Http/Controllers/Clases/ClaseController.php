@@ -49,7 +49,7 @@ class ClaseController extends Controller
                        ->where('date', '<=', $request->dateend)
                        
                        ->with(['claseType:id,clase_color',
-                               'block:id,start,end,quota,clase_type_id',])
+                               'block:id,start,end'])
 
                        ->get(['id', 'date', 'quota', 'block_id', 'clase_type_id']);
 

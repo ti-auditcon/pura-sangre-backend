@@ -138,7 +138,9 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
      * Users Routes (ALUMNOS, PROFES, ADMINS, ALERTAS)
      */
     Route::resource('users', 'Users\UserController');
-    
+
+    Route::get('users-json', 'Users\UserController@usersJson')->name('users-json');
+
     Route::get('export', 'Users\UserController@export')->name('users.export');
     
     Route::get('update-avatar', 'Users\UserController@updateAvatar')->name('user.update.avatar');

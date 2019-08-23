@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Reports;
 
-use App\Http\Controllers\Controller;
-use App\Models\Clases\Reservation;
 use App\Models\Plans\Plan;
+use App\Models\Clases\Reservation;
+use App\Http\Controllers\Controller;
 use App\Models\Plans\PlanIncomeSummary;
 
 class ReportController extends Controller
@@ -132,14 +132,18 @@ class ReportController extends Controller
     public function quantityPlansSubYearByMonth()
     {
         $plans = $this->plans();
+
         foreach ($plans as $plan) {
             $quantity[] = PlanIncomeSummary::where('plan_id', $plan->id)
-                ->where('year', now()->subYear()->year)
-                ->get()
-                ->sum('quantity');
+                                           ->where('year', now()->subYear()->year)
+                                           ->get()
+                                           ->sum('quantity');
+
             $plans_by_years[$plan->id - 1] = [$plan->plan, $quantity[$plan->id - 1]];
         }
+
         $plans_by_years = array_merge(['data' => $plans_by_years, 'year' => now()->subYear()->year]);
+        
         return $plans_by_years;
     }
 
