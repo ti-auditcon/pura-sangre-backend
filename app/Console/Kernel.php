@@ -31,8 +31,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('push:clases')->hourlyAt(0, 15, 30, 45);
-        $schedule->command('clean:clase')->hourlyAt(0, 15, 30, 45);
+        // $schedule->command('push:clases')->hourlyAt(0, 15, 30, 45);
+        // $schedule->command('clean:clase')->hourlyAt(0, 15, 30, 45);
+
+        $schedule->command('push:clases')->everyFifteenMinutes();
+        $schedule->command('clean:clase')->everyFifteenMinutes();
         $schedule->command('closed:clase')->hourlyAt(15);
         $schedule->command('refresh:plans')->daily();
         $schedule->command('create:clases')->weekly();
