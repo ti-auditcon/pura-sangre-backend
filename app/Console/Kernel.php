@@ -31,12 +31,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('push:clases')->hourly();
+        $schedule->command('push:clases')->hourlyAt(0, 15, 30, 45);
+        $schedule->command('clean:clase')->hourlyAt(0, 15, 30, 45);
         $schedule->command('closed:clase')->hourlyAt(15);
         $schedule->command('refresh:plans')->daily();
         $schedule->command('create:clases')->weekly();
         $schedule->command('toexpire:plan')->dailyAt('9:10');
-        $schedule->command('clean:clase')->hourlyAt(15);
 
         $schedule->command('plans:freeze')->dailyAt('00:10');
         $schedule->command('plans:unfreeze')->dailyAt('00:15');

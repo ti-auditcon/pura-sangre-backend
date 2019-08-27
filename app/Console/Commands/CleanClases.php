@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Models\Clases\Clase;
-use App\Models\Clases\Reservation;
 use Illuminate\Console\Command;
+use App\Models\Clases\Reservation;
 
 class CleanClases extends Command
 {
@@ -38,13 +38,33 @@ class CleanClases extends Command
      */
     public function handle()
     {
-        $clase = Clase::where('date', today())->whereStartAt(now()->addHour()->startOfHour())
-            ->first();
+        $hour_clase = $this->roundToQuarterHour(now()->addMinutes(45))->format('h:i');
+
+        $clase = Clase::where('date', today())
+                      ->whereStartAt($hour_clase)
+                      ->first('id');
+        
         if ($clase) {
-            $reservations = Reservation::whereClaseId($clase->id)->whereReservationStatusId(1)->get();
+            $reservations = Reservation::whereClaseId($clase->id)
+                                       ->whereReservationStatusId(1)
+                                       ->get('id');
+
             foreach ($reservations as $reserv) {
                 $reserv->delete();
             }
         }
+    }
+
+    /**
+     * Get the rounded minute from an specific time,
+     * useful in case of server trigger after the specific hour and minute
+     * 
+     * @param  Carbon\Carbon $time
+     * @return Carbon\Carbon
+     */
+    public function roundToQuarterHour($time) {
+        $minutes = date('i', strtotime($time));
+        
+        return $time->setTime($time->format('h'), $minutes - ($minutes % 15));
     }
 }
