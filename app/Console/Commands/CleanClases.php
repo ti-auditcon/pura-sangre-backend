@@ -65,6 +65,6 @@ class CleanClases extends Command
     public function roundToQuarterHour($time) {
         $minutes = date('i', strtotime($time));
         
-        return $time->setTime($time->format('h'), $minutes - ($minutes % 15));
+        return $time->setTime($time->format('H'), $minutes - ($minutes % 15));
     }
 }

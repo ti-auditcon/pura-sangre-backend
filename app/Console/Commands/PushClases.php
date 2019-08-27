@@ -42,7 +42,7 @@ class PushClases extends Command
     {
         // now()->addHour()
         // Carbon::create(1975, 12, 25, 13, 00, 16)
-        $hora_clase = $this->roundToHalfHour(now()->addHour())->format('h:i');
+        $hora_clase = $this->roundToQuarterfHour(now()->addHour())->format('H:i');
         
         $reservations = Reservation::where('reservation_status_id', 1)
                                    ->join('users', 'users.id', '=', 'reservations.user_id')
@@ -74,7 +74,7 @@ class PushClases extends Command
     public function roundToQuarterfHour($time) {
         $minutes = date('i', strtotime($time));
         
-        return $time->setTime($time->format('h'), $minutes - ($minutes % 15));
+        return $time->setTime($time->format('H'), $minutes - ($minutes % 15));
     }
 
     /**
