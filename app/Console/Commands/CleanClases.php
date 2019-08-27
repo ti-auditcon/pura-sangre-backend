@@ -38,7 +38,7 @@ class CleanClases extends Command
      */
     public function handle()
     {
-        $hour_clase = $this->roundToQuarterHour(now()->addMinutes(45))->format('h:i');
+        $hour_clase = $this->roundToQuarterHour(now()->addMinutes(45))->format('H:i');
 
         $clase = Clase::where('date', today())
                       ->whereStartAt($hour_clase)
