@@ -255,9 +255,9 @@
                             return '<a href="/users/'+ row.id +'" class="btn btn-info btn-icon-only btn-success"><i class="la la-eye"></i></a>';
                         }
                     },
-                    { "data": "status",
+                    { "data": "status_user_id",
                       "render": function ( data, other, row ) {
-                        return row.id;
+                           return data;
                       }
                     }
                 ],

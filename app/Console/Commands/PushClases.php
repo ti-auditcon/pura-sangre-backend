@@ -40,10 +40,8 @@ class PushClases extends Command
      */
     public function handle()
     {
-        // now()->addHour()
-        // Carbon::create(1975, 12, 25, 13, 00, 16)
         $hora_clase = $this->roundToQuarterfHour(now()->addHour())->format('H:i');
-        
+
         $reservations = Reservation::where('reservation_status_id', 1)
                                    ->join('users', 'users.id', '=', 'reservations.user_id')
                                    ->join('clases', 'clases.id', '=', 'reservations.clase_id')
@@ -54,7 +52,7 @@ class PushClases extends Command
                                         'reservations.id', 'users.first_name', 'users.fcm_token', 'clase_types.clase_type',
                                         'clases.start_at'
                                     ]);
-        
+
         foreach ($reservations as $resrv) {
             $title = $resrv->first_name . ' recuerda confirmar ahora';
 

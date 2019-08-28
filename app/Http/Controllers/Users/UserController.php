@@ -77,7 +77,10 @@ class UserController extends Controller
         ]));
         if ($user->save()) {
             Session::flash('success', 'El usuario ha sido creado correctamente');
-            return view('users.show')->with('user', $user);
+            return view('users.show', [
+                'user' => $user,
+                'past_reservations' => $user->past_reservations()
+            ]);
         } else {
             return Redirect::back();
         }

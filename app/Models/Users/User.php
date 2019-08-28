@@ -355,11 +355,11 @@ class User extends Authenticatable
     public function past_reservations()
     {
         return Reservation::where('user_id', $this->id)
-                   ->whereIn('reservation_status_id', [3,4])
-                   ->with(['clase:id,date,start_at,finish_at',
-                           'reservation_status:id,reservation_status',
-                           'plan_user:id,plan_id',
-                           'plan_user.plan:id,plan'])
-                   ->get(['id', 'clase_id', 'user_id', 'plan_user_id', 'reservation_status_id']);
+                          ->whereIn('reservation_status_id', [3,4])
+                          ->with(['clase:id,date,start_at,finish_at',
+                                  'reservation_status:id,reservation_status',
+                                  'plan_user:id,plan_id',
+                                  'plan_user.plan:id,plan'])
+                         ->get(['id', 'clase_id', 'user_id', 'plan_user_id', 'reservation_status_id']);
     }
 }
