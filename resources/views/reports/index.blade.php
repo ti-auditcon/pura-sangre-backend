@@ -4,88 +4,74 @@
 @endsection
 
 @section('content')
-   <div class="row">
-      <div class="col-12 col-xl-6">
-         <div class="ibox">
+<div class="row">
+    <div class="col-12 col-xl-6">
+        <div class="ibox">
             <div class="ibox-head">
-               <div class="ibox-title">Total de Ingresos de todos los planes</div>
-             </div>
-            <div class="ibox-body">
-               <canvas id="canvas" height="280" width="600"></canvas>
+                <div class="ibox-title">Total de Ingresos de todos los planes</div>
             </div>
-         </div>
-      </div>
-
-      <div class="col-12 col-xl-6">
-         <div class="ibox">
+            <div class="ibox-body">
+                <canvas id="canvas" height="280" width="600"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-xl-6">
+        <div class="ibox">
             <div class="ibox-head">
-               <div class="ibox-title">N° de planes vendidos por Mes</div>
+                <div class="ibox-title">N° de planes vendidos por Mes</div>
             </div>
             <div class="ibox-body">
-               <canvas id="quantity-plans" height="280" width="600"></canvas>
+                <canvas id="quantity-plans" height="280" width="600"></canvas>
             </div>
-         </div>
-      </div>
-
-      <div class="col-12 col-xl-6">
-         <div class="ibox">
+        </div>
+    </div>
+    <div class="col-12 col-xl-6">
+        <div class="ibox">
             <div class="ibox-head">
-               <div class="ibox-title">Cantidad de reservas por mes en el año</div>
+                <div class="ibox-title">Cantidad de reservas por mes en el año</div>
             </div>
             <div class="ibox-body">
-               <canvas id="quantity-rsrvs" height="280" width="600"></canvas>
+                <canvas id="quantity-rsrvs" height="280" width="600"></canvas>
             </div>
-         </div>
-      </div>
-
-      <div class="col-xl-6">
-         <div class="ibox">
+        </div>
+    </div>
+    <div class="col-xl-6">
+        <div class="ibox">
             <div class="ibox-body">
-               <div class="d-flex justify-content-between mb-4">
-                  <div>
-                     <h3 class="m-0">Cantidad de Planes</h3>
-                     <div>Por tipo de Plan a nivel anual</div>
-                  </div>
-                  <ul class="nav nav-pills nav-pills-rounded nav-pills-air" id="myTab" role="tablist">
-                     <li class="nav-item">
-                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{{now()->year}}</a>
-                     </li>
-                     <li class="nav-item">
-                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">{{now()->subYear()->year}}</a>
-                     </li>
-                  </ul>
-               </div>
-               <div class="table-responsive">
-                  <div class="tab-content" id="myTabContent">
-                     <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <table id="quantity-plans-table" class="table table-hover">
-                           <thead class="thead-default">
-                              <tr>
-                                 <th width="51%">Tipo de Plan</th>
-                                 <th width="49%">Total vendidos</th>
-                              </tr>
-                           </thead>
-                           <tbody>
-                           </tbody>
-                        </table>
-                     </div>
-                     <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                        <table id="quantity-plans-sub-table" class="table table-hover">
-                           <thead class="thead-default">
-                              <tr>
-                                 <th width="60%">Tipo de Plan</th>
-                                 <th width="40%">Total vendidos</th>
-                              </tr>
-                           </thead>
-                           <tbody>
-                           </tbody>
-                        </table>
-                     </div>
-                  </div>
-               </div>
-         </div>
-      </div>
-   </div>
+                <div class="d-flex justify-content-between mb-4">
+                    <div>
+                        <h3 class="m-0">Cantidad de Planes</h3>
+                        <div>Por tipo de Plan a nivel anual</div>
+                    </div>
+ {{--                    <ul class="nav nav-pills nav-pills-rounded nav-pills-air" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{{now()->year}}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">{{now()->subYear()->year}}</a>
+                        </li>
+                    </ul> --}}
+                </div>
+                <div class="table-responsive">
+                    {{-- <div class="tab-content" id="myTabContent"> --}}
+                        {{-- <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"> --}}
+                            <table id="quantity-plans-table" class="table table-hover">
+                                <thead class="thead-default">
+                                    <tr>
+                                        <th width="50%">Tipo de Plan</th>
+                                        <th width="25%">{{ today()->year }}</th>
+                                        <th width="25%">{{ today()->subYear()->year }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        {{-- </div> --}}
+                    {{-- </}div> --}}
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 
@@ -99,54 +85,39 @@
 
    <script src="{{ asset('js/datatables.min.js') }}"></script>
 
-   <script>
-      $('#quantity-plans-table').DataTable( {
-         "ajax": {
-            "url": '{{route("totalplans")}}',
+<script>
+    $('#quantity-plans-table').DataTable( {
+        "ajax": {
+            "url": '{{ route("totalplans") }}',
             "dataType": "json",
             "type": "get",
-            "data": {"_token": "<?= csrf_token() ?>"},
-         },
-         "language": {
+        },
+        "language": {
             "lengthMenu": "Mostrar _MENU_ elementos",
             "zeroRecords": "Sin resultados",
             "info": "Mostrando página _PAGE_ de _PAGES_",
             "infoEmpty": "Sin resultados",
             "infoFiltered": "(filtrado de _MAX_ registros totales)",
-            "search": "Filtrar:"
-         },
-         "bLengthChange" : false,
-         "bpageLength": false,
-         "bPaginate": false,
-         "searching": false,
-         "bInfo":false,
-      } );
-   </script>
-
-   <script>
-      $('#quantity-plans-sub-table').DataTable( {
-         "ajax": {
-            "url": '{{route("totalplanssub")}}',
-            "dataType": "json",
-            "type": "get",
-            "data": {"_token": "<?= csrf_token() ?>"},
-         },
-         "language": {
-            "lengthMenu": "Mostrar _MENU_ elementos",
-            "zeroRecords": "Sin resultados",
-            "info": "Mostrando página _PAGE_ de _PAGES_",
-            "infoEmpty": "Sin resultados",
-            "infoFiltered": "(filtrado de _MAX_ registros totales)",
-            "search": "Filtrar:"
-         },
-         "bLengthChange" : false,
-         "bpageLength": false,
-         "bPaginate": false,
-         "searching": false,
-         "bInfo":false,
-      } );
-   </script>
-
+            "search": "Filtrar:",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            },
+        },
+        "bLengthChange" : false,
+        "bpageLength": false,
+        "bPaginate": true,
+        "searching": false,
+        "bInfo":false,
+        "columns": [
+            { "data": "plan" },
+            { "data": 2019 },
+            { "data": 2018 }
+        ]
+    });
+</script>
 
 <script src="{{ asset('js/Chart.min.js') }}"></script>
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
@@ -242,35 +213,40 @@
   </script>
 
 {{--     //////////////////  TOTAL QUANTITY PLAN ANUAL BY MONTH  ////////////////////////////////// --}}
-  <script>
-   var urltwo = "{{url('report/secondchart')}}";
-  $(document).ready(function(){
-   var Months =  new Array();
-   var Quantities = new Array();
-   var SubQuantities = new Array();
-    $.get(urltwo, function(respuesta){
-      respuesta.q_anual.forEach(function(data){
-          Months.push(data.month);
-          Quantities.push(data.quantity);
-      });
-      respuesta.q_sub_anual.forEach(function(data){
-          SubQuantities.push(data.quantity);
-      });
+<script>
+    var urltwo = "{{url('report/secondchart')}}";
 
-      var chartdata = {
-            labels: Months,
-            datasets: [{ label: '2019', borderWidth: 1, borderColor: 'rgba(54, 162, 235, 1)',
-               backgroundColor: 'rgba(54, 162, 235, 1)', data: Quantities,
-            }, {
-               label: '2018', borderWidth: 1, borderColor: 'rgba(180, 178, 180, 0.8)',
-               backgroundColor: 'rgba(180, 178, 180, 0.8)', data: SubQuantities, }]
-      };
-      var chart_quantity = document.getElementById("quantity-plans").getContext('2d');
-         var miChart = new Chart(chart_quantity, {
-            type: 'bar', data: chartdata, });
-      });
-   });
-  </script>
+    $(document).ready(function() {
+        var Months =  new Array();
+        var Quantities = new Array();
+        var SubQuantities = new Array();
+        
+        $.get(urltwo, function(respuesta) {
+            respuesta.q_anual.forEach(function(data) {
+                Months.push(data.month);
+                Quantities.push(data.quantity);
+            });
+            
+            respuesta.q_sub_anual.forEach(function( data ) {
+                SubQuantities.push(data.quantity);
+            });
+            
+            var chartdata = {
+                labels: Months,
+                datasets: [
+                    { label: '2019', borderWidth: 1, borderColor: 'rgba(54, 162, 235, 1)',
+                      backgroundColor: 'rgba(54, 162, 235, 1)', data: Quantities,
+                    },
+                    { label: '2018', borderWidth: 1, borderColor: 'rgba(180, 178, 180, 0.8)',
+                      backgroundColor: 'rgba(180, 178, 180, 0.8)', data: SubQuantities, }
+                ]
+            };
+            var chart_quantity = document.getElementById("quantity-plans").getContext('2d');
+            
+            var miChart = new Chart(chart_quantity, { type: 'bar', data: chartdata });
+        });
+    });
+</script>
 
   <script>
    var urlresrvs = "{{url('report/thirdchart')}}";
