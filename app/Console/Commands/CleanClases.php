@@ -47,7 +47,7 @@ class CleanClases extends Command
         if ($clase) {
             $reservations = Reservation::whereClaseId($clase->id)
                                        ->whereReservationStatusId(1)
-                                       ->get('id');
+                                       ->get();
 
             foreach ($reservations as $reserv) {
                 $reserv->delete();

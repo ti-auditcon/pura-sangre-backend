@@ -87,12 +87,12 @@ class ReservationObserver
 
     public function deleted(Reservation $reservation)
     {
-        $clase = $reservation->clase;
+        $reservation_clase = $reservation->clase;
 
         if ($reservation->user) {
             $plans = $reservation->user->reservable_plans;
             
-            $date_class = Carbon::parse($clase->date);
+            $date_class = Carbon::parse($reservation_clase->date);
             
             $period_plan = null;
             

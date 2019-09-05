@@ -76,7 +76,7 @@ class PushClases extends Command
     }
 
     /**
-     * [notification description]
+     * Prepare and send PUSH Notification
      * @param  [type] $token [description]
      * @param  [type] $title [description]
      * @param  [type] $body  [description]
