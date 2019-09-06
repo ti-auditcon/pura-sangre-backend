@@ -11,7 +11,7 @@ class PlanSummary extends Model
 	 * 
 	 * @var string
 	 */
-	protected $table = 'plan_summaries';
+	protected $table = 'plans_summaries';
 
 	/**
 	 * Columns for Massive Assignment 
@@ -25,7 +25,7 @@ class PlanSummary extends Model
 		'cumulative_reservations',
 		'day_incomes',
 		'cumulative_incomes',
-		'days_plans_sold',
+		'day_plans_sold',
 		'cumulative_plans_sold'
 	];
 }
