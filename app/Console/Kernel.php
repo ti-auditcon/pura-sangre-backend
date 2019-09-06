@@ -21,7 +21,6 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\CleanClases',
         'App\Console\Commands\Plans\FreezePlans',
         'App\Console\Commands\Plans\UnfreezePlans',
-        // 'App\Console\Commands\Reports\PlanSummary',
     ];
 
     /**

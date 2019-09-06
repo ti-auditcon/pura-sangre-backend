@@ -2,7 +2,7 @@
 
 @section('sidebar')
 
-  @include('layouts.sidebar')
+  @include('layouts.sidebar',['page'=>'clases'])
 
 @endsection
 

@@ -120,9 +120,7 @@ class planuserController extends Controller
      */
     public function edit(User $user, planuser $plan)
     {
-        return view('userplans.edit')
-             ->with('user', $user)
-             ->with('plan_user', $plan);
+        return view('userplans.edit')->with('user', $user)->with('plan_user', $plan);
     }
 
     /**
@@ -134,51 +132,41 @@ class planuserController extends Controller
      */
     public function update(Request $request, User $user, planuser $plan)
     {
-        if ( $plan->finish_date->lt(today()) ) {
+        if ($plan->finish_date->lt(today())) {
             Session::flash('warning', 'No se puede modificar el estado de un plan cuya fecha de término es anterior a hoy');
-            
-            return view('userplans.show')->with([
-                'user' => $user,
-                'plan_user' => $plan
-            ]);
+            return view('userplans.show')->with(['user' => $user, 'plan_user' => $plan]);
+        } else {
+            if ($plan->update([
+                'start_date' => Carbon::parse($request->start_date),
+                'finish_date' => Carbon::parse($request->finish_date),
+                'observations' => $request->observations,
+                'counter' => $request->counter,
+            ])) {
+                if ($plan->plan_id != 1 && $plan->plan_id != 2) {
+                    $plan = $this->updateBillIncome($plan);
+                    $plan->bill->amount = $request->amount;
+                    $plan->bill->updated_at = now();
+                    $plan->bill->save();
+                }
+                Session::flash('success', 'El plan se actualizó correctamente');
+                return redirect('users/' . $user->id);
+            } else {
+                return redirect('users/' . $user->id);
+            }
         }
- 
-        $plan->update([
-            'start_date' => Carbon::parse($request->start_date),
-            'finish_date' => Carbon::parse($request->finish_date),
-            'observations' => $request->observations,
-            'counter' => $request->counter,
-        ]);
-
-        if ($plan->plan_id != 1 && $plan->plan_id != 2) {
-            $plan = $this->updateBillIncome($plan);
-
-            $plan->bill->amount = $request->amount;
-
-            $plan->bill->updated_at = now();
-
-            $plan->bill->save();
-        }
-
-        Session::flash('success', 'El plan se actualizó correctamente');
-        return redirect('users/' . $user->id);
     }
 
     public function updateBillIncome($plan_saved)
     {
         if ($plan_saved->bill) {
             $plan_income_sum = PlanIncomeSummary::where('month', $plan_saved->bill->date->month)
-                                                ->where('year', $plan_saved->bill->date->year)
-                                                ->where('plan_id', $plan_saved->bill->plan_user->plan->id)
-                                                ->first();
-            
+                ->where('year', $plan_saved->bill->date->year)
+                ->where('plan_id', $plan_saved->bill->plan_user->plan->id)
+                ->first();
             $plan_income_sum->amount -= $plan_saved->bill->amount;
-            
             $plan_income_sum->quantity -= 1;
-            
             $plan_income_sum->save();
         }
-
         return $plan_saved;
     }
 
@@ -191,9 +179,7 @@ class planuserController extends Controller
     public function annul(User $user, planuser $plan)
     {
         $plan->update(['plan_status_id' => 5]);
-
-        return redirect()->route('users.show', $user->id)
-                         ->with('success', 'Se canceló el plan correctamente');
+        return redirect()->route('users.show', $user->id)->with('success', 'Se canceló el plan correctamente');
     }
 
     /**

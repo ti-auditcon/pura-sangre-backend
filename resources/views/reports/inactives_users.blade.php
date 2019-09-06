@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('sidebar')
-  @include('layouts.sidebar')
+  @include('layouts.sidebar',['page'=>'reports'])
 @endsection
 
 @section('content')
