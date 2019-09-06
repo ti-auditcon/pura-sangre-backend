@@ -118,11 +118,11 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
      */
     Route::resource('reports', 'Reports\ReportController')->middleware('role:1')->only('index');
     
-    Route::get('report/firstchart', 'Reports\ReportController@firstchart');
+    Route::get('reports/firstchart', 'Reports\ReportController@firstchart');
     
-    Route::get('report/secondchart', 'Reports\ReportController@secondchart');
+    Route::get('reports/secondchart', 'Reports\ReportController@secondchart');
     
-    Route::get('report/thirdchart', 'Reports\ReportController@thirdchart');
+    Route::get('reports/thirdchart', 'Reports\ReportController@thirdchart');
     
     Route::get('reports/totalplans', 'Reports\ReportController@totalplans')->name('totalplans');
     
@@ -133,6 +133,10 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::post('reports/inactive_users_json', 'Reports\InactiveUserController@inactiveUsers')->name('inactiveusers');
     
     Route::get('reports/inactive_users/export', 'Reports\InactiveUserController@export')->name('inactive_users.export');
+
+    Route::get('reports/data-plans/', 'Reports\DataPlansController@index');
+    
+    Route::post('reports/data-plans/compare', 'Reports\DataPlansController@compare');
 
     /**
      * Users Routes (ALUMNOS, PROFES, ADMINS, ALERTAS)

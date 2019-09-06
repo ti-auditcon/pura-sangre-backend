@@ -35,20 +35,24 @@ class ReportController extends Controller
 
     public function firstchart()
     {
-        $anual = $this->monthIncomeAnual();
+        list($annual, $sub_annual) = $this->monthIncomeAnual();
 
-        $anual_sub = $this->monthIncomeAnualSub();
-
-        return response()->json(array('anual' => $anual, 'anual_sub' => $anual_sub));
+        return response()->json([
+            'annual' => $annual,
+            'sub_annual' => $sub_annual,
+            'months' => $this->months
+        ]);
     }
 
     public function secondchart()
     {
-        $q_anual = $this->totalPlansYearByMonth();
+        list($q_anual, $q_sub_anual) = $this->totalPlansYearByMonth();
 
-        $q_sub_anual = $this->totalPlansSubYearByMonth();
-
-        return response()->json(array('q_anual' => $q_anual, 'q_sub_anual' => $q_sub_anual));
+        return response()->json([
+            'q_anual' => $q_anual,
+            'q_sub_anual' => $q_sub_anual,
+            'months' => $this->months
+        ]);
     }
 
     public function thirdchart()
@@ -57,7 +61,11 @@ class ReportController extends Controller
 
         $rsrvs_sub_anual = $this->quantitySubAnualReservationsByMonth();
 
-        return response()->json(array('rsrvs_anual' => $rsrvs_anual, 'rsrvs_sub_anual' => $rsrvs_sub_anual));
+        return response()->json([
+            'rsrvs_anual' => $rsrvs_anual,
+            'rsrvs_sub_anual' => $rsrvs_sub_anual,
+            'months' => $this->months
+        ]);
     }
 
     public function totalplans()
@@ -70,26 +78,39 @@ class ReportController extends Controller
     //INGRESOS POR MES AÑO ACTUAL
     public function monthIncomeAnual()
     {
-        for ($i = 1; $i < 13; $i++) {
-            $amount[] = PlanIncomeSummary::where('month', $i)
-                ->where('year', now()->year)
-                ->get()
-                ->sum('amount');
-            $month_summ[$i - 1] = ['month' => $this->months[$i - 1], 'amount' => $amount[$i - 1]];
+        $incomes = PlanIncomeSummary::selectRaw('month, year, SUM(amount) as total')
+                                       ->where('year', toDay()->year)
+                                       ->orWhere('year', toDay()->subYear()->year)
+                                       ->groupBy('year', 'month')
+                                       ->get();
+
+        for ($i = 0; $i < 12; $i++) {
+            $actual_income = $incomes->where('month', $i + 1)
+                                     ->where('year', toDay()->year)
+                                     ->pluck('total')
+                                     ->toArray();
+
+            $actual_year[] = count($actual_income) ? (int)$actual_income[0] : 0;
+
+            $past_year_income = $incomes->where('month', $i + 1)
+                                     ->where('year', toDay()->subYear()->year)
+                                     ->pluck('total')
+                                     ->toArray();
+
+            $past_year[] = count($past_year_income) ? (int)$past_year_income[0] : 0;
         }
-        return $month_summ;
+
+        return [$actual_year, $past_year];
     }
 
     //INGRESOS POR MES AÑO ANTERIOR
     public function monthIncomeAnualSub()
     {
-        for ($i = 1; $i < 13; $i++) {
-            $amount[] = PlanIncomeSummary::where('month', $i)
-                ->where('year', now()->subYear()->year)
-                ->get()
-                ->sum('amount');
-            $month_summ[$i - 1] = ['month' => $this->months[$i - 1], 'amount' => $amount[$i - 1]];
-        }
+        $month_summ = PlanIncomeSummary::selectRaw('month, year, SUM(amount) as total')
+                                       ->orWhere('year', now()->subYear()->year)
+                                       ->groupBy('year', 'month')
+                                       ->get();
+
         return $month_summ;
     }
 
@@ -97,19 +118,22 @@ class ReportController extends Controller
     public function totalPlansYearByMonth()
     {
         for ($i = 1; $i < 13; $i++) {
-            $quantity[] = PlanIncomeSummary::where('month', $i)
+            $year_plans[] = PlanIncomeSummary::where('month', $i)
                 ->where('year', now()->year)
                 ->get()
                 ->sum('quantity');
-            $quantity_plans[$i - 1] = ['month' => $this->months[$i - 1], 'quantity' => $quantity[$i - 1]];
 
-            // $quantity[] = PlanIncomeSummary::where('month', $i)
-            //     ->where('year', now()->subYear()->year)
-            //     ->get()
-            //     ->sum('quantity');
-            // $quantity_plans[$i - 1] = ['month' => $this->months[$i - 1], 'quantity' => $quantity[$i - 1]];
+            $actual_year[] = $year_plans[$i - 1];
+
+            $past_year_plans[] = PlanIncomeSummary::where('month', $i)
+                ->where('year', now()->subYear()->year)
+                ->get()
+                ->sum('quantity');
+
+            $past_year[] = $past_year_plans[$i - 1];
         }
-        return $quantity_plans;
+
+        return [$actual_year, $past_year];
     }
 
     /**
@@ -168,13 +192,12 @@ class ReportController extends Controller
     {
         for ($i = 0; $i < 12; $i++) {
             $reservations[] = Reservation::join('clases', 'clases.id', 'reservations.clase_id')
-                ->whereMonth('clases.date', $i + 1)
-                ->whereYear('clases.date', now()->year)
-                ->get()
-                ->count();
-            $q_reservations[$i] = ['month' => $this->months[$i], 'reservations' => $reservations[$i]];
+                                         ->whereMonth('clases.date', $i + 1)
+                                         ->whereYear('clases.date', now()->year)
+                                         ->count('reservations.id');
         }
-        return $q_reservations;
+
+        return $reservations;
     }
 
     public function quantitySubAnualReservationsByMonth()
@@ -183,12 +206,10 @@ class ReportController extends Controller
             $reservations[] = Reservation::join('clases', 'clases.id', 'reservations.clase_id')
                 ->whereMonth('clases.date', $i + 1)
                 ->whereYear('clases.date', now()->subYear()->year)
-                ->get()
-                ->count();
-            $q_reservations[$i] = ['reservations' => $reservations[$i]];
+                ->count('reservations.id');
         }
 
-        return $q_reservations;
+        return $reservations;
     }
 }
 

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('sidebar')
-  @include('layouts.sidebar',['page'=>'reports'])
+  @include('layouts.sidebar')
 @endsection
 
 @section('content')
@@ -11,7 +11,7 @@
                 <div class="ibox-title">Total de Ingresos de todos los planes</div>
             </div>
             <div class="ibox-body">
-                <canvas id="canvas" height="280" width="600"></canvas>
+                <canvas id="all_plans_incomes" height="280" width="600"></canvas>
             </div>
         </div>
     </div>
@@ -85,6 +85,8 @@
 
    <script src="{{ asset('js/datatables.min.js') }}"></script>
 
+    <script src="{{ asset('js/moment.min.js') }}"></script>
+
 <script>
     $('#quantity-plans-table').DataTable( {
         "ajax": {
@@ -113,170 +115,90 @@
         "bInfo":false,
         "columns": [
             { "data": "plan" },
-            { "data": 2019 },
-            { "data": 2018 }
+            { "data": moment().year() },
+            { "data": moment().subtract(1, 'years').year() }
         ]
     });
 </script>
 
-<script src="{{ asset('js/Chart.min.js') }}"></script>
-{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+    <script src="{{ asset('js/Chart.min.js') }}"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script> --}}
-
-{{--     //////////////////  TOTAL INCOMES PLAN ANUAL BY MONTH  VS PAST YEAR  /////////////////////// --}}
-  <script>
-  var url = "{{url('report/firstchart')}}";
-  var meses =  new Array();
-  var Prices = new Array();
-  var Prices_sub = new Array();
-  $(document).ready(function(){
-    $.get(url, function(response){
-      response.anual.forEach(function(data){
-          meses.push(data.month);
-          Prices.push(data.amount);
-      });
-      response.anual_sub.forEach(function(data){
-          Prices_sub.push(data.amount);
-      });
-      var barChartData = {
-            labels:meses,
-            datasets: [{
-               label: '2019',
-               borderWidth: 3,
-               borderColor: 'rgba(54, 162, 235, 1)',
-               backgroundColor: 'rgba(54, 162, 235, 1)',
-               data: Prices,
-               fill: false,
-            }, {
-               label: '2018',
-               borderWidth: 3,
-               borderColor: 'rgba(180, 178, 180, 0.6)',
-               backgroundColor: 'rgba(180, 178, 180, 0.6)',
-               data: Prices_sub,
-               fill: false,
-            }]
-      };
-      var ctx = document.getElementById("canvas").getContext('2d');
-          var myChart = new Chart(ctx, {
-            type: 'line',
-            data: barChartData,
-            options: {
-               responsive: true,
-               tooltips: {
-                  mode: 'index',
-                  callbacks: {
-                     label: function(tooltipItem, data) {
-                        var datasetLabel = data.datasets[tooltipItem.datasetIndex].label || 'Other';
-                        var label = tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-                        return datasetLabel + ': ' + label;
-                     },
-                     // Use the footer callback to display the sum of the items showing in the tooltip
-                     beforeFooter: function(tooltipItems, data) {
-                        var sum = 0;
-                        tooltipItems.forEach(function(tooltipItem) {
-                           if (sum == 0){ sum += tooltipItem.yLabel;
-                           }else{ sum -= tooltipItem.yLabel; }
-                        });
-                        return 'Diferencia: ' + sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-                     },
-                     footer: function(tooltipItem, data) {
-                        var dif = 0;
-                        tasa = ((tooltipItem[0]['yLabel'] - tooltipItem[1]['yLabel'])*100)/tooltipItem[1]['yLabel'];
-                        if (tasa == 'Infinity') {
-                           tasa = 'Infinito';
-                           return 'Tasa de crecimiento: '+tasa;
-                        }else{
-                           return 'Tasa de crecimiento: '+tasa.toFixed(1)+'%';
-                        }
-                        // valor de el mes 2019 (ej: 200000)
-                        // console.log(tooltipItem[0]['yLabel']);
-                        // DIFERENCIA ENTRE LOS VALORES DE 2019 Y 2018
-                        // console.log(tooltipItem[0]['yLabel'] - tooltipItem[1]['yLabel']);
-                        //LARGO DEL ARREGLO
-                        // console.log(data.datasets[1]['data']['length']);
-                        //AÑO DEL ARRAY (EJ: 2019)
-                        // console.log(data.datasets[0]['label']);
-                     },
-
-                  },
-               },
-               scales: { yAxes: [{ ticks: {
-                        // Include a dollar sign in the ticks
-                        callback: function(value, index, values) {
-                           return '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-                        }}}]}
-            }
-        });
-    });
-  });
-  </script>
+    <script src="{{ asset('js/purasangre-js/all-plans-incomes.js') }}"></script>
 
 {{--     //////////////////  TOTAL QUANTITY PLAN ANUAL BY MONTH  ////////////////////////////////// --}}
 <script>
-    var urltwo = "{{url('report/secondchart')}}";
+var urltwo = "{{url('reports/secondchart')}}";
 
-    $(document).ready(function() {
-        var Months =  new Array();
-        var Quantities = new Array();
-        var SubQuantities = new Array();
-        
-        $.get(urltwo, function(respuesta) {
-            respuesta.q_anual.forEach(function(data) {
-                Months.push(data.month);
-                Quantities.push(data.quantity);
-            });
-            
-            respuesta.q_sub_anual.forEach(function( data ) {
-                SubQuantities.push(data.quantity);
-            });
-            
-            var chartdata = {
-                labels: Months,
-                datasets: [
-                    { label: '2019', borderWidth: 1, borderColor: 'rgba(54, 162, 235, 1)',
-                      backgroundColor: 'rgba(54, 162, 235, 1)', data: Quantities,
-                    },
-                    { label: '2018', borderWidth: 1, borderColor: 'rgba(180, 178, 180, 0.8)',
-                      backgroundColor: 'rgba(180, 178, 180, 0.8)', data: SubQuantities, }
-                ]
-            };
-            var chart_quantity = document.getElementById("quantity-plans").getContext('2d');
-            
-            var miChart = new Chart(chart_quantity, { type: 'bar', data: chartdata });
+$(document).ready(function() {
+    var Months =  new Array();
+    var Quantities = new Array();
+    var SubQuantities = new Array();
+    
+    $.get(urltwo, function(respuesta) {
+        respuesta.q_anual.forEach(function(data) {
+            Quantities.push(data);
         });
+        
+        respuesta.q_sub_anual.forEach(function( data ) {
+            SubQuantities.push(data);
+        });
+
+        respuesta.months.forEach(function( data ) {
+            Months.push(data);
+        });
+        
+        var chartdata = {
+            labels: Months,
+            datasets: [
+                { label: '2019', borderWidth: 1, borderColor: 'rgba(54, 162, 235, 1)',
+                  backgroundColor: 'rgba(54, 162, 235, 1)', data: Quantities,
+                },
+                { label: '2018', borderWidth: 1, borderColor: 'rgba(180, 178, 180, 0.8)',
+                  backgroundColor: 'rgba(180, 178, 180, 0.8)', data: SubQuantities, }
+            ]
+        };
+        var chart_quantity = document.getElementById("quantity-plans").getContext('2d');
+        
+        var miChart = new Chart(chart_quantity, { type: 'bar', data: chartdata });
     });
+});
 </script>
 
-  <script>
-   var urlresrvs = "{{url('report/thirdchart')}}";
-  $(document).ready(function(){
-   var Monthss =  new Array();
-   var reservs = new Array();
-   var sub_reservs = new Array();
-    $.get(urlresrvs, function(respuesta){
-      respuesta.rsrvs_anual.forEach(function(data){
-          Monthss.push(data.month);
-          reservs.push(data.reservations);
-      });
-      respuesta.rsrvs_sub_anual.forEach(function(data){
-          sub_reservs.push(data.reservations);
-      });
+<script>
+var urlresrvs = "{{url('reports/thirdchart')}}";
 
-      var chartdata = {
+$(document).ready(function(){
+    var Monthss =  new Array();
+    var reservs = new Array();
+    var sub_reservs = new Array();
+    
+    $.get(urlresrvs, function(respuesta) {
+        respuesta.rsrvs_anual.forEach(function(data) {
+            reservs.push(data);
+        });
+        respuesta.rsrvs_sub_anual.forEach(function(data){
+            sub_reservs.push(data);
+        });
+        respuesta.months.forEach(function(data) {
+            Monthss.push(data);
+        });
+
+        var chartdata = {
             labels: Monthss,
             datasets: [{ label: '2019', borderWidth: 1, borderColor: 'rgba(54, 162, 235, 1)',
-               backgroundColor: 'rgba(54, 162, 235, 1)', data: reservs,
+                backgroundColor: 'rgba(54, 162, 235, 1)', data: reservs,
             }, {
-               label: '2018', borderWidth: 1, borderColor: 'rgba(180, 178, 180, 0.8)',
-               backgroundColor: 'rgba(180, 178, 180, 0.8)', data: sub_reservs, }]
-      };
-      var chart_quantity = document.getElementById("quantity-rsrvs").getContext('2d');
-         var miChart = new Chart(chart_quantity, {
-            type: 'bar', data: chartdata, });
-      });
-   });
-  </script>
+            label: '2018', borderWidth: 1, borderColor: 'rgba(180, 178, 180, 0.8)',
+                backgroundColor: 'rgba(180, 178, 180, 0.8)', data: sub_reservs, }]
+        };
+        var chart_quantity = document.getElementById("quantity-rsrvs").getContext('2d');
+        
+        var miChart = new Chart(chart_quantity, {
+            type: 'bar', data: chartdata, 
+        });
+    });
+});
+</script>
 
 
 @endsection
