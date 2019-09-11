@@ -11,8 +11,8 @@ use App\Models\Plans\PlanUser;
 use App\Models\Users\Emergency;
 use App\Models\Clases\Reservation;
 use Illuminate\Support\Facades\Log;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 use Intervention\Image\Facades\Image;
 use App\Http\Requests\Users\UserRequest;
 
@@ -57,6 +57,9 @@ class UserController extends Controller
      */
     public function create()
     {
+        if (! auth()->user()->hasRole(1)) {
+            return back();
+        }
         return view('users.create');
     }
 
@@ -72,9 +75,11 @@ class UserController extends Controller
             'password' => bcrypt('purasangre'),
             'avatar' => url('img/default_user.png'),
         ]));
+
         $emergency = Emergency::create(array_merge($request->all(), [
             'user_id' => $user->id,
         ]));
+        
         if ($user->save()) {
             Session::flash('success', 'El usuario ha sido creado correctamente');
             return view('users.show', [
