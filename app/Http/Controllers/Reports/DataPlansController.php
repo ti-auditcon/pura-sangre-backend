@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Reports;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Reports\PlanSummary;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class DataPlansController extends Controller
 {
@@ -17,69 +19,32 @@ class DataPlansController extends Controller
         return view('reports.data_plans');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function compare(Request $request)
     {
-        //
-    }
+        $first_date = Carbon::parse($request->date)->format('Y-m-d');
+        
+        $second_date = Carbon::parse($request->date)->subMonthWithoutOverflow()->format('Y-m-d');
+        // subMonthWithoutOverflow
+        
+        $data = PlanSummary::where('date', $first_date)
+                           ->orWhere('date', $second_date)
+                           ->orderByDesc('date')
+                           ->get();
+        
+        $new = $data->map(function ($data) {
+            return [
+                'day' => ucfirst(Carbon::parse($data->date)->formatLocalized('%A')),
+                'date' => Carbon::parse($data->date)->format('d-m-Y'),
+                'active_users_day' => $data->active_users_day,
+                'reservations_day' => $data->reservations_day,
+                'cumulative_reservations' => number_format($data->cumulative_reservations, $decimal = 0, '.', '.'),
+                'day_incomes' => '$ ' . number_format($data->day_incomes, $decimal = 0, '.', '.'),
+                'cumulative_incomes' => '$ ' . number_format($data->cumulative_incomes, $decimal = 0, '.', '.'),
+                'day_plans_sold' => $data->day_plans_sold,
+                'cumulative_plans_sold' => $data->cumulative_plans_sold
+            ];
+        });
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return response()->json(['data' => $new]);
     }
 }

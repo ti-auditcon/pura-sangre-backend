@@ -23,7 +23,7 @@ class PlanSummaryCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Get plans daily report';
+    protected $description = 'Close data about the plans sold today';
 
     /**
      * Create a new command instance.
@@ -42,7 +42,7 @@ class PlanSummaryCommand extends Command
      */
     public function handle()
     {
-        $period = CarbonPeriod::create('2018-04-02', '1 days', '2019-09-29');
+        $period = CarbonPeriod::create('2018-04-02', '1 days', '2019-09-08');
 
         foreach ($period as $key => $date) {
             $active_users_day = PlanUser::where('plan_id', '!=', 1)

@@ -145,7 +145,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 
     Route::get('reports/data-plans/', 'Reports\DataPlansController@index');
     
-    Route::post('reports/data-plans/compare', 'Reports\DataPlansController@compare');
+    Route::post('reports/data-plans/compare', 'Reports\DataPlansController@compare')->name('data-plans-compare');
 
     /**
      * Users Routes (ALUMNOS, PROFES, ADMINS, ALERTAS)
