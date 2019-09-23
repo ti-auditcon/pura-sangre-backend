@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Clases;
 
 use App\Models\Clases\Block;
 use App\Models\Clases\Clase;
@@ -14,7 +14,7 @@ class CreateClases extends Command
      *
      * @var string
      */
-    protected $signature = 'create:clases';
+    protected $signature = 'clases:create';
 
     /**
      * The console command description.

@@ -51,9 +51,10 @@ class MessageController extends Controller
             $mail->subject = $request->subject;
             $mail->text = $request->text;
             $mail->user = $user->first_name;
-            try{
+
+            try {
                 Mail::to($user->email)->send(new $mailable($mail, $user));
-            } catch(\Exception $e){
+            } catch(\Exception $e) {
                 \DB::table('errors')->insert([
                     'error' => $e,
                     'where' => 'email',

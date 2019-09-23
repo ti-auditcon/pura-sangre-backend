@@ -14,7 +14,7 @@ class RefreshPlans extends Command
      *
      * @var string
      */
-    protected $signature = 'refresh:plans';
+    protected $signature = 'plans:refresh';
 
     /**
      * The console command description.

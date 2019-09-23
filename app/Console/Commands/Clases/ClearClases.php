@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Clases;
 
 use App\Models\Clases\Clase;
 use Illuminate\Console\Command;
 use App\Models\Clases\Reservation;
 
-class CleanClases extends Command
+class ClearClases extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'clean:clase';
+    protected $signature = 'clases:clear';
 
     /**
      * The console command description.
