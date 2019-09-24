@@ -41,6 +41,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('clases:create')->weekly();
         $schedule->command('plans:toexpire')->dailyAt('9:10');
 
+        $schedule->command('reports:daily')->dailyAt('23:50');
+
         $schedule->command('plans:freeze')->dailyAt('00:10');
         $schedule->command('plans:unfreeze')->dailyAt('00:15');
     }
