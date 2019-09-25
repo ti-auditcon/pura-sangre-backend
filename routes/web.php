@@ -2,14 +2,14 @@
 
 Auth::routes();
 
-Route::get('mailable', function () {
-    $invoice = collect();
-    $invoice->first_name = 'Raul';
-    $invoice->subject = 'Asunto';
-    $invoice->message = 'Esperamos como Equipo, que tu primera Clase haya sido con todo, por lo general las primeras clases son las más duras, por eso te invitamos a seguir dandolo todo. Por nuestra parte queremos saber que tal fuimos contigo';
+// Route::get('mailable', function () {
+//     $invoice = collect();
+//     $invoice->first_name = 'Raul';
+//     $invoice->subject = 'Asunto';
+//     $invoice->message = 'Esperamos como Equipo, que tu primera Clase haya sido con todo, por lo general las primeras clases son las más duras, por eso te invitamos a seguir dandolo todo. Por nuestra parte queremos saber que tal fuimos contigo';
 
-    return new App\Mail\SendFirstClassEmail($invoice);
-});
+//     return new App\Mail\SendFirstClassEmail($invoice);
+// });
 
 Route::get('/', 'HomeController@index');
 Route::get('/withoutrenewal', 'HomeController@withoutrenewal');
@@ -70,7 +70,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     /**   
      * BILLS Routes
      */
-    Route::resource('payments', 'Bills\BillController')->middleware('role:1');
+    Route::resource('payments', 'Bills\BillController')->middleware('role:1')->only('index', 'update');
     
     Route::post('payments/pagos', 'Bills\BillController@getPagos')->name('datapagos');
     
@@ -162,7 +162,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     
     Route::post('users/{user}/plans/{plan}/annul', 'Plans\PlanUserController@annul')->name('users.plans.annul');
     
-    Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
+    // Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
     
     Route::get('users/{user}/plans/{plan}/info', 'Users\UserController@userinfo')->name('users.plans.info');
 
