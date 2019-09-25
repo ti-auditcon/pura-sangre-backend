@@ -24,9 +24,9 @@
 
                     <div class="nav-2-level">
                         <ul>
-                            <li><a href="{{url('/users')}}">Todos los Alumnnos</a></li>
-                        
-                            <li><a href="{{url('/users/create')}}">Nuevo Alumno</a></li>
+                            <li><a href="{{ url('/users') }}">Todos los Alumnnos</a></li>
+                            
+                            <li><a href="{{ url('/users/create') }}">Nuevo Alumno</a></li>
                         </ul>
                     </div>
                 </li>
@@ -56,7 +56,7 @@
                         
                         <li><a href="{{ url('/reports/inactive_users') }}">Usuarios Inactivos</a></li>
 
-                        <li><a href="{{ url('/reports/data-plans') }}">Data</a></li>
+                        <li><a href="{{ url('/reports/data-plans') }}">Análisis Diarios</a></li>
                     </ul>
                 </div>
             </li>

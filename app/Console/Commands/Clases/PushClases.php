@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Clases;
 
 use App\Models\Clases\Clase;
 use App\Models\Clases\Reservation;
@@ -14,7 +14,7 @@ class PushClases extends Command
      *
      * @var string
      */
-    protected $signature = 'push:clases';
+    protected $signature = 'clases:push';
 
     /**
      * The console command description.

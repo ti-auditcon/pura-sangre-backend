@@ -14,7 +14,7 @@ class ToExpiredPlan extends Command
      *
      * @var string
      */
-    protected $signature = 'toexpire:plan';
+    protected $signature = 'plans:toexpire';
 
     /**
      * The console command description.

@@ -162,7 +162,7 @@
             densities.push(e);
         });        // response.
     }).done(() => {
-        console.log(densities);
+        // console.log(densities);
     });
 </script>
 
@@ -312,7 +312,7 @@
                     var date = $("#input-date-day").val();
                     var type_clase = $('#select-entire-day-delete').find(":selected").val();
 
-                    console.log(type_clase);
+                    // console.log(type_clase);
 
                     let remove_day_url = '{{ url('calendar/clases/delete') }}';
 

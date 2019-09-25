@@ -2,6 +2,15 @@
 
 Auth::routes();
 
+Route::get('mailable', function () {
+    $invoice = collect();
+    $invoice->first_name = 'Raul';
+    $invoice->subject = 'Asunto';
+    $invoice->message = 'Esperamos como Equipo, que tu primera Clase haya sido con todo, por lo general las primeras clases son las más duras, por eso te invitamos a seguir dandolo todo. Por nuestra parte queremos saber que tal fuimos contigo';
+
+    return new App\Mail\SendFirstClassEmail($invoice);
+});
+
 Route::get('/', 'HomeController@index');
 Route::get('/withoutrenewal', 'HomeController@withoutrenewal');
 Route::get('/genders', 'HomeController@genders');
@@ -136,7 +145,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 
     Route::get('reports/data-plans/', 'Reports\DataPlansController@index');
     
-    Route::post('reports/data-plans/compare', 'Reports\DataPlansController@compare');
+    Route::post('reports/data-plans/compare', 'Reports\DataPlansController@compare')->name('data-plans-compare');
 
     /**
      * Users Routes (ALUMNOS, PROFES, ADMINS, ALERTAS)

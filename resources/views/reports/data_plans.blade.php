@@ -6,35 +6,40 @@
 
 @section('content')
 <div class="row">
-    <div class="col-12 col-xl-5">
+    <div class="col-12 col-xl-12">
         <div class="ibox">
             <div class="ibox-head">
-                <div class="ibox-title">Total de Ingresos de todos los planes</div>
+                <div class="ibox-title">
+                    <h4>Comparación de Ingresos</h4>
+                </div>
+                
                 <div class="iboox-tools">
-                    <div class="inline-items">
-                        <select class="form-control">
-                            @for ($i = 1; $i <= 31; $i++)
-                                <option>{{ $i }}</option>
-                            @endfor
-                        </select>
-                        
-                        <button class="btn btn-success">Buscar</button>
+                    <div class="d-flex flex-row">
+                        <input autocomplete="off" id="date-input" type="text" class="form-control">
+
+                        <button id="compare-button" class="btn btn-success">Buscar</button>
                     </div>
                 </div>
             </div>
 
             <div class="ibox-body">
-                <div class="row">
-                    <div class="col-3 mx-auto">
-                        <h3 class="font-strong text-success">$ 135.600</h3>
-                        <div class="text-muted">34 Planes Vendidos</div>
-                    </div>
-
-                    <div class="col-3 mx-auto">
-                        <h3 class="font-strong text-secondary">$ 130.500</h3>
-                        <div class="text-muted">30 Planes Vendidos</div>
-                    </div>
-                </div>
+                <table id="plans-summary-table" class="table table-hover">
+                    <thead class="thead-default">
+                        <tr>
+                            <th width="6%">Día</th>
+                            <th width="8%">Fechas</th>
+                            <th width="10%">Usuarios Activos del día</th>
+                            <th width="10%">Cantidad de Reservas del día</th>
+                            <th width="15%">Reservaciones acumuladas a la Fecha</th>
+                            <th width="12%">Ingresos del Día</th>
+                            <th width="13%">Ingresos Acumulados a la Fecha</th>
+                            <th width="10%">Cantidad Planes vendidos en el Día</th>
+                            <th width="10%">Acumulado de Planes vendidos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -49,48 +54,81 @@
 
 @section('scripts') {{-- scripts para esta vista --}}
 
-<script src="{{ asset('js/datatables.min.js') }}"></script>
-
 <script src="{{ asset('js/moment.min.js') }}"></script>
 
-<script src="{{ asset('js/Chart.min.js') }}"></script>
+<script src="{{ asset('js/datatables.min.js') }}"></script>
 
 <script>
-var urltwo = "{{ url('report/secondchart') }}";
+var today = moment().format('DD-MM-YYYY');
 
-$(document).ready(function() {
-    var Months =  new Array();
-    var Quantities = new Array();
-    var SubQuantities = new Array();
-    
-    $.get(urltwo, function(respuesta) {
-        respuesta.q_anual.forEach(function(data) {
-            Quantities.push(data);
-        });
-        
-        respuesta.q_sub_anual.forEach(function( data ) {
-            SubQuantities.push(data);
-        });
+$('#date-input').datepicker({
+    format: "dd-mm-yyyy",
+    weekStart: 1,
+    startDate: "03-03-2008",
+    endDate: today,
+    maxViewMode: 3,
+    todayBtn: "linked",
+    language: "es",
+    autoclose: true,
+    todayHighlight: true
+});
 
-        respuesta.months.forEach(function( data ) {
-            Months.push(data);
-        });
-        
-        var chartdata = {
-            labels: Months,
-            datasets: [
-                { label: '2019', borderWidth: 1, borderColor: 'rgba(54, 162, 235, 1)',
-                  backgroundColor: 'rgba(54, 162, 235, 1)', data: Quantities,
-                },
-                { label: '2018', borderWidth: 1, borderColor: 'rgba(180, 178, 180, 0.8)',
-                  backgroundColor: 'rgba(180, 178, 180, 0.8)', data: SubQuantities, }
-            ]
-        };
-        var chart_quantity = document.getElementById("quantity-plans").getContext('2d');
-        
-        var miChart = new Chart(chart_quantity, { type: 'bar', data: chartdata });
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+$(document).ready(function () {
+    var date = $('#date-input').val() ? $('#date-input').val() : today;
+
+    $('#compare-button').click(function () {
+        table.ajax.reload();
+    });
+
+    var table = $('#plans-summary-table').DataTable({
+        "processing": true,
+        // "serverSide": true,
+        "ajax": {
+            "url": "<?= route('data-plans-compare') ?>",
+            "dataType": "json",
+            "type": "POST",
+            "data" : function( d ) {
+                d.date = $('#date-input').val() ?
+                         $('#date-input').val() :
+                         moment().format('DD-MM-YYYY');
+            },
+        },
+        "dom": '<"top">rt<"bottom"><"clear">',
+        "lengthChange": false,
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ elementos",
+            "zeroRecords": "Sin resultados",
+            "info": "Mostrando página _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin resultados",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Filtrar:",
+            "paginate": {
+                "first":      "Primero",
+                "last":       "último",
+                "next":       "Siguiente",
+                "previous":   "Anterior"
+            },
+        },        
+        "columns":[
+            { "data": "day" },
+            { "data": "date" },
+            { "data": "active_users_day" },
+            { "data": "reservations_day" }, 
+            { "data": "cumulative_reservations" },
+            { "data": "day_incomes" },
+            { "data": "cumulative_incomes" },
+            { "data": "day_plans_sold" },
+            { "data": "cumulative_plans_sold" }
+        ],
     });
 });
+
 </script>
 
 @endsection

@@ -11,7 +11,18 @@ class SendNewUserEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    /**
+     * $user data
+     * 
+     * @var array
+     */
     public $user;
+
+    /**
+     * $token for reset password
+     * 
+     * @var string
+     */
     public $token;
 
     /**
