@@ -31,6 +31,7 @@ class UsersExport implements FromCollection, WithHeadings
             return [
                 $user->full_name,
                 Rut::set($user->rut)->fix()->format(),
+                $user->email,
                 $user->birthdate->format('d/m/Y'),
                 '+569 ' . $user->phone,
                 $plan,
@@ -46,6 +47,7 @@ class UsersExport implements FromCollection, WithHeadings
         return [
             'Alumno',
             'RUN',
+            'Correo',
             'Fecha de Nacimiento',
             'Telefono',
             'Plan Activo',

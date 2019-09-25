@@ -89,13 +89,12 @@
                         </div>
                         
                         <div>
-                            
                             <label class="btn btn-info btn-edit file-input">
-                            
                                 <span class="btn-icon"><i class="la la-upload"></i>Subir o cambiar Imagen</span>
                             
                                 <input style="display: none" name="image" id="photoinput" type="file" accept="image/*" max-file-size=1234>
                             </label>
+
                             <span class="help-block"></span>
                         </div>
                     </div>

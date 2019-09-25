@@ -44,13 +44,21 @@ class MessageController extends Controller
         $errors = null;
         $users = User::whereIn('id', explode (",", $request->to[0]))->get();
         
-        $mailable = count($users) > 18 ? SendEmailQueue::class : SendEmail::class; 
+        $mailable = count($users) > 18 ? SendEmailQueue::class : SendEmail::class;
+
+        if ($request->image) {
+            $random_name = str_shuffle(str_replace([' ', ':'], '', $request->subject . now()));
+
+            request()->file('image')->storeAs('public/emails', $random_name . '.jpg');
+        } 
 
         foreach ($users as $user) {
             $mail = new \stdClass();
             $mail->subject = $request->subject;
             $mail->text = $request->text;
             $mail->user = $user->first_name;
+            $mail->image_url = $request->image ? url('/') . '/storage/emails/' . $random_name . '.jpg' : null;
+
             try{
                 Mail::to($user->email)->send(new $mailable($mail, $user));
             } catch(\Exception $e){

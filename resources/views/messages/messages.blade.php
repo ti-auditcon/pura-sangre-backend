@@ -82,54 +82,80 @@
         </div>
     </div>
 
-    {{--  ................ M O D A L ...................... --}}
-    <div class="modal fade bd-example-modal-xl" id="user-assign" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog-email modal-dialog modal-xl " role="document">
+{{--  ................ M O D A L ...................... --}}
+<div class="modal fade" id="user-assign" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog-email modal-dialog modal-lg" role="document">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Redactar correo</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          {!! Form::open(['url' => ['messages/send'], 'method' => 'post', 'id' => 'form-val']) !!}
-          <div class="modal-body messages-modal-body">
-            <tbody>
-              <div class="ibox-body">
-                 <label class="col-form-label">Para</label>
-                  <input type="text" value="" name="to[]" data-role="tagsinput" id="tags" class="tass form-control">
-              </div>
-              </br>
-              <label class="col-form-label">Asunto</label>
-              <input class="form-control" type="text" value="" name="subject" required>
-              <label class="col-form-label">Contenido</label>
-              <textarea name="text" class="form-control" required></textarea>
-              <button type="button" id="submit-emails-button" class="btn btn-primary" type="submit" onClick="this.form.submit();">Enviar Correo</button>
-              <p> </p>
-            </tbody>
-            <div id="form-input">
-              {{-- <input type="text" name="id[]"> --}}
+            <div class="modal-header">
+                <h5 class="modal-title">Redactar correo</h5>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-          </div>
-          {!! Form::close() !!}
+            {!! Form::open(['url' => ['messages/send'], 'method' => 'post', 'id' => 'form-val', 'files' => true]) !!}
+            <div class="modal-body messages-modal-body">
+                <div class="ibox-body">
+                    <label class="col-form-label">Para</label>
+                    <input type="text" value="" name="to[]" data-role="tagsinput" id="tags" class="tass form-control">
+
+                    <label class="col-form-label mt-2">Asunto</label>
+                    <input class="form-control" type="text" value="" name="subject" required>
+                    
+                    <label class="col-form-label mt-2">Contenido</label>
+                    <textarea class="form-control" name="text"></textarea>
+
+                    <input name="image" type="file" accept="image/*" max-file-size=1234>
+                </div>
+                
+                <button
+                    id="submit-emails-button"
+                    class="btn btn-primary mt-3"
+                    type="submit"
+                    onClick="this.form.submit();"
+                >
+                    Enviar Correo
+                </button>
+                <div id="form-input">
+                    {{-- <input type="text" name="id[]"> --}}
+                </div>
+            </div>
+            {!! Form::close() !!}
         </div>
-      </div>
     </div>
-  @endsection
+</div>
+@endsection
 
   @section('css') {{-- stylesheet para esta vista --}}
     {{-- <link href="{{ asset('css/summernote.css') }}" rel="stylesheet" /> --}}
     {{-- <link href="{{ asset('css/jquery.dataTables.min.css') }}"/> --}}
-    <link href="{{asset('/css/bootstrap-tagsinput.css') }}" rel="stylesheet" />
+    <link href="{{asset('/css/bootstrap-tagsinput.css') }}" rel="stylesheet"/>
 
+    {{-- <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet"/> --}}
   @endsection
 
-  @section('scripts') {{-- scripts para esta vista --}}
+@section('scripts') {{-- scripts para esta vista --}}
     <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
+    
     <script src="{{ asset('/js/datatables.min.js') }}"></script>
+    
     <script src="{{ asset('/js/dataTables.checkboxes.min.js') }}"></script>
+    
     <script src="{{ asset('/js/bootstrap-tagsinput.min.js') }}"></script>
-  
+
+    {{-- <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script> --}}
+
+{{-- <script>
+    $(document).ready(function() {
+        $('#summernote').summernote({
+            height: 250,
+            toolbar: [
+                ["Imagen", ["picture"]],
+            ],
+        });
+    });
+</script> --}}
+
 <script>
     $(document).ready(function() {
         var table = $('#example').DataTable({
