@@ -53,10 +53,11 @@ class AfterFirstClass extends Command
      */
     public function handle()
     {
-        $hour_clase = $this->roundToQuarterHour(now()->addMinutes(45))->format('H:i');
+        $hour_clase = $this->roundToQuarterHour(now()->subHour())->format('H:i');
+        // dd(now(), $hour_clase);
 
         $clase = Clase::where('date', today())
-                      ->whereStartAt('11:00')
+                      ->whereStartAt($hour_clase)
                       ->first('id');
 
         $users = User::join('reservations', 'users.id', '=', 'reservations.user_id')
@@ -77,6 +78,8 @@ class AfterFirstClass extends Command
                 $email->first_name = $user->first_name;
 
                 Mail::to($user->email)->send(new SendFirstClassEmail($email));
+
+                // Agregar enviar PUSH
             }
         }
     }

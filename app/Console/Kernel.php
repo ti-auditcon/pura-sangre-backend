@@ -37,8 +37,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('clases:push')->hourlyAt(15);
         $schedule->command('clases:push')->hourlyAt(30);
         $schedule->command('clases:push')->hourlyAt(45);
-        $schedule->command('clases:clear')->hourlyAt(0);
 
+        $schedule->command('clases:clear')->hourlyAt(0);
         $schedule->command('clases:clear')->hourlyAt(15);
         $schedule->command('clases:clear')->hourlyAt(30);
         $schedule->command('clases:clear')->hourlyAt(45);

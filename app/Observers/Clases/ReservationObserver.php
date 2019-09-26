@@ -85,27 +85,39 @@ class ReservationObserver
         return true;
     }
 
+    /**
+     * [deleted description]
+     * @param  Reservation $reservation [description]
+     * @return [type]                   [description]
+     */
     public function deleted(Reservation $reservation)
     {
-        $reservation_clase = $reservation->clase;
+        // $reservation_clase = $reservation->clase;
 
-        if ($reservation->user) {
-            $plans = $reservation->user->reservable_plans;
-            
-            $date_class = Carbon::parse($reservation_clase->date);
-            
-            $period_plan = null;
-            
-            foreach ($plans as $planuser) {
-                if ($date_class->between(Carbon::parse($planuser->start_date), Carbon::parse($planuser->finish_date))) {
-                    $period_plan = $planuser;
-                }
-            }
-
-            if ($period_plan) {
-                $period_plan->update(['counter' => $period_plan->counter + 1]);
-            }
+        if ($reservation->plan_user_id) {
+            $reservation->plan_user->update([
+                'counter' => $reservation->plan_user->counter + 1
+            ]);
         }
+
+        // if ($reservation->user) {
+        //     $plans = $reservation->user->reservable_plans;
+            
+        //     $date_class = Carbon::parse($reservation_clase->date);
+            
+        //     $period_plan = null;
+            
+        //     foreach ($plans as $planuser) {
+        //         if ($date_class->between(Carbon::parse($planuser->start_date), Carbon::parse($planuser->finish_date))) {
+        //             $period_plan = $planuser;
+        //         }
+        //     }
+
+        //     if ($period_plan) {
+        //         $period_plan->update(['counter' => $period_plan->counter + 1]);
+        //     }
+        // }
+
         return true;
     }
 
