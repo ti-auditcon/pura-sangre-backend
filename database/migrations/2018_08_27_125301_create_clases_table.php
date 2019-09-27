@@ -25,7 +25,8 @@ class CreateClasesTable extends Migration
             $table->increments('id');
             $table->string('clase_type');
             $table->string('clase_color');
-            $table->string('icon')->nullable();
+            $table->integer('active')->nullable();
+            $table->string('icon_white')->nullable();
             $table->timestamps();
         });
 

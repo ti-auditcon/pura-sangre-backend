@@ -14,21 +14,6 @@ use Session;
 
 class UserObserver
 {
-    // public function retrieved(User $user)
-    // {
-    //     if($user->status_user_id == 1 || $user->status_user_id == 3) {
-    //         if(!$user->actual_plan) {
-    //             $user->status_user_id = 2;
-    //             $user->save();
-    //         }
-    //     }
-    // }
-
-    public function creating(User $user)
-    {
-        //
-    }
-
     /**
      * Handle the user "created" event.
      *
