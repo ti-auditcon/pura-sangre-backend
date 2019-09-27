@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
         //     ReservationsTableSeeder::class,
         // ]);
 
+        $this->call(ClaseTypesTableSeeder::class);
     }
 }
 // $user = User::create([
