@@ -79,6 +79,13 @@
                 <div class="ibox-tools">
                     
                     <a
+                        href="{{ route('role-user.edit', ['role_user' => $user->id]) }}"
+                        class="btn btn-warning"
+                    >
+                        Roles
+                    </a>
+
+                    <a
                         class="btn btn-success text-white mr-1" style="display: inline-block;"
                         href="{{ route('users.edit', $user->id) }}"
                     >
@@ -128,7 +135,7 @@
                     <div class="col-12 text-muted">Contacto de emergencia</div>
                     @if ($user->emergency)
                         <div class="col-12">
-                            {{ $user->emergency->contact_name.'  -' ?? '' }}  {{ '+56 9 '.$user->emergency->contact_phone ?? 'No ingresado' }}
+                            {{ $user->emergency->contact_name.'  -' ?? '' }}  {{ '+56 9 ' . $user->emergency->contact_phone ?? 'No ingresado' }}
                         </div>
                     @endif
                 </div>

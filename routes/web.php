@@ -167,6 +167,11 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('users/{user}/plans/{plan}/info', 'Users\UserController@userinfo')->name('users.plans.info');
 
     /**
+     * ROLEUSER ROUTES
+     */
+    Route::resource('role-user', 'Users\RoleUserController')->only('edit', 'store', 'destroy');
+
+    /**
      *  WODS Routes
      */
     Route::resource('wods', 'Wods\WodController')->except('index', 'show')->middleware('role:1');
