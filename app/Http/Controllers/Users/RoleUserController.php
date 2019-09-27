@@ -27,7 +27,8 @@ class RoleUserController extends Controller
 
         $user->roles()->sync($request->role);
 
-        return back()->with('success', 'Rol(es) ajustados correctamente');
+        return redirect('/role-user/' . $user->id . '/edit')
+             ->with('success', 'Rol(es) ajustados correctamente');
     }
 
     /**
