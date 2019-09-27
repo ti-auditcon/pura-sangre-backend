@@ -27,17 +27,10 @@ class RolesTableSeeder extends Seeder
             1 => 
             array (
                 'id' => 2,
-                'role' => 'profesor',
+                'role' => 'coach',
                 'created_at' => NULL,
                 'updated_at' => NULL,
-            ),
-            2 => 
-            array (
-                'id' => 3,
-                'role' => 'student',
-                'created_at' => NULL,
-                'updated_at' => NULL,
-            ),
+            )
         ));
         
         
