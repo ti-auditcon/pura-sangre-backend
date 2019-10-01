@@ -21,7 +21,7 @@
                             <label class="form-control-label">Planes*</label>
                             
                             <div class="input-group">
-                                <select class="selectpicker form-control " name="plan_id" required id="plan-select">
+                                <select class="form-control" name="plan_id" required id="plan-select">
                                     <option value="">Elegir plan...</option>
                                     
                                     @foreach (App\Models\Plans\Plan::all() as $plan)
@@ -211,12 +211,12 @@ $('#finish_date .input-group.date').datepicker({
       $('#payment').show();
 
       if(custom != 0){
-         console.log('es custom');
+        // console.log('es custom');
          $('.is-custom').show();
          $('.is-not-custom').hide();
       }
       else {
-         console.log('no es custom');
+         // console.log('no es custom');
          $('.is-custom').hide();
          $('.is-not-custom').show();
       }

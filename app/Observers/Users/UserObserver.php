@@ -5,7 +5,7 @@ namespace App\Observers\Users;
 use App\Mail\SendNewUserEmail;
 use App\Models\Plans\PlanUser;
 use App\Models\Users\User;
-use Illuminate\Auth\Passwords\TokenRepositoryInterface;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -14,19 +14,19 @@ use Session;
 
 class UserObserver
 {
-    // public function retrieved(User $user)
-    // {
-    //     if($user->status_user_id == 1 || $user->status_user_id == 3) {
-    //         if(!$user->actual_plan) {
-    //             $user->status_user_id = 2;
-    //             $user->save();
-    //         }
-    //     }
-    // }
-
+    /**
+     * [creating description]
+     * 
+     * @param  User   $user [description]
+     * @return [type]       [description]
+     */
     public function creating(User $user)
     {
-        //
+        $user->status_user_id = !request('test_user') ? 2 : 3; 
+
+        $user->password = bcrypt('purasangre');
+
+        $user->avatar = url('img/default_user.png');
     }
 
     /**
@@ -42,17 +42,19 @@ class UserObserver
             'email' => $user->email, 
             'token' => Hash::make($token),
         ]);
-        // if (!\App::environment('local')) {
-            Mail::to($user->email)->send(new SendNewUserEmail($user, $token));
-        // }
+
+        Mail::to($user->email)->send(new SendNewUserEmail($user, $token));
+        
         if ($user->status_user_id == 3) {
             $planuser = new PlanUser;
             $planuser->plan_id = 1;
             $planuser->user_id = $user->id;
             $planuser->counter = 3;
             $planuser->plan_status_id = 1;
-            $planuser->start_date = today();
-            $planuser->finish_date = today()->addDays(7);
+            $planuser->start_date = request('since') ?
+                                    Carbon::parse(request('since')) :
+                                    today();
+            $planuser->finish_date = $planuser->start_date->copy()->addDays(7);
             $planuser->save();
         }
     }
@@ -60,17 +62,6 @@ class UserObserver
     public function createToken($tokens, $user)
     {
         return $tokens->create($user);
-    }
-
-    /**
-     * Handle the user "updated" event.
-     *
-     * @param  \App\Models\Users\User  $user
-     * @return void
-     */
-    public function updated(User $user)
-    {
-        //
     }
 
     /**
@@ -84,27 +75,5 @@ class UserObserver
         $user->plan_users()->each(function ($plan_user){
             $plan_user->delete();
         });
-    }
-
-    /**
-     * Handle the user "restored" event.
-     *
-     * @param  \App\Models\Users\User  $user
-     * @return void
-     */
-    public function restored(User $user)
-    {
-        //
-    }
-
-    /**
-     * Handle the user "force deleted" event.
-     *
-     * @param  \App\Models\Users\User  $user
-     * @return void
-     */
-    public function forceDeleted(User $user)
-    {
-        //
     }
 }
