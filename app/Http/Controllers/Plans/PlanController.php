@@ -18,7 +18,7 @@ class PlanController extends Controller
     public function index()
     {
         $plans = Plan::with('plan_period:id,period')
-                     ->get(['id', 'plan', 'class_numbers', 'daily_clases', 'plan_period_id']);
+                     ->get(['id', 'plan', 'class_numbers', 'daily_clases', 'plan_period_id', 'contractable', 'convenio']);
         // dd($plans);
         return view('plans.index')->with('plans', $plans);
     }
@@ -41,10 +41,13 @@ class PlanController extends Controller
      */
     public function store(Request $request, Plan $plan)
     {
-        // $plan = Plan::create(array_merge($request->all(), ['has_clases' => 1, 'custom' => 0]));
-        $plan = Plan::create(array_merge($request->all(), ['custom' => 0]));
+        $plan = Plan::create(array_merge($request->all(), [
+            'contractable' => $request->contractable ? 1 : 0,
+            'convenio' => $request->convenio ? 1 : 0
+        ]));
         
-        return redirect()->route('plans.show', $plan->id)->with('success', 'El plan ha sido creado correctamente');
+        return redirect()->route('plans.show', $plan->id)
+                         ->with('success', 'El plan ha sido creado correctamente');
     }
 
     /**
@@ -78,9 +81,12 @@ class PlanController extends Controller
      */
     public function update(Request $request, Plan $plan)
     {
-        $plan->update($request->all());
-        Session::flash('success', 'Los datos del plan han sido actualizados correctamente');
-        return view('plans.show')->with('plan', $plan);
+        $plan->update(array_merge($request->all(), [
+            'contractable' => $request->contractable ? 1 : 0,
+            'convenio' => $request->convenio ? 1 : 0
+        ]));
+        
+        return back()->with('success', 'Los datos del plan han sido actualizados correctamente');
     }
 
     /**

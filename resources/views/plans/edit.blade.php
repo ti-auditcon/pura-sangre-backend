@@ -8,9 +8,7 @@
     <div class="col-6">
         <div class="ibox form-control-air">
             <div class="ibox-head">
-            
-                <div class="ibox-title">Editar Plan: {{strtoupper($plan->plan)}}</div>
-            
+                <div class="ibox-title">Editar plan {{ strtoupper($plan->plan) }}</div>
             </div>
 
             {!! Form::open(['route' => ['plans.update', $plan->id], 'method' => 'put']) !!}
@@ -82,11 +80,38 @@
                         </div>
                     </div>
                 </div>
-                <br>
-                
+
+                <div class="row ">
+                    <div class="col-12 form-group mt-4">
+                        <label class="checkbox checkbox-success">
+                            <input
+                                type="checkbox"
+                                name="contractable"
+                                @if ($plan->contractable) checked @endif
+                            />
+                            
+                            <span class="input-span"></span>
+
+                            Contratable por APP
+                        </label>
+                        <label class="checkbox checkbox-success ml-4">
+                            <input 
+                                type="checkbox"
+                                name="convenio" 
+                                @if ($plan->convenio) checked @endif
+                            />
+                            
+                            <span class="input-span"></span>
+
+                            Es Convenio
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="ibox-footer">
                 <button class="btn btn-primary mr-2" type="submit">Actualizar Plan</button>
 
-                <a class="btn btn-secondary" href="{{ route('plans.index') }}">Volver</a>
+                <a class="btn btn-secondary" href="{{ route('plans.index') }}">Ir a Planes</a>
             </div>
             {!! Form::close() !!}
         </div>
@@ -102,6 +127,7 @@
 
 
 @section('scripts') {{-- scripts para esta vista --}}
+
 
 
 @endsection

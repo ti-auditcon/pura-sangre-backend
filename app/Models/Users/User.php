@@ -79,20 +79,16 @@ class User extends Authenticatable
     }
 
     /**
-     * [hasRole description]
-     * @param  [type]  $role [description]
-     * @return boolean       [description]
+     * Verified if auth user has an specific Role
+     * 
+     * @param  integer
+     * @return boolean
      */
     public function hasRole($role)
     {
-        $role = RoleUser::where('role_id', $role)
-                        ->where('user_id', $this->id)
-                        ->exists();
-
-        if ($role) {
-            return true;
-        }
-        return false;
+        return RoleUser::where('role_id', $role)
+                       ->where('user_id', $this->id)
+                       ->exists();
     }
 
     /**

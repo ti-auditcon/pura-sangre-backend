@@ -114,6 +114,24 @@
             
                 </div>
 
+                <div class="row col-sm-12 form-group">
+                        <label class="checkbox checkbox-success">
+                            <input type="checkbox" name="contractable"/>
+                            
+                            <span class="input-span"></span>
+
+                            Contratable por APP
+                        </label>
+
+                        <label class="checkbox checkbox-success ml-3">
+                            <input type="checkbox" name="convenio"/>
+                            
+                            <span class="input-span"></span>
+
+                            Es Convenio
+                        </label>
+                    </div>
+
                 <div class="mt-4">
                     <button class="btn btn-primary btn-air mr-2" type="submit">Crear Plan</button>
 
