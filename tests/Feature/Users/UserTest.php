@@ -85,6 +85,7 @@ class UserTest extends TestCase
     /** @test */
     public function admin_can_see_a_client_user()
     {
+        
         $this->seed(\StatusUsersTableSeeder::class);
         $this->seed(\ClaseTypesTableSeeder::class);
         $this->seed(\PlansTableSeeder::class);

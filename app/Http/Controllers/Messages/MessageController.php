@@ -72,7 +72,7 @@ class MessageController extends Controller
         }
 
         if ($errors) {
-            Session::flash('warning', 'Hay error(es) en al menos '.$errors.' correo(s)');
+            Session::flash('warning', 'Hay error(es) en '.$errors.' correo(s)');
             return redirect()->back();
         }
 

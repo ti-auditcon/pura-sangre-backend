@@ -70,6 +70,7 @@ class planuserController extends Controller
             $finish_date = Carbon::parse($request->fecha_termino);
             $counter = $request->counter * $plan->daily_clases;
         }
+        
         $planuser = new PlanUser;
         $planuser->start_date = Carbon::parse($request->fecha_inicio);
         $planuser->finish_date = $finish_date;

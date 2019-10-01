@@ -40,7 +40,7 @@ class RoleUserController extends Controller
     {
         $roles = Role::all(['id', 'role']);
 
-        return view('personal.edit', ['user' => $role_user, 'roles' => $roles]);
+        return view('users.role-user', ['user' => $role_user, 'roles' => $roles]);
     }
 
     /**

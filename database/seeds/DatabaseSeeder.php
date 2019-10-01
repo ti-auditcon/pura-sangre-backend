@@ -42,6 +42,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call(ClaseTypesTableSeeder::class);
+        $this->call(PlansTableSeeder::class);
     }
 }
 // $user = User::create([

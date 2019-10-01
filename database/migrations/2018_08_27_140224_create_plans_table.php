@@ -33,13 +33,13 @@ class CreatePlansTable extends Migration
             
             $table->unsignedInteger('plan_period_id')->nullable();
             
-            $table->boolean('has_clases');
-            
             $table->integer('class_numbers');
             
             $table->integer('amount')->nullable();
             
             $table->boolean('custom')->nullable();
+
+            $table->boolean('daily_clases')->nullable();
             
             $table->timestamps();
 

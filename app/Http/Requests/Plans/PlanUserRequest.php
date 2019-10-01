@@ -14,7 +14,10 @@ class PlanUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        if (auth()->user()->hasRole(1)) {
+            return true;
+        }
+        return false;
     }
 
     /**

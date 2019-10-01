@@ -29,19 +29,18 @@ $factory->define(Role::class, function (Faker $faker) {
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-      'rut' => Rut::parse($faker->numberBetween($min = 1000000, $max = 100000000))->normalize(),
-      'first_name' => $faker->firstName($gender = 'male'|'female'),
-      'last_name' => $faker->lastName,
-      'email' => $faker->unique()->safeEmail,
-      'birthdate' => $faker->date($format = 'Y-m-d', $max = 'now'), // '1979-06-09',
-      'gender' => $faker->randomElement($array = array ('male','female')),
-      'password' => bcrypt('123123'), // secret
-      'avatar' => url('/').'/storage/users/u ('.$faker->numberBetween($min = 1, $max = 54).').jpg',
-      'phone' => $faker->numberBetween($min = 40000000, $max = 99876599),
-      'address' => $faker->streetAddress,
-      // 'emergency_id' => Emergency::all()->random()->id,
-      'status_user_id' => StatusUser::all()->random()->id,
-      'remember_token' => str_random(10),
+        'rut' => Rut::parse($faker->numberBetween($min = 1000000, $max = 100000000))->normalize(),
+        'first_name' => $faker->firstName($gender = 'male'|'female'),
+        'last_name' => $faker->lastName,
+        'email' => $faker->unique()->safeEmail,
+        'birthdate' => $faker->date($format = 'Y-m-d', $max = 'now'), // '1979-06-09',
+        'gender' => $faker->randomElement($array = array ('male','female')),
+        'password' => bcrypt('123123'), // secret
+        'avatar' => url('/').'/storage/users/u ('.$faker->numberBetween($min = 1, $max = 54).').jpg',
+        'phone' => $faker->numberBetween($min = 40000000, $max = 99876599),
+        'address' => $faker->streetAddress,
+        'status_user_id' => StatusUser::all()->random()->id,
+        'remember_token' => str_random(10),
     ];
 });
 
