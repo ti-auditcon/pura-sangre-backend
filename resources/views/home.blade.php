@@ -1,7 +1,9 @@
 @extends('layouts.app')
 
 @section('sidebar')
-  @include('layouts.sidebar',['page'=>'home'])
+
+    @include('layouts.sidebar',['page'=>'home'])
+
 @endsection
 
 @section('content')
@@ -9,40 +11,76 @@
       <div class="col-12 col-md-5">
 
         <div class="ibox">
-          <div class="ibox-head">
-            <div class="ibox-title">Clases de hoy</div>
-          </div>
-          <div class="ibox-body" >
-            <div id="calendar"></div>
-          </div>
-        </div>
-      </div>
+            <div class="ibox-head">
+                <div class="ibox-title">
+                    Clases de hoy
+                </div>
 
-      <div class="col-12 col-md-7">
-        <div class="row">
-          <div class=" col-md-6 col-sm-12">
-            <div class="ibox">
-               <div class="ibox-head">
-                  <div class="ibox-title">Actividad de alumnos <span style="text-transform: capitalize;">{{today()->formatLocalized('%B')}}</span></div>
-               </div>
-                  <div class="ibox-body">
-                     <canvas id="renewal-chart"></canvas>
-                  </div>
+                <div class="ibox-tools">
+                    {{ Form::open(['route' => 'clases.type']) }}
+                        <div class="row mr-2">
+                            <div class="col-10">
+                                <select class="form-control" name="type">
+                                    @foreach(App\Models\Clases\ClaseType::all() as $type)
+
+                                    <option
+                                        value="{{ $type->id }}"
+                                        @if($type->id == Session::get('clases-type-id')) selected @endif
+                                    >
+
+                                        {{ $type->clase_type }}
+
+                                    </option>
+
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-2 pl-0">
+                                <button class="btn btn-default">Ir</button>
+                            </div>
+                        </div>
+                    {{ Form::close() }}
+                </div>
             </div>
-          </div>
-          <div class="col-md-6 col-sm-12 ">
-             <div class="ibox">
-                 <div class="ibox-head">
-                    <div class="ibox-title">Crossfiteros activos del box</div>
-                    <label id="my-label"></label>
-                 </div>
-                  <div class="ibox-body">
-                     <canvas id="gender-chart" ></canvas>
-                  </div>
-              </div>
-          </div>
-
+            <div class="ibox-body">
+                <div id="calendar"></div>
+            </div>
         </div>
+    </div>
+
+    @if (auth()->user()->hasRole(1))
+        <div class="col-12 col-md-7">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="ibox">
+                        <div class="ibox-head">
+                            <div class="ibox-title">
+                                Actividad de alumnos en
+                                <span style="text-transform: capitalize;">
+                                    {{ today()->formatLocalized('%B') }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="ibox-body">
+                            <canvas id="renewal-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-sm-12 ">
+                    <div class="ibox">
+                        <div class="ibox-head">
+                            <div class="ibox-title">Crossfiteros activos del box</div>
+                            <label id="my-label"></label>
+                        </div>
+                        <div class="ibox-body">
+                            <canvas id="gender-chart" ></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         <div class="row">
           <div class="col-12">
              <div class="ibox">
@@ -74,10 +112,10 @@
                         <tbody>
                            @foreach ($plan_users->take(5) as $pu)
                            <tr>
-                              <td><a href="{{url('/users/'.$pu['user_id'])}}">{{$pu['alumno']}}</a></td>
-                              <td>{{$pu['plan']}}</td>
-                              <td>{{$pu['fecha_termino']}}</td>
-                              <td>{{$pu['telefono']}}</td>
+                              <td><a href="{{ url('/users/'.$pu['user_id']) }}">{{ $pu['alumno'] }}</a></td>
+                              <td>{{ $pu['plan'] }}</td>
+                              <td>{{ $pu['fecha_termino'] }}</td>
+                              <td>{{ $pu['telefono'] }}</td>
                            </tr>
                            @endforeach
                         </tbody>
@@ -90,7 +128,7 @@
                   <div class="ibox-title">Alumnos recientemente inactivos</div>
                </div>
                <div class="ibox-body">
-                   <table id="students-table" class="table table-hover">
+                   <table id="inactive-users-table" class="table table-hover">
                       <thead class="thead-default">
                          <tr>
                             <tr>
@@ -102,14 +140,14 @@
                          </tr>
                       </thead>
                       <tbody>
-                         @foreach ($expired_plans->take(5) as $expired_plan)
-                         <tr>
-                            <td><a href="{{url('/users/'.$expired_plan['user_id'])}}">{{$expired_plan['alumno']}}</a></td>
-                            <td>{{$expired_plan['plan']}}</td>
-                            <td>{{$expired_plan['fecha_termino']}}</td>
-                            <td>{{$expired_plan['telefono']}}</td>
-                         </tr>
-                         @endforeach
+                       {{--   @foreach ($expired_plans->take(5) as $expired_plan)
+                           <tr>
+                              <td><a href="{{url('/users/'.$expired_plan['user_id'])}}">{{$expired_plan['alumno']}}</a></td>
+                              <td>{{$expired_plan['plan']}}</td>
+                              <td>{{$expired_plan['fecha_termino']}}</td>
+                              <td>{{$expired_plan['telefono']}}</td>
+                           </tr>
+                         @endforeach --}}
                       </tbody>
                    </table>
                </div>
@@ -117,6 +155,8 @@
           </div>
         </div>
       </div>
+    @endif
+
 
 
    </div>
@@ -131,6 +171,7 @@
     .fc-axis.fc-widget-content{width:51px !important;}
     .fc-scroller.fc-time-grid-container{height:100% !important;}
     .fc-time-grid.fc-event-container {left:10px}
+    .closeon { top: 0; right: 8px; bottom: 0; position: absolute; }
   </style>
 @endsection
 
@@ -138,10 +179,24 @@
 
 @section('scripts') {{-- scripts para esta vista --}}
 	{{--  datatable --}}
-  <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
-  <script src="{{ asset('js/moment.min.js') }}"></script>
-	  <script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
-  <script src="{{ asset('js/fullcalendar/lang/es.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
+
+    <script src="{{ asset('js/moment.min.js') }}"></script>
+
+    <script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
+
+    <script src="{{ asset('js/fullcalendar/lang/es.js') }}"></script>
+
+  <script>
+      var densities = [];
+      $.get( "json-density-parameters", function(response) {
+          response.forEach(function (e) {
+              densities.push(e);
+          });        // response.
+      }).done(() => {
+          console.log(densities);
+      });
+  </script>
 
   <script defer>
     $(document).ready(function() {
@@ -160,87 +215,106 @@
           hiddenDays: [0],
           eventColor: '#4c6c8b',
           eventRender: function( event, element, view ) {
-            element.find('.fc-time').append('<div> reservas: ' +event.reservation_count+'/'+event.quota+'</div> ');
+            let percent = (event.reservation_count * 100) / event.quota;
+            let colorPercentage = null;
+            densities.forEach(function (density) {
+                if (percent <= density.to) {
+                    colorPercentage = density.color;
+                }
+            });
+
+            element.find('.fc-time').append(
+              '<div> reservas: ' +event.reservation_count+'/'+event.quota+'</div> '+
+              '<div class="closeon circle-color" style="background-color: '+ colorPercentage +'"></div>');
           },
           viewRender: function (view, element,start,end) {
-             var b = $('#calendar').fullCalendar('getDate');
-             console.log(b.startOf('week').format('Y-M-D'));
+             // var b = $('#calendar').fullCalendar('getDate');
              $('#calendar').fullCalendar( 'removeEventSources');
-             //alert(b.format('Y-M-D'));
 
             $('#calendar').fullCalendar( 'addEventSource',
              {
-               url: '/get-clases?datestart='+b.startOf('week').format('Y-M-D')+'&dateend='+b.endOf('week').format('Y-M-D'), // use the `url` property
+               url: '/get-clases?datestart='+moment().startOf('day').format('Y-M-D')+'&dateend='+moment().startOf('day').format('Y-M-D'), // use the `url` property
                textColor: 'black'  // an option!
              }
             );
             $('#calendar').fullCalendar( 'addEventSource',
               {
-                url: '/get-wods?datestart='+b.startOf('week').format('Y-M-D')+'&dateend='+b.endOf('week').format('Y-M-D'), // use the `url` property
-                color: 'yellow',    // an option!
+                url: '/get-wods?datestart='+moment().startOf('day').format('Y-M-D')+'&dateend='+moment().startOf('day').format('Y-M-D'), // use the `url` property
+                color: '#7DCCD1',    // an option!
                 textColor: 'black'  // an option!
               }
             );
           },
-          // eventClick: function(calEvent, jsEvent, view) {
-          //   $('#clase-resume').modal();
-          // },
         });
     });
   </script>
 
-  <script src="{{ asset('js/Chart.min.js') }}"></script>
+  {{-- <script src="{{ asset('js/Chart.min.js') }}"></script> --}}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.7.1/dist/Chart.min.js"></script>
 
-  <script>
-   var uri = "{{url('withoutrenewal')}}";
-   $(document).ready(function(){
-      $.get(uri, function(respuesta){
-      var chartdata = {
-         labels: ["Activos", "Inactivos", "Prueba"],
-         datasets: [{
-            data: [JSON.parse(respuesta).actives, JSON.parse(respuesta).inactives, JSON.parse(respuesta).tests],
-            backgroundColor: ["#009900", "#9EB1D1", "#F49D36"]
-         }]
-      } ;
-       var doughnutOptions = {
-              responsive: true
-          };
+<script>
+    var uri = "{{ url('withoutrenewal') }}";
 
-      var ctx4 = document.getElementById("renewal-chart").getContext("2d");
-       new Chart(ctx4, {type: 'doughnut', data: chartdata, options:doughnutOptions});
+    $(document).ready(function(){
+        $.get(uri, function(respuesta){
+            var chartdata = {
+                labels: ["Activos", "Inactivos", "Prueba"],
+                datasets: [{
+                    data: [
+                        respuesta.actives,
+                        respuesta.inactives,
+                        respuesta.tests
+                    ],
+                    backgroundColor: ["#009900", "#9EB1D1", "#F49D36"]
+                }]
+            };
 
+            var doughnutOptions = {
+                responsive: true
+            };
 
-      });
-   });
+            var ctx4 = document.getElementById("renewal-chart").getContext("2d");
+            new Chart(ctx4, {type: 'doughnut', data: chartdata, options:doughnutOptions});
+        });
+    });
   </script>
 
-   <script>
-   var url = "{{url('genders')}}";
-   $(document).ready(function(){
-      $.get(url, function(respuesta){
-      var chartdata = {
-         labels: ["Mujeres", "Hombres"],
-         datasets: [{
-            data: [JSON.parse(respuesta).mujeres, JSON.parse(respuesta).hombres],
-            backgroundColor: ["#E74694", "#1F87EF"]
-         }]
-      } ;
-      var doughnutOptions = {
-         responsive: true,
-         rotation: -Math.PI,
-         cutoutPercentage: 30,
-         circumference: Math.PI,
-         legend: {
-            position: 'right'
-        }
-      };
-      var ctx4 = document.getElementById("gender-chart").getContext("2d");
-      new Chart(ctx4, {type: 'doughnut', data: chartdata, options:doughnutOptions});
-      var crossfiteros = JSON.parse(respuesta).mujeres + JSON.parse(respuesta).hombres;
-      $('#my-label').html(crossfiteros + " crossfiteros");
-      });
-   });
-  </script>
+<script>
+    var url = "{{ url('withoutrenewal') }}";
+
+    $(document).ready(function(){
+        $.get(url, function(respuesta){
+            var chartdata = {
+                labels: ["Mujeres", "Hombres"],
+                datasets: [{
+                    data: [
+                        respuesta.mujeres,
+                        respuesta.hombres
+                    ],
+                    backgroundColor: ["#E74694", "#1F87EF"]
+                }]
+            };
+
+            var doughnutOptions = {
+                responsive: true,
+                rotation: -Math.PI,
+                cutoutPercentage: 30,
+                circumference: Math.PI,
+                legend: {
+                    position: 'right'
+                }
+            };
+
+            var ctx4 = document.getElementById("gender-chart").getContext("2d");
+
+            new Chart(ctx4, {type: 'doughnut', data: chartdata, options:doughnutOptions});
+
+            var crossfiteros = respuesta.mujeres + respuesta.hombres;
+
+            $('#my-label').html(crossfiteros + " crossfiteros");
+        });
+    });
+</script>
 
   <script>
 
@@ -271,6 +345,45 @@ $(document).ready(function(){
 });
 
 
+</script>
+
+<script src="{{ asset('js/datatables.min.js') }}"></script>
+
+<script>
+    $('#inactive-users-table').DataTable({
+        "processing": true,
+        "serverSide": false,
+        "order": [[ 2, "desc" ]],
+        "dom": '<"top"><"bottom"><"clear">',
+        "ajax": {
+            "url": "<?= route('expiredplans') ?>",
+            "dataType": "json",
+            "type": "POST",
+            "data": {"_token": "<?= csrf_token() ?>"}
+        },
+        "language": {
+            "loadingRecords": "Cargando datos...",
+            "processing": "Cargando datos...",
+            "lengthMenu": "Mostrar _MENU_ elementos",
+            "zeroRecords": "Sin resultados",
+            "info": "Mostrando página _PAGE_ de _PAGES_",
+            "infoEmpty": "Sin resultados",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "search": "Filtrar:",
+            "paginate": {
+                "first":    "Primero",
+                "last":     "último",
+                "next":     "Siguiente",
+                "previous": "Anterior"
+            },
+        },
+        "columns":[
+            { "data": "first_name" },
+            { "data": "plan" },
+            { "data": "date" },
+            { "data": "phone" }
+        ]
+    });
 </script>
 
 @endsection

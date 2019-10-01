@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers\Clases;
 
-use Session;
-use Redirect;
-use App\Models\Wods\Wod;
-use App\Models\Users\User;
+use App\Http\Controllers\Controller;
 use App\Models\Clases\Clase;
-use Illuminate\Http\Request;
 use App\Models\Clases\ClaseType;
 use App\Models\Clases\Reservation;
-use App\Http\Controllers\Controller;
+use App\Models\Settings\DensityParameter;
+use App\Models\Users\User;
+use App\Models\Wods\Stage;
+use App\Models\Wods\StageType;
+use App\Models\Wods\Wod;
+use Illuminate\Http\Request;
+use Redirect;
+use Session;
 
 /** [ClaseController description] */
 class ClaseController extends Controller
@@ -26,8 +29,10 @@ class ClaseController extends Controller
             Session::put('clases-type-id', 1);
             Session::put('clases-type-name', ClaseType::find(1)->clase_type);
         }
-        //Session::put('clases-type-name',ClaseType::find($request->type)->clase_type);
-        return view('clases.index');
+
+        $densities = DensityParameter::all(['id', 'level', 'from', 'to', 'color']);
+
+        return view('clases.index', ['densities' => $densities]);
     }
 
     /**
@@ -38,9 +43,15 @@ class ClaseController extends Controller
     public function clases(Request $request)
     {
         $clases = Clase::where('clase_type_id', Session::get('clases-type-id'))
-                       ->where('date','>=',$request->datestart)
-                       ->where('date','<=',$request->dateend)
-                       ->get();
+                       
+                       ->where('date', '>=', $request->datestart)
+                       
+                       ->where('date', '<=', $request->dateend)
+                       
+                       ->with(['claseType:id,clase_color',
+                               'block:id,start,end'])
+
+                       ->get(['id', 'date', 'quota', 'block_id', 'clase_type_id']);
 
         return response()->json($clases, 200);
     }
@@ -53,13 +64,32 @@ class ClaseController extends Controller
      */
     public function show(Clase $clase)
     {
-        $outclase = $this->outClass($clase);
-        
-        $wod = $clase->wod;
+        $outclase = $this->outClass($clase->id);
 
-        return view('clases.show')->with('clase', $clase)
-                                  ->with('outclase', $outclase)
-                                  ->with('wod',$wod);
+        $reservations = Reservation::where('clase_id', $clase->id)
+                                   ->with(['user:id,first_name,last_name,avatar,status_user_id',
+                                           'user.status_user:id,type',
+                                           'user.status_user:id,type',
+                                           'reservation_status:id,reservation_status,type'])
+                                   ->get(['id', 'reservation_status_id', 'user_id', 'updated_at']);
+
+        $auth_roles = auth()->user(['id'])->roles()->pluck('id')->toArray();
+
+        $stages = Stage::where('wod_id', $clase->wod_id)
+                       ->with('stage_type:id,stage_type')
+                       ->get(['id', 'description', 'stage_type_id']);
+
+        $reservation_count = Reservation::where('clase_id', $clase->id)->count('id');
+
+        return view('clases.show', [
+            'clase' => $clase,
+            'outclase' => $outclase,
+            'wod' => $clase->wod,
+            'stages' => $stages,
+            'reservation_count' => $reservation_count,
+            'reservations' => $reservations,
+            'auth_roles' => $auth_roles
+        ]);
     }
 
     public function store(Request $request)
@@ -83,6 +113,7 @@ class ClaseController extends Controller
     public function destroy(Clase $clase)
     {
         $clase->delete();
+
         return redirect('/clases')->with('success', 'La clase ha sido borrada correctamente');
     }
     
@@ -93,7 +124,10 @@ class ClaseController extends Controller
      */
     public function wods(Request $request)
     {
-        $wods = Wod::where('clase_type_id',Session::get('clases-type-id'))->where('date','>=',$request->datestart)->where('date','<=',$request->dateend)->get();
+        $wods = Wod::where('clase_type_id', Session::get('clases-type-id'))
+                   ->where('date', '>=', $request->datestart)
+                   ->where('date', '<=', $request->dateend)
+                   ->get();
 
         return response()->json($wods, 200);
     } 
@@ -138,8 +172,14 @@ class ClaseController extends Controller
      */
     public function outClass($clase) 
     {
-        $otro = Reservation::where('clase_id', $clase->id)->get();
-        $consulta = User::whereNotIn('id', $otro->pluck('user_id'))->get();
+        $otro = Reservation::where('clase_id', $clase)->pluck('user_id');
+
+        $consulta = User::whereNotIn('id', $otro)
+                        ->with(['status_user' => function ($status) {
+                            $status->select('id', 'type');
+                        }])
+                        ->get(['id', 'avatar', 'first_name', 'last_name', 'status_user_id']);
+        
         return $consulta;
     }
 
@@ -201,5 +241,4 @@ class ClaseController extends Controller
             ];
         });
     }
-
 }

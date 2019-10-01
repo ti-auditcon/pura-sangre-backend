@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Clases;
 
+use App\Models\Clases\Clase;
 use App\Models\Clases\Reservation;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class PushClases extends Command
@@ -12,7 +14,7 @@ class PushClases extends Command
      *
      * @var string
      */
-    protected $signature = 'push:clases';
+    protected $signature = 'clases:push';
 
     /**
      * The console command description.
@@ -38,20 +40,48 @@ class PushClases extends Command
      */
     public function handle()
     {
-        $hora_clase = now()->startOfHour()->addHour();
+        $hora_clase = $this->roundToQuarterfHour(now()->addHour())->format('H:i');
+
         $reservations = Reservation::where('reservation_status_id', 1)
-            ->join('clases', 'clases.id', '=', 'reservations.clase_id')
-            ->where('clases.start_at', $hora_clase)
-            ->where('clases.date', toDay())
-            ->get();
+                                   ->join('users', 'users.id', '=', 'reservations.user_id')
+                                   ->join('clases', 'clases.id', '=', 'reservations.clase_id')
+                                   ->join('clase_types', 'clase_types.id', '=', 'clases.clase_type_id')
+                                   ->where('clases.start_at', $hora_clase)
+                                   ->where('clases.date', toDay())
+                                   ->get([
+                                        'reservations.id', 'users.first_name', 'users.fcm_token', 'clase_types.clase_type',
+                                        'clases.start_at'
+                                    ]);
 
         foreach ($reservations as $resrv) {
-            $title = $resrv->user->first_name . ' recuerda confirmar ahora';
-            $body = 'Tienes una clase a las ' . $hora_clase->format('H:i') . ', no te olvides confirmar o tu reserva sera eliminada en 15 minutos';
-            $this->notification($resrv->user->fcm_token, $title, $body);
+            $title = $resrv->first_name . ' recuerda confirmar ahora';
+
+            $body = 'Tienes una clase de ' . strtoupper($resrv->clase_type) . ' las ' . Carbon::parse($resrv->start_at)->format('h:i') . ', no te olvides confirmar o tu reserva sera eliminada en 15 minutos';
+
+            $this->notification($resrv->fcm_token, $title, $body);
         }
     }
 
+    /**
+     * Get the rounded minute from an specific time,
+     * useful in case of server trigger after the specific hour and minute
+     * 
+     * @param  Carbon\Carbon $time
+     * @return Carbon\Carbon
+     */
+    public function roundToQuarterfHour($time) {
+        $minutes = date('i', strtotime($time));
+        
+        return $time->setTime($time->format('H'), $minutes - ($minutes % 15));
+    }
+
+    /**
+     * Prepare and send PUSH Notification
+     * @param  [type] $token [description]
+     * @param  [type] $title [description]
+     * @param  [type] $body  [description]
+     * @return [type]        [description]
+     */
     public function notification($token, $title, $body)
     {
         $fcmUrl = 'https://fcm.googleapis.com/fcm/send';

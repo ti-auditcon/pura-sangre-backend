@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Clases;
 
 use App\Models\Clases\Clase;
 use Illuminate\Console\Command;
 
-class ClosedClass extends Command
+class CloseClass extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'closed:clase';
+    protected $signature = 'clases:close';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Check status classes every hour, and close it';
+    protected $description = 'Check status classes every hour, change status to users from confirmado to consumida';
 
     /**
      * Create a new command instance.

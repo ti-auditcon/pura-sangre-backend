@@ -2,8 +2,9 @@
 
 namespace App\Models\Wods;
 
-use App\Models\Clases\Clase;
 use Carbon\Carbon;
+use App\Models\Clases\Clase;
+use App\Models\Clases\ClaseType;
 use Illuminate\Database\Eloquent\Model;
 
 class Wod extends Model
@@ -20,6 +21,11 @@ class Wod extends Model
     public function clases()
     {
         return $this->hasMany(Clase::class);
+    }
+
+    public function clase_type()
+    {
+        return $this->belongsTo(ClaseType::class);
     }
 
     public function stages()

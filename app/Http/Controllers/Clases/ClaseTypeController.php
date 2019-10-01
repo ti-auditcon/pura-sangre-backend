@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Clases;
 
-use Illuminate\Http\Request;
-use App\Models\Clases\ClaseType;
 use App\Http\Controllers\Controller;
+use App\Models\Clases\ClaseType;
+use App\Models\Wods\StageType;
+use Illuminate\Http\Request;
 
 class ClaseTypeController extends Controller
 {
@@ -58,15 +59,37 @@ class ClaseTypeController extends Controller
      */
     public function update(Request $request, ClaseType $clases_type)
     {
+        // dd($request->all());
         $clases_type->update([
-            'clase_type' => $request->clase_type
+            'clase_type' => $request->clase_type_name
         ]);
 
-        return response()->json([
-            'success' => 'Tipo de clase actualizada correctamente', 
-            'data' => $clases_type->id
-        ], 200);
+        // Get all the stage type of an specific Clase Type
+        $stage_type_ids = StageType::where('clase_type_id', $clases_type->id)
+                                ->pluck('id')
+                                ->toArray();
+
+        foreach ($request->stage_type as $key => $stage) {
+            // dd($key, $stage);
+            if (in_array($key, $stage_type_ids)) {
+                StageType::where('id', $key)->update([
+                    'stage_type' => $stage,
+                ]);
+            } else {
+                StageType::create([
+                    'stage_type' => $stage,
+                    'clase_type_id' => $clases_type->id
+                ]);
+            }
+        }
+
+        return back()->with('success', 'Actualizado correctamente');
     }
+
+    // public function updateClaseTypeStage(Request $request)
+    // {
+    //     dd($request->all());
+    // }
 
     /**
      * Remove the specified resource from storage.

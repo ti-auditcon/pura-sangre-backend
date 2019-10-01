@@ -33,4 +33,9 @@ class ClaseType extends Model
 	{
 		return $this->hasMany('App\Models\Clases\Block');
 	}
+
+	public function stage_types()
+	{
+		return $this->hasMany('App\Models\Wods\StageType');
+	}
 }

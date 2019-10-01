@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Messages;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Messages\MessageRequest;
-use App\Mail\SendEmail;
-use App\Mail\SendEmailQueue;
-use App\Models\Users\User;
-use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Mail;
-use Redirect;
 use Session;
+use Redirect;
+use App\Mail\SendEmail;
+use App\Models\Users\User;
+use Illuminate\Http\Request;
+use App\Mail\SendEmailQueue;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Console\Scheduling\Schedule;
+use App\Http\Requests\Messages\MessageRequest;
 
 class MessageController extends Controller
 {
@@ -44,16 +44,24 @@ class MessageController extends Controller
         $errors = null;
         $users = User::whereIn('id', explode (",", $request->to[0]))->get();
         
-        $mailable = count($users) > 18 ? SendEmailQueue::class : SendEmail::class; 
+        $mailable = count($users) > 18 ? SendEmailQueue::class : SendEmail::class;
+
+        if ($request->image) {
+            $random_name = str_shuffle(str_replace([' ', ':'], '', $request->subject . now()));
+
+            request()->file('image')->storeAs('public/emails', $random_name . '.jpg');
+        } 
 
         foreach ($users as $user) {
             $mail = new \stdClass();
             $mail->subject = $request->subject;
             $mail->text = $request->text;
             $mail->user = $user->first_name;
+            $mail->image_url = $request->image ? url('/') . '/storage/emails/' . $random_name . '.jpg' : null;
+
             try{
                 Mail::to($user->email)->send(new $mailable($mail, $user));
-            } catch(\Exception $e){
+            } catch(\Exception $e) {
                 \DB::table('errors')->insert([
                     'error' => $e,
                     'where' => 'email',
@@ -64,7 +72,7 @@ class MessageController extends Controller
         }
 
         if ($errors) {
-            Session::flash('warning', 'Hay error(es) en al menos '.$errors.' correo(s)');
+            Session::flash('warning', 'Hay error(es) en ' . $errors . ' correo(s)');
             return redirect()->back();
         }
 

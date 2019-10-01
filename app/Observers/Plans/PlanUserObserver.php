@@ -165,17 +165,19 @@ class PlanUserObserver
     public function fixReservations(PlanUser $planUser)
     {
         $reservations = Reservation::join('clases', 'reservations.clase_id', '=', 'clases.id')
-            ->where('reservations.user_id', $planUser->user_id)
-            ->whereBetween('date', [Carbon::parse($planUser->start_date)->format('Y-m-d'), Carbon::parse($planUser->finish_date)->format('Y-m-d')])
-            ->pluck('reservations.id');
+                                   ->where('reservations.user_id', $planUser->user_id)
+                                   ->whereBetween('date', [Carbon::parse($planUser->start_date)->format('Y-m-d'), Carbon::parse($planUser->finish_date)->format('Y-m-d')])
+                                   ->get('reservations.id');
 
         $reservations_out = Reservation::join('clases', 'reservations.clase_id', '=', 'clases.id')
             ->where('reservations.user_id', $planUser->user_id)
             ->whereNotBetween('date', [Carbon::parse($planUser->start_date)->format('Y-m-d'), Carbon::parse($planUser->finish_date)->format('Y-m-d')])
-            ->pluck('reservations.id');
+            ->get('reservations.id');
+
+        // dd($reservations);
 
         foreach ($reservations as $reserv) {
-            $reservation = Reservation::find($reserv);
+            $reservation = Reservation::find($reserv->id, ['id', 'plan_user_id']);
             
             if ($reservation->plan_user_id !== $planUser->id) {
                 $reservation->update(['plan_user_id' => $planUser->id]);
@@ -184,7 +186,8 @@ class PlanUserObserver
             }
         }
         foreach ($reservations_out as $reserv) {
-            $reservation = Reservation::whereId($reserv)->first();
+            $reservation = Reservation::find($reserv->id, ['id', 'plan_user_id']);
+
             if ($reservation->plan_user_id === $planUser->id) {
                 $reservation->update(['plan_user_id' => null]);
                 $planUser->counter += 1;

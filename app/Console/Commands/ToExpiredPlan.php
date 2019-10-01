@@ -14,7 +14,7 @@ class ToExpiredPlan extends Command
      *
      * @var string
      */
-    protected $signature = 'toexpire:plan';
+    protected $signature = 'plans:toexpire';
 
     /**
      * The console command description.
@@ -40,9 +40,11 @@ class ToExpiredPlan extends Command
      */
     public function handle()
     {
-        $plans_about_expired = PlanUser::whereFinishDate(toDay()->addDays(3))->get();
-        foreach ($plans_about_expired as $planuser) {
+        $plans_to_expire = PlanUser::whereFinishDate(toDay()->addDays(3))->get();
+        
+        foreach ($plans_to_expire as $planuser) {
             $user = $planuser->user;
+        
             Mail::to($user->email)->send(new ToExpireEmail($user, $planuser));
         }
     }

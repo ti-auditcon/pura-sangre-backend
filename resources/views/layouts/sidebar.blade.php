@@ -2,54 +2,49 @@
 <nav class="page-sidebar" id="sidebar">
     <div id="sidebar-collapse">
         <ul class="side-menu">
-            
-            <li @if($page=="home") class="active" @endif>
-            
+            <li @if(url()->current() == url("/")) class="active" @endif>
                 <a href="/"><i class="sidebar-item-icon ti-home"></i>
-            
                     <span class="nav-label">Inicio</span>
-            
                 </a>
-            
             </li>
             
-            <li @if($page=="clases") class="active" @endif>
-            
-                <a href="{{url('/clases')}}"><i class="sidebar-item-icon  ti-calendar"></i>
-            
+            <li @if(url()->current() == url("/clases")) class="active" @endif>
+                <a href="{{ url('/clases') }}"><i class="sidebar-item-icon  ti-calendar"></i>
                     <span class="nav-label">Clases</span>
-            
                 </a>
-            
             </li>
             
             @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
-            
-                <li @if($page=="users") class="active" @endif>
-                
-                    <a href="{{ url('/users') }}"><i class="sidebar-item-icon ti-id-badge"></i>
-                
+                <li @if( in_array(url()->current(), [url("/users"), url("/users/create")]) ) class="active" @endif>
+                    <a>
+                        <i class="sidebar-item-icon ti-id-badge"></i>
+                    
                         <span class="nav-label">Alumnos</span>
-                
                     </a>
-                
+
+                    <div class="nav-2-level">
+                        <ul>
+                            <li><a href="{{ url('/users') }}">Todos los Alumnnos</a></li>
+                            
+                            <li><a href="{{ url('/users/create') }}">Nuevo Alumno</a></li>
+                        </ul>
+                    </div>
                 </li>
-            
             @endif
             
             @if (Auth::user()->hasRole(1))
             
-            <li @if($page=="payments") class="active" @endif>
-            
+            <li @if( url()->current() == url("/payments") ) class="active" @endif>
                 <a href="{{ url('/payments') }}"><i class="sidebar-item-icon ti-money"></i>
-            
                     <span class="nav-label">Pagos</span>
-            
                 </a>
-            
             </li>
 
-            <li @if($page == "reports") class="active" @endif>
+            <li @if( in_array(url()->current(), [
+                        url("/reports"),
+                        url("/reports/inactive_users"),
+                        url("/reports/data-plans")
+                     ]) ) class="active" @endif>
                 <a>
                     <i class="sidebar-item-icon ti-bar-chart"></i>
                     
@@ -57,13 +52,20 @@
                 </a>
                 <div class="nav-2-level">
                     <ul>
-                        <li><a href="{{url('/reports')}}">Gráficos</a></li>
+                        <li><a href="{{ url('/reports') }}">Gráficos</a></li>
                         
-                        <li><a href="{{url('/reports/inactive_users')}}">Usuarios Inactivos</a></li>
+                        <li><a href="{{ url('/reports/inactive_users') }}">Usuarios Inactivos</a></li>
+
+                        <li><a href="{{ url('/reports/data-plans') }}">Análisis Diarios</a></li>
                     </ul>
                 </div>
             </li>
-            <li @if($page=="messages") class="active" @endif>
+
+            <li @if( in_array(url()->current(), [
+                        url("/messages"),
+                        url("/alerts"),
+                        url("/notifications")
+                     ]) ) class="active" @endif>
                 <a>
                     <i class="sidebar-item-icon ti-email"></i>
                     
@@ -79,7 +81,11 @@
                     </ul>
                 </div>
             </li>
-            <li @if($page=="config") class="active" @endif>
+            <li @if( in_array(url()->current(), [
+                        url("/plans"),
+                        url("/blocks"),
+                        url("/density-parameters")
+                     ]) ) class="active" @endif>
                 <a href="javascript:;">
                     <i class="sidebar-item-icon ti-settings"></i>
                     
@@ -92,6 +98,8 @@
                         
                         <li><a href="{{ route('blocks.index') }}">Horarios</a></li>
                         
+                        {{-- <li><a href="{{ route('blocks.index') }}">Horarios</a></li> --}}
+                        
                         <li><a href="{{ route('density-parameters.index') }}">Parámetros</a></li>
                     </ul>
                 </div>
@@ -99,7 +107,7 @@
             @endif
 
             @if (!Auth::user()->hasRole(1))
-                <li @if($page=="profile") class="active" @endif>
+                <li @if(url()->current() == url("profile")) class="active" @endif>
                     <a href="{{ route('users.show', Auth::user()->id) }}">
                         <i class="sidebar-item-icon ti-user"></i>
                         

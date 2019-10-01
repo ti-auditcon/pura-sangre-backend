@@ -13,27 +13,30 @@ use App\Http\Controllers\Controller;
 
 class ReservationController extends Controller
 {
+    /**
+     * [store description]
+     * @param  Request $request [description]
+     * @return [type]           [description]
+     */
     public function store(Request $request)
     {
-        $reservation = new Reservation;
-        $reservation->clase_id = $request->clase_id;
-        $reservation->reservation_status_id = 1;
-        $reservation->user_id = $request->user_id;
-        $reservation->by_god = $request->by_god;
+        Reservation::create([
+            'clase_id' => $request->clase_id,
+            'reservation_status_id' => 1,
+            'user_id' => $request->user_id,
+            'by_god' => 1,
+        ]);
 
-        if($reservation->save()){
-            Session::flash('success','Agregado correctamente a la clase');
-            return Redirect::back();
-        } else {
-            return Redirect::back();
-        }
+        Session::flash('success','Agregado correctamente a la clase');
+        return back();
     }
 
-    public function update(Request $request, Reservation $reservation)
-    {
-
-    }
-
+    /**
+     * [confirm description]
+     * @param  Request     $request     [description]
+     * @param  Reservation $reservation [description]
+     * @return [type]                   [description]
+     */
     public function confirm(Request $request, Reservation $reservation)
     {
         if ($request->ajax()) {
@@ -44,6 +47,12 @@ class ReservationController extends Controller
         }
     }
 
+    /**
+     * [destroy description]
+     * @param  Request     $request     [description]
+     * @param  Reservation $reservation [description]
+     * @return [type]                   [description]
+     */
     public function destroy(Request $request, Reservation $reservation)
     {
         if ($request->ajax()) {
@@ -58,6 +67,4 @@ class ReservationController extends Controller
         // Session::flash('success','Retiro de Clase exitoso');
         // return Redirect::back();
     }
-
-
 }

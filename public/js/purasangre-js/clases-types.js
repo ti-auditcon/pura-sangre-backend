@@ -1,9 +1,45 @@
+// Open modal with All the classes type
+$('#clases-type-button-modal').click(function () {
+	new getAllClasesType();
+});
+
+function getAllClasesType(claseType = null) {
+	// Delete all option inside select // Add default option to select
+	$('#type-clase-select').find('option').remove();
+	$('#type-clase-select').append($('<option>Eliga un tipo de clase...</option>').val(null));
+	$('#div-clase-type input').remove();
+
+	/** Remove options and append an option on select Calendar */
+	$('#calendar-type-clase-select').find('option').remove();
+	$('#calendar-type-clase-select').append($('<option>Eliga un tipo de clase...</option>').val(null));
+
+	// Get all classes types
+	$.get( "/clases-types/" ).done(function (response) {
+		response.forEach( function (el) {
+			$('#type-clase-select').append(
+		        $('<option></option>').val(el.id).html(el.clase_type)
+		    );
+
+		    $('#calendar-type-clase-select').append(
+		        $('<option></option>').val(el.id).html(el.clase_type)
+		    );
+		});
+	}).done( function () {
+		if (claseType) {
+			// Set an specific option to select
+			new changeClaseTypeSelect(claseType);
+			// $('#type-clase-select option[value="' + claseType + '"]').attr("selected", true);
+		} else {
+			$('#div-clase-type-name').hide();
+		}
+	});
+}
+
 /**
  * changeClaseTypeSelect  
  * Manage data on clase type SELECT
  */
 function changeClaseTypeSelect(selectValue = 0, name = null) {
-
 	if (selectValue.length != 0) {
 		$('#type-clase-select option[value="' + selectValue + '"]').attr("selected", true);
 
@@ -15,117 +51,76 @@ function changeClaseTypeSelect(selectValue = 0, name = null) {
     
     	$('#div-clase-type-name').show();
 
-	} else {
+    	$('#div-clase-type input').remove();
 
+    	new manageStagesClaseTypes(selectValue);
+	} else {
     	$("#sweet-confirm-clase-type-delete").attr("disabled", true);
 
     	$("#div-clase-type-name").hide();
-
 	}
 }
 
-function getAllClasesType(claseType = null) {
-	// Delete all option inside select
-	$('#type-clase-select').find('option').remove();
-
-	// Add default option to select
-	$('#type-clase-select').append($('<option>Eliga un tipo de clase...</option>').val(null));
-
-	/**  */
-	$('#calendar-type-clase-select').find('option').remove();
-
-	/**  */
-	$('#calendar-type-clase-select').append($('<option>Eliga un tipo de clase...</option>').val(null));
-
-	// Get all classes types
-	$.get( "/clases-types/" ).done(function (response) {
-
+function manageStagesClaseTypes(stage_type) {
+	$.get( "/stage-types/" + stage_type ).done(function (response) {
+		// console.log(response);
 		response.forEach( function (el) {
-			$('#type-clase-select').append(
-		        $('<option></option>').val(el.id).html(el.clase_type)
-		    );
-		    $('#calendar-type-clase-select').append(
-		        $('<option></option>').val(el.id).html(el.clase_type)
-		    );
+			console.log(el);
+			$('#div-clase-type').append(
+				'<input type="text" class="form-control mt-2" value="'+ el.stage_type +'" name="stage_type['+ el.id +']"/>'
+			);
 		});
-
-	}).done( function () {
-		if (claseType) {
-			// Set an specific option to select
-			new changeClaseTypeSelect(claseType);
-			// $('#type-clase-select option[value="' + claseType + '"]').attr("selected", true);
-		} else {
-			$('#div-clase-type-name').hide();
-		}
-
 	});
 }
-
-// Open modal with All the classes type
-$('#clases-type-button-modal').click(function () {
-	new getAllClasesType();
-});
 
 // Show input to add a new brand clase type
 $('#button-add-clase-type').click(function () {
 	$('#div-new-clase-type').show();
 });
 
+$('#button-add-stage-type').click(function () {
+	$('#div-clase-type').append(
+		'<input type="text" class="form-control mt-2" value="" name="stage_type[]"/>'
+	);
+});
+
+$('#button-delete-stage-type').click(function () {
+	$('#div-clase-type').find("input:last").remove();
+});
+
+
 $('#new_clase_type').keyup(function(){
 	if (this.value == 0) {
-	
 		$("#button-store-new-clase-type").attr("disabled", true);
-	
 	} else {
-
 		$("#button-store-new-clase-type").attr("disabled", false);
-	
 	}
 });
 
 /** 
- *	Enable/disable update/delete button on modal 
+ *	Enable/disable update and delete button on modal 
  *	if there is no text on input
  */
 $('#clase_type_name').keyup(function(){
 	if (this.value == 0) {
-	
 		$("#sweet-confirm-clase-type-delete").attr("disabled", true);
 
 		$("#update-clase-type-name").attr("disabled", true);
-	
 	} else {
-
 		$("#sweet-confirm-clase-type-delete").attr("disabled", false);
 		
 		$("#update-clase-type-name").attr("disabled", false);
-	
-	}
-});
-
-/** Get an specific type clase */
-$('#type-clase-select').change(function () {
-	// Check if select has a value different to 0
-	if (this.value) {
-		$.get("/clases-types/" + this.value)
-		.done( function( data ) {
-			$("#clase_type_name").val(data.clase_type);
-
-			// Show the inputs with the filled data
-			$('#div-clase-type-name').show();
-		});
 	}
 });
 
 /** Select an specific clase type on SELECT */
 $("#type-clase-select").change(function() {
-
+	// console.log(this.value, this.options[this.selectedIndex].text);
     new changeClaseTypeSelect(this.value, this.options[this.selectedIndex].text);
-
 });
 
 /////////////////////////////////////////////////
-//     METHODS   (GET, POST, PUT , DELETE)     //
+//     METHODS   (GET, POST, PUT, DELETE)      //
 /////////////////////////////////////////////////
 
 /** Store a new clase type */
@@ -157,34 +152,43 @@ $('#button-store-new-clase-type').click(function () {
 
 /** Update clase type name */
 $('#update-clase-type-name').click(function () {
-	var selected_clase = $('#type-clase-select').children("option:selected").val();
+	form = $( "#form-clases-types" );
+	clase_type_id = $('#type-clase-select').val();
 	
-	var clase_type_name = $('#clase_type_name').val();
+	// Replace parameter of the route
+	form.attr('action', function(_, action){
+		// console.log(action);
+	  	return action.replace('+id+', clase_type_id)
+	});
 
-	if (clase_type_name) {
-		$.ajax({
-		    url: "/clases-types/" + selected_clase,
-		    type: 'post',
-		    data: {
-		    	clase_type: clase_type_name,
-            	_method: 'put',
-		    	_token: $('meta[name=csrf-token]').attr("content")
-		    },
-		    success: function(result) {
-		    	new getAllClasesType(result.data);
+	$( "#form-clases-types" ).submit();
+
+	// var selected_clase = $('#type-clase-select').children("option:selected").val();
+	
+	// var clase_type_name = $('#clase_type_name').val();
+
+	// if (clase_type_name) {
+	// 	$.ajax({
+	// 	    url: "/clases-types/" + selected_clase,
+	// 	    type: 'post',
+	// 	    data: {
+	// 	    	clase_type: clase_type_name,
+ //            	_method: 'put',
+	// 	    	_token: $('meta[name=csrf-token]').attr("content")
+	// 	    },
+	// 	    success: function(result) {
+	// 	    	new getAllClasesType(result.data);
 		    	
-		    	toastr.success(result.success);
-		    }
-		});
-	}
+	// 	    	toastr.success(result.success);
+	// 	    }
+	// 	});
+	// }
 });
 
-    // Allow to get focus in the input text modal for SWAL
-    $('#clases-types-modal').on('shown.bs.modal', function() {
-    
-        $(document).off('focusin.modal');
-    
-    });
+// Allow to get focus in the input text modal for SWAL
+$('#clases-types-modal').on('shown.bs.modal', function() {
+    $(document).off('focusin.modal');
+});
 
 	////////////////////////////////////////////////
 	// 		SWAL DELETE an specific ClaseType     //
@@ -231,7 +235,6 @@ $('#update-clase-type-name').click(function () {
             },
             allowOutsideClick: () => !Swal.isLoading()
         }).then((response) => {
-
             if (response.value) {
                 Swal.fire({ 
                     title: response.value.success,
@@ -242,6 +245,19 @@ $('#update-clase-type-name').click(function () {
                     location.reload();
                 })
             }
-            
         })
     });
+
+/** Get an specific type clase */
+// $('#type-clase-select').change(function () {
+// 	// Check if type clase select has a value different to 0
+// 	if (this.value) {
+// 		$.get("/clases-types/" + this.value)
+// 		.done( function( data ) {
+// 			$("#clase_type_name").val(data.clase_type);
+
+// 			// Show the inputs with the filled data
+// 			$('#div-clase-type-name').show();
+// 		});
+// 	}
+// });

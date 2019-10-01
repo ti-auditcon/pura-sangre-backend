@@ -467,7 +467,11 @@
 <p style="margin: 10px 0;padding: 0;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #202020;font-family: Helvetica;font-size: 16px;line-height: 150%;text-align: left;"><br>
 <font face="lato, helvetica neue, helvetica, arial, sans-serif"><span style="font-size:17px">{{$demo->text}}</span></font></p>
 
-                        </td>
+
+          @if ($demo->image_url)
+            <img src="{{ $demo->image_url }}">
+          @endif
+        </td>
                     </tr>
                 </tbody></table>
      

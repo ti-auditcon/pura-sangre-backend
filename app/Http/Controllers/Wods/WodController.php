@@ -2,125 +2,115 @@
 
 namespace App\Http\Controllers\Wods;
 
-use App\Http\Controllers\Controller;
-use App\Models\Wods\Stage;
-use App\Models\Wods\StageType;
-use App\Models\Wods\Wod;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Session;
+use Carbon\Carbon;
+use App\Models\Wods\Wod;
+use App\Models\Wods\Stage;
+use Illuminate\Http\Request;
+use App\Models\Wods\StageType;
+use App\Http\Controllers\Controller;
 
 class WodController extends Controller
 {
-  /**
-   * Display a listing of the resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function index()
-  {
-
-  }
-
-  /**
-   * Show the form for creating a new exercise.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function create()
-  {
-    return view('wods.create');
-  }
-
-  /**
-   * Store a newly created resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @return \Illuminate\Http\Response
-   */
-  public function store(Request $request)
-  {
-    $haywod = $this->hayWod($request);
-    if ($haywod == true) {
-      $wod = Wod::create([
-        'date' => $request->date,
-        'clase_type_id' => Session::get('clases-type-id')
-     ]);
-
-     foreach (StageType::all() as $st) {
-       $id = $st->id;
-       Stage::create([
-         'wod_id' =>  $wod->id,
-         'stage_type_id' => $id,
-         'description' => $request->$id,
-       ]);
+    /**
+     * Show the form for creating a new exercise.
+     *
+     * @return View
+     */
+    public function create()
+    {
+        return view('wods.create');
     }
-     return redirect('/clases');
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $haywod = $this->hayWod($request);
+        
+        if (! $haywod) {
+            $wod = Wod::create([
+                'date' => $request->date,
+                'clase_type_id' => $request->clase_type_id
+            ]);
+    
+            foreach (StageType::all() as $stage_type) {
+                if (request($stage_type->id)) {
+                    Stage::create([
+                        'wod_id' =>  $wod->id,
+                        'stage_type_id' => $stage_type->id,
+                        'description' => request($stage_type->id)
+                    ]);
+                }
+            }
+            return redirect('/clases');
+        }
+        return back()->with('warning', 'Ya ha sido asignado un Wod para la fecha seleccionada');
     }
-    return redirect()->back()->with('warning', 'Ya ha sido asignado un Wod para la fecha seleccionada');
-  }
 
-  protected function hayWod($request)
-  {
-      $wod = Wod::where('date', date('Y-m-d',strtotime($request->date)))->get();
-      if (count($wod) == 0) {
-        return true;
-      }else{
-        return false;
-      }
-  }
-
-  /**
-   * Display the specified resource.
-   *
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function show(Wod $wod)
-  {
-    //
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   *
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function edit(Wod $wod)
-  {
-    return view('wods.edit')->with('wod',$wod);
-  }
-
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @return \Illuminate\Http\Response
-   */
-  public function update(Request $request, Wod $wod)
-  {
-    foreach (StageType::all() as $st) {
-      $id = $st->id;
-      $stage = $wod->stage($st->id);
-      $stage->description = $request->$id;
-      $stage->save();
+    protected function hayWod($request)
+    {
+        $wod = Wod::where('date', date('Y-m-d', strtotime($request->date)))
+                  ->where('clase_type_id', $request->clase_type_id)
+                  ->count();
+ 
+        return $wod ?? null;
     }
-      return redirect('/clases');
-  }
 
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  \App\Models\Exercises\Exercise  $exercise
-   * @return \Illuminate\Http\Response
-   */
-  public function destroy(Wod $wod)
-  {
-    foreach ($wod->stages as $stg) {
-      $stg->delete();
+    /**
+     * Show the form for editing the specified resource.
+     *
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Wod $wod)
+    {
+        $stages = Stage::where('wod_id', $wod->id)
+                        ->with(['stage_type' => function($stage) {
+                            $stage->select('id', 'stage_type', 'clase_type_id');
+                        }])
+                       ->get(['id', 'stage_type_id', 'wod_id', 'description']);
+        return view('wods.edit', ['wod' => $wod, 'stages' => $stages]);
     }
-    $wod->delete();
-    return redirect('/clases')->with('success', 'Wod eliminado correctamente');
-  }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Wod $wod)
+    {
+        $wod->stages->map(function ($stage) {
+
+            $stage->update([
+
+                'description' => request($stage->id)
+            
+            ]);
+
+        });
+        return redirect('/clases')->with('success', 'Rutina actualizada correctamente');
+    }
+
+    /**
+     * Remove the specified wod from storage.
+     *
+     * @param  \App\Models\Wods\Wod  $wod
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Wod $wod)
+    {
+        $wod->stages->map(function ($stage) {
+            $stage->delete();
+        });
+
+        $wod->delete();
+        
+        return redirect('/clases')->with('success', 'Wod eliminado correctamente');
+    }
 }

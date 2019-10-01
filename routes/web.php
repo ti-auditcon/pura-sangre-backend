@@ -2,23 +2,28 @@
 
 Auth::routes();
 
+// Route::get('mailable', function () {
+//     $invoice = collect();
+//     $invoice->first_name = 'Raul';
+//     $invoice->subject = 'Asunto';
+//     $invoice->message = 'Esperamos como Equipo, que tu primera Clase haya sido con todo, por lo general las primeras clases son las más duras, por eso te invitamos a seguir dandolo todo. Por nuestra parte queremos saber que tal fuimos contigo';
+
+//     return new App\Mail\SendFirstClassEmail($invoice);
+// });
+
 Route::get('/', 'HomeController@index');
 Route::get('/withoutrenewal', 'HomeController@withoutrenewal');
 Route::get('/genders', 'HomeController@genders');
 Route::get('/incomes-summary', 'HomeController@incomessummary');
+
 Route::get('/success-reset-password', function () {
     return view('guest.success-reset-password');
 });
 
+Route::post('expired-plans', 'HomeController@ExpiredPlan')->name('expiredplans');
+
 Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('update-reservations-plans', 'Users\UserController@putIdPlan')->middleware('role:1');
-
-    /**
-     * Exercises Routes (exercises)
-     */
-    Route::resource('wods', 'Wods\WodController');
-    
-    Route::resource('exercises', 'Exercises\ExerciseController');
 
     /**
      * Clases routes (clases, clases-alumnos, bloques)
@@ -46,6 +51,9 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
      */
     Route::resource('clases-types', 'Clases\ClaseTypeController')->except('create', 'edit');
 
+    // Route::post('clases-types/update', 'Clases\ClaseTypeController@updateClaseTypeStage')
+    //      ->name('clases-types.update-all');
+
     /**
      * CALENDAR CLASES ROUTES
      */
@@ -62,7 +70,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     /**   
      * BILLS Routes
      */
-    Route::resource('payments', 'Bills\BillController')->middleware('role:1');
+    Route::resource('payments', 'Bills\BillController')->middleware('role:1')->only('index', 'update');
     
     Route::post('payments/pagos', 'Bills\BillController@getPagos')->name('datapagos');
     
@@ -74,40 +82,12 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::resource('plans', 'Plans\PlanController')->middleware('role:1');
 
     /**
-     * Reports routes
+     * Exercises Routes (exercises)
      */
-    Route::resource('reports', 'Reports\ReportController')->middleware('role:1')->only('index');
-    
-    Route::get('report/firstchart', 'Reports\ReportController@firstchart');
-    
-    Route::get('report/secondchart', 'Reports\ReportController@secondchart');
-    
-    Route::get('report/thirdchart', 'Reports\ReportController@thirdchart');
-    
-    Route::get('reports/totalplans', 'Reports\ReportController@totalplans')->name('totalplans');
-    
-    Route::get('reports/totalplanssub', 'Reports\ReportController@totalplanssub')->name('totalplanssub');
-    
-    Route::get('reports/inactive_users', 'Reports\InactiveUserController@index');
-    
-    Route::get('reports/inactive_users/export', 'Reports\InactiveUserController@export')->name('inactive_users.export');
+    Route::resource('exercises', 'Exercises\ExerciseController');
 
-    /**
-     * Users Routes (ALUMNOS, PROFES, ADMINS, ALERTAS)
-     */
-    Route::resource('users', 'Users\UserController');
-    
-    Route::get('export', 'Users\UserController@export')->name('users.export');
-    
-    Route::get('update-avatar', 'Users\UserController@updateAvatar')->name('user.update.avatar');
-    
-    Route::resource('users.plans', 'Plans\PlanUserController');
-    
-    Route::post('users/{user}/plans/{plan}/annul', 'Plans\PlanUserController@annul')->name('users.plans.annul');
-    
-    Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
-    
-    Route::get('users/{user}/plans/{plan}/info', 'Users\UserController@userinfo')->name('users.plans.info');
+    Route::get('stage-types/{stage_type}', 'Wods\StageTypeController@show');
+    // Route::resource('stages-types', 'Exercises\ExerciseController');
 
     /**
      * Messages Routes
@@ -129,11 +109,70 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::post('notifications', 'Messages\NotificationController@store')->middleware('role:1');
 
     /**
-     *  Parameters Routes
+     *  Settings Routes
      */
     Route::get('json-density-parameters', 'Settings\DensityParameterController@clasesDensities');
-
-    Route::resource('density-parameters', 'Settings\DensityParameterController')->only('index', 'store');
     
-    Route::get('/configurations/config-options', 'Settings\DensityParameterController@configOptions')->name('parameters.options');
+    Route::post('density-parameters/updateAll', 'Settings\DensityParameterController@updateAll')
+         ->name('density-parameters.updateAll');
+
+    Route::resource('density-parameters', 'Settings\DensityParameterController')
+         ->only('index', 'store');
+    
+    Route::get('/configurations/config-options', 'Settings\DensityParameterController@configOptions')
+         ->name('parameters.options');
+
+    /**
+     * Reports routes
+     */
+    Route::resource('reports', 'Reports\ReportController')->middleware('role:1')->only('index');
+    
+    Route::get('reports/firstchart', 'Reports\ReportController@firstchart');
+    
+    Route::get('reports/secondchart', 'Reports\ReportController@secondchart');
+    
+    Route::get('reports/thirdchart', 'Reports\ReportController@thirdchart');
+    
+    Route::get('reports/totalplans', 'Reports\ReportController@totalplans')->name('totalplans');
+    
+    Route::get('reports/totalplanssub', 'Reports\ReportController@totalplanssub')->name('totalplanssub');
+    
+    Route::get('reports/inactive_users', 'Reports\InactiveUserController@index');
+
+    Route::post('reports/inactive_users_json', 'Reports\InactiveUserController@inactiveUsers')->name('inactiveusers');
+    
+    Route::get('reports/inactive_users/export', 'Reports\InactiveUserController@export')->name('inactive_users.export');
+
+    Route::get('reports/data-plans/', 'Reports\DataPlansController@index');
+    
+    Route::post('reports/data-plans/compare', 'Reports\DataPlansController@compare')->name('data-plans-compare');
+
+    /**
+     * Users Routes (ALUMNOS, PROFES, ADMINS, ALERTAS)
+     */
+    Route::resource('users', 'Users\UserController');
+
+    Route::get('users-json', 'Users\UserController@usersJson')->name('users-json');
+
+    Route::get('export', 'Users\UserController@export')->name('users.export');
+    
+    Route::get('update-avatar', 'Users\UserController@updateAvatar')->name('user.update.avatar');
+    
+    Route::resource('users.plans', 'Plans\PlanUserController');
+    
+    Route::post('users/{user}/plans/{plan}/annul', 'Plans\PlanUserController@annul')->name('users.plans.annul');
+    
+    // Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
+    
+    Route::get('users/{user}/plans/{plan}/info', 'Users\UserController@userinfo')->name('users.plans.info');
+
+    /**
+     * ROLEUSER ROUTES
+     */
+    Route::resource('role-user', 'Users\RoleUserController')->only('edit', 'store', 'destroy');
+
+    /**
+     *  WODS Routes
+     */
+    Route::resource('wods', 'Wods\WodController')->except('index', 'show')->middleware('role:1');
 });

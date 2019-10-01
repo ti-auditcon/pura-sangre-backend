@@ -56,7 +56,6 @@
                     </div>
 
                     <div class="form-group py-3">
-                      
                                 
                         <label class="font-normal">Fecha de término de Congelamiento</label>
 

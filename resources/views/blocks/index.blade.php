@@ -46,16 +46,6 @@
 						<div class="col-sm-4">
 							<select class="form-control" id="calendar-type-clase-select" name="type">
 							</select>
-							{{-- <select class="form-control" name="type">
-								@foreach(App\Models\Clases\ClaseType::all() as $type)
-									<option
-										value="{{ $type->id }}"
-										@if($type->id == Session::get('clases-type-id')) selected @endif
-									>
-										{{ $type->clase_type }}
-									</option>
-								@endforeach
-								</select> --}}
 						</div>
 
 						<div class="col-sm-1">
@@ -65,6 +55,7 @@
 					{{ Form::close() }}
 					<div id="calendar"></div>
 				</div>
+
 			</div>
 		</div>
 	</div>
@@ -250,6 +241,14 @@
 					
 										<span class="input-span"></span>Sabado
 									</label>
+
+									<label class="checkbox checkbox-inline mb-2">
+										<input type="checkbox" name="day[]" value="0">
+					
+										<input type="checkbox" >
+					
+										<span class="input-span"></span>Domingo
+									</label>
 						
 								</div>
 						
@@ -299,6 +298,11 @@
 		</div>
 	</div>
 
+	{{--  ///////////////////////////////////////////////  --}}
+
+	{{--          MODAL PARA EDITAR HORARIO                --}}       
+
+	{{--  ///////////////////////////////////////////////  --}}
 	<div class="modal fade" id="blockedit" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog ">
 			<div class="modal-content">
@@ -334,7 +338,27 @@
 
 						<label class="col-form-label">N° de Cupos</label>
 						
-						<input id="block-quota-input" type="number" class="form-control" name="quota" required>
+						<input id="block-quota-input" type="number" class="form-control" name="quota" required/>
+
+						<div class="form-group mb-12">
+				
+							<label class="col-form-label">Profesor:</label>
+				
+							<select id="select-coach" name="profesor_id" class="form-control" required>
+					
+								<option value="">Elegir un Profesor</option>
+					
+								@foreach (App\Models\Users\Role::find(2)->users as $coach)
+					
+									<option value="{{ $coach->id }}">{{ $coach->first_name }} {{ $coach->last_name }}</option>
+					
+								@endforeach
+					
+							</select>
+						
+							<span class="input-group-addon"></span>
+					
+						</div>
 						
 						<button
 							type="submit"
@@ -407,7 +431,7 @@
 	<script src="{{ asset('js/jquery.multi-select.js') }}"></script>
 	
 	{{-- PuraSangre customized javascripts --}}
-	<script src="{{ asset('js/purasangreJS/ClasesTypes.js') }}"></script>
+	<script src="{{ asset('js/purasangre-js/clases-types.js') }}"></script>
 
 	<script src="{{ asset('js/sweetalert2.8.js') }}"></script>
 
@@ -428,7 +452,7 @@
 	      	orientation: "bottom auto",
 	      	autoclose: true,
 	      	maxViewMode: 3,
-	      	daysOfWeekDisabled: "6",
+	      	// daysOfWeekDisabled: "6",
 	      	todayHighlight: true
 		});
 
@@ -448,15 +472,24 @@
 			// allDaySlot: false,
 			slotDuration: '00:30:00',
 			slotLabelFormat: 'h(:mm)a',
-			hiddenDays: [0],
 			eventColor: '#4c6c8b',
 			eventClick: function(calEvent, jsEvent, view) {
-				ids = Object.values(calEvent.plans_id);
-				// console.log(calEvent.quota);
+				var ids = [];
+				$.each(calEvent.plans, function(index, plan) {
+					ids[index] = plan.id;
+				});
+				// ids = Object.values(calEvent.plans);
+
 				//traer todos los ids de los planes que pueden tomar clase de la hora que se seleccionó
 				$('#block-quota-input').val(calEvent.quota);
+				
+				// $('#select-coach option[value="'+ calEvent.profesor_id +'"]').attr('selected', 'selected');
+				$('#select-coach').val(calEvent.profesor_id);
+				
 				$('#plan-select-edit').multiSelect('deselect_all');
-				$('#plan-select-edit').multiSelect('select',ids.map(String));
+				
+				$('#plan-select-edit').multiSelect('select', ids.map(String));
+				
 				update_url = $('#blockedit #block-update').attr('action');
 				update_newurl = update_url.replace(/[0-9]+/g, calEvent.id);
 
@@ -465,16 +498,22 @@
 				delete_url = $('#blockedit #block-delete').attr('action');
 				delete_newurl = delete_url.replace(/[0-9]+/g, calEvent.id);
 
-				$('#blockedit #block-delete').attr('action',delete_newurl);
+				$('#blockedit #block-delete').attr('action', delete_newurl);
 				$('#blockedit').modal();
 			},
 			dayClick: function(date, jsEvent, view) {
 				$('#plan-select-add').multiSelect('deselect_all');
+				
 				$('#unique-tab input[name="date"]').val(date.format('D/M/Y'));
+				
 				$('#blockadd input[name="start"]').val(date.format('H:mm'));
+				
 				$('#blockadd input[name="end"]').val(date.add(1, 'hours').format('H:mm'));
+				
 				$('#daycheckbox input').prop('checked', false);
+				
 				$('#daycheckbox input[value="'+date.day()+'"]').prop('checked', true);
+				
 				$('#blockadd').modal();
 			},
 		});
@@ -507,6 +546,7 @@
 				$('#type-clase-select').append(
 			        $('<option></option>').val(el.id).html(el.clase_type)
 			    );
+
 			    $('#calendar-type-clase-select').append(
 			        $('<option></option>').val(el.id).html(el.clase_type)
 			    );
@@ -514,7 +554,7 @@
 
 		}).done( function () {
 
-			var clase_type_session_id = {!! Session::get('clases-type-id') !!};
+			var clase_type_session_id = {!! Session::get('clases-type-id') ?? 1 !!};
 
 			$('#calendar-type-clase-select option[value="' + clase_type_session_id + '"]').attr("selected", true);
 

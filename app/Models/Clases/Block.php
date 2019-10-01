@@ -30,7 +30,7 @@ class Block extends Model
      * 
      * @var array
      */
-    protected $appends = ['plans_id','color'];
+    // protected $appends = ['plans_id','color'];
 
     // protected $with = array('plans');
 

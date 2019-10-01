@@ -72,9 +72,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        /** Manually register the Service Provider */
-        if ($this->app->isLocal()) {
-            $this->app->register(TelescopeServiceProvider::class);
-        }
+        //
     }
 }

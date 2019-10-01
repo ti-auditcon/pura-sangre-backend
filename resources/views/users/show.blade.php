@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('sidebar')
@@ -41,13 +42,13 @@
             </div>
             <div class="flexbox-b align-self-start">
                 
-                @if ($user->actual_plan && $user->actual_plan->plan->has_clases == true)
+                {{-- @if ($user->actual_plan && $user->actual_plan->plan->has_clases == true) --}}
                 
                     <div class="pr-2 text-right">
                 
                         <div class="h2 mt-2 mb-0 text-warning">
                 
-                            {{ $user->actual_plan->counter }}
+                            {{ $user->actual_plan->counter ?? '-' }}
                 
                         </div>
                 
@@ -55,7 +56,7 @@
                 
                     </div>
                 
-                @endif
+                {{-- @endif --}}
 
             </div>
         </div>
@@ -78,6 +79,13 @@
                 <div class="ibox-tools">
                     
                     <a
+                        href="{{ route('role-user.edit', ['role_user' => $user->id]) }}"
+                        class="btn btn-warning"
+                    >
+                        Roles
+                    </a>
+
+                    <a
                         class="btn btn-success text-white mr-1" style="display: inline-block;"
                         href="{{ route('users.edit', $user->id) }}"
                     >
@@ -89,8 +97,8 @@
                         <button
                             class="btn btn-info btn-danger sweet-user-delete"
                             style="display: inline-block;"
-                            data-id="{{$user->id}}"
-                            data-name="{{$user->first_name}} {{$user->last_name}}"
+                            data-id="{{ $user->id }}"
+                            data-name="{{ $user->first_name }} {{ $user->last_name }}"
                         >
                             <i class="la la-trash"></i>
                         </button>
@@ -105,29 +113,29 @@
             <div class="ibox-body">
                 <div class="row mb-2">
                     <div class="col-12 text-muted">Rut:</div>
-                    <div class="col-12">{{Rut::set($user->rut)->fix()->format()}}</div>
+                    <div class="col-12">{{ Rut::set($user->rut)->fix()->format() }}</div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-12 text-muted">Email:</div>
-                    <div class="col-12">{{$user->email}}</div>
+                    <div class="col-12">{{ $user->email }}</div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-12 text-muted">Fecha de nacimiento:</div>
-                    <div class="col-12">{{$user->birthdate->format('d-m-Y')}}</div>
+                    <div class="col-12">{{ $user->birthdate->format('d-m-Y') }}</div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-12 text-muted">Teléfono</div>
-                    <div class="col-12">{{'+56 9 '.$user->phone ?? ''}}</div>
+                    <div class="col-12">{{ '+56 9 '.$user->phone ?? '' }}</div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-12 text-muted">Direccción:</div>
-                    <div class="col-12">{{$user->address}}</div>
+                    <div class="col-12">{{ $user->address }}</div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-12 text-muted">Contacto de emergencia</div>
                     @if ($user->emergency)
                         <div class="col-12">
-                            {{ $user->emergency->contact_name.'  -' ?? '' }}  {{ '+56 9 '.$user->emergency->contact_phone ?? 'No ingresado' }}
+                            {{ $user->emergency->contact_name.'  -' ?? '' }}  {{ '+56 9 ' . $user->emergency->contact_phone ?? 'No ingresado' }}
                         </div>
                     @endif
                 </div>
@@ -194,10 +202,10 @@
                                 <td>
                                     <a
                                         class="sweet-user-plan-info"
-                                        data-user-id="{{$user->id}}"
-                                        data-plan-id="{{$plan_user->id}}"
+                                        data-user-id="{{ $user->id }}"
+                                        data-plan-id="{{ $plan_user->id }}"
                                     >
-                                        {{$plan_user->plan->plan}}
+                                        {{ $plan_user->plan->plan }}
                                     </a>
 
                                     @if (\Carbon\Carbon::parse($plan_user->finish_date)->gte(toDay()))
@@ -304,7 +312,7 @@
         {{-- //                      PPROXIMAS CLASES                        //--}}
         {{--                                                                   --}}
         {{-- ///////////////////////////////////////////////////////////////// --}}
-        @if ($user->future_reservs)
+        {{-- @if ($user->future_reservs) --}}
 
             <div class="ibox proximas-clases">
                 <div class="ibox-head">
@@ -331,7 +339,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($user->future_reservs as $reserv)
+                                @forelse($user->future_reservs as $reserv)
                                 <tr>
                                     <td>
                                         <a href="{{ url('/clases/'.$reserv->clase->id) }}">
@@ -351,21 +359,23 @@
                                     <td>{{ $reserv->plan_user ? $reserv->plan_user->plan->plan : 'No Aplica' }}</td>
 
                                 </tr>
-                                @endforeach
+                                @empty
+                                    {{-- Sin Clases que mostrar --}}
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-        @endif
+        {{-- @endif --}}
 
         {{-- ///////////////////////////////////////////////////////////////// --}}
         {{--                                                                   --}}
         {{-- //                         PAST RESERVS                         //--}}
         {{--                                                                   --}}
         {{-- ///////////////////////////////////////////////////////////////// --}}
-        @if ($user->past_reservs)
+        @if ($past_reservations)
             <div class="ibox clases-pasadas">
                 <div class="ibox-head">
                     <div class="ibox-title">Clases Anteriores</div>
@@ -392,9 +402,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($user->past_reservs as $reserv)
+                                @foreach($past_reservations as $reserv)
                                 <tr>
-                                    
+                                    {{-- {{ dd($reserv) }} --}}
                                     <td>
                                         <a href="{{url('/clases/'.$reserv->clase->id)}}">
                                             {{$reserv->clase->id}}

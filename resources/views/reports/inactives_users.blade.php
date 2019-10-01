@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('sidebar')
-  @include('layouts.sidebar',['page'=>'reports'])
+  @include('layouts.sidebar')
 @endsection
 
 @section('content')
@@ -91,23 +91,15 @@
                     <table id="inactives-table" class="table table-hover">
                         <thead class="thead-default">
                             <tr>
-                                <th width="30%">Alumno</th>
-                                <th width="30%">Plan</th>
-                                <th width="20%">Fecha de término del plan</th>
+                                <th width="25%">Alumno</th>
                                 <th width="20%">N° teléfono</th>
-                                <th>date</th>
+                                <th width="25%">Plan</th>
+                                <th width="20%">Fecha de término del plan</th>
+                                <th width="10%">Clases restantes</th>
+                                <th>DateRaw</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($inactive_users as $plan)
-                            <tr>
-                                <td><a href="{{url('/users/'.$plan->user->id)}}">{{$plan->user->first_name}} {{$plan->user->last_name}}</a></td>
-                                <td>{{$plan->plan->plan}}</td>
-                                <td>{{ Carbon\Carbon::parse($plan->finish_date)->format('d-m-Y') }}</td>
-                                <td>{{'+56 9 '.$plan->user->phone}}</td>
-                                <td>{{ $plan->finish_date }}</td>
-                            </tr>
-                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -119,18 +111,28 @@
 @endsection
 
 @section('scripts') {{-- scripts para esta vista --}}
-  <script src="{{ asset('js/datatables.min.js') }}"></script>
-  <script>
 
+<script src="{{ asset('js/datatables.min.js') }}"></script>
+
+<script>
     {{--  datatable --}}
     var table = $('#inactives-table').DataTable({
+        "processing": true,
+        "serverSide": false,
+        "order": [[ 5, "desc" ]],
+        "ajax": {
+            "url": "<?= route('inactiveusers') ?>",
+            "dataType": "json",
+            "type": "POST",
+            "data": {"_token": "<?= csrf_token() ?>"}
+        },
+        "columnDefs": [
+          { "targets": [ 5 ], "visible": false },
+          { "targets": [ 3 ], "orderData": [ 5 ] }
+        ],
         "dom": '<"top">rt<"bottom"ilp><"clear">',
         "lengthChange": false,
-        "columnDefs": [
-          { "targets": [ 4 ], "visible": false },
-          { "targets": [ 2 ], "orderData": [ 4 ] }
-        ],
-         "language": {
+        "language": {
             "lengthMenu": "Mostrar _MENU_ elementos",
             "zeroRecords": "Sin resultados",
             "info": "Mostrando página _PAGE_ de _PAGES_",
@@ -143,24 +145,33 @@
                "next":       "Siguiente",
                "previous":   "Anterior"
             },
-         },
-         "infoCallback": function( settings, start, end, max, total, pre ) {
-          $('#filtered').html(total);
-          $('#filtered-from').html('de ' + max);
+        },        
+        "columns":[
+            { "data": "full_name" },
+            { "data": "phone" },
+            { "data": "plan" },
+            { "data": "date" }, 
+            { "data": "remaining_clases" },
+            { "data": "date_raw" }
+        ],
+        "infoCallback": function( settings, start, end, max, total, pre ) {
+            $('#filtered').html(total);
+            $('#filtered-from').html('de ' + max);
         }
-      } );
+    });
 
-      $('#plan-filter').on('change', function() {
-        table.column(1).search($(this).val()).draw();
-      }); 
-      $('#key-search').on('keyup', function() {
+    $('#plan-filter').on('change', function() {
+        table.column(2).search($(this).val()).draw();
+    }); 
+    
+    $('#key-search').on('keyup', function() {
         table.search(this.value).draw();
-      });
+    });
 
-      $('#length-filter').on( 'change', function () {
-          table.page.len( $(this).val() ).draw();
-      } );
-   </script> 
+    $('#length-filter').on( 'change', function () {
+        table.page.len( $(this).val() ).draw();
+    });
+</script> 
   {{--  End datatable --}}
 
 @endsection

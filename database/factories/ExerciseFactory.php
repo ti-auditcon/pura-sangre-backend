@@ -1,13 +1,13 @@
 <?php
 
+use App\Models\Wods\Stage;
 use App\Models\Clases\Clase;
+use Faker\Generator as Faker;
+use App\Models\Wods\StageType;
 use App\Models\Clases\ClaseStage;
 use App\Models\Exercises\Exercise;
-use App\Models\Exercises\ExerciseStage;
-use App\Models\Exercises\Stage;
-use App\Models\Exercises\StageType;
 use App\Models\Exercises\Statistic;
-use Faker\Generator as Faker;
+use App\Models\Exercises\ExerciseStage;
 
 
 $factory->define(Exercise::class, function (Faker $faker) {

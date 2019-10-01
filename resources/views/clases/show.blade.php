@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('sidebar')
-  @include('layouts.sidebar',['page'=>'student'])
+  @include('layouts.sidebar')
 @endsection
 
 @section('content')
@@ -20,7 +20,7 @@
                 </div>
             
                 <div class="ibox-tools">
-                    @if (Carbon\Carbon::parse($clase->date)->gte(today()) && Auth::user()->hasRole(1))
+                    @if (Carbon\Carbon::parse($clase->date)->gte(today()) && in_array(1, $auth_roles))
                         {!! Form::open([
                             'route' => ['clases.destroy', $clase->id],
                             'method' => 'delete', 'class' => 'clase-delete'
@@ -52,7 +52,7 @@
                             <div class="col-12 text-muted">Horario:</div>
                             
                             <div class="col-12">
-                                {{ Carbon\Carbon::parse($clase->block->start)->format('H:i') }} - {{ Carbon\Carbon::parse($clase->block->end)->format('H:i') }}
+                                {{ Carbon\Carbon::parse($clase->start_at)->format('H:i') }} - {{ Carbon\Carbon::parse($clase->finish_at)->format('H:i') }}
                             </div>
                         
                         </div>
@@ -61,7 +61,7 @@
                          
                             <div class="col-12 text-muted">Coach:</div>
                          
-                            <div class="col-12">{{$clase->block->user->first_name}} {{$clase->block->user->last_name}}</div>
+                            <div class="col-12">{{ $clase->block->user->first_name }} {{ $clase->block->user->last_name }}</div>
                       
                         </div>
                       
@@ -73,7 +73,7 @@
                             <div
                                 id="porcentaje"
                                 class="easypie col"
-                                data-percent="{{ ($clase->reservations->count() * 100) / $clase->quota }}"
+                                data-percent="{{ ($reservation_count * 100) / $clase->quota }}"
                                 data-bar-color="#5c6bc0"
                                 data-size="70"
                                 data-line-width="8"
@@ -89,7 +89,7 @@
                                    
                                    <span class="easypie-data font-26 text-primary icon-people"><i class="ti-user"></i></span>
                                    
-                                   <h3 id="total" class="font-strong text-primary">{{ $clase->reservations->count() }}</h3>
+                                   <h3 id="total" class="font-strong text-primary">{{ $reservation_count }}</h3>
 
                                    <h3 class="font-strong text-primary">/{{ $clase->quota }}</h3>
                                 
@@ -97,7 +97,7 @@
                                 
                                 <div class="col-12 p-0 m-0">
                                    
-                                   <div class="text-muted">Cupos confirmados</div>
+                                   <div class="text-muted">Cupos tomados</div>
                                 
                                 </div>
                             
@@ -116,7 +116,7 @@
         <div class="ibox">
             <div class="ibox-head">
 
-                <div class="ibox-title">Workout</div>
+                <div class="ibox-title">Rutina de la Clase</div>
           
                 <div class="ibox-tools">
 
@@ -131,22 +131,26 @@
             
             <div class="ibox-body">
                 <div class="row">
-                    @foreach(App\Models\Wods\StageType::all() as $st)
+                    @forelse($stages as $st)
                         <div class="col-12 col-md-4 col-xl-12 mb-4">
-                            <h5 class="font-strong">{{ $st->stage_type }}</h5>
+                            <h5 class="font-strong">{{ $st->stage_type->stage_type }}</h5>
 
                             <div class="py-2">
-
                                 <textarea
-                                    name="{{$st->id}}"
+                                    name="{{ $st->id }}"
                                     class="form-control form-control-solid p-4"
                                     rows="10"
                                     disabled
-                                >@if($clase->wod){{$clase->wod->stage($st->id)->description }} @else No hay {{$st->stage_type}} ingresado @endif
+                                >
+                                    {{ $st->description }}
                                 </textarea>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="col-12 col-md-4 col-xl-12 mb-4">
+                            Esta clase aún no tiene una rutina agregada
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>
@@ -165,14 +169,14 @@
                 
                 <div class="ibox-tools">
                 
-                    @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
+                    @if (in_array(1, $auth_roles) || in_array(2, $auth_roles))
 
                         @if($clase->start_at <= now()->subMinute()->format('H:i:s') && $clase->date == toDay()->format('Y-m-d'))
 
                             <button id="button-modal" class="btn btn-warning btn-icon-only" data-toggle="modal" data-target="#confirm-assistance-modal"><i class="la la-check-square"></i></button>
                         @endif
 
-                        @if (Auth::user()->hasRole(1))
+                        @if (in_array(1, $auth_roles))
 
                             <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">
                                 Agregar un Alumno
@@ -210,26 +214,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                          @foreach ($clase->reservations as $reservation)
+                          @foreach ($reservations as $reservation)
                              <tr>
                                 <td>
                                    <div class="img-avatar" style="background-image:  @if ($reservation->user->avatar) url('{{$reservation->user->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"></div>
                                    <span class="badge-{{$reservation->user->status_user->type}} badge-point"></span>
-                                   <a @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2)) href="{{url('/users/'.$reservation->user->id)}}" @endif>
+                                   <a @if (in_array(1, $auth_roles) || in_array(2, $auth_roles)) href="{{url('/users/'.$reservation->user->id)}}" @endif>
                                       {{$reservation->user->first_name}} {{$reservation->user->last_name}}
                                    </a>
                                 </td>
                                 <td>
-                                   <span id="status-user-badge-{{$reservation->id}}" class="badge badge-{{$reservation->reservation_status->type}} badge-pill">{{strtoupper($reservation->reservation_status->reservation_status)}}</span>
-                                   <span id="status-user-badge-two-{{$reservation->id}}" style="display: none" class="badge badge-success badge-pill">CONFIRMADA</span>
+                                   <span id="status-user-badge-{{ $reservation->id }}" class="badge badge-{{ $reservation->reservation_status->type }} badge-pill">{{ strtoupper($reservation->reservation_status->reservation_status) }}</span>
+                                   <span id="status-user-badge-two-{{ $reservation->id }}" style="display: none" class="badge badge-success badge-pill">CONFIRMADA</span>
                                 </td>
 
-                             @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
+                             @if (in_array(1, $auth_roles) || in_array(2, $auth_roles))
                                 <td>
                                    {!! Form::open(['action' => ['Clases\ReservationController@destroy', $reservation->id], 'method' => 'delete', 'id' => 'delete'.$reservation->user->id]) !!}
+
                                       <input type="hidden" value="1" name="by_god">
                                       <button class="btn btn-info btn-icon-only btn-danger sweet-user-delete" type="button" data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash"></i></button>
                                    {!! Form::close() !!}
+
                                    @if ($reservation->reservation_status_id === 1)
                                      {!! Form::open(['action' => ['Clases\ReservationController@confirm', $reservation->id], 'method' => 'POST', 'id' => 'update'.$reservation->user->id]) !!}
                                       <input type="hidden" value="1" name="by_god">
@@ -238,7 +244,7 @@
                                    @endif
                                    
                                 </td>
-                             @elseif (Auth::user()->hasRole(3) && Auth::id() == $reservation->user->id)
+                             @elseif (in_array(3, $auth_roles) && Auth::id() == $reservation->user->id)
                                 <td>
                                    {!! Form::open(['route' => ['reservation.destroy', $reservation->id], 'method' => 'delete', 'id'=> 'delete'.$reservation->user->id]) !!}
                                    <input type="hidden" value="1" name="by_god">
@@ -246,7 +252,7 @@
                                    {!! Form::close() !!}
                                 </td>
                              @endif
-                                <td>{{$reservation->updated_at}}</td>
+                                <td>{{ $reservation->updated_at }}</td>
                              </tr>
                           @endforeach
                         </tbody>
@@ -259,45 +265,49 @@
 
 <!-- Modal -->
 <div class="modal fade" id="user-assign" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Agregar Alumno</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-               <span aria-hidden="true">&times;</span>
-            </button>
-         </div>
-         <div class="modal-body pl-4 pb-5">
-            <table id="students-table-search" class="table table-hover">
-               <thead class="thead-default">
-                  <tr>
-                     <th width="90%">Alumnos</th>
-                     <th width="10%">Accion</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  @foreach ($outclase as $usuario)
-                  <tr>
-                    <td>
-                      <div class="img-avatar" style="background-image:  @if ($usuario->avatar) url('{{$usuario->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"></div>
-                      <span class="badge-{{$usuario->status_user->type}} badge-point"></span>
-                      <a href="{{url('/users/'.$usuario->id)}}">{{$usuario->first_name}} {{$usuario->last_name}}</a>
-                    </td>
-                    <td>
-                      {!! Form::open(['route' => ['reservation.store'], 'method' => 'post']) !!}
-                      <input type="hidden" value="{{$usuario->id}}" name="user_id">
-                      <input type="hidden" value="{{$clase->id}}" name="clase_id">
-                      <input type="hidden" value="1" name="by_god">
-                      <button type="button" class="btn btn-primary button-little" type="submit" onClick="this.form.submit();">Agregar</button>
-                      {!! Form::close() !!}
-                    </td>
-                 </tr>
-                 @endforeach
-               </tbody>
-            </table>
-         </div>
-      </div>
-   </div>
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar Alumno</h5>
+                
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pl-4 pb-5">
+                <table id="students-table-search" class="table table-hover">
+                    <thead class="thead-default">
+                        <tr>
+                            <th width="90%">Alumnos</th>
+                            <th width="10%">Accion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($outclase as $usuario)
+                        <tr>
+                            <td>
+                                <div class="img-avatar" style="background-image:  @if ($usuario->avatar) url('{{$usuario->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"></div>
+                                <span class="badge-{{$usuario->status_user->type}} badge-point"></span>
+                                <a href="{{url('/users/'.$usuario->id)}}">{{$usuario->first_name}} {{$usuario->last_name}}</a>
+                            </td>
+                            <td>
+                                {!! Form::open(['route' => ['reservation.store'], 'method' => 'post']) !!}
+                                    <input type="hidden" value="{{$usuario->id}}" name="user_id">
+                                    
+                                    <input type="hidden" value="{{$clase->id}}" name="clase_id">
+                                    
+                                    <input type="hidden" value="1" name="by_god">
+                                    
+                                    <button type="button" class="btn btn-primary button-little" type="submit" onClick="this.form.submit();">Agregar</button>
+                                {!! Form::close() !!}
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Modal de confirmacion de clase-->

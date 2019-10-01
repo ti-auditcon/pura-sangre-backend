@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Users;
 
-use App\Exports\UsersExport;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Users\UserRequest;
-use App\Models\Clases\Reservation;
-use App\Models\Plans\PlanUser;
-use App\Models\Users\Emergency;
+use Session;
+use Redirect;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
+use App\Exports\UsersExport;
+use App\Models\Plans\PlanUser;
+use App\Models\Users\Emergency;
+use App\Models\Clases\Reservation;
 use Illuminate\Support\Facades\Log;
-use Intervention\Image\Facades\Image;
+use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
-use Redirect;
-use Session;
+use Intervention\Image\Facades\Image;
+use App\Http\Requests\Users\UserRequest;
 
 /**
  * [UserController description]
@@ -33,8 +33,16 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return view('users.index')->with('users', $users);
+        $status_users = User::CountStatusUsers()->get();
+
+        return view('users.index', ['status_users' => $status_users]);
+    }
+
+    public function usersJson()
+    {
+        $users = User::allUsers()->get();
+
+        return response()->json(['data' => $users]);
     }
 
     public function export()
@@ -49,6 +57,9 @@ class UserController extends Controller
      */
     public function create()
     {
+        if (! auth()->user()->hasRole(1)) {
+            return back();
+        }
         return view('users.create');
     }
 
@@ -64,12 +75,17 @@ class UserController extends Controller
             'password' => bcrypt('purasangre'),
             'avatar' => url('img/default_user.png'),
         ]));
+
         $emergency = Emergency::create(array_merge($request->all(), [
             'user_id' => $user->id,
         ]));
+        
         if ($user->save()) {
             Session::flash('success', 'El usuario ha sido creado correctamente');
-            return view('users.show')->with('user', $user);
+            return view('users.show', [
+                'user' => $user,
+                'past_reservations' => $user->past_reservations()
+            ]);
         } else {
             return Redirect::back();
         }
@@ -83,7 +99,10 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('users.show')->with('user', $user);
+        return view('users.show', [
+            'user' => $user,
+            'past_reservations' => $user->past_reservations()
+        ]);
     }
 
     /**
@@ -143,16 +162,18 @@ class UserController extends Controller
             try {
                 request()->file('image')->storeAs('public/users', $user->id . $user->first_name . '.jpg');
             } catch (\Exception $e) {
-                Log::error('siguiente error: ' . $e);
-                return response()->json(['error' => 'Problema al subir la imagen, si vuelve a suceder por favor comuniquese con el administrador de purasangre.']);
+                Log::error('Hemos tenido el siguiente error: ' . $e);
+
+                return response()->json(['error' => 'Problema al subir la imagen, si vuelve a suceder por favor comuniquese con PuraSangre.']);
             }
-            // request()->file('image')->storeAs('public/users', $user->id . $user->first_name . '.jpg');
+
             $user->avatar = url('/') . '/storage/users/' . $user->id . $user->first_name . '.jpg';
+            
             $user->save();
-            return response()->json(['success' => 'imagen subida correctamente'], 200);
-        } else {
-            return response()->json(['error' => 'no hay imagen'], 400);
+            
+            return response()->json(['success' => 'Imagen subida correctamente'], 200);
         }
+        return response()->json(['error' => 'No ha sido posible subir la imagen, si el problema persiste comuniquese con PuraSangre'], 400);
     }
 
     /**
