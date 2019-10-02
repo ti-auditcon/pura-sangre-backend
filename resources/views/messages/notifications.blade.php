@@ -241,7 +241,7 @@
                 "dom": '<"top">rt<"bottom"ilp><"clear">',
                 "lengthChange": false,
                 'columnDefs': [
-                    {'targets': 0, 'checkboxes': {'selectRow': true}},
+                    { 'targets': 0, 'checkboxes': {'selectRow': true} },
                     { "targets": [ 4 ], "visible": false, "searchable": true},
                 ],
                 "columns": [

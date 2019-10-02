@@ -44,6 +44,8 @@ class CreatePlansTable extends Migration
             $table->boolean('contractable')->default(0);
             
             $table->boolean('convenio')->default(0);
+
+            $table->text('description')->default();
             
             $table->timestamps();
 

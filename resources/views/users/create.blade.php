@@ -178,14 +178,17 @@
     });
 </script>
 
+<script src="{{ asset('js/moment.min.js') }}"></script>
+
 <script>
+    var today = moment().format("DD-MM-YYYY");
     $('.datepicker-since').datepicker({
         todayBtn: "linked",
         keyboardNavigation: false,
         forceParse: true,
         calendarWeeks: true,
         format: "dd-mm-yyyy",
-        startDate: "01-01-1910",
+        startDate: today,
         endDate: "01-01-2030",
         language: "es",
         autoclose: true,

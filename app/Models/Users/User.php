@@ -260,6 +260,18 @@ class User extends Authenticatable
                     ->orderBy('start_date','desc');
     }
 
+    public function planes_del_usuario()
+    {
+        return PlanUser::where('user_id', $this->id)
+                       ->with(['bill:id,date,amount,payment_type_id,plan_user_id',
+                                'bill.payment_type:id,payment_type',
+                                'plan:id,plan,class_numbers',
+                                'plan_status:id,plan_status,type,can_delete',
+                                'postpone',
+                                'user:id,first_name'])
+                       ->get(['id', 'start_date', 'finish_date', 'counter', 'plan_id', 'plan_status_id', 'user_id']);
+    }
+
     /**
      * [regular_users description]
      * 

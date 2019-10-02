@@ -144,7 +144,6 @@
     </div>
 
     <div class="col-12 col-xl-9">
-
         {{-- ///////////////////////////////////////////////////////////////// --}}
         {{--                                                                   --}}
         {{-- //                      USER PLANS TABLE                        //--}}
@@ -155,19 +154,14 @@
                 <div class="ibox-title">Planes</div>
                 
                 @if (Auth::user()->hasRole(1))
-                
-
                     <div class="ibox-tools">
-                    
                         <a
                             class="btn btn-success text-white"
                             href="{{ route('users.plans.create', $user->id) }}"
                         >
                             Asignar Plan
                         </a>
-                    
                     </div>
-                
                 @endif
             </div>
             
@@ -176,28 +170,22 @@
                     <table id="students-table" class="table table-hover">
                         <thead class="thead-default thead-lg">
                             <tr>
-                                
                                 <th width="15%">Plan</th>
-                                
                                 <th width="10%">Fecha Pago</th>
-                                
                                 <th width="17%">Periodo</th>
-                                
                                 <th width="7%">Clases</th>
-                                
                                 <th width="10%">Medio de pago</th>
-                                
                                 <th width="10%">Monto</th>
-                                
                                 <th width="10%">Estado</th>
-
                                 <th width="12%">Acciones</th>
-
+                                <th>plan_status_id</th>
+                                <th>start_date</th> {{-- 9 --}}
+                                <th>payment_date</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            @foreach($user->plan_users as $plan_user)
+                            @foreach($user->planes_del_usuario() as $plan_user)
                             <tr>
                                 <td>
                                     <a
@@ -209,13 +197,9 @@
                                     </a>
 
                                     @if (\Carbon\Carbon::parse($plan_user->finish_date)->gte(toDay()))
-                                        
                                         <a href="{{url('/users/'.$user->id.'/plans/'.$plan_user->id.'/edit')}}">
-                                        
                                             <span class="la la-edit"></span>
-                                        
                                         </a>
-                                    
                                     @endif
                                 </td>
 
@@ -299,6 +283,14 @@
 
                                     @endif
                                 </td>
+                                <td>{{ $plan_user->plan_status_id }}</td>
+                                <td>{{ $plan_user->start_date }}</td>
+
+                                @if ($plan_user->bill)
+                                    <td>{{ $plan_user->bill->date }}</td>
+                                @else
+                                    <td >no aplica</td>
+                                @endif
                             </tr>
                             @endforeach
                         </tbody>
@@ -314,59 +306,57 @@
         {{-- ///////////////////////////////////////////////////////////////// --}}
         {{-- @if ($user->future_reservs) --}}
 
-            <div class="ibox proximas-clases">
-                <div class="ibox-head">
-                    <div class="ibox-title">Próximas Clases</div>
-                </div>
-                <div class="ibox-body">
-                    <div class="table-responsive">
-                        <table id="next-clases-table" class="table table-hover">
-                            <thead class="thead-default thead-lg">
-                                <tr>
-                                    
-                                    <th width="10%">ID Clase</th>
-                                    
-                                    <th width="20%">Fecha Clase</th>
-                                    
-                                    <th width="20%">Hora</th>
-                                    
-                                    <th width="20%">Estado</th>
-                                    
-                                    <th width="10%">N° Plan</th>
-                                    
-                                    <th width="20%">Plan</th>
+        <div class="ibox proximas-clases">
+            <div class="ibox-head">
+                <div class="ibox-title">Próximas Clases</div>
+            </div>
+            <div class="ibox-body">
+                <div class="table-responsive">
+                    <table id="next-clases-table" class="table table-hover">
+                        <thead class="thead-default thead-lg">
+                            <tr>
+                                <th width="10%">ID Clase</th>
                                 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($user->future_reservs as $reserv)
-                                <tr>
-                                    <td>
-                                        <a href="{{ url('/clases/'.$reserv->clase->id) }}">
-                                            {{ $reserv->clase->id }}
-                                        </a>
-                                    </td>
-                                    
-                                    <td>{{ $reserv->clase->date }}</td>
-                                    
-                                    <td>{{Carbon\Carbon::parse($reserv->clase->start_at)->format('H:i')}}  a  {{Carbon\Carbon::parse($reserv->clase->finish_at)->format('H:i')}}</td>
-                                    
-                                    <td>{{$reserv->reservation_status->reservation_status}}</td>
-                                    
-                                    
-                                    <td>{{ optional($reserv->plan_user)->id ?? 'No Aplica' }}</td>
-                                    
-                                    <td>{{ $reserv->plan_user ? $reserv->plan_user->plan->plan : 'No Aplica' }}</td>
+                                <th width="20%">Fecha Clase</th>
+                                
+                                <th width="20%">Hora</th>
+                                
+                                <th width="20%">Estado</th>
+                                
+                                <th width="10%">N° Plan</th>
+                                
+                                <th width="20%">Plan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($user->future_reservs as $reserv)
+                            <tr>
+                                <td>
+                                    <a href="{{ url('/clases/'.$reserv->clase->id) }}">
+                                        {{ $reserv->clase->id }}
+                                    </a>
+                                </td>
+                                
+                                <td>{{ $reserv->clase->date }}</td>
+                                
+                                <td>{{Carbon\Carbon::parse($reserv->clase->start_at)->format('H:i')}}  a  {{Carbon\Carbon::parse($reserv->clase->finish_at)->format('H:i')}}</td>
+                                
+                                <td>{{$reserv->reservation_status->reservation_status}}</td>
+                                
+                                
+                                <td>{{ optional($reserv->plan_user)->id ?? 'No Aplica' }}</td>
+                                
+                                <td>{{ $reserv->plan_user ? $reserv->plan_user->plan->plan : 'No Aplica' }}</td>
 
-                                </tr>
-                                @empty
-                                    {{-- Sin Clases que mostrar --}}
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
+                            </tr>
+                            @empty
+                                {{-- Sin Clases que mostrar --}}
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
+        </div>
 
         {{-- @endif --}}
 
@@ -443,13 +433,14 @@
 
 {{-- stylesheet para esta vista --}}
 @section('css')
+
 @endsection
 
 {{-- scripts para esta vista --}}
 @section('scripts')
 
   <script>
-	$('.sweet-user-delete').click(function(e){
+	$('.sweet-user-delete').click(function(e) {
         var id = $(this).data('id');
 		
         swal({
@@ -538,68 +529,101 @@
     
     <script src="//cdn.datatables.net/plug-ins/1.10.19/dataRender/datetime.js"></script>
 
-   <script>
-      $(document).ready(function() {
-         $('#next-clases-table').DataTable({
-            columnDefs: [{
-               targets: 1,
-                  render: $.fn.dataTable.render.moment('', 'DD-MM-YYYY')
-            }],
-            "paging": true,
-            "ordering": true,
-            "order": [[ 0, 'asc' ]],
-            "pageLength": 10,
-            "bLengthChange" : false,
-            "bpageLength": false,
-            "bPaginate": false,
-            "language": {
-               "lengthMenu": "Mostrar _MENU_ elementos",
-               "zeroRecords": "Sin Registros",
-               "info": "",
-               "infoEmpty": "Sin Registros",
-               "infoFiltered": "(filtrado de _MAX_ registros totales)",
-               "search": "<span>Filtrar:</span>",
-               "paginate": {
-                  "first": "Primero",
-                  "last": "Ultimo",
-                  "next": "Siguiente",
-                  "previous": "Anterior"
-               },
-            },
-         });
-      });
-   </script>
+    <script>
+        $(document).ready(function() {
+            $('#students-table').DataTable({
+                "paging": true,
+                "ordering": true,
+                "order": [[ 7, 'desc' ]],
+                "columnDefs": [
+                    { "targets": [ 8, 9, 10 ], "visible": false },
+                    { "targets": [ 1 ], "orderData": [ 10 ] },
+                    { "targets": [ 2 ], "orderData": [ 9 ] }
+                ],
+                "pageLength": 8,
+                "bLengthChange" : false,
+                "bpageLength": false,
+                "bPaginate": false,
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ elementos",
+                    "zeroRecords": "Sin Registros",
+                    "info": "",
+                    "infoEmpty": "Sin Registros",
+                    "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                    "search": "<span>Filtrar:</span>",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                },
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#next-clases-table').DataTable({
+                columnDefs: [{
+                    targets: 1,
+                    render: $.fn.dataTable.render.moment('', 'DD-MM-YYYY')
+                }],
+                "paging": true,
+                "ordering": true,
+                "order": [[ 0, 'asc' ]],
+                "pageLength": 10,
+                "bLengthChange" : false,
+                "bpageLength": false,
+                "bPaginate": false,
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ elementos",
+                    "zeroRecords": "Sin Registros",
+                    "info": "",
+                    "infoEmpty": "Sin Registros",
+                    "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                    "search": "<span>Filtrar:</span>",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    },
+                },
+            });
+        });
+    </script>
 
    <script>
-      $(document).ready(function() {
-         $('#past-classes-table').DataTable({
-            columnDefs: [ {
-               targets: 1,
-                  render: $.fn.dataTable.render.moment('', 'DD-MM-YYYY')
-            } ],
-            "paging": true,
-            "ordering": true,
-            "order": [[ 0, 'desc' ]],
-            "pageLength": 10,
-            "bLengthChange" : false,
-            "bpageLength": false,
-            "bPaginate": false,
-            "language": {
-               "lengthMenu": "Mostrar _MENU_ elementos",
-               "zeroRecords": "Sin Registros",
-               "info": "",
-               "infoEmpty": "Sin Registros",
-               "infoFiltered": "(filtrado de _MAX_ registros totales)",
-               "search": "<span>Filtrar:</span>",
-               "paginate": {
-                  "first": "Primero",
-                  "last": "Ultimo",
-                  "next": "Siguiente",
-                  "previous": "Anterior"
-               },
-            },
-         });
-      });
+    $(document).ready(function() {
+     $('#past-classes-table').DataTable({
+        columnDefs: [ {
+           targets: 1,
+              render: $.fn.dataTable.render.moment('', 'DD-MM-YYYY')
+        } ],
+        "paging": true,
+        "ordering": true,
+        "order": [[ 0, 'desc' ]],
+        "pageLength": 10,
+        "bLengthChange" : false,
+        "bpageLength": false,
+        "bPaginate": false,
+        "language": {
+           "lengthMenu": "Mostrar _MENU_ elementos",
+           "zeroRecords": "Sin Registros",
+           "info": "",
+           "infoEmpty": "Sin Registros",
+           "infoFiltered": "(filtrado de _MAX_ registros totales)",
+           "search": "<span>Filtrar:</span>",
+           "paginate": {
+              "first": "Primero",
+              "last": "Ultimo",
+              "next": "Siguiente",
+              "previous": "Anterior"
+           },
+        },
+     });
+  });
    </script>
 
    <script>
@@ -682,8 +706,4 @@
         // FALTA CORRER EL PLAN HACIA ADELANTE EN EL CONTROLADOR
        
    </script>
-
-
-
-
 @endsection
