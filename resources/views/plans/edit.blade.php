@@ -81,6 +81,16 @@
                     </div>
                 </div>
 
+                <div class="row mt-2">
+                    <div class="col-12 form-group">
+                        <label class="col-form-label">Descripción</label>
+            
+                        <div class="input-group-icon">
+                            <textarea class="form-control form-control-air" name="description">{{ $plan->description }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row ">
                     <div class="col-12 form-group mt-4">
                         <label class="checkbox checkbox-success">
