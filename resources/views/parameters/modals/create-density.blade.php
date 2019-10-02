@@ -11,29 +11,29 @@
             <form action="{{ route('density-parameters.store') }}" method="POST">
                 @csrf
                 <div class="modal-body">
-                    <div class="row mt-2 level-row" id="1">
-                        <div class="col-3">
+                    <div class="row level-row">
+                        <div class="col-6">
                             <label>Nivel</label>
                             
-                            <input class="form-control" type="text" name="level_1" placeholder="Ej: Bajo" />
+                            <input class="form-control" type="text" name="level" placeholder="Ej: Bajo" />
                         </div>
                         
-                        <div class="col-2"> 
+                        <div class="col-3"> 
                             <label>Desde</label>
                             
-                            <input class="form-control" type="number" name="from_1"/>
+                            <input class="form-control" type="number" name="from"/>
                         </div>
                         
-                        <div class="col-2">  
+                        <div class="col-3">  
                             <label>Hasta</label>
                             
-                            <input class="form-control" type="number" name="to_1"/>
+                            <input class="form-control" type="number" name="to"/>
                         </div>
                     </div>
                 </div>
 
                 <div class="modal-footer">
-                    <div class="row">
+{{--                     <div class="row">
                         <div class="col-6">
                             <button
                                 id="row-create"
@@ -54,7 +54,7 @@
                                 Eliminar Fila
                             </button>
                         </div>
-                    </div>
+                    </div> --}}
 
                     
                     <button type="submit" class="btn btn-primary">

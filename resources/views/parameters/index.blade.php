@@ -25,74 +25,73 @@
                         >
                             +
                         </button>
+
                     </div>
                 </div>
                 
-                <form action="{{ route('density-parameters.updateAll') }}" method="POST">
-                    @csrf
+                {{-- <form action="{{ route('density-parameters.updateAll') }}" method="POST"> --}}
+
                     <div class="ibox-body">
                         <div>
                             <table class="table table-hover">
                                 <thead class="thead-default">
                                     <tr>
-                                        <th width="20%">Nivel</th>
+                                        <th width="30%">Nivel</th>
                                         
-                                        <th width="20%">Desde</th>
+                                        <th width="23%">Desde</th>
 
-                                        <th width="20%">Hasta</th>
+                                        <th width="23%">Hasta</th>
                                         
-                                        <th width="30%">Color</th>
+                                        <th width="20%">Color</th>
+
+                                        <th width="10%">Acciones</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
                                     @forelse ($densities as $density)
                                         <tr>
-                                            <td>
-                                                <input
-                                                    class="form-control" 
-                                                    value="{{ $density->level }}"
-                                                    name="level_{{ $density->id }}"
-                                                />
-                                            </td>
+                                            <td>{{ $density->level }}</td>
                                             
                                             <td>
                                                 <div class="d-flex align-items-center">
-                                                    <input
-                                                        type="number"
-                                                        name="from_{{ $density->id }}"
-                                                        value="{{ $density->from }}"
-                                                        class="form-control"
-                                                        min="1"
-                                                        max="100"
-                                                    />
-                                                    
-                                                    <label class="ml-2 mr-4">%</label>
+                                                    {{ $density->from }}%
                                                 </div>
                                             </td>
 
                                             <td>
                                                 <div class="d-flex align-items-center">
-                                                    <input
-                                                        type="number"
-                                                        name="to_{{ $density->id }}"
-                                                        value="{{ $density->to }}"
-                                                        class="form-control"
-                                                        min="1"
-                                                        max="100"
-                                                    />
-                                                    
-                                                    <label class="ml-2 mr-4">%</label>
+                                                    {{ $density->to }}%
                                                 </div>
                                             </td>
                                             
+                                            <td>{{ $density->color }}</td>
                                             <td>
-                                                <input
-                                                    class="form-control"
-                                                    type="text"
-                                                    name="color_{{ $density->id }}"
-                                                    value="{{ $density->color }}"
-                                                />
+                                                <button 
+                                                    class="btn btn-info edit-density-modal"
+                                                    name="edit-density-modal"
+                                                    data-target="#edit-density-modal"
+                                                    data-toggle="modal"
+                                                    data-id="{{ $density->id }}"
+                                                    data-level="{{ $density->level }}"
+                                                    data-from="{{ $density->from }}"
+                                                    data-to="{{ $density->to }}"
+                                                    data-color="{{ $density->color }}"
+                                                >
+                                                    E
+                                                </button>
+
+
+                                                <form action="{{ route('density-parameters.destroy', $density->id) }}" method="POST" class="density-parameter-delete">
+                                                @csrf @method('DELETE')
+                                                </form>
+                                                <button
+                                                    class="btn btn-info btn-danger sweet-density-parameter-delete"
+                                                    data-id="{{ $density->id }}"
+                                                    data-name="{{ $density->level }}"
+                                                >
+                                                    <i class="la la-trash"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                     @empty
@@ -112,7 +111,7 @@
                             </button>  
                         </div>
                     </div>
-                </form>
+                {{-- </form> --}}
             </div>
         </div>
     {{-- </div> --}}
@@ -137,32 +136,52 @@
 
 @include('parameters.modals.create-density')
 
+@include('parameters.modals.edit-density')
+
 @endsection
 
 @section('css')
 
-<link href="https://farbelous.io/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css" rel="stylesheet">
+{{-- <link href="https://farbelous.io/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css" rel="stylesheet"> --}}
 
 @endsection
 
 @section('scripts') {{-- scripts para esta vista --}}
 
-<script src="https://farbelous.io/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js"></script>
 
-{{-- <script>
-    $( document ).ready(function () {
-        $('.level-color').colorpicker('setValue', '#FFFFFF');
+  <script>
+    $('.sweet-density-parameter-delete').click(function(e) {
+        var id = $(this).data('id');
         
-        $.each($('.level-color'), function (q) {
-            console.log(q);
-        })
-        // $('.level-color').colorpicker().on('change', function() {
-        //     console.log( $( '.level-color' ).val() );
-        // });
+        swal({
+            title: "Desea eliminar el nivel: "+$(this).data('name')+"?",
+            // text: "(Se borrarán todas las cuotas o planes futuros, manteniendo los ya consumidos)",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn-danger',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Eliminar',
+            closeOnConfirm: false
+        },function(){
+            //redirección para eliminar usuario
+            $('form.density-parameter-delete').submit();
+        });
     });
-</script> --}}
+    </script>
 
 <script>
+    $( document ).ready(function () {
+        $('.edit-density-modal').click(function () {
+            $('#input-id').val($(this).data('id'));
+            $('#input-level').val($(this).data('level'));
+            $('#input-from').val($(this).data('from'));
+            $('#input-to').val($(this).data('to'));
+            $('#input-color').val($(this).data('color'));
+        });
+    });
+</script>
+
+{{-- <script>
     $( document ).ready(function () {
         // Create rows
         $( '#row-create' ).click(function () {
@@ -213,6 +232,6 @@
             }
         });
     });
-</script>
+</script> --}}
 
 @endsection
