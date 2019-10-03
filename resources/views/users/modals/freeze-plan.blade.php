@@ -30,7 +30,7 @@
                             data-toggle="popover"
                             data-trigger="hover"
                             data-placement="right"
-                            data-content="La fecha de inicio de congelamiento del plan, es la fecha en que empezará a contar el plan como &#8221;Inactivo&#8221;."
+                            data-content="La fecha de inicio de congelamiento del plan, es la fecha en que empezará a contar el plan como &#8221;Congelado&#8221;."
                         >
                             ?
                         </span>

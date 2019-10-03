@@ -13,7 +13,7 @@ class DensityParameterRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return auth()->user()->hasRole(1);
     }
 
     /**
@@ -24,24 +24,34 @@ class DensityParameterRequest extends FormRequest
     public function rules()
     {
         return [
-            "bajo" => 'required|lt:medio|min:1|max:100',
-            "medio" => 'required|lt:alto|min:1|max:100',
-            "alto" => 'required|gt:medio|min:1|max:100',
+            "level" => 'required',
+            "from" => 'required',
+            "to" => 'required',
+            "color" => 'required',
         ];
     }
 
+    // /**
+    //  * Get custom attributes for validator errors.
+    //  *
+    //  * @return array
+    //  */
     // public function attributes()
     // {
     //     return [
-    //         'calendar_start' => 'Hora de Inicio',
-    //         'calendar_end' => 'Hora de Término',
+    //         'level' => 'Nivel',
+    //         'from' => 'Desde',
+    //         'to' => 'Hasta',
     //     ];
     // }
 
-    // public function messages()
-    // {
-    //     return [
-    //         'calendar_end.after' => 'Hora de Término debe ser una hora posterior a Hora de Inicio.',
-    //     ];
-    // }
+    public function messages()
+    {
+        return [
+            'level.required' => 'El campo nivel es requerido.',
+            'from.required' => 'El campo desde es requerido.',
+            'to.required' => 'El campo hasta es requerido.',
+            'color.required' => 'El campo color es requerido.',
+        ];
+    }
 }

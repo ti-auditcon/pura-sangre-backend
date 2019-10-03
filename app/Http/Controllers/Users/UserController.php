@@ -71,24 +71,17 @@ class UserController extends Controller
      */
     public function store(UserRequest $request, User $user)
     {
-        $user = User::create(array_merge($request->all(), [
-            'password' => bcrypt('purasangre'),
-            'avatar' => url('img/default_user.png'),
-        ]));
+        $user = User::create($request->all());
 
         $emergency = Emergency::create(array_merge($request->all(), [
             'user_id' => $user->id,
         ]));
         
-        if ($user->save()) {
-            Session::flash('success', 'El usuario ha sido creado correctamente');
-            return view('users.show', [
-                'user' => $user,
-                'past_reservations' => $user->past_reservations()
-            ]);
-        } else {
-            return Redirect::back();
-        }
+        Session::flash('success', 'El usuario ha sido creado correctamente');
+        return view('users.show', [
+            'user' => $user,
+            'past_reservations' => $user->past_reservations()
+        ]);
     }
 
     /**

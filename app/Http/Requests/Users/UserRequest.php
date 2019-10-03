@@ -17,7 +17,7 @@ class UserRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return auth()->user()->hasRole(1);
     }
 
     /**
@@ -37,6 +37,7 @@ class UserRequest extends FormRequest
                     'gender' => 'required',
                     'rut' => new RutUnique,
                     'email' => 'required|email|unique:users',
+                    'since' => 'after_or_equal:' . today(),
                     'phone' => $this->phone != null ? 'digits:8': '',
                     'contact_phone' => $this->contact_phone ? 'digits:8' : ''
                 ];

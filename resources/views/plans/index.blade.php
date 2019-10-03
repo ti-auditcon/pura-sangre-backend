@@ -21,11 +21,13 @@
                     <table id="students-table" class="table table-hover">
                         <thead class="thead-default">
                             <tr>
-                                <th width="40%">Nombre</th>
+                                <th width="30%">Nombre</th>
                                 <th width="20%">Período</th>
-                                <th width="10%">N° Clases</th>
-                                <th width="10%">Clases diarias</th>
-                                <th width="20%">Acciones</th>
+                                <th width="10%">N° Clases totales</th>
+                                <th width="10%">N° clases diarias</th>
+                                <th width="10%">Por convenio</th>
+                                <th width="10%">Contratable por APP Móvil</th>
+                                <th width="10%">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -38,13 +40,15 @@
                                 <td>{{ $plan->plan_period->period ?? "una semana" }}</td>
                                 <td>{{ $plan->class_numbers }}</td>
                                 <td>{{ $plan->daily_clases }}</td>
+                                <td>{{ $plan->convenio ? 'Si' : 'No' }}</td>
+                                <td>{{ $plan->contractable ? 'Si' : 'No' }}</td>
                                 <td>
-                                    <a
+{{--                                     <a
                                         class="btn btn-info btn-icon-only btn-success"
                                         href="{{ url('/plans/'.$plan->id) }}"
                                     >
                                         <i class="la la-eye"></i>
-                                    </a>
+                                    </a> --}}
 
                                     <a
                                         class="btn btn-info btn-icon-only btn-edit"

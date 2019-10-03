@@ -79,20 +79,16 @@ class User extends Authenticatable
     }
 
     /**
-     * [hasRole description]
-     * @param  [type]  $role [description]
-     * @return boolean       [description]
+     * Verified if auth user has an specific Role
+     * 
+     * @param  integer
+     * @return boolean
      */
     public function hasRole($role)
     {
-        $role = RoleUser::where('role_id', $role)
-                        ->where('user_id', $this->id)
-                        ->exists();
-
-        if ($role) {
-            return true;
-        }
-        return false;
+        return RoleUser::where('role_id', $role)
+                       ->where('user_id', $this->id)
+                       ->exists();
     }
 
     /**
@@ -262,6 +258,18 @@ class User extends Authenticatable
         return $this->hasMany(PlanUser::class)
                     ->orderBy('plan_status_id', 'ASC')
                     ->orderBy('start_date','desc');
+    }
+
+    public function planes_del_usuario()
+    {
+        return PlanUser::where('user_id', $this->id)
+                       ->with(['bill:id,date,amount,payment_type_id,plan_user_id',
+                                'bill.payment_type:id,payment_type',
+                                'plan:id,plan,class_numbers',
+                                'plan_status:id,plan_status,type,can_delete',
+                                'postpone',
+                                'user:id,first_name'])
+                       ->get(['id', 'start_date', 'finish_date', 'counter', 'plan_id', 'plan_status_id', 'user_id']);
     }
 
     /**

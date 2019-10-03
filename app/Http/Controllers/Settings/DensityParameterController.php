@@ -16,7 +16,7 @@ class DensityParameterController extends Controller
      */
     public function index()
     {
-        $densities = DensityParameter::all(['id', 'level', 'from', 'to', 'color']);
+        $densities = DensityParameter::orderBy('from')->get(['id', 'level', 'from', 'to', 'color']);
 
         return view('parameters.index')->with('densities', $densities);
     }
@@ -34,44 +34,39 @@ class DensityParameterController extends Controller
     }
 
     /**
-     * Parameters Store|Update for NFIT Configurations.
+     * Parameters Store|Update for Pura Sangre Configurations.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DensityParameterRequest $request)
     {
-        for ($i = 1; $i < 6; $i++) {
-            if ( request('level_'.$i) ) {
-                DensityParameter::create([
-                    'level' => request('level_'.$i),
-                    
-                    'from' => (int) request('from_'.$i),
-                    
-                    'to' => (int) request('to_'.$i),
-                    
-                    'color' => '#27b0b6'
-                ]);                
-            }
-        }
+        DensityParameter::create($request->all());
 
         return back()->with('success', 'Datos guardados correctamente');
     }
 
-    public function updateAll()
+    /**
+     * [updateAll description]
+     * 
+     * @return [type] [description]
+     */
+    public function update(DensityParameter $density_parameter, DensityParameterRequest $request)
     {
-        $densities = DensityParameter::all(['id', 'level', 'from', 'to', 'color']);
+        $density_parameter->update($request->all());
 
-        foreach ($densities as $key => $density) {
-            $key += 1;
+        return redirect('density-parameters')->with('success', 'Parámetro actuaqlizado correctamente');
+    }
 
-            $density->update([
-                'level' => request('level_' . $key),
-                'from' => (int) request('from_' . $key),
-                'to' => (int) request('to_' . $key),
-                'color' =>request('color_' . $key) 
-            ]);
-        }
-        return back()->with('success', 'Datos actualizados correctamente');
+    /**
+     * [destroy description]
+     * @param  DensityParameter $density_parameter [description]
+     * @return [type]                              [description]
+     */
+    public function destroy(DensityParameter $density_parameter)
+    {
+        $density_parameter->delete();
+        
+        return back()->with('succes', 'Parámetro eliminado correctamente');
     }
 }

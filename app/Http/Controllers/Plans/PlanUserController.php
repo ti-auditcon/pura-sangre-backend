@@ -193,6 +193,10 @@ class planuserController extends Controller
     {
         $plan->update(['plan_status_id' => 5]);
 
+        if ($plan->postpone) {
+            $plan->postpone->delete();
+        }
+
         return redirect()->route('users.show', $user->id)
                          ->with('success', 'Se canceló el plan correctamente');
     }

@@ -38,9 +38,7 @@ class RutUnique implements Rule
         $number_rut = (int) Rut::parse($rut)->number();
 
         if ( is_null($this->user) && User::where('rut', $number_rut)->first()) {
-
             return false;
-        
         }
 
         // Get a user whose rut is equal to $number_rut
@@ -52,7 +50,6 @@ class RutUnique implements Rule
              $this->user->id !== $id_user_checked ) {
 
             return false;
-
         }
 
         return true;

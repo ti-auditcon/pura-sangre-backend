@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Messages;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Messages\MessageRequest;
-use App\Mail\SendEmail;
-use App\Mail\SendEmailQueue;
-use App\Models\Users\User;
-use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Mail;
-use Redirect;
 use Session;
+use Redirect;
+use App\Mail\SendEmail;
+use App\Models\Users\User;
+use Illuminate\Http\Request;
+use App\Mail\SendEmailQueue;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Console\Scheduling\Schedule;
+use App\Http\Requests\Messages\MessageRequest;
 
 class MessageController extends Controller
 {
@@ -72,7 +72,7 @@ class MessageController extends Controller
         }
 
         if ($errors) {
-            Session::flash('warning', 'Hay error(es) en '.$errors.' correo(s)');
+            Session::flash('warning', 'Hay error(es) en ' . $errors . ' correo(s)');
             return redirect()->back();
         }
 

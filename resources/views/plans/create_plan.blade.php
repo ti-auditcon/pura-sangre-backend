@@ -96,22 +96,41 @@
                 </div>
             
                 <div class="row">
-            
                     <div class="col-sm-6 form-group">
-            
                         <label class="col-form-label">Numero de clases unicas diarias</label>
             
                         <div class="input-group-icon">
-            
-            
-                            <input class="form-control form-control-air"
-            
-                            name="daily_clases" type="number" value="1" required/>
-            
+                            <input class="form-control form-control-air" name="daily_clases" type="number" value="1" required/>
                         </div>
-            
                     </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-12 form-group">
+                        <label class="col-form-label">Descripción</label>
             
+                        <div class="input-group-icon">
+                            <textarea class="form-control form-control-air" name="description"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row col-sm-12 form-group mt-3">
+                    <label class="checkbox checkbox-success">
+                        <input type="checkbox" name="contractable"/>
+                        
+                        <span class="input-span"></span>
+
+                        Contratable por APP
+                    </label>
+
+                    <label class="checkbox checkbox-success ml-3">
+                        <input type="checkbox" name="convenio"/>
+                        
+                        <span class="input-span"></span>
+
+                        Es Convenio
+                    </label>
                 </div>
 
                 <div class="mt-4">

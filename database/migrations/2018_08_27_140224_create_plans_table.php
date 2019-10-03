@@ -41,6 +41,12 @@ class CreatePlansTable extends Migration
 
             $table->boolean('daily_clases')->nullable();
             
+            $table->boolean('contractable')->default(0);
+            
+            $table->boolean('convenio')->default(0);
+
+            $table->text('description')->default();
+            
             $table->timestamps();
 
             $table->foreign('plan_period_id')->references('id')->on('plan_periods')->onDelete('cascade');
