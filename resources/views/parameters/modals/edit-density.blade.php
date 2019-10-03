@@ -40,7 +40,7 @@
 
                 <div class="modal-footer">                    
                     <button type="submit" class="btn btn-primary">
-                        Guardar
+                        Actualizar datos
                     </button>
 
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">

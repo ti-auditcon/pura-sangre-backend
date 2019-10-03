@@ -51,7 +51,7 @@ class DensityParameterController extends Controller
      * 
      * @return [type] [description]
      */
-    public function update(DensityParameter $density_parameter, Request $request)
+    public function update(DensityParameter $density_parameter, DensityParameterRequest $request)
     {
         $density_parameter->update($request->all());
 

@@ -13,7 +13,7 @@ class DensityParameterRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return auth()->user()->hasRole(1);
     }
 
     /**
