@@ -151,7 +151,9 @@
         {{-- ///////////////////////////////////////////////////////////////// --}}
         <div class="ibox">
             <div class="ibox-head">
-                <div class="ibox-title">Planes</div>
+                <div class="ibox-title">
+                    <h5>Planes de {{ $user->first_name }}</h5>
+                </div>
                 
                 @if (Auth::user()->hasRole(1))
                     <div class="ibox-tools">
@@ -239,7 +241,7 @@
                                             <i class="la la-ban"></i>
                                         </button>
 
-                                        @if ($plan_user->plan_status->id != 2)
+                                        @if ($plan_user->plan_status_id == 1)
                                             <button
                                                 class="btn btn-icon-only btn-warning freeze-plan-button"
                                                 data-toggle="modal"
@@ -249,8 +251,9 @@
                                             >
                                             <i class="la la-power-off"></i>
                                             </button>
-
-                                        @else
+                                        @endif
+                                        
+                                        @if($plan_user->plan_status_id == 2)
                                             <form
                                                 action="{{ route('plan-user.postpones.destroy', ['plan_user' => $plan_user->id, 'postpone' => $plan_user->postpone]) }}"
                                                 method="POST"
@@ -439,7 +442,7 @@
 {{-- scripts para esta vista --}}
 @section('scripts')
 
-  <script>
+<script>
 	$('.sweet-user-delete').click(function(e) {
         var id = $(this).data('id');
 		
@@ -457,7 +460,7 @@
             $('form.user-delete').submit();
 		});
 	});
-	</script>
+</script>
 
 <script>
     $( '.sweet-user-plan-unfreeze' ).click(function() {
