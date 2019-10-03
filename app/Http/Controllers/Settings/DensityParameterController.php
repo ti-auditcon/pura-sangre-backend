@@ -16,7 +16,7 @@ class DensityParameterController extends Controller
      */
     public function index()
     {
-        $densities = DensityParameter::all(['id', 'level', 'from', 'to', 'color']);
+        $densities = DensityParameter::orderBy('from')->get(['id', 'level', 'from', 'to', 'color']);
 
         return view('parameters.index')->with('densities', $densities);
     }
@@ -39,11 +39,9 @@ class DensityParameterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DensityParameterRequest $request)
     {
-        DensityParameter::create(array_merge($request->all(), [
-            'color' => '#27b0b6'
-        ]));
+        DensityParameter::create($request->all());
 
         return back()->with('success', 'Datos guardados correctamente');
     }
@@ -57,7 +55,7 @@ class DensityParameterController extends Controller
     {
         $density_parameter->update($request->all());
 
-        return back()->with('succes', 'Parámetro actuaqlizado correctamente');
+        return redirect('density-parameters')->with('success', 'Parámetro actuaqlizado correctamente');
     }
 
     /**

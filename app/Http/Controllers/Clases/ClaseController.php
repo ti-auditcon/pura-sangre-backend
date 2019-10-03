@@ -30,8 +30,8 @@ class ClaseController extends Controller
             Session::put('clases-type-name', ClaseType::find(1)->clase_type);
         }
 
-        $densities = DensityParameter::all(['id', 'level', 'from', 'to', 'color']);
-
+        $densities = DensityParameter::orderBy('from')->get(['id', 'level', 'from', 'to', 'color']);
+        
         return view('clases.index', ['densities' => $densities]);
     }
 

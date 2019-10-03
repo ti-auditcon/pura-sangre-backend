@@ -185,7 +185,7 @@
                 let percent = (event.reservation_count * 100) / event.quota;
                 let colorPercentage = null;
                 densities.forEach(function (density) {
-                    if (percent <= density.to) {
+                    if (percent >= density.from && percent <= density.to) {
                         colorPercentage = density.color;
                     }
                 });
