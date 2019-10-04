@@ -57,6 +57,7 @@ class planuserController extends Controller
         $plan = Plan::find($request->plan_id);
         $finish_date = null;
         $counter = null;
+        
         if ($plan->id == 1) {
             $finish_date = Carbon::parse($request->fecha_inicio)->addWeeks(1);
             $counter = $plan->class_numbers;

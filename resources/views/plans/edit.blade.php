@@ -64,20 +64,17 @@
                         <div class="form-group inline @if ($errors->has('class_numbers')) has-warning  @endif">
                             <label class="col-form-label">Número de Clases</label>
                             
-                            <input class="form-control form-control-air" type="number" value="{{ $plan->class_numbers }}" name="class_numbers" placeholder="0" required>
+                            <input class="form-control form-control-air" type="number" value="{{ $plan->class_numbers }}"
+                                   name="class_numbers" placeholder="0" required/>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6 form-group mb-4">
-                        <label class="col-form-label">Numero de clases unicas diarias</label>
+                        <label class="col-form-label">Número de clases únicas diarias</label>
                         
-                        <div class="input-group-icon input-group-icon-left">
-                            <span class="input-icon input-icon-left"><i class="la la-dollar"></i></span>
-                        
-                            <input class="form-control form-control-air"
-                            name="daily_clases" type="number" value="{{ $plan->daily_clases }}" required/>
-                        </div>
+                        <input class="form-control form-control-air" name="daily_clases"
+                               type="number" value="{{ $plan->daily_clases }}" required/>
                     </div>
                 </div>
 

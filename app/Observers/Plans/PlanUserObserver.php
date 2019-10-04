@@ -2,13 +2,13 @@
 
 namespace App\Observers\Plans;
 
-use App\Models\Clases\Reservation;
-use App\Models\Plans\Plan;
-use App\Models\Plans\PlanIncomeSummary;
-use App\Models\Plans\PlanUser;
-use App\Models\Users\User;
-use Carbon\Carbon;
 use Session;
+use Carbon\Carbon;
+use App\Models\Plans\Plan;
+use App\Models\Users\User;
+use App\Models\Plans\PlanUser;
+use App\Models\Clases\Reservation;
+use App\Models\Plans\PlanIncomeSummary;
 
 /**
  * [PlanUserObserver description]
@@ -26,6 +26,7 @@ class PlanUserObserver
         $fecha_inicio = Carbon::parse($planUser->start_date);
         $fecha_termino = Carbon::parse($planUser->finish_date);
         $plan_users = PlanUser::whereIn('plan_status_id', [1, 3])->where('user_id', $user->id)->get();
+        
         foreach ($plan_users as $plan_user) {
             if (($fecha_inicio->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date))) || ($fecha_termino->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date)))) {
 
@@ -170,11 +171,9 @@ class PlanUserObserver
                                    ->get('reservations.id');
 
         $reservations_out = Reservation::join('clases', 'reservations.clase_id', '=', 'clases.id')
-            ->where('reservations.user_id', $planUser->user_id)
-            ->whereNotBetween('date', [Carbon::parse($planUser->start_date)->format('Y-m-d'), Carbon::parse($planUser->finish_date)->format('Y-m-d')])
-            ->get('reservations.id');
-
-        // dd($reservations);
+                                       ->where('reservations.user_id', $planUser->user_id)
+                                       ->whereNotBetween('date', [Carbon::parse($planUser->start_date)->format('Y-m-d'), Carbon::parse($planUser->finish_date)->format('Y-m-d')])
+                                       ->get('reservations.id');
 
         foreach ($reservations as $reserv) {
             $reservation = Reservation::find($reserv->id, ['id', 'plan_user_id']);
@@ -204,11 +203,8 @@ class PlanUserObserver
         if (today()->between(Carbon::parse($planUser->start_date), Carbon::parse($planUser->finish_date)) &&
             $planUser->plan_status_id === 1
         ) {
-
             $user->status_user_id = ($planUser->plan->id === 1) ? 3 : 1;
-
         } elseif ($user->actual_plan && $user->actual_plan->id != $planUser->id) {
-
             $user->status_user_id = $user->actual_plan->plan->id === 1 ? 3 : 1;
         } else {
             $user->status_user_id = 2;

@@ -10,7 +10,6 @@ use App\Models\Plans\PlanIncomeSummary;
  */
 class BillObserver
 {
-
     /**
      * Handle the plan user "created" event.
      *

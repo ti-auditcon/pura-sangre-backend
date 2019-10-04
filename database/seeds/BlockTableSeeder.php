@@ -12,24 +12,6 @@ class BlockTableSeeder extends Seeder
      */
     public function run()
     {
-      \DB::table('clase_types')->insert(array (
-          0 =>
-          array (
-              'id' => 1,
-              'clase_type' => 'Crossfit',
-              'clase_color' => '#27b0b6',
-              'created_at' => NULL,
-              'updated_at' => NULL,
-          ),
-          1 =>
-          array (
-              'id' => 2,
-              'clase_type' => 'Cardio',
-              'clase_color' => '#27b066',
-              'created_at' => NULL,
-              'updated_at' => NULL,
-          ),
-        ));
       Block::create(['start'=>'07:00', 'end'=>'08:00', 'dow'=>'1', 'profesor_id' => 1, 'quota' => 22, 'clase_type_id' => 1]);
       Block::create(['start'=>'07:00', 'end'=>'08:00', 'dow'=>'2', 'profesor_id' => 1, 'quota' => 22, 'clase_type_id' => 1]);
       Block::create(['start'=>'07:00', 'end'=>'08:00', 'dow'=>'3', 'profesor_id' => 1, 'quota' => 22, 'clase_type_id' => 1]);

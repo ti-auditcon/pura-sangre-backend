@@ -2,13 +2,14 @@
 
 namespace Tests\Feature\Plans;
 
-use App\Models\Plans\Plan;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
+use App\Models\Clases\Reservation;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class PlanUserTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     /** @test */
     public function admin_can_see_plan_user_create_view()
@@ -133,6 +134,53 @@ class PlanUserTest extends TestCase
     /** @test */
     public function reservations_are_organized_after_user_plan_created()
     {
+        $this->withoutExceptionHandling();
+
+        $this->seed(\StatusUsersTableSeeder::class);
+        $this->seed(\ClaseTypesTableSeeder::class);
+        $this->seed(\BlockTableSeeder::class);
+        $this->seed(\PlanPeriodsTableSeeder::class);
+        $this->seed(\PlanStatusTableSeeder::class);
+        $this->seed(\PlansTableSeeder::class);
+        $this->seed(\RolesTableSeeder::class);
+        $this->seed(\UsersTableSeeder::class);
+
+        $clase_de_hoy = factory(\App\Models\Clases\Clase::class)->create([
+            'date' => today()->format('Y-m-d')
+        ]);
+
+        $admin = factory(\App\Models\Users\User::class)->create();
+        $admin->roles()->attach(1);
+        $user = factory(\App\Models\Users\User::class)->create();
+
+        $reservation = factory(Reservation::class)->create([
+            'clase_id' => $clase_de_hoy->id,
+            'user_id' => $user->id
+        ]);
+        $reservation = $reservation->toArray();
+        
+        $response = $this->actingAs($admin)->post('/reservation/', $reservation);
+        
+        $this->assertDatabaseHas('clases', [
+            'id' => $clase_de_hoy->id,
+        ]);
+
+        $this->assertDatabaseHas('reservations', [
+            'user_id' => $user->id,
+            'clase_id' => $clase_de_hoy->id,
+            'plan_user_id' => null,
+        ]);
+
+        $plan_user = factory(\App\Models\Plans\PlanUser::class)->create([
+            'user_id' => $user->id,
+            'start_date' => today() 
+        ]);
+
+        $this->assertDatabaseHas('reservations', [
+            'user_id' => $user->id,
+            'clase_id' => $clase_de_hoy->id,
+            'plan_user_id' => $plan_user->id,
+        ]);
     }
 }
     // $this->withoutExceptionHandling();

@@ -2,8 +2,10 @@
 
 namespace Tests\Feature\Users;
 
-use Tests\TestCase;
+use Carbon\Carbon;
+use Freshwork\ChileanBundle\Rut;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\TestCase;
 
 class UserTest extends TestCase
 {
@@ -36,31 +38,26 @@ class UserTest extends TestCase
     /** @test */
     public function admin_can_create_a_new_user()
     {
-        // $this->withoutExceptionHandling();
-
         $this->seed(\StatusUsersTableSeeder::class);
         $this->seed(\ClaseTypesTableSeeder::class);
         $this->seed(\PlansTableSeeder::class);
 
         $user = factory(\App\Models\Users\User::class)->create();
-
         $user->roles()->attach(1);
 
-        $client_user = [
-            'rut' => '19.007.597-4',
-            'first_name' => 'Casimer',
-            'last_name' => 'Stroman',
-            'email' => 'josefa87@example.net',
-            'birthdate' => '1975-02-09',
-            'gender' => 'female',
-            'phone' => 69547003,
-            'address' => '288 Goldner Extensions Apt. 396',
-            'status_user_id' => 3,
-        ];
+        $client_user = factory(\App\Models\Users\User::class)->make([
+            'avatar' => null,
+        ]);
+        $client_user = $client_user->toArray();
+        $client_user['birthdate'] = Carbon::parse($client_user['birthdate'])->format('Y-m-d');
 
-        $response = $this->actingAs($user)->post(route('users.store'), $client_user);
+        $response = $this->actingAs($user)->post(route('users.store'), array_merge($client_user, ['test_user' => 'on']));
 
-        $this->assertDatabaseHas('users', array_splice($client_user, 1));
+        $client_user = array_diff_key($client_user, [
+            'rut_formated' => 1, 'full_name' => 2, 'avatar' => 3, 'rut' => 4,
+        ]);
+
+        $this->assertDatabaseHas('users', $client_user);
     }
 
     /** @test */

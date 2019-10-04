@@ -21,12 +21,6 @@ $factory->define(Role::class, function (Faker $faker) {
     ];
 });
 
-// $factory->define(Millestone::class, function (Faker $faker) {
-//     return [
-//         'millestone' => $faker->word,
-//     ];
-// });
-
 $factory->define(User::class, function (Faker $faker) {
     return [
         'rut' => Rut::parse($faker->numberBetween($min = 1000000, $max = 100000000))->normalize(),
@@ -39,7 +33,7 @@ $factory->define(User::class, function (Faker $faker) {
         'avatar' => url('/').'/storage/users/u ('.$faker->numberBetween($min = 1, $max = 54).').jpg',
         'phone' => $faker->numberBetween($min = 40000000, $max = 99876599),
         'address' => $faker->streetAddress,
-        'status_user_id' => StatusUser::all()->random()->id,
+        'status_user_id' => 3,
         'remember_token' => str_random(10),
     ];
 });
@@ -64,16 +58,3 @@ $factory->define(Emergency::class, function (Faker $faker) {
 //         'total' => $faker->randomNumber($nbDigits = 7, $strict = false),
 //     ];
 // });
-
-
-
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/

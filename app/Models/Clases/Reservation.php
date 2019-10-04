@@ -14,8 +14,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Reservation extends Model
 {
-    protected $dates = ['deleted_at'];
-    protected $fillable = ['plan_user_id', 'clase_id', 'reservation_status_id', 'user_id', 'by_god', 'details'];
+    /**
+     * [$fillable description]
+     * @var [type]
+     */
+    protected $fillable = [
+        'plan_user_id', 'clase_id', 'reservation_status_id',
+        'user_id', 'by_god', 'details'
+    ];
 
     /**
      * [reservation_statistic_stages description]
@@ -36,16 +42,28 @@ class Reservation extends Model
       return $this->belongsTo(User::class);
     }
 
+    /**
+     * [clase description]
+     * @return [type] [description]
+     */
     public function clase()
     {
         return $this->belongsTo(Clase::class);
     }
 
+    /**
+     * [reservation_status description]
+     * @return [type] [description]
+     */
     public function reservation_status()
     {
       return $this->belongsTo(ReservationStatus::class);
     }
 
+    /**
+     * [plan_user description]
+     * @return [type] [description]
+     */
     public function plan_user()
     {
       return $this->belongsTo(PlanUser::class);
