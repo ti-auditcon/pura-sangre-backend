@@ -22,22 +22,22 @@ class ReservationObserver
 
         if ($reservation->by_god) {
             return true;
-        } else {
-            $period_plan = null;
-            foreach ($plans as $planuser) {
-                if ($date_class->between(Carbon::parse($planuser->start_date), Carbon::parse($planuser->finish_date))) {
-                    $period_plan = $planuser;
-                }
+        }
+        
+        $period_plan = null;
+        foreach ($plans as $planuser) {
+            if ($date_class->between(Carbon::parse($planuser->start_date), Carbon::parse($planuser->finish_date))) {
+                $period_plan = $planuser;
             }
-            if (!$period_plan) {
-                Session::flash('warning', 'No tiene un plan que le permita tomar esta clase');
-                return false;
-            }
-            $response = $this->userBadReserve($clase, $period_plan);
-            if ($response) {
-                Session::flash('warning', $response);
-                return false;
-            }
+        }
+        if (!$period_plan) {
+            Session::flash('warning', 'No tiene un plan que le permita tomar esta clase');
+            return false;
+        }
+        $response = $this->userBadReserve($clase, $period_plan);
+        if ($response) {
+            Session::flash('warning', $response);
+            return false;
         }
     }
 

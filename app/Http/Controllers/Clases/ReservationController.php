@@ -24,7 +24,7 @@ class ReservationController extends Controller
             'clase_id' => $request->clase_id,
             'reservation_status_id' => 1,
             'user_id' => $request->user_id,
-            'by_god' => 1,
+            'by_god' => auth()->user(['id'])->roles()->orderBy('role_id')->value('id')
         ]);
 
         Session::flash('success','Agregado correctamente a la clase');
