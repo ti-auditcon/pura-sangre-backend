@@ -225,7 +225,7 @@ class HomeController extends Controller
         $mes['ingresos'] = '$ ' . number_format($month_amount, $decimal = 0, '.', '.');
         $mes['cantidad'] = Bill::whereDate('bills.date', '>=', today()->startOfMonth())
             ->whereDate('bills.date', '<=', today()->endOfMonth())
-            ->count();
+            ->count('id');
 
         //obtener todos los planes de este día que tengan anexada una boleta
         //sin contar boletas eliminadas
@@ -234,7 +234,7 @@ class HomeController extends Controller
             ->get()
             ->sum('amount');
         $dia['ingresos'] = '$ ' . number_format($day_amount, $decimal = 0, '.', '.');
-        $dia['cantidad'] = Bill::whereDate('bills.date', today())->count();
+        $dia['cantidad'] = Bill::whereDate('bills.date', today())->count('id');
         $in_sum = array_merge([$dia, $mes]);
         echo json_encode($in_sum);
     }

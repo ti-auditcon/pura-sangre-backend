@@ -9,6 +9,16 @@
         <div class="ibox">
             <div class="ibox-head">
                 <div class="ibox-title">Total de Ingresos de todos los planes</div>
+
+                <div class="ibox-tools">
+                    <form action="{{ route('incomes.calibrate') }}" method="POST" id="chart-calibrate">
+                        @csrf
+                    </form>
+                    
+                        <button class="form-control" type="button" id="charts-recalculate">
+                            Ajustar Gráficos
+                        </button>
+                </div>
             </div>
             <div class="ibox-body">
                 <canvas id="all_plans_incomes" height="280" width="600"></canvas>
@@ -43,18 +53,9 @@
                         <h3 class="m-0">Cantidad de Planes</h3>
                         <div>Por tipo de Plan a nivel anual</div>
                     </div>
- {{--                    <ul class="nav nav-pills nav-pills-rounded nav-pills-air" id="myTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{{now()->year}}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">{{now()->subYear()->year}}</a>
-                        </li>
-                    </ul> --}}
                 </div>
                 <div class="table-responsive">
-                    {{-- <div class="tab-content" id="myTabContent"> --}}
-                        {{-- <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"> --}}
+
                             <table id="quantity-plans-table" class="table table-hover">
                                 <thead class="thead-default">
                                     <tr>
@@ -66,8 +67,7 @@
                                 <tbody>
                                 </tbody>
                             </table>
-                        {{-- </div> --}}
-                    {{-- </}div> --}}
+
                 </div>
             </div>
         </div>
@@ -200,71 +200,24 @@ $(document).ready(function(){
 });
 </script>
 
+{{-- <script src="{{ asset('js/sweetalert2.8.js') }}"></script> --}}
+
+<script>
+    $('#charts-recalculate').click(function() {
+        swal({
+            title: "Desea RECALCULAR?",
+            text: "Esta acción puede tomar unos momentos, dependiendo de la cantidad de ingresos",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn-warning',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Confirmar',
+            closeOnConfirm: false,
+        },function() {
+            $('#chart-calibrate').submit();
+        });
+    });
+</script>
+
 
 @endsection
-{{-- <script>
-  // Bar Chart example
-$(document).ready(function() {
-  //////////////////TOTAL SUMMARY//////////////////////////////////////////////////////
-   var barData = {
-      labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo",
-               "Junio", "Julio", "Agosto", "septiembre",
-               "Octubre", "Noviembre", "Diciembre"],
-      datasets: [
-         {
-            label: "{!!(string)date("Y",strtotime("-1 year"))!!}",
-            backgroundColor:'#DADDE0',
-            data:
-            [
-               @for($i = 1; $i <= 12; $i++)
-               {!!$summaries->where('month',$i)->where('year',date("Y",strtotime("-1 year")))->sum('amount'); !!},
-               @endfor
-            ]
-         },
-         {
-            label: "{!!(string)date("Y")!!}",
-            backgroundColor: '#18C5A9',
-            borderColor: "#fff",
-            data:
-            [
-               @for($i = 1; $i <= 12; $i++)
-               {!!$summaries->where('month',$i)->where('year',date("Y"))->sum('amount'); !!},
-               @endfor
-            ]
-         }
-      ]
-   };
-   var barOptions = {
-      responsive: true,
-      tooltips: {
-         callbacks: {
-            label: function(tooltipItem, data) {
-               var datasetLabel = data.datasets[tooltipItem.datasetIndex].label || 'Other';
-               var label = tooltipItem.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-               return datasetLabel + ': ' + label;
-            }
-         }
-      },
-      scales: {
-         yAxes: [{
-            ticks: {
-               // Include a dollar sign in the ticks
-               callback: function(value, index, values) {
-                  return '$' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-               }
-            }
-         }]
-      }
-   };
-   var ctx = document.getElementById("total_income").getContext("2d");
-   new Chart(ctx, {type: 'bar', data: barData, options:barOptions});
-  //////////////////END TOTAL SUMMARY/////////////////////////
-  ////////////////// ACUMULATIVO //////////////////////////////////////////////////////
-   var options_acumulative = {
-      responsive: true,
-      maintainAspectRatio: false,
-   };
-   var ctx = document.getElementById("acumulative").getContext("2d");
-   new Chart(ctx, {type: 'line', data: data_acomulative, options:options_acumulative});
-});
-</script> --}}

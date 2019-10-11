@@ -40,9 +40,11 @@ class UpdateIncome extends Command
      */
     public function handle()
     {
+        // PlanIncomeSummary::where('year', 2019)->delete();
         $years = [2017, 2018, 2019];
         $plans = Plan::all();
         foreach ($years as $year) {
+            PlanIncomeSummary::where('year', $year)->delete();
             for ($i = 1; $i < 13; $i++) {
                 foreach ($plans as $plan) {
                     $amount = Bill::join('plan_user', 'plan_user.id', 'bills.plan_user_id')
@@ -51,20 +53,32 @@ class UpdateIncome extends Command
                         ->whereYear('date', $year)
                         ->get()
                         ->sum('amount');
+
                     $quantity = Bill::join('plan_user', 'plan_user.id', 'bills.plan_user_id')
                         ->where('plan_user.plan_id', $plan->id)
                         ->whereMonth('date', $i)
                         ->whereYear('date', $year)
-                        ->count();
-                    $income = new PlanIncomeSummary;
-                    $income->plan_id = $plan->id;
-                    $income->amount = $amount;
-                    $income->quantity = $quantity;
-                    $income->month = $i;
-                    $income->year = $year;
-                    $income->save();
+                        ->count('bills.id');
+
+                    if ($amount || $quantity) {
+                        PlanIncomeSummary::create([
+                            'plan_id' => $plan->id,
+                            'amount' => $amount,
+                            'quantity' => $quantity,
+                            'month' => $i,
+                            'year' => $year
+                        ]);
+                    }
                 }
             }
         }
     }
 }
+
+                    // $income = new PlanIncomeSummary;
+                    // $income->plan_id = $plan->id;
+                    // $income->amount = $amount;
+                    // $income->quantity = $quantity;
+                    // $income->month = $i;
+                    // $income->year = $year;
+                    // $income->save();
