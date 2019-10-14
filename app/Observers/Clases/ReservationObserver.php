@@ -14,14 +14,23 @@ class ReservationObserver
         $clase = $reservation->clase;
         $plans = $reservation->user->reservable_plans;
         $date_class = Carbon::parse($clase->date);
+
+        // Check if has class yet
         $response = $this->hasReserve($clase, $reservation);
         if ($response) {
             Session::flash('warning', $response);
             return false;
         }
 
-        if ($reservation->by_god) {
+        // Return true if auth user is admin
+        if ($reservation->by_god == 1) {
             return true;
+        }
+
+        // Verified if class is full
+        if ($clase->reservation_count >= $clase->quota) {
+            Session::flash('warning', 'La clase esta llena');
+            return false;
         }
         
         $period_plan = null;
