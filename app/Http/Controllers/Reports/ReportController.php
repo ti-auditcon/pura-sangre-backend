@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Reports;
 
-use App\Models\Plans\Plan;
-use App\Models\Clases\Reservation;
 use App\Http\Controllers\Controller;
+use App\Models\Bills\Bill;
+use App\Models\Clases\Reservation;
+use App\Models\Plans\Plan;
 use App\Models\Plans\PlanIncomeSummary;
 
 class ReportController extends Controller
@@ -210,6 +211,42 @@ class ReportController extends Controller
         }
 
         return $reservations;
+    }
+
+    public function incomesCalibrate()
+    {
+        $plans = Plan::all();
+        $year = now()->year;
+        
+        PlanIncomeSummary::where('year', $year)->delete();
+        for ($i = 1; $i < 13; $i++) {
+            foreach ($plans as $plan) {
+                $amount = Bill::join('plan_user', 'plan_user.id', 'bills.plan_user_id')
+                              ->where('plan_user.plan_id', $plan->id)
+                              ->whereMonth('date', $i)
+                              ->whereYear('date', $year)
+                              ->get()
+                              ->sum('amount');
+
+                $quantity = Bill::join('plan_user', 'plan_user.id', 'bills.plan_user_id')
+                                ->where('plan_user.plan_id', $plan->id)
+                                ->whereMonth('date', $i)
+                                ->whereYear('date', $year)
+                                ->count('bills.id');
+
+                if ($amount || $quantity) {
+                    PlanIncomeSummary::create([
+                        'plan_id' => $plan->id,
+                        'amount' => $amount,
+                        'quantity' => $quantity,
+                        'month' => $i,
+                        'year' => $year
+                    ]);
+                }
+            }
+        }
+
+        return back()->with('success', 'Se han recalculado los ingresos');
     }
 }
 

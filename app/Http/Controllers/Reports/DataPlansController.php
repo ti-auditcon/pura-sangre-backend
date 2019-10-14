@@ -21,9 +21,9 @@ class DataPlansController extends Controller
 
     public function compare(Request $request)
     {
-        $first_date = Carbon::parse($request->date)->format('Y-m-d');
+        $first_date = Carbon::parse($request->first_date)->format('Y-m-d');
         
-        $second_date = Carbon::parse($request->date)->subMonthWithoutOverflow()->format('Y-m-d');
+        $second_date = Carbon::parse($request->second_date)->format('Y-m-d');
         // subMonthWithoutOverflow
         
         $data = PlanSummary::where('date', $first_date)

@@ -73,7 +73,7 @@ class ClaseController extends Controller
                                            'reservation_status:id,reservation_status,type'])
                                    ->get(['id', 'reservation_status_id', 'user_id', 'updated_at']);
 
-        $auth_roles = auth()->user(['id'])->roles()->pluck('id')->toArray();
+        $auth_roles = auth()->user(['id'])->roles()->orderBy('role_id')->pluck('id')->toArray();
 
         $stages = Stage::where('wod_id', $clase->wod_id)
                        ->with('stage_type:id,stage_type')

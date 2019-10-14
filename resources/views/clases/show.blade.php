@@ -176,7 +176,7 @@
                             <button id="button-modal" class="btn btn-warning btn-icon-only" data-toggle="modal" data-target="#confirm-assistance-modal"><i class="la la-check-square"></i></button>
                         @endif
 
-                        @if (in_array(1, $auth_roles))
+                        @if (in_array(1, $auth_roles) || in_array(2, $auth_roles))
 
                             <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">
                                 Agregar un Alumno
@@ -295,8 +295,8 @@
                                     <input type="hidden" value="{{$usuario->id}}" name="user_id">
                                     
                                     <input type="hidden" value="{{$clase->id}}" name="clase_id">
-                                    
-                                    <input type="hidden" value="1" name="by_god">
+
+                                    {{-- <input type="hidden" value="{{ $auth_roles[0] ?? 0 }}" name="by_god"> --}}
                                     
                                     <button type="button" class="btn btn-primary button-little" type="submit" onClick="this.form.submit();">Agregar</button>
                                 {!! Form::close() !!}

@@ -17,6 +17,8 @@
                     <div class="d-flex flex-row">
                         <input autocomplete="off" id="date-input" type="text" class="form-control">
 
+                        <input autocomplete="off" id="date-input-two" type="text" class="form-control">
+
                         <button id="compare-button" class="btn btn-success">Buscar</button>
                     </div>
                 </div>
@@ -73,6 +75,18 @@ $('#date-input').datepicker({
     todayHighlight: true
 });
 
+$('#date-input-two').datepicker({
+    format: "dd-mm-yyyy",
+    weekStart: 1,
+    startDate: "03-03-2008",
+    endDate: today,
+    maxViewMode: 3,
+    todayBtn: "linked",
+    language: "es",
+    autoclose: true,
+    todayHighlight: true
+});
+
 $.ajaxSetup({
     headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -80,8 +94,6 @@ $.ajaxSetup({
 });
 
 $(document).ready(function () {
-    var date = $('#date-input').val() ? $('#date-input').val() : today;
-
     $('#compare-button').click(function () {
         table.ajax.reload();
     });
@@ -93,10 +105,10 @@ $(document).ready(function () {
             "url": "<?= route('data-plans-compare') ?>",
             "dataType": "json",
             "type": "POST",
-            "data" : function( d ) {
-                d.date = $('#date-input').val() ?
-                         $('#date-input').val() :
-                         moment().format('DD-MM-YYYY');
+            // Data to send
+            "data" : function( data ) {
+                data.first_date = $('#date-input').val() ? $('#date-input').val() : moment().format('DD-MM-YYYY');
+                data.second_date = $('#date-input-two').val() ? $('#date-input-two').val() : moment().format('DD-MM-YYYY');
             },
         },
         "dom": '<"top">rt<"bottom"><"clear">',

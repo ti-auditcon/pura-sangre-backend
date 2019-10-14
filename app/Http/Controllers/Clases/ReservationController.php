@@ -10,11 +10,11 @@ use Illuminate\Http\Request;
 use App\Models\Clases\Reservation;
 use App\Http\Controllers\Controller;
 
-
 class ReservationController extends Controller
 {
     /**
      * [store description]
+     * 
      * @param  Request $request [description]
      * @return [type]           [description]
      */
@@ -24,7 +24,7 @@ class ReservationController extends Controller
             'clase_id' => $request->clase_id,
             'reservation_status_id' => 1,
             'user_id' => $request->user_id,
-            'by_god' => 1,
+            'by_god' => auth()->user(['id'])->roles()->orderBy('role_id')->value('id')
         ]);
 
         Session::flash('success','Agregado correctamente a la clase');
@@ -33,6 +33,7 @@ class ReservationController extends Controller
 
     /**
      * [confirm description]
+     * 
      * @param  Request     $request     [description]
      * @param  Reservation $reservation [description]
      * @return [type]                   [description]
@@ -49,6 +50,7 @@ class ReservationController extends Controller
 
     /**
      * [destroy description]
+     * 
      * @param  Request     $request     [description]
      * @param  Reservation $reservation [description]
      * @return [type]                   [description]

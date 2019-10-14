@@ -23,6 +23,10 @@ Route::get('/success-reset-password', function () {
 Route::post('expired-plans', 'HomeController@ExpiredPlan')->name('expiredplans');
 
 Route::middleware(['auth'])->prefix('/')->group(function () {
+    // Calibrate plan_income_summaries
+    Route::post('plan-incomes-summaries/calibrate', 'Reports\ReportController@incomesCalibrate')
+        ->name('incomes.calibrate');
+
     Route::get('update-reservations-plans', 'Users\UserController@putIdPlan')->middleware('role:1');
 
     /**

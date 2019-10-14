@@ -23,12 +23,14 @@ class InactiveUsersExport implements FromCollection, WithHeadings
 
     /**
      * headings for excel export
+     * 
      * @return [type] [description]
      */
     public function headings(): array
     {
         return [
         	'Alumno',
+            'Correo',
             'N° de teléfono',
             'Atleta desde',
         	'Último Plan',
@@ -57,6 +59,8 @@ class InactiveUsersExport implements FromCollection, WithHeadings
             
             return [                
                 $plan->user->full_name,
+
+                $plan->user->email,
 
                 '+56 9 ' . $plan->user->phone,
 

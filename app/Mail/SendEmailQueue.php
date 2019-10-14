@@ -18,7 +18,7 @@ class SendEmailQueue extends Mailable implements ShouldQueue
      *
      * @var int
      */
-    public $tries = 3;
+    public $tries = 20;
 
     /**
      * The number of seconds the job can run before timing out.
@@ -26,6 +26,13 @@ class SendEmailQueue extends Mailable implements ShouldQueue
      * @var int
      */
     public $timeout = 120;
+
+    /**
+     * The number of seconds to wait before retrying the job.
+     *
+     * @var int
+     */
+    public $retryAfter = 60;
 
     /**
      * [$demo description]
