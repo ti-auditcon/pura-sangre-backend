@@ -3,10 +3,10 @@
 namespace App\Exports;
 
 use App\Models\Users\User;
-// use App\Traits\EliminarTildes;
 use Freshwork\ChileanBundle\Rut;
-use Maatwebsite\Excel\Concerns\FromCollection;
+// use App\Traits\EliminarTildes;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\FromCollection;
 
 class UsersExport implements FromCollection, WithHeadings
 {
