@@ -203,16 +203,19 @@ $(document).ready(function(){
 {{-- <script src="{{ asset('js/sweetalert2.8.js') }}"></script> --}}
 
 <script>
-    $('#charts-recalculate').click(function() {
+    $('#charts-recalculate').click(function(e) {
+        e.preventDefault();
         swal({
             title: "Desea RECALCULAR?",
             text: "Esta acción puede tomar unos momentos, dependiendo de la cantidad de ingresos",
             type: 'warning',
             showCancelButton: true,
-            confirmButtonClass: 'btn-warning',
-            cancelButtonText: 'Cancelar',
             confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar',
+            confirmButtonClass: 'btn-warning',
             closeOnConfirm: false,
+            showLoaderOnConfirm: true,
+            allowOutsideClick: true
         },function() {
             $('#chart-calibrate').submit();
         });
