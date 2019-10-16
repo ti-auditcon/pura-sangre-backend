@@ -124,4 +124,23 @@ class PlanUser extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Create a bill from a plan user
+     * 
+     * @param  $request
+     * @return App\Models\Bills
+     */
+    public function createBill($request)
+    {
+        return Bill::create([
+            'plan_user_id' => $this->id,
+            'payment_type_id' => $request->payment_type_id,
+            'date' => Carbon::parse($request->date),
+            'start_date' => $this->start_date,
+            'finish_date' => $this->finish_date,
+            'detail' => $request->detalle,
+            'amount' => $request->amount
+        ]);
+    }
 }

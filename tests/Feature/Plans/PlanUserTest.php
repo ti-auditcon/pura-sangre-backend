@@ -3,7 +3,6 @@
 namespace Tests\Feature\Plans;
 
 use Tests\TestCase;
-use App\Models\Clases\Reservation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -43,7 +42,7 @@ class PlanUserTest extends TestCase
 
         $client_user = factory(\App\Models\Users\User::class)->create();
 
-        $all_plans = Plan::all();
+        $all_plans = \App\Models\Plans\Plan::all();
 
         $period = today();
         
@@ -134,7 +133,7 @@ class PlanUserTest extends TestCase
     /** @test */
     public function reservations_are_organized_after_user_plan_created()
     {
-        $this->withoutExceptionHandling();
+        // $this->withoutExceptionHandling();
 
         $this->seed(\StatusUsersTableSeeder::class);
         $this->seed(\ClaseTypesTableSeeder::class);
@@ -143,17 +142,17 @@ class PlanUserTest extends TestCase
         $this->seed(\PlanStatusTableSeeder::class);
         $this->seed(\PlansTableSeeder::class);
         $this->seed(\RolesTableSeeder::class);
-        $this->seed(\UsersTableSeeder::class);
+        // $this->seed(\UsersTableSeeder::class);
 
+        $admin = factory(\App\Models\Users\User::class)->create();
         $clase_de_hoy = factory(\App\Models\Clases\Clase::class)->create([
             'date' => today()->format('Y-m-d')
         ]);
 
-        $admin = factory(\App\Models\Users\User::class)->create();
         $admin->roles()->attach(1);
         $user = factory(\App\Models\Users\User::class)->create();
 
-        $reservation = factory(Reservation::class)->create([
+        $reservation = factory(\App\Models\Clases\Reservation::class)->create([
             'clase_id' => $clase_de_hoy->id,
             'user_id' => $user->id
         ]);
@@ -171,16 +170,87 @@ class PlanUserTest extends TestCase
             'plan_user_id' => null,
         ]);
 
-        $plan_user = factory(\App\Models\Plans\PlanUser::class)->create([
-            'user_id' => $user->id,
-            'start_date' => today() 
-        ]);
+        $plan_user = [
+            'plan_id' => 3,
+            "fecha_inicio" => today(),
+            "payment_type_id" => "1",
+            "date" => "01-11-2019",
+            "amount" => '45000'
+        ];
+
+        $response = $this->actingAs($admin)->post('/users/' . $user->id .  '/plans', $plan_user);
 
         $this->assertDatabaseHas('reservations', [
+            'plan_user_id' => 1,
             'user_id' => $user->id,
             'clase_id' => $clase_de_hoy->id,
-            'plan_user_id' => $plan_user->id,
         ]);
+    }
+
+    /** @test */
+    public function a_bill_is_created_after_plan_user_created()
+    {
+        $this->seed(\StatusUsersTableSeeder::class);
+        $this->seed(\ClaseTypesTableSeeder::class);
+        $this->seed(\BlockTableSeeder::class);
+        $this->seed(\PlanPeriodsTableSeeder::class);
+        $this->seed(\PlanStatusTableSeeder::class);
+        $this->seed(\PlansTableSeeder::class);
+        $this->seed(\RolesTableSeeder::class);
+
+        $admin = factory(\App\Models\Users\User::class)->create();
+
+        $admin->roles()->attach(1);
+        $user = factory(\App\Models\Users\User::class)->create();
+
+        $plan_user = [
+            'plan_id' => 3,
+            "fecha_inicio" => today(),
+            "payment_type_id" => "1",
+            "date" => today()->addDay()->format('d-m-Y'),
+            "amount" => 45000
+        ];
+
+        $response = $this->actingAs($admin)->post('/users/' . $user->id .  '/plans', $plan_user);
+
+        $this->assertDatabaseHas('bills', [
+            'payment_type_id' => 1,
+            'date' => today()->addDay(),
+            'start_date' => $plan_user['fecha_inicio'],
+            'finish_date' => today()->addMonth()->subDay(),
+            'amount' => $plan_user['amount']
+        ]);
+    }
+
+    /** @test */
+    public function when_creating_plan_dates_can_not_overlap_with_created_plan()
+    {
+        $this->seed(\PlanPeriodsTableSeeder::class);
+        $this->seed(\PlanStatusTableSeeder::class);
+        $this->seed(\PlansTableSeeder::class);
+        $this->seed(\RolesTableSeeder::class);
+        $user = factory(\App\Models\Users\User::class)->create();
+
+        $admin = factory(\App\Models\Users\User::class)->create();
+        $admin->roles()->attach(1);
+
+        factory(\App\Models\Plans\PlanUser::class)->create([
+            'user_id' => $user->id,
+            'start_date' => today(),
+            'finish_date' => today()->addMonth()->subDay()
+        ]);
+
+        $plan_user = factory(\App\Models\Plans\PlanUser::class)->create([
+            'user_id' => $user->id,
+            'start_date' => today()->addMonth(),
+            'finish_date' => today()->addMonths(2)->subDay()
+        ]);
+
+        $response = $this->actingAs($admin)->put('/users/' . $user->id .  '/plans/' .  $plan_user->id, [
+            'fecha_inicio' => today()->addMonth()->subDay()
+        ]);
+
+        $response->assertSessionHas('error-tap');
     }
 }
     // $this->withoutExceptionHandling();

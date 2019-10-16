@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Users\User;
-use App\Models\Clases\Clase;
 use Faker\Generator as Faker;
 use App\Models\Clases\Reservation;
 
@@ -14,10 +12,10 @@ use App\Models\Clases\Reservation;
 $factory->define(Reservation::class, function (Faker $faker) {
     return [
         'plan_user_id' => null,
-        'clase_id' => Clase::all()->random()->id,
+        'clase_id' => App\Models\Clases\Clase::all()->random()->id,
         'reservation_status_id' => mt_rand(1, 2),
-        'user_id' => User::all()->random()->id,
-        'by_god' => $faker->boolean(10),
+        'user_id' => App\Models\Users\User::all()->random()->id,
+        'by_god' => mt_rand(0, 1),
         'details' => $faker->text(400),
     ];
 });

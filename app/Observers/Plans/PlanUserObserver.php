@@ -26,17 +26,23 @@ class PlanUserObserver
         $fecha_inicio = Carbon::parse($planUser->start_date);
         $fecha_termino = Carbon::parse($planUser->finish_date);
         $plan_users = PlanUser::whereIn('plan_status_id', [1, 3])->where('user_id', $user->id)->get();
-        
+
         foreach ($plan_users as $plan_user) {
-            if (($fecha_inicio->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date))) || ($fecha_termino->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date)))) {
+            $inicio_plan = Carbon::parse($plan_user->start_date);
+            $termino_plan = Carbon::parse($plan_user->finish_date);
 
-                Session::flash('error', 'El usuario tiene un plan que choca con la fecha de inicio y período seleccionados');
-                return false;
-            } elseif (($fecha_inicio->lt(Carbon::parse($plan_user->start_date))) && ($fecha_termino->gt(Carbon::parse($plan_user->finish_date)))) {
+            if ($fecha_inicio->between($inicio_plan, $termino_plan) ||
+                $fecha_termino->between($inicio_plan, $termino_plan)) {
+                    Session::flash('error', 'El usuario tiene un plan que choca con la fecha de inicio y período seleccionados');
+                    return false;
+            }
 
+            if ($fecha_inicio->lt($inicio_plan) && $fecha_termino->gt($termino_plan)) {
                 Session::flash('error', 'El usuario tiene un plan activo que choca con la fecha de inicio y período seleccionados');
                 return false;
-            } elseif (($fecha_inicio->gt(Carbon::parse($plan_user->start_date))) && ($fecha_termino->lt(Carbon::parse($plan_user->finish_date)))) {
+            }
+
+            if ($fecha_inicio->gt($inicio_plan) && $fecha_termino->lt($termino_plan)) {
                 Session::flash('error', 'El usuario tiene un plan activo que choca con la fecha de inicio y período seleccionados');
                 return false;
             }
@@ -95,7 +101,6 @@ class PlanUserObserver
             } 
 
             if ( $fecha_inicio->gt($start_date) && $fecha_termino->lt($finish_date) ) {
-
                 Session::flash(
                     'error-tap',
                     'No se pudo actualizar las fechas, debido a que el plan ' . $plan_user->plan->plan . ' que va desde el ' . $start_date->format('d-m-Y') . ' al ' . $finish_date->format('d-m-Y') . ', choca con una fecha del plan que intentas modificar');
@@ -105,9 +110,7 @@ class PlanUserObserver
         }
 
         if ($planUser->plan_status_id != 5) {
-
             $planUser->plan_status_id = $this->checkActualPlan($planUser);
-        
         }
     }
 
@@ -180,8 +183,15 @@ class PlanUserObserver
             
             if ($reservation->plan_user_id !== $planUser->id) {
                 $reservation->update(['plan_user_id' => $planUser->id]);
+                // getting the dispatcher instance (needed to enable again the event observer later on)
+                $dispatcher = PlanUser::getEventDispatcher();
+                // disabling the events
+                PlanUser::unsetEventDispatcher();
+                // perform the operation
                 $planUser->counter -= 1;
                 $planUser->save();
+                // enabling the event dispatcher
+                PlanUser::setEventDispatcher($dispatcher);
             }
         }
         foreach ($reservations_out as $reserv) {

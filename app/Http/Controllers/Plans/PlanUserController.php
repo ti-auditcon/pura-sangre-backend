@@ -63,8 +63,8 @@ class planuserController extends Controller
             $counter = $plan->class_numbers;
         } else {
             $finish_date = Carbon::parse($request->fecha_inicio)
-                ->addMonths($plan->plan_period->period_number)
-                ->subDay();
+                                 ->addMonths($plan->plan_period->period_number)
+                                 ->subDay();
             $counter = $plan->class_numbers * $plan->plan_period->period_number * $plan->daily_clases;
         }
         if ($plan->custom == 1) {
@@ -83,15 +83,8 @@ class planuserController extends Controller
 
         if ($planuser->save()) {
             if (($plan->custom == 0) && ($request->amount > 0)) {
-                Bill::create([
-                    'plan_user_id' => $planuser->id,
-                    'payment_type_id' => $request->payment_type_id,
-                    'date' => Carbon::parse($request->date),
-                    'start_date' => $planuser->start_date,
-                    'finish_date' => $planuser->finish_date,
-                    'detail' => $request->detalle,
-                    'amount' => $request->amount,
-                ]);
+                $planuser->createBill($request);
+                
                 if (!\App::environment('local')) {
                     Mail::to($user->email)->send(new NewPlanUserEmail($user, $planuser));
                 }
