@@ -18,7 +18,7 @@ class SendEmailQueue extends Mailable implements ShouldQueue
      *
      * @var int
      */
-    public $tries = 20;
+    public $tries = 2;
 
     /**
      * The number of seconds the job can run before timing out.

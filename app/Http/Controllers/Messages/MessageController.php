@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Messages;
 
-use Session;
-use Redirect;
-use App\Mail\SendEmail;
-use App\Models\Users\User;
-use Illuminate\Http\Request;
-use App\Mail\SendEmailQueue;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Console\Scheduling\Schedule;
 use App\Http\Requests\Messages\MessageRequest;
+use App\Mail\SendEmail;
+use App\Mail\SendEmailQueue;
+use App\Models\Users\User;
+use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Mail;
+use Mailgun\Mailgun;
+use Redirect;
+use Session;
 
 class MessageController extends Controller
 {
@@ -41,10 +42,23 @@ class MessageController extends Controller
      */
     public function send(MessageRequest $request)
     {
+        // Mail::to('raulberrios8@gmail.com')->send(new SendEmail($mail, $user));
+        // $mgClient = new Mailgun();
+        // $mg = Mailgun::create(env('MAILGUN_SECRET'));
+        // dd($mg);
+        // $domain = env('MAILGUN_DOMAIN');
+        // # Make the call to the client.
+        // $mg->messages()->send($domain, [
+        //     'from'    => 'bob@example.com',
+        //     'to'      => 'raulberrios8@gmail.com',
+        //     'subject' => 'The PHP SDK is awesome!',
+        //     'text'    => 'It is so simple to send a message.'
+        // ]);
+
         $errors = null;
-        $users = User::whereIn('id', explode (",", $request->to[0]))->get();
+        $users = User::whereIn('id', explode (",", $request->to[0]))->get(['id', 'first_name', 'email']);
         
-        $mailable = count($users) > 18 ? SendEmailQueue::class : SendEmail::class;
+        // $mailable = count($users) > 18 ? SendEmailQueue::class : SendEmail::class;
 
         if ($request->image) {
             $random_name = str_shuffle(str_replace([' ', ':'], '', $request->subject . now()));
@@ -52,15 +66,16 @@ class MessageController extends Controller
             request()->file('image')->storeAs('public/emails', $random_name . '.jpg');
         } 
 
+        $time = 0;
         foreach ($users as $user) {
-            $mail = new \stdClass();
+            $mail = collect();
             $mail->subject = $request->subject;
             $mail->text = $request->text;
             $mail->user = $user->first_name;
             $mail->image_url = $request->image ? url('/') . '/storage/emails/' . $random_name . '.jpg' : null;
 
             try{
-                Mail::to($user->email)->send(new $mailable($mail, $user));
+                Mail::to($user->email)->later(now()->addSeconds($time), new SendEmailQueue($mail, $user));
             } catch(\Exception $e) {
                 \DB::table('errors')->insert([
                     'error' => $e,
@@ -69,6 +84,7 @@ class MessageController extends Controller
                 ]);
                 $errors += 1;
             }
+            $time += 3;
         }
 
         if ($errors) {
