@@ -120,7 +120,9 @@
                     <table id="students-table" class="table table-hover">
                         <thead class="thead-default thead-lg">
                             <tr>
-                                <th width="30%">Alumno</th>
+                                <th width="25%">Alumno</th>
+
+                                <th width="10%">Correo</th>
                             
                                 <th width="10%">RUN</th>
                             
@@ -128,7 +130,7 @@
                             
                                 <th width="10%">Vencimiento</th>
                             
-                                <th width="20%">Período</th>
+                                <th width="15%">Período</th>
                             
                                 <th width="10%">Acciones</th>
                             
@@ -232,6 +234,7 @@
                                    data + '</a>';
                       }
                     },
+                    { "data": "email" },
                     { "data": "rut_formated" },
                     {  "data": "actual_plan",
                         "render": function (data, other, row) {
@@ -242,7 +245,7 @@
                         "render": function (data, other, row) {
                             return data && data.plan ? moment(data.finish_date).format("DD-MM-YYYY") : 'no aplica';
                         },
-                     },
+                    },
                     { "data": "actual_plan",
                         "render": function (data, other, row) {
                             return data && data.plan ?
@@ -263,7 +266,7 @@
                 ],
                 "columnDefs": [
                     {
-                        "targets": [ 6 ],
+                        "targets": [ 7 ],
                         "visible": false,
                         "searchable": true
                     }

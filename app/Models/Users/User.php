@@ -126,7 +126,7 @@ class User extends Authenticatable
      */
     public function scopeAllUsers($query)
     {
-        $query->select(['id', 'rut', 'first_name', 'last_name', 'avatar', 'status_user_id'])
+        $query->select(['id', 'rut', 'first_name', 'last_name', 'email', 'avatar', 'status_user_id'])
               ->with(['actual_plan:id,start_date,finish_date,user_id,plan_id',
                       'actual_plan.plan:id,plan'
                      ]);
