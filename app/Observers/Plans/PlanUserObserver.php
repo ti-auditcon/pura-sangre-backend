@@ -2,17 +2,14 @@
 
 namespace App\Observers\Plans;
 
-use App\Models\Clases\Reservation;
-use App\Models\Plans\Plan;
-use App\Models\Plans\PlanIncomeSummary;
-use App\Models\Plans\PlanUser;
-use App\Models\Users\User;
-use Carbon\Carbon;
 use Session;
+use Carbon\Carbon;
+use App\Models\Users\User;
+use App\Models\Plans\Plan;
+use App\Models\Plans\PlanUser;
+use App\Models\Clases\Reservation;
+use App\Models\Plans\PlanIncomeSummary;
 
-/**
- * [PlanUserObserver description]
- */
 class PlanUserObserver
 {
     /**
@@ -56,6 +53,12 @@ class PlanUserObserver
         $this->updateStatusUser($planUser);
     }
 
+    /**
+     * [updating description]
+     * 
+     * @param  PlanUser $planUser [description]
+     * @return [type]             [description]
+     */
     public function updating(PlanUser $planUser)
     {
         $user = User::findOrFail($planUser->user_id);
@@ -121,9 +124,11 @@ class PlanUserObserver
                     $reserv->update(['plan_user_id' => null]);
                 }
             }
+
             $this->updateStatusUser($planUser);
         } else {
             $this->fixReservations($planUser);
+
             $this->updateStatusUser($planUser);
         }
     }
@@ -170,11 +175,9 @@ class PlanUserObserver
                                    ->get('reservations.id');
 
         $reservations_out = Reservation::join('clases', 'reservations.clase_id', '=', 'clases.id')
-            ->where('reservations.user_id', $planUser->user_id)
-            ->whereNotBetween('date', [Carbon::parse($planUser->start_date)->format('Y-m-d'), Carbon::parse($planUser->finish_date)->format('Y-m-d')])
-            ->get('reservations.id');
-
-        // dd($reservations);
+                                       ->where('reservations.user_id', $planUser->user_id)
+                                       ->whereNotBetween('date', [Carbon::parse($planUser->start_date)->format('Y-m-d'), Carbon::parse($planUser->finish_date)->format('Y-m-d')])
+                                       ->get('reservations.id');
 
         foreach ($reservations as $reserv) {
             $reservation = Reservation::find($reserv->id, ['id', 'plan_user_id']);
@@ -185,6 +188,7 @@ class PlanUserObserver
                 $planUser->save();
             }
         }
+
         foreach ($reservations_out as $reserv) {
             $reservation = Reservation::find($reserv->id, ['id', 'plan_user_id']);
 
@@ -194,6 +198,7 @@ class PlanUserObserver
                 $planUser->save();
             }
         }
+
         return $planUser;
     }
 
@@ -202,17 +207,14 @@ class PlanUserObserver
         $user = $planUser->user;
 
         if (today()->between(Carbon::parse($planUser->start_date), Carbon::parse($planUser->finish_date)) &&
-            $planUser->plan_status_id === 1
-        ) {
-
+            $planUser->plan_status_id === 1) {
             $user->status_user_id = ($planUser->plan->id === 1) ? 3 : 1;
-
         } elseif ($user->actual_plan && $user->actual_plan->id != $planUser->id) {
-
             $user->status_user_id = $user->actual_plan->plan->id === 1 ? 3 : 1;
         } else {
             $user->status_user_id = 2;
         }
+
         $user->save();
     }
 }

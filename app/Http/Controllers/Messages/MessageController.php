@@ -42,10 +42,9 @@ class MessageController extends Controller
     public function send(MessageRequest $request)
     {
         $errors = null;
-        $users = User::whereIn('id', explode (",", $request->to[0]))->get();
+        $users = User::whereIn('id', explode (",", $request->to[0]))
+                     ->get(['id', 'first_name', 'email']);
         
-        $mailable = count($users) > 18 ? SendEmailQueue::class : SendEmail::class;
-
         if ($request->image) {
             $random_name = str_shuffle(str_replace([' ', ':'], '', $request->subject . now()));
 
@@ -53,14 +52,14 @@ class MessageController extends Controller
         } 
 
         foreach ($users as $user) {
-            $mail = new \stdClass();
+            $mail = collect();
             $mail->subject = $request->subject;
             $mail->text = $request->text;
             $mail->user = $user->first_name;
             $mail->image_url = $request->image ? url('/') . '/storage/emails/' . $random_name . '.jpg' : null;
 
             try{
-                Mail::to($user->email)->send(new $mailable($mail, $user));
+                Mail::to($user->email)->send(new SendEmail($mail, $user));
             } catch(\Exception $e) {
                 \DB::table('errors')->insert([
                     'error' => $e,
@@ -73,11 +72,13 @@ class MessageController extends Controller
 
         if ($errors) {
             Session::flash('warning', 'Hay error(es) en ' . $errors . ' correo(s)');
+
             return redirect()->back();
         }
 
         if (count($users) > 18) {
             Session::flash('success', 'Parece que has enviado un correo masivo, dependiendo de la cantidad de personas es lo que tomará la entrega de cada uno de los correos');
+
             return redirect()->back();
         }
         
