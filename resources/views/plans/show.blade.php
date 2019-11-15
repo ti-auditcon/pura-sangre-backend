@@ -42,6 +42,11 @@
                 <div class="col-12">{{$plan->daily_clases}}</div>
               </div>
 
+              <div class="row mb-3">
+                <div class="col-12 text-muted">Descripción</div>
+                <div class="col-12">{{ $plan->description ?? 'Sin descripción' }}</div>
+              </div>
+
         </div>
       </div>
     </div>
