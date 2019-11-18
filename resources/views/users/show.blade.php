@@ -628,10 +628,10 @@
    <script>
     $(document).ready(function() {
      $('#past-classes-table').DataTable({
-        columnDefs: [ {
+        columnDefs: [{
            targets: 1,
               render: $.fn.dataTable.render.moment('', 'DD-MM-YYYY')
-        } ],
+        }],
         "paging": true,
         "ordering": true,
         "order": [[ 0, 'desc' ]],
