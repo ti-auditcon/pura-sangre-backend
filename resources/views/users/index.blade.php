@@ -116,6 +116,22 @@
                     </div>
                 
                 </div>
+
+                <div class="modal fade bd-example-modal-lg show" id="modal-avatar" role="dialog">
+                    <div class="modal-dialog">
+                            <div class="modal-content" style="max-width: 400px">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="dynamic-content">
+                                    <img id="avatar-img" alt="" style="width: 400px;"/>
+                                </div>
+                            </div>
+                       </div>
+                </div> 
+
                 <div class="table-responsive">
                     <table id="students-table" class="table table-hover">
                         <thead class="thead-default thead-lg">
@@ -229,7 +245,7 @@
                 "columns":[
                     { "data": "full_name",
                       "render": function (data, other, row) {
-                            return '<div class="img-avatar" style="background-image: url('+ row.avatar +')"></div>'+
+                            return '<div class="img-avatar div-user-avatar" style="background-image: url('+ row.avatar +')" data-image="'+ row.avatar +'"></div>'+
                                    '<a href="/users/'+ row.id +'">'+
                                    data + '</a>';
                       }
@@ -271,6 +287,13 @@
                         "searchable": true
                     }
                 ],
+                "fnInitComplete": function(oSettings, json) {
+                    $(".div-user-avatar").click(function () {
+                        $('#avatar-img').attr('src', $(this).data('image'));
+
+                        $('#modal-avatar').modal('show');
+                    });
+                }
 			});
 		});
 
@@ -281,5 +304,4 @@
 
 	</script>
 	{{--  End datatable --}}
-
 @endsection

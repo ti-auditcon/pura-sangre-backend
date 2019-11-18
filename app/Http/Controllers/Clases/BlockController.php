@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Clases;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Clases\BlockRequest;
 use App\Models\Clases\Block;
+use App\Models\Plans\Plan;
 use Illuminate\Http\Request;
 use Redirect;
 use Session;
@@ -25,19 +26,9 @@ class BlockController extends Controller
                        ->get()
                        ->toArray();
 
-        // dd($blocks->take(2));
+        $plans = Plan::with('plan_period:id,period')->where('plan_status_id', 1)->get(['id', 'plan', 'plan_period_id']);
                        
-        return view('blocks.index')->with('blocks', json_encode($blocks));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('blocks.index', ['blocks' => json_encode($blocks), 'plans' => $plans]);
     }
 
     /**
@@ -107,5 +98,4 @@ class BlockController extends Controller
         $block->delete();
         return Redirect::back();
     }
-
 }

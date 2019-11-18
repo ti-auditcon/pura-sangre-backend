@@ -200,6 +200,21 @@
                 </div>
             </div>
 
+                <div class="modal fade bd-example-modal-lg show" id="modal-avatar" role="dialog">
+                    <div class="modal-dialog">
+                            <div class="modal-content" style="max-width: 400px">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="dynamic-content">
+                                    <img id="avatar-img" alt="" style="width: 400px;"/>
+                                </div>
+                            </div>
+                       </div>
+                </div> 
+
             <div class="ibox-body pb-5">
                 <div class="table-responsive">
                 
@@ -217,7 +232,11 @@
                           @foreach ($reservations as $reservation)
                              <tr>
                                 <td>
-                                   <div class="img-avatar" style="background-image:  @if ($reservation->user->avatar) url('{{$reservation->user->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"></div>
+                                    <div class="img-avatar div-user-avatar"
+                                        style="background-image:  @if ($reservation->user->avatar) url('{{$reservation->user->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"
+                                        data-image="{{ $reservation->user->avatar }}"
+                                    ></div>
+
                                    <span class="badge-{{$reservation->user->status_user->type}} badge-point"></span>
                                    <a @if (in_array(1, $auth_roles) || in_array(2, $auth_roles)) href="{{url('/users/'.$reservation->user->id)}}" @endif>
                                       {{$reservation->user->first_name}} {{$reservation->user->last_name}}
@@ -375,6 +394,16 @@ $(document).ready(function(){
 });
 
 
+</script>
+
+<script>
+    $(document).ready(function () {
+        $(".div-user-avatar").click(function () {
+            $('#avatar-img').attr('src', $(this).data('image'));
+
+            $('#modal-avatar').modal('show');
+        });
+    });
 </script>
 
 <script>

@@ -326,12 +326,10 @@
 						{{ Form::open(['route' => ['blocks.update', 1], 'method' => 'put', 'id' => 'block-update', 'class' => 'styles-select']) }}
 						<select multiple="multiple" id="plan-select-edit" name="plans[]">
 							
-							@foreach (App\Models\Plans\Plan::all() as $plan)
-								
+							@foreach ($plans as $plan)
 								<option value="{{ $plan->id }}">
 									{{ $plan->plan }} {{ $plan->plan_period->period ?? "(sin período)" }}
 								</option>
-							
 							@endforeach
 						
 						</select>
