@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Bills;
 
+use App\Exports\PaymentsExcel;
 use App\Http\Controllers\Controller;
 use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
@@ -9,10 +10,8 @@ use App\Models\Plans\PlanUser;
 use App\Models\Users\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
-/**
- * [BillController description]
- */
 class BillController extends Controller
 {
     /**
@@ -22,7 +21,7 @@ class BillController extends Controller
      */
     public function index()
     {
-        $plans = Plan::all();
+        // $plans = Plan::all();
         return view('payments.index');
     }
 
@@ -124,5 +123,15 @@ class BillController extends Controller
     public function show(Bill $bill)
     {
         return $bill->toJson();
+    }
+
+    /**
+     * Export Excel of System bills
+     * 
+     * @return Maatwebsite\Excel\Facades\Excel
+     */
+    public function export()
+    {
+        return Excel::download(new PaymentsExcel, toDay()->format('d-m-Y') . '_pagos.xlsx');
     }
 }

@@ -80,6 +80,8 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     
     Route::get('/bills', 'Bills\BillController@bills')->name('bills');
 
+    Route::get('bills/export', 'Bills\BillController@export')->name('bills.export');
+
     /**
      * Plans Routes
      */
