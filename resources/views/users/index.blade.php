@@ -136,7 +136,7 @@
                     <table id="students-table" class="table table-hover">
                         <thead class="thead-default thead-lg">
                             <tr>
-                                <th width="25%">Alumno</th>
+                                <th width="30%">Alumno</th>
 
                                 <th width="10%">Correo</th>
                             
@@ -148,7 +148,7 @@
                             
                                 <th width="15%">Período</th>
                             
-                                <th width="10%">Acciones</th>
+                                <th width="5%">Acciones</th>
                             
                                 <th width="10%">status</th>
                             </tr>
@@ -287,7 +287,7 @@
                         "searchable": true
                     }
                 ],
-                "fnInitComplete": function(oSettings, json) {
+                "drawCallback": function( settings ) {
                     $(".div-user-avatar").click(function () {
                         $('#avatar-img').attr('src', $(this).data('image'));
 
@@ -299,9 +299,13 @@
 
 
   $('button.user-filter').on("click", function(){
-      table.columns( 6 ).search( $(this).data('status') ).draw();
+      table.columns( 7 ).search( $(this).data('status') ).draw();
     });
 
 	</script>
 	{{--  End datatable --}}
+
+{{--     <script>
+
+    </script> --}}
 @endsection
