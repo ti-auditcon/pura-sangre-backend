@@ -2,17 +2,17 @@
 
 @section('sidebar')
 
-    @include('layouts.sidebar',['page'=>'home'])
+    @include('layouts.sidebar', ['page' => 'home'])
 
 @endsection
 
 @section('content')
-   <div class="row justify-content-center">
-      <div class="col-12 col-md-5">
+<div class="row justify-content-center">
+    <div class="col-12 col-md-5">
         <div class="ibox">
             <div class="ibox-head">
                 <div class="ibox-title">
-                    Clases de hoy
+                    <h5>Clases de Hoy</h5>
                 </div>
 
                 <div class="ibox-tools">
@@ -21,13 +21,11 @@
                             <div class="col-10">
                                 <select class="form-control" name="type">
                                     @foreach(App\Models\Clases\ClaseType::all() as $type)
-
                                         <option value="{{ $type->id }}"
                                                 @if($type->id == Session::get('clases-type-id')) selected @endif
                                         >
                                             {{ $type->clase_type }}
                                         </option>
-
                                     @endforeach
                                 </select>
                             </div>
@@ -48,139 +46,160 @@
     @if (auth()->user()->hasRole(1))
         <div class="col-12 col-md-7">
             <div class="row">
-                <div class="col-md-7 col-sm-6">
+                <div class="col-12 col-md-6">
                     <div class="ibox">
-                        <div class="ibox-head">
-                            <div class="ibox-title">
-                                Actividad de alumnos en
-                                <span style="text-transform: capitalize;">
-                                    {{ today()->formatLocalized('%B') }}
-                                </span>
-                            </div>
-                        </div>
                         <div class="ibox-body">
-                            <div class="row">
-                                <div class="col-4 text-center" style="border-right: 1px solid rgba(0,0,0,.1);">
-                                    <div class="text-muted">ACTIVOS</div>
+                            <div>
+                                <h5>
+                                    Alumnos en
+                                    <span style="text-transform: capitalize;">
+                                        {{ today()->formatLocalized('%B') }}
+                                    </span>
+                                </h5>
 
-                                    <h2 class="text-success mt-1" id="actives">-</h2>
-                                </div>
-                                <div class="col-4 text-center" style="border-right: 1px solid rgba(0,0,0,.1);">
-                                    <div class="text-muted">PRUEBA</div>
+                                <div class="row mt-3">
+                                    <div class="col-4 text-center" style="border-right: 1px solid rgba(0,0,0,.1);">
+                                        <div class="text-muted">ACTIVOS</div>
 
-                                    <h2 class="text-warning mt-1" id="tests">-</h2>
+                                        <h2 class="text-success mt-1" id="actives">-</h2>
+                                    </div>
+
+                                    <div class="col-4 text-center" style="border-right: 1px solid rgba(0,0,0,.1);">
+                                        <div class="text-muted">PRUEBA</div>
+
+                                        <h2 class="text-warning mt-1" id="tests">-</h2>
+                                    </div>
+
+                                    <div class="col-4 text-center">
+                                        <div class="text-muted">INACTIVOS</div>
+                                        
+                                        <h2 class="text-danger mt-1" id="inactives">-</h2>
+                                    </div>
                                 </div>
-                                <div class="col-4 text-center">
-                                    <div class="text-muted">INACTIVOS</div>
-                                    
-                                    <h2 class="text-danger mt-1" id="inactives">-</h2>
+                            </div>
+                            <div class="mt-4">
+                                <h5>Crossfiteros activos del box</h5>
+
+                                <div class="row mt-4">
+                                    <div class="col-6 text-center">
+                                        <span class="h2"><i class="fa fa-male text-primary h1 mb-0 ml-2 mr-2"></i>
+                                            <span id="hombres">-</span>
+                                        </span>
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <span class="h2"><i class="fa fa-female text-pink h1 mb-0 ml-2 mr-2"></i>
+                                            <span id="mujeres">-</span>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-5 col-sm-12 ">
+                <div class="col-12 col-md-6">
                     <div class="ibox">
-                        <div class="ibox-head">
-                            <div class="ibox-title">Crossfiteros activos del box</div>
-                            <label id="my-label"></label>
-                        </div>
                         <div class="ibox-body">
-                            <div class="row ml-4 mt-3 mb-2">
-                                <span class="h2 mr-3"><i class="fa fa-male text-primary h1 mb-0 ml-2 mr-2"></i>
-                                    <span id="hombres">-</span>
-                                </span>
-                                <span class="h2 mr-3"><i class="fa fa-female text-pink h1 mb-0 ml-2 mr-2"></i>
-                                    <span id="mujeres">-</span>
-                                </span>
-                            </div>
+                            <h5>
+                                Planes vendidos hoy vs. mes <span style="text-transform: capitalize;">{{today()->formatLocalized('%B')}}</span>
+                            </h5>
+                                <div class="row mt-5">
+                                    <div class="col-6 text-center" style="border-right: 1px solid rgba(0,0,0,.1);">
+                                        <div class="text-muted">HOY</div>
+
+                                        <h2 id="hoy_total">-</h2>
+
+                                        <div class="text-muted mt-4">PLANES</div>
+
+                                        <h5 class="text-secondary mb-3" id="hoy_cantidad">-</h5>
+                                    </div>
+
+                                    <div class="col-6 text-center">
+                                        <div class="text-muted"> {{ strtoupper(today()->formatLocalized('%B')) }}</div>
+
+                                        <h2 id="mes_total">-</h2>
+
+                                        <div class="text-muted mt-4">PLANES</div>
+
+                                        <h5 class="text-secondary mb-3" id="mes_cantidad">-</h5>
+                                    </div>
+                                </div>
+                            {{-- <div class="ibox-body" id="incomes-summary"></div> --}}
                         </div>
                     </div>
                 </div>
             </div>
 
-        <div class="row">
-          <div class="col-12">
-             <div class="ibox">
-                  <div class="ibox-head">
-                  <div class="ibox-title">Planes vendidos hoy vs. mes <span style="text-transform: capitalize;">{{today()->formatLocalized('%B')}}</span></div>
-               </div>
-                  <div class="ibox-body" id="incomes-summary">
-                  </div>
-              </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="ibox">
-               <div class="ibox-head">
-                  <div class="ibox-title">Alumnos con planes próximos a vencer</div>
-               </div>
-               <div class="ibox-body">
-                  <div class="table-responsive">
-                     <table id="students-table" class="table table-hover">
-                        <thead class="thead-default thead-lg">
-                           <tr>
-                              <th>Alumno</th>
-                              <th>Plan</th>
-                              <th>Vencimiento</th>
-                              <th>Teléfono</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           @foreach ($plan_users->take(5) as $pu)
-                           <tr>
-                              <td><a href="{{ url('/users/'.$pu['user_id']) }}">{{ $pu['alumno'] }}</a></td>
-                              <td>{{ $pu['plan'] }}</td>
-                              <td>{{ $pu['fecha_termino'] }}</td>
-                              <td>{{ $pu['telefono'] }}</td>
-                           </tr>
-                           @endforeach
-                        </tbody>
-                     </table>
-                  </div>
-               </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="ibox">
+                        <div class="ibox-head">
+                            <div class="ibox-title">Alumnos con planes próximos a vencer</div>
+                        </div>
+
+                        <div class="ibox-body">
+                            <div class="table-responsive">
+                                <table id="students-table" class="table table-hover">
+                                    <thead class="thead-default thead-lg">
+                                        <tr>
+                                            <th>Alumno</th>
+                                            <th>Plan</th>
+                                            <th>Vencimiento</th>
+                                            <th>Teléfono</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($plan_users->take(5) as $pu)
+                                        <tr>
+                                            <td><a href="{{ url('/users/'.$pu['user_id']) }}">{{ $pu['alumno'] }}</a></td>
+                                            <td>{{ $pu['plan'] }}</td>
+                                            <td>{{ $pu['fecha_termino'] }}</td>
+                                            <td>{{ $pu['telefono'] }}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox">
+                        <div class="ibox-head">
+                            <div class="ibox-title">Alumnos recientemente inactivos</div>
+                        </div>
+                        <div class="ibox-body">
+                            <table id="inactive-users-table" class="table table-hover">
+                                <thead class="thead-default">
+                                    <tr>
+                                       <th>Alumno</th>
+                                       <th>Plan</th>
+                                       <th>Fecha</th>
+                                       <th>N° Teléfono</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                           </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="ibox">
-               <div class="ibox-head">
-                  <div class="ibox-title">Alumnos recientemente inactivos</div>
-               </div>
-               <div class="ibox-body">
-                   <table id="inactive-users-table" class="table table-hover">
-                      <thead class="thead-default">
-                         <tr>
-                            <tr>
-                               <th>Alumno</th>
-                               <th>Plan</th>
-                               <th>Fecha</th>
-                               <th>N° Teléfono</th>
-                            </tr>
-                         </tr>
-                      </thead>
-                      <tbody>
-                      </tbody>
-                   </table>
-               </div>
-             </div>
-          </div>
         </div>
-      </div>
     @endif
-   </div>
+</div>
 
 @endsection
 
 @section('css') {{-- stylesheet para esta vista --}}
-      <link href="{{asset('css/bootstrap-datepicker.min.css')}}" rel="stylesheet" />
-    	<link href="{{asset('css/fullcalendar.min.css')}}" rel="stylesheet" />
-      <style>
+    <link href="{{asset('css/bootstrap-datepicker.min.css')}}" rel="stylesheet" />
+    
+    <link href="{{asset('css/fullcalendar.min.css')}}" rel="stylesheet" />
+    
+    <style>
         .fc-axis.fc-widget-header{width:59px !important;}
         .fc-axis.fc-widget-content{width:51px !important;}
         .fc-scroller.fc-time-grid-container{height:100% !important;}
         .fc-time-grid.fc-event-container {left:10px}
         .closeon { top: 0; right: 8px; bottom: 0; position: absolute; }
-      </style>
+    </style>
 @endsection
 
 
@@ -287,6 +306,17 @@
             error: function(){
                 console.log("Error Occurred");
             }
+        });
+    });
+
+    var uri = "{{ url('withoutrenewal') }}";
+
+    $( document ).ready(function () {
+        $.get('/incomes-summary/', function (res) {
+            Object.keys(res).forEach(element => {
+                // console.log(element);
+                $('#' + element).text(res[element]);
+            });
         });
     });
 </script>
