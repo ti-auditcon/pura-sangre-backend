@@ -111,7 +111,7 @@
 
                                         <div class="text-muted mt-4">PLANES</div>
 
-                                        <h5 class="text-secondary mb-3" id="hoy_cantidad">-</h5>
+                                        <h4 id="hoy_cantidad">-</h4>
                                     </div>
 
                                     <div class="col-6 text-center">
@@ -121,7 +121,7 @@
 
                                         <div class="text-muted mt-4">PLANES</div>
 
-                                        <h5 class="text-secondary mb-3" id="mes_cantidad">-</h5>
+                                        <h4 id="mes_cantidad">-</h4>
                                     </div>
                                 </div>
                             {{-- <div class="ibox-body" id="incomes-summary"></div> --}}
