@@ -11,10 +11,15 @@ use App\Http\Controllers\Controller;
 
 class NotificationController extends Controller
 {
+    /**
+     * [__construct description]
+     * 
+     */
     public function __construct()
     {
         // $this->Notification = new Notification;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -26,19 +31,32 @@ class NotificationController extends Controller
         return view('messages.notifications')->with('users', $users);
     }
 
-    public function store(Request $r)
+    /**
+     * [store description]
+     * 
+     * @param  Request $r [description]
+     * @return [type]     [description]
+     */
+    public function store(Request $request)
     {
-        $users = User::whereIn('id', request('users_id'))->get();
+        $not = Notification::create([
+            'users' => implode($request->to),
+            'title' => $request->title,
+            'body' => $request->body,
+            'trigger_at' => '2019-01-01'
+        ]);
 
-        foreach ($users as $user) {
-            SendPushNotification::dispatch($user->fcm_token, request('title'), request('body'));
-        }
+        // $users = User::whereIn('id', request('users_id'))->get(['id', 'fcm_token']);
 
-        $response = count($users) > 1 ?
-                    'Notificación enviada correctamente' :
-                    'Notificaciones enviadas correctamente';
+        // foreach ($users as $user) {
+        //     SendPushNotification::dispatch($user->fcm_token, request('title'), request('body'));
+        // }
 
-        Session::flash('success', $response);
+        // $response = count($users) > 1 ?
+        //             'Notificación enviada correctamente' :
+        //             'Notificaciones enviadas correctamente';
+
+        Session::flash('success', 'correcto');
         
         return redirect()->route('messages.notifications');
     }

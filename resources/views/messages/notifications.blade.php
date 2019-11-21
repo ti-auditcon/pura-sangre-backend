@@ -4,13 +4,17 @@
 @endsection
 
 @section('content')
-<div class="row justify-content-center">
-    <div class="col-md-12">
+<div class="row">
+    <div class="col-md-6">
         <div class="ibox ibox-fullheight" id="mailbox-container">
             <div class="ibox-head">
                 <div class="ibox-title">
-                
-                <h3 class="font-strong"><i class="fa fa-mobile" aria-hidden="true"></i> Notificaciones PUSH</h3></div>
+                    <h3 class="font-strong">
+                        <i class="fa fa-mobile" aria-hidden="true"></i>
+                        
+                        Notificaciones PUSH
+                    </h3>
+                </div>
                 
                 <div class="ibox-tools">
                     <button
@@ -25,16 +29,19 @@
 
             <div class="ibox-body">
                 <div class="ibox-body messages">
-                    <div class="flexbox mb-4">
+                    <div class="flexbox">
                         <div class="row">
                             <div class="flexbox">
-                                
                                 <label class="mb-0 mr-2">Estados:</label>
                                 
                                 <div class="btn-group bootstrap-select show-tick form-control" style="width: 150px;">
-                                
-                                    <select class="selectpicker show-tick form-control" id="type-filter" title="Elegir estado" data-style="btn-solid" data-width="150px" tabindex="-98">
-                                        
+                                    <select class="selectpicker show-tick form-control"
+                                            id="type-filter"
+                                            title="Elegir estado"
+                                            data-style="btn-solid"
+                                            data-width="150px"
+                                            tabindex="-98"
+                                    >
                                         <option value="">Todos</option>
                                         
                                         <option value="1">Activo</option>
@@ -42,14 +49,15 @@
                                         <option value="2">Inactivo</option>
                                         
                                         <option value="3">Prueba</option>
-                                    
                                     </select>
-
                                 </div>
                             </div>
                             <div class="flexbox">
                                 <label class="mb-0 mr-2">&nbsp; Mostrar: </label>
-                                <div class="btn-group bootstrap-select show-tick form-control" style="width: 150px;">
+
+                                <div class="btn-group bootstrap-select show-tick form-control"
+                                     style="width: 150px;"
+                                >
                                     <select
                                         class="selectpicker show-tick form-control"
                                         id="length-filter"
@@ -57,7 +65,6 @@
                                         data-width="150px"
                                         tabindex="-98"
                                     >
-                                        
                                         <option value="10">10 alumnos</option>
                                         
                                         <option value="25">25 alumnos</option>
@@ -65,7 +72,6 @@
                                         <option value="50">50 alumnos</option>
                                         
                                         <option value="100">100 alumnos</option>
-                                    
                                     </select>
                                 </div>
                                 <label class="mb-0 mr-2">&nbsp;</label>
@@ -80,9 +86,15 @@
                         </div>
 
                         <div class="input-group-icon input-group-icon-left mr-3">
-                            <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
+                            <span class="input-icon input-icon-right font-16">
+                                <i class="ti-search"></i>
+                            </span>
                             
-                            <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Buscar ...">
+                            <input class="form-control form-control-rounded form-control-solid"
+                                   id="key-search"
+                                   type="text"
+                                   placeholder="Buscar ..."
+                            />
                         </div>
                     </div>
 
@@ -97,15 +109,14 @@
                             >
                                 <thead class="thead-default thead-lg">
                                     <tr role="row">
-                                        <th
-                                            class="checkboxes-select-all sorting_disabled"
+                                        <th class="checkboxes-select-all sorting_disabled"
                                             tabindex="0"
                                             aria-controls="example"
                                             rowspan="1"
                                             colspan="1"
                                             aria-label=""
                                         >
-                                            <input type="checkbox">
+                                            <input type="checkbox"/>
                                         </th>
                                         
                                         <th class="sorting_asc" width="10">ID</th>
@@ -117,8 +128,7 @@
                                         <th class="sorting">status_user</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                </tbody>
+                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
@@ -134,8 +144,8 @@
          tabindex="-1"
          role="dialog"
          aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-
+         aria-hidden="true"
+    >
         <div class="modal-dialog-email modal-dialog modal-xl " role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -152,13 +162,12 @@
                         <div class="ibox-body">
                             <label class="col-form-label">Para</label>
                             
-                            <input
-                                type="text"
-                                value=""
-                                name="to[]"
-                                data-role="tagsinput"
-                                id="tags"
-                                class="tass form-control"
+                            <input type="text"
+                                   value=""
+                                   name="to[]"
+                                   data-role="tagsinput"
+                                   id="tags"
+                                   class="tass form-control"
                             />
                         </div>
 
@@ -176,7 +185,7 @@
                             type="submit"
                             onClick="this.form.submit();"
                         >
-                            Enviar Push
+                            Programar PUSH
                         </button>
                     </tbody>
                     <div id="form-input"></div>
@@ -269,7 +278,7 @@
                         $('<input>').attr({
                             type: 'hidden',
                             id: rowId.id,
-                            name: 'users_id['+ index +']'
+                            name: 'users['+ index +']'
                         }).val(rowId.id).appendTo(form);
 
                         $('.tass').tagsinput('add', {
@@ -297,21 +306,15 @@
             var table = $('#example').DataTable();
             
             $('#key-search').on('keyup', function() {
-            
                 table.search(this.value).draw();
-            
             });
             
             $('#type-filter').on('change', function() {
-            
                 table.column(4).search($(this).val()).draw();
-            
             }); 
             
             $('#length-filter').on('change', function () {
-            
                 table.page.len( $(this).val() ).draw();
-            
             });
         });
 

@@ -7,12 +7,15 @@ use App\Models\Bills\Bill;
 use App\Models\Clases\Reservation;
 use App\Models\Plans\Plan;
 use App\Models\Plans\PlanIncomeSummary;
+use App\Models\Plans\PlanUser;
 
 class ReportController extends Controller
 {
-    public $months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo",
-        "Junio", "Julio", "Agosto", "Septiembre",
-        "Octubre", "Noviembre", "Diciembre"];
+    public $months = [
+        "Enero", "Febrero", "Marzo",
+        "Abril", "Mayo", "Junio", "Julio", "Agosto",
+        "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ];
 
     /**
      * Get all plans
@@ -24,27 +27,43 @@ class ReportController extends Controller
 
         return $plans;
     }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {        
         return view('reports.index');
     }
 
+    /**
+     * [firstchart description]
+     * 
+     * @return [type] [description]
+     */
     public function firstchart()
     {
-        list($annual, $sub_annual) = $this->monthIncomeAnual();
+        $data = Bill::selectRaw('SUM(amount) as total, YEAR(DATE) as year, MONTH(date) as month')
+                    ->whereYear('date', today()->year)
+                    ->orWhereYear('date', today()->subYear()->year)
+                    ->groupBy(\DB::raw('YEAR(date)'))
+                    ->groupBy(\DB::raw('MONTH(date)'))
+                    ->get();
 
         return response()->json([
-            'annual' => $annual,
-            'sub_annual' => $sub_annual,
-            'months' => $this->months
+            'annual'     => $data->where('year', today()->year)->pluck('total'),
+            'sub_annual' => $data->where('year', today()->subYear()->year)->pluck('total'),
+            'months'     => $this->months
         ]);
     }
 
+    /**
+     * [secondchart description]
+     * 
+     * @return [type] [description]
+     */
     public function secondchart()
     {
         list($q_anual, $q_sub_anual) = $this->totalPlansYearByMonth();
@@ -56,6 +75,11 @@ class ReportController extends Controller
         ]);
     }
 
+    /**
+     * [thirdchart description]
+     * 
+     * @return [type] [description]
+     */
     public function thirdchart()
     {
         $rsrvs_anual = $this->quantityAnualReservationsByMonth();
@@ -69,50 +93,42 @@ class ReportController extends Controller
         ]);
     }
 
-    public function totalplans()
+    /**
+     * Get the quantity of the plans sorted by plan type around the year (monthly)
+     * 
+     * @return [type] [description]
+     */
+    public function quantityTypePlansByMonth()
     {
-        $data = $this->quantityPlansByMonthLastTwoYears();
+        $data = PlanUser::selectRaw(
+                            'COUNT(id) as total, YEAR(start_date) as year,
+                            MONTH(start_date) as month, plan_id as plan'
+                          )
+                        ->whereYear('start_date', today()->year)
+                        ->with(['plan' => function($plan) {
+                            $plan->where('plan_status_id', 1);
+                        }])
+                        ->groupBy(\DB::raw('YEAR(start_date)'))
+                        ->groupBy(\DB::raw('MONTH(start_date)'))
+                        ->groupBy('plan_id')
+                        ->get();
 
-        echo json_encode($data);
-    }
+        foreach (Plan::where('plan_status_id', 1)->get(['id', 'plan']) as $key => $plan) {
+            for ($i = 0; $i < 13; $i++) {
+                if ($i == 0) {
+                    $result[$key]['plan'] = $plan->plan;
+                } else {
+                    $value = $data->where('plan', $plan->id)
+                                  ->where('month', $i)
+                                  ->where('year', today()->year)
+                                  ->first();
 
-    //INGRESOS POR MES AÑO ACTUAL
-    public function monthIncomeAnual()
-    {
-        $incomes = PlanIncomeSummary::selectRaw('month, year, SUM(amount) as total')
-                                       ->where('year', toDay()->year)
-                                       ->orWhere('year', toDay()->subYear()->year)
-                                       ->groupBy('year', 'month')
-                                       ->get();
-
-        for ($i = 0; $i < 12; $i++) {
-            $actual_income = $incomes->where('month', $i + 1)
-                                     ->where('year', toDay()->year)
-                                     ->pluck('total')
-                                     ->toArray();
-
-            $actual_year[] = count($actual_income) ? (int)$actual_income[0] : 0;
-
-            $past_year_income = $incomes->where('month', $i + 1)
-                                     ->where('year', toDay()->subYear()->year)
-                                     ->pluck('total')
-                                     ->toArray();
-
-            $past_year[] = count($past_year_income) ? (int)$past_year_income[0] : 0;
+                    $result[$key][$this->months[$i - 1]] = $value ? $value->total : 0;
+                }
+            }
         }
 
-        return [$actual_year, $past_year];
-    }
-
-    //INGRESOS POR MES AÑO ANTERIOR
-    public function monthIncomeAnualSub()
-    {
-        $month_summ = PlanIncomeSummary::selectRaw('month, year, SUM(amount) as total')
-                                       ->orWhere('year', now()->subYear()->year)
-                                       ->groupBy('year', 'month')
-                                       ->get();
-
-        return $month_summ;
+        echo json_encode(['data' => $result, 'max' => $data->max()->total]);
     }
 
     // CANTIDAD DE PLANES EN EL AÑO POR MES
@@ -146,43 +162,13 @@ class ReportController extends Controller
     {
         for ($i = 1; $i < 13; $i++) {
             $quantity[] = PlanIncomeSummary::where('month', $i)
-                ->where('year', now()->subYear()->year)
-                ->get()
-                ->sum('quantity');
+                                           ->where('year', now()->subYear()->year)
+                                           ->get()
+                                           ->sum('quantity');
             $quantity_plans[$i - 1] = ['month' => $this->months[$i - 1], 'quantity' => $quantity[$i - 1]];
         }
 
         return $quantity_plans;
-    }
-
-    /**
-     * CANTIDAD DE PLANES EN EL AÑO POR MES
-     * 
-     * @return array
-     */
-    public function quantityPlansByMonthLastTwoYears()
-    {
-        $plans = $this->plans();
-
-        foreach ($plans as $plan) {
-            $quantity_year = PlanIncomeSummary::where('plan_id', $plan->id)
-                                          ->where('year', now()->year)
-                                          ->get(['id', 'quantity'])
-                                          ->sum('quantity');
-
-            $quantity_sub_year = PlanIncomeSummary::where('plan_id', $plan->id)
-                                          ->where('year', now()->subYear()->year)
-                                          ->get(['id', 'quantity'])
-                                          ->sum('quantity');
-
-            $plans_by_years[] = [
-                'plan' => $plan->plan,
-                now()->year => $quantity_year,
-                now()->subYear()->year => $quantity_sub_year
-            ];
-        }
-
-        return ['data' => $plans_by_years];
     }
 
     /**
@@ -205,9 +191,9 @@ class ReportController extends Controller
     {
         for ($i = 0; $i < 12; $i++) {
             $reservations[] = Reservation::join('clases', 'clases.id', 'reservations.clase_id')
-                ->whereMonth('clases.date', $i + 1)
-                ->whereYear('clases.date', now()->subYear()->year)
-                ->count('reservations.id');
+                                         ->whereMonth('clases.date', $i + 1)
+                                         ->whereYear('clases.date', now()->subYear()->year)
+                                         ->count('reservations.id');
         }
 
         return $reservations;
@@ -250,108 +236,60 @@ class ReportController extends Controller
     }
 }
 
-    // //INGRESOS EN EL AÑO
-    // public function yearIncome()
+    // //INGRESOS POR MES AÑO ACTUAL
+    // public function monthIncomeAnual()
     // {
-    //     $year_summ = PlanIncomeSummary::where('year', now()->year)
-    //                                   ->get()
-    //                                   ->sum('amount');
-    //     return $year_summ;
+    //     $incomes = PlanIncomeSummary::selectRaw('month, year, SUM(amount) as total')
+    //                                    ->where('year', toDay()->year)
+    //                                    ->orWhere('year', toDay()->subYear()->year)
+    //                                    ->groupBy('year', 'month')
+    //                                    ->get();
+
+    //     for ($i = 0; $i < 12; $i++) {
+    //         $actual_income = $incomes->where('month', $i + 1)
+    //                                  ->where('year', toDay()->year)
+    //                                  ->pluck('total')
+    //                                  ->toArray();
+
+    //         $actual_year[] = count($actual_income) ? (int)$actual_income[0] : 0;
+
+    //         $past_year_income = $incomes->where('month', $i + 1)
+    //                                  ->where('year', toDay()->subYear()->year)
+    //                                  ->pluck('total')
+    //                                  ->toArray();
+
+    //         $past_year[] = count($past_year_income) ? (int)$past_year_income[0] : 0;
+    //     }
+
+    //     return [$actual_year, $past_year];
     // }
 
-    // //INGRESOS EN EL MES
-    // public function monthIncome()
+    // //INGRESOS POR MES AÑO ANTERIOR
+    // public function monthIncomeAnualSub()
     // {
-    //     $month_summ = PlanIncomeSummary::where('month', now()->month)
-    //                                    ->get()
-    //                                    ->sum('amount');
+    //     $month_summ = PlanIncomeSummary::selectRaw('month, year, SUM(amount) as total')
+    //                                    ->orWhere('year', now()->subYear()->year)
+    //                                    ->groupBy('year', 'month')
+    //                                    ->get();
+
     //     return $month_summ;
     // }
-
-    // // CANTIDAD DE PLANES EN EL AÑO
-    // public function totalPlansYear()
-    // {
-    //     $plans_year = PlanIncomeSummary::where('year', now()->year)
-    //                                            ->get()
-    //                                            ->count();
-    //     return $plans_year;
-    // }
-
-    // // CANTIDAD DE PLANES DEL AÑO ANTERIOR
-    // public function totalPlansSubYear()
-    // {
-    //     $plans_before_year = PlanIncomeSummary::where('year', now()->subYear()->year)
-    //                                            ->get()
-    //                                            ->count();
-    //     return $plans_before_year;
-    // }
-
-    // // CANTIDAD DE PLANES EN EL MES
-    // public function totalPlansMonth()
-    // {
-    //     $plans_month = PlanIncomeSummary::where('month', now()->month)
-    //                                            ->get()
-    //                                            ->count();
-    //     return $plans_month;
-    // }
-
-    // // CANTIDAD DE PLANES DEL MES ANTERIOR
-    // public function totalPlansSubMonth()
-    // {
-    //     $plans_sub_month = PlanIncomeSummary::where('month', now()->subMonth()->month)
-    //                                            ->get()
-    //                                            ->count();
-    //     return $plans_sub_month;
-    // }
-
-    // // ALUMNOS NUEVOS POR MES
-    // public function newStudents()
-    // {
-    //     $new_students = User::whereMonth('created_at' , now()->month)
-    //                         ->get()
-    //                         ->count();
-    //     return $new_students;
-    // }
-
-    // public function reservationsOfDay()
-    // {
-    //     $day_reservations = null;
-    //     $clases = Clase::where('date', toDay())->get();
-    //     foreach ($clases as $clase) {
-    //         foreach ($clase->reservations as $reservation) {
-    //             $day_reservations[] = $reservation;
-    //         }
-    //     }
-    //     // dd($day_reservations);
-    //     return $day_reservations;
-    // }
-
-    // public function reservationsOfMonth()
-    // {
-    //     $month_reservations = null;
-    //     $clases = Clase::where('date', '>=', now()->startOfMonth())
-    //                    ->where('date', '<=', now()->endOfMonth())
-    //                    ->get();
-    //     foreach ($clases as $clase) {
-    //         foreach ($clase->reservations as $reservation) {
-    //             $month_reservations[] = $reservation;
-    //         }
-    //     }
-    //     // dd($month_reservations);
-    //     return $month_reservations;
-    // }
-
-    // public function reservationsDailyMonth()
-    // {
-    //     $month_reservations = null;
-    //     $clases = Clase::where('date', '>=', now()->startOfMonth())
-    //                    ->where('date', '<=', now()->endOfMonth())
-    //                    ->get();
-    //     foreach ($clases as $clase) {
-    //         foreach ($clase->reservations as $reservation) {
-    //             $month_reservations[] = $reservation;
-    //         }
-    //     }
-    //     // dd($month_reservations);
-    //     return $month_reservations;
-    // }
+    // 
+    // 
+        // $data = $data->map(function ($plan) {
+        //     return [
+        //         'plan' => $plan->plan_id,
+        //         'enero' => ,
+        //         'febrero' => ,
+        //         'marzo' => ,
+        //         'abril' => ,
+        //         'mayo' => ,
+        //         'junio' => ,
+        //         'julio' => ,
+        //         'agosto' => ,
+        //         'septiembre' => ,
+        //         'octubre' => ,
+        //         'noviembre' => ,
+        //         'diciembre' => 
+        //     ];
+        // });

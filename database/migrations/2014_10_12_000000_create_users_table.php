@@ -117,17 +117,19 @@ class CreateUsersTable extends Migration
           // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
-        // Schema::create('millestone_users', function (Blueprint $table) {
-        //   $table->unsignedInteger('millestone_id')->nullable();
-        //   $table->unsignedInteger('user_id');
-        //   $table->date('month');
-        //   $table->date('year');
-        //   $table->timestamps();
-        //   $table->softDeletes();
-        //
-        //   $table->foreign('millestone_id')->references('id')->on('millestones')->onDelete('cascade');
-        //   $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-        // });
+        Schema::create('notifications', function (Blueprint $table) {
+            $table->increments('id');
+          
+            $table->string('title')->nullable();
+          
+            $table->longText('body')->nullable();
+          
+            $table->boolean('sended')->default(0);
+          
+            $table->timestamp('trigger_at');
+
+            $table->timestamps();
+        });
     }
 
     /**
@@ -151,7 +153,6 @@ class CreateUsersTable extends Migration
         
         Schema::dropIfExists('role_user');
         
-        // Schema::dropIfExists('millestones');
-        // Schema::dropIfExists('millestone_users');
+        Schema::dropIfExists('notifications');
     }
 }

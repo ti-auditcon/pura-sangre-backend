@@ -1,6 +1,7 @@
 @extends('layouts.app')
+
 @section('sidebar')
-  @include('layouts.sidebar')
+    @include('layouts.sidebar')
 @endsection
 
 @section('content')
@@ -45,29 +46,36 @@
             </div>
         </div>
     </div>
-    <div class="col-xl-6">
+    <div class="col-xl-12">
         <div class="ibox">
             <div class="ibox-body">
                 <div class="d-flex justify-content-between mb-4">
                     <div>
-                        <h3 class="m-0">Cantidad de Planes</h3>
-                        <div>Por tipo de Plan a nivel anual</div>
+                        <h3 class="m-0">Cantidad de Planes por tipo año {{ today()->formatLocalized('%Y') }}</h3>
                     </div>
                 </div>
                 <div class="table-responsive">
-
-                            <table id="quantity-plans-table" class="table table-hover">
-                                <thead class="thead-default">
-                                    <tr>
-                                        <th width="50%">Tipo de Plan</th>
-                                        <th width="25%">{{ today()->year }}</th>
-                                        <th width="25%">{{ today()->subYear()->year }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-
+                    <table id="plans-type-table" class="table table-hover">
+                        <thead class="thead-default">
+                            <tr>
+                                <th width="16%">Tipo de Plan</th>
+                                <th width="7%">Enero</th>
+                                <th width="7%">Febrero</th>
+                                <th width="7%">Marzo</th>
+                                <th width="7%">Abril</th>
+                                <th width="7%">Mayo</th>
+                                <th width="7%">Junio</th>
+                                <th width="7%">Julio</th>
+                                <th width="7%">Agosto</th>
+                                <th width="7%">Septiembre</th>
+                                <th width="7%">Octubre</th>
+                                <th width="7%">Noviembre</th>
+                                <th width="7%">Diciembre</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -83,42 +91,140 @@
 
 @section('scripts') {{-- scripts para esta vista --}}
 
-   <script src="{{ asset('js/datatables.min.js') }}"></script>
+    <script src="{{ asset('js/datatables.min.js') }}"></script>
 
     <script src="{{ asset('js/moment.min.js') }}"></script>
 
 <script>
-    $('#quantity-plans-table').DataTable( {
-        "ajax": {
-            "url": '{{ route("totalplans") }}',
-            "dataType": "json",
-            "type": "get",
-        },
-        "language": {
-            "lengthMenu": "Mostrar _MENU_ elementos",
-            "zeroRecords": "Sin resultados",
-            "info": "Mostrando página _PAGE_ de _PAGES_",
-            "infoEmpty": "Sin resultados",
-            "infoFiltered": "(filtrado de _MAX_ registros totales)",
-            "search": "Filtrar:",
-            "paginate": {
-                "first": "Primero",
-                "last": "Último",
-                "next": "Siguiente",
-                "previous": "Anterior"
-            },
-        },
-        "bLengthChange" : false,
-        "bpageLength": false,
-        "bPaginate": true,
-        "searching": false,
-        "bInfo":false,
-        "columns": [
-            { "data": "plan" },
-            { "data": moment().year() },
-            { "data": moment().subtract(1, 'years').year() }
-        ]
+    // var uno = #93d5ed;
+    // var 50 = #45a5f5;
+    // var color 75 = #4285f4;
+    // var 100 = #2f5ec4;
+    // var 0 = #c9c9c9
+
+    // console.log(data.response);
+    // 
+    $(document).ready (function() {
+        $.ajax({
+            url: "{{ route("plansMonthType") }}",
+            success : function(data) {
+                var data = JSON.parse(data);
+
+                $('#plans-type-table').DataTable( {
+                    data : data.data,
+                    columns: [
+                        { "data": "plan" },
+                        { "data": "Enero" }, 
+                        { "data": "Febrero" },
+                        { "data": "Marzo" },
+                        { "data": "Abril" },
+                        { "data": "Mayo" },
+                        { "data": "Junio" },
+                        { "data": "Julio" },
+                        { "data": "Agosto" },
+                        { "data": "Septiembre" },
+                        { "data": "Octubre" },
+                        { "data": "Noviembre" },
+                        { "data": "Diciembre" }         
+                    ],
+                    "language": {
+                        "lengthMenu": "Mostrar _MENU_ elementos",
+                        "zeroRecords": "Sin resultados",
+                        "info": "Mostrando página _PAGE_ de _PAGES_",
+                        "infoEmpty": "Sin resultados",
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Último",
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        },
+                    },
+                    "searching": false,
+                    columnDefs: [{
+                        targets: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
+                        createdCell: function (td, cellData, rowData, row, col) {
+                            var density = cellData * 100 / data.max;
+                            $(td).css("background-color", "#E0E0E0");
+                            if (density > 10) {
+                                $(td).css("background-color", "#93d5ed");
+                                $(td).css('color', 'white');
+                            }      
+                            if (density > 25) {
+                                $(td).css("background-color", "#45a5f5");
+                                $(td).css('color', 'white');
+                            }      
+                            if (density > 50) {
+                                $(td).css("background-color", "#4285f4");
+                                $(td).css('color', 'white');
+                            }      
+                            if (density > 75) {
+                                $(td).css("background-color", "#2f5ec4");
+                                $(td).css('color', 'white');
+                            }      
+                            $(td).addClass( "text-center" );
+                        }
+                    }],
+                });
+            }       
+        });
     });
+    
+    // $('#plans-type-table').DataTable( {
+    //     "ajax": {
+    //         "url": '{{ route("plansMonthType") }}',
+    //         "dataType": "json",
+    //         "type": "get"
+    //     },
+    //     "language": {
+    //         "lengthMenu": "Mostrar _MENU_ elementos",
+    //         "zeroRecords": "Sin resultados",
+    //         "info": "Mostrando página _PAGE_ de _PAGES_",
+    //         "infoEmpty": "Sin resultados",
+    //         "infoFiltered": "(filtrado de _MAX_ registros totales)",
+    //         "search": "Filtrar:",
+    //         "paginate": {
+    //             "first": "Primero",
+    //             "last": "Último",
+    //             "next": "Siguiente",
+    //             "previous": "Anterior"
+    //         },
+    //     },
+    //     "bLengthChange" : false,
+    //     "bpageLength": false,
+    //     "bPaginate": true,
+    //     "searching": false,
+    //     "bInfo":false,
+    //     "columns": [
+    //         { "data": "plan" },
+    //         { "data": "Enero" }, 
+    //         { "data": "Febrero" },
+    //         { "data": "Marzo" },
+    //         { "data": "Abril" },
+    //         { "data": "Mayo" },
+    //         { "data": "Junio" },
+    //         { "data": "Julio" },
+    //         { "data": "Agosto" },
+    //         { "data": "Septiembre" },
+    //         { "data": "Octubre" },
+    //         { "data": "Noviembre" },
+    //         { "data": "Diciembre" }
+    //     ],
+    //     columnDefs: [{
+    //         targets: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
+    //         // render: function ( data, type, row ) {
+    //         //      // console.log(data, type);
+    //         //      return data;
+    //         //  }
+    //         createdCell: function (td, cellData, rowData, row, col) {
+    //             console.log(this.ajax);
+    //             $(td).addClass( "text-center" );
+
+    //             $(td).css("background-color", "#E0E0E0"); 
+
+    //             // $(td).css('color', 'white');
+    //         }
+    //     }],
+    // });
 </script>
 
     <script src="{{ asset('js/Chart.min.js') }}"></script>
@@ -127,7 +233,7 @@
 
 {{--     //////////////////  TOTAL QUANTITY PLAN ANUAL BY MONTH  ////////////////////////////////// --}}
 <script>
-var urltwo = "{{url('reports/secondchart')}}";
+var urltwo = "{{ url('reports/secondchart') }}";
 
 $(document).ready(function() {
     var Months =  new Array();
@@ -165,7 +271,7 @@ $(document).ready(function() {
 </script>
 
 <script>
-var urlresrvs = "{{url('reports/thirdchart')}}";
+var urlresrvs = "{{ url('reports/thirdchart') }}";
 
 $(document).ready(function(){
     var Monthss =  new Array();

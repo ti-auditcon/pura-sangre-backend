@@ -23,6 +23,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\Reports\PlanSummaryCommand',
         'App\Console\Commands\RefreshPlans',
         'App\Console\Commands\ToExpiredPlan',
+        'App\Console\Commands\Messages\SendNotifications',
     ];
 
     /**

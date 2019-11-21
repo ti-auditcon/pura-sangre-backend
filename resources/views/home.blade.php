@@ -266,27 +266,37 @@
   </script>
 
 <script>
-    $(document).ready(function(){
-        var op = "";
-        $.ajax({
-            type:'get',
-            url: '/incomes-summary/',
-            success: function (resp) {
-                var obj = JSON.parse(resp);
-                op+='<table class="table table-striped">';
-                op+='<tr><th width="40%">Período</th><th width="15%">Cantidad</th><th width="45%">Ingresos</th></tr>';
-                for(var i=0;i<obj.length;i++){
-                   op += '<tr>';
-                   op += '<td>' + obj[i].periodo + '</td>' +
-                         '<td>' + obj[i].cantidad + '</td>' +
-                         '<td>' + obj[i].ingresos + '</td></tr>';
-                }
-                op +='</table>';
-                $('#incomes-summary').html(op);
-            },
-            error: function(){
-                console.log("Error Occurred");
-            }
+    // $(document).ready(function(){
+        // var op = "";
+        // $.ajax({
+        //     type:'get',
+        //     url: '/incomes-summary/',
+        //     success: function (resp) {
+        //         var obj = JSON.parse(resp);
+        //         op+='<table class="table table-striped">';
+        //         op+='<tr><th width="40%">Período</th><th width="15%">Cantidad</th><th width="45%">Ingresos</th></tr>';
+        //         for(var i=0;i<obj.length;i++){
+        //            op += '<tr>';
+        //            op += '<td>' + obj[i].periodo + '</td>' +
+        //                  '<td>' + obj[i].cantidad + '</td>' +
+        //                  '<td>' + obj[i].ingresos + '</td></tr>';
+        //         }
+        //         op +='</table>';
+        //         $('#incomes-summary').html(op);
+        //     },
+        //     error: function(){
+        //         console.log("Error Occurred");
+        //     }
+        // });
+    // });
+
+    var uri = "{{ url('withoutrenewal') }}";
+
+    $( document ).ready(function () {
+        $.get('/incomes-summary/', function (res) {
+            Object.keys(res).forEach(element => {
+                $('#' + element).text(res[element]);
+            });
         });
     });
 </script>

@@ -133,7 +133,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     
     Route::get('reports/thirdchart', 'Reports\ReportController@thirdchart');
     
-    Route::get('reports/totalplans', 'Reports\ReportController@totalplans')->name('totalplans');
+    Route::get('reports/totalplans', 'Reports\ReportController@quantityTypePlansByMonth')->name('plansMonthType');
     
     Route::get('reports/totalplanssub', 'Reports\ReportController@totalplanssub')->name('totalplanssub');
     
