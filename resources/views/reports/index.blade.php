@@ -144,23 +144,34 @@
                         targets: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
                         createdCell: function (td, cellData, rowData, row, col) {
                             var density = cellData * 100 / data.max;
+
+                            
                             $(td).css("background-color", "#E0E0E0");
+                            
                             if (density > 10) {
                                 $(td).css("background-color", "#93d5ed");
+
                                 $(td).css('color', 'white');
                             }      
+
                             if (density > 25) {
                                 $(td).css("background-color", "#45a5f5");
+                                
                                 $(td).css('color', 'white');
                             }      
+
                             if (density > 50) {
                                 $(td).css("background-color", "#4285f4");
+                                
                                 $(td).css('color', 'white');
                             }      
+
                             if (density > 75) {
                                 $(td).css("background-color", "#2f5ec4");
+                                
                                 $(td).css('color', 'white');
                             }      
+                            
                             $(td).addClass( "text-center" );
                         }
                     }],
