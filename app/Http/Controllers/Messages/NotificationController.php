@@ -27,8 +27,10 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return view('messages.notifications')->with('users', $users);
+        $notifications = Notification::orderBy('trigger_at')
+                                     ->get(['title', 'body', 'sended', 'trigger_at']); 
+
+        return view('messages.notifications', ['notifications' => $notifications]);
     }
 
     /**
@@ -45,16 +47,6 @@ class NotificationController extends Controller
             'body' => $request->body,
             'trigger_at' => '2019-01-01'
         ]);
-
-        // $users = User::whereIn('id', request('users_id'))->get(['id', 'fcm_token']);
-
-        // foreach ($users as $user) {
-        //     SendPushNotification::dispatch($user->fcm_token, request('title'), request('body'));
-        // }
-
-        // $response = count($users) > 1 ?
-        //             'Notificación enviada correctamente' :
-        //             'Notificaciones enviadas correctamente';
 
         Session::flash('success', 'correcto');
         

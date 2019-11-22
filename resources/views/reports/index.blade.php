@@ -31,6 +31,7 @@
             <div class="ibox-head">
                 <div class="ibox-title">N° de planes vendidos por Mes</div>
             </div>
+
             <div class="ibox-body">
                 <canvas id="quantity-plans" height="280" width="600"></canvas>
             </div>
@@ -41,6 +42,7 @@
             <div class="ibox-head">
                 <div class="ibox-title">Cantidad de reservas por mes en el año</div>
             </div>
+
             <div class="ibox-body">
                 <canvas id="quantity-rsrvs" height="280" width="600"></canvas>
             </div>
@@ -54,22 +56,35 @@
                         <h3 class="m-0">Cantidad de Planes por tipo año {{ today()->formatLocalized('%Y') }}</h3>
                     </div>
                 </div>
+                
                 <div class="table-responsive">
                     <table id="plans-type-table" class="table table-hover">
                         <thead class="thead-default">
                             <tr>
                                 <th width="16%">Tipo de Plan</th>
+                                
                                 <th width="7%">Enero</th>
+                                
                                 <th width="7%">Febrero</th>
+                                
                                 <th width="7%">Marzo</th>
+                                
                                 <th width="7%">Abril</th>
+                                
                                 <th width="7%">Mayo</th>
+                                
                                 <th width="7%">Junio</th>
+                                
                                 <th width="7%">Julio</th>
+                                
                                 <th width="7%">Agosto</th>
+                                
                                 <th width="7%">Septiembre</th>
+                                
                                 <th width="7%">Octubre</th>
+                                
                                 <th width="7%">Noviembre</th>
+                                
                                 <th width="7%">Diciembre</th>
                             </tr>
                         </thead>
@@ -179,63 +194,6 @@
             }       
         });
     });
-    
-    // $('#plans-type-table').DataTable( {
-    //     "ajax": {
-    //         "url": '{{ route("plansMonthType") }}',
-    //         "dataType": "json",
-    //         "type": "get"
-    //     },
-    //     "language": {
-    //         "lengthMenu": "Mostrar _MENU_ elementos",
-    //         "zeroRecords": "Sin resultados",
-    //         "info": "Mostrando página _PAGE_ de _PAGES_",
-    //         "infoEmpty": "Sin resultados",
-    //         "infoFiltered": "(filtrado de _MAX_ registros totales)",
-    //         "search": "Filtrar:",
-    //         "paginate": {
-    //             "first": "Primero",
-    //             "last": "Último",
-    //             "next": "Siguiente",
-    //             "previous": "Anterior"
-    //         },
-    //     },
-    //     "bLengthChange" : false,
-    //     "bpageLength": false,
-    //     "bPaginate": true,
-    //     "searching": false,
-    //     "bInfo":false,
-    //     "columns": [
-    //         { "data": "plan" },
-    //         { "data": "Enero" }, 
-    //         { "data": "Febrero" },
-    //         { "data": "Marzo" },
-    //         { "data": "Abril" },
-    //         { "data": "Mayo" },
-    //         { "data": "Junio" },
-    //         { "data": "Julio" },
-    //         { "data": "Agosto" },
-    //         { "data": "Septiembre" },
-    //         { "data": "Octubre" },
-    //         { "data": "Noviembre" },
-    //         { "data": "Diciembre" }
-    //     ],
-    //     columnDefs: [{
-    //         targets: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ],
-    //         // render: function ( data, type, row ) {
-    //         //      // console.log(data, type);
-    //         //      return data;
-    //         //  }
-    //         createdCell: function (td, cellData, rowData, row, col) {
-    //             console.log(this.ajax);
-    //             $(td).addClass( "text-center" );
-
-    //             $(td).css("background-color", "#E0E0E0"); 
-
-    //             // $(td).css('color', 'white');
-    //         }
-    //     }],
-    // });
 </script>
 
     <script src="{{ asset('js/Chart.min.js') }}"></script>
@@ -252,7 +210,7 @@ $(document).ready(function() {
     var SubQuantities = new Array();
     
     $.get(urltwo, function(respuesta) {
-        respuesta.q_anual.forEach(function(data) {
+        respuesta.q_anual.forEach(function (data) {
             Quantities.push(data);
         });
         
@@ -275,7 +233,7 @@ $(document).ready(function() {
             ]
         };
         var chart_quantity = document.getElementById("quantity-plans").getContext('2d');
-        
+
         var miChart = new Chart(chart_quantity, { type: 'bar', data: chartdata });
     });
 });
@@ -293,7 +251,7 @@ $(document).ready(function(){
         respuesta.rsrvs_anual.forEach(function(data) {
             reservs.push(data);
         });
-        respuesta.rsrvs_sub_anual.forEach(function(data){
+        respuesta.rsrvs_sub_anual.forEach(function(data) {
             sub_reservs.push(data);
         });
         respuesta.months.forEach(function(data) {
@@ -338,6 +296,5 @@ $(document).ready(function(){
         });
     });
 </script>
-
 
 @endsection

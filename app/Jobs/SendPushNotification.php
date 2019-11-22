@@ -27,7 +27,9 @@ class SendPushNotification implements ShouldQueue
     public $timeout = 120;
 
     /**
-     *  @var string [fcm_token user] 
+     *  FCM token from Firebase
+     * 
+     *  @var string
     */
     protected $token;
 

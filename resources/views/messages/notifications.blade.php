@@ -136,6 +136,51 @@
             </div>
         </div>
     </div>
+
+
+    <div class="col-md-6">
+        <div class="ibox ibox-fullheight">
+            <div class="ibox-head">
+                <div class="ibox-title">
+                    <h3 class="font-strong">
+                        Proximas Notificaciones
+                    </h3>
+                </div>
+            </div>
+
+            <div class="ibox-body">
+                <div class="ibox-body messages">
+                    <div class="table-responsive row">
+                        <div class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+                            <table class="table table-hover no-footer" id="example">
+                                <thead class="thead-default thead-lg">
+                                    <tr role="row">                                        
+                                        <th>Titulo</th>
+                                        
+                                        <th>Mensaje</th>
+
+                                        <th>Fecha de Envío</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($notifications as $notification)
+                                        <tr role="row">                                        
+                                            <td>{{ $notification->title }}</td>
+
+                                            <td>{{ $notification->body }}</td>
+
+                                            <td>{{ Carbon\Carbon::parse($notification->trigger_at)
+                                                                ->format('d-m-Y') }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 {{--  - - - - - - - - - - - -  MODAL SEND PUSH NOTIFICATIONS  - - - - - - - - - - --}}

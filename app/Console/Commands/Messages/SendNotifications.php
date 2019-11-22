@@ -52,10 +52,10 @@ class SendNotifications extends Command
                          ->get(['id', 'fcm_token']);
             
             foreach ($users as $user) {
-                SendPushNotification::dispatch(
-                    $user->fcm_token, $notification->title, $notification->body
-                );
+                SendPushNotification::dispatch($user->fcm_token, $notification->title, $notification->body)
+                                    ->delay(6000000);
             }
+
             $notification->update(['sended' => 1]);
         }
     }

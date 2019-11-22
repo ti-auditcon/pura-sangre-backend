@@ -34,7 +34,7 @@ class ReportController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {        
+    {    
         return view('reports.index');
     }
 
@@ -94,24 +94,21 @@ class ReportController extends Controller
     }
 
     /**
-     * Get the quantity of the plans sorted by plan type around the year (monthly)
+     * Get the quantity of the plans sorted by plan type around the year (monthly),
+     * get from bills 
      * 
      * @return [type] [description]
      */
     public function quantityTypePlansByMonth()
     {
-        $data = PlanUser::selectRaw(
-                            'COUNT(id) as total, YEAR(start_date) as year,
-                            MONTH(start_date) as month, plan_id as plan'
-                          )
-                        ->whereYear('start_date', today()->year)
-                        ->with(['plan' => function($plan) {
-                            $plan->where('plan_status_id', 1);
-                        }])
-                        ->groupBy(\DB::raw('YEAR(start_date)'))
-                        ->groupBy(\DB::raw('MONTH(start_date)'))
-                        ->groupBy('plan_id')
-                        ->get();
+        $data = Bill::join('plan_user', 'bills.plan_user_id', '=', 'plan_user.id')
+                    ->join('plans', 'plan_user.plan_id', '=', 'plans.id')
+                    ->whereYear('bills.date', today()->year)
+                    ->where('plans.plan_status_id', 1)
+                    ->groupBy('plan_user.plan_id', \DB::raw('YEAR(bills.date), MONTH(bills.date)'))
+                    ->selectRaw('COUNT(bills.id) as total, YEAR(bills.date) as year, 
+                                 MONTH(bills.date) as month, plans.id as plan')
+                    ->get();
 
         foreach (Plan::where('plan_status_id', 1)->get(['id', 'plan']) as $key => $plan) {
             for ($i = 0; $i < 13; $i++) {
@@ -293,3 +290,18 @@ class ReportController extends Controller
         //         'diciembre' => 
         //     ];
         // });
+        // 
+        // 
+        // GET FROM PLANUSER TABLE
+        //         // $data = PlanUser::selectRaw(
+        //                     'COUNT(id) as total, YEAR(start_date) as year,
+        //                     MONTH(start_date) as month, plan_id as plan'
+        //                   )
+        //                 ->whereYear('start_date', today()->year)
+        //                 ->with(['plan' => function($plan) {
+        //                     $plan->where('plan_status_id', 1);
+        //                 }])
+        //                 ->groupBy(\DB::raw('YEAR(start_date)'))
+        //                 ->groupBy(\DB::raw('MONTH(start_date)'))
+        //                 ->groupBy('plan_id')
+        //                 ->get();
