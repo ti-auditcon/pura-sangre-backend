@@ -102,19 +102,14 @@
                         <div id="datatable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
                             <table
                                 class="table table-bordered table-hover dataTable no-footer collapsed"
-                                id="example"
-                                role="grid"
-                                aria-describedby="datatable_info"
+                                id="example" role="grid" aria-describedby="datatable_info"
                                 style="width: 1592px;"
                             >
                                 <thead class="thead-default thead-lg">
                                     <tr role="row">
                                         <th class="checkboxes-select-all sorting_disabled"
-                                            tabindex="0"
-                                            aria-controls="example"
-                                            rowspan="1"
-                                            colspan="1"
-                                            aria-label=""
+                                            tabindex="0" aria-controls="example"
+                                            rowspan="1" colspan="1" aria-label=""
                                         >
                                             <input type="checkbox"/>
                                         </th>
@@ -157,9 +152,11 @@
                                     <tr role="row">                                        
                                         <th>Titulo</th>
                                         
-                                        <th>Mensaje</th>
+                                        <th width="50%">Mensaje</th>
 
                                         <th>Fecha de Envío</th>
+                                        
+                                        <th width="10%">Estado</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -171,6 +168,27 @@
 
                                             <td>{{ Carbon\Carbon::parse($notification->trigger_at)
                                                                 ->format('d-m-Y') }}</td>
+
+                                            <td>
+                                                @switch($notification->sended)
+                                                    @case(0)
+                                                        <span class="badge badge-info badge-pill">
+                                                            PROGRAMADO
+                                                        </span>
+                                                        @break
+
+                                                    @case(1)
+                                                        <span class="badge badge-success badge-pill">
+                                                            ENVIADO
+                                                        </span>
+                                                        @break
+
+                                                    @default
+                                                        <span class="badge badge-danger badge-pill">
+                                                            SIN ESTADO
+                                                        </span>
+                                                @endswitch
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

@@ -28,7 +28,7 @@ class NotificationController extends Controller
     public function index()
     {
         $notifications = Notification::orderBy('trigger_at')
-                                     ->get(['title', 'body', 'sended', 'trigger_at']); 
+                                     ->get(['title', 'body', 'sended', 'trigger_at']);
 
         return view('messages.notifications', ['notifications' => $notifications]);
     }
