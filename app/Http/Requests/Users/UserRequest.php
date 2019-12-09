@@ -79,7 +79,8 @@ class UserRequest extends FormRequest
             'phone.digits' => 'El número de teléfono debe contener :digits dígitos de solo números.',
             'image.mimes' => 'El formato de imagen debe ser jpeg o png',
             'image.max' => 'La imagen no debe se mas grande que 1 MB',
-            'contact_phone.digits' => 'El campo Teléfono de contacto de emergencia debe contener :digits dígitos de solo números.'
+            'contact_phone.digits' => 'El campo Teléfono de contacto de emergencia debe contener :digits dígitos de solo números.',
+            'after_or_equal' => 'La fecha del campo Atleta desde no puede ser menor a hoy'
         ];
     }
  }
