@@ -43,7 +43,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('clases:clear')->hourlyAt(15);
         $schedule->command('clases:clear')->hourlyAt(30);
         $schedule->command('clases:clear')->hourlyAt(45);
-        
+
         $schedule->command('clases:close')->hourlyAt(15);
         $schedule->command('plans:refresh')->daily();
         $schedule->command('clases:create')->weekly();
@@ -53,7 +53,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('plans:freeze')->dailyAt('00:10');
         $schedule->command('plans:unfreeze')->dailyAt('00:15');
-        
+
         $schedule->command('messages:send-notifications')->everyMinute();
     }
 
