@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands\Messages;
 
-use App\Jobs\SendPushNotification;
-use App\Models\Users\Notification;
 use App\Models\Users\User;
 use Illuminate\Console\Command;
+use App\Models\Users\Notification;
+use App\Jobs\SendPushNotification;
 
 class SendNotifications extends Command
 {
@@ -42,17 +42,13 @@ class SendNotifications extends Command
     {
         $notification = Notification::where('trigger_at', now()->startOfMinute()->format('Y-m-d H:i:s'))
                                     ->first();
-        // dd(now()->startOfMinute()->format('Y-m-d H:i:s'), $notification);
-        // $notification = Notification::first();
 
         if ($notification) {
             $users_id = explode(',', $notification->users);
 
             $users = User::whereIn('id', $users_id)->get(['id', 'fcm_token']);
 
-
             foreach ($users as $user) {
-                // dd($user->fcm_token, $notification->title, $notification->body);
                 SendPushNotification::dispatch($user->fcm_token, $notification->title, $notification->body);
             }
 
