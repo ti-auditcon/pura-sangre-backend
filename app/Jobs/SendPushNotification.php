@@ -64,7 +64,6 @@ class SendPushNotification implements ShouldQueue
      */
     public function handle()
     {
-        dd('hola');
         // $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
         $fcmUrl = env('FIREBASE_CLOUD_MESSAGING_URL', 'https://fcm.googleapis.com/fcm/send');
 
