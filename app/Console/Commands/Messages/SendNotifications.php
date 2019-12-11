@@ -50,7 +50,9 @@ class SendNotifications extends Command
 
             $users = User::whereIn('id', $users_id)->get(['id', 'fcm_token']);
 
+
             foreach ($users as $user) {
+                // dd($user->fcm_token, $notification->title, $notification->body);
                 SendPushNotification::dispatch($user->fcm_token, $notification->title, $notification->body);
             }
 
