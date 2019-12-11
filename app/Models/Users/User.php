@@ -2,33 +2,42 @@
 
 namespace App\Models\Users;
 
+use Carbon\Carbon;
 use App\Models\Bills\Bill;
-use App\Models\Bills\Installment;
+use App\Models\Plans\Plan;
+use App\Models\Users\Role;
 use App\Models\Clases\Block;
 use App\Models\Clases\Clase;
-use App\Models\Clases\Reservation;
-use App\Models\Plans\Plan;
 use App\Models\Plans\PlanUser;
+use App\Models\Users\RoleUser;
 use App\Models\Users\Emergency;
 use App\Models\Users\Millestone;
-use App\Models\Users\Role;
-use App\Models\Users\RoleUser;
-use App\Models\Users\StatusUser;
-use App\Notifications\MyResetPassword;
-use Carbon\Carbon;
 use Freshwork\ChileanBundle\Rut;
+use App\Models\Users\StatusUser;
+use App\Models\Bills\Installment;
+use Laravel\Passport\HasApiTokens;
+use App\Models\Clases\Reservation;
+use App\Notifications\MyResetPassword;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;
-
 
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable, SoftDeletes;
 
+    /**
+     * [$dates description]
+     * 
+     * @var array
+     */
     protected $dates = ['birthdate', 'since', 'deleted_at'];
     
+    /**
+     * [$fillable description]
+     * 
+     * @var array
+     */
     protected $fillable = [
         'rut',
         'first_name',
@@ -44,13 +53,24 @@ class User extends Authenticatable
         'emergency_id', 
         'status_user_id'
     ];
-    
+
+    /**
+     * [$hidden description]
+     * 
+     * @var array
+     */
     protected $hidden = ['password', 'remember_token'];
     
+    /**
+     * [$appends description]
+     * 
+     * @var array
+     */
     protected $appends = ['full_name', 'rut_formated'];
 
     /**
      * [setBirthdateAttribute description]
+     * 
      * @param [type] $value [description]
      */
     public function setBirthdateAttribute($value)
@@ -60,6 +80,7 @@ class User extends Authenticatable
 
     /**
      * [setSinceAttribute description]
+     * 
      * @param [type] $value [description]
      */
     public function setSinceAttribute($value)
@@ -93,6 +114,7 @@ class User extends Authenticatable
 
     /**
      * [setRutAttribute description]
+     * 
      * @param [type] $value [description]
      */
     public function setRutAttribute($value)
@@ -102,6 +124,7 @@ class User extends Authenticatable
 
     /**
      * [getFullNameAttribute description]
+     * 
      * @return [type] [description]
      */
     public function getFullNameAttribute()
@@ -111,6 +134,7 @@ class User extends Authenticatable
 
     /**
      * [getFullNameAttribute description]
+     * 
      * @return [type] [description]
      */
     public function getRutFormatedAttribute()
@@ -134,6 +158,7 @@ class User extends Authenticatable
 
     /**
      * [scopeCountStatusUsers description]
+     * 
      * @param  [type] $users [description]
      * @return [type]        [description]
      */
@@ -260,6 +285,11 @@ class User extends Authenticatable
                     ->orderBy('start_date','desc');
     }
 
+    /**
+     * [planes_del_usuario description]
+     *
+     * @return [type] [description]
+     */
     public function planes_del_usuario()
     {
         return PlanUser::where('user_id', $this->id)
@@ -289,6 +319,7 @@ class User extends Authenticatable
 
     /**
      * [last_plan description]
+     * 
      * @return [type] [description]
      */
     public function emergency()
@@ -298,6 +329,7 @@ class User extends Authenticatable
 
     /**
      * [last_plan description]
+     * 
      * @return [type] [description]
      */
     public function reservations()
@@ -307,6 +339,7 @@ class User extends Authenticatable
 
     /**
      * [roles description]
+     * 
      * @return [type] [description]
      */
     public function roles()
@@ -316,13 +349,13 @@ class User extends Authenticatable
 
     /**
      * [getAvatarAttribute description]
+     * 
      * @param  [type] $value [description]
      * @return [type]        [description]
      */
     public function getAvatarAttribute($value)
     {
-        if (!$value) {
-            
+        if ( !$value ) {
             return url('img/default_user.png');
         }
         
@@ -331,6 +364,7 @@ class User extends Authenticatable
 
     /**
      * [birthdate_users description]
+     * 
      * @return [type] [description]
      */
     public function birthdate_users()
@@ -342,13 +376,12 @@ class User extends Authenticatable
 
     /**
      * [itsBirthDay description]
+     * 
      * @return [type] [description]
      */
     public function itsBirthDay()
     {
-        if ($this->birthdate->month == toDay()->month &&
-            $this->birthdate->day == toDay()->day) {
-            
+        if ($this->birthdate->month == toDay()->month && $this->birthdate->day == toDay()->day) {
             return true;
         }
 
@@ -368,6 +401,6 @@ class User extends Authenticatable
                                   'reservation_status:id,reservation_status',
                                   'plan_user:id,plan_id',
                                   'plan_user.plan:id,plan'])
-                         ->get(['id', 'clase_id', 'user_id', 'plan_user_id', 'reservation_status_id']);
+                          ->get(['id', 'clase_id', 'user_id', 'plan_user_id', 'reservation_status_id']);
     }
 }

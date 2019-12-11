@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-5">
         <div class="ibox ibox-fullheight" id="mailbox-container">
             <div class="ibox-head">
                 <div class="ibox-title">
@@ -133,7 +133,7 @@
     </div>
 
 
-    <div class="col-md-6">
+    <div class="col-md-7">
         <div class="ibox ibox-fullheight">
             <div class="ibox-head">
                 <div class="ibox-title">
@@ -152,11 +152,15 @@
                                     <tr role="row">                                        
                                         <th>Titulo</th>
                                         
-                                        <th width="50%">Mensaje</th>
+                                        <th width="40%">Mensaje</th>
 
-                                        <th>Fecha de Envío</th>
+                                        <th>Fecha de envío</th>
+
+                                        <th>Hora de envío</th>
                                         
                                         <th width="10%">Estado</th>
+
+                                        <th width="10%">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -168,6 +172,9 @@
 
                                             <td>{{ Carbon\Carbon::parse($notification->trigger_at)
                                                                 ->format('d-m-Y') }}</td>
+
+                                            <td>{{ Carbon\Carbon::parse($notification->trigger_at)
+                                                                ->format('H:i') }}</td>
 
                                             <td>
                                                 @switch($notification->sended)
@@ -188,6 +195,22 @@
                                                             SIN ESTADO
                                                         </span>
                                                 @endswitch
+                                            </td>
+                                            
+                                            <td>
+                                                <form id="form-{{ $notification->id }}" action="{{ route('notifications.destroy', $notification->id) }}"
+                                                      method="POST"
+                                                >
+                                                    @csrf @method('DELETE')
+                                                    <button
+                                                        class="btn btn-info btn-danger sweet-push-delete"
+                                                        style="display: inline-block;"
+                                                        data-id="{{ $notification->id }}"
+                                                        data-title="{{ $notification->title }}"
+                                                    >
+                                                        <i class="la la-trash"></i>
+                                                    </button>
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -222,21 +245,37 @@
                 {!! Form::open(['url' => ['/notifications'], 'method' => 'post']) !!}
                 <div class="modal-body messages-modal-body">
                     <tbody>
-                        <div class="ibox-body">
+                        <div class="ibox-body" >
                             <label class="col-form-label">Para</label>
                             
-                            <input type="text"
-                                   value=""
-                                   name="to[]"
-                                   data-role="tagsinput"
-                                   id="tags"
-                                   class="tass form-control"
-                            />
+                            <div style="height:120px;overflow:auto;">
+                                <input type="text"
+                                       value=""
+                                       name="to[]"
+                                       data-role="tagsinput"
+                                       id="tags"
+                                       class="tass form-control"
+                                />
+                            </div>
                         </div>
 
                         <label class="col-form-label">Título</label>
                         
                         <input class="form-control" name="title" type="text" required />
+
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="col-form-label">Fecha</label>
+                        
+                                <input class="form-control" name="date" type="date" required />
+                            </div>
+
+                            <div class="col-6">
+                                <label class="col-form-label">Hora</label>
+                        
+                                <input class="form-control" name="time" type="time" required />
+                            </div>
+                        </div>
                         
                         <label class="col-form-label">Mensaje</label>
                         
@@ -244,7 +283,7 @@
                         
                         <button
                             type="button"
-                            class="btn btn-primary"
+                            class="btn btn-primary mt-2"
                             type="submit"
                             onClick="this.form.submit();"
                         >
@@ -387,6 +426,29 @@
             itemText: 'text',
         });
     </script>
+
+<script>
+    $('.sweet-push-delete').click(function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        console.log(id);
+        
+        swal({
+            title: `Desea eliminar la notificación: "${ $(this).data('title') }"`,
+            text: "",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn-danger',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Eliminar',
+            closeOnConfirm: false
+        }, function() {
+            // console.log(`form-${ id }`);
+            //redirección para eliminar la notificación
+            $(`#form-${ id }`).submit();
+        });
+    });
+</script>
 
 
 @endsection

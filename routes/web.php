@@ -114,6 +114,10 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     
     Route::post('notifications', 'Messages\NotificationController@store')->middleware('role:1');
 
+    Route::delete('/notifications/{notification}', 'Messages\NotificationController@destroy')
+         ->middleware('role:1')
+         ->name('notifications.destroy');
+
     /**
      *  Settings Routes
      */
