@@ -96,12 +96,13 @@
                 
                 <div class="ibox-tools">
                     
-                    <a
-                        href="{{ route('role-user.edit', ['role_user' => $user->id]) }}"
-                        class="btn btn-warning"
-                    >
-                        Roles
-                    </a>
+                    @if (auth()->user()->hasRole(1))
+                        <a href="{{ route('role-user.edit', ['role_user' => $user->id]) }}"
+                           class="btn btn-warning"
+                        >
+                            Roles
+                        </a>
+                    @endif
 
                     <a
                         class="btn btn-success text-white mr-1" style="display: inline-block;"

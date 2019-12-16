@@ -17,6 +17,10 @@ class RoleUserController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->hasRole(Role::ADMIN)) {
+            return redirect('/');
+        }
+        
         $fail = $this->specialValidation($request);
 
         if ($fail) {
