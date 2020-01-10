@@ -93,7 +93,8 @@
                         <div class="form-group inline @if($errors->has('address')) has-warning  @endif">
                             <label class="col-form-label">Dirección</label>
                            
-                            <input class="form-control" placeholder="Ejemplo: Longitudinal Sur Km 188,9, Curicó" name="address" value="{{ old('address') }}">
+                            {{-- <input class="form-control" placeholder="Ejemplo: Longitudinal Sur Km 188,9, Curicó" name="address" value="{{ old('address') }}"> --}}
+                            <input id="pac-input" class="form-control" value="{{ old('address') }}" name="address"  placeholder="Ingresa una dirección" autocomplete="off"/>
                         </div>
                     </div>
                 </div>
@@ -112,7 +113,7 @@
                             <div class="input-group mb-3">
                                 <span class="input-group-addon">+56 9</span>
                                
-                                <input class="form-control " name="contact_phone" value="{{ old('contact_phone')}}">
+                                <input class="form-control" name="contact_phone" value="{{ old('contact_phone')}}">
                             </div>
                         </div>
                     </div>
@@ -221,4 +222,17 @@
     })
 </script>
 {{-- END RUT --}}
+
+    {{-- GOOGLE MAPS API --}}
+    <script>
+        function initAutocomplete() {
+            // Create the search box and link it to the UI element.
+            var input = document.getElementById('pac-input');
+    
+            var searchBox = new google.maps.places.SearchBox(input);
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBdjSN29qOPy3mKi4MGOoRp9VWUP9pPaHc&libraries=places&callback=initAutocomplete" async defer>
+    </script>
 @endsection

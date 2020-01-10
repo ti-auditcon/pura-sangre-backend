@@ -12,6 +12,9 @@ Auth::routes();
 // });
 
 Route::get('/', 'HomeController@index');
+Route::get('other', function() {
+    return view('other');
+});
 Route::get('/withoutrenewal', 'HomeController@withoutrenewal');
 Route::get('/genders', 'HomeController@genders');
 Route::get('/incomes-summary', 'HomeController@incomessummary');
