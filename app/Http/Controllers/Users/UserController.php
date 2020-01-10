@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Users;
 
-use Redirect;
 use Session;
+use Redirect;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
 use App\Exports\UsersExport;
@@ -172,11 +172,19 @@ class UserController extends Controller
      */
     public function image(Request $request, User $user)
     {
-        $image = Image::make(file_get_contents($request->avatar));
+        // $users_path = public_path('users');
 
-        $image->fit(480)->encode('jpg')->save('public/users', $user->id . $user->first_name . '.jpg');
+        // if(!file_exists($users_path)) {
+        //     mkdir($users_path, 666, true);
+        // }
+        // request()->file('image')->storeAs('public/users', $user->id . $user->first_name . '.jpg');
 
-        $user->avatar = url('/') . '/storage/users/' . $user->id . $user->first_name . '.jpg';
+        $image = Image::make(file_get_contents($request->avatar))->fit(480);
+
+        $image->save('public/users' . $user->id . $user->first_name . '.jpg');
+        // Storage::put('public/users', $user->id . $user->first_name . '.jpg', $image);
+            
+        $user->avatar = url('/') . '/storage/users/' . $user->id.$user->first_name . '.jpg';
         
         $user->save();
         
