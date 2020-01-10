@@ -176,30 +176,11 @@ class UserController extends Controller
 
         $image->fit(480)->encode('jpg')->save('public/users', $user->id . $user->first_name . '.jpg');
 
-        // dd('hola');
-            
         $user->avatar = url('/') . '/storage/users/' . $user->id . $user->first_name . '.jpg';
         
         $user->save();
         
         return response()->json(['success' =>'Sesion finalizada'], 200);
-        // if ($request->hasFile('image')) {
-        //     try {
-        //         request()->file('image')->storeAs('public/users', $user->id . $user->first_name . '.jpg');
-        //     } catch (\Exception $e) {
-        //         Log::error('Hemos tenido el siguiente error: ' . $e);
-
-        //         return response()->json(['error' => 'Problema al subir la imagen, si vuelve a suceder por favor comuniquese con PuraSangre.']);
-        //     }
-
-        //     $user->avatar = url('/') . '/storage/users/' . $user->id . $user->first_name . '.jpg';
-            
-        //     $user->save();
-            
-        //     return response()->json(['success' => 'Imagen subida correctamente'], 200);
-        // }
-
-        // return response()->json(['error' => 'No ha sido posible subir la imagen, si el problema persiste comuniquese con PuraSangre'], 400);
     }
 
     /**
