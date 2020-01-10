@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers\Users;
 
-use App\Exports\UsersExport;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Users\UserRequest;
-use App\Models\Clases\Reservation;
-use App\Models\Plans\PlanUser;
-use App\Models\Users\Emergency;
-use App\Models\Users\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use Intervention\Image\Facades\Image;
-use Maatwebsite\Excel\Facades\Excel;
 use Redirect;
 use Session;
+use App\Models\Users\User;
+use Illuminate\Http\Request;
+use App\Exports\UsersExport;
+use App\Models\Plans\PlanUser;
+use App\Models\Users\Emergency;
+use App\Models\Clases\Reservation;
+use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Controllers\Controller;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\Users\UserRequest;
 
 class UserController extends Controller
 {
@@ -172,16 +172,13 @@ class UserController extends Controller
      */
     public function image(Request $request, User $user)
     {
-        $user = auth()->user();
-
         $image = Image::make(file_get_contents($request->avatar));
 
-        $image->fit(480)->encode('jpg');
+        $image->fit(480)->encode('jpg')->save('public/users', $user->id . $user->first_name . '.jpg');
 
-        // Storage::put('/public/users/'.$user ->id.'-'.$random.'.jpg', $finalImage);
-        Storage::put('public/users', $user->id . $user->first_name . '.jpg', $image);
+        // dd('hola');
             
-        $user->avatar = url('/') . '/storage/users/' . $user->id.$user->first_name . '.jpg';
+        $user->avatar = url('/') . '/storage/users/' . $user->id . $user->first_name . '.jpg';
         
         $user->save();
         
