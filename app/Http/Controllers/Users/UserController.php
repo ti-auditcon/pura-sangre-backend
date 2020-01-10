@@ -181,7 +181,7 @@ class UserController extends Controller
 
         $image = Image::make(file_get_contents($request->avatar))->fit(480);
 
-        $image->save('public/users' . $user->id . $user->first_name . '.jpg');
+        $image->save('public/users/' . $user->id . $user->first_name . '.jpg');
         // Storage::put('public/users', $user->id . $user->first_name . '.jpg', $image);
             
         $user->avatar = url('/') . '/storage/users/' . $user->id.$user->first_name . '.jpg';
