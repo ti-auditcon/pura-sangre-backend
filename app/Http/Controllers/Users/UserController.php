@@ -166,6 +166,7 @@ class UserController extends Controller
 
     /**
      * [image description]
+     * 
      * @param  Request $request [description]
      * @param  User    $user    [description]
      * @return [type]           [description]
@@ -177,18 +178,17 @@ class UserController extends Controller
         // if(!file_exists($users_path)) {
         //     mkdir($users_path, 666, true);
         // }
-        // request()->file('image')->storeAs('public/users', $user->id . $user->first_name . '.jpg');
+        request()->file('avatar')->storeAs('public/users', $user->id . $user->first_name . '.jpg');
 
-        $image = Image::make(file_get_contents($request->avatar))->fit(480);
+        // $image = Image::make(file_get_contents($request->avatar))->fit(480);
 
-        $image->save('public/users/' . $user->id . $user->first_name . '.jpg');
-        // Storage::put('public/users', $user->id . $user->first_name . '.jpg', $image);
+        // $image->save($users_path . $user->id . $user->first_name . '.jpg');
             
         $user->avatar = url('/') . '/storage/users/' . $user->id.$user->first_name . '.jpg';
         
         $user->save();
         
-        return response()->json(['success' =>'Sesion finalizada'], 200);
+        return response()->json(['success' => 'Sesion finalizada'], 200);
     }
 
     /**
