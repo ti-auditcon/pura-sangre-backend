@@ -57,7 +57,7 @@ class UserRequest extends FormRequest
                     'image' => 'mimes:jpeg,png|max:1024',
                     'email' => $required.'|email'.$case,
                     'phone' => $this->phone != null ? 'digits:8': '',
-                    'contact_phone' => $this->contact_phone ? 'numeric' : ''
+                    'contact_phone' => $this->contact_phone ? 'digits:8' : ''
                 ];
            }
            default:break;

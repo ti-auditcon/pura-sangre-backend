@@ -287,7 +287,7 @@ class User extends Authenticatable
 
     /**
      * [planes_del_usuario description]
-     *
+     * 
      * @return [type] [description]
      */
     public function planes_del_usuario()

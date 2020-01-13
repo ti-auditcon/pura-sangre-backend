@@ -40,17 +40,17 @@ class ClearClases extends Command
     {
         $hour_clase = $this->roundToQuarterHour(now()->addMinutes(45))->format('H:i');
 
-        $clase = Clase::where('date', today())
-                      ->whereStartAt($hour_clase)
-                      ->first('id');
-        
-        if ($clase) {
-            $reservations = Reservation::whereClaseId($clase->id)
-                                       ->whereReservationStatusId(1)
-                                       ->get();
+        $clases = Clase::where('date', today())->whereStartAt($hour_clase)->get();
 
-            foreach ($reservations as $reserv) {
-                $reserv->delete();
+        if (count($clases) != 0) {
+            foreach ($clases as $clase) {
+                $reservations = Reservation::whereClaseId($clase->id)
+                                           ->whereReservationStatusId(1)
+                                           ->get();
+
+                foreach ($reservations as $reserv) {
+                    $reserv->delete();
+                }
             }
         }
     }

@@ -39,8 +39,9 @@ class CloseClass extends Command
     public function handle()
     {
         $clases = Clase::where('date', today())
-            ->where('start_at', now()->startOfHour())
-            ->get();
+                       ->where('start_at', now()->startOfHour())
+                       ->get();
+                       
         if (count($clases) != 0) {
             foreach ($clases as $clase) {
                 foreach ($clase->reservations as $reservation) {
