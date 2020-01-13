@@ -260,6 +260,11 @@ class User extends Authenticatable
                     ->orderBy('start_date','desc');
     }
 
+    /**
+     * [planes_del_usuario description]
+     * 
+     * @return [type] [description]
+     */
     public function planes_del_usuario()
     {
         return PlanUser::where('user_id', $this->id)

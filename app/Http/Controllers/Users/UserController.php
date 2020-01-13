@@ -137,9 +137,11 @@ class UserController extends Controller
     public function update(UserRequest $request, User $user)
     {
         if ($request->image) {
-            request()->file('image')->storeAs('public/users', $user->id . $user->first_name . '.jpg');
+            $avatar_name = md5(mt_rand());
 
-            $user->update(['avatar' => url('/') . '/storage/users/' . $user->id . $user->first_name . '.jpg']);
+            request()->file('image')->storeAs('public/users', "{$avatar_name}.jpg");
+
+            $user->update(['avatar' => url("storage/users/$avatar_name.jpg")]);
         }
 
         $user->update(array_merge($request->all(), [
@@ -147,18 +149,12 @@ class UserController extends Controller
             'since' => $request->since
         ]));
 
-        if ($user->emergency) {
-            $user->emergency()->update([
-                'contact_name' => $request->contact_name,
-                'contact_phone' => $request->contact_phone,
-            ]);
-        } else {
-            Emergency::create([
-                'user_id' => $user->id,
-                'contact_name' => $request->contact_name,
-                'contact_phone' => $request->contact_phone,
-            ]);
-        }
+        $updateOrCreate = $user->emergency ? 'update' : 'create';
+
+        $user->emergency()->$updateOrCreate([
+            'contact_name' => $request->contact_name,
+            'contact_phone' => $request->contact_phone,
+        ]);
 
         Session::flash('success', 'Los datos del usuario han sido actualizados');
         return redirect('/users/' . $user->id)->with('user', $user);
