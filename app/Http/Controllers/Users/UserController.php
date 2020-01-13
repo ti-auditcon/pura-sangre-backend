@@ -173,18 +173,11 @@ class UserController extends Controller
      */
     public function image(Request $request, User $user)
     {
-        // $users_path = public_path('users');
+        $avatar_name = md5(mt_rand());
 
-        // if(!file_exists($users_path)) {
-        //     mkdir($users_path, 666, true);
-        // }
-        request()->file('avatar')->storeAs('public/users', $user->id . $user->first_name . '.jpg');
+        request()->file('avatar')->storeAs('public/users', "{$avatar_name}.jpg");
 
-        // $image = Image::make(file_get_contents($request->avatar))->fit(480);
-
-        // $image->save($users_path . $user->id . $user->first_name . '.jpg');
-            
-        $user->avatar = url('/') . '/storage/users/' . $user->id.$user->first_name . '.jpg';
+        $user->avatar = url('/') . '/storage/users/' . $avatar_name . '.jpg';
         
         $user->save();
         
