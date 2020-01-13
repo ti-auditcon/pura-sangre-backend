@@ -225,10 +225,10 @@ $(document).ready(function() {
         var chartdata = {
             labels: Months,
             datasets: [
-                { label: '2019', borderWidth: 1, borderColor: 'rgba(54, 162, 235, 1)',
+                { label: moment().format("YYYY"), borderWidth: 1, borderColor: 'rgba(54, 162, 235, 1)',
                   backgroundColor: 'rgba(54, 162, 235, 1)', data: Quantities,
                 },
-                { label: '2018', borderWidth: 1, borderColor: 'rgba(180, 178, 180, 0.8)',
+                { label: moment().subtract(1, 'year').format("YYYY"), borderWidth: 1, borderColor: 'rgba(180, 178, 180, 0.8)',
                   backgroundColor: 'rgba(180, 178, 180, 0.8)', data: SubQuantities, }
             ]
         };
@@ -260,10 +260,10 @@ $(document).ready(function(){
 
         var chartdata = {
             labels: Monthss,
-            datasets: [{ label: '2019', borderWidth: 1, borderColor: 'rgba(54, 162, 235, 1)',
+            datasets: [{ label: moment().format("YYYY"), borderWidth: 1, borderColor: 'rgba(54, 162, 235, 1)',
                 backgroundColor: 'rgba(54, 162, 235, 1)', data: reservs,
             }, {
-            label: '2018', borderWidth: 1, borderColor: 'rgba(180, 178, 180, 0.8)',
+            label: moment().subtract(1, 'year').format("YYYY"), borderWidth: 1, borderColor: 'rgba(180, 178, 180, 0.8)',
                 backgroundColor: 'rgba(180, 178, 180, 0.8)', data: sub_reservs, }]
         };
         var chart_quantity = document.getElementById("quantity-rsrvs").getContext('2d');
