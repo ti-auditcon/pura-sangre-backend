@@ -69,12 +69,9 @@ class SendPushNotification implements ShouldQueue
         $notification = ['title' => $this->title, 'body' => $this->body, 'sound' => true];
         
         $fcmNotification = [
-            //'registration_ids' => $tokenList, //multple token array
             'to' => $this->token, //single token
             'notification' => $notification,
-            'data' => [
-                'message' => $notification->toJson()
-            ]
+            'data' => $notification
         ];
 
         $headers = [
