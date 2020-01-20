@@ -73,7 +73,7 @@ class SendPushNotification implements ShouldQueue
             'to' => $this->token, //single token
             'notification' => $notification,
             'data' => [
-                'message' => $notification
+                'message' => $notification->toJson()
             ]
         ];
 
