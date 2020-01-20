@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('sidebar')
    @include('layouts.sidebar', ['page'=>'messages'])
 @endsection
@@ -138,7 +139,7 @@
             <div class="ibox-head">
                 <div class="ibox-title">
                     <h3 class="font-strong">
-                        Proximas Notificaciones
+                        Lista de notificaciones
                     </h3>
                 </div>
             </div>
@@ -146,8 +147,8 @@
             <div class="ibox-body">
                 <div class="ibox-body messages">
                     <div class="table-responsive row">
-                        <div class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
-                            <table class="table table-hover no-footer" id="example">
+                        <div class="dataTables_wrapper container-fluid no-footer">
+                            <table class="table table-hover no-footer" id="notifications-list">
                                 <thead class="thead-default thead-lg">
                                     <tr role="row">                                        
                                         <th>Titulo</th>
@@ -183,13 +184,11 @@
                                                             PROGRAMADO
                                                         </span>
                                                         @break
-
                                                     @case(1)
                                                         <span class="badge badge-success badge-pill">
                                                             ENVIADO
                                                         </span>
                                                         @break
-
                                                     @default
                                                         <span class="badge badge-danger badge-pill">
                                                             SIN ESTADO
@@ -261,19 +260,19 @@
 
                         <label class="col-form-label">Título</label>
                         
-                        <input class="form-control" name="title" type="text" required />
+                        <input class="form-control" name="title" type="text" required/>
 
                         <div class="row">
                             <div class="col-6">
                                 <label class="col-form-label">Fecha</label>
                         
-                                <input class="form-control" name="date" type="date" required />
+                                <input class="form-control" name="date" type="date" required/>
                             </div>
 
                             <div class="col-6">
                                 <label class="col-form-label">Hora</label>
                         
-                                <input class="form-control" name="time" type="time" required />
+                                <input class="form-control" name="time" type="time" required/>
                             </div>
                         </div>
                         
@@ -449,6 +448,33 @@
         });
     });
 </script>
+
+    <script>
+        $('#notifications-list').DataTable({
+            'pageLength': 6,
+            'lengthMenu': [ 6, 15, 25, 50 ],
+            'order': [[1, 'asc']],
+            'language': {
+                'lengthMenu': '<p>Mostrar</p> _MENU_ <p>elementos</p>',
+                'zeroRecords': 'Sin resultados',
+                'info': ' ',
+                'infoEmpty': 'Sin resultados',
+                'infoFiltered': '(_TOTAL_ filtrados de _MAX_ registros totales)',
+                'search': 'Filtrar:  ',
+                'paginate': {
+                    'next':     'Siguiente',
+                    'previous': 'Anterior'
+                },
+                'select': {
+                    'rows': {
+                        _: ' %d alumnos seleccionados',
+                        0: '',
+                        1: ' 1 alumno seleccionado'
+                    }
+                }
+            },  
+        });        
+    </script>
 
 
 @endsection
