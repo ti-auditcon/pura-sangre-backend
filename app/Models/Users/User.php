@@ -49,6 +49,8 @@ class User extends Authenticatable
         'birthdate', 
         'gender', 
         'address',
+        'lat',
+        'lng',
         'since',
         'emergency_id', 
         'status_user_id'

@@ -2,15 +2,6 @@
 
 Auth::routes();
 
-// Route::get('mailable', function () {
-//     $invoice = collect();
-//     $invoice->first_name = 'Raul';
-//     $invoice->subject = 'Asunto';
-//     $invoice->message = 'Esperamos como Equipo, que tu primera Clase haya sido con todo, por lo general las primeras clases son las más duras, por eso te invitamos a seguir dandolo todo. Por nuestra parte queremos saber que tal fuimos contigo';
-
-//     return new App\Mail\SendFirstClassEmail($invoice);
-// });
-
 Route::get('/', 'HomeController@index');
 Route::get('/withoutrenewal', 'HomeController@withoutrenewal');
 Route::get('/genders', 'HomeController@genders');
