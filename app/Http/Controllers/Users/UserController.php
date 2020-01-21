@@ -112,7 +112,8 @@ class UserController extends Controller
         return view(
             'users.show', [
                 'user' => $user,
-                'past_reservations' => $user->past_reservations()
+                'past_reservations' => $user->past_reservations(),
+                'auth_roles' => auth()->user(['id'])->roles()->orderBy('role_id')->pluck('id')->toArray()
             ]
         );
     }
@@ -237,5 +238,16 @@ class UserController extends Controller
             }
         }
         return 'All successfully updated!!';
+    }
+
+    /**
+     * [geolocations description]
+     *
+     * @return json
+     */
+    public function geolocations() {
+        $users = User::whereNotNull('address')->get(['id', 'lat', 'lng']);
+        
+        return $users;
     }
 }

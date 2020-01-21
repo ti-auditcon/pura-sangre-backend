@@ -135,8 +135,10 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('reports/inactive_users', 'Reports\InactiveUserController@index');
 
     Route::post('reports/inactive_users_json', 'Reports\InactiveUserController@inactiveUsers')->name('inactiveusers');
-    
+
     Route::get('reports/inactive_users/export', 'Reports\InactiveUserController@export')->name('inactive_users.export');
+
+    Route::get('reports/heatmap', 'Reports\ReportController@heatMap');
 
     Route::get('reports/data-plans/', 'Reports\DataPlansController@index');
     
@@ -145,6 +147,14 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     /**
      * Users Routes (ALUMNOS, PROFES, ADMINS, ALERTAS)
      */
+    Route::get('users/{user}/plans/{plan}/info', 'Users\UserController@userinfo')->name('users.plans.info');
+    
+    Route::get('users/geolocations', 'Users\UserController@geolocations')->name('users.geolocations');
+    
+    Route::post('users/{user}/plans/{plan}/annul', 'Plans\PlanUserController@annul')->name('users.plans.annul');
+    
+    // Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
+    
     Route::resource('users', 'Users\UserController');
 
     Route::get('users-json', 'Users\UserController@usersJson')->name('users-json');
@@ -154,12 +164,6 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('update-avatar', 'Users\UserController@updateAvatar')->name('user.update.avatar');
     
     Route::resource('users.plans', 'Plans\PlanUserController');
-    
-    Route::post('users/{user}/plans/{plan}/annul', 'Plans\PlanUserController@annul')->name('users.plans.annul');
-    
-    // Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
-    
-    Route::get('users/{user}/plans/{plan}/info', 'Users\UserController@userinfo')->name('users.plans.info');
 
     /**
      * ROLEUSER ROUTES

@@ -152,10 +152,10 @@ class ClaseController extends Controller
             return intval($value);
         }, $request->user_id);
         foreach ($clase->reservations as $reservation) {
-            if (in_array($reservation->user_id, $users_ids)){
+            if (in_array($reservation->user_id, $users_ids)) {
                 $reservation->reservation_status_id = 3;
                 $reservation->save();
-            }else{
+            } else {
                 $reservation->reservation_status_id = 4;
                 $reservation->save();
             }

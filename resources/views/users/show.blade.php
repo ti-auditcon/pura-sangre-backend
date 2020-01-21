@@ -96,7 +96,7 @@
                 
                 <div class="ibox-tools">
                     
-                    @if (auth()->user()->hasRole(1))
+                    @if (in_array(1, $auth_roles))
                         <a href="{{ route('role-user.edit', ['role_user' => $user->id]) }}"
                            class="btn btn-warning"
                         >
@@ -111,7 +111,7 @@
                         Editar
                     </a>
 
-                    @if (Auth::user()->hasRole(1))
+                    @if (in_array(1, $auth_roles))
 
                         <button
                             class="btn btn-info btn-danger sweet-user-delete"
@@ -174,7 +174,7 @@
                     <h5>Planes de {{ $user->first_name }}</h5>
                 </div>
                 
-                @if (Auth::user()->hasRole(1))
+                @if (in_array(1, $auth_roles))
                     <div class="ibox-tools">
                         <a
                             class="btn btn-success text-white"
@@ -247,7 +247,7 @@
                                 </td>
 
                                 <td>
-                                    @if (Auth::user()->hasRole(1) && $plan_user->plan_status->can_delete == true)
+                                    @if (in_array(1, $auth_roles) && $plan_user->plan_status->can_delete === true)
 
                                         {!! Form::open(['route' => ['users.plans.annul', 'user' => $user->id, 'plan' => $plan_user->id], 'method' => 'post', 'class' => 'user-plan-annul',  'id'=>'annul'.$plan_user->id]) !!}
                                         {!! Form::close() !!}
@@ -260,7 +260,7 @@
                                             <i class="la la-ban"></i>
                                         </button>
 
-                                        @if ($plan_user->plan_status_id == 1)
+                                        @if ($plan_user->plan_status_id === 1)
                                             <button
                                                 class="btn btn-icon-only btn-warning freeze-plan-button"
                                                 data-toggle="modal"
@@ -290,7 +290,7 @@
                                             </button>
                                         @endif
                                     
-                                    @elseif (Auth::user()->hasRole(1) && $plan_user->plan_status_id == 5)
+                                    @elseif (in_array(1, $auth_roles) && $plan_user->plan_status_id == 5)
 
                                         {!! Form::open(['route' => ['users.plans.destroy', 'user' => $user->id, 'plan' => $plan_user->id], 'method' => 'delete', 'class' => 'user-plan-delete',  'id'=>'delete'.$plan_user->id]) !!}
                                         {!! Form::close() !!}

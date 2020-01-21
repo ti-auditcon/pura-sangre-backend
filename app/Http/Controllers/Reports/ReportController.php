@@ -231,6 +231,10 @@ class ReportController extends Controller
 
         return back()->with('success', 'Se han recalculado los ingresos');
     }
+
+    public function heatMap() {
+        return view('reports.heatmap');
+    }
 }
 
     // //INGRESOS POR MES AÑO ACTUAL

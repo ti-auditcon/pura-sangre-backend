@@ -73,7 +73,7 @@ class ClaseUserController extends Controller
         $date_class = Carbon::parse($clase->date);
         $reservation = $clase->reservations()->where('user_id', $user->id)->first();
 
-        if(count($planusers) != 0){
+        if(count($planusers) != 0) {
             foreach ($planusers as $planuser) {
                 foreach ($planuser->plan_user_periods as $pup) {
                     if ($date_class->between(Carbon::parse($pup->start_date), Carbon::parse($pup->finish_date))) {
@@ -81,23 +81,18 @@ class ClaseUserController extends Controller
                     }
                 }
             }
-        }elseif (count($planusers) == 0) {
+        } elseif (count($planusers) == 0) {
             # code...
-        }
-
-        
-            }elseif ($class_hour < now()) {
+        } elseif ($class_hour < now()) {
                 Session::flash('warning','No puede votar una clase que ya pasó');
                 return Redirect::back();
-            }
-            else{
-                if ($reservation->delete()) {
-                    if ($period_plan != null) {
-                        $period_plan->update(['counter' => $period_plan->counter + 1]);
-                    }
-                    Session::flash('success','Retiro de clase exitoso');
-                    return Redirect::back();
+        } else {
+            if ($reservation->delete()) {
+                if ($period_plan != null) {
+                    $period_plan->update(['counter' => $period_plan->counter + 1]);
                 }
+                Session::flash('success','Retiro de clase exitoso');
+                return Redirect::back();
             }
         }
     }

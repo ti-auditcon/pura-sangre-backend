@@ -232,9 +232,17 @@ $(document).ready(function() {
                   backgroundColor: 'rgba(180, 178, 180, 0.8)', data: SubQuantities, }
             ]
         };
+
         var chart_quantity = document.getElementById("quantity-plans").getContext('2d');
 
-        var miChart = new Chart(chart_quantity, { type: 'bar', data: chartdata });
+        var miChart = new Chart(
+            chart_quantity,
+            {
+                type: 'bar',
+                data: chartdata,
+                options: { scales: { xAxes: [{ gridLines: false }] } }
+            }
+        );
     });
 });
 </script>
@@ -269,7 +277,9 @@ $(document).ready(function(){
         var chart_quantity = document.getElementById("quantity-rsrvs").getContext('2d');
         
         var miChart = new Chart(chart_quantity, {
-            type: 'bar', data: chartdata, 
+            type: 'bar',
+            data: chartdata,
+            options: { scales: { xAxes: [{ gridLines: false }] } }
         });
     });
 });
