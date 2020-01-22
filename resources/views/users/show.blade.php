@@ -217,11 +217,11 @@
                                         {{ optional($plan_user->plan)->plan }}
                                     </a>
 
-                                    @if (\Carbon\Carbon::parse($plan_user->finish_date)->gte(toDay()))
+                                    {{-- @if ( \Carbon\Carbon::parse($plan_user->finish_date)->gte(toDay()) ) --}}
                                         <a href="{{url('/users/'.$user->id.'/plans/'.$plan_user->id.'/edit')}}">
                                             <span class="la la-edit"></span>
                                         </a>
-                                    @endif
+                                    {{-- @endif --}}
                                 </td>
 
                                 @if ($plan_user->bill)
@@ -247,7 +247,7 @@
                                 </td>
 
                                 <td>
-                                    @if (Auth::user()->hasRole(1) && $plan_user->plan_status->can_delete == true)
+                                    @if (Auth::user()->hasRole(1) && $plan_user->plan_status->can_delete)
 
                                         {!! Form::open(['route' => ['users.plans.annul', 'user' => $user->id, 'plan' => $plan_user->id], 'method' => 'post', 'class' => 'user-plan-annul',  'id'=>'annul'.$plan_user->id]) !!}
                                         {!! Form::close() !!}
@@ -289,20 +289,18 @@
                                                 <i class="la la-play-circle-o"></i>
                                             </button>
                                         @endif
-                                    
-                                    @elseif (Auth::user()->hasRole(1) && $plan_user->plan_status_id == 5)
 
+                                    @elseif (Auth::user()->hasRole(1) && $plan_user->plan_status_id == 5)
                                         {!! Form::open(['route' => ['users.plans.destroy', 'user' => $user->id, 'plan' => $plan_user->id], 'method' => 'delete', 'class' => 'user-plan-delete',  'id'=>'delete'.$plan_user->id]) !!}
                                         {!! Form::close() !!}
 
                                         <button
                                             class="btn btn-info btn-icon-only btn-danger sweet-user-plan-delete"
-                                            data-id="{{$plan_user->id}}"
-                                            data-name="{{$plan_user->plan->plan}}"
+                                            data-id="{{ $plan_user->id }}"
+                                            data-name="{{ $plan_user->plan->plan }}"
                                         >
                                             <i class="la la-trash"></i>
                                         </button>
-
                                     @endif
                                 </td>
                                 <td>{{ $plan_user->plan_status_id }}</td>
@@ -311,7 +309,7 @@
                                 @if ($plan_user->bill)
                                     <td>{{ $plan_user->bill->date }}</td>
                                 @else
-                                    <td >no aplica</td>
+                                    <td>no aplica</td>
                                 @endif
                             </tr>
                             @endforeach
