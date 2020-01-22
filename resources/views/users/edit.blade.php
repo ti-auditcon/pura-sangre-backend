@@ -65,18 +65,16 @@
                                 </div>
                             @endif
 
-                            <div id="container-logo" class="pull-right" style="display: none">
-                                <img class="img-responsive" width="200" id="logo-img" src="#" />
-                            </div>
+                            <input class="form-control" 
+                                   id="rut-src"
+                                   name="rut"
+                                   type="text"
+                                   value="{{ old('rut', $user->rut_formated) }}"
+                                   required
+                            />
 
-                            <div>
-                                <label class="btn btn-info btn-edit file-input">
-                                    <span class="btn-icon"><i class="la la-upload"></i>Subir o cambiar Imagen</span>
-
-                                    <input style="display: none" name="image" id="photoinput" type="file" accept="image/*" max-file-size=1234>
-                                </label>
-
-                                <span class="help-block"></span>
+                            <div class="col-12 p-0 my-0 mt-3">
+                                <span class="col-form-label hidden">Por favor, ingrese un rut válido</span>
                             </div>
                         </div>
                     </div>

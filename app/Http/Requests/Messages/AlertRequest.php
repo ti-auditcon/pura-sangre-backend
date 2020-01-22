@@ -25,7 +25,7 @@ class AlertRequest extends FormRequest
     {
         return [
             'from' => 'required|date',
-            'to' => 'required|date|after:from',
+            'to' => 'required|date|after_or_equal:from',
             'message' => 'required'
         ];
     }
@@ -41,8 +41,8 @@ class AlertRequest extends FormRequest
             'from.date' => 'El campo desde debe ser una fecha válida.',
             'to.required' => 'El campo hasta es requerido.',
             'to.date' => 'El campo hasta debe ser una fecha válida.',
-            'to.after' => 'El campo hasta debe ser una fecha mayor al campo desde.',
+            'to.after_or_equal' => 'El campo hasta debe ser una fecha igual o mayor al campo desde.',
             'message.required' => 'El campo contenido es requerido.',
-         ];
+        ];
    }
 }

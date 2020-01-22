@@ -132,7 +132,7 @@
             <div class="ibox-body">
                 <div class="row mb-2">
                     <div class="col-12 text-muted">Rut:</div>
-                    <div class="col-12">{{ Rut::set($user->rut)->fix()->format() }}</div>
+                    <div class="col-12">{{ $user->rut_formated }}</div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-12 text-muted">Email:</div>
@@ -217,11 +217,11 @@
                                         {{ optional($plan_user->plan)->plan }}
                                     </a>
 
-                                    @if (\Carbon\Carbon::parse($plan_user->finish_date)->gte(toDay()))
+                                    {{-- @if ( \Carbon\Carbon::parse($plan_user->finish_date)->gte(toDay()) ) --}}
                                         <a href="{{url('/users/'.$user->id.'/plans/'.$plan_user->id.'/edit')}}">
                                             <span class="la la-edit"></span>
                                         </a>
-                                    @endif
+                                    {{-- @endif --}}
                                 </td>
 
                                 @if ($plan_user->bill)
@@ -292,19 +292,17 @@
                                             </button>
                                         @endif
                                     
-                                    @elseif (in_array(1, $auth_roles) && $plan_user->plan_status_id == 5)
-
+                                    @elseif (Auth::user()->hasRole(1) && $plan_user->plan_status_id == 5)
                                         {!! Form::open(['route' => ['users.plans.destroy', 'user' => $user->id, 'plan' => $plan_user->id], 'method' => 'delete', 'class' => 'user-plan-delete',  'id'=>'delete'.$plan_user->id]) !!}
                                         {!! Form::close() !!}
 
                                         <button
                                             class="btn btn-info btn-icon-only btn-danger sweet-user-plan-delete"
-                                            data-id="{{$plan_user->id}}"
-                                            data-name="{{$plan_user->plan->plan}}"
+                                            data-id="{{ $plan_user->id }}"
+                                            data-name="{{ $plan_user->plan->plan }}"
                                         >
                                             <i class="la la-trash"></i>
                                         </button>
-
                                     @endif
                                 </td>
                                 <td>{{ $plan_user->plan_status_id }}</td>
@@ -313,7 +311,7 @@
                                 @if ($plan_user->bill)
                                     <td>{{ $plan_user->bill->date }}</td>
                                 @else
-                                    <td >no aplica</td>
+                                    <td>no aplica</td>
                                 @endif
                             </tr>
                             @endforeach
