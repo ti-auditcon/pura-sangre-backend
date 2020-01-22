@@ -247,7 +247,9 @@
                                 </td>
 
                                 <td>
-                                    @if (in_array(1, $auth_roles) && $plan_user->plan_status->can_delete === true)
+                                    {{-- {{ dd(in_array(1, $auth_roles)) }} --}}
+                                    {{-- {{ dd($plan_user->plan_status->can_delete == true) }} --}}
+                                    @if (in_array(1, $auth_roles) && $plan_user->plan_status->can_delete)
 
                                         {!! Form::open(['route' => ['users.plans.annul', 'user' => $user->id, 'plan' => $plan_user->id], 'method' => 'post', 'class' => 'user-plan-annul',  'id'=>'annul'.$plan_user->id]) !!}
                                         {!! Form::close() !!}
