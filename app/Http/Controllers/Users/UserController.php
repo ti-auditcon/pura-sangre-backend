@@ -24,6 +24,7 @@ class UserController extends Controller
         // parent::__construct();
         $this->middleware('can:view,user')->only('show');
     }
+    
     /**
      * Display a listing of the resource.
      *

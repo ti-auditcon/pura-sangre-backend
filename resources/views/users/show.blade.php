@@ -132,7 +132,7 @@
             <div class="ibox-body">
                 <div class="row mb-2">
                     <div class="col-12 text-muted">Rut:</div>
-                    <div class="col-12">{{ Rut::set($user->rut)->fix()->format() }}</div>
+                    <div class="col-12">{{ $user->rut_formated }}</div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-12 text-muted">Email:</div>

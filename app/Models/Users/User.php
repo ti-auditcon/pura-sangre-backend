@@ -49,6 +49,8 @@ class User extends Authenticatable
         'birthdate', 
         'gender', 
         'address',
+        'lat',
+        'lng',
         'since',
         'emergency_id', 
         'status_user_id'
@@ -129,7 +131,7 @@ class User extends Authenticatable
      */
     public function getFullNameAttribute()
     {
-        return $this->first_name.' '.$this->last_name;
+        return $this->first_name . ' ' . $this->last_name;
     }
 
     /**
@@ -139,7 +141,11 @@ class User extends Authenticatable
      */
     public function getRutFormatedAttribute()
     {
-        return Rut::set($this->rut)->fix()->format();
+        if ( Rut::parse($this->rut)->quiet()->validate() ) {
+            return Rut::set($this->rut)->fix()->format();
+        }
+        
+        return $this->rut;
     }
 
     /**

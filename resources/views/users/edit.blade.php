@@ -55,12 +55,16 @@
 
                             <label class="col-form-label">Rut</label>
 
-                            <input class="form-control" id="rut-src" name="rut" type="text" value="{{ old('rut', Rut::set($user->rut)->fix()->format()) }}" required />
+                            <input class="form-control" 
+                                   id="rut-src"
+                                   name="rut"
+                                   type="text"
+                                   value="{{ old('rut', $user->rut_formated) }}"
+                                   required
+                            />
 
                             <div class="col-12 p-0 my-0 mt-3">
-
                                 <span class="col-form-label hidden">Por favor, ingrese un rut válido</span>
-
                             </div>
 
                         </div>
