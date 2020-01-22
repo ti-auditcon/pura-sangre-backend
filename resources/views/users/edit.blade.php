@@ -43,7 +43,7 @@
                                        id="rut-src"
                                        name="rut"
                                        type="text"
-                                       value="{{ old('rut', Rut::set($user->rut)->fix()->format()) }}"
+                                       value="{{ old('rut', $user->rut_formated) }}"
                                        required/>
 
                                 <div class="col-12 p-0 my-0 mt-3">
@@ -65,17 +65,29 @@
                                 </div>
                             @endif
 
-                            <input class="form-control" 
+                            <div id="container-logo" class="pull-right" style="display: none">
+                                <img class="img-responsive" width="200" id="logo-img" src="#" />
+                            </div>
+
+                            <div>
+                                <label class="btn btn-info btn-edit file-input">
+                                    <span class="btn-icon"><i class="la la-upload"></i>Subir o cambiar Imagen</span>
+
+                                    <input style="display: none" name="image" id="photoinput" type="file" accept="image/*" max-file-size=1234>
+                                </label>
+
+                                <span class="help-block"></span>
+
+                            {{-- <input class="form-control" 
                                    id="rut-src"
                                    name="rut"
                                    type="text"
                                    value="{{ old('rut', $user->rut_formated) }}"
                                    required
-                            />
+                            /> --}}
 
-                            <div class="col-12 p-0 my-0 mt-3">
-                                <span class="col-form-label hidden">Por favor, ingrese un rut válido</span>
-                            </div>
+
+                        </div>
                         </div>
                     </div>
                     <div class="row">
