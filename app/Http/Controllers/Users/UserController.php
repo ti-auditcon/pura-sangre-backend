@@ -122,6 +122,7 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Users\User  $user
+     * 
      * @return \Illuminate\Http\Response
      */
     public function edit(User $user)
@@ -131,8 +132,10 @@ class UserController extends Controller
 
     /**
      * [update description]
+     * 
      * @param  UserRequest $request [description]
      * @param  User        $user    [description]
+     * 
      * @return [type]               [description]
      */
     public function update(UserRequest $request, User $user)
@@ -166,6 +169,7 @@ class UserController extends Controller
      * 
      * @param  Request $request [description]
      * @param  User    $user    [description]
+     * 
      * @return [type]           [description]
      */
     public function image(Request $request, User $user)
@@ -183,18 +187,22 @@ class UserController extends Controller
 
     /**
      * [destroy description]
+     * 
      * @param  Request $request [description]
      * @param  User    $user    [description]
+     * 
      * @return [type]           [description]
      */
     public function destroy(Request $request, User $user)
     {
         $user->delete();
+        
         return redirect('/users')->with('success', 'El usuario ha sido borrado correctamente');
     }
 
     /**
      * [updateAvatar description]
+     * 
      * @return [type] [description]
      */
     public function updateAvatar()
@@ -204,6 +212,7 @@ class UserController extends Controller
             $user->avatar = url('/') . '/storage/users/u (' . rand(1, 54) . ').jpg';
             $user->save();
         }
+
         return 'listoco';
     }
 
@@ -218,6 +227,7 @@ class UserController extends Controller
             'status_plan' => $plan->plan_status->plan_status,
             'observations' => $plan->observations ?: '',
         ];
+
         echo json_encode($response);
     }
 
@@ -226,10 +236,12 @@ class UserController extends Controller
         foreach (Reservation::all() as $reserv) {
             if ($reserv->plan_user_id == null) {
                 $fecha_clase = $reserv->clase->date;
+                
                 $plan = PlanUser::where('start_date', '<=', $fecha_clase)
                     ->where('finish_date', '>=', $fecha_clase)
                     ->where('user_id', $reserv->user_id)
                     ->first();
+                
                 if ($plan) {
                     $reserv->update(['plan_user_id' => $plan->id]);
                     $plan->counter -= 1;
@@ -237,6 +249,7 @@ class UserController extends Controller
                 }
             }
         }
+
         return 'All successfully updated!!';
     }
 }
