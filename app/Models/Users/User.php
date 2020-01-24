@@ -141,11 +141,7 @@ class User extends Authenticatable
      */
     public function getRutFormatedAttribute()
     {
-        if ( Rut::parse($this->rut)->quiet()->validate() ) {
-            return Rut::set($this->rut)->fix()->format();
-        }
-        
-        return $this->rut;
+        return Rut::set($this->rut)->fix()->format();
     }
 
     /**
