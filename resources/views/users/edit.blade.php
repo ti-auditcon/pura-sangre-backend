@@ -1,58 +1,36 @@
 @extends('layouts.app')
 
 @section('sidebar')
-    @include('layouts.sidebar',['page'=>'student'])
+
+@include('layouts.sidebar',['page'=>'student'])
+
 @endsection
 
+
 @section('content')
-    <div class="row justify-content-center">
-        <div class="col-12 col-xl-6">
-            <div class="ibox">
-                <div class="ibox-head">
-                    <div class="ibox-title">
-                        Editar datos de {{ $user->first_name }} {{ $user->last_name }}
-                    </div>
-                </div>
 
-                {!! Form::open(['route' => [ 'users.update', $user->id ], 'method' => 'PUT', 'files' => true]) !!}
+<div class="row justify-content-center">
+    <div class="col-12 col-xl-6">
+        <div class="ibox">
+            <div class="ibox-head">
+                <div class="ibox-title">Editar datos de {{$user->first_name}} {{$user->last_name}}</div>
+            </div>
 
-                <div class="ibox-body">
-                    <div class="row">
-                        <div class="col-sm-6 form-group mb-2">
-                            <div class="form-group inline @if($errors->has('first_name')) has-warning  @endif">
-                                <label class="col-form-label">Nombre</label>
+            {!! Form::open(['route' => ['users.update', $user->id], 'method' => 'PUT', 'files' => true]) !!}
 
-                                <input class="form-control " name="first_name" value="{{ $user->first_name }}" required>
-                            </div>
-                        </div>
+            <div class="ibox-body">
+                <div class="row">
+                    <div class="col-sm-6 form-group mb-2">
+                        <div class="form-group inline @if($errors->has('first_name')) has-warning  @endif">
+                            <label class="col-form-label">Nombre</label>
 
-                        <div class="col-sm-6 form-group mb-2">
-                            <div class="form-group inline @if($errors->has('last_name')) has-warning  @endif">
-                                <label class="col-form-label">Apellido</label>
-
-                                <input class="form-control " name="last_name" value="{{ $user->last_name }}" required>
-                            </div>
+                            <input class="form-control"
+                                   name="first_name"
+                                   value="{{ $user->first_name }}"
+                                   required 
+                            />
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-6 form-group mb-2">
-                            <div id="rut-group" class="form-group inline @if($errors->has('rut')) has-warning  @endif">
-                                <label class="col-form-label">Rut</label>
-
-                                <input class="form-control"
-                                       id="rut-src"
-                                       name="rut"
-                                       type="text"
-                                       value="{{ old('rut', $user->rut_formated) }}"
-                                       required/>
-
-                                <div class="col-12 p-0 my-0 mt-3">
-                                    <span class="col-form-label hidden">
-                                        Por favor, ingrese un rut válido
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
 
                     <div class="col-sm-6 form-group mb-2">
                         <div class="form-group inline @if($errors->has('last_name')) has-warning  @endif">
@@ -74,22 +52,21 @@
                         >
                             <label class="col-form-label">Rut</label>
 
-                            {{-- <input class="form-control" 
+                            <input class="form-control" 
                                    id="rut-src"
                                    name="rut"
                                    type="text"
                                    value="{{ old('rut', $user->rut_formated) }}"
                                    required
-                            /> --}}
+                            />
 
-
+                            <div class="col-12 p-0 my-0 mt-3">
+                                <span class="col-form-label hidden">
+                                    Por favor, ingrese un rut válido
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                    <div class="row">
-                        <div class="col-sm-6 form-group mb-2">
-                            <div class="form-group inline @if($errors->has('phone')) has-warning  @endif">
-                                <label class="col-form-label">Número de celular</label>
 
                     <div class="upload-box col-sm-6 form-group mb-2">
                         {{ Session::get('error') }}
@@ -211,10 +188,6 @@
                                     <i id="i-icon" class="fa fa-map-marker" aria-hidden="true"></i>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6 form-group mb-4">
-                            <div class="form-group inline @if($errors->has('contact_phone')) has-warning  @endif">
-                                <label class="col-form-label">Teléfono de contacto de emergencia</label>
 
                             {{-- hidden lat and long inputs --}}
                             <input id="lat-input" type="text" name="lat" value="{{ $user->lat }}" hidden />
@@ -248,13 +221,6 @@
                             />
                         </div>
                     </div>
-                    <div>
-                        <button class="btn btn-primary mr-2" type="submit">
-                            Actualizar datos
-                        </button>
-
-                        <a class="btn btn-secondary" href="{{ route('users.show', $user->id) }}">Volver</a>
-                    </div>
                 </div>
             </div>
             <div>
@@ -265,7 +231,13 @@
                 <a class="btn btn-secondary" href="{{ route('users.show', $user->id) }}">Volver</a>
             </div>
         </div>
+        {!! Form::close() !!}
     </div>
+</div>
+</div>
+
+
+
 @endsection
 
 
@@ -316,6 +288,7 @@
         });
 
         const readURL = (input) => {
+
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
 
@@ -333,6 +306,9 @@
     $(function() {
         $("input:file").change(function() {
             $("#imgback").prop('hidden', true);
+            // console.log("si");
+            // var fileName = $(this).val();
+            // $(".filename").html(fileName);
         });
     });
 </script>
@@ -342,26 +318,30 @@
 
 <script>
     $(function() {
-        $("input#rut-src").rut({ 
+        $("input#rut-src").rut({
             formatOn: 'keyup',
             minimumLength: 8, // validar largo mínimo; default: 2
             validateOn: 'keyup' // si no se quiere validar, pasar null
         });
 
         $("input#rut-src").rut().on('rutInvalido', function(e) {
+
             $('#rut-group').addClass('has-error');
 
             $('#rut-group span').show();
 
             $('#rut-submit').prop('disabled', true);
+
         });
 
         $("input#rut-src").rut().on('rutValido', function(e, rut, dv) {
+
             $('#rut-group').removeClass('has-error');
 
             $('#rut-group span').hide();
 
             $('#rut-submit').prop('disabled', false);
+
         });
     });
 </script>

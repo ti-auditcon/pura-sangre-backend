@@ -260,7 +260,7 @@ class UserController extends Controller
      * @return json
      */
     public function geolocations() {
-        $users = User::whereNotNull('address')->get(['id', 'lat', 'lng']);
+        $users = User::whereNotNull('address')->get(['id', 'rut', 'lat', 'lng']);
         
         return $users;
     }
