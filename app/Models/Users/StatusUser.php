@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class StatusUser extends Model
 {
+    const ACTIVE = 1;
+    
+    const INACTIVE = 2;
+
 	protected $fillable = ['status_user'];
 
 	/**
