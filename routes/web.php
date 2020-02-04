@@ -10,6 +10,7 @@ Auth::routes();
 
 //     return new App\Mail\SendFirstClassEmail($invoice);
 // });
+Route::get('/fix-clases', 'HomeController@fixClases');
 
 Route::get('/', 'HomeController@index');
 Route::get('/withoutrenewal', 'HomeController@withoutrenewal');

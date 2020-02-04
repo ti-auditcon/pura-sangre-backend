@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Session;
-use Carbon\Carbon;
 use App\Models\Bills\Bill;
-use App\Models\Plans\Plan;
-use App\Models\Users\User;
-use Illuminate\Http\Request;
-use App\Traits\ExpiredPlans;
-use App\Models\Plans\PlanUser;
+use App\Models\Clases\Clase;
 use App\Models\Clases\ClaseType;
+use App\Models\Plans\Plan;
 use App\Models\Plans\PlanIncomeSummary;
+use App\Models\Plans\PlanUser;
+use App\Models\Users\User;
+use App\Traits\ExpiredPlans;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Session;
 
 class HomeController extends Controller
 {
@@ -226,6 +227,15 @@ class HomeController extends Controller
                 }
             }
         }
+    }
+
+    public function fixClases()
+    {
+        $clases = Clase::where('date', '>=', today())->get();
+        foreach ($clases as $clase) {
+            $clase->update(['quota' => $clase->block->quota]);
+        }
+        return 'Finalizado';
     }
 }
 
