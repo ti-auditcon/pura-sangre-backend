@@ -273,8 +273,12 @@
                                         @endif
                                         
                                         @if($plan_user->plan_status_id == 2)
+                                        {{-- {{ dd($plan_user->postpone) }} --}}
                                             <form
-                                                action="{{ route('plan-user.postpones.destroy', ['plan_user' => $plan_user->id, 'postpone' => $plan_user->postpone]) }}"
+                                                action="{{ route('plan-user.postpones.destroy', [
+                                                                'plan_user' => $plan_user->id,
+                                                                'postpone' => $plan_user->postpone
+                                                           ]) }}"
                                                 method="POST"
                                                 class="user-plan-unfreeze"
                                             >
@@ -291,7 +295,16 @@
                                         @endif
 
                                     @elseif (Auth::user()->hasRole(1) && $plan_user->plan_status_id == 5)
-                                        {!! Form::open(['route' => ['users.plans.destroy', 'user' => $user->id, 'plan' => $plan_user->id], 'method' => 'delete', 'class' => 'user-plan-delete',  'id'=>'delete'.$plan_user->id]) !!}
+                                        {!! Form::open([
+                                                'route' => [
+                                                    'users.plans.destroy',
+                                                    'user' => $user->id,
+                                                    'plan' => $plan_user->id
+                                                ],
+                                                'method' => 'delete',
+                                                'class' => 'user-plan-delete',
+                                                'id' => 'delete' . $plan_user->id
+                                        ]) !!}
                                         {!! Form::close() !!}
 
                                         <button

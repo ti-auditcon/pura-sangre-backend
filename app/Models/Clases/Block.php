@@ -21,8 +21,9 @@ class Block extends Model
      * 
      * @var array
      */
-    protected $fillable = ['start', 'end', 'dow', 'title',
-        'date', 'profesor_id', 'quota', 'clase_type_id'
+    protected $fillable = [
+        'start', 'end', 'dow', 'title', 'date',
+        'profesor_id', 'quota', 'clase_type_id'
     ];
 
     /**
@@ -38,19 +39,16 @@ class Block extends Model
      * [getEndAttribute description]
      * 
      * @param  [type] $value [description]
+     * 
      * @return [type]        [description]
      */
     public function getEndAttribute($value)
     {
-        if ($this->date!=null) {
-            
-            return $this->date.' '.$value;
-        
-        } else {
-            
-            return $value;
-        
-        }
+        if($this->date != null) {
+            return "{$this->date} {$value}";
+        }            
+
+        return $value;
     }
 
     /**
@@ -67,6 +65,7 @@ class Block extends Model
      * Transformamos el valor de dow a un arreglo para FullCalendar
      * 
      * @param  [type] $value [description]
+     * 
      * @return array
      */
     public function getDowAttribute($value)
@@ -96,15 +95,11 @@ class Block extends Model
      */
     public function getStartAttribute($value)
     {
-        if ($this->date!=null) {
-            
-            return $this->date.' '.$value;
-        
-        } else {
-            
-            return $value;
-        
-        }
+        if($this->date) {
+            return "{$this->date}  {$value}";
+        }            
+
+        return $value;
     }
 
     /**
@@ -134,7 +129,7 @@ class Block extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class,'profesor_id');
+        return $this->belongsTo(User::class, 'profesor_id');
     }
 
     /**
