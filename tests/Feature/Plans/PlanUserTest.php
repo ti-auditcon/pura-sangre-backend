@@ -3,6 +3,10 @@
 namespace Tests\Feature\Plans;
 
 use Tests\TestCase;
+use App\Models\Plans\Plan;
+use App\Models\Users\Role;
+use App\Models\Users\User;
+use App\Models\Plans\PlanUser;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -10,42 +14,50 @@ class PlanUserTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     *  Allows implementation in a test.
+     */
+    protected function duringSetUp()
+    {
+        // ..
+    }
+
     /** @test */
     public function admin_can_see_plan_user_create_view()
     {
-        $this->seed(\StatusUsersTableSeeder::class);
-        $this->seed(\ClaseTypesTableSeeder::class);
-        $this->seed(\PlansTableSeeder::class);
+        // $this->seed(\StatusUsersTableSeeder::class);
+        // $this->seed(\ClaseTypesTableSeeder::class);
+        // $this->seed(\PlansTableSeeder::class);
 
         $admin = factory(\App\Models\Users\User::class)->create();
         // $admin->roles()->attach(1);
 
         $client_user = factory(\App\Models\Users\User::class)->create();
 
-        $response = $this->actingAs($admin)->get('/users/' . $client_user->id .  '/plans/create');
-
-        $response->assertSee('Planes*');
+        $this->actingAs($admin)->get("/users/{$client_user->id}/plans/create")
+                               ->assertSee('Planes*');
     }
 
     /** @test */
     public function admin_can_create_plan_user_to_a_client()
     {
-        $this->seed(\StatusUsersTableSeeder::class);
-        $this->seed(\ClaseTypesTableSeeder::class);
-        $this->seed(\PlanPeriodsTableSeeder::class);
-        $this->seed(\PlanStatusTableSeeder::class);
-        $this->seed(\PlansTableSeeder::class);
-        $this->seed(\RolesTableSeeder::class);
+        // $this->seed(\StatusUsersTableSeeder::class);
+        // $this->seed(\ClaseTypesTableSeeder::class);
+        // $this->seed(\PlanPeriodsTableSeeder::class);
+        // $this->seed(\PlanStatusTableSeeder::class);
+        // $this->seed(\PlansTableSeeder::class);
+        // $this->seed(\RolesTableSeeder::class);
 
-        $admin = factory(\App\Models\Users\User::class)->create();
-        $admin->roles()->attach(1);
+        $admin = factory(User::class)->create()->each(function ($user) {
+            $user->roles()->attach(Role::ADMIN);
+        });
 
-        $client_user = factory(\App\Models\Users\User::class)->create();
+        $client_user = factory(User::class)->create();
 
-        $all_plans = \App\Models\Plans\Plan::all();
+        $all_plans = Plan::all();
 
         $period = today();
-        
+
         foreach ($all_plans as $plan) {
             $plan_user = [
                 'plan_id' => $plan->id,
@@ -87,7 +99,7 @@ class PlanUserTest extends TestCase
 
             $this->get('/users/' . $client_user->id)->assertOk();
 
-            $period->addMonths($plan->plan_period->period_number ?? 1);
+            // $period->addMonths($plan->plan_period->period_number ?? 1);
         }
     }
 
@@ -157,9 +169,9 @@ class PlanUserTest extends TestCase
             'user_id' => $user->id
         ]);
         $reservation = $reservation->toArray();
-        
+
         $response = $this->actingAs($admin)->post('/reservation/', $reservation);
-        
+
         $this->assertDatabaseHas('clases', [
             'id' => $clase_de_hoy->id,
         ]);
@@ -190,36 +202,35 @@ class PlanUserTest extends TestCase
     /** @test */
     public function a_bill_is_created_after_plan_user_created()
     {
-        $this->seed(\StatusUsersTableSeeder::class);
-        $this->seed(\ClaseTypesTableSeeder::class);
-        $this->seed(\BlockTableSeeder::class);
-        $this->seed(\PlanPeriodsTableSeeder::class);
-        $this->seed(\PlanStatusTableSeeder::class);
-        $this->seed(\PlansTableSeeder::class);
-        $this->seed(\RolesTableSeeder::class);
-
         $admin = factory(\App\Models\Users\User::class)->create();
 
-        $admin->roles()->attach(1);
+        $this->actingAs($admin)->get('')->assertViewIs('');
+
+        // ->each(function ($user) {
+            // $user->roles()->attach(Role::ADMIN);
+        // });
+
         $user = factory(\App\Models\Users\User::class)->create();
 
-        $plan_user = [
-            'plan_id' => 3,
-            "fecha_inicio" => today(),
-            "payment_type_id" => "1",
-            "date" => today()->addDay()->format('d-m-Y'),
-            "amount" => 45000
-        ];
+        // $plan_user = factory(PlanUser::class, 1)->make();
+        // dd($plan_user);
+        // $plan_user = [
+        //     'plan_id' => 3,
+        //     "fecha_inicio" => today(),
+        //     "payment_type_id" => "1",
+        //     "date" => today()->addDay()->format('d-m-Y'),
+        //     "amount" => 45000
+        // ];
 
-        $response = $this->actingAs($admin)->post('/users/' . $user->id .  '/plans', $plan_user);
+        // $this->actingAs($admin)->post("/users/{$user->id}/plans", $plan_user)->dump();
 
-        $this->assertDatabaseHas('bills', [
-            'payment_type_id' => 1,
-            'date' => today()->addDay(),
-            'start_date' => $plan_user['fecha_inicio'],
-            'finish_date' => today()->addMonth()->subDay(),
-            'amount' => $plan_user['amount']
-        ]);
+        // $this->assertDatabaseHas('bills', [
+        //     'payment_type_id' => 1,
+        //     'date' => today()->addDay(),
+        //     'start_date' => $plan_user['fecha_inicio'],
+        //     'finish_date' => today()->addMonth()->subDay(),
+        //     'amount' => $plan_user['amount']
+        // ]);
     }
 
     /** @test */

@@ -12,12 +12,12 @@ class ClaseTypesTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('clase_types')->delete();
-        
+
         \DB::table('clase_types')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 1,
                 'clase_type' => 'CrossFit',
@@ -28,7 +28,7 @@ class ClaseTypesTableSeeder extends Seeder
                 'created_at' => '2018-12-17 17:10:54',
                 'updated_at' => '2018-12-17 17:10:56',
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 3,
                 'clase_type' => 'Frenetic',
@@ -40,7 +40,7 @@ class ClaseTypesTableSeeder extends Seeder
                 'updated_at' => '2019-07-24 10:11:29',
             ),
         ));
-        
-        
+
+
     }
 }

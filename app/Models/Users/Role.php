@@ -8,9 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Role extends Model
 {
-	const ADMIN = 1;
-	   // Innecesario ya que se agregara desde DB
-	   protected $fillable = ['role'];
+    const ADMIN = 1;
+
+    const COACH = 2;
+
+	// Innecesario ya que se agregara desde DB
+	//    protected $fillable = ['role'];
 
 	  /**
 	   * [users description]

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\Reports;
+namespace App\Console\Commands\Users;
 
 use App\Models\Users\User;
 use Illuminate\Console\Command;
@@ -42,7 +42,7 @@ class NoConvertUsers extends Command
         $no_converted_users = User::join('users.plan_user', 'users.id', '=', 'plan_user.user_id')
                                   ->where('users.status_user_id', StatusUser::INACTIVE)
                                   ->where('plan_user.finish_date', today()->subWeek())
-                                  ->get([ 
+                                  ->get([
                                     'users.id', 'users.first_name', 'users.email'
                                   ]);
 
