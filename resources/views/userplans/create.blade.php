@@ -19,19 +19,19 @@
                     <div class="col-sm-6 form-group mb-2">
                         <div class="form-group">
                             <label class="form-control-label">Planes*</label>
-                            
+
                             <div class="input-group">
                                 <select class="form-control" name="plan_id" required id="plan-select">
                                     <option value="">Elegir plan...</option>
                                     
-                                    @foreach (App\Models\Plans\Plan::all() as $plan)
+                                    @foreach ($plans as $plan)
                                     <option
-                                        value="{{$plan->id}}"
-                                        @if(old('plan_id')==$plan->id) selected @endif
-                                        data-amount="{{$plan->amount}}"
-                                        data-custom="{{$plan->custom}}"
+                                        value="{{ $plan->id }}"
+                                        @if(old('plan_id') == $plan->id) selected @endif
+                                        data-amount="{{ $plan->amount }}"
+                                        data-custom="{{ $plan->custom }}"
                                     >
-                                        {{$plan->plan}}
+                                        {{ $plan->plan }}
                                     </option>
                                     @endforeach
                                 </select>
@@ -56,9 +56,17 @@
 
                                 <div class="input-group date">
                                     <span class="input-group-addon bg-white"><i class="la la-calendar"></i></span>
-                                    <input class="form-control" name="fecha_inicio" type="text" value="@isset ($user->last_plan){{$user->last_plan->finish_date->addDay()->format('d-m-Y')}} @else {{date('d-m-Y')}} @endisset">
+                                    <input class="form-control"
+                                           name="fecha_inicio"
+                                           type="text"
+                                           value="@isset ($user->last_plan) {{ $user->last_plan->finish_date->addDay()->format('d-m-Y') }} @else {{ date('d-m-Y') }} @endisset"
+                                    />
                                 </div>
-                                <span class="bg-white"><i class="la la-calendar"></i><i>Fecha término último plan: @isset ($user->last_plan) {{$user->last_plan->finish_date->format('d-m-Y')}} @else Sin referencia @endisset</i></span>
+
+                                <span class="bg-white">
+                                    <i class="la la-calendar"></i>
+                                    <i>Fecha término último plan: @isset ($user->last_plan) {{ $user->last_plan->finish_date->format('d-m-Y') }} @else Sin referencia @endisset</i>
+                                </span>
                             </div>
                         </div>
 
@@ -74,7 +82,7 @@
                                         name="fecha_termino" 
                                         type="text" 
                                         value="@isset ($user->last_plan) {{$user->last_plan->finish_date->addDay()->format('d-m-Y')}} @else {{date('d-m-Y')}} @endisset"
-                                        >
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -88,9 +96,9 @@
                             
                             <select class="selectpicker form-control " name="payment_type_id">
                                 @foreach (App\Models\Bills\PaymentType::all() as $pt)
-                                <option value="{{$pt->id}}">
-                                    {{$pt->payment_type}}
-                                </option>
+                                    <option value="{{ $pt->id }}">
+                                        {{ $pt->payment_type }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -105,7 +113,7 @@
                                         class="form-control" 
                                         name="date" 
                                         type="text" 
-                                        value="@isset ($user->last_plan){{$user->last_plan->finish_date->addDay()->format('d-m-Y')}} @else {{date('d-m-Y')}} @endisset"
+                                        value="@isset ($user->last_plan) {{$user->last_plan->finish_date->addDay()->format('d-m-Y')}} @else {{date('d-m-Y')}} @endisset"
                                     >
                                 </div>
                             </div>
@@ -210,12 +218,11 @@ $('#finish_date .input-group.date').datepicker({
       $('#plan-amount').val(data);
       $('#payment').show();
 
-      if(custom != 0){
+      if (custom != 0) {
         // console.log('es custom');
          $('.is-custom').show();
          $('.is-not-custom').hide();
-      }
-      else {
+      } else {
          // console.log('no es custom');
          $('.is-custom').hide();
          $('.is-not-custom').show();

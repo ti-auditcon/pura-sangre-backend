@@ -50,6 +50,7 @@
             <div class="content">
                 <div class="title">
                     @yield('message')
+                    {{ dump('hola') }}
                 </div>
             </div>
         </div>

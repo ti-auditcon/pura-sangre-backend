@@ -18,8 +18,9 @@ class PlanController extends Controller
     public function index()
     {
         $plans = Plan::with('plan_period:id,period')
+                     ->where('plan_status_id', 1)
                      ->get(['id', 'plan', 'class_numbers', 'daily_clases', 'plan_period_id', 'contractable', 'convenio']);
-        // dd($plans);
+
         return view('plans.index')->with('plans', $plans);
     }
 
@@ -97,8 +98,10 @@ class PlanController extends Controller
      */
     public function destroy(Plan $plan)
     {
-        $plan->delete();
+        $plan->plan = $plan->plan . ' (descontinuado)';
+        $plan->plan_status_id = 5;
+        $plan->save();
+
         return redirect('/plans')->with('success', 'El plan ha sido eliminado correctamente');
     }
-
 }

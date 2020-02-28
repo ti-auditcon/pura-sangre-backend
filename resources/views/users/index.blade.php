@@ -116,11 +116,29 @@
                     </div>
                 
                 </div>
+
+                <div class="modal fade bd-example-modal-lg show" id="modal-avatar" role="dialog">
+                    <div class="modal-dialog">
+                            <div class="modal-content" style="max-width: 400px">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="dynamic-content">
+                                    <img id="avatar-img" alt="" style="width: 400px;"/>
+                                </div>
+                            </div>
+                       </div>
+                </div> 
+
                 <div class="table-responsive">
                     <table id="students-table" class="table table-hover">
                         <thead class="thead-default thead-lg">
                             <tr>
                                 <th width="30%">Alumno</th>
+
+                                <th width="10%">Correo</th>
                             
                                 <th width="10%">RUN</th>
                             
@@ -128,9 +146,9 @@
                             
                                 <th width="10%">Vencimiento</th>
                             
-                                <th width="20%">Período</th>
+                                <th width="15%">Período</th>
                             
-                                <th width="10%">Acciones</th>
+                                <th width="5%">Acciones</th>
                             
                                 <th width="10%">status</th>
                             </tr>
@@ -227,11 +245,12 @@
                 "columns":[
                     { "data": "full_name",
                       "render": function (data, other, row) {
-                            return '<div class="img-avatar" style="background-image: url('+ row.avatar +')"></div>'+
+                            return '<div class="img-avatar div-user-avatar" style="background-image: url('+ row.avatar +')" data-image="'+ row.avatar +'"></div>'+
                                    '<a href="/users/'+ row.id +'">'+
                                    data + '</a>';
                       }
                     },
+                    { "data": "email" },
                     { "data": "rut_formated" },
                     {  "data": "actual_plan",
                         "render": function (data, other, row) {
@@ -242,7 +261,7 @@
                         "render": function (data, other, row) {
                             return data && data.plan ? moment(data.finish_date).format("DD-MM-YYYY") : 'no aplica';
                         },
-                     },
+                    },
                     { "data": "actual_plan",
                         "render": function (data, other, row) {
                             return data && data.plan ?
@@ -263,20 +282,30 @@
                 ],
                 "columnDefs": [
                     {
-                        "targets": [ 6 ],
+                        "targets": [ 7 ],
                         "visible": false,
                         "searchable": true
                     }
                 ],
+                "drawCallback": function( settings ) {
+                    $(".div-user-avatar").click(function () {
+                        $('#avatar-img').attr('src', $(this).data('image'));
+
+                        $('#modal-avatar').modal('show');
+                    });
+                }
 			});
 		});
 
 
   $('button.user-filter').on("click", function(){
-      table.columns( 6 ).search( $(this).data('status') ).draw();
+      table.columns( 7 ).search( $(this).data('status') ).draw();
     });
 
 	</script>
 	{{--  End datatable --}}
 
+{{--     <script>
+
+    </script> --}}
 @endsection

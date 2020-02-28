@@ -69,11 +69,15 @@ class ClaseUserController extends Controller
     public function destroy(Clase $clase, User $user)
     {
         // $planuser = PlanUser::where('plan_status_id', 1)->where('user_id', $user->id)->first();
-        $planusers = PlanUser::whereIn('plan_status_id', [1,3])->where('user_id', $user->id)->get();
+        $planusers = PlanUser::whereIn('plan_status_id', [1,3])
+                             ->where('user_id', $user->id)
+                             ->get();
+
         $date_class = Carbon::parse($clase->date);
+        
         $reservation = $clase->reservations()->where('user_id', $user->id)->first();
 
-        if(count($planusers) != 0){
+        if (count($planusers) != 0) {
             foreach ($planusers as $planuser) {
                 foreach ($planuser->plan_user_periods as $pup) {
                     if ($date_class->between(Carbon::parse($pup->start_date), Carbon::parse($pup->finish_date))) {
@@ -81,26 +85,23 @@ class ClaseUserController extends Controller
                     }
                 }
             }
-        }elseif (count($planusers) == 0) {
+        } elseif (count($planusers) == 0) {
             # code...
-        }
-
+        } elseif ($class_hour < now()) {
+            Session::flash('warning','No puede votar una clase que ya pasó');
         
-            }elseif ($class_hour < now()) {
-                Session::flash('warning','No puede votar una clase que ya pasó');
-                return Redirect::back();
-            }
-            else{
-                if ($reservation->delete()) {
-                    if ($period_plan != null) {
-                        $period_plan->update(['counter' => $period_plan->counter + 1]);
-                    }
-                    Session::flash('success','Retiro de clase exitoso');
-                    return Redirect::back();
+            return Redirect::back();
+        } else {
+            if ($reservation->delete()) {
+                if ($period_plan != null) {
+                    $period_plan->update(['counter' => $period_plan->counter + 1]);
                 }
+                Session::flash('success','Retiro de clase exitoso');
+                return Redirect::back();
             }
         }
     }
+}
 
     // private function hasReserve($clase, $request)
     // {
@@ -170,4 +171,3 @@ class ClaseUserController extends Controller
     //     }
     //     return $response;
     // }
-}

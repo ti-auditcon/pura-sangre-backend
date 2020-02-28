@@ -33,21 +33,29 @@ class planuserController extends Controller
     public function index()
     {
         $userPlans = planuser::all();
+        
         return view('userplans.index')->with('userPlans', $userPlans);
     }
 
     /**
      * [create description]
-     * @param  User   $user [description]
-     * @return [type]       [description]
+     * 
+     * @param  User   $user
+     * @return \Illuminate\View\View|array
      */
     public function create(User $user)
     {
-        return view('userplans.create')->with('user', $user);
+        $plans = Plan::where('plan_status_id', 1)
+                     ->get(['id', 'plan', 'amount', 'custom']);
+
+        return view('userplans.create',
+            ['user' => $user, 'plans' => $plans]
+        );
     }
 
     /**
      * [store description]
+     * 
      * @param  Request $request [description]
      * @param  User    $user    [description]
      * @return [type]           [description]

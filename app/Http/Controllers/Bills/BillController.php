@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Bills;
 
+use App\Exports\PaymentsExcel;
 use App\Http\Controllers\Controller;
 use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
@@ -9,10 +10,8 @@ use App\Models\Plans\PlanUser;
 use App\Models\Users\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
-/**
- * [BillController description]
- */
 class BillController extends Controller
 {
     /**
@@ -22,7 +21,7 @@ class BillController extends Controller
      */
     public function index()
     {
-        $plans = Plan::all();
+        // $plans = Plan::all();
         return view('payments.index');
     }
 
@@ -92,6 +91,7 @@ class BillController extends Controller
                 $nestedData['fecha_registro'] = $bill->created_at->format('d-m-Y');
                 $nestedData['alumno'] = isset($bill->plan_user) ? '<a href="'.url('/users/'.$bill->plan_user->user->id).'">'.$bill->plan_user->user->first_name.' '.$bill->plan_user->user->last_name.'</a>' : "no aplica";
                 $nestedData['plan'] = isset($bill->plan_user) ? $bill->plan_user->plan->plan : "no aplica";
+                $nestedData['payment_type'] = isset($bill->payment_type) ? $bill->payment_type->payment_type : "no aplica";
                 $nestedData['date'] = date('d-m-Y',strtotime($bill->date));
                 $nestedData['start_date'] = date('d-m-Y',strtotime($bill->start_date));
                 $nestedData['finish_date'] = date('d-m-Y',strtotime($bill->finish_date));
@@ -123,5 +123,15 @@ class BillController extends Controller
     public function show(Bill $bill)
     {
         return $bill->toJson();
+    }
+
+    /**
+     * Export Excel of System bills
+     * 
+     * @return Maatwebsite\Excel\Facades\Excel
+     */
+    public function export()
+    {
+        return Excel::download(new PaymentsExcel, toDay()->format('d-m-Y') . '_pagos.xlsx');
     }
 }

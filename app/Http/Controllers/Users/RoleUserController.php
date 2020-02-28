@@ -13,10 +13,15 @@ class RoleUserController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * 
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->hasRole(Role::ADMIN)) {
+            return redirect('/');
+        }
+        
         $fail = $this->specialValidation($request);
 
         if ($fail) {
@@ -33,7 +38,9 @@ class RoleUserController extends Controller
 
     /**
      * [edit description]
+     * 
      * @param  User   $role_user [description]
+     * 
      * @return [type]            [description]
      */
     public function edit(User $role_user)
@@ -47,6 +54,7 @@ class RoleUserController extends Controller
      * Make validation if it's editing to the admin of the system
      * 
      * @param  $request
+     * 
      * @return string|null
      */
     public function specialValidation($request)

@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers\Messages;
 
-use Session;
-use App\Models\Users\User;
-use Illuminate\Http\Request;
-use App\Models\Users\Notification;
-use App\Jobs\SendPushNotification;
 use App\Http\Controllers\Controller;
+use App\Jobs\SendPushNotification;
+use App\Models\Users\Notification;
+use App\Models\Users\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Session;
 
 class NotificationController extends Controller
 {
-    public function __construct()
-    {
-        // $this->Notification = new Notification;
-    }
     /**
      * Display a listing of the resource.
      *
@@ -22,27 +19,46 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return view('messages.notifications')->with('users', $users);
+        $notifications = Notification::orderBy('trigger_at')
+                                     ->get(['id', 'title', 'body', 'sended', 'trigger_at']);
+
+        return view('messages.notifications', ['notifications' => $notifications]);
     }
 
-    public function store(Request $r)
+    /**
+     * [store description]
+     * 
+     * @param  Request $r [description]
+     * @return [type]     [description]
+     */
+    public function store(Request $request)
     {
-        $users = User::whereIn('id', request('users_id'))->get();
+        $trigger_date = Carbon::createFromFormat('Y-m-d H:i', $request->date . ' ' . $request->time);
 
-        foreach ($users as $user) {
-            SendPushNotification::dispatch($user->fcm_token, request('title'), request('body'));
-        }
+        $not = Notification::create([
+            'users' => implode($request->to),
+            'title' => $request->title,
+            'body' => $request->body,
+            'trigger_at' => $trigger_date
+        ]);
 
-        $response = count($users) > 1 ?
-                    'Notificación enviada correctamente' :
-                    'Notificaciones enviadas correctamente';
-
-        Session::flash('success', $response);
+        Session::flash('success', 'correcto');
         
         return redirect()->route('messages.notifications');
     }
 
+    /**
+     * [destroy description]
+     * 
+     * @param  Notification $notification [description]
+     * @return [type]                     [description]
+     */
+    public function destroy(Notification $notification)
+    {
+        $notification->delete();
+
+        return back()->with('succes', 'Notificación eliminada correctamente');
+    }
 }
 
     // public function notification($token, $title, $body)

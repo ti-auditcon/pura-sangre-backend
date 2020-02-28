@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Users;
 
 use App\Rules\RutUnique;
+use App\Rules\RutValidate;
 use App\Models\Users\User;
 use Illuminate\Validation\Rule;
 use Freshwork\ChileanBundle\Rut;
@@ -55,11 +56,11 @@ class UserRequest extends FormRequest
                 return [
                     'first_name' => 'required',
                     'last_name' => 'required',
-                    'rut' => new RutUnique($this->user),
+                    'rut' => [new RutUnique($this->user), new RutValidate],
                     'image' => 'mimes:jpeg,png|max:1024',
                     'email' => $required.'|email'.$case,
                     'phone' => $this->phone != null ? 'digits:8': '',
-                    'contact_phone' => $this->contact_phone ? 'numeric' : ''
+                    'contact_phone' => $this->contact_phone ? 'digits:8' : ''
                 ];
            }
            default:break;
@@ -81,7 +82,8 @@ class UserRequest extends FormRequest
             'phone.digits' => 'El número de teléfono debe contener :digits dígitos de solo números.',
             'image.mimes' => 'El formato de imagen debe ser jpeg o png',
             'image.max' => 'La imagen no debe se mas grande que 1 MB',
-            'contact_phone.digits' => 'El campo Teléfono de contacto de emergencia debe contener :digits dígitos de solo números.'
+            'contact_phone.digits' => 'El campo Teléfono de contacto de emergencia debe contener :digits dígitos de solo números.',
+            'after_or_equal' => 'La fecha del campo Atleta desde no puede ser menor a hoy'
         ];
     }
  }

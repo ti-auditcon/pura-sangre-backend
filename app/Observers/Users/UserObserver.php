@@ -8,6 +8,7 @@ use App\Models\Users\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Redirect;
 use Session;
@@ -43,7 +44,11 @@ class UserObserver
             'token' => Hash::make($token),
         ]);
 
-        Mail::to($user->email)->send(new SendNewUserEmail($user, $token));
+        try {
+            Mail::to($user->email)->send(new SendNewUserEmail($user, $token));
+        } catch (Exception $e) {
+            Log::error('Hemos tenido el siguiente error: ' . $e);
+        }
         
         if ($user->status_user_id == 3) {
             $planuser = new PlanUser;

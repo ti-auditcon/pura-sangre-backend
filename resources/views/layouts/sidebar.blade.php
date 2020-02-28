@@ -57,6 +57,8 @@
                         <li><a href="{{ url('/reports/inactive_users') }}">Usuarios Inactivos</a></li>
 
                         <li><a href="{{ url('/reports/data-plans') }}">Análisis Diarios</a></li>
+
+                        <li><a href="{{ url('/reports/heatmap') }}">Mapa de Densidad</a></li>
                     </ul>
                 </div>
             </li>
@@ -73,11 +75,11 @@
                 </a>
                 <div class="nav-2-level">
                     <ul>
-                        <li><a href="{{url('/messages')}}">Correos</a></li>
+                        <li><a href="{{ url('/messages') }}">Correos</a></li>
                         
-                        <li><a href="{{url('/alerts')}}">Alertas</a></li>
+                        <li><a href="{{ url('/alerts') }}">Alertas</a></li>
                         
-                        <li><a href="{{url('/notifications')}}">Notificaciones</a></li>
+                        <li><a href="{{ url('/notifications') }}">Notificaciones</a></li>
                     </ul>
                 </div>
             </li>

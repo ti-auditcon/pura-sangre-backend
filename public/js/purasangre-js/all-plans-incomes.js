@@ -1,36 +1,31 @@
 var Months =  new Array();
 var incomes = [];
-var incomes_sub = []
+var incomes_sub = [];
 
 $.ajax({
     type: 'GET',
     url: 'reports/firstchart',
     success: function (response) {
         for (var i = 0; i < 12; i++) {
-            
+            incomes.push(response.annual[i] ? response.annual[i] : 0);
+
+            incomes_sub.push(response.sub_annual[i] ? response.sub_annual[i] : 0);
+
+            Months.push(response.months[i]);
         }
-        response.annual.forEach(function (data) {
-            incomes.push(data);
-        });
-        response.months.forEach(function (data) {
-            Months.push(data);
-        });
-        response.sub_annual.forEach(function (data) {
-            incomes_sub.push(data);
-        });
 
         var barChartData = {
         labels: Months,
         datasets: [
                 {
-                    label: '2019',
+                    label: moment().year(),
                     borderWidth: 3,
                     borderColor: 'rgba(54, 162, 235, 1)',
                     backgroundColor: 'rgba(54, 162, 235, 1)',
                     data: incomes,
                 }, 
                 {
-                    label: '2018',
+                    label: moment().subtract(1, 'years').year(),
                     borderWidth: 3,
                     borderColor: 'rgba(54, 162, 235, 0.6)',
                     backgroundColor: 'rgba(54, 162, 235, 0.6)',
@@ -86,7 +81,7 @@ $.ajax({
                             var sum = 0;
 
                             tooltipItems.forEach(function(tooltipItem) {
-                                if (sum == 0){
+                                if (sum == 0) {
                                     sum += tooltipItem.yLabel;
                                 } else {
                                     sum -= tooltipItem.yLabel;

@@ -21,7 +21,25 @@
                 <div
                     class="img-avatar img-avatar-header align-self-start"
                     style="background-image: @if ($user->avatar) url('{{$user->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"
+                    role="button" id="div-avatar" data-image="{{ $user->avatar }}"
                 ></div>
+
+                <div class="modal fade bd-example-modal-lg show" id="modal-avatar" role="dialog">
+                    <div class="modal-dialog">
+                            <div class="modal-content" style="max-width: 400px">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="dynamic-content">
+                                    <img id="avatar-img" alt="" style="width: 400px;"/>
+                                </div>
+                            </div>
+                       </div>
+                </div> 
+
+{{-- <a >Launch modal</a> --}}
                 
                 <div class="ml-1">
                     
@@ -78,12 +96,13 @@
                 
                 <div class="ibox-tools">
                     
-                    <a
-                        href="{{ route('role-user.edit', ['role_user' => $user->id]) }}"
-                        class="btn btn-warning"
-                    >
-                        Roles
-                    </a>
+                    @if (in_array(1, $auth_roles))
+                        <a href="{{ route('role-user.edit', ['role_user' => $user->id]) }}"
+                           class="btn btn-warning"
+                        >
+                            Roles
+                        </a>
+                    @endif
 
                     <a
                         class="btn btn-success text-white mr-1" style="display: inline-block;"
@@ -92,7 +111,7 @@
                         Editar
                     </a>
 
-                    @if (Auth::user()->hasRole(1))
+                    @if (in_array(1, $auth_roles))
 
                         <button
                             class="btn btn-info btn-danger sweet-user-delete"
@@ -113,7 +132,7 @@
             <div class="ibox-body">
                 <div class="row mb-2">
                     <div class="col-12 text-muted">Rut:</div>
-                    <div class="col-12">{{ Rut::set($user->rut)->fix()->format() }}</div>
+                    <div class="col-12">{{ $user->rut_formated }}</div>
                 </div>
                 <div class="row mb-2">
                     <div class="col-12 text-muted">Email:</div>
@@ -155,7 +174,7 @@
                     <h5>Planes de {{ $user->first_name }}</h5>
                 </div>
                 
-                @if (Auth::user()->hasRole(1))
+                @if (in_array(1, $auth_roles))
                     <div class="ibox-tools">
                         <a
                             class="btn btn-success text-white"
@@ -195,14 +214,14 @@
                                         data-user-id="{{ $user->id }}"
                                         data-plan-id="{{ $plan_user->id }}"
                                     >
-                                        {{ $plan_user->plan->plan }}
+                                        {{ optional($plan_user->plan)->plan }}
                                     </a>
 
-                                    @if (\Carbon\Carbon::parse($plan_user->finish_date)->gte(toDay()))
+                                    {{-- @if ( \Carbon\Carbon::parse($plan_user->finish_date)->gte(toDay()) ) --}}
                                         <a href="{{url('/users/'.$user->id.'/plans/'.$plan_user->id.'/edit')}}">
                                             <span class="la la-edit"></span>
                                         </a>
-                                    @endif
+                                    {{-- @endif --}}
                                 </td>
 
                                 @if ($plan_user->bill)
@@ -215,7 +234,7 @@
                                     {{ $plan_user->start_date->format('d-m-Y') }} al {{ $plan_user->finish_date->format('d-m-Y') }}
                                 </td>
                                 
-                                <td>{{ $plan_user->counter }} / {{ $plan_user->plan->class_numbers }}</td>
+                                <td>{{ $plan_user->counter }} / {{ optional($plan_user->plan)->class_numbers ?? 1}}</td>
                                 
                                 <td>{{ $plan_user->bill->payment_type->payment_type ?? "no aplica" }}</td>
                                 
@@ -228,7 +247,9 @@
                                 </td>
 
                                 <td>
-                                    @if (Auth::user()->hasRole(1) && $plan_user->plan_status->can_delete == true)
+                                    {{-- {{ dd(in_array(1, $auth_roles)) }} --}}
+                                    {{-- {{ dd($plan_user->plan_status->can_delete == true) }} --}}
+                                    @if (in_array(1, $auth_roles) && $plan_user->plan_status->can_delete)
 
                                         {!! Form::open(['route' => ['users.plans.annul', 'user' => $user->id, 'plan' => $plan_user->id], 'method' => 'post', 'class' => 'user-plan-annul',  'id'=>'annul'.$plan_user->id]) !!}
                                         {!! Form::close() !!}
@@ -236,26 +257,30 @@
                                         <button
                                             class="btn btn-info btn-icon-only btn-danger sweet-user-plan-annul"
                                             data-id="{{ $plan_user->id }}"
-                                            data-name="{{ $plan_user->plan->plan }}"
+                                            data-name="{{ optional($plan_user->plan)->plan }}"
                                         >
                                             <i class="la la-ban"></i>
                                         </button>
 
-                                        @if ($plan_user->plan_status_id == 1)
+                                        @if ($plan_user->plan_status_id === 1)
                                             <button
                                                 class="btn btn-icon-only btn-warning freeze-plan-button"
                                                 data-toggle="modal"
                                                 data-target="#freeze-plan-modal"
                                                 data-plan-user="{{ $plan_user->id }}"
-                                                data-user="{{ $plan_user->user->id }}"
+                                                data-user="{{ optional($plan_user->user)->id }}"
                                             >
                                             <i class="la la-power-off"></i>
                                             </button>
                                         @endif
                                         
                                         @if($plan_user->plan_status_id == 2)
+                                        {{-- {{ dd($plan_user->postpone) }} --}}
                                             <form
-                                                action="{{ route('plan-user.postpones.destroy', ['plan_user' => $plan_user->id, 'postpone' => $plan_user->postpone]) }}"
+                                                action="{{ route('plan-user.postpones.destroy', [
+                                                                'plan_user' => $plan_user->id,
+                                                                'postpone' => $plan_user->postpone
+                                                           ]) }}"
                                                 method="POST"
                                                 class="user-plan-unfreeze"
                                             >
@@ -272,18 +297,25 @@
                                         @endif
                                     
                                     @elseif (Auth::user()->hasRole(1) && $plan_user->plan_status_id == 5)
-
-                                        {!! Form::open(['route' => ['users.plans.destroy', 'user' => $user->id, 'plan' => $plan_user->id], 'method' => 'delete', 'class' => 'user-plan-delete',  'id'=>'delete'.$plan_user->id]) !!}
+                                        {!! Form::open([
+                                                'route' => [
+                                                    'users.plans.destroy',
+                                                    'user' => $user->id,
+                                                    'plan' => $plan_user->id
+                                                ],
+                                                'method' => 'delete',
+                                                'class' => 'user-plan-delete',
+                                                'id' => 'delete' . $plan_user->id
+                                        ]) !!}
                                         {!! Form::close() !!}
 
                                         <button
                                             class="btn btn-info btn-icon-only btn-danger sweet-user-plan-delete"
-                                            data-id="{{$plan_user->id}}"
-                                            data-name="{{$plan_user->plan->plan}}"
+                                            data-id="{{ $plan_user->id }}"
+                                            data-name="{{ $plan_user->plan->plan }}"
                                         >
                                             <i class="la la-trash"></i>
                                         </button>
-
                                     @endif
                                 </td>
                                 <td>{{ $plan_user->plan_status_id }}</td>
@@ -292,7 +324,7 @@
                                 @if ($plan_user->bill)
                                     <td>{{ $plan_user->bill->date }}</td>
                                 @else
-                                    <td >no aplica</td>
+                                    <td>no aplica</td>
                                 @endif
                             </tr>
                             @endforeach
@@ -414,7 +446,7 @@
                                     
                                     <td>{{ optional($reserv->plan_user)->id ?? 'No Aplica' }}</td>
 
-                                    <td>{{ $reserv->plan_user ? $reserv->plan_user->plan->plan : 'No Aplica' }}</td>
+                                    <td>{{ $reserv->plan_user ? optional($reserv->plan_user->plan)->plan : 'No Aplica' }}</td>
 
                                 </tr>
                                 @endforeach
@@ -460,6 +492,16 @@
             $('form.user-delete').submit();
 		});
 	});
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#div-avatar").click(function () {
+            $('#avatar-img').attr('src', $("#div-avatar").data('image'));
+
+            $('#modal-avatar').modal('show');
+        });
+    });
 </script>
 
 <script>
@@ -600,10 +642,10 @@
    <script>
     $(document).ready(function() {
      $('#past-classes-table').DataTable({
-        columnDefs: [ {
+        columnDefs: [{
            targets: 1,
               render: $.fn.dataTable.render.moment('', 'DD-MM-YYYY')
-        } ],
+        }],
         "paging": true,
         "ordering": true,
         "order": [[ 0, 'desc' ]],

@@ -30,6 +30,7 @@ class RutUnique implements Rule
      *
      * @param  string  $attribute
      * @param  mixed  $rut
+     * 
      * @return boolean
      */
     public function passes($attribute, $rut)
@@ -37,18 +38,18 @@ class RutUnique implements Rule
         // Parse rut to number to check with the DataBase
         $number_rut = (int) Rut::parse($rut)->number();
 
-        if ( is_null($this->user) && User::where('rut', $number_rut)->first()) {
+        if (is_null($this->user) && User::where('rut', $number_rut)->first()) {
             return false;
         }
 
         // Get a user whose rut is equal to $number_rut
-        // otherwise, assign a 0 to avoid errors
+        // otherwise, assign 0 to avoid errors
         $id_user_checked = optional(User::where('rut', $number_rut)->first())->id;
 
-        if ( ! is_null($this->user) &&
-             ! is_null($id_user_checked) &&
-             $this->user->id !== $id_user_checked ) {
-
+        if ($this->user &&
+            $id_user_checked &&
+            $this->user->id !== $id_user_checked
+        ) {
             return false;
         }
 

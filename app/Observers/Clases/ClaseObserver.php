@@ -26,6 +26,7 @@ class ClaseObserver
     * Handle the clase "deleting" event.
     *
     * @param  \App\Models\Clases\Clase  $clase
+    * 
     * @return void
     */
     public function deleting(Clase $clase)
@@ -33,9 +34,7 @@ class ClaseObserver
         $date_class = Carbon::parse($clase->date);
         
         foreach ($clase->reservations as $reservation){
-
                 $reservation->delete();
-
         }
     }
 }

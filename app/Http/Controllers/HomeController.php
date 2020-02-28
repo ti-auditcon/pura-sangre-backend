@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
+use App\Models\Clases\Clase;
 use Illuminate\Http\Request;
 use App\Traits\ExpiredPlans;
 use App\Models\Plans\PlanUser;
@@ -43,13 +44,18 @@ class HomeController extends Controller
         return view('home')->with('plan_users', $plan_users);
     }
 
+    /**
+     * [expiredNext description]
+     * 
+     * @return [type] [description]
+     */
     public function expiredNext()
     {
         $plan_users = PlanUser::where('plan_status_id', 1)
-            ->where('finish_date', '>=', now())
-            ->orderBy('finish_date')
-            ->take(10)
-            ->get();
+                                ->where('finish_date', '>=', now())
+                                ->orderBy('finish_date')
+                                ->take(10)
+                                ->get();
 
         return $plan_users->map(function ($plan) {
             return [
@@ -62,42 +68,11 @@ class HomeController extends Controller
         });
     }
 
-    // public function ExpiredPlan()
-    // {
-    //     return $this->ExpiredPlan();
-    // }
-
-    // public function ExpiredPlan()
-
-    // {
-    //     // $expired_plans = collect(new PlanUser);
-
-    //     // foreach (User::all() as $user) {
-    //     //     if (! $user->actual_plan) {
-    //     //         $plan_user = $user->plan_users->whereIn('plan_status_id', [3, 4])
-                                              
-    //     //                                       ->where('finish_date', '<', today())
-                                              
-    //     //                                       ->sortByDesc('finish_date')
-                                              
-    //     //                                       ->first();
-                
-    //     //         if ($plan_user) {
-                
-    //     //             $expired_plans->push($plan_user);
-                
-    //     //         }
-            
-    //     //     }
-    //     // }
-
-    //     // return $expired_plans->sortByDesc('finish_date')->take(10);
-    // }
-
     /**
      * Get expired plans
      * 
      * @param  Request $request [description]
+     * 
      * @return json
      */
     public function ExpiredPlan(Request $request)
@@ -149,6 +124,7 @@ class HomeController extends Controller
 
     /**
      * [withoutrenewal description]
+     * 
      * @return [type] [description]
      */
     public function withoutrenewal()
@@ -191,52 +167,27 @@ class HomeController extends Controller
         return response()->json($data);
     }
 
-    public function genders()
-    {
-
-        foreach (User::all() as $user) {
-            if ($user->actual_plan) {
-                if ($user->gender == 'hombre') {
-                    $men += 1;
-                }
-                if ($user->gender == 'mujer') {
-                    $women += 1;
-                }
-            }
-            // if ($user->gender == 'hombre' && $user->actual_plan) {
-                
-            // } elseif ( && $user->actual_plan) {
-                
-            // }
-        }
-        $genders = array_merge(['mujeres' => $women, 'hombres' => $men]);
-        echo json_encode($genders);
-    }
-
+    /**
+     * Summary of today and this month bills (amount and quantity)
+     * 
+     * @return array
+     */
     public function incomessummary()
     {
-        //obtener todos los planes del mes actual que tengan anexada una boleta
-        //sin contar boletas eliminadas
-        $mes['periodo'] = 'mensual';
-        $month_amount = Bill::whereDate('bills.date', '>=', today()->startOfMonth())
-                            ->whereDate('bills.date', '<=', today()->endOfMonth())
-                            ->get()
-                            ->sum('amount');
-        $mes['ingresos'] = '$ ' . number_format($month_amount, $decimal = 0, '.', '.');
-        $mes['cantidad'] = Bill::whereDate('bills.date', '>=', today()->startOfMonth())
-            ->whereDate('bills.date', '<=', today()->endOfMonth())
-            ->count('id');
+        $today_bills = Bill::whereDate('bills.date', today())->get(['id', 'amount']);
 
-        //obtener todos los planes de este día que tengan anexada una boleta
-        //sin contar boletas eliminadas
-        $dia['periodo'] = 'hoy';
-        $day_amount = Bill::whereDate('bills.date', today())
-            ->get()
-            ->sum('amount');
-        $dia['ingresos'] = '$ ' . number_format($day_amount, $decimal = 0, '.', '.');
-        $dia['cantidad'] = Bill::whereDate('bills.date', today())->count('id');
-        $in_sum = array_merge([$dia, $mes]);
-        echo json_encode($in_sum);
+        $month_bills = Bill::whereDate('bills.date', '>=', today()->startOfMonth())
+                           ->whereDate('bills.date', '<=', today()->endOfMonth())
+                           ->get(['id', 'amount']);
+
+        $data = [
+            'hoy_cantidad' => $today_bills->count('id') . ' planes',
+            'hoy_total' => '$ ' . number_format($today_bills->sum('amount'), $decimal = 0, '.', '.'),
+            'mes_cantidad' => $month_bills->count('id') . ' planes',
+            'mes_total' => '$ ' . number_format($month_bills->sum('amount'), $decimal = 0, '.', '.'),
+        ];
+
+        return response()->json($data);
     }
 
     public function updateIncomeSummary()
@@ -268,6 +219,15 @@ class HomeController extends Controller
             }
         }
     }
+
+    // public function fixClases()
+    // {
+    //     $clases = Clase::where('date', '>=', today())->get();
+    //     foreach ($clases as $clase) {
+    //         $clase->update(['quota' => $clase->block->quota]);
+    //     }
+    //     return 'Finalizado';
+    // }
 }
 
 // ----------------ORDENAR UN ARRAY DE MANERA DESCENDENTE---------------------
