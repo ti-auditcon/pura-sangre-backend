@@ -105,7 +105,7 @@ class Wod extends Model
      */
     public function getTitleAttribute()
     {
-        return $this->clase_type->clase_type;
+        return "Rutina de {$this->clase_type->clase_type}";
     }
 
     /**

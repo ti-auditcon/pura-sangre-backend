@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\RefreshPlans',
         'App\Console\Commands\ToExpiredPlan',
         'App\Console\Commands\Messages\SendNotifications',
+        // 'App\Console\Commands\Users\NoConvertUsers',
     ];
 
     /**

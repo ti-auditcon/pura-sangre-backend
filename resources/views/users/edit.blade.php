@@ -288,7 +288,6 @@
         });
 
         const readURL = (input) => {
-
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
 
@@ -325,23 +324,19 @@
         });
 
         $("input#rut-src").rut().on('rutInvalido', function(e) {
-
             $('#rut-group').addClass('has-error');
 
             $('#rut-group span').show();
 
             $('#rut-submit').prop('disabled', true);
-
         });
 
         $("input#rut-src").rut().on('rutValido', function(e, rut, dv) {
-
             $('#rut-group').removeClass('has-error');
 
             $('#rut-group span').hide();
 
             $('#rut-submit').prop('disabled', false);
-
         });
     });
 </script>

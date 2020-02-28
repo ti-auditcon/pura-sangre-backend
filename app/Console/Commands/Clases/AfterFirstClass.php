@@ -34,7 +34,11 @@ class AfterFirstClass extends Command
      * $message Body for email
      * @var string
      */
-    protected $message = 'Esperamos como Equipo, que tu primera Clase haya sido con todo, por lo general las primeras clases son las más duras, por eso te invitamos a seguir dandolo todo. Por nuestra parte queremos saber que tal fuimos contigo';
+    protected $message = "Esperamos como Equipo, 
+        que tu primera Clase haya sido con todo,
+         por lo general las primeras clases son las más duras,
+        por eso te invitamos a seguir dandolo todo.
+        Por nuestra parte queremos saber que tal fuimos contigo";
 
     /**
      * Create a new command instance.
@@ -72,10 +76,11 @@ class AfterFirstClass extends Command
                                         ->count('id');
 
             if ($count_reservs == 1) {
-                $email = collect();
-                $email->subject = $this->subject;
-                $email->message = $this->message;
-                $email->first_name = $user->first_name;
+                $email = collect([
+                    'subject' => $this->subject,
+                    'message' => $this->message,
+                    'first_name' => $this->first_name,
+                ]);
 
                 Mail::to($user->email)->send(new SendFirstClassEmail($email));
 

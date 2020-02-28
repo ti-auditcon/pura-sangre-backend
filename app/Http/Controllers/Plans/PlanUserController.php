@@ -33,6 +33,7 @@ class planuserController extends Controller
     public function index()
     {
         $userPlans = planuser::all();
+        
         return view('userplans.index')->with('userPlans', $userPlans);
     }
 

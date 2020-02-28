@@ -43,24 +43,35 @@ class BlockObserver
                 'quota' => $block->quota,
             ]);
         }
+    }
 
-        //si es unico
-        //
-        //
+    /**
+     *  Update quota from block to clases
+     *  
+     *  @param  App\Models\Blocks\Block  $block
+     *  
+     *  @return  void
+     */
+    public function updated(Block $block)
+    {
+        $block->clases()->each(function ($clase) {
+            if ($clase->date >= today()) {
+                $clase->update(['quota' => $clase->block->quota]);
+            }
+        });
     }
 
     /**
      * Handle the block' "deleted" event.
      *
      * @param  \App\Models\Clases\Block  $block
+     * 
      * @return void
      */
     public function deleted(Block $block)
     {   
         $block->clases()->each(function ($clase) {
-        
             $clase->delete();
-        
         });
     }
 }

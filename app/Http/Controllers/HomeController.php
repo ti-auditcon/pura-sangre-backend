@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
+use App\Models\Clases\Clase;
 use Illuminate\Http\Request;
 use App\Traits\ExpiredPlans;
 use App\Models\Plans\PlanUser;
@@ -43,6 +44,11 @@ class HomeController extends Controller
         return view('home')->with('plan_users', $plan_users);
     }
 
+    /**
+     * [expiredNext description]
+     * 
+     * @return [type] [description]
+     */
     public function expiredNext()
     {
         $plan_users = PlanUser::where('plan_status_id', 1)
@@ -66,6 +72,7 @@ class HomeController extends Controller
      * Get expired plans
      * 
      * @param  Request $request [description]
+     * 
      * @return json
      */
     public function ExpiredPlan(Request $request)
@@ -117,6 +124,7 @@ class HomeController extends Controller
 
     /**
      * [withoutrenewal description]
+     * 
      * @return [type] [description]
      */
     public function withoutrenewal()
@@ -158,22 +166,6 @@ class HomeController extends Controller
 
         return response()->json($data);
     }
-
-    // public function genders()
-    // {
-    //     foreach (User::all() as $user) {
-    //         if ($user->actual_plan) {
-    //             if ($user->gender == 'hombre') {
-    //                 $men += 1;
-    //             }
-    //             if ($user->gender == 'mujer') {
-    //                 $women += 1;
-    //             }
-    //         }
-    //     }
-    //     $genders = array_merge(['mujeres' => $women, 'hombres' => $men]);
-    //     echo json_encode($genders);
-    // }
 
     /**
      * Summary of today and this month bills (amount and quantity)
@@ -227,6 +219,15 @@ class HomeController extends Controller
             }
         }
     }
+
+    // public function fixClases()
+    // {
+    //     $clases = Clase::where('date', '>=', today())->get();
+    //     foreach ($clases as $clase) {
+    //         $clase->update(['quota' => $clase->block->quota]);
+    //     }
+    //     return 'Finalizado';
+    // }
 }
 
 // ----------------ORDENAR UN ARRAY DE MANERA DESCENDENTE---------------------

@@ -4,6 +4,7 @@
 @section('title', __('Page Not Found'))
 
 @section('image')
+                    {{ dd('hola') }}
     <div style="background-image: url({{ asset('/img/errors/404.gif') }});" class="absolute pin bg-cover bg-no-repeat md:bg-left lg:bg-center">
     </div>
 @endsection
