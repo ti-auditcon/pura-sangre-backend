@@ -20,6 +20,7 @@ class SendFirstClassEmail extends Mailable
      */
     public function __construct($data)
     {
+        // dd($data);
         $this->data = $data;
     }
 
@@ -31,6 +32,7 @@ class SendFirstClassEmail extends Mailable
     public function build()
     {
         return $this->markdown('messages.first_class')
-                    ->subject($this->data->subject);
+                    // ->subject($this->data->subject);
+                    ->subject('Primera Clase ');
     }
 }

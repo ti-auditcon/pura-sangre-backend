@@ -460,12 +460,14 @@
                 <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
                     <tbody><tr>
                         
-                        <td valign="top" class="mcnTextContent" style="padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;font-family: Helvetica;font-size: 16px;line-height: 150%;text-align: left;">
+                        <td valign="top" class="mcnTextContent" style="padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #202020;font-family: Roboto;font-size: 16px;line-height: 150%;text-align: left;">
                         
-                            <h1 style="display: block;margin: 0;padding: 0;color: #202020;font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 26px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: normal;text-align: left;"><strong><span style="font-size:30px"><span style="font-family:lato,helvetica neue,helvetica,arial,sans-serif">Hola {{ $data->first_name }},</span></span></strong></h1>
+                            <h1 style="display: block;margin: 0;padding: 0;color: #202020;font-family: 'Roboto', 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 26px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: normal;text-align: left;"><span style="font-size:30px"><span style="font-family:roboto,lato,helvetica neue,helvetica,arial,sans-serif">Hola {{ $data->first_name ?? 'Raul' }}! XD</span></span></h1>
 
+{{-- <p style="margin: 10px 0;padding: 0;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #202020;font-family: Helvetica;font-size: 16px;line-height: 150%;text-align: left;"><br>
+<font face="lato, helvetica neue, helvetica, arial, sans-serif"><span style="font-size:17px">{{ $data->message }}</span></font></p> --}}
 <p style="margin: 10px 0;padding: 0;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #202020;font-family: Helvetica;font-size: 16px;line-height: 150%;text-align: left;"><br>
-<font face="lato, helvetica neue, helvetica, arial, sans-serif"><span style="font-size:17px">{{ $data->message }}</span></font></p>
+<font face="lato, helvetica neue, helvetica, arial, sans-serif"><span style="font-size:17px"><iframe src="https://docs.google.com/forms/d/e/1FAIpQLScAqssB8Fecb2N0BNOsXbYpLcc4UlxZe-zDZ9N9gzNvOVHHkA/viewform?embedded=true" width="640" height="1346" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe></span></font></p>
 
                         </td>
                     </tr>

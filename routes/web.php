@@ -2,6 +2,14 @@
 
 Auth::routes();
 
+Route::get('maili', function() {
+    $invoice = new \stdClass();
+    $invoice->message = '';
+
+
+    return new App\Mail\SendFirstClassEmail($invoice);
+});
+
 // Route::get('mailable', function () {
 //     $invoice = collect();
 //     $invoice->first_name = 'Raul';
