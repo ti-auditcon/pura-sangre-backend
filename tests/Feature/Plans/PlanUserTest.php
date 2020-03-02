@@ -2,24 +2,38 @@
 
 namespace Tests\Feature\Plans;
 
-use Tests\TestCase;
+use Carbon\Carbon;
+use Tests\NfitTestCase;
 use App\Models\Plans\Plan;
 use App\Models\Users\Role;
 use App\Models\Users\User;
+use App\Models\Clases\Clase;
 use App\Models\Plans\PlanUser;
+use App\Models\Clases\Reservation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
-class PlanUserTest extends TestCase
+class PlanUserTest extends NfitTestCase
 {
     use RefreshDatabase;
+
+    /**
+     * Undocumented variable
+     *
+     * @var [type]
+     */
+    protected $admin;
 
     /**
      *  Allows implementation in a test.
      */
     protected function duringSetUp()
     {
-        // ..
+        $this->seed();
+
+        $this->admin = $this->createModel(\App\Models\Users\User::class, [], 1);
+        
+        $this->admin->roles()->attach(Role::ADMIN);
     }
 
     /** @test */
@@ -202,35 +216,28 @@ class PlanUserTest extends TestCase
     /** @test */
     public function a_bill_is_created_after_plan_user_created()
     {
-        $admin = factory(\App\Models\Users\User::class)->create();
+        $user = $this->createModel(\App\Models\Users\User::class, [], 1);
 
-        $this->actingAs($admin)->get('')->assertViewIs('');
-
-        // ->each(function ($user) {
-            // $user->roles()->attach(Role::ADMIN);
-        // });
-
-        $user = factory(\App\Models\Users\User::class)->create();
+        $this->actingAs($this->admin)->get('/')->assertOk();
 
         // $plan_user = factory(PlanUser::class, 1)->make();
         // dd($plan_user);
-        // $plan_user = [
-        //     'plan_id' => 3,
-        //     "fecha_inicio" => today(),
-        //     "payment_type_id" => "1",
-        //     "date" => today()->addDay()->format('d-m-Y'),
-        //     "amount" => 45000
-        // ];
+        $plan_user = [
+            'plan_id' => 3,
+            "fecha_inicio" => today()->format('d-m-Y'),
+            "payment_type_id" => 1,
+            "date" => today()->addDay()->format('d-m-Y'),
+            "amount" => 45000
+        ];
 
-        // $this->actingAs($admin)->post("/users/{$user->id}/plans", $plan_user)->dump();
+        $this->actingAs($this->admin)->post("/users/{$user->id}/plans", $plan_user)
+                                     ->assertRedirect();
 
-        // $this->assertDatabaseHas('bills', [
-        //     'payment_type_id' => 1,
-        //     'date' => today()->addDay(),
-        //     'start_date' => $plan_user['fecha_inicio'],
-        //     'finish_date' => today()->addMonth()->subDay(),
-        //     'amount' => $plan_user['amount']
-        // ]);
+        $this->assertDatabaseHas('plan_user', [
+            'plan_id' => (string) $plan_user['plan_id'],
+            'user_id' => (string) $user->id,
+            'start_date' => today()->format('Y-m-d'),
+        ]);
     }
 
     /** @test */

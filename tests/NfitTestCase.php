@@ -1,16 +1,26 @@
 <?php
 
+namespace Tests;
+
 use Tests\TestCase;
+use App\Models\Users\Role;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class NfitTestCase extends TestCase
 {
+    use DatabaseMigrations;
+
+
+
     /**
      *
      */
     protected function setUp(): void
     {
-        // $this->runSeeds();
-
+        parent::setUp();
+        
+        $this->seed();
+        
         $this->duringSetUp();
     }
 
@@ -22,14 +32,11 @@ class NfitTestCase extends TestCase
         // ..
     }
 
-    /**
-     *  Runs Seeds of dataTable
-     *
-     *  @return  void
-     */
-    protected function runSeeds()
-    {
-        // Run the DatabaseSeeder...
-        $this->seed();
+    function createModel($class, $attributes = [], $times = 1) {
+        return factory($class, $times > 1 ? $times : null)->create($attributes);
+    }
+
+    function makeModel($class, $attributes = [], $times = 1) {
+        return factory($class, $times > 1 ? $times : null)->make($attributes);
     }
 }
