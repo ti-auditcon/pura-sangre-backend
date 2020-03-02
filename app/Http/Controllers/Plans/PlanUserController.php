@@ -33,13 +33,13 @@ class planuserController extends Controller
     public function index()
     {
         $userPlans = planuser::all();
-        
+
         return view('userplans.index')->with('userPlans', $userPlans);
     }
 
     /**
      * [create description]
-     * 
+     *
      * @param  User   $user
      * @return \Illuminate\View\View|array
      */
@@ -55,17 +55,18 @@ class planuserController extends Controller
 
     /**
      * [store description]
-     * 
+     *
      * @param  Request $request [description]
      * @param  User    $user    [description]
      * @return [type]           [description]
      */
     public function store(PlanUserRequest $request, User $user)
     {
+        // dd('hola');
         $plan = Plan::find($request->plan_id);
         $finish_date = null;
         $counter = null;
-        
+
         if ($plan->id == 1) {
             $finish_date = Carbon::parse($request->fecha_inicio)->addWeeks(1);
             $counter = $plan->class_numbers;
@@ -79,7 +80,7 @@ class planuserController extends Controller
             $finish_date = Carbon::parse($request->fecha_termino);
             $counter = $request->counter * $plan->daily_clases;
         }
-        
+
         $planuser = new PlanUser;
         $planuser->start_date = Carbon::parse($request->fecha_inicio);
         $planuser->finish_date = $finish_date;
@@ -92,7 +93,7 @@ class planuserController extends Controller
         if ($planuser->save()) {
             if (($plan->custom == 0) && ($request->amount > 0)) {
                 $planuser->createBill($request);
-                
+
                 if (!\App::environment('local')) {
                     Mail::to($user->email)->send(new NewPlanUserEmail($user, $planuser));
                 }
@@ -139,13 +140,13 @@ class planuserController extends Controller
     {
         if ( $plan->finish_date->lt(today()) ) {
             Session::flash('warning', 'No se puede modificar el estado de un plan cuya fecha de término es anterior a hoy');
-            
+
             return view('userplans.show')->with([
                 'user' => $user,
                 'plan_user' => $plan
             ]);
         }
- 
+
         $plan->update([
             'start_date' => Carbon::parse($request->start_date),
             'finish_date' => Carbon::parse($request->finish_date),
@@ -174,11 +175,11 @@ class planuserController extends Controller
                                                 ->where('year', $plan_saved->bill->date->year)
                                                 ->where('plan_id', $plan_saved->bill->plan_user->plan->id)
                                                 ->first();
-            
+
             $plan_income_sum->amount -= $plan_saved->bill->amount;
-            
+
             $plan_income_sum->quantity -= 1;
-            
+
             $plan_income_sum->save();
         }
 

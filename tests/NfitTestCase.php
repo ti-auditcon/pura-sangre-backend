@@ -10,17 +10,15 @@ class NfitTestCase extends TestCase
 {
     use DatabaseMigrations;
 
-
-
     /**
      *
      */
     protected function setUp(): void
     {
         parent::setUp();
-        
-        $this->seed();
-        
+
+        // $this->seed();
+
         $this->duringSetUp();
     }
 

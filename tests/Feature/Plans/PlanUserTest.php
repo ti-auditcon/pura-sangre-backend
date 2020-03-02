@@ -9,6 +9,7 @@ use App\Models\Users\Role;
 use App\Models\Users\User;
 use App\Models\Clases\Clase;
 use App\Models\Plans\PlanUser;
+use App\Models\Users\StatusUser;
 use App\Models\Clases\Reservation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -32,7 +33,7 @@ class PlanUserTest extends NfitTestCase
         $this->seed();
 
         $this->admin = $this->createModel(\App\Models\Users\User::class, [], 1);
-        
+
         $this->admin->roles()->attach(Role::ADMIN);
     }
 
@@ -55,17 +56,6 @@ class PlanUserTest extends NfitTestCase
     /** @test */
     public function admin_can_create_plan_user_to_a_client()
     {
-        // $this->seed(\StatusUsersTableSeeder::class);
-        // $this->seed(\ClaseTypesTableSeeder::class);
-        // $this->seed(\PlanPeriodsTableSeeder::class);
-        // $this->seed(\PlanStatusTableSeeder::class);
-        // $this->seed(\PlansTableSeeder::class);
-        // $this->seed(\RolesTableSeeder::class);
-
-        $admin = factory(User::class)->create()->each(function ($user) {
-            $user->roles()->attach(Role::ADMIN);
-        });
-
         $client_user = factory(User::class)->create();
 
         $all_plans = Plan::all();
@@ -83,23 +73,25 @@ class PlanUserTest extends NfitTestCase
                 "amount" => $plan->amount
             ];
 
-            $response = $this->actingAs($admin)->post('/users/' . $client_user->id .  '/plans', $plan_user);
+            $response = $this->actingAs($this->admin)->post('/users/' . $client_user->id .  '/plans', $plan_user);
 
-            $response->assertRedirect('/users/' . $client_user->id);
+            $response->assertRedirect("/users/{$client_user->id}");
 
             if ($plan->custom) {
                 $finish_date = $period->format('Y-m-d H:i:s');
                 $counter = 1;
-            } elseif ($plan->id == 1) {
+            } elseif ($plan->id === 1) {
                 $finish_date = $period->copy()
                                       ->addWeek()
                                       ->format('Y-m-d H:i:s');
+                                      
                 $counter = $plan->class_numbers;
             } else {
                 $finish_date = $period->copy()
                                       ->addMonths(optional($plan->plan_period)->period_number)
                                       ->subDay()
                                       ->format('Y-m-d H:i:s');
+
                 $counter = $plan->class_numbers * $plan->plan_period->period_number * $plan->daily_clases;
             }
 
@@ -111,7 +103,7 @@ class PlanUserTest extends NfitTestCase
                 'counter' => $counter
             ]);
 
-            $this->get('/users/' . $client_user->id)->assertOk();
+            $this->get("/users/{$client_user->id}")->assertOk();
 
             // $period->addMonths($plan->plan_period->period_number ?? 1);
         }
@@ -120,18 +112,6 @@ class PlanUserTest extends NfitTestCase
     /** @test */
     public function status_user_is_updated_after_user_plan_created()
     {
-        $this->withoutExceptionHandling();
-
-        $this->seed(\StatusUsersTableSeeder::class);
-        $this->seed(\ClaseTypesTableSeeder::class);
-        $this->seed(\PlanPeriodsTableSeeder::class);
-        $this->seed(\PlanStatusTableSeeder::class);
-        $this->seed(\PlansTableSeeder::class);
-        $this->seed(\RolesTableSeeder::class);
-
-        $admin = factory(\App\Models\Users\User::class)->create();
-        $admin->roles()->attach(1);
-
         $client_user = factory(\App\Models\Users\User::class)->create();
 
         $plan_user = [
@@ -142,40 +122,27 @@ class PlanUserTest extends NfitTestCase
             "amount" => '45000'
         ];
 
-        $response = $this->actingAs($admin)->post('/users/' . $client_user->id .  '/plans', $plan_user);
+        $response = $this->actingAs($this->admin)
+                         ->post("/users/{$client_user->id}/plans", $plan_user);
 
         $this->assertDatabaseHas('plan_user', [
-            'plan_id' => 3,
+            'plan_id' => $plan_user['plan_id'],
             'user_id' => $client_user->id,
-            "start_date" => today()->format('Y-m-d H:i:s'),
+            "start_date" => Carbon::parse($plan_user['fecha_inicio'])->format('Y-m-d H:i:s'),
         ]);
 
         $this->assertDatabaseHas('users', [
             'id' => $client_user->id,
-            'status_user_id' => 1
+            'status_user_id' => StatusUser::ACTIVE
         ]);
     }
 
     /** @test */
     public function reservations_are_organized_after_user_plan_created()
     {
-        // $this->withoutExceptionHandling();
-
-        $this->seed(\StatusUsersTableSeeder::class);
-        $this->seed(\ClaseTypesTableSeeder::class);
-        $this->seed(\BlockTableSeeder::class);
-        $this->seed(\PlanPeriodsTableSeeder::class);
-        $this->seed(\PlanStatusTableSeeder::class);
-        $this->seed(\PlansTableSeeder::class);
-        $this->seed(\RolesTableSeeder::class);
-        // $this->seed(\UsersTableSeeder::class);
-
-        $admin = factory(\App\Models\Users\User::class)->create();
         $clase_de_hoy = factory(\App\Models\Clases\Clase::class)->create([
             'date' => today()->format('Y-m-d')
         ]);
-
-        $admin->roles()->attach(1);
         $user = factory(\App\Models\Users\User::class)->create();
 
         $reservation = factory(\App\Models\Clases\Reservation::class)->create([
@@ -184,7 +151,7 @@ class PlanUserTest extends NfitTestCase
         ]);
         $reservation = $reservation->toArray();
 
-        $response = $this->actingAs($admin)->post('/reservation/', $reservation);
+        $response = $this->actingAs($this->admin)->post('/reservation/', $reservation);
 
         $this->assertDatabaseHas('clases', [
             'id' => $clase_de_hoy->id,
@@ -204,7 +171,7 @@ class PlanUserTest extends NfitTestCase
             "amount" => '45000'
         ];
 
-        $response = $this->actingAs($admin)->post('/users/' . $user->id .  '/plans', $plan_user);
+        $response = $this->actingAs($this->admin)->post('/users/' . $user->id .  '/plans', $plan_user);
 
         $this->assertDatabaseHas('reservations', [
             'plan_user_id' => 1,
@@ -220,8 +187,6 @@ class PlanUserTest extends NfitTestCase
 
         $this->actingAs($this->admin)->get('/')->assertOk();
 
-        // $plan_user = factory(PlanUser::class, 1)->make();
-        // dd($plan_user);
         $plan_user = [
             'plan_id' => 3,
             "fecha_inicio" => today()->format('d-m-Y'),
@@ -236,21 +201,21 @@ class PlanUserTest extends NfitTestCase
         $this->assertDatabaseHas('plan_user', [
             'plan_id' => (string) $plan_user['plan_id'],
             'user_id' => (string) $user->id,
-            'start_date' => today()->format('Y-m-d'),
+            'start_date' => today()->format('Y-m-d H:i:s'),
+        ]);
+
+        $this->assertDatabaseHas('bills', [
+            'date' => Carbon::parse($plan_user['date'])->format('Y-m-d H:i:s'),
+            'start_date' => today()->format('Y-m-d H:i:s'),
+            'finish_date' => today()->addMonth()->subDay()->format('Y-m-d H:i:s'),
+            'amount' => $plan_user['amount'],
         ]);
     }
 
     /** @test */
     public function when_creating_plan_dates_can_not_overlap_with_created_plan()
     {
-        $this->seed(\PlanPeriodsTableSeeder::class);
-        $this->seed(\PlanStatusTableSeeder::class);
-        $this->seed(\PlansTableSeeder::class);
-        $this->seed(\RolesTableSeeder::class);
         $user = factory(\App\Models\Users\User::class)->create();
-
-        $admin = factory(\App\Models\Users\User::class)->create();
-        $admin->roles()->attach(1);
 
         factory(\App\Models\Plans\PlanUser::class)->create([
             'user_id' => $user->id,
@@ -264,7 +229,7 @@ class PlanUserTest extends NfitTestCase
             'finish_date' => today()->addMonths(2)->subDay()
         ]);
 
-        $response = $this->actingAs($admin)->put('/users/' . $user->id .  '/plans/' .  $plan_user->id, [
+        $response = $this->actingAs($this->admin)->put('/users/' . $user->id .  '/plans/' .  $plan_user->id, [
             'fecha_inicio' => today()->addMonth()->subDay()
         ]);
 

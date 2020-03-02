@@ -22,9 +22,9 @@ class DatabaseSeeder extends Seeder
              \OauthClientsTableSeeder::class,
              \RoleUserTableSeeder::class,
              \UsersTableSeeder::class,
-             \PlanUserTableSeeder::class,
-             \BillsTableSeeder::class,
-             \ReservationsTableSeeder::class,
+            //  \PlanUserTableSeeder::class,
+            //  \BillsTableSeeder::class,
+            //  \ReservationsTableSeeder::class,
         ]);
     }
 }
