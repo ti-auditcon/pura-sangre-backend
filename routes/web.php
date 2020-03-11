@@ -2,14 +2,21 @@
 
 Auth::routes();
 
-// Route::get('mailable', function () {
-//     $invoice = collect();
-//     $invoice->first_name = 'Raul';
-//     $invoice->subject = 'Asunto';
-//     $invoice->message = 'Esperamos como Equipo, que tu primera Clase haya sido con todo, por lo general las primeras clases son las más duras, por eso te invitamos a seguir dandolo todo. Por nuestra parte queremos saber que tal fuimos contigo';
+Route::get('first-class-mail', function () {
+    // dd('asdasds');
+    $invoice = collect();
+    $invoice->subject = '';
+    $invoice->user = 'Raul';
 
-//     return new App\Mail\SendFirstClassEmail($invoice);
-// });
+    return new App\Mail\SendFirstClassEmail($invoice);
+});
+
+Route::get('gone-away-mail', function () {
+    // dd('asdasds');
+    $user = \App\Models\Users\User::find(15);
+
+    return new App\Mail\GoneAwayUserEmail($user);
+});
 // Route::get('/fix-clases', 'HomeController@fixClases');
 
 Route::get('/', 'HomeController@index');
@@ -36,17 +43,17 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::resource('blocks', 'Clases\BlockController')->middleware('role:1');
 
     Route::resource('clases', 'Clases\ClaseController')->except('create', 'edit', 'update');
-        
+
         Route::post('clases/{clase}/confirm', 'Clases\ClaseController@confirm')->name('clase.confirm');
 
     Route::resource('reservation', 'Clases\ReservationController')->only('store', 'update', 'destroy');
-        
+
         Route::post('/reservation/{reservation}/confirm', 'Clases\ReservationController@confirm');
 
     Route::get('get-wods', 'Clases\ClaseController@wods');
-    
+
     Route::get('get-clases', 'Clases\ClaseController@clases');
-    
+
     Route::post('clases/type-select/', 'Clases\ClaseController@typeSelect')->name('clases.type');
 
     Route::get('/asistencia-modal/{id}', 'Clases\ClaseController@asistencia')->name('asistencia');
@@ -72,13 +79,13 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
          ->only('store', 'destroy')
          ->middleware('role:1');
 
-    /**   
+    /**
      * BILLS Routes
      */
     Route::resource('payments', 'Bills\BillController')->middleware('role:1')->only('index', 'update');
-    
+
     Route::post('payments/pagos', 'Bills\BillController@getPagos')->name('datapagos');
-    
+
     Route::get('/bills', 'Bills\BillController@bills')->name('bills');
 
     Route::get('bills/export', 'Bills\BillController@export')->name('bills.export');
@@ -98,21 +105,21 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 
     /**
      * Messages Routes
-     */    
+     */
     Route::resource('alerts', 'Messages\AlertController')->only(['index', 'store'])->middleware('role:1');
-    
+
     Route::get('/alert-list', 'Messages\AlertController@alerts');
-    
+
     Route::delete('/alert-list/{alert}', 'Messages\AlertController@destroy')->name('alerts.destroy')->middleware('role:1');
-    
+
     Route::get('messages', 'Messages\MessageController@index')->middleware('role:1');
-    
+
     Route::get('messages/users_Json', 'Messages\MessageController@usersJson')->middleware('role:1');
-    
+
     Route::post('messages/send', 'Messages\MessageController@send')->middleware('role:1');
-    
+
     Route::get('notifications', 'Messages\NotificationController@index')->middleware('role:1')->name('messages.notifications');
-    
+
     Route::post('notifications', 'Messages\NotificationController@store')->middleware('role:1');
 
     Route::delete('/notifications/{notification}', 'Messages\NotificationController@destroy')
@@ -131,25 +138,25 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
      * Reports routes
      */
     Route::resource('reports', 'Reports\ReportController')->middleware('role:1')->only('index');
-    
+
     Route::get('reports/firstchart', 'Reports\ReportController@firstchart');
-    
+
     Route::get('reports/secondchart', 'Reports\ReportController@secondchart');
-    
+
     Route::get('reports/thirdchart', 'Reports\ReportController@thirdchart');
-    
+
     Route::get('reports/totalplans', 'Reports\ReportController@quantityTypePlansByMonth')->name('plansMonthType');
-    
+
     Route::get('reports/totalplanssub', 'Reports\ReportController@totalplanssub')->name('totalplanssub');
-    
+
     Route::get('reports/inactive_users', 'Reports\InactiveUserController@index');
 
     Route::post('reports/inactive_users_json', 'Reports\InactiveUserController@inactiveUsers')->name('inactiveusers');
-    
+
     Route::get('reports/inactive_users/export', 'Reports\InactiveUserController@export')->name('inactive_users.export');
 
     Route::get('reports/data-plans/', 'Reports\DataPlansController@index');
-    
+
     Route::post('reports/data-plans/compare', 'Reports\DataPlansController@compare')->name('data-plans-compare');
 
     /**
@@ -160,15 +167,15 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('users-json', 'Users\UserController@usersJson')->name('users-json');
 
     Route::get('export', 'Users\UserController@export')->name('users.export');
-    
+
     Route::get('update-avatar', 'Users\UserController@updateAvatar')->name('user.update.avatar');
-    
+
     Route::resource('users.plans', 'Plans\PlanUserController');
-    
+
     Route::post('users/{user}/plans/{plan}/annul', 'Plans\PlanUserController@annul')->name('users.plans.annul');
-    
+
     // Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
-    
+
     Route::get('users/{user}/plans/{plan}/info', 'Users\UserController@userinfo')->name('users.plans.info');
 
     /**

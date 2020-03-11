@@ -15,7 +15,7 @@ class GoneAwayUserEmail extends Mailable
      *
      * @var string
      */
-    protected $user;
+    public $user;
 
     /**
      * Create a new message instance.
@@ -34,7 +34,8 @@ class GoneAwayUserEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('messages.gone_away_user')
+        // dd($this->user); 
+        return $this->markdown('messages.gone_away_user')
                     ->subject("{$this->user} te extrañamos!");
     }
 }
