@@ -55,8 +55,8 @@ class BlockObserver
     public function updated(Block $block)
     {
         $block->clases()->each(function ($clase) {
-            if ($clase->date >= today()) {
-                $clase->update(['quota' => $clase->block->quota]);
+            if ($clase->start >= now()) {
+                $clase->update([ 'quota' => $clase->block->quota ]);
             }
         });
     }

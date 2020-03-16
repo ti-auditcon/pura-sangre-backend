@@ -49,9 +49,7 @@ class Clase extends Model
     public function getStartAttribute()
     {
         if ( $this->block->date == null ) {
-        
-          return $this->date." ".$this->block->start;
-        
+            return $this->date." ".$this->block->start;
         }
         
         return $this->block->start;
