@@ -56,8 +56,8 @@
                 {{ Form::close() }}
 
                 <div id="calendar" style="position: relative;">
-                    <div id="calendar-spinner" class="loading-box d-none">
-                        <div class="spinner "></div>
+                    <div id="calendar-spinner" class="loading-box" hidden>
+                        <div class="spinner"></div>
                         <h1>Cargando...</h1>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                             <div class="circle-color"
                                 style="background-color: {{ $density->color }}; display: inline-block;"
                             ></div>
-                            Nivel: {{ $density->level }}: 
+                            Nivel: {{ $density->level }}:
                             Desde: {{ $density->from }}%
                             Hasta: {{ $density->to }}%
                         </li>
@@ -189,13 +189,15 @@
                 },
 
                 loading: function (bool) {
-                   $('#calendar-spinner').removeClass('d-none'); // Add your script to show loading
+                    $('#calendar-spinner').attr("hidden", false);
+                //    removeClass('d-none'); // Add your script to show loading
                 },
 
                 eventAfterAllRender: function (view) {
-                    $('#calendar-spinner').addClass('d-none');
+                    $('#calendar-spinner').attr('hidden', true);
+                    // $('#calendar-spinner').addClass('d-none');
 
-                    $('#calendar-spinner').addClass('d-none'); // remove your loading
+                    // $('#calendar-spinner').addClass('d-none'); // remove your loading
                 }
             });
         });

@@ -11,6 +11,8 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    'web_url' => env('APP_WEB_URL', 'https://purasangrecrossfit.cl/'),
+
     'timezone' => 'America/Santiago',
 
     'locale' => 'es_ES',
@@ -46,7 +48,7 @@ return [
         Illuminate\Queue\QueueServiceProvider::class,
         Illuminate\Redis\RedisServiceProvider::class,
         //Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
-        
+
         // MY OWN PasswordResetServiceProvider ...
         App\Providers\CustomPasswordResetServiceProvider::class,
 

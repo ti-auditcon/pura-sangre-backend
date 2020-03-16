@@ -2,14 +2,21 @@
 
 Auth::routes();
 
-// Route::get('mailable', function () {
-//     $invoice = collect();
-//     $invoice->first_name = 'Raul';
-//     $invoice->subject = 'Asunto';
-//     $invoice->message = 'Esperamos como Equipo, que tu primera Clase haya sido con todo, por lo general las primeras clases son las más duras, por eso te invitamos a seguir dandolo todo. Por nuestra parte queremos saber que tal fuimos contigo';
+Route::get('first-class-mail', function () {
+    // dd('asdasds');
+    $invoice = collect();
+    $invoice->subject = '';
+    $invoice->user = 'Raul';
 
-//     return new App\Mail\SendFirstClassEmail($invoice);
-// });
+    return new App\Mail\SendFirstClassEmail($invoice);
+});
+
+Route::get('gone-away-mail', function () {
+    // dd('asdasds');
+    $user = \App\Models\Users\User::find(15);
+
+    return new App\Mail\GoneAwayUserEmail($user);
+});
 // Route::get('/fix-clases', 'HomeController@fixClases');
 
 Route::get('/', 'HomeController@index');
@@ -174,6 +181,12 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('update-avatar', 'Users\UserController@updateAvatar')->name('user.update.avatar');
 
     Route::resource('users.plans', 'Plans\PlanUserController');
+
+    Route::post('users/{user}/plans/{plan}/annul', 'Plans\PlanUserController@annul')->name('users.plans.annul');
+
+    // Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
+
+    Route::get('users/{user}/plans/{plan}/info', 'Users\UserController@userinfo')->name('users.plans.info');
 
     /**
      * ROLEUSER ROUTES
