@@ -29,6 +29,18 @@ class PlanUserRequest extends FormRequest
                 'counter' => 'required',
             ];
         }
+
+        // if (\in_array($this->method(), ['PUT','PATCH'])) {
+        //     if ( $plan->finish_date->lt(today()) ) {
+        //     Session::flash('warning', 'No se puede modificar el estado de un plan cuya fecha de término es anterior a hoy');
+
+        //     return view('userplans.show')->with([
+        //         'user' => $user,
+        //         'plan_user' => $plan
+        //     ]);
+        // }
+
+        // }
         return [
             //
         ];

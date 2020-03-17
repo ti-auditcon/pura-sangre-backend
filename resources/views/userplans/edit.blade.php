@@ -14,7 +14,7 @@
                 </div>
                 <div class="ibox-tools">
                     <span class="badge badge-{{ $plan_user->plan_status->type }} badge-pill">
-                        {{ strtoupper($plan_user->plan_status->plan_status) }}
+                        {{ strtoupper($plan_user->status) }}
                     </span>
                 </div>
             </div>
@@ -82,15 +82,17 @@
                                 Perfirl de {{ $user->first_name }}
                             </a>
                         </div>
-                        <div class="col-6">
-                            <label class="checkbox checkbox-success ml-3 float-right">
-                                <input type="checkbox" name="reactivate">
+                        @if (in_array($plan_user->plan_status_id, $plan_status->reactivablePlans()))
+                            <div class="col-6">
+                                <label class="checkbox checkbox-success ml-3 float-right">
+                                    <input type="checkbox" name="reactivate">
 
-                                <span class="input-span"></span>
+                                    <span class="input-span"></span>
 
-                                Activar plan nuevamente
-                        </label>
-                        </div>
+                                    Activar plan nuevamente
+                                </label>
+                            </div>
+                        @endif
                     </div>
                 </div>
 
@@ -110,8 +112,6 @@
 
 
 @section('scripts') {{-- scripts para esta vista --}}
-
-
   {{-- // BOOTSTRAP DATEPICKER // --}}
    <script defer>
       $('#start_date .input-group.date').datepicker({
@@ -146,6 +146,4 @@
          todayHighlight: true
       });
    </script>
-
-
 @endsection

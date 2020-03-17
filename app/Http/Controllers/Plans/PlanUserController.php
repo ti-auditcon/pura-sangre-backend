@@ -9,15 +9,17 @@ use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
-use App\Models\Plans\PlanUser;
+use Illuminate\Http\Response;
 use App\Mail\NewPlanUserEmail;
-use Illuminate\Support\Facades\Mail;
+use App\Models\Plans\PlanUser;
+use App\Models\Plans\PlanStatus;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Plans\PlanIncomeSummary;
 use App\Http\Requests\Plans\PlanUserRequest;
 
 
-class planuserController extends Controller
+class PlanUserController extends Controller
 {
     public function __construct()
     {
@@ -33,13 +35,13 @@ class planuserController extends Controller
     public function index()
     {
         $userPlans = planuser::all();
-        
+
         return view('userplans.index')->with('userPlans', $userPlans);
     }
 
     /**
      * [create description]
-     * 
+     *
      * @param  User   $user
      * @return \Illuminate\View\View|array
      */
@@ -55,7 +57,7 @@ class planuserController extends Controller
 
     /**
      * [store description]
-     * 
+     *
      * @param  Request $request [description]
      * @param  User    $user    [description]
      * @return [type]           [description]
@@ -121,36 +123,35 @@ class planuserController extends Controller
     }
 
     /**
-     * [edit description]
-     * @param  User     $user [description]
-     * @param  planuser $plan [description]
-     * @return [type]         [description]
+     *  [edit description]
+     *
+     *  @param  User      $user [description]
+     *  @param  planuser  $plan [description]
+     *
+     *  @return  View
      */
     public function edit(User $user, planuser $plan)
     {
-        return view('userplans.edit')
-             ->with('user', $user)
-             ->with('plan_user', $plan);
+        $plan_status = new PlanStatus();
+
+        return view('userplans.edit', [
+            'user' => $user,
+            'plan_user' => $plan,
+            'plan_status' => $plan_status,
+        ]);
     }
 
     /**
-     * [update description]
-     * @param  Request  $request [description]
-     * @param  User     $user    [description]
-     * @param  planuser $plan    [description]
-     * @return [type]            [description]
+     *  [update description]
+     *
+     *  @param   Request   $request
+     *  @param   User      $user
+     *  @param   planuser  $plan
+     *
+     *  @return  \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, User $user, planuser $plan)
     {
-        if ( $plan->finish_date->lt(today()) ) {
-            Session::flash('warning', 'No se puede modificar el estado de un plan cuya fecha de término es anterior a hoy');
-            
-            return view('userplans.show')->with([
-                'user' => $user,
-                'plan_user' => $plan
-            ]);
-        }
- 
         $plan->update([
             'start_date' => Carbon::parse($request->start_date),
             'finish_date' => Carbon::parse($request->finish_date),
@@ -168,10 +169,17 @@ class planuserController extends Controller
             $plan->bill->save();
         }
 
-        Session::flash('success', 'El plan se actualizó correctamente');
-        return redirect('users/' . $user->id);
+        // Session::flash('success', 'El plan se actualizó correctamente');
+        return redirect('users/' . $user->id, Response)->with('success', 'El plan se actualizó correctamente');
     }
 
+    /**
+     * [updateBillIncome description]
+     *
+     * @param   [type]  $plan_saved  [$plan_saved description]
+     *
+     * @return  [type]               [return description]
+     */
     public function updateBillIncome($plan_saved)
     {
         if ($plan_saved->bill) {
@@ -179,11 +187,11 @@ class planuserController extends Controller
                                                 ->where('year', $plan_saved->bill->date->year)
                                                 ->where('plan_id', $plan_saved->bill->plan_user->plan->id)
                                                 ->first();
-            
+
             $plan_income_sum->amount -= $plan_saved->bill->amount;
-            
+
             $plan_income_sum->quantity -= 1;
-            
+
             $plan_income_sum->save();
         }
 
@@ -209,15 +217,19 @@ class planuserController extends Controller
     }
 
     /**
-     * [destroy description]
-     * @param  User     $user [description]
-     * @param  planuser $plan [description]
-     * @return [type]         [description]
+     *  [destroy description]
+     *
+     *  @param  User     $user [description]
+     *  @param  planuser $plan [description]
+     *
+     *  @return [type]         [description]
      */
     public function destroy(User $user, planuser $plan)
     {
         $plan->delete();
-        return redirect()->route('users.show', $user->id)->with('success', 'Se eliminó el plan correctamente');
+
+        return redirect()->route('users.show', $user->id)
+                         ->with('success', 'Se eliminó el plan correctamente');
     }
 
 }

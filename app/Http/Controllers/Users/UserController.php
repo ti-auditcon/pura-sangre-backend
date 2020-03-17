@@ -24,7 +24,7 @@ class UserController extends Controller
         // parent::__construct();
         $this->middleware('can:view,user')->only('show');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -44,6 +44,7 @@ class UserController extends Controller
      */
     public function usersJson()
     {
+        $auth_roles = auth()->user()->roles()->get(['id'])->pluck([id])->toArray();
         $users = User::allUsers()->get();
 
         return response()->json(['data' => $users]);
@@ -77,26 +78,29 @@ class UserController extends Controller
 
     /**
      * [store description]
-     * 
+     *
      * @param UserRequest $request [description]
      * @param User        $user    [description]
-     * 
+     *
      * @return Users show view
      */
     public function store(UserRequest $request, User $user)
     {
         $user = User::create($request->all());
 
-        $emergency = Emergency::create(array_merge($request->all(), 
+        $auth_roles = auth()->user(['id'])->roles()->orderBy('role_id')->pluck('id')->toArray();
+
+        $emergency = Emergency::create(array_merge($request->all(),
             ['user_id' => $user->id]
         ));
-        
+
         Session::flash('success', 'El usuario ha sido creado correctamente');
 
         return view(
             'users.show', [
                 'user' => $user,
-                'past_reservations' => $user->past_reservations()
+                'past_reservations' => $user->past_reservations(),
+                'auth_roles' => $auth_roles
             ]
         );
     }
@@ -123,7 +127,7 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Users\User  $user
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(User $user)
@@ -133,21 +137,21 @@ class UserController extends Controller
 
     /**
      * [update description]
-     * 
+     *
      * @param  UserRequest $request [description]
      * @param  User        $user    [description]
-     * 
+     *
      * @return [type]               [description]
      */
     public function update(UserRequest $request, User $user)
     {
-        if ($request->image) {
-            $avatar_name = md5(mt_rand());
+        // if ($request->image) {
+        //     $avatar_name = md5(mt_rand());
 
-            request()->file('image')->storeAs('public/users', "{$avatar_name}.jpg");
+        //     request()->file('image')->storeAs('public/users', "{$avatar_name}.jpg");
 
-            $user->update(['avatar' => url("storage/users/$avatar_name.jpg")]);
-        }
+        //     $user->update(['avatar' => url("storage/users/$avatar_name.jpg")]);
+        // }
 
         $user->update(array_merge($request->all(), [
             'birthdate' => $request->birthdate,
@@ -162,15 +166,18 @@ class UserController extends Controller
         ]);
 
         Session::flash('success', 'Los datos del usuario han sido actualizados');
-        return redirect('/users/' . $user->id)->with('user', $user);
+
+        $auth_roles = auth()->user(['id'])->roles()->orderBy('role_id')->pluck('id')->toArray();
+
+        return redirect('/users/' . $user->id)->with(compact('user', 'auth_roles'));
     }
 
     /**
      * [image description]
-     * 
+     *
      * @param  Request $request [description]
      * @param  User    $user    [description]
-     * 
+     *
      * @return [type]           [description]
      */
     public function image(Request $request, User $user)
@@ -180,30 +187,30 @@ class UserController extends Controller
         request()->file('avatar')->storeAs('public/users', "{$avatar_name}.jpg");
 
         $user->avatar = url('/') . '/storage/users/' . $avatar_name . '.jpg';
-        
+
         $user->save();
-        
+
         return response()->json(['success' => 'Sesion finalizada'], 200);
     }
 
     /**
      * [destroy description]
-     * 
+     *
      * @param  Request $request [description]
      * @param  User    $user    [description]
-     * 
+     *
      * @return [type]           [description]
      */
     public function destroy(Request $request, User $user)
     {
         $user->delete();
-        
+
         return redirect('/users')->with('success', 'El usuario ha sido borrado correctamente');
     }
 
     /**
      * [updateAvatar description]
-     * 
+     *
      * @return [type] [description]
      */
     public function updateAvatar()
@@ -237,12 +244,12 @@ class UserController extends Controller
         foreach (Reservation::all() as $reserv) {
             if ($reserv->plan_user_id == null) {
                 $fecha_clase = $reserv->clase->date;
-                
+
                 $plan = PlanUser::where('start_date', '<=', $fecha_clase)
                     ->where('finish_date', '>=', $fecha_clase)
                     ->where('user_id', $reserv->user_id)
                     ->first();
-                
+
                 if ($plan) {
                     $reserv->update(['plan_user_id' => $plan->id]);
                     $plan->counter -= 1;
@@ -261,7 +268,7 @@ class UserController extends Controller
      */
     public function geolocations() {
         $users = User::whereNotNull('address')->get(['id', 'rut', 'lat', 'lng']);
-        
+
         return $users;
     }
 }

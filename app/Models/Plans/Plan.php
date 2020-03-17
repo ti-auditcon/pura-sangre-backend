@@ -16,7 +16,7 @@ class Plan extends Model
 {
     /**
      * For massive assignment
-     * 
+     *
      * @var array
      */
     protected $fillable = [

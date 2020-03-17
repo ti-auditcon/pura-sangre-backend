@@ -75,6 +75,10 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     /**
      *  POSTPONE PLANS ROUTE
      */
+    Route::get('postpones', 'Plans\PostponeController@index')->name('postpones.index');
+
+    Route::post('postpones/all', 'Plans\PostponeController@postponeAll')->name('postpones.all');
+
     Route::resource('plan-user.postpones', 'Plans\PlanUserPostponesController')
          ->only('store', 'destroy')
          ->middleware('role:1');
