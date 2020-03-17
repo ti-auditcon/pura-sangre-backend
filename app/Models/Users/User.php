@@ -28,14 +28,14 @@ class User extends Authenticatable
 
     /**
      * [$dates description]
-     * 
+     *
      * @var array
      */
     protected $dates = ['birthdate', 'since', 'deleted_at'];
-    
+
     /**
      * [$fillable description]
-     * 
+     *
      * @var array
      */
     protected $fillable = [
@@ -46,33 +46,33 @@ class User extends Authenticatable
         'password',
         'avatar',
         'phone',
-        'birthdate', 
-        'gender', 
+        'birthdate',
+        'gender',
         'address',
         'lat',
         'lng',
         'since',
-        'emergency_id', 
+        'emergency_id',
         'status_user_id'
     ];
 
     /**
      * [$hidden description]
-     * 
+     *
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
-    
+
     /**
      * [$appends description]
-     * 
+     *
      * @var array
      */
     protected $appends = ['full_name', 'rut_formated'];
 
     /**
      * [setBirthdateAttribute description]
-     * 
+     *
      * @param [type] $value [description]
      */
     public function setBirthdateAttribute($value)
@@ -82,7 +82,7 @@ class User extends Authenticatable
 
     /**
      * [setSinceAttribute description]
-     * 
+     *
      * @param [type] $value [description]
      */
     public function setSinceAttribute($value)
@@ -102,21 +102,22 @@ class User extends Authenticatable
     }
 
     /**
-     * Verified if auth user has an specific Role
-     * 
-     * @param  integer
-     * @return boolean
+     *  Verified if auth user has an specific Role
+     *
+     *  @param   integer
+     *
+     *  @return  boolean
      */
-    public function hasRole($role)
+    public function hasRole($roleId)
     {
-        return RoleUser::where('role_id', $role)
+        return RoleUser::where('role_id', $roleId)
                        ->where('user_id', $this->id)
                        ->exists();
     }
 
     /**
      * [setRutAttribute description]
-     * 
+     *
      * @param [type] $value [description]
      */
     public function setRutAttribute($value)
@@ -126,7 +127,7 @@ class User extends Authenticatable
 
     /**
      * [getFullNameAttribute description]
-     * 
+     *
      * @return [type] [description]
      */
     public function getFullNameAttribute()
@@ -136,7 +137,7 @@ class User extends Authenticatable
 
     /**
      * [getFullNameAttribute description]
-     * 
+     *
      * @return [type] [description]
      */
     public function getRutFormatedAttribute()
@@ -160,7 +161,7 @@ class User extends Authenticatable
 
     /**
      * [scopeCountStatusUsers description]
-     * 
+     *
      * @param  [type] $users [description]
      * @return [type]        [description]
      */
@@ -172,7 +173,7 @@ class User extends Authenticatable
 
     /**
      * Return all the clase of this User
-     * 
+     *
      * @return App\Models\Clases\Clase
      */
     public function clases()
@@ -182,7 +183,7 @@ class User extends Authenticatable
 
     /**
      * Return the status of this User
-     * 
+     *
      * @return App\Models\User\StatusUser
      */
     public function status_user()
@@ -192,7 +193,7 @@ class User extends Authenticatable
 
     /**
      * Return all the plans of this User
-     * 
+     *
      * @return App\Models\Plans\Plan
      */
     public function plans()
@@ -203,7 +204,7 @@ class User extends Authenticatable
 
     /**
      * Get the active plan of this User
-     * 
+     *
      * @return App\Models\Plans\PlanUser
      */
     public function actual_plan()
@@ -215,7 +216,7 @@ class User extends Authenticatable
 
     /**
      * Return all the plans of this User
-     * 
+     *
      * @return App\Models\Plans\PlanUser
      */
     public function last_plan()
@@ -227,7 +228,7 @@ class User extends Authenticatable
 
     /**
      * Return the 10 first next reservations of this User
-     * 
+     *
      * @return App\Models\Clases\Reservation
      */
     public function future_reservs()
@@ -240,7 +241,7 @@ class User extends Authenticatable
     /**
      * Return all the plans of the user,
      * with plan status: 'activo' and 'precompra'
-     * 
+     *
      * @return App\Models\Plans\PlanUser
      */
     public function reservable_plans()
@@ -251,7 +252,7 @@ class User extends Authenticatable
 
     /**
      * [description]
-     * 
+     *
      * @return App\Models\Clases\Block
      */
     public function blocks()
@@ -261,7 +262,7 @@ class User extends Authenticatable
 
     /**
      * Return all the bills of this User
-     * 
+     *
      * @return App\Models\Bills\Bill
      */
     public function bills()
@@ -277,7 +278,7 @@ class User extends Authenticatable
     /**
      * Return all the plans of this User,
      * ordered by plan status and start date of the plan
-     * 
+     *
      * @return App\Models\Plans\PlanUser
      */
     public function plan_users()
@@ -289,7 +290,7 @@ class User extends Authenticatable
 
     /**
      * [planes_del_usuario description]
-     * 
+     *
      * @return [type] [description]
      */
     public function planes_del_usuario()
@@ -306,7 +307,7 @@ class User extends Authenticatable
 
     /**
      * [regular_users description]
-     * 
+     *
      * @return [collection] [description]
      */
     public function regular_users()
@@ -321,7 +322,7 @@ class User extends Authenticatable
 
     /**
      * [last_plan description]
-     * 
+     *
      * @return [type] [description]
      */
     public function emergency()
@@ -331,7 +332,7 @@ class User extends Authenticatable
 
     /**
      * [last_plan description]
-     * 
+     *
      * @return [type] [description]
      */
     public function reservations()
@@ -341,7 +342,7 @@ class User extends Authenticatable
 
     /**
      * [roles description]
-     * 
+     *
      * @return [type] [description]
      */
     public function roles()
@@ -350,8 +351,18 @@ class User extends Authenticatable
     }
 
     /**
+     *  Get all Roles Ids of the User
+     *
+     *  @return  array
+     */
+    public function rolesId()
+    {
+        return $this->roles()->pluck('id')->toArray();
+    }
+
+    /**
      * [getAvatarAttribute description]
-     * 
+     *
      * @param  [type] $value [description]
      * @return [type]        [description]
      */
@@ -360,25 +371,25 @@ class User extends Authenticatable
         if ( !$value ) {
             return url('img/default_user.png');
         }
-        
+
         return $value;
     }
 
     /**
      * [birthdate_users description]
-     * 
+     *
      * @return [type] [description]
      */
     public function birthdate_users()
     {
-        return User::whereMonth('birthdate', toDay()->month)
-                   ->whereDay('birthdate', toDay()->day)
-                   ->get(['id', 'first_name', 'last_name', 'avatar', 'birthdate']);
+        return $this->whereMonth('birthdate', toDay()->month)
+                    ->whereDay('birthdate', toDay()->day)
+                    ->get(['id', 'first_name', 'last_name', 'avatar', 'birthdate']);
     }
 
     /**
      * [itsBirthDay description]
-     * 
+     *
      * @return [type] [description]
      */
     public function itsBirthDay()
@@ -392,7 +403,7 @@ class User extends Authenticatable
 
     /**
      * Reservations 'Consumidas' and 'perdidas'
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function past_reservations()
