@@ -44,7 +44,6 @@ class UserController extends Controller
      */
     public function usersJson()
     {
-        $auth_roles = auth()->user()->roles()->get(['id'])->pluck([id])->toArray();
         $users = User::allUsers()->get();
 
         return response()->json(['data' => $users]);
