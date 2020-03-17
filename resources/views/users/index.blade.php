@@ -1,104 +1,70 @@
 @extends('layouts.app')
 
 @section('sidebar')
-  
-  @include('layouts.sidebar',['page'=>'users'])
-
+    @include('layouts.sidebar',['page'=>'users'])
 @endsection
 
 @section('content')
 <div class="row justify-content-center">
     <div class="col-md-12">
         <div class="ibox ibox-fullheight">
-            
             <div class="ibox-head">
-                
-                <div class="ibox-title">Alumnos</div>
-               
-                <div class="ibox-tools">
-                    
-                    <a class="btn btn-success text-white" href="{{ route('users.create')}}">Nuevo alumno</a>
-                
+                <div class="ibox-title">
+                    Alumnos
                 </div>
-           
+
+                <div class="ibox-tools">
+                    <a class="btn btn-success text-white" href="{{ route('users.create')}}">
+                        Nuevo alumno
+                    </a>
+                </div>
             </div>
 
             <div class="ibox-body">
-                
                 <div class="flexbox mb-4">
-                
                     <div class="flexbox">
-                
                         <span class="flexbox mr-3">
-                
                             <div class="btn-group">
-                
                                 <button class="btn btn-outline-success user-filter" data-status="1">
-
                                     <span class="btn-icon">ACTIVOS</span>
-                
                                 </button>
-                
+
                                 <span class="btn-label-out btn-label-out-right btn-label-out-success pointing">
-
                                     {{ $status_users->where('status_user_id', 1)->pluck('total')->pull(0) }}
-                                
                                 </span>
-                            
                             </div>
-                        
                         </span>
-                
+
                         <span class="flexbox mr-3" >
-                
                             <div class="btn-group">
-                
                                 <button class="btn btn-outline-danger user-filter" data-status="2">
-                
                                     <span class="btn-icon">INACTIVOS</span>
-                
                                 </button>
-                                
+
                                 <span class="btn-label-out btn-label-out-right btn-label-out-danger pointing">
-
                                     {{ $status_users->where('status_user_id', 2)->pluck('total')->pull(0) }}
-                                
                                 </span>
-                            
                             </div>
-
                         </span>
-                        
+
                         <span class="flexbox mr-3">
-                            
                             <div class="btn-group">
-                                
                                 <button class="btn btn-outline-warning user-filter" data-status="3">
-                                
                                     <span class="btn-icon">PRUEBA</span>
-                                
                                 </button>
-                                
-                                <span class="btn-label-out btn-label-out-right btn-label-out-warning pointing">
 
+                                <span class="btn-label-out btn-label-out-right btn-label-out-warning pointing">
                                     {{ $status_users->where('status_user_id', 3)->pluck('total')->pull(0) }}
-                                
                                 </span>
-                            
                             </div>
-                        
                         </span>
-                        
+
                         <span class="flexbox mr-3">
-                            
                             <div class="btn-group">
-                                
                                 <button class="btn btn-outline-primary user-filter" data-status="">
-                                
                                     <span class="btn-icon">TODOS</span>
-                                
                                 </button>
-                                
+
                                 <span class="btn-label-out btn-label-out-right btn-label-out-primary pointing">
                                     {{ $status_users->sum('total') }}
                                 </span>
@@ -109,12 +75,12 @@
                             style="display: inline-block;" href="{{ route('users.export')}}"
                         >
                             <span class="btn-label"><i class="la la-cloud-download"></i></span>
-                            
+
                             Excel alumnos
                         </a>
-                    
+
                     </div>
-                
+
                 </div>
 
                 <div class="modal fade bd-example-modal-lg show" id="modal-avatar" role="dialog">
@@ -130,7 +96,7 @@
                                 </div>
                             </div>
                        </div>
-                </div> 
+                </div>
 
                 <div class="table-responsive">
                     <table id="students-table" class="table table-hover">
@@ -139,17 +105,17 @@
                                 <th width="30%">Alumno</th>
 
                                 <th width="10%">Correo</th>
-                            
+
                                 <th width="10%">RUN</th>
-                            
+
                                 <th width="10%">Plan Activo</th>
-                            
+
                                 <th width="10%">Vencimiento</th>
-                            
+
                                 <th width="15%">Período</th>
-                            
+
                                 <th width="5%">Acciones</th>
-                            
+
                                 <th width="10%">status</th>
                             </tr>
                         </thead>
@@ -167,13 +133,13 @@
                                         {{ $user->first_name }} {{ $user->last_name }}
                                     </a>
                                 </td>
-                                
+
                                 <td>{{ Rut::set($user->rut)->fix()->format() }}</td>
-                                
+
                                 @if ($user->actual_plan)
-                                
+
                                     <td>{{ $user->actual_plan->plan->plan ?? 'No aplica' }}</td>
-                                
+
                                     @if ($user->actual_plan->finish_date >= (Carbon\Carbon::today()))
                                         <td>{{ 'Quedan ' }}{{ $user->actual_plan->finish_date->diffInDays(Carbon\Carbon::now()) }}{{ ' días' }}
                                         </td>
@@ -183,9 +149,9 @@
                                 <td>{{ $user->actual_plan->start_date->format('d-m-Y') }} a {{ $user->actual_plan->finish_date->format('d-m-Y') }}</td>
                                 @else
                                     <td>{{ 'Sin plan' }}</td>
-                                    
+
                                     <td>{{ 'No aplica' }}</td>
-                                    
+
                                     <td>{{ 'No aplica' }}</td>
                                 @endif
                                 <td>
@@ -245,14 +211,20 @@
                 "columns":[
                     { "data": "full_name",
                       "render": function (data, other, row) {
-                            return '<div class="img-avatar div-user-avatar" style="background-image: url('+ row.avatar +')" data-image="'+ row.avatar +'"></div>'+
-                                   '<a href="/users/'+ row.id +'">'+
-                                   data + '</a>';
+                            return `<div class="img-avatar div-user-avatar"
+                                         style="background-image: url('${row.avatar}')"
+                                         data-image="${row.avatar}">
+                                    </div>
+                                    <a href="/users/${row.id}">${data}</a>
+                                    <span class="badge badge-primary badge-pill">
+                                        ${row.status}
+                                    </span>
+                                    `;
                       }
                     },
                     { "data": "email" },
                     { "data": "rut_formated" },
-                    {  "data": "actual_plan",
+                    { "data": "actual_plan",
                         "render": function (data, other, row) {
                             return data && data.plan ? data.plan.plan : 'no aplica';
                         },
@@ -268,7 +240,7 @@
                                    moment(data.start_date).format("DD-MM-YYYY") +' al '+ moment(data.finish_date).format("DD-MM-YYYY") :
                                    'no aplica';
                         }
-                    }, 
+                    },
                     { "data": "actions",
                         "render": function (data, other, row) {
                             return '<a href="/users/'+ row.id +'" class="btn btn-info btn-icon-only btn-success"><i class="la la-eye"></i></a>';

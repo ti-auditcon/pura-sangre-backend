@@ -116,6 +116,18 @@ class User extends Authenticatable
     }
 
     /**
+     *  Check if user has ADMIN Role
+     *
+     *  @param   integer
+     *
+     *  @return  boolean
+     */
+    public function isAdmin()
+    {
+        return $this->roles()->whereId(Role::ADMIN)->exists(['id']);
+    }
+
+    /**
      * [setRutAttribute description]
      *
      * @param [type] $value [description]
@@ -146,17 +158,29 @@ class User extends Authenticatable
     }
 
     /**
-     * Scope a query to get all the users.
+     *  Scope a query to get all the users.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
+     *  @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     *  @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeAllUsers($query)
     {
-        $query->select(['id', 'rut', 'first_name', 'last_name', 'email', 'avatar', 'status_user_id'])
-              ->with(['actual_plan:id,start_date,finish_date,user_id,plan_id',
-                      'actual_plan.plan:id,plan'
-                     ]);
+        $query->with([
+                    'actual_plan:id,start_date,finish_date,user_id,plan_id',
+                    'actual_plan.plan:id,plan',
+                ])
+                ->get(['id', 'rut', 'first_name', 'last_name', 'email', 'avatar', 'status_user_id']);
+    }
+
+    /**
+     *  Get the Status User
+     *
+     *  @return  string
+     */
+    public function getStatusAttribute()
+    {
+        return app(StatusUser::class)->getStatus($this->status_user_id);
     }
 
     /**

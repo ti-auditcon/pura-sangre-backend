@@ -158,18 +158,16 @@ class UserController extends Controller
 
         Session::flash('success', 'Los datos del usuario han sido actualizados');
 
-        $auth_roles = auth()->user(['id'])->roles()->orderBy('role_id')->pluck('id')->toArray();
-
-        return redirect('/users/' . $user->id)->with(compact('user', 'auth_roles'));
+        return redirect("/users/{$user->id}")->with(compact('user'));
     }
 
     /**
-     * [image description]
+     *  [image description]
      *
-     * @param  Request $request [description]
-     * @param  User    $user    [description]
+     *  @param  Request $request [description]
+     *  @param  User    $user    [description]
      *
-     * @return [type]           [description]
+     *  @return [type]           [description]
      */
     public function image(Request $request, User $user)
     {

@@ -32,6 +32,7 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
+                                {{-- {{ dd(auth()->user()->isAdmin()) }} --}}
                                 <div class="modal-body" id="dynamic-content">
                                     <img id="avatar-img" alt="" style="width: 400px;"/>
                                 </div>
@@ -208,19 +209,13 @@
                             @foreach($user->planes_del_usuario() as $plan_user)
                             <tr>
                                 <td>
-                                    <a
-                                        class="sweet-user-plan-info"
+                                    <a href="{{ url("/users/{$user->id}/plans/{$plan_user->id}/edit") }}"
+                                        {{-- class="sweet-user-plan-info" --}}
                                         data-user-id="{{ $user->id }}"
                                         data-plan-id="{{ $plan_user->id }}"
                                     >
-                                        {{ optional($plan_user->plan)->plan }}
+                                        {{ optional($plan_user->plan)->plan }} <span class="la la-edit"></span>
                                     </a>
-
-                                    {{-- @if ( \Carbon\Carbon::parse($plan_user->finish_date)->gte(toDay()) ) --}}
-                                        <a href="{{url('/users/'.$user->id.'/plans/'.$plan_user->id.'/edit')}}">
-                                            <span class="la la-edit"></span>
-                                        </a>
-                                    {{-- @endif --}}
                                 </td>
 
                                 @if ($plan_user->bill)
@@ -240,83 +235,89 @@
                                 <td>{{ '$ '.number_format(optional($plan_user->bill)->amount, $decimal = 0, '.', '.') }}</td>
 
                                 <td>
-                                    <span class="badge badge-{{ $plan_user->plan_status->type }} badge-pill">
-                                        {{ strtoupper($plan_user->plan_status->plan_status) }}
+                                    <span class="badge badge-{{ $plan_user->statusColor }} badge-pill">
+                                        {{ strtoupper($plan_user->status) }}
                                     </span>
                                 </td>
 
                                 <td>
-                                    {{-- {{ dd(in_array(1, $auth_roles)) }} --}}
-                                    {{-- {{ dd($plan_user->plan_status->can_delete == true) }} --}}
-                                    @if (in_array(1, $auth_roles) && $plan_user->plan_status->can_delete)
-
-                                        {!! Form::open(['route' => ['users.plans.annul', 'user' => $user->id, 'plan' => $plan_user->id], 'method' => 'post', 'class' => 'user-plan-annul',  'id'=>'annul'.$plan_user->id]) !!}
-                                        {!! Form::close() !!}
-
-                                        <button
-                                            class="btn btn-info btn-icon-only btn-danger sweet-user-plan-annul"
-                                            data-id="{{ $plan_user->id }}"
-                                            data-name="{{ optional($plan_user->plan)->plan }}"
-                                        >
-                                            <i class="la la-ban"></i>
-                                        </button>
-
-                                        @if ($plan_user->plan_status_id === 1)
-                                            <button
-                                                class="btn btn-icon-only btn-warning freeze-plan-button"
-                                                data-toggle="modal"
-                                                data-target="#freeze-plan-modal"
-                                                data-plan-user="{{ $plan_user->id }}"
-                                                data-user="{{ optional($plan_user->user)->id }}"
+                                    <div class="row">
+                                        @if (in_array(1, $auth_roles) && $plan_user->plan_status->can_delete)
+                                            <form action="{{ route('users.plans.annul', [
+                                                                   'user' => $user->id, 'plan' => $plan_user->id
+                                                          ]) }}"
+                                                  method="POST"
+                                                  id="annul{{ $plan_user->id }}"
+                                                  class="user-plan-annul"
                                             >
-                                            <i class="la la-power-off"></i>
-                                            </button>
-                                        @endif
-
-                                        @if($plan_user->plan_status_id == 2)
-                                        {{-- {{ dd($plan_user->postpone) }} --}}
-                                            <form
-                                                action="{{ route('plan-user.postpones.destroy', [
-                                                                'plan_user' => $plan_user->id,
-                                                                'postpone' => $plan_user->postpone
-                                                           ]) }}"
-                                                method="POST"
-                                                class="user-plan-unfreeze"
-                                            >
-                                                @csrf @method('DELETE')
+                                                @csrf
                                             </form>
-
-                                            <button
-                                                class="btn btn-info btn-icon-only btn-success sweet-user-plan-unfreeze"
-                                                data-plan-name="{{ $plan_user->plan->plan }}"
-                                                data-user-name="{{ $plan_user->user->first_name }}"
-                                            >
-                                                <i class="la la-play-circle-o"></i>
-                                            </button>
+                                            <div class="col-2">
+                                                <button
+                                                class="btn btn-info btn-icon-only btn-danger sweet-user-plan-annul"
+                                                data-id="{{ $plan_user->id }}"
+                                                data-name="{{ optional($plan_user->plan)->plan }}"
+                                                >
+                                                    <i class="la la-ban"></i>
+                                                </button>
+                                            </div>
+                                            @if ($plan_user->plan_status_id === 1)
+                                                <div class="col-2">
+                                                    <button class="btn btn-icon-only btn-warning freeze-plan-button"
+                                                            data-toggle="modal"
+                                                            data-target="#freeze-plan-modal"
+                                                            data-plan-user="{{ $plan_user->id }}"
+                                                            data-user="{{ optional($plan_user->user)->id }}"
+                                                    >
+                                                        <i class="la la-power-off"></i>
+                                                    </button>
+                                                </div>
+                                            @endif
+                                            @if($plan_user->plan_status_id == 2)
+                                                <form
+                                                    action="{{ route('plan-user.postpones.destroy', [
+                                                                    'plan_user' => $plan_user->id,
+                                                                    'postpone' => $plan_user->postpone
+                                                            ]) }}"
+                                                    method="POST"
+                                                    class="user-plan-unfreeze"
+                                                >
+                                                    @csrf @method('DELETE')
+                                                </form>
+                                                <div class="col-2">
+                                                    <button
+                                                        class="btn btn-info btn-icon-only btn-success sweet-user-plan-unfreeze"
+                                                        data-plan-name="{{ $plan_user->plan->plan }}"
+                                                        data-user-name="{{ $plan_user->user->first_name }}"
+                                                    >
+                                                        <i class="la la-play-circle-o"></i>
+                                                    </button>
+                                                </div>
+                                            @endif
+                                        {{-- Check if User has role ADMIN and if status plan is Clompleted --}}
+                                        @elseif (in_array(1, $auth_roles) && $plan_user->plan_status_id == 5)
+                                            {!! Form::open([
+                                                    'route' => [
+                                                        'users.plans.destroy',
+                                                        'user' => $user->id,
+                                                        'plan' => $plan_user->id
+                                                    ],
+                                                    'method' => 'delete',
+                                                    'class' => 'user-plan-delete',
+                                                    'id' => 'delete' . $plan_user->id
+                                            ]) !!}
+                                            {!! Form::close() !!}
+                                            <div class="col-2">
+                                                <button
+                                                    class="btn btn-info btn-icon-only btn-danger sweet-user-plan-delete"
+                                                    data-id="{{ $plan_user->id }}"
+                                                    data-name="{{ $plan_user->plan->plan }}"
+                                                >
+                                                    <i class="la la-trash"></i>
+                                                </button>
+                                            </div>
                                         @endif
-
-                                    {{-- Check if User has role ADMIN and if status plan is Clompleted --}}
-                                    @elseif (auth()->user()->hasRole(1) && $plan_user->plan_status_id == 5)
-                                        {!! Form::open([
-                                                'route' => [
-                                                    'users.plans.destroy',
-                                                    'user' => $user->id,
-                                                    'plan' => $plan_user->id
-                                                ],
-                                                'method' => 'delete',
-                                                'class' => 'user-plan-delete',
-                                                'id' => 'delete' . $plan_user->id
-                                        ]) !!}
-                                        {!! Form::close() !!}
-
-                                        <button
-                                            class="btn btn-info btn-icon-only btn-danger sweet-user-plan-delete"
-                                            data-id="{{ $plan_user->id }}"
-                                            data-name="{{ $plan_user->plan->plan }}"
-                                        >
-                                            <i class="la la-trash"></i>
-                                        </button>
-                                    @endif
+                                    </div>
                                 </td>
                                 <td>{{ $plan_user->plan_status_id }}</td>
                                 <td>{{ $plan_user->start_date }}</td>

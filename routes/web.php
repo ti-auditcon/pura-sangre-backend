@@ -203,7 +203,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::resource('wods', 'Wods\WodController')->except('index', 'show')->middleware('role:1');
 
     /**
-     *  WODS Routes
+     *  Notifications TESTS
      */
     Route::get('notifications-send-push/{user_id}', 'Messages\NotificationController@sendOnePush')->middleware('role:1');
 });
