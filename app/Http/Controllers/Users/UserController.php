@@ -144,14 +144,6 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
-        // if ($request->image) {
-        //     $avatar_name = md5(mt_rand());
-
-        //     request()->file('image')->storeAs('public/users', "{$avatar_name}.jpg");
-
-        //     $user->update(['avatar' => url("storage/users/$avatar_name.jpg")]);
-        // }
-
         $user->update(array_merge($request->all(), [
             'birthdate' => $request->birthdate,
             'since' => $request->since
