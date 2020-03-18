@@ -216,7 +216,7 @@
                                          data-image="${row.avatar}">
                                     </div>
                                     <a href="/users/${row.id}">${data}</a>
-                                    <span class="badge badge-primary badge-pill">
+                                    <span class="badge badge-${row.status_color} badge-pill">
                                         ${row.status}
                                     </span>
                                     `;

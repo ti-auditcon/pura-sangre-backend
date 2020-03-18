@@ -68,7 +68,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $appends = ['full_name', 'rut_formated'];
+    protected $appends = ['full_name', 'rut_formated', 'status', 'status_color'];
 
     /**
      * [setBirthdateAttribute description]
@@ -180,7 +180,17 @@ class User extends Authenticatable
      */
     public function getStatusAttribute()
     {
-        return app(StatusUser::class)->getStatus($this->status_user_id);
+        return StatusUser::getStatus($this->status_user_id);
+    }
+
+    /**
+     *  Get the Status User
+     *
+     *  @return  string
+     */
+    public function getStatusColorAttribute()
+    {
+        return StatusUser::getStatusColor($this->status_user_id);
     }
 
     /**

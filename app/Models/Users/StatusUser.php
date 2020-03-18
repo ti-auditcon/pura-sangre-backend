@@ -31,8 +31,6 @@ class StatusUser extends Model
      */
     const TEST = 3;
 
-	protected $fillable = ['status_user'];
-
 	/**
 	 *  [users description]
 	 *  @return [type] [description]
@@ -47,7 +45,7 @@ class StatusUser extends Model
      *
      *  @return  array
      */
-    public function listAllStatuses()
+    public static function listAllStatuses()
     {
         return [
             self::ACTIVE => 'ACTIVO',
@@ -61,10 +59,36 @@ class StatusUser extends Model
      *
      *  @return  returnType
      */
-    public function getStatus($statusId)
+    public static function getStatus($statusId)
     {
-        $statuses = $this->listAllStatuses();
+        $statuses = self::listAllStatuses();
 
         return $statuses[$statusId] ?? 'SIN ESTADO';
+    }
+
+        /**
+     *  listAllStatuses
+     *
+     *  @return  array
+     */
+    public static function listAllStatusesColors()
+    {
+        return [
+            self::ACTIVE => 'success',
+            self::INACTIVE => 'danger',
+            self::TEST => 'warning'
+        ];
+    }
+
+    /**
+     *  methodDescription
+     *
+     *  @return  returnType
+     */
+    public static function getStatusColor($statusId)
+    {
+        $statuses = self::listAllStatusesColors();
+
+        return $statuses[$statusId] ?? 'secondary';
     }
 }
