@@ -234,6 +234,14 @@ img {
     border-left: 18px solid #2ab27b;
 }
 
+.button-green-whatsapp {
+    background-color: #01e675;
+    border-top: 10px solid #01e675;
+    border-right: 18px solid #01e675;
+    border-bottom: 10px solid #01e675;
+    border-left: 18px solid #01e675;
+}
+
 .button-red {
     background-color: #bf5329;
     border-top: 10px solid #bf5329;

@@ -6,7 +6,7 @@ Route::get('first-class-mail', function () {
     // dd('asdasds');
     $invoice = collect();
     $invoice->subject = 'ss';
-    $invoice->user = 'Raul';
+    $invoice->first_name = 'Raul';
 
     return new App\Mail\SendFirstClassEmail($invoice);
 });

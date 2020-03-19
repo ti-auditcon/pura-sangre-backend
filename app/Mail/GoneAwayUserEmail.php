@@ -22,7 +22,7 @@ class GoneAwayUserEmail extends Mailable
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct($user)
     {
         $this->user = $user;
     }
@@ -34,7 +34,6 @@ class GoneAwayUserEmail extends Mailable
      */
     public function build()
     {
-        // dd($this->user); 
         return $this->markdown('messages.gone_away_user')
                     ->subject("{$this->user} te extrañamos!");
     }
