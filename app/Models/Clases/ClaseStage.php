@@ -8,8 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class ClaseStage extends Model
 {
-	protected $table = 'clase_stage';
-	protected $fillable = ['clase_id', 'stage_id'];
+    protected $table = 'clase_stage';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['clase_id', 'stage_id'];
+
 	/**
 	 * [clase relation to this model]
 	 * @return [model] [description]

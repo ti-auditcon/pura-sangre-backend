@@ -11,10 +11,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /** [Installment description] */
 class Installment extends Model
 {
-  use SoftDeletes;
+    use SoftDeletes;
 
-  protected $dates = ['deleted_at'];
-  protected $fillable = [
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
     'bill_id',
     'payment_status_id',
     'commitment_date',

@@ -13,29 +13,25 @@ use Session;
 class BlockController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     *  Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     *  @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $blocks = Block::where('clase_type_id', Session::get('clases-type-id'))
-                       ->with(['plans' => function ($q) {
-                            $q->select('plans.id')->withPivot('block_id', 'plan_id');
-                       }])
-                       ->get()
-                       ->toArray();
+        $blocks = app(Block::class)->claseTypesInSession();
 
         $plans = Plan::with('plan_period:id,period')->where('plan_status_id', 1)->get(['id', 'plan', 'plan_period_id']);
-                       
+
         return view('blocks.index', ['blocks' => json_encode($blocks), 'plans' => $plans]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     *  Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     *  @param  \Illuminate\Http\Request  $request
+     *
+     *  @return \Illuminate\Http\Response
      */
     public function store(BlockRequest $request)
     {
@@ -80,9 +76,9 @@ class BlockController extends Controller
             'quota' => $request->quota,
             'profesor_id' => $request->profesor_id
         ]);
-        
+
         $block->plans()->sync($request->plans);
-        
+
         return Redirect::back();
     }
 

@@ -13,18 +13,24 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class ReservationStatisticStage extends Model
 {
-  use SoftDeletes;
+    use SoftDeletes;
 
-  protected $dates = ['deleted_at'];
-  protected $fillable = [
-    'statistic_id',
-    'reservation_id',
-    'stage_exercise_id',
-    'weight',
-    'time',
-    'round',
-    'repetitions',
-  ];
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'statistic_id', 'reservation_id', 'stage_exercise_id',
+        'weight', 'time', 'round', 'repetitions',
+    ];
 
   /**
    * [stage description]

@@ -14,17 +14,27 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Clase extends Model
 {
     use SoftDeletes;
-    
+
     protected $table = 'clases';
-    
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
     protected $dates = ['deleted_at'];
-    
+
+     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'date', 'start_at', 'finish_at',
         'room', 'profesor_id', 'quota',
         'wod_id', 'block_id', 'clase_type_id'
     ];
-    
+
     protected $appends = ['start', 'end', 'url', 'reservation_count', 'color'];
 
     // protected static function boot()
@@ -51,7 +61,7 @@ class Clase extends Model
         if ( $this->block->date == null ) {
             return $this->date." ".$this->block->start;
         }
-        
+
         return $this->block->start;
     }
 
@@ -62,13 +72,13 @@ class Clase extends Model
     public function getEndAttribute()
     {
         if ($this->block->date == null) {
-        
+
           return $this->date . " " . $this->block->end;
-        
+
         } else {
-        
+
           return $this->block->end;
-        
+
         }
     }
 

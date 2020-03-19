@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class PlanPeriod extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
 	protected $fillable = ['period', 'period_number'];
 
   	/**

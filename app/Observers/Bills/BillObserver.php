@@ -44,6 +44,7 @@ class BillObserver
 
     public function updated(Bill $bill)
     {
+        dd($bill);
         $month = $bill->date->month;
         $year = $bill->date->year;
         $plan_id = $bill->plan_user->plan->id;

@@ -13,6 +13,7 @@ use Illuminate\Http\Response;
 use App\Mail\NewPlanUserEmail;
 use App\Models\Plans\PlanUser;
 use App\Models\Plans\PlanStatus;
+use App\Models\Bills\PaymentType;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Plans\PlanIncomeSummary;
@@ -34,9 +35,9 @@ class PlanUserController extends Controller
      */
     public function index()
     {
-        $userPlans = planuser::all();
+        $userPlans = PlanUser::all();
 
-        return view('userplans.index')->with('userPlans', $userPlans);
+        return view('userplans.index', compact('userPlans'));
     }
 
     /**
@@ -130,14 +131,15 @@ class PlanUserController extends Controller
      *
      *  @return  View
      */
-    public function edit(User $user, planuser $plan)
+    public function edit(User $user, PlanUser $plan)
     {
-        $plan_status = new PlanStatus();
+        $payment_types = PaymentType::all();
 
         return view('userplans.edit', [
             'user' => $user,
+            'payment_types' => $payment_types,
             'plan_user' => $plan,
-            'plan_status' => $plan_status,
+            'plan_status' => new PlanStatus()
         ]);
     }
 
@@ -159,18 +161,7 @@ class PlanUserController extends Controller
             'counter' => $request->counter,
         ]);
 
-        if ($plan->plan_id != 1 && $plan->plan_id != 2) {
-            $plan = $this->updateBillIncome($plan);
-
-            $plan->bill->amount = $request->amount;
-
-            $plan->bill->updated_at = now();
-
-            $plan->bill->save();
-        }
-
-        // Session::flash('success', 'El plan se actualizó correctamente');
-        return redirect('users/' . $user->id, Response)->with('success', 'El plan se actualizó correctamente');
+        return redirect('users/' . $user->id)->with('success', 'El plan se actualizó correctamente');
     }
 
     /**

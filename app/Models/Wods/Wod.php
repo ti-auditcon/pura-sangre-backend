@@ -9,20 +9,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Wod extends Model
 {
+
     /**
-     * [$appends description]
+     * The attributes that should be mutated to dates.
      *
-     * @var [type]
+     * @var array
      */
     protected $dates = ['date'];
 
     /**
-     * [$appends description]
+     * The attributes that are mass assignable.
      *
-     * @var [type]
+     * @var array
      */
     protected $fillable = ['date','clase_type_id'];
-    
+
     /**
      * [$appends description]
      *

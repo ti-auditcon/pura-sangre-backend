@@ -7,16 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class ClaseType extends Model
 {
-	/**
-	 * $fillable for mass assignment
-	 * 
-	 * @var array
-	 */
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
 	protected $fillable = ['clase_type', 'clase_color'];
 
 	/**
 	 * Return all the clases associated to this Model
-	 * 
+	 *
 	 * @return Illuminate\Database\Eloquent
 	 */
 	public function clases()
@@ -26,7 +26,7 @@ class ClaseType extends Model
 
 	/**
 	 * Return all the blocks associated to this Model
-	 * 
+	 *
 	 * @return Illuminate\Database\Eloquent
 	 */
 	public function blocks()

@@ -27,15 +27,25 @@ class User extends Authenticatable
     use HasApiTokens, Notifiable, SoftDeletes;
 
     /**
+<<<<<<< Updated upstream
      * [$dates description]
      * 
+=======
+     * The attributes that should be mutated to dates.
+     *
+>>>>>>> Stashed changes
      * @var array
      */
     protected $dates = ['birthdate', 'since', 'deleted_at'];
     
     /**
+<<<<<<< Updated upstream
      * [$fillable description]
      * 
+=======
+     * The attributes that are mass assignable.
+     *
+>>>>>>> Stashed changes
      * @var array
      */
     protected $fillable = [

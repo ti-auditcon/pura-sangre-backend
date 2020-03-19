@@ -10,6 +10,11 @@ use App\Models\Clases\Reservation;
  */
 class ReservationStatus extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = ['reservation_status'];
 
     /**

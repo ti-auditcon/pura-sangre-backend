@@ -9,16 +9,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Block extends Model
 {
+    // protected $weekDays = [
+    //     'Domingo', 'Lunes', 'Martes',
+    //     'Miercoles', 'Jueves', 'Viernes', 'Sabado'
+    // ];
+
     /**
      * $table variable to define table name
-     * 
+     *
      * @var string
      */
     protected $table = 'blocks';
 
     /**
-     * $fillable for mass assignment
-     * 
+     * The attributes that are mass assignable.
+     *
      * @var array
      */
     protected $fillable = [
@@ -28,32 +33,32 @@ class Block extends Model
 
     /**
      * Append attributes to queries
-     * 
+     *
      * @var array
      */
-    // protected $appends = ['plans_id','color'];
+    // protected $appends = ['day_week'];
 
     // protected $with = array('plans');
 
     /**
      * [getEndAttribute description]
-     * 
+     *
      * @param  [type] $value [description]
-     * 
+     *
      * @return [type]        [description]
      */
     public function getEndAttribute($value)
     {
         if($this->date != null) {
             return "{$this->date} {$value}";
-        }            
+        }
 
         return $value;
     }
 
     /**
      * Get the color of the block who this belongs to
-     * 
+     *
      * @return [type] [description]
      */
     public function getColorAttribute()
@@ -63,23 +68,23 @@ class Block extends Model
 
     /**
      * Transformamos el valor de dow a un arreglo para FullCalendar
-     * 
+     *
      * @param  [type] $value [description]
-     * 
+     *
      * @return array
      */
     public function getDowAttribute($value)
     {
         $array = [];
-        
+
         array_push($array,$value);
-        
+
         return $array;
     }
 
     /**
      * [getPlansIdAttribute description]
-     * 
+     *
      * @return array
      */
     public function getPlansIdAttribute()
@@ -89,7 +94,7 @@ class Block extends Model
 
     /**
      * [getStartAttribute description]
-     * 
+     *
      * @param  [type] $value [description]
      * @return [type]        [description]
      */
@@ -97,14 +102,14 @@ class Block extends Model
     {
         if($this->date) {
             return "{$this->date}  {$value}";
-        }            
+        }
 
         return $value;
     }
 
     /**
      * Get all the clases of this Model
-     * 
+     *
      * @return Illuminate\Database\Eloquent
      */
     public function clases()
@@ -114,7 +119,7 @@ class Block extends Model
 
     /**
      * Get all the plans of this Model
-     * 
+     *
      * @return Illuminate\Database\Eloquent
      */
     public function plans()
@@ -124,7 +129,7 @@ class Block extends Model
 
     /**
      * Get the User of this Model
-     * 
+     *
      * @return Illuminate\Database\Eloquent
      */
     public function user()
@@ -134,11 +139,36 @@ class Block extends Model
 
     /**
      * Get the clase type of this Model
-     * 
+     *
      * @return Illuminate\Database\Eloquent
      */
     public function claseType()
     {
         return $this->belongsTo(ClaseType::class);
+    }
+
+    // /**
+    //  *  Day of the week of this block
+    //  *
+    //  *  @return  string
+    //  */
+    // public function getDayWeekAttribute()
+    // {
+    //     return $this->weekDays[$this->attributes['dow']] ?? '';
+    // }
+
+    /**
+     *  claseTypesInSession
+     *
+     *  @return  collection
+     */
+    public function claseTypesInSession()
+    {
+        return $this->where('clase_type_id', session()->get('clases-type-id'))
+                    ->with(['plans' => function ($plan) {
+                        $plan->select('plans.id')->withPivot('block_id', 'plan_id');
+                    }])
+                    ->get(['id', 'start', 'end', 'title', 'date', 'profesor_id', 'quota', 'clase_type_id', 'dow'])
+                    ->toArray();
     }
 }

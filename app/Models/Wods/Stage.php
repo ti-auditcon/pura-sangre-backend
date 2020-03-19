@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Stage extends Model
 {
-	/**
-	 * [$fillable description]
-	 * @var [type]
-	 */
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
 	protected $fillable = ['wod_id', 'stage', 'stage_type_id', 'name', 'description', 'star'];
 
 	/**

@@ -26,6 +26,25 @@ class BillController extends Controller
     }
 
     /**
+     *  methodDescription
+     *
+     *  @return  returnType
+     */
+    public function update(Request $request, Bill $payment)
+    {
+        // dd((int)$request->amount);
+        $payment->update([
+            'date' => Carbon::parse($request->date),
+            'payment_type_id' => (int) $request->payment_type_id,
+            'amount' => (int) $request->amount,
+            'payment_type_id' => 1,
+            'plan_user_id' => 1,
+        ]);
+
+        return back()->with('success', 'Boleta actualizada correctamente');
+    }
+
+    /**
      * [getPagos description]
      * @param  Request $request [description]
      * @return [type]           [description]
@@ -36,7 +55,7 @@ class BillController extends Controller
         $columns = array(0 => 'bills.created_at', 1 => 'users.first_name', 2 => 'plans.plan',
             3 => 'bills.date', 4 => 'bills.start_date', 5 => 'bills.finish_date', 6 => 'amount',
         );
-        
+
         $totalData = Bill::count();
         $limit = $request->input('length');
         $start = $request->input('start');
@@ -52,7 +71,7 @@ class BillController extends Controller
                 ->orderBy($order, $dir)
                 ->select('bills.*', 'users.first_name', 'users.last_name')
                 ->get();
-            $totalFiltered = Bill::count(); 
+            $totalFiltered = Bill::count();
         }else{
             $search = $request->input('search.value');
             $bills = Bill::where('date', 'like', date("Y-m-d",strtotime($search)))
@@ -85,7 +104,7 @@ class BillController extends Controller
         }
 
         $data = array();
-        
+
         if($bills){
             foreach($bills as $bill){
                 $nestedData['fecha_registro'] = $bill->created_at->format('d-m-Y');
@@ -103,14 +122,14 @@ class BillController extends Controller
                 $data[] = $nestedData;
             }
         }
-        
+
         $json_data = array(
             "draw"          => intval($request->input('draw')),
             "recordsTotal"  => intval($totalData),
             "recordsFiltered" => intval($totalFiltered),
             "data"          => $data
         );
-        
+
         echo json_encode($json_data);
     }
 
@@ -127,7 +146,7 @@ class BillController extends Controller
 
     /**
      * Export Excel of System bills
-     * 
+     *
      * @return Maatwebsite\Excel\Facades\Excel
      */
     public function export()

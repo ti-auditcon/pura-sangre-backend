@@ -14,17 +14,33 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Reservation extends Model
 {
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
     protected $dates = ['deleted_at'];
-    protected $fillable = ['plan_user_id', 'clase_id', 'reservation_status_id', 'user_id', 'by_god', 'details'];
 
     /**
-     * [reservation_statistic_stages description]
-     * @method reservation_statistic_stages
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'plan_user_id', 'clase_id',
+        'reservation_status_id', 'user_id', 'by_god', 'details'
+    ];
+
+    /**
+     *  [reservation_statistic_stages description]
+     *
+     *  @method reservation_statistic_stages
+     *
      * @return [type]                       [description]
      */
     public function reservation_statistic_stages()
     {
-      return $this->hasMany(ReservationStatisticStage::class);
+        return $this->hasMany(ReservationStatisticStage::class);
     }
 
     /**

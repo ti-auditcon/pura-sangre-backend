@@ -9,14 +9,14 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
 	const ADMIN = 1;
-	   // Innecesario ya que se agregara desde DB
-	   protected $fillable = ['role'];
 
-	  /**
-	   * [users description]
-	   * @method users
-	   * @return [model] [description]
-	   */
+    /**
+     *  [users description]
+     *
+     *  @method users
+     *
+     *  @return [model] [description]
+     */
 	public function users()
 	{
 	    return $this->belongsToMany(User::class, 'role_user');

@@ -23,34 +23,42 @@ class AlertController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     *  Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     *  @param  \Illuminate\Http\Request  $request
+     *
+     *  @return \Illuminate\Http\Response
      */
     public function store(AlertRequest $request)
     {
         Alert::create($request->all());
+
         return redirect('/alerts')->with('success','La alerta ha sido creada exitosamente');
     }
 
+    /**
+     *  Get JSON of All alerts
+     *
+     *  @return  json
+     */
     public function alerts()
     {
-        $alerts = Alert::orderByDesc('from')->get();
-        $alerts = $alerts->map(function ($alert){
-            return [
-                'message' => $alert->message,
-                'from' => date('d-m-Y', strtotime($alert->from)),
-                'to' => date('d-m-Y', strtotime($alert->to)),
-                'id' => $alert->id
-            ];
-        });
+        $alerts = Alert::orderByDesc('from')->get(['id', 'from', 'to', 'message']);
+
         return json_encode(['data' => $alerts]);
     }
 
+    /**
+     *  [destroy description]
+     *
+     *  @param   [type]  $id  [$id description]
+     *
+     *  @return  [type]       [return description]
+     */
     public function destroy($id)
     {
         Alert::find($id)->delete();
+
         return response()->json(['done']);
     }
 }
