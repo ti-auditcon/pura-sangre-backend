@@ -14,7 +14,8 @@
                 </a>
             </li>
 
-            @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
+            {{-- If auth user has Role Admin or COACH  --}}
+            @if (auth()->user()->isAdmin() || auth()->user()->hasRole(2))
                 <li @if( in_array(url()->current(), [url("/users"), url("/users/create")]) ) class="active" @endif>
                     <a>
                         <i class="sidebar-item-icon ti-id-badge"></i>
@@ -56,12 +57,19 @@
 
                         <li><a href="{{ url('/reports/inactive_users') }}">Usuarios Inactivos</a></li>
 
-                        <li><a href="{{ url('/reports/data-plans') }}">Análisis Diarios</a></li>
+                <li @if( in_array(url()->current(), [
+                            url("/reports"),
+                            url("/reports/inactive_users"),
+                            url("/reports/data-plans")
+                        ]) ) class="active" @endif>
+                    <a>
+                        <i class="sidebar-item-icon ti-bar-chart"></i>
 
-                        <li><a href="{{ url('/reports/heatmap') }}">Mapa de Densidad</a></li>
-                    </ul>
-                </div>
-            </li>
+                        <span class="nav-label">Reportes</span>
+                    </a>
+                    <div class="nav-2-level">
+                        <ul>
+                            <li><a href="{{ url('/reports') }}">Gráficos</a></li>
 
             <li @if( in_array(url()->current(), [
                         url("/messages"),
@@ -110,8 +118,8 @@
             </li>
             @endif
 
-            @if (!Auth::user()->hasRole(1))
-                <li @if(url()->current() == url("profile")) class="active" @endif>
+            @if (! auth()->user()->isAdmin())
+                <li @if(url()->current() === url("profile")) class="active" @endif>
                     <a href="{{ route('users.show', Auth::user()->id) }}">
                         <i class="sidebar-item-icon ti-user"></i>
 

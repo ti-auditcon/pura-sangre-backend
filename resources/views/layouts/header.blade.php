@@ -20,11 +20,11 @@
         <!-- START TOP-RIGHT TOOLBAR-->
         <ul class="nav navbar-toolbar">
             {{-- @auth() --}}
-            @if (Auth::user()->birthdate_users()->count() > 0)
+            @if ($birthdate_users->count() > 0)
             <li class="dropdown dropdown-notification">
                 <a class="nav-link dropdown-toggle toolbar-icon" data-toggle="dropdown" href="javascript:;" aria-expanded="false">
                     <i class="la la-birthday-cake"></i>
-                    <span class="envelope-badge">{{ Auth::user()->birthdate_users()->count() }}</span>
+                    <span class="envelope-badge">{{ $birthdate_users->count() }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-media">
                     <div class="dropdown-header text-center">
@@ -32,7 +32,7 @@
                     </div>
                     <div class="p-3">
                         <ul class="media-list timeline scroller" style="overflow: hidden; width: auto;">
-                            @foreach (Auth::user()->birthdate_users() as $user)
+                            @foreach ($birthdate_users as $user)
                             <li class="media py-3">
                                 <div class="media-img">
                                     <span><i class="img-avatar img-avatar-mini" style="background-image: @if ($user->avatar) url('{{$user->avatar }}') @else url('{{ asset('/img/default_user.png') }}') @endif "></i></span>

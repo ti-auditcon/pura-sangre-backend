@@ -2,7 +2,7 @@
 @extends('layouts.app')
 
 @section('sidebar')
-    
+
     @include('layouts.sidebar',['page'=>'profile'])
 
 @endsection
@@ -32,48 +32,49 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
+                                {{-- {{ dd(auth()->user()->isAdmin()) }} --}}
                                 <div class="modal-body" id="dynamic-content">
                                     <img id="avatar-img" alt="" style="width: 400px;"/>
                                 </div>
                             </div>
                        </div>
-                </div> 
+                </div>
 
 {{-- <a >Launch modal</a> --}}
-                
+
                 <div class="ml-1">
-                    
+
                     <h4 class="mb-1">{{ $user->first_name }} {{ $user->last_name }}</h4>
-                    
+
                     <span class="mr-3">{{ $user->actual_plan->plan->plan ?? "sin plan actualmente" }}</span>
-                    
+
                     <div class="text-left mt-2">
-                    
-                        <span 
+
+                        <span
                             class="badge badge-{{ $user->status_user->type }} badge-pills"
                         >
                             {{ $user->status_user->status_user }}
                         </span>
-                    
+
                     </div>
                 </div>
             </div>
             <div class="flexbox-b align-self-start">
-                
+
                 {{-- @if ($user->actual_plan && $user->actual_plan->plan->has_clases == true) --}}
-                
+
                     <div class="pr-2 text-right">
-                
+
                         <div class="h2 mt-2 mb-0 text-warning">
-                
+
                             {{ $user->actual_plan->counter ?? '-' }}
-                
+
                         </div>
-                
+
                         <div class="text-muted font-13">Clases disponibles</div>
-                
+
                     </div>
-                
+
                 {{-- @endif --}}
 
             </div>
@@ -91,12 +92,11 @@
     <div class="col-12 col-xl-3">
         <div class="ibox">
             <div class="ibox-head d-flex">
-                
+
                 <div class="ibox-title">Datos</div>
-                
+
                 <div class="ibox-tools">
-                    
-                    @if (in_array(1, $auth_roles))
+                    @if (in_array(1, auth()->user()->rolesId()))
                         <a href="{{ route('role-user.edit', ['role_user' => $user->id]) }}"
                            class="btn btn-warning"
                         >
@@ -173,7 +173,7 @@
                 <div class="ibox-title">
                     <h5>Planes de {{ $user->first_name }}</h5>
                 </div>
-                
+
                 @if (in_array(1, $auth_roles))
                     <div class="ibox-tools">
                         <a
@@ -185,7 +185,7 @@
                     </div>
                 @endif
             </div>
-            
+
             <div class="ibox-body">
                 <div class="table-responsive">
                     <table id="students-table" class="table table-hover">
@@ -209,19 +209,13 @@
                             @foreach($user->planes_del_usuario() as $plan_user)
                             <tr>
                                 <td>
-                                    <a
-                                        class="sweet-user-plan-info"
+                                    <a href="{{ url("/users/{$user->id}/plans/{$plan_user->id}/edit") }}"
+                                        {{-- class="sweet-user-plan-info" --}}
                                         data-user-id="{{ $user->id }}"
                                         data-plan-id="{{ $plan_user->id }}"
                                     >
-                                        {{ optional($plan_user->plan)->plan }}
+                                        {{ optional($plan_user->plan)->plan }} <span class="la la-edit"></span>
                                     </a>
-
-                                    {{-- @if ( \Carbon\Carbon::parse($plan_user->finish_date)->gte(toDay()) ) --}}
-                                        <a href="{{url('/users/'.$user->id.'/plans/'.$plan_user->id.'/edit')}}">
-                                            <span class="la la-edit"></span>
-                                        </a>
-                                    {{-- @endif --}}
                                 </td>
 
                                 @if ($plan_user->bill)
@@ -233,90 +227,97 @@
                                 <td>
                                     {{ $plan_user->start_date->format('d-m-Y') }} al {{ $plan_user->finish_date->format('d-m-Y') }}
                                 </td>
-                                
+
                                 <td>{{ $plan_user->counter }} / {{ optional($plan_user->plan)->class_numbers ?? 1}}</td>
-                                
+
                                 <td>{{ $plan_user->bill->payment_type->payment_type ?? "no aplica" }}</td>
-                                
+
                                 <td>{{ '$ '.number_format(optional($plan_user->bill)->amount, $decimal = 0, '.', '.') }}</td>
 
                                 <td>
-                                    <span class="badge badge-{{ $plan_user->plan_status->type }} badge-pill">
-                                        {{ strtoupper($plan_user->plan_status->plan_status) }}
+                                    <span class="badge badge-{{ $plan_user->statusColor }} badge-pill">
+                                        {{ strtoupper($plan_user->status) }}
                                     </span>
                                 </td>
 
                                 <td>
-                                    {{-- {{ dd(in_array(1, $auth_roles)) }} --}}
-                                    {{-- {{ dd($plan_user->plan_status->can_delete == true) }} --}}
-                                    @if (in_array(1, $auth_roles) && $plan_user->plan_status->can_delete)
-
-                                        {!! Form::open(['route' => ['users.plans.annul', 'user' => $user->id, 'plan' => $plan_user->id], 'method' => 'post', 'class' => 'user-plan-annul',  'id'=>'annul'.$plan_user->id]) !!}
-                                        {!! Form::close() !!}
-                                
-                                        <button
-                                            class="btn btn-info btn-icon-only btn-danger sweet-user-plan-annul"
-                                            data-id="{{ $plan_user->id }}"
-                                            data-name="{{ optional($plan_user->plan)->plan }}"
-                                        >
-                                            <i class="la la-ban"></i>
-                                        </button>
-
-                                        @if ($plan_user->plan_status_id === 1)
-                                            <button
-                                                class="btn btn-icon-only btn-warning freeze-plan-button"
-                                                data-toggle="modal"
-                                                data-target="#freeze-plan-modal"
-                                                data-plan-user="{{ $plan_user->id }}"
-                                                data-user="{{ optional($plan_user->user)->id }}"
+                                    <div class="row">
+                                        @if (in_array(1, $auth_roles) && $plan_user->plan_status->can_delete)
+                                            <form action="{{ route('users.plans.annul', [
+                                                                   'user' => $user->id, 'plan' => $plan_user->id
+                                                          ]) }}"
+                                                  method="POST"
+                                                  id="annul{{ $plan_user->id }}"
+                                                  class="user-plan-annul"
                                             >
-                                            <i class="la la-power-off"></i>
-                                            </button>
-                                        @endif
-                                        
-                                        @if($plan_user->plan_status_id == 2)
-                                        {{-- {{ dd($plan_user->postpone) }} --}}
-                                            <form
-                                                action="{{ route('plan-user.postpones.destroy', [
-                                                                'plan_user' => $plan_user->id,
-                                                                'postpone' => $plan_user->postpone
-                                                           ]) }}"
-                                                method="POST"
-                                                class="user-plan-unfreeze"
-                                            >
-                                                @csrf @method('DELETE')
+                                                @csrf
                                             </form>
-
-                                            <button
-                                                class="btn btn-info btn-icon-only btn-success sweet-user-plan-unfreeze"
-                                                data-plan-name="{{ $plan_user->plan->plan }}"
-                                                data-user-name="{{ $plan_user->user->first_name }}"
-                                            >
-                                                <i class="la la-play-circle-o"></i>
-                                            </button>
+                                            <div class="col-2">
+                                                <button
+                                                class="btn btn-info btn-icon-only btn-danger sweet-user-plan-annul"
+                                                data-id="{{ $plan_user->id }}"
+                                                data-name="{{ optional($plan_user->plan)->plan }}"
+                                                >
+                                                    <i class="la la-ban"></i>
+                                                </button>
+                                            </div>
+                                            @if ($plan_user->plan_status_id === 1)
+                                                <div class="col-2">
+                                                    <button class="btn btn-icon-only btn-warning freeze-plan-button"
+                                                            data-toggle="modal"
+                                                            data-target="#freeze-plan-modal"
+                                                            data-plan-user="{{ $plan_user->id }}"
+                                                            data-user="{{ optional($plan_user->user)->id }}"
+                                                    >
+                                                        <i class="la la-power-off"></i>
+                                                    </button>
+                                                </div>
+                                            @endif
+                                            @if($plan_user->plan_status_id == 2)
+                                                <form
+                                                    action="{{ route('plan-user.postpones.destroy', [
+                                                                    'plan_user' => $plan_user->id,
+                                                                    'postpone' => $plan_user->postpone
+                                                            ]) }}"
+                                                    method="POST"
+                                                    class="user-plan-unfreeze"
+                                                >
+                                                    @csrf @method('DELETE')
+                                                </form>
+                                                <div class="col-2">
+                                                    <button
+                                                        class="btn btn-info btn-icon-only btn-success sweet-user-plan-unfreeze"
+                                                        data-plan-name="{{ $plan_user->plan->plan }}"
+                                                        data-user-name="{{ $plan_user->user->first_name }}"
+                                                    >
+                                                        <i class="la la-play-circle-o"></i>
+                                                    </button>
+                                                </div>
+                                            @endif
+                                        {{-- Check if User has role ADMIN and if status plan is Clompleted --}}
+                                        @elseif (in_array(1, $auth_roles) && $plan_user->plan_status_id == 5)
+                                            {!! Form::open([
+                                                    'route' => [
+                                                        'users.plans.destroy',
+                                                        'user' => $user->id,
+                                                        'plan' => $plan_user->id
+                                                    ],
+                                                    'method' => 'delete',
+                                                    'class' => 'user-plan-delete',
+                                                    'id' => 'delete' . $plan_user->id
+                                            ]) !!}
+                                            {!! Form::close() !!}
+                                            <div class="col-2">
+                                                <button
+                                                    class="btn btn-info btn-icon-only btn-danger sweet-user-plan-delete"
+                                                    data-id="{{ $plan_user->id }}"
+                                                    data-name="{{ $plan_user->plan->plan }}"
+                                                >
+                                                    <i class="la la-trash"></i>
+                                                </button>
+                                            </div>
                                         @endif
-                                    
-                                    @elseif (Auth::user()->hasRole(1) && $plan_user->plan_status_id == 5)
-                                        {!! Form::open([
-                                                'route' => [
-                                                    'users.plans.destroy',
-                                                    'user' => $user->id,
-                                                    'plan' => $plan_user->id
-                                                ],
-                                                'method' => 'delete',
-                                                'class' => 'user-plan-delete',
-                                                'id' => 'delete' . $plan_user->id
-                                        ]) !!}
-                                        {!! Form::close() !!}
-
-                                        <button
-                                            class="btn btn-info btn-icon-only btn-danger sweet-user-plan-delete"
-                                            data-id="{{ $plan_user->id }}"
-                                            data-name="{{ $plan_user->plan->plan }}"
-                                        >
-                                            <i class="la la-trash"></i>
-                                        </button>
-                                    @endif
+                                    </div>
                                 </td>
                                 <td>{{ $plan_user->plan_status_id }}</td>
                                 <td>{{ $plan_user->start_date }}</td>
@@ -351,15 +352,15 @@
                         <thead class="thead-default thead-lg">
                             <tr>
                                 <th width="10%">ID Clase</th>
-                                
+
                                 <th width="20%">Fecha Clase</th>
-                                
+
                                 <th width="20%">Hora</th>
-                                
+
                                 <th width="20%">Estado</th>
-                                
+
                                 <th width="10%">N° Plan</th>
-                                
+
                                 <th width="20%">Plan</th>
                             </tr>
                         </thead>
@@ -371,16 +372,16 @@
                                         {{ $reserv->clase->id }}
                                     </a>
                                 </td>
-                                
+
                                 <td>{{ $reserv->clase->date }}</td>
-                                
-                                <td>{{Carbon\Carbon::parse($reserv->clase->start_at)->format('H:i')}}  a  {{Carbon\Carbon::parse($reserv->clase->finish_at)->format('H:i')}}</td>
-                                
-                                <td>{{$reserv->reservation_status->reservation_status}}</td>
-                                
-                                
+
+                                <td>{{ Carbon\Carbon::parse($reserv->clase->start_at)->format('H:i') }} a {{ Carbon\Carbon::parse($reserv->clase->finish_at)->format('H:i') }}</td>
+
+                                <td>{{ $reserv->reservation_status->reservation_status }}</td>
+
+
                                 <td>{{ optional($reserv->plan_user)->id ?? 'No Aplica' }}</td>
-                                
+
                                 <td>{{ $reserv->plan_user ? $reserv->plan_user->plan->plan : 'No Aplica' }}</td>
 
                             </tr>
@@ -411,19 +412,19 @@
                         <table id="past-classes-table" class="table table-hover">
                             <thead class="thead-default thead-lg">
                                 <tr>
-                                    
+
                                     <th width="10%">ID Clase</th>
-                                    
+
                                     <th width="20%">Fecha Clase</th>
-                                    
+
                                     <th width="20%">Hora</th>
-                                    
+
                                     <th width="20%">Estado</th>
-                                    
+
                                     <th width="10%">N° Plan</th>
-                                    
+
                                     <th width="20%">Plan</th>
-                                
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -435,15 +436,15 @@
                                             {{$reserv->clase->id}}
                                         </a>
                                     </td>
-                                    
+
                                     <td>{{ $reserv->clase->date }}</td>
-                                    
+
                                     <td>
                                         {{ Carbon\Carbon::parse($reserv->clase->start_at)->format('H:i') }} a {{ Carbon\Carbon::parse($reserv->clase->finish_at)->format('H:i') }}
                                     </td>
-                                    
+
                                     <td>{{ $reserv->reservation_status->reservation_status }}</td>
-                                    
+
                                     <td>{{ optional($reserv->plan_user)->id ?? 'No Aplica' }}</td>
 
                                     <td>{{ $reserv->plan_user ? optional($reserv->plan_user->plan)->plan : 'No Aplica' }}</td>
@@ -477,7 +478,7 @@
 <script>
 	$('.sweet-user-delete').click(function(e) {
         var id = $(this).data('id');
-		
+
         swal({
 			title: "Desea eliminar al usuario: "+$(this).data('name')+"?",
 			text: "(Se borrarán todas las cuotas o planes futuros, manteniendo los ya consumidos)",
@@ -512,7 +513,7 @@
         var user_name = $( this ).data( 'user-name' );
 
         console.log('golad');
-        
+
         swal({
             title: "Desea reanudar el Plan "+ plan_name +" a: " + user_name + "?",
             // text: "(Se borrarán todas las cuotas o planes futuros, manteniendo los ya consumidos)",
@@ -569,9 +570,9 @@
 </script>
 
     <script src="{{ asset('js/datatables.min.js') }}"></script>
-   
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    
+
     <script src="//cdn.datatables.net/plug-ins/1.10.19/dataRender/datetime.js"></script>
 
     <script>
@@ -674,9 +675,9 @@
    <script>
     $('.sweet-user-plan-info').click(function(e){
         var user_id = $(this).data('user-id');
-        
+
         var plan_id = $(this).data('plan-id');
-        
+
         $.ajax({
             url: '/users/'+user_id+'/plans/'+plan_id+'/info',
             method: "GET",
@@ -733,9 +734,9 @@
 
         $('.freeze-plan-button').click( function(e) {
             var plan_user_id = $(this).data('plan-user'),
-                                
+
                 route = '{!! route('plan-user.postpones.store', ['plan_user' => ":plan_user"]) !!}',
-                
+
                 url = route.replace(':plan_user', plan_user_id);
 
             $('#form-plan-freeze').attr('action', url);
@@ -749,6 +750,6 @@
         });
 
         // FALTA CORRER EL PLAN HACIA ADELANTE EN EL CONTROLADOR
-       
+
    </script>
 @endsection

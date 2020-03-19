@@ -44,7 +44,6 @@ class UserController extends Controller
      */
     public function usersJson()
     {
-        $auth_roles = auth()->user()->roles()->get(['id'])->pluck([id])->toArray();
         $users = User::allUsers()->get();
 
         return response()->json(['data' => $users]);
@@ -145,14 +144,6 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User $user)
     {
-        // if ($request->image) {
-        //     $avatar_name = md5(mt_rand());
-
-        //     request()->file('image')->storeAs('public/users', "{$avatar_name}.jpg");
-
-        //     $user->update(['avatar' => url("storage/users/$avatar_name.jpg")]);
-        // }
-
         $user->update(array_merge($request->all(), [
             'birthdate' => $request->birthdate,
             'since' => $request->since
@@ -167,18 +158,16 @@ class UserController extends Controller
 
         Session::flash('success', 'Los datos del usuario han sido actualizados');
 
-        $auth_roles = auth()->user(['id'])->roles()->orderBy('role_id')->pluck('id')->toArray();
-
-        return redirect('/users/' . $user->id)->with(compact('user', 'auth_roles'));
+        return redirect("/users/{$user->id}")->with(compact('user'));
     }
 
     /**
-     * [image description]
+     *  [image description]
      *
-     * @param  Request $request [description]
-     * @param  User    $user    [description]
+     *  @param  Request $request [description]
+     *  @param  User    $user    [description]
      *
-     * @return [type]           [description]
+     *  @return [type]           [description]
      */
     public function image(Request $request, User $user)
     {

@@ -13,7 +13,7 @@
                     Editar Plan {{ $plan_user->plan->plan }} a {{ $user->full_name }}
                 </div>
                 <div class="ibox-tools">
-                    <span class="badge badge-{{ $plan_user->plan_status->type }} badge-pill">
+                    <span class="badge badge-{{ $plan_user->statusColor }} badge-pill">
                         {{ strtoupper($plan_user->status) }}
                     </span>
                 </div>

@@ -10,7 +10,7 @@ class PlanStatus extends Model
 	const ACTIVO = 1;
 
 	/** ID status Plan */
-	const INACTIVO = 2;
+	const CONGELADO = 2;
 
 	/** ID status Plan */
 	const PRECOMPRA = 3;
@@ -36,7 +36,7 @@ class PlanStatus extends Model
     {
         return [
             self::ACTIVO     =>  'ACTIVO',
-            self::INACTIVO   =>  'INACTIVO',
+            self::CONGELADO   =>  'CONGELADO',
             self::PRECOMPRA  =>  'PRECOMPRA',
             self::COMPLETADO =>  'COMPLETADO',
             self::CANCELADO  =>  'CANCELADO',
@@ -62,7 +62,7 @@ class PlanStatus extends Model
     {
         return [
             self::ACTIVO     =>  'success',
-            self::INACTIVO   =>  'warning',
+            self::CONGELADO   =>  'info',
             self::PRECOMPRA  =>  'info',
             self::COMPLETADO =>  'primary',
             self::CANCELADO  =>  'danger',

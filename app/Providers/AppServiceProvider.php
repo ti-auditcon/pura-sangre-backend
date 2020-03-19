@@ -14,6 +14,7 @@ use App\Models\Plans\PlanUser;
 use App\Models\Clases\ClaseType;
 use App\Models\Clases\Reservation;
 use App\Observers\Wods\WodObserver;
+use Illuminate\Support\Facades\Auth;
 use App\Observers\Bills\BillObserver;
 use App\Observers\Plans\PlanObserver;
 use App\Observers\Users\UserObserver;
@@ -35,31 +36,31 @@ class AppServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot()
-    {   
+    {
         /** Wod observer */
         Wod::observe(WodObserver::class);
-        
+
         /** Bill observer */
         Bill::observe(BillObserver::class);
-        
+
         /** User observer */
         User::observe(UserObserver::class);
-        
+
         /** Block observer */
         Block::observe(BlockObserver::class);
-        
+
         /** Clase observer */
         Clase::observe(ClaseObserver::class);
-        
+
         /** observer */
         Stage::observe(StageObserver::class);
-        
+
         /** observer */
         PlanUser::observe(PlanUserObserver::class);
 
         /** Plan observer */
         Plan::observe(PlanObserver::class);
-        
+
         /** observer */
         Reservation::observe(ReservationObserver::class);
 
@@ -68,6 +69,10 @@ class AppServiceProvider extends ServiceProvider
 
         /** Set language to Spanish Chile from Carbon */
         setlocale(LC_ALL, "es_CL.UTF-8");
+
+        $birthdate_users = app(User::class)->birthdate_users();
+
+        view()->share(compact('birthdate_users'));
     }
 
     /**

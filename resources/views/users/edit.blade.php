@@ -27,7 +27,7 @@
                             <input class="form-control"
                                    name="first_name"
                                    value="{{ $user->first_name }}"
-                                   required 
+                                   required
                             />
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                         >
                             <label class="col-form-label">Rut</label>
 
-                            <input class="form-control" 
+                            <input class="form-control"
                                    id="rut-src"
                                    name="rut"
                                    type="text"
@@ -68,48 +68,15 @@
                         </div>
                     </div>
 
-                    <div class="upload-box col-sm-6 form-group mb-2">
-                        {{ Session::get('error') }}
-
-                        @if ($user->avatar)
-                            <div class="img"
-                                 style="background-image: url('{{$user->avatar}}');"
-                                 id="imgback"
-                                 alt="image">
-                            </div>
-                        @endif
-
-                        <div id="container-logo" class="pull-right" style="display: none">
-                            <img class="img-responsive" width="200" id="logo-img" src="#" />
-                        </div>
-
-                        <div>
-                            <label class="btn btn-info btn-edit file-input">
-                                <span class="btn-icon">
-                                    <i class="la la-upload"></i>Subir o cambiar Imagen
-                                </span>
-
-                                <input style="display: none" 
-                                       name="image"
-                                       id="photoinput"
-                                       type="file"
-                                       accept="image/*"
-                                       max-file-size=1234
-                                />
-                            </label>
-
-                            <span class="help-block"></span>
-                        </div>
-                    </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6 form-group mb-2">
                         <div class="form-group inline @if($errors->has('phone')) has-warning  @endif">
                             <label class="col-form-label">Número de celular</label>
-                            
+
                             <div class="input-group mb-3">
                                 <span class="input-group-addon">+56 9</span>
-                                
+
                                 <input class="form-control"
                                        name="phone"
                                        value="{{ $user->phone }}"
@@ -122,8 +89,8 @@
                     <div class="col-sm-6 form-group mb-2">
                         <div class="form-group inline @if($errors->has('email')) has-warning  @endif">
                             <label class="col-form-label">Email</label>
-                            
-                            <input class="form-control" 
+
+                            <input class="form-control"
                                    name="email"
                                    value="{{ $user->email }}"
                                    @if (!Auth::user()->hasRole(1)) readonly @endif
@@ -140,12 +107,12 @@
                                 <span class="input-group-addon bg-white">
                                     <i class="fa fa-calendar"></i>
                                 </span>
-                                
+
                                 <input class="form-control"
                                        name="birthdate"
                                        value="{{ Carbon\Carbon::parse($user->birthdate)->format('d-m-Y') }}"
                                        type="text"
-                                       value="{{ date('d/m/Y') }}" 
+                                       value="{{ date('d/m/Y') }}"
                                 />
                             </div>
                         </div>
@@ -153,17 +120,17 @@
                     <div class="col-sm-6 form-group mb-2">
                         <div class="form-group" id="since-picker">
                             <label class="font-normal">Atleta desde</label>
-                            
+
                             <div class="input-group date">
                                 <span class="input-group-addon bg-white">
                                     <i class="fa fa-calendar"></i>
                                 </span>
-                                
+
                                 <input class="form-control"
                                        name="since"
                                        value="{{ Carbon\Carbon::parse($user->since)->format('d-m-Y') }}"
                                        type="text"
-                                       value="{{ date('d/m/Y') }}" 
+                                       value="{{ date('d/m/Y') }}"
                                 />
                             </div>
                         </div>
@@ -183,7 +150,7 @@
                                        placeholder="Ingresa una dirección"
                                        autocomplete="off"
                                 />
-                                
+
                                 <div id="div-badge-address" class="badge d-flex align-items-center pl-3 pr-3">
                                     <i id="i-icon" class="fa fa-map-marker" aria-hidden="true"></i>
                                 </div>
@@ -193,7 +160,7 @@
                             <input id="lat-input" type="text" name="lat" value="{{ $user->lat }}" hidden />
 
                             <input id="long-input" type="text" name="lng" value="{{ $user->lng }}" hidden/>
-                        </div> 
+                        </div>
                     </div>
                 </div>
 
@@ -211,10 +178,10 @@
                 <div class="col-sm-6 form-group mb-4">
                     <div class="form-group inline @if($errors->has('contact_phone')) has-warning  @endif">
                         <label class="col-form-label">Teléfono de contacto de emergencia</label>
-                        
+
                         <div class="input-group mb-3">
                             <span class="input-group-addon">+56 9</span>
-                        
+
                             <input class="form-control"
                                    name="contact_phone"
                                    @if($user->emergency) value="{{ $user->emergency->contact_phone }}" @endif
@@ -227,7 +194,7 @@
                 <button class="btn btn-primary mr-2" type="submit">
                     Actualizar datos
                 </button>
-                
+
                 <a class="btn btn-secondary" href="{{ route('users.show', $user->id) }}">Volver</a>
             </div>
         </div>
@@ -349,12 +316,12 @@
         var input = document.getElementById('pac-input');
 
         var autocomplete = new google.maps.places.Autocomplete(input);
-    
+
         autocomplete.addListener('place_changed', function () {
             var place = autocomplete.getPlace();
             // console.log('Place been changed');
             // place variable will have all the information you are looking for.
-        
+
             $("#lat-input").val(place.geometry['location'].lat());
             $("#long-input").val(place.geometry['location'].lng());
 

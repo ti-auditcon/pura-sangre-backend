@@ -27,42 +27,52 @@ class PlanUserPostponesController extends Controller
         $finish = Carbon::parse($request->end_freeze_date);
 
         PostponePlan::create([
-
             'plan_user_id' => $plan_user->id,
 
             'start_date' => $start,
 
             'finish_date' => $finish
-
         ]);
 
         $diff_in_days = $start->diffInDays($finish) + 1;
-        
+
         $planes_posteriores = $plan_user->user->plan_users->where('start_date', '>', $plan_user->start_date)
                                                           ->where('id', '!=', $plan_user->id)
                                                           ->sortByDesc('finish_date');
 
         foreach ($planes_posteriores as $plan) {
             $plan->update([
-            
+
                 'start_date' =>$plan->start_date->addDays($diff_in_days),
-            
+
                 'finish_date' => $plan->finish_date->addDays($diff_in_days)
-            
+
             ]);
         }
 
+        $this->deletePlanReservations($plan_user);
+
         $plan_user->update([
-            
             'plan_status_id' => $start->isToday() ? 2 : $plan_user->plan_status_id,
-            
+
             'finish_date' => $plan_user->finish_date->addDays($diff_in_days)
-        
         ]);
 
         Session::flash('success', 'Plan Congelado Correctamente');
-        
+
         return back();
+    }
+
+    /**
+     *  Delete all the future reservations of the plan
+     *
+     *  @return  returnType
+     */
+    public function deletePlanReservations($planUser)
+    {
+        $planUser->reservations()->each(function($reservation) {
+            $reservation->delete();
+        });
     }
 
     /**
@@ -74,9 +84,9 @@ class PlanUserPostponesController extends Controller
     public function destroy(PlanUser $plan_user, PostponePlan $postpone)
     {
         $plan_user->update([
-            
+
             'plan_status_id' => PlanStatus::ACTIVO
-        
+
         ]);
 
         $postpone->delete();

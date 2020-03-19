@@ -27,7 +27,7 @@ class NotificationController extends Controller
 
     /**
      * [store description]
-     * 
+     *
      * @param  Request $r [description]
      * @return [type]     [description]
      */
@@ -43,13 +43,13 @@ class NotificationController extends Controller
         ]);
 
         Session::flash('success', 'correcto');
-        
+
         return redirect()->route('messages.notifications');
     }
 
     /**
      * [destroy description]
-     * 
+     *
      * @param  Notification $notification [description]
      * @return [type]                     [description]
      */
@@ -58,6 +58,53 @@ class NotificationController extends Controller
         $notification->delete();
 
         return back()->with('succes', 'Notificación eliminada correctamente');
+    }
+
+    /**
+     *  sendOnePush
+     *
+     *  @return  returnType
+     */
+    public function sendOnePush($userId)
+    {
+        $user = User::find((int) $userId);
+        $title = '📣 Hoy día de Trepa, ⚠ recuerda tus medias largas!!🔥';
+        $body = '📣 Mensaje de prueba!!🔥🔥🔥🔥🔥';
+
+        $fcmUrl = env('FIREBASE_CLOUD_MESSAGING_URL', 'https://fcm.googleapis.com/fcm/send');
+
+        $notification = ['title' => $title, 'body' => $body, 'sound' => true];
+
+        $fcmNotification = [
+            'to' => $user->fcm_token, //single token
+            'notification' => $notification,
+            'data' => $notification
+        ];
+
+        $headers = [
+            'Authorization: key=' . env('FIREBASE_AUTHORIZATION_KEY', 'AAAAyEVqUCs:APA91bE77nkMYX2gfQmz9pA813fWzqfslJWYK6cLUUie9uwechvjAE6wler6W9oy-MMMZPsXY6v5KmlLyTGfkQ-PB0tdO-Dn0yGeqeU6NaQTL7XhtOG-7PkwHJv3-NoLxjqHooIvLCzr'),
+            'Content-Type: application/json'
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $fcmUrl);
+
+        curl_setopt($ch, CURLOPT_POST, true);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmNotification));
+
+        $result = curl_exec($ch);
+
+        curl_close($ch);
+
+        return 'Push Enviado - ' . now()->format('d-m-Y H:i:s');
     }
 }
 
@@ -71,7 +118,7 @@ class NotificationController extends Controller
     //         'body' => $body,
     //         'sound' => true,
     //     ];
-        
+
     //     $extraNotificationData = ["message" => $notification, "moredata" => 'dd'];
 
     //     $fcmNotification = [
