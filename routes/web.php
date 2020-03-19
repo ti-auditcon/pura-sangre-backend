@@ -5,7 +5,7 @@ Auth::routes();
 Route::get('first-class-mail', function () {
     // dd('asdasds');
     $invoice = collect();
-    $invoice->subject = '';
+    $invoice->subject = 'ss';
     $invoice->user = 'Raul';
 
     return new App\Mail\SendFirstClassEmail($invoice);

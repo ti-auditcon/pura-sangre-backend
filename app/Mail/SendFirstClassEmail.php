@@ -11,6 +11,11 @@ class SendFirstClassEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    /**
+     *  Undocumented variable
+     *
+     *  @var [type]
+     */
     public $data;
 
     /**

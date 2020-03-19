@@ -1,5 +1,5 @@
 @component('mail::message')
-#**Felicitaciones {{ $this->user }}!!**
+#**Felicitaciones {{ $data->user }}!!**
 
 **Acabas de asistir a tu primera clase de prueba!**
 Ya has dado el primer paso para mejorar tu salud y estado físico. Te desafiamos a seguir con esta experiencia **3 Clases de Prueba** Pura Sangre CrossFit!
