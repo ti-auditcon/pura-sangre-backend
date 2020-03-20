@@ -11,16 +11,16 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class GoneAwayUserEmail extends Mailable
 {
     /**
-     * Name of the user to send email
+     *  Name of the user to send email
      *
-     * @var string
+     *  @var string
      */
     public $user;
 
     /**
-     * Create a new message instance.
+     *  Create a new message instance.
      *
-     * @return void
+     *  @return void
      */
     public function __construct($user)
     {
@@ -28,13 +28,14 @@ class GoneAwayUserEmail extends Mailable
     }
 
     /**
-     * Build the message.
+     *  Build the message.
      *
-     * @return $this
+     *  @return $this
      */
     public function build()
     {
         return $this->markdown('messages.gone_away_user')
+                    ->from('contacto@purasangrecrossfit.cl')
                     ->subject("{$this->user} te extrañamos!");
     }
 }

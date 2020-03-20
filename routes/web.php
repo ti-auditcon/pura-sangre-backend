@@ -15,7 +15,7 @@ Route::get('gone-away-mail', function () {
     // dd('asdasds');
     $user = \App\Models\Users\User::find(15);
 
-    return new App\Mail\GoneAwayUserEmail($user);
+    return new App\Mail\GoneAwayUserEmail($user->first_name);
 });
 // Route::get('/fix-clases', 'HomeController@fixClases');
 

@@ -12,6 +12,7 @@ Escríbenos a nuestro **WhatsApp o responde este correo**.
        class="button button-green-whatsapp" 
        target="_blank"
     >
+        <span class="fa-whatsapp" style="font-family: fontawesome !important;"></span>
         <b>Contáctanos</b>
     </a>
 </div>

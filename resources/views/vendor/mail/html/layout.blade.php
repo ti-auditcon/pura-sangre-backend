@@ -5,6 +5,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <link href="{{ asset('/css/font-awesome.min.css') }}" rel="stylesheet" />
+    
+    <link href="{{ asset('/css/line-awesome.min.css') }}" rel="stylesheet" />
 </head>
 <body>
     <style>

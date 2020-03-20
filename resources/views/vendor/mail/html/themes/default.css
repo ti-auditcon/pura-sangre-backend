@@ -105,14 +105,16 @@ img {
 .header {
     padding: 25px 0;
     text-align: center;
+    background: -webkit-linear-gradient(299.95deg, #FC0F85 6.69%, #9300AB 88.08%);
+    background: -o-linear-gradient(299.95deg, #FC0F85 6.69%, #9300AB 88.08%);
+    background: linear-gradient(150.05deg, #FC0F85 6.69%, #9300AB 88.08%);
 }
 
 .header a {
-    color: #bbbfc3;
+    color: white;
     font-size: 19px;
     font-weight: bold;
     text-decoration: none;
-    text-shadow: 0 1px 0 white;
 }
 
 /* Body */
@@ -220,10 +222,8 @@ img {
 
 .button-blue {
     background-color: #3097D1;
-    border-top: 10px solid #3097D1;
-    border-right: 18px solid #3097D1;
-    border-bottom: 10px solid #3097D1;
-    border-left: 18px solid #3097D1;
+        background-image: linear-gradient(117deg, #0075c9, #00bfc9);
+        padding: 10px 16px;
 }
 
 .button-green {

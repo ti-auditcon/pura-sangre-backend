@@ -2,7 +2,7 @@
 #**Felicitaciones {{ $data->first_name }}!!**
 
 **Acabas de asistir a tu primera clase de prueba!**
-Ya has dado el primer paso para mejorar tu salud y estado físico. Te desafiamos a seguir con esta **Experiencia Pura Sangre CrossFit** en tus siguientes **Clases de Prueba!**
+Ya has dado el primer paso para mejorar tu salud y estado físico. Te desafiamos a seguir con la **Experiencia Pura Sangre CrossFit** en tus siguientes **Clases de Prueba!**
 
 No esperes más y **reserva en nuestra App tu segunda clase de prueba!**
 
