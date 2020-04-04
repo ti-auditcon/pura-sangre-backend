@@ -59,7 +59,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('clases:first')->everyFifteenMinutes();
         
-        $schedule->command('users:gone-away-email')->everyFifteenMinutes();
+        // $schedule->command('users:gone-away-email')->ev();
     }
 
     /**
