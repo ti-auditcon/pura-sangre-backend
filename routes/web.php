@@ -5,8 +5,8 @@ Auth::routes();
 Route::get('first-class-mail', function () {
     // dd('asdasds');
     $invoice = collect();
-    $invoice->subject = '';
-    $invoice->user = 'Raul';
+    $invoice->subject = 'ss';
+    $invoice->first_name = 'Raul';
 
     return new App\Mail\SendFirstClassEmail($invoice);
 });
@@ -15,7 +15,8 @@ Route::get('maile', function () {
     // dd('asdasds');
     $user = \App\Models\Users\User::find(15);
 
-    return new App\Mail\NewPlanUserEmail($user, $user->actual_plan);
+    // return new App\Mail\NewPlanUserEmail($user, $user->actual_plan);
+    // return new App\Mail\GoneAwayUserEmail($user->first_name);
 });
 // Route::get('/fix-clases', 'HomeController@fixClases');
 

@@ -1,19 +1,21 @@
 <?php
 
-namespace App\Console\Commands\Reports;
+namespace App\Console\Commands\Users;
 
 use App\Models\Users\User;
+use App\Mail\GoneAwayUserEmail;
 use Illuminate\Console\Command;
 use App\Models\Users\StatusUser;
+use Illuminate\Support\Facades\Mail;
 
-class NoConvertUsers extends Command
+class UsersGoneAway extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'users:noconverted';
+    protected $signature = 'users:gone-away-email';
 
     /**
      * The console command description.
@@ -39,13 +41,13 @@ class NoConvertUsers extends Command
      */
     public function handle()
     {
-        $no_converted_users = User::join('users.plan_user', 'users.id', '=', 'plan_user.user_id')
+        $no_converted_users = User::join('plan_user', 'users.id', '=', 'plan_user.user_id')
                                   ->where('users.status_user_id', StatusUser::INACTIVE)
                                   ->where('plan_user.finish_date', today()->subWeek())
                                   ->get([ 
                                     'users.id', 'users.first_name', 'users.email'
                                   ]);
-
+                                  
         foreach($no_converted_users as $user) {
             Mail::to($user->email)->send(new GoneAwayUserEmail($user->first_name));
         }

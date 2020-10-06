@@ -1,6 +1,6 @@
-<table class="action" align="center" width="100%" cellpadding="0" cellspacing="0">
+<table class="action" align="center" width="100%" cellpadding="0" cellspacing="0" style="">
     <tr>
-        <td align="center">
+        <td align="center" s>
             <table width="100%" border="0" cellpadding="0" cellspacing="0">
                 <tr>
                     <td align="center">

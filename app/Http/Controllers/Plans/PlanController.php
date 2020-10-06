@@ -44,7 +44,8 @@ class PlanController extends Controller
     {
         $plan = Plan::create(array_merge($request->all(), [
             'contractable' => $request->contractable ? 1 : 0,
-            'convenio' => $request->convenio ? 1 : 0
+            'convenio' => $request->convenio ? 1 : 0,
+            'custom' => $request->custom ? 1 : 0,
         ]));
         
         return redirect()->route('plans.show', $plan->id)

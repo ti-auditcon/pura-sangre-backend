@@ -237,7 +237,7 @@
             defaultView: 'agendaDay',
             slotDuration: '00:30:00',
             slotLabelFormat: 'h(:mm)a',
-            hiddenDays: [0],
+            // hiddenDays: [0],
             eventColor: '#4c6c8b',
             eventRender: function( event, element, view ) {
                 let percent = (event.reservation_count * 100) / event.quota;

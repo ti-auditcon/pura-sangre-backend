@@ -11,6 +11,11 @@ class SendFirstClassEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    /**
+     *  Undocumented variable
+     *
+     *  @var [type]
+     */
     public $data;
 
     /**
@@ -31,6 +36,7 @@ class SendFirstClassEmail extends Mailable
     public function build()
     {
         return $this->markdown('messages.first_class')
+                    ->from('contacto@purasangrecrossfit.cl')
                     ->subject($this->data->subject);
     }
 }
