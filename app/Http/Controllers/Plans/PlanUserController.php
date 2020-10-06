@@ -170,7 +170,7 @@ class PlanUserController extends Controller
         }
 
         // Session::flash('success', 'El plan se actualizó correctamente');
-        return redirect('users/' . $user->id, Response)->with('success', 'El plan se actualizó correctamente');
+        return redirect('users/' . $user->id)->with('success', 'El plan se actualizó correctamente');
     }
 
     /**
