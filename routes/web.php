@@ -11,11 +11,11 @@ Route::get('first-class-mail', function () {
     return new App\Mail\SendFirstClassEmail($invoice);
 });
 
-Route::get('gone-away-mail', function () {
+Route::get('maile', function () {
     // dd('asdasds');
     $user = \App\Models\Users\User::find(15);
 
-    return new App\Mail\GoneAwayUserEmail($user);
+    return new App\Mail\NewPlanUserEmail($user, $user->actual_plan);
 });
 // Route::get('/fix-clases', 'HomeController@fixClases');
 
@@ -75,7 +75,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     /**
      *  POSTPONE PLANS ROUTE
      */
-    Route::get('postpones', 'Plans\PostponeController@index')->name('postpones.index');
+    Route::get('postpones', 'Plans\PostponeController@index')->middleware('role:1')->name('postpones.index');
 
     Route::post('postpones/all', 'Plans\PostponeController@postponeAll')->name('postpones.all');
 

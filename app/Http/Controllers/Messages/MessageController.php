@@ -46,12 +46,12 @@ class MessageController extends Controller
                      ->get(['id', 'first_name', 'email']);
 
         $mailable = count($users) > 18 ? SendEmailQueue::class : SendEmail::class;
-        
+
         if ($request->image) {
             $random_name = str_shuffle(str_replace([' ', ':'], '', $request->subject . now()));
 
             request()->file('image')->storeAs('public/emails', $random_name . '.jpg');
-        } 
+        }
 
         foreach ($users as $user) {
             $mail = collect();
@@ -83,7 +83,7 @@ class MessageController extends Controller
 
             return redirect()->back();
         }
-        
+
         Session::flash('success', 'Correos enviados correctamente');
         return redirect()->back();
     }
