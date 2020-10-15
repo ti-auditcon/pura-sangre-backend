@@ -92,10 +92,10 @@ class PlanUserPostponesController extends Controller
 
         $plan_user->update([
             'plan_status_id' => PlanStatus::ACTIVO,
-            'finish_date' => Carbon::parse($plan_user->finish_date)->subDays($diff_in_days)
+            'finish_date' => Carbon::parse($plan_user->finish_date)->subDays($diff_in_days + 1)
         ]);
 
-        $postpone->delete();
+        $last_postpone->delete();
 
         return redirect('users/' . $plan_user->user->id)
                     ->with('success', 'Plan reanudado correctamente');
