@@ -2,8 +2,8 @@
 
 Auth::routes();
 
-Route::get('add-four', function () {
-    $diff_in_days = 4;
+Route::get('quit-six', function () {
+    $diff_in_days = 16;
     $plans =  App\Models\Plans\PlanUser::where('plan_status_id', 2)->get();
     
     foreach ($plans as $plan) {
@@ -14,10 +14,19 @@ Route::get('add-four', function () {
                                                         ->get();
 
         foreach ($planes_posteriores as $plan) {
+                        // getting the dispatcher instance (needed to enable again the event observer later on)
+            $dispatcher = App\Models\Plans\PlanUser::getEventDispatcher();
+
+            // disabling the events
+            App\Models\Plans\PlanUser::unsetEventDispatcher();
+
             $plan->update([
-                'start_date' =>$plan->start_date->addDays($diff_in_days),
-                'finish_date' => $plan->finish_date->addDays($diff_in_days)
+                'start_date' =>$plan->start_date->subDays($diff_in_days),
+                'finish_date' => $plan->finish_date->subDays($diff_in_days)
             ]);
+            
+            // enabling the event dispatcher
+            App\Models\Plans\PlanUser::setEventDispatcher($dispatcher);
         }
 
         $plan->update(['finish_date' => Carbon\Carbon::parse($plan->finish_date)->addDays($diff_in_days)]);

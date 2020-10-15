@@ -83,15 +83,13 @@ class PlanUserPostponesController extends Controller
      */
     public function destroy(PlanUser $plan_user, PostponePlan $postpone)
     {
-        $plan_user->update([
-
-            'plan_status_id' => PlanStatus::ACTIVO
-
-        ]);
+        $diff_in_days = Carbon::parse($postpone->finish_date)->diffInDays(today());
+        dd($diff_in_days);
+        $plan_user->update(['plan_status_id' => PlanStatus::ACTIVO]);
 
         $postpone->delete();
 
         return redirect('users/' . $plan_user->user->id)
-                 ->with('success', 'Plan reanudado correctamente');
+                    ->with('success', 'Plan reanudado correctamente');
     }
 }
