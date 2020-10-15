@@ -78,7 +78,6 @@ class PlanUserObserver
             $finish_date = Carbon::parse($plan_user->finish_date);
 
             if ( $fecha_inicio->between($start_date, $finish_date) || $fecha_termino->between($start_date, $finish_date)) {
-
                 Session::flash(
                     'error-tap',
                     'No se pudo actualizar las fechas, debido a que el plan ' . $plan_user->plan->plan . ' que va desde el ' . $start_date->format('d-m-Y') . ' al ' . $finish_date->format('d-m-Y') . ' choca con una fecha del plan que intentas modificar');
@@ -87,7 +86,6 @@ class PlanUserObserver
             }
 
             if ( $fecha_inicio->lt($start_date) && $fecha_termino->gt($finish_date) ) {
-
                 Session::flash(
                     'error-tap',
                     'No se pudo actualizar las fechas, debido a que el plan ' . $plan_user->plan->plan . ' que va desde el ' . $start_date->format('d-m-Y') . ' al ' . $finish_date->format('d-m-Y') . ', choca fecha del plan que intentas modificar'
@@ -97,7 +95,6 @@ class PlanUserObserver
             }
 
             if ( $fecha_inicio->gt($start_date) && $fecha_termino->lt($finish_date) ) {
-
                 Session::flash(
                     'error-tap',
                     'No se pudo actualizar las fechas, debido a que el plan ' . $plan_user->plan->plan . ' que va desde el ' . $start_date->format('d-m-Y') . ' al ' . $finish_date->format('d-m-Y') . ', choca con una fecha del plan que intentas modificar');

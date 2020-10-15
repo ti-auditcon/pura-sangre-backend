@@ -64,8 +64,8 @@ class PostponeController extends Controller
         $diff_in_days = $start->diffInDays($finish) + 1;
 
         $planes_posteriores = $plan_user->user->plan_users->where('start_date', '>', $plan_user->start_date)
-                                                          ->where('id', '!=', $plan_user->id)
-                                                          ->sortByDesc('finish_date');
+                                                            ->where('id', '!=', $plan_user->id)
+                                                            ->sortByDesc('finish_date');
 
         foreach ($planes_posteriores as $plan) {
             $plan->update([
