@@ -162,14 +162,13 @@ class PlanUserController extends Controller
         if ($plan->plan_id != 1 && $plan->plan_id != 2) {
             $plan = $this->updateBillIncome($plan);
 
-            $plan->bill->amount = $request->amount;
-
-            $plan->bill->updated_at = now();
-
-            $plan->bill->save();
+            if ($plan->bill) {
+                $plan->bill->amount = $request->amount;
+                $plan->bill->updated_at = now();
+                $plan->bill->save();
+            }
         }
 
-        // Session::flash('success', 'El plan se actualizó correctamente');
         return redirect('users/' . $user->id)->with('success', 'El plan se actualizó correctamente');
     }
 
