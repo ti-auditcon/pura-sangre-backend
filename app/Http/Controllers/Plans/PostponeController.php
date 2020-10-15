@@ -50,7 +50,7 @@ class PostponeController extends Controller
     public function postpone($request, $plan_user)
     {
         // Parse Dates
-        $start = Carbon::parse($request->start_date);
+        $start = Carbon::parse($request->start_date); 
         $finish = Carbon::parse($request->finish_date);
 
         if ($plan_user->plan_status_id === PlanStatus::ACTIVO) {
