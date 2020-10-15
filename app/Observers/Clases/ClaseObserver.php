@@ -33,8 +33,10 @@ class ClaseObserver
     {
         $date_class = Carbon::parse($clase->date);
         
-        foreach ($clase->reservations as $reservation){
+        if ($date_class > today()) {
+            foreach ($clase->reservations as $reservation) {
                 $reservation->delete();
+            }
         }
     }
 }

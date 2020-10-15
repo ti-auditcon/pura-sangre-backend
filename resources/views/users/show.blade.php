@@ -368,14 +368,14 @@
                             @forelse($user->future_reservs as $reserv)
                             <tr>
                                 <td>
-                                    <a href="{{ url('/clases/'.$reserv->clase->id) }}">
-                                        {{ $reserv->clase->id }}
+                                    <a href="{{ url('/clases/' . optional($reserv->clase)->id) }}">
+                                        {{ optional($reserv->clase)->id }}
                                     </a>
                                 </td>
 
-                                <td>{{ $reserv->clase->date }}</td>
+                                <td>{{ optional($reserv->clase)->date }}</td>
 
-                                <td>{{ Carbon\Carbon::parse($reserv->clase->start_at)->format('H:i') }} a {{ Carbon\Carbon::parse($reserv->clase->finish_at)->format('H:i') }}</td>
+                                <td>{{ $reserv->clase ? Carbon\Carbon::parse($reserv->clase->start_at)->format('H:i') . ' a ' . Carbon\Carbon::parse($reserv->clase->finish_at)->format('H:i') : '' }}</td>
 
                                 <td>{{ $reserv->reservation_status->reservation_status }}</td>
 
@@ -430,19 +430,20 @@
                             <tbody>
                                 @foreach($past_reservations as $reserv)
                                 <tr>
-                                    {{-- {{ dd($reserv) }} --}}
-                                    <td>
-                                        <a href="{{url('/clases/'.$reserv->clase->id)}}">
-                                            {{$reserv->clase->id}}
-                                        </a>
-                                    </td>
-
-                                    <td>{{ $reserv->clase->date }}</td>
-
-                                    <td>
-                                        {{ Carbon\Carbon::parse($reserv->clase->start_at)->format('H:i') }} a {{ Carbon\Carbon::parse($reserv->clase->finish_at)->format('H:i') }}
-                                    </td>
-
+                                    @if ($reserv->clase)
+                                        <td>
+                                            <a href="{{ url("/clases/{$reserv->clase->id}") }}">
+                                                {{ $reserv->clase->id }}
+                                            </a>
+                                        </td>
+                                        <td>{{ $reserv->clase->date }}</td>
+                                        <td>{{ Carbon\Carbon::parse($reserv->clase->start_at)->format('H:i') }} a {{ Carbon\Carbon::parse($reserv->clase->finish_at)->format('H:i') }}</td>
+                                    @else 
+                                        <td>sin clase asociada</td>
+                                        <td>sin fecha</td>
+                                        <td>sin hora</td>
+                                    @endif
+                                    
                                     <td>{{ $reserv->reservation_status->reservation_status }}</td>
 
                                     <td>{{ optional($reserv->plan_user)->id ?? 'No Aplica' }}</td>

@@ -51,21 +51,14 @@ class UnfreezePlans extends Command
 
         foreach ($plans_to_unfreeze as $plan) {
             $finish_date = $plan->finish_date;
-
             // getting the dispatcher instance (needed to enable again the event observer later on)
             $dispatcher = PlanUser::getEventDispatcher();
-
             // disabling the events
             PlanUser::unsetEventDispatcher();
-
             // perform the operation you want
-            $plan->update([
-                'finish_date' => $finish_date->addMonth()
-            ]);
-
+            $plan->update(['finish_date' => $finish_date->addMonth()]);
             // enabling the event dispatcher
             PlanUser::setEventDispatcher($dispatcher);
-
         }
     }
 }
