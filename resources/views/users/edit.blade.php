@@ -68,6 +68,16 @@
                         </div>
                     </div>
 
+                        <div class="col-sm-6 form-group mb-2">
+                            <label class="col-form-label">Contraseña</label>
+
+                            <button class="btn btn-warning form-control sweet-user-reset-password"
+                                    data-user-name="{{ $user->full_name }}"
+                                    data-user-id="{{ $user->id }}"
+                            >
+                                Restablecer contraseña
+                            </button>
+                        </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6 form-group mb-2">
@@ -351,6 +361,41 @@
         } else {
             $('#div-badge-address').addClass('badge-success');
         }
+    });
+</script>
+
+<script>
+    $('.sweet-user-reset-password').click(function(e) {
+        e.preventDefault();
+        var userName = $(this).data('user-name');
+        var userId = $(this).data('user-id');
+
+        swal({
+            title: `Seguro desea restablecer la contraseña de ${userName}?`,
+            text: "No olvide avisar al usuario de este cambio, para que sepa cual es su nueva contraseña",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn-warning',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Restablecer',
+            closeOnConfirm: true
+        }, function() {
+            $.ajax({
+                method: "POST",
+                url: `/users/${userId}/reset-password`,
+                data: {
+                    _method: 'PATCH',
+                    _token: $('meta[name=csrf-token]').attr("content")
+                },
+            }).done(function(response) {
+                console.log(response);
+                toastr.success(response.success);
+            }).fail(response => {
+                console.log(response.fail);
+
+                toastr.warning('No se ha podido restablecer la contraseña');
+            });
+        });
     });
 </script>
 @endsection

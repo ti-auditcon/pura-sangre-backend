@@ -171,6 +171,8 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     // Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
     Route::get('users/{user}/plans/{plan}/info', 'Users\UserController@userinfo')->name('users.plans.info');
 
+    Route::patch('users/{user}/reset-password', 'Users\UserController@resetPassword')->name('users.password-reset');
+  
     /**
      * ROLEUSER ROUTES
      */
