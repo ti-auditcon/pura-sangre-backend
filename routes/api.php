@@ -2,6 +2,15 @@
 
 use Illuminate\Http\Request;
 
+
+/**  *****************************************************
+
+*    *******         EXTERNAL ROUTES        ************** 
+
+*   ******************************************************   */
+Route::post('/external/contact-form', 'Web\ContactEmailController@sendEmail');
+
+
 /**
  * [Route Users ApiControllers]
  * @var [type]
