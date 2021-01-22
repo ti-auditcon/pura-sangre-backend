@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
         //     ReservationsTableSeeder::class,
         // ]);
 
-        $this->call(MovementsTableSeeder::class);
+        // $this->call(MovementsTableSeeder::class);
     }
 }
 // $user = User::create([

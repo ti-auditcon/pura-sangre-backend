@@ -2,37 +2,12 @@
 
 Auth::routes();
 
-Route::get('quit-six', function () {
-    // $diff_in_days = 4;
-    // $plans =  App\Models\Plans\PlanUser::where('plan_status_id', 2)->get();
-    
-    // foreach ($plans as $plan) {
-    //     // getting the dispatcher instance (needed to enable again the event observer later on)
-    //     $dispatcher = App\Models\Plans\PlanUser::getEventDispatcher();
+/**  *****************************************************
 
-    //     // disabling the events
-    //     App\Models\Plans\PlanUser::unsetEventDispatcher();
-        
-    //     $planes_posteriores = App\Models\Plans\PlanUser::where('user_id', $plan->user_id)
-    //                                                     ->where('start_date', '>', $plan->start_date)
-    //                                                     ->where('id', '!=', $plan->id)
-    //                                                     ->orderByDesc('finish_date')
-    //                                                     ->get();
+*    *******         EXTERNAL ROUTES        ************** 
 
-    //     foreach ($planes_posteriores as $plan) {
-    //         $plan->update([
-    //             'start_date' =>$plan->start_date->addDays($diff_in_days),
-    //             'finish_date' => $plan->finish_date->addDays($diff_in_days)
-    //         ]);
-    //     }
-    //     $plan->update(['finish_date' => Carbon\Carbon::parse($plan->finish_date)->addDays($diff_in_days)]);
-        
-    //     // enabling the event dispatcher
-    //     App\Models\Plans\PlanUser::setEventDispatcher($dispatcher);
-    // }
-
-    // return 'listo';
-});
+*   ******************************************************   */
+Route::post('/external/contact-form', 'Web\ContactEmailController@sendEmail');
 
 Route::get('maile', function () {
     // dd('asdasds');
