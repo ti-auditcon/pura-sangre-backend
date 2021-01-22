@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\RefreshPlans',
         'App\Console\Commands\ToExpiredPlan',
         'App\Console\Commands\Messages\SendNotifications',
-        // 'App\Console\Commands\Users\NoConvertUsers',
+        'App\Console\Commands\Users\UsersGoneAway',
     ];
 
     /**
@@ -56,6 +56,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('plans:unfreeze')->dailyAt('00:15');
 
         $schedule->command('messages:send-notifications')->everyMinute();
+
+        $schedule->command('clases:first')->everyFifteenMinutes();
+        
+        $schedule->command('users:gone-away-email')->daily();
     }
 
     /**

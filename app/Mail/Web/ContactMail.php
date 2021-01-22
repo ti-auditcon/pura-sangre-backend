@@ -1,21 +1,16 @@
 <?php
 
-namespace App\Mail;
+namespace App\Web\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendFirstClassEmail extends Mailable
+class ContactMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     *  Undocumented variable
-     *
-     *  @var [type]
-     */
     public $data;
 
     /**
@@ -29,14 +24,12 @@ class SendFirstClassEmail extends Mailable
     }
 
     /**
-     * Build the message.
+     *  Build the message.
      *
-     * @return $this
+     *  @return  $this
      */
     public function build()
     {
-        return $this->markdown('messages.first_class')
-                    ->from('contacto@purasangrecrossfit.cl')
-                    ->subject($this->data->subject);
+        return $this->view('mail.contact')->subject('Mensaje desde Formulario de Contacto página web');
     }
 }

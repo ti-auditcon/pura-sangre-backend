@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Mail\ToExpireEmail;
 use App\Models\Plans\PlanUser;
 use Illuminate\Console\Command;
+use App\Models\Plans\PlanStatus;
 use Illuminate\Support\Facades\Mail;
 
 class ToExpiredPlan extends Command
@@ -40,11 +41,13 @@ class ToExpiredPlan extends Command
      */
     public function handle()
     {
-        $plans_to_expire = PlanUser::whereFinishDate(toDay()->addDays(3))->get();
-        
+        $plans_to_expire = PlanUser::whereFinishDate(toDay()->addDays(3))
+                                    ->wherePlanStatusId(PlanStatus::ACTIVO)
+                                    ->get();
+
         foreach ($plans_to_expire as $planuser) {
             $user = $planuser->user;
-        
+
             Mail::to($user->email)->send(new ToExpireEmail($user, $planuser));
         }
     }

@@ -4,10 +4,12 @@ namespace App\Observers\Plans;
 
 use Session;
 use Carbon\Carbon;
-use App\Models\Users\User;
 use App\Models\Plans\Plan;
+use App\Models\Users\User;
 use App\Models\Plans\PlanUser;
+use App\Models\Plans\PlanStatus;
 use App\Models\Clases\Reservation;
+use App\Models\Plans\PostponePlan;
 use App\Models\Plans\PlanIncomeSummary;
 
 class PlanUserObserver
@@ -68,9 +70,9 @@ class PlanUserObserver
         $fecha_termino = Carbon::parse($planUser->finish_date);
 
         $plan_users = PlanUser::whereIn('plan_status_id', [1, 3])
-                              ->where('user_id', $user->id)
-                              ->where('id', '!=', $planUser->id)
-                              ->get();
+                                ->where('user_id', $user->id)
+                                ->where('id', '!=', $planUser->id)
+                                ->get();
 
         foreach ($plan_users as $plan_user) {
             $start_date = Carbon::parse($plan_user->start_date);
@@ -78,7 +80,6 @@ class PlanUserObserver
             $finish_date = Carbon::parse($plan_user->finish_date);
 
             if ( $fecha_inicio->between($start_date, $finish_date) || $fecha_termino->between($start_date, $finish_date)) {
-
                 Session::flash(
                     'error-tap',
                     'No se pudo actualizar las fechas, debido a que el plan ' . $plan_user->plan->plan . ' que va desde el ' . $start_date->format('d-m-Y') . ' al ' . $finish_date->format('d-m-Y') . ' choca con una fecha del plan que intentas modificar');
@@ -87,7 +88,6 @@ class PlanUserObserver
             }
 
             if ( $fecha_inicio->lt($start_date) && $fecha_termino->gt($finish_date) ) {
-
                 Session::flash(
                     'error-tap',
                     'No se pudo actualizar las fechas, debido a que el plan ' . $plan_user->plan->plan . ' que va desde el ' . $start_date->format('d-m-Y') . ' al ' . $finish_date->format('d-m-Y') . ', choca fecha del plan que intentas modificar'
@@ -97,7 +97,6 @@ class PlanUserObserver
             }
 
             if ( $fecha_inicio->gt($start_date) && $fecha_termino->lt($finish_date) ) {
-
                 Session::flash(
                     'error-tap',
                     'No se pudo actualizar las fechas, debido a que el plan ' . $plan_user->plan->plan . ' que va desde el ' . $start_date->format('d-m-Y') . ' al ' . $finish_date->format('d-m-Y') . ', choca con una fecha del plan que intentas modificar');
@@ -106,7 +105,7 @@ class PlanUserObserver
             }
         }
 
-        if ($planUser->plan_status_id != 5) {
+        if ($planUser->plan_status_id != PlanStatus::CANCELADO) {
             $planUser->plan_status_id = $this->checkActualPlan($planUser);
         }
     }
@@ -152,30 +151,59 @@ class PlanUserObserver
         }
     }
 
+    /**
+     *  Undocumented function
+     *
+     *  @param  PlanUser  $planUser
+     *  
+     *  @return  void
+     */
     public function checkActualPlan(PlanUser $planUser)
     {
         if ($planUser->start_date > today()) {
-            $planUser->plan_status_id = 3;
+            $planUser->plan_status_id = PlanStatus::PRECOMPRA;
         } elseif ($planUser->finish_date < today()) {
-            $planUser->plan_status_id = 4;
+            $planUser->plan_status_id = PlanStatus::COMPLETADO;
         }
-        if (!$planUser->user->actual_plan && $planUser->start_date <= today() && $planUser->finish_date >= today()) {
-            $planUser->plan_status_id = 1;
+
+        if (!$planUser->user->actual_plan &&
+            $planUser->start_date <= today() && $planUser->finish_date >= today() &&
+            !$this->planUserIsFreeze($planUser)) {
+            $planUser->plan_status_id = PlanStatus::ACTIVO;
         }
+
         return $planUser->plan_status_id;
     }
 
+    /**
+     *  planUserIsFreeze
+     *
+     *  @return  returnType
+     */
+    public function planUserIsFreeze($planUser)
+    {
+        $plan_is_freezed = PostponePlan::where('plan_user_id', $planUser->id)->exists('id');
+
+        return $plan_is_freezed;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param PlanUser $planUser
+     * @return void
+     */
     public function fixReservations(PlanUser $planUser)
     {
         $reservations = Reservation::join('clases', 'reservations.clase_id', '=', 'clases.id')
-                                   ->where('reservations.user_id', $planUser->user_id)
-                                   ->whereBetween('date', [Carbon::parse($planUser->start_date)->format('Y-m-d'), Carbon::parse($planUser->finish_date)->format('Y-m-d')])
-                                   ->get('reservations.id');
+                                    ->where('reservations.user_id', $planUser->user_id)
+                                    ->whereBetween('date', [Carbon::parse($planUser->start_date)->format('Y-m-d'), Carbon::parse($planUser->finish_date)->format('Y-m-d')])
+                                    ->get('reservations.id');
 
         $reservations_out = Reservation::join('clases', 'reservations.clase_id', '=', 'clases.id')
-                                       ->where('reservations.user_id', $planUser->user_id)
-                                       ->whereNotBetween('date', [Carbon::parse($planUser->start_date)->format('Y-m-d'), Carbon::parse($planUser->finish_date)->format('Y-m-d')])
-                                       ->get('reservations.id');
+                                        ->where('reservations.user_id', $planUser->user_id)
+                                        ->whereNotBetween('date', [Carbon::parse($planUser->start_date)->format('Y-m-d'), Carbon::parse($planUser->finish_date)->format('Y-m-d')])
+                                        ->get('reservations.id');
 
         foreach ($reservations as $reserv) {
             $reservation = Reservation::find($reserv->id, ['id', 'plan_user_id']);

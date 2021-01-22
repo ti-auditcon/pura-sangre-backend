@@ -161,6 +161,16 @@ class PlanUserController extends Controller
             'counter' => $request->counter,
         ]);
 
+        if ($plan->plan_id != 1 && $plan->plan_id != 2) {
+            $plan = $this->updateBillIncome($plan);
+
+            if ($plan->bill) {
+                $plan->bill->amount = $request->amount;
+                $plan->bill->updated_at = now();
+                $plan->bill->save();
+            }
+        }
+
         return redirect('users/' . $user->id)->with('success', 'El plan se actualizó correctamente');
     }
 

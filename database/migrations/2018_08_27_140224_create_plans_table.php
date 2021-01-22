@@ -28,27 +28,17 @@ class CreatePlansTable extends Migration
 
         Schema::create('plans', function (Blueprint $table) {
             $table->increments('id');
-            
             $table->string('plan');
-            
             $table->unsignedInteger('plan_period_id')->nullable();
-            
             $table->boolean('has_clases');
-            
             $table->integer('class_numbers');
-            
             $table->integer('amount')->nullable();
-            
             $table->boolean('custom')->nullable();
-            
             $table->boolean('contractable')->default(0);
-            
             $table->boolean('convenio')->default(0);
-
-            $table->text('description')->default();
+            $table->text('description')->nullable();
             
             $table->timestamps();
-
             $table->foreign('plan_period_id')->references('id')->on('plan_periods')->onDelete('cascade');
         });
 
@@ -61,11 +51,8 @@ class CreatePlansTable extends Migration
 
         Schema::create('plan_status', function (Blueprint $table) {
             $table->increments('id');
-            
             $table->string('plan_status')->nullable();
-            
             $table->string('type')->nullable();
-            
             $table->boolean('can_delete')->nullable();
             
             $table->timestamps();
@@ -73,25 +60,15 @@ class CreatePlansTable extends Migration
 
         Schema::create('plan_user', function (Blueprint $table) {
             $table->increments('id');
-            
             $table->date('start_date');
-            
             $table->date('finish_date');
-            
             $table->integer('counter')->nullable();
-
             $table->text('observations')->nullable();
-            
             $table->unsignedInteger('plan_status_id')->nullable();
-            
             // $table->unsignedInteger('discount_id')->nullable();
-            
             $table->unsignedInteger('plan_id')->nullable();
-            
             $table->unsignedInteger('user_id')->nullable();
-            
             $table->timestamps();
-            
             $table->softDeletes();
 
             // $table->foreign('plan_status_id')->references('id')->on('plan_status')->onDelete('cascade');
@@ -102,13 +79,10 @@ class CreatePlansTable extends Migration
 
         Schema::create('freeze_plans', function (Blueprint $table) {
             $table->mediumIncrements('id');
-            
             $table->unsignedInteger('plan_user_id');
-            
+            $table->unsignedTinyInteger('revoked');
             $table->date('start_date');
-
             $table->date('finish_date');
-       
             $table->timestamps();
         });
 

@@ -162,6 +162,29 @@ class UserController extends Controller
     }
 
     /**
+     *  Reset to default value the specific user's password
+     *
+     *  @param   User  $user
+     *
+     *  @return  \Illuminate\Http\RedirectResponse
+     */
+    public function resetPassword(User $user)
+    {
+        $dispatcher = User::getEventDispatcher();
+        // disabling the events
+        User::unsetEventDispatcher();
+        // perform the operation
+        $user->update(['password' => bcrypt('purasangre')]);
+        // enabling the event dispatcher
+        User::setEventDispatcher($dispatcher);
+
+        return response()->json(
+            ['success' => "Se ha restablecido la contraseña de {$user->first_name}, su contraseña ahora es: purasangre"],
+            201
+        );
+    }
+
+    /**
      *  [image description]
      *
      *  @param  Request $request [description]

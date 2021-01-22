@@ -468,4 +468,6 @@ class User extends Authenticatable
                                   'plan_user.plan:id,plan'])
                           ->get(['id', 'clase_id', 'user_id', 'plan_user_id', 'reservation_status_id']);
     }
+
+    //
 }
