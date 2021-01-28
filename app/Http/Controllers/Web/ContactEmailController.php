@@ -1,54 +1,63 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Web;
 
 use Illuminate\Http\Request;
 use App\Web\Mail\ContactMail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\Web\ContactEmailRequest;
 
-class LoginController extends Controller
+class ContactEmailController extends Controller
 {
     /**
      *   
      */
     public function sendEmail(Request $request)
     {
-        dd('hola hola sendEmail');
-        if ($this->thereErrors($request)) {
-            return response()->json($this->thereErrors($request));
+        $this->makeValidation($request);
+     
+        if (!$this->reCaptchaFails(request('token'))) {
+            return response()->json(['error' => 'No se ha podido verificar el reCaptcha de la pagina']);
         }
 
-        Mail::to("contacto@purasangrecrossfit.cl")->send(new ContactMail($request));
+        // Mail::to("contacto@purasangrecrossfit.cl")->send(new ContactMail($request));
 
-        if (Mail::failures()) {
-            return response()->json(['warning' => 'Lo siento en estos momentos estamos teniendo problemas recibiendo tu informacion, por favor intenta mas tarde']);
-        }
+        // if (Mail::failures()) {
+        //     return response()->json(['warning' => 'Lo siento en estos momentos estamos teniendo problemas recibiendo tu informacion, por favor intenta mas tarde']);
+        // }
 
         return response()->json(['success' => 'Hemos recibido tu mensaje correctamente, te responderemos lo antes posible :)']);
     }
 
-    /**
-     *  
-     */
-    public function thereErrors($request)
+    public function makeValidation($request)
     {
-        if (!$request->ajax()) {
-            return ['error' => 'La solicitud debe ser ajax'];
-        }
-
-        // check RECAPTCHA validation
-
-        $validator = \Validator::make($request->all(), [
+        return $request->validate([
             'name' => 'required',
             'email' => 'required|email',
-            'mensaje' => 'required|max:700'
+            'message' => 'required|max:700'
+        ], [
+            'name.required' => 'El nombre es obligatorio.',
+            'email.required' => 'El correo es obligatorio.',
+            'email.email' => 'El correo debe ser valido.',
+            'message.required' => 'El motivo del mensaje es obligatorio.',
         ]);
+    }
 
-        if ($validator->fails()) {
-            return $validator->errors()->all();
-        }
+    /**
+     *  methodDescription
+     *
+     *  @return  returnType
+     */
+    public function reCaptchaFails($captcha)
+    {
+        $secret = '6LdriT0aAAAAAApTzSkBAz6yd6I9DQecuxj_itQ6';
 
-        return false; // there are no errors
+        $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
+        $recaptcha = file_get_contents("{$recaptcha_url}?secret={$secret}&response={$captcha}");
+        $recaptcha = json_decode($recaptcha);
+
+        return $recaptcha->success;
     }
 }

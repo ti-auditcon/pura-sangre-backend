@@ -154,4 +154,32 @@ class PlanUser extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * [makePlanUser description]
+     *
+     * @param   [type]  $  [$ description]
+     *
+     * @return  [type]     [return description]
+     */
+    public function makePlanUser($data, $user)
+    {
+        $plan_status = count($user->plan_users()->where('plan_status_id', 1)->get()) > 0 ?
+                        PlanStatus::PRECOMPRA :
+                        PlanStatus::ACTIVO;
+
+        if ($plan_status === PlanStatus::ACTIVO) {
+            $user->status_user_id = 1;
+            $user->save();
+        }
+
+        return $this->create([
+            'start_date' => $data->start_date,
+            'finish_date' => $data->finish_date,
+            'counter' => $data->counter,
+            'user_id' => $data->user_id,
+            'plan_id' => $data->plan_id,
+            'plan_status_id' => $plan_status 
+        ]);
+    }
 }

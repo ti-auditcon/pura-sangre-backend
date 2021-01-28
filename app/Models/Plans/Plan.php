@@ -60,4 +60,25 @@ class Plan extends Model
     {
       return $this->belongsToMany(User::class)->using(PlanUser::class);
     }
+
+
+    /**
+     * [isContractable description]
+     *
+     * @return  [type]  [return description]
+     */
+    public function isContractable()
+    {
+        return $this->contractable;
+    }
+
+    /**
+     * [IsNotContractable description]
+     *
+     * @return  [type]  [return description]
+     */
+    public function IsNotContractable()
+    {
+        return !$this->isContractable();
+    }
 }

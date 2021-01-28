@@ -15,7 +15,6 @@ class Cors
      */
     public function handle($request, Closure $next)
     {
-        // dd('hola');
         //Url a la que se le dará acceso en las peticiones
         // return $next($request)->header("Access-Control-Allow-Origin", "*")
         //     ->header("Access-Control-Allow-Methods", "POST") // Métodos que a los que se da acceso

@@ -11,6 +11,13 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentType extends Model
 {
     /**
+     * [FLOW description]
+     *
+     * @var [type]
+     */
+    const FLOW = 6;
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array

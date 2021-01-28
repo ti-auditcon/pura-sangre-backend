@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
+
 Auth::routes();
 
 
@@ -160,4 +164,23 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
      *  Notifications TESTS
      */
     Route::get('notifications-send-push/{user_id}', 'Messages\NotificationController@sendOnePush')->middleware('role:1');
+});
+
+/**  *****************************************************
+
+ *    *******         EXTERNAL ROUTES        ************** 
+
+ *   ******************************************************   */
+ Route::resource('/new-user', 'Web\NewUserController');
+ 
+ /*   *****************************************************
+  *    *******         EXTERNAL ROUTES        ************** 
+  *   ******************************************************   */
+Route::post('/flow/return', 'Flow\FlowController@returnFlow')->name('flow.return');
+Route::post('/flow/confirm', 'Flow\FlowController@confirmFlow')->name('flow.confirm');
+Route::get('/flow-return', function () {
+    return view('flow.return');
+});
+Route::get('/flow-error', function () {
+    return view('flow.error');
 });
