@@ -7,6 +7,7 @@ use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
 use App\Models\Plans\PlanStatus;
+use App\Models\Users\StatusUser;
 use App\Models\Clases\Reservation;
 use App\Models\Plans\PostponePlan;
 use App\Models\Plans\PlanUserPeriod;
@@ -156,27 +157,28 @@ class PlanUser extends Model
     }
 
     /**
-     * [makePlanUser description]
+     *  Store a new PlanUser
      *
-     * @param   [type]  $  [$ description]
+     *  @param   Flow   $data  [$data description]
+     *  @param   User   $user  [$user description]
      *
-     * @return  [type]     [return description]
+     *  @return  $this
      */
-    public function makePlanUser($data, $user)
+    public static function makePlanUser($data, $user)
     {
         $plan_status = count($user->plan_users()->where('plan_status_id', 1)->get()) > 0 ?
                         PlanStatus::PRECOMPRA :
                         PlanStatus::ACTIVO;
 
         if ($plan_status === PlanStatus::ACTIVO) {
-            $user->status_user_id = 1;
+            $user->status_user_id = StatusUser::ACTIVE;
             $user->save();
         }
 
-        return $this->create([
+        return self::create([
             'start_date' => $data->start_date,
             'finish_date' => $data->finish_date,
-            'counter' => $data->counter,
+            'counter' => $data->plan->class_numbers,
             'user_id' => $data->user_id,
             'plan_id' => $data->plan_id,
             'plan_status_id' => $plan_status 

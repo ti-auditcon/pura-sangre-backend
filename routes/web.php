@@ -171,16 +171,29 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
  *    *******         EXTERNAL ROUTES        ************** 
 
  *   ******************************************************   */
- Route::resource('/new-user', 'Web\NewUserController');
+Route::post('new-user/request-instructions', 'Web\NewUserController@requestInstructions');
+Route::resource('/new-user', 'Web\NewUserController');
  
- /*   *****************************************************
+ /**   *****************************************************
   *    *******         EXTERNAL ROUTES        ************** 
   *   ******************************************************   */
-Route::post('/flow/return', 'Flow\FlowController@returnFlow')->name('flow.return');
-Route::post('/flow/confirm', 'Flow\FlowController@confirmFlow')->name('flow.confirm');
+Route::post('/flow/return', 'Web\NewUserController@returnFlow');
+Route::post('/flow/confirm', 'Web\NewUserController@confirmFlow');
 Route::get('/flow-return', function () {
-    return view('flow.return');
+    return view('web.flow.return');
 });
 Route::get('/flow-error', function () {
-    return view('flow.error');
+    return view('web.flow.error');
+});
+Route::get('finish-registration', 'Web\NewUserController@finishing');
+
+Route::get('test-email', function () {
+    $token = Illuminate\Support\Str::random(150);
+    $user = App\Models\Users\User::first();
+    \DB::table('password_resets')->insert([
+        'email' => $user->email,
+        'token' => $token,
+    ]);
+
+    return (new App\Mail\VerifyExternalUser($user, $token, 3));
 });

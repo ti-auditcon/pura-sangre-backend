@@ -16,5 +16,7 @@ class VerifyCsrfToken extends Middleware
         'web/new-user/store',
         '/flow/confirm',
         '/flow/return',
+        'flow-return',
+        'flow-error'
     ];
 }

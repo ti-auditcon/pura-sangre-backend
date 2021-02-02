@@ -6,7 +6,7 @@
         <div class="ibox ibox-fullheight">
             <div class="ibox-head">
                 <div class="ibox-title">
-                    Completa tu compra registrandote
+                    <h3>Paso 1 de 2. Completa tu compra registrandote</h3>
                 </div>
 
                 <div class="ibox-tools">
@@ -16,111 +16,135 @@
             <div class="ibox-body">
                 @isset($plan)
                     <div class="row justify-content-center">
-                        <div class="col-11 col-lg-7">
-                            <form x-data="newUser()" 
-                                    x-init="flatpickr($refs.input, {{ json_encode((object)['dateFormat' => 'd-m-Y', 'locale' => 'es']) }});getSelectedPlan({{ $plan->id }});">
-                                @csrf
-                                <div class="ibox-body">
-                                    <div class="row">
-                                        <div class="col-md-6 form-group">
-                                            <label class="col-form-label">Nombre</label>
-                                        
-                                            <input class="form-control" x-on:keyup="fill('first_name', $event)" name="first_name">
+                        <div class="col-11 col-lg-7" x-data="newUser()" 
+                                x-init="flatpickr($refs.input, {{ json_encode((object)['dateFormat' => 'd-m-Y', 'locale' => 'es']) }});getSelectedPlan({{ $plan->id }});" >
+                            <div class="ibox-body" x-show="!formStatus.isFinished">
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label class="col-form-label">Nombre</label>
+                                    
+                                        <input class="form-control" x-on:keyup="fill('first_name', $event)" name="first_name">
 
-                                            <span x-show.transition.in="errors.first_name" x-text="errors.first_name" class="text-warning"></span>
-                                        </div>
-                                        <div class="col-md-6 form-group">
-                                            <label class="col-form-label">Apellido</label>
-                                        
-                                            <input class="form-control" 
-                                                    x-on:keyup="fill('last_name', $event)"
-                                                    name="last_name"
-                                            />
-                                                
-                                            <span x-show.transition.in="errors.last_name" x-text="errors.last_name" class="text-warning"></span>
-                                        </div>
+                                        <span x-show.transition.in="errors.first_name" x-text="errors.first_name" class="text-warning"></span>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-5 form-group">
-                                            <label class="font-normal">Fecha de nacimiento</label>
-                                        
-                                            <div class="input-group date">
-                                                {{-- <input id="datepicker-birthdate" type="text" x-on:change="console.log($event)" class="form-control"/> --}}
-                                                    <input class="form-control"
-                                                            x-ref="input"
-                                                            type="text"
-                                                            x-on:change="fill('birthdate', $event)"
-                                                    />                                          
-                                            </div>
-
-                                            <span x-show.transition.in="errors.birthdate" x-text="errors.birthdate" class="text-warning"></span>
-                                        </div>
-                                        <div class="col-md-7 form-group">
-                                            <label class="col-form-label">Dirección</label>
-                                
-                                            <input class="form-control"
-                                                    x-on:keyup="fill('address', $event)"
-                                                    name="address"
-                                                    placeholder="Ingresa una dirección"
-                                                    autocomplete="off"/>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group inline">
-                                                <label class="col-form-label">Teléfono</label>
+                                    <div class="col-md-6 form-group">
+                                        <label class="col-form-label">Apellido</label>
+                                    
+                                        <input class="form-control" 
+                                                x-on:keyup="fill('last_name', $event)"
+                                                name="last_name"
+                                        />
                                             
-                                                <div class="input-group">
-                                                    <span class="input-group-addon">+56 9</span>
-                                                
-                                                    <input class="form-control" x-on:keyup="fill('phone', $event)" name="phone" type="tel">
-                                                </div>
-
-                                                <span x-show.transition.in="errors.phone" x-text="errors.phone" class="text-warning"></span>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 form-group inline">
-                                            <label class="col-form-label">Correo electronico</label>
-                                        
-                                            <input class="form-control" 
-                                                    x-on:keyup="fill('email', $event)" 
-                                                    type="email" 
-                                                    name="email"
-                                                />
-
-                                            <span x-show.transition.in="errors.email" x-text="errors.email" class="text-warning"></span>
-                                        </div>
+                                        <span x-show.transition.in="errors.last_name" x-text="errors.last_name" class="text-warning"></span>
                                     </div>
-                                    <div class="form-group row">
-                                        <div class="col-6">
-                                            <label class="mr-3">Género</label>
-                                            <label class="radio radio-inline radio-info">
-                                                <input type="radio" name="gender" value="hombre">
-                                                <span class="input-span"></span>
-                                                Masculino
-                                            </label>
-
-                                            <label class="radio radio-inline radio-info">
-                                                <input type="radio" name="gender" value="mujer">
-                                                <span class="input-span"></span>
-                                                Femenino
-                                            </label>
-                                            
-                                            <label class="radio radio-inline radio-info">
-                                                <input type="radio" name="gender" value="other">
-                                                <span class="input-span"></span>
-                                                Otro
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <button class="btn btn-primary"
-                                            x-on:click="sendForm"
-                                            type="button"
-                                            x-bind:disabled="sendButton.disabled"
-                                            x-text="sendButton.text">Registrarme y pagar</button>
                                 </div>
-                            </form>
+                                <div class="row">
+                                    <div class="col-md-5 form-group">
+                                        <label class="font-normal">Fecha de nacimiento</label>
+                                    
+                                        <div class="input-group date">
+                                            {{-- <input id="datepicker-birthdate" type="text" x-on:change="console.log($event)" class="form-control"/> --}}
+                                                <input class="form-control"
+                                                        x-ref="input"
+                                                        type="text"
+                                                        x-on:change="fill('birthdate', $event)"
+                                                />                                          
+                                        </div>
+
+                                        <span x-show.transition.in="errors.birthdate" x-text="errors.birthdate" class="text-warning"></span>
+                                    </div>
+                                    <div class="col-md-7 form-group">
+                                        <label class="col-form-label">Dirección</label>
+                            
+                                        <input class="form-control"
+                                                x-on:keyup="fill('address', $event)"
+                                                name="address"
+                                                placeholder="Ingresa una dirección"
+                                                autocomplete="off"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group inline">
+                                            <label class="col-form-label">Teléfono</label>
+                                        
+                                            <div class="input-group">
+                                                <span class="input-group-addon">+56 9</span>
+                                            
+                                                <input class="form-control" x-on:keyup="fill('phone', $event)" name="phone" type="tel">
+                                            </div>
+
+                                            <span x-show.transition.in="errors.phone" x-text="errors.phone" class="text-warning"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 form-group inline">
+                                        <label class="col-form-label">Correo electronico</label>
+                                    
+                                        <input class="form-control" 
+                                                x-on:keyup="fill('email', $event)" 
+                                                type="email" 
+                                                name="email"
+                                            />
+
+                                        <span x-show.transition.in="errors.email" x-text="errors.email" class="text-warning"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-6">
+                                        <label class="mr-3">Género</label>
+                                        <label class="radio radio-inline radio-info">
+                                            <input type="radio" name="gender" value="hombre">
+                                            <span class="input-span"></span>
+                                            Masculino
+                                        </label>
+
+                                        <label class="radio radio-inline radio-info">
+                                            <input type="radio" name="gender" value="mujer">
+                                            <span class="input-span"></span>
+                                            Femenino
+                                        </label>
+                                        
+                                        <label class="radio radio-inline radio-info">
+                                            <input type="radio" name="gender" value="other">
+                                            <span class="input-span"></span>
+                                            Otro
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <a class="btn btn-primary"
+                                        x-on:click="sendForm"
+                                        type="button"
+                                        x-bind:disabled="sendButton.disabled"
+                                        x-text="sendButton.text">Registrarme y pagar</a>
+
+                                <div x-show="redirectButton">
+                                    Si no te redirige, has clic aqui
+                                    <a :href="redirectButton">Ir a pagar</a>
+                                </div>
+                            </div>
+                            <div x-show="formStatus.isFinished" x-text="formStatus.message"></div>
+                            <div x-show="!errors.email">
+                            {{-- <div x-show="errors.email"> --}}
+                                <span>Parece que ya tienes cuenta en PuraSangre. Tal vez quieras que:</span>
+                                <br>
+                                <div>
+                                    <div x-show="!instructions.areSended">
+                                        <span>Tuve problemas al comprar y quiero que me envien las instrucciones de nuevo</span>
+
+                                        <input type="text" x-on:keyup="fillEmail($event)" x-model="instructions.email" class="form-control"/>
+                                        {{-- <input type="text" x-on:keyup="instructions.email" class="form-control"/> --}}
+                                        <div x-show="instructions.error !== null">
+                                            <p x-text="instructions.error"></p>
+                                        </div>
+                                        <button x-on:click="requestInstrutions()">Enviame las instrucciones nuevamente</button>
+                                    </div>
+                                    <div x-show="instructions.areSended" x-text="instructions.message"></div>
+                                </div>
+                                
+                                <br>
+                                <span>Quiero terminar mi pago</span>
+                            </div>
                         </div>
                     </div>
                 @else
@@ -134,6 +158,8 @@
                         </span>
                     @endforeach
                 @endisset
+
+                Recuerda que la aplicacion de PuraSangre esta disponible para Android e IOS
             </div>
         </div>
     </div>
@@ -182,6 +208,7 @@
                 $('#rut-submit').prop('disabled', false);
             });
         })
+
     </script>
 
     {{-- <script src="{{ asset('/js/bootstrap-datepicker.min.js') }}"></script>

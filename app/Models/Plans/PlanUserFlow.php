@@ -97,6 +97,36 @@ class PlanUserFlow extends Model
      */
     public function isPaid()
     {
-        return (bool) $this->paid;
+        return $this->paid === FlowOrderStatus::PAGADO;
+    }
+
+    /**
+     *  [annul description]
+     *
+     *  @param   [type]$observations  [$observations description]
+     *
+     *  @return  [type]               [return description]
+     */
+    public function annul($observations = null)
+    {
+        $this->update([
+            'plan_status_id' => FlowOrderStatus::ANULADO,
+            'observations' => $observations
+        ]);
+    }
+    
+    /**
+     * [pay description]
+     *
+     *  @param   [type]$observations  [$observations description]
+     *
+     *  @return  [type]               [return description]
+     */
+    public function toPay($observations = null)
+    {
+        $this->update([
+            'plan_status_id' => FlowOrderStatus::PAGADO,
+            'observations' => $observations
+        ]);
     }
 }

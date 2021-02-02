@@ -18,6 +18,7 @@ use App\Models\Bills\Installment;
 use Laravel\Passport\HasApiTokens;
 use App\Models\Clases\Reservation;
 use App\Notifications\MyResetPassword;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -27,71 +28,44 @@ class User extends Authenticatable
     use HasApiTokens, Notifiable, SoftDeletes;
 
     /**
-<<<<<<< Updated upstream
-     * [$dates description]
-<<<<<<< HEAD
-     * 
-=======
      * The attributes that should be mutated to dates.
      *
->>>>>>> Stashed changes
-=======
      *
->>>>>>> master
      * @var array
      */
     protected $dates = ['birthdate', 'since', 'deleted_at'];
 
     /**
-<<<<<<< Updated upstream
-     * [$fillable description]
-<<<<<<< HEAD
      * 
-=======
-     * The attributes that are mass assignable.
+     *  The attributes that are mass assignable.
      *
->>>>>>> Stashed changes
-=======
-     *
->>>>>>> master
-     * @var array
+     *  @var  array
      */
     protected $fillable = [
-        'rut',
-        'first_name',
-        'last_name',
-        'email',
-        'password',
-        'avatar',
-        'phone',
-        'birthdate',
-        'gender',
-        'address',
-        'lat',
-        'lng',
-        'since',
-        'emergency_id',
-        'status_user_id'
+        'rut', 'first_name', 'last_name', 'email',
+        'password', 'avatar', 'phone', 'birthdate',
+        'gender', 'address', 'lat', 'lng', 'since',
+        'emergency_id', 'status_user_id'
     ];
 
     /**
-     * [$hidden description]
+     *  [$hidden description]
      *
-     * @var array
+     *  @var  array
      */
     protected $hidden = ['password', 'remember_token'];
 
     /**
-     * [$appends description]
+     *  [$appends description]
      *
-     * @var array
+     *  @var  array
      */
     protected $appends = ['full_name', 'rut_formated', 'status', 'status_color'];
 
     /**
      * [setBirthdateAttribute description]
      *
-     * @param [type] $value [description]
+     *  @param [type] $value [description]
      */
     public function setBirthdateAttribute($value)
     {
@@ -230,7 +204,7 @@ class User extends Authenticatable
      */
     public function clases()
     {
-        return $this->belongsToMany(Clase::Class, 'reservations', 'user_id', 'clase_id');
+        return $this->belongsToMany(Clase::class, 'reservations', 'user_id', 'clase_id');
     }
 
     /**

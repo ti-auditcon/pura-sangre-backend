@@ -68,10 +68,12 @@
 
             <div class="content">
                 <div class="title m-b-md">
-
                     Pago Exitoso!
                 </div>
-                <div class="alert alert-success">El pago se ha realizado con exito. Presiona en "Cerrar" para volver.</div>
+                <div class="alert alert-success">El pago se ha realizado con exito. Que sigue ahora.</div>
+                You can download the app form Play Store or/and form AppStore
+
+                Here are the links to all of them.
             </div>
         </div>
     </body>

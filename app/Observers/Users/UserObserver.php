@@ -2,16 +2,17 @@
 
 namespace App\Observers\Users;
 
+use Session;
+use Redirect;
+use Carbon\Carbon;
+use App\Models\Users\User;
+use Illuminate\Support\Str;
 use App\Mail\SendNewUserEmail;
 use App\Models\Plans\PlanUser;
-use App\Models\Users\User;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Redirect;
-use Session;
 
 class UserObserver
 {
@@ -38,7 +39,7 @@ class UserObserver
      */
     public function created(User $user)
     {
-        $token = str_random(64);
+        $token = Str::random(64);
         DB::table('password_resets')->insert([
             'email' => $user->email, 
             'token' => Hash::make($token),
@@ -62,11 +63,6 @@ class UserObserver
             $planuser->finish_date = $planuser->start_date->copy()->addDays(7);
             $planuser->save();
         }
-    }
-
-    public function createToken($tokens, $user)
-    {
-        return $tokens->create($user);
     }
 
     /**

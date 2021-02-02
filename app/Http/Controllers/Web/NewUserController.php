@@ -6,24 +6,20 @@ use App\Models\Flow\Flow;
 use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Plans\PlanUser;
-use App\Models\Bills\PaymentType;
+use App\Mail\VerifyExternalUser;
 use App\Models\Plans\PlanUserFlow;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\Plans\FlowOrderStatus;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\Web\NewUserRequest;
+use Illuminate\Support\Facades\Validator;
 
 class NewUserController extends Controller
 {
-    /**
-     *  GuzzleClient
-     *
-     *  @var Client
-     */
-    protected $client;
-
     /**
      *  Plan instance
      *
@@ -40,13 +36,23 @@ class NewUserController extends Controller
 
     /**
      *  Flow instance for purchases
+     *
+     *  @var  App\Models\Flow\Flow
      */
     private $flow;
+
+    /**
+     *  Bill instance
+     *
+     *  @var  App\Models\Bills\Bill
+     */
+    private $bill;
 
     /**
      *  Instanciate Flow
      *  Instanciate PlanUserFlow
      *  Instanciate Plan
+     *  Instanciate PlanUser
      *
      *  @return  void
      */
@@ -54,8 +60,9 @@ class NewUserController extends Controller
     {
         $this->instanciateFlow('sandbox');
         $this->planUserFlow = new PlanUserFlow;
-        $this->plan = Plan::class;
-        $this->plan_user = PlanUser::class;
+        $this->plan = new Plan;
+        $this->plan_user = new PlanUser;
+        $this->bill = new Bill;
     }
 
     /**
@@ -98,25 +105,84 @@ class NewUserController extends Controller
      */
     public function store(NewUserRequest $request)
     {
-        $user = User::create($request->all());
+        $dispatcher = $this->disableObservers(User::class);
+        $user = User::create(array_merge($request->all(), ['password' => bcrypt('purasangre')]));
+        /*** 
+         *  todo: extract the generate a new token
+         */
+        $token = Str::random(150);
+        DB::table('password_resets')->insert([
+            'email' => $user->email,
+            'token' => $token,
+        ]);
+        Mail::to($user->email)->send(new VerifyExternalUser($user, $token, $request->plan_id));
+        $this->enableObservers(User::class, $dispatcher);
 
         return response()->json([
-            'success' => 'Genial, ahora estas siendo redirigido para pagar el plan que elegiste :)',
+            'success' => 'Has sido registrado, te hemos enviado un link a tu correo para verificar tu correo y pagar directamente tu plan',
             'user_id' => $user->id,
             'plan_id' => $request->plan_id
         ]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     *  [disableObservers description]
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *  @param   [type]  $class  [$class description]
+     *
+     *  @return  [type]          [return description]
+     */
+    public function disableObservers($class)
+    {
+        // getting the dispatcher instance (needed to enable again the event observer later on)
+        $dispatcher = $class::getEventDispatcher();
+        // disabling the events
+        $class::unsetEventDispatcher();
+
+        return $dispatcher;
+    }
+
+    /**
+     * [enableObservers description]
+     *
+     * @param   [type]  $class       [$class description]
+     * @param   [type]  $dispatcher  [$dispatcher description]
+     *
+     * @return  void
+     */
+    public function enableObservers($class, $dispatcher)
+    {
+        // enabling the event dispatcher
+        $class::setEventDispatcher($dispatcher);
+    }
+    /**
+     *  Show the form for editing the specified resource.
+     *
+     *  @param  int  $id
+     * 
+     *  @return \Illuminate\Http\Response
      */
     public function edit($userId, Request $request)
     {
-        $user = User::find($userId);
+        // find a plan
         $this->plan = Plan::find($request->plan_id);
+        /**
+         *  todo: add the page to choose a contractable plan
+         */
+        if (!isset($this->plan->id)  || $this->plan->IsNotContractable()) return; // pagina para elegir el plan a pagar
+        
+        /** 
+         *  todod: extract this block
+         */
+        if ($error = $this->verifyToken($request->token)) {
+            $type = 'email';
+            return view('web.flow.error', compact('error', 'type'));
+        } else {
+            $this->spendToken($request->token);
+        }
+
+        $user = User::find($userId);
+        if (!isset($user->id)) return view('web.flow.error', compact('error', 'type'));; // pagina type error to choose between email token or create  in the system
         $this->planUserFlow = $this->planUserFlow->makeOrder($this->plan, $user->id);
 
         try {
@@ -132,13 +198,33 @@ class NewUserController extends Controller
                 ]
             ]);
         } catch (\Exception $e) {
-            return back()->with(
-                'warning',
-                'Ups, algo ha salido mal, no se ha realizado la transacción, verifica que tu correo sea válido, o puedes comunicarte con el administrador'
-            );
+            return view('web.flow.error', [
+                'error' => 'Ups, algo ha salido mal, no desesperes, si crees que has realizado bien el pago, comunicate con nosotros al +569 56488542 para que podamos ayudarte', 
+                'type' => 'payment'
+            ]);
         }
 
         return Redirect::to($paymentResponse->getUrl());
+    }
+
+    /**
+     *  [verifyToken description]
+     *
+     *  @param   [type]  $token  [$token description]
+     *
+     *  @return  [type]          [return description]
+     */
+    public function verifyToken($token)
+    {
+        if (!isset($token) || $token === null) {
+            return 'No tiene un token valido para poder seguir, puedes solicitar uno a tu correo';
+        }
+
+        if (DB::table('password_resets')->where('token', $token)->where('expired', false)->exists('id')) {
+            return false;
+        }
+
+        return 'El token es invalido, puedes solicitar uno a tu correo';
     }
 
     /**
@@ -150,154 +236,146 @@ class NewUserController extends Controller
      */
     public function returnFlow(Request $request)
     {
-        $payment = $this->flow->payment()->get($request->token);
-        $this->planUserFlow = PlanUserFlow::find($payment->commerceOrder);
-
-        if ($this->planUserFlow->isPaid()) {
-            return view('web.flow.return');
-        }
-
-        $user = User::find($this->planUserflow->user_id);
-        $paymentData = $payment->paymentData;
-        
-        // todo: extract error payment
-        if ($paymentData['date'] === null) {
-            $this->planUserFlow->paid = FlowOrderStatus::ANULADO;
-            $this->planUserFlow->observations = 'Error fecha desde flow. Posiblemente error en el pago';
-            $this->planUserFlow->save();
-
-            return view('web.flow.error');
-        }
-
-        $this->planUserFlow->paid = FlowOrderStatus::PAGADO;
-        $this->planUserFlow->save();
-         
-        $this->plan_user = $this->plan_user->makePlanUser($this->planUserFlow, $user);
-        
-        //  TODO: refactor to Bill model 
-        $bill = new Bill;
-        $bill->payment_type_id = PaymentType::FLOW;
-        $bill->plan_user_id = $this->plan_user->id;
-        $bill->date = today();
-        $bill->start_date = $this->plan_user->start_date;
-        $bill->finish_date = $this->plan_user->finish_date;
-        $bill->amount = $paymentData['balance'];
-        $bill->total_paid = $paymentData['amount'];
-        $bill->save();
-
-        // todo: chequear de donde viene este return con el otro codigo
-        return view('flow.return');
-            \DB::table('errors')->insert([
-                'error' => 'entre returnFlow, userId: ' .  $user->id . ' - ' .
-                    $user->full_name . 'status_user_id: ' . $user->status_user_id .  ', con plan planUserflow: ' . $planUserflow->id,
-                'where' => 'FlowController',
-                'created_at' => now(),
-            ]);
-
-            $planUserflow->paid = 0;
-            $planUserflow->save();
-                
-        return view('flow.error');
-    }
-
-    // public function confirmFlow(Request $request)
-    // {
-    //     $payment = $this->flow->payment()->get($request->token);
-    //     $paymentData = $payment->paymentData;
-    //     $planUserflow = FlowOrder::find($payment->commerceOrder);
-    //     $user = User::find($planUserflow->user_id);
-
-    //     if ($planUserflow->paid == FlowOrderStatus::PAGADO) {
-    //         return response()->json(['data' => 'no']);
-    //     }
-
-    //     if ($paymentData['date'] == null) {
-    //         $planUserflow->paid = 3;
-    //         $planUserflow->observations = 'Error fecha desde flow. Posiblemente error en el pago';
-    //         $planUserflow->save();
-    //         return response()->json(['data' => 'no']);
-    //     } else {
-
-    //         $planUserflow->paid = FlowOrderStatus::PAGADO;
-    //         $planUserflow->save();
-    //         $planUser = new PlanUser;
-    //         $planUser->start_date = $planUserflow->start_date;
-    //         $planUser->finish_date = $planUserflow->finish_date;
-    //         $planUser->counter = $planUserflow->counter;
-    //         $planUser->user_id = $planUserflow->user_id;
-    //         $planUser->plan_id = $planUserflow->plan_id;
-    //         if (count($user->plan_users()->where('plan_status_id', 1)->get()) > 0) {
-    //             $planUser->plan_status_id = 3;
-    //         } else {
-    //             $planUser->plan_status_id = 1;
-    //             $user->status_user_id = 1;
-    //             $user->save();
-    //         }
-
-    //         if ($planUser->save()) {
-
-
-    //             $bill = new Bill;
-    //             $bill->payment_type_id = 6;
-    //             $bill->plan_user_id = $planUser->id;
-    //             $bill->date = today();
-    //             $bill->start_date = $planUser->start_date;
-    //             $bill->finish_date = $planUser->finish_date;
-    //             $bill->amount = $paymentData['balance'];
-    //             $bill->total_paid = $paymentData['amount'];
-    //             $bill->save();
-
-    //             $month = $bill->date->month;
-    //             $year = $bill->date->year;
-    //             $plan_id = $bill->plan_user->plan->id;
-    //             $amount = $bill->amount;
-
-    //             \DB::table('errors')->insert([
-    //                 'error' => 'entre confirmFlow, userId: ' .  $user->id . ' - ' .
-    //                 $user->full_name . 'status_user_id: ' . $user->status_user_id .
-    //                     ', con plan planUserflow: ' . $planUserflow->id,
-    //                 'where' => 'FlowController',
-    //                 'created_at' => now(),
-    //             ]);
-
-    //             return response()->json([
-    //                 'data' => 'ok',
-    //             ]);
-    //         } else {
-    //             $planUserflow->paid = 0;
-    //             $planUserflow->save();
-    //             return response()->json([
-    //                 'data' => 'no',
-    //             ]);
-    //         }
-    //     }
-
-
-    //     return response()->json([
-    //         'data' => 'no',
-    //     ]);
-    // }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        $this->makeFlowPayment($request);
     }
 
     /**
-     * Remove the specified resource from storage.
+     *  Confirm payment
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *  @param   Request  $request
+     *
+     *  @return  view
      */
-    public function destroy($id)
+    public function confirmFlow(Request $request)
     {
-        //
+        $this->makeFlowPayment($request);
+    }
+
+    /**
+     * [makeFlowPayment description]
+     *
+     * @param   Request  $request  [$request description]
+     *
+     * @return  [type]             [return description]
+     */
+    public function makeFlowPayment(Request $request)
+    {
+        $payment = $this->flow->payment()->get($request->token); // get the payment process
+        $planUserFlow = $this->planUserFlow->find((int) $payment->commerceOrder);
+
+        /** Plan has been paid already */
+        if ($planUserFlow->isPaid()) {
+            return response()->json(['data' => 'ok']);
+        }
+        
+        /** Plan wasn't paid, then anuul payment */
+        if ($payment->paymentData['date'] === null) {
+            $planUserFlow->annul('Error fecha desde flow. Posiblemente error en el pago');
+
+            return response()->json(['data' => 'no']);
+        }
+
+        /**  Chage status plan user flow to paid  */
+        $planUserFlow->toPay('Pago realizado desde web');
+        $user = User::find($planUserFlow->user_id);
+
+        /** Register Plan User on system */
+        $plan_user = PlanUser::makePlanUser($planUserFlow, $user);
+
+        $this->bill->makeFlowBill($plan_user, $payment->paymentData);
+
+        return response()->json(['data' => 'ok']);
+    }
+
+    /**
+     * [finishing description]
+     *
+     * @param   Request  $request  [$request description]
+     *
+     * @return  [type]             [return description]
+     */
+    public function finishing(Request $request)
+    {
+        if ($error = $this->verifyToken($request->token)) {
+            $type = 'email';
+            return view('web.flow.error', compact('error', 'type'));
+        }
+
+        /**
+         *  todo: Pass the next two lines to the User class
+          */
+        $user = User::where('email', $request->email)->first(['id', 'email_verified_at']);
+        $user->update(['email_verified_at' => now()]);
+
+        return redirect("/new-user/{$user->id}/edit?plan_id={$request->plan_id}&token={$request->token}");
+    }
+
+    /**
+     * [requestInstructions description]
+     *
+     * @param   Request  $request  [$request description]
+     *
+     * @return  json
+     */
+    public function requestInstructions(Request $request)
+    {
+        /** The email is valid and exists a user in the system with this email */
+        if($this->validateEmail($request)) return $this->validateEmail($request);
+
+        $token = $this->generateNewToken($request->email);
+
+        $user = User::where('email', $request->email)->first();
+        Mail::to($user->email)->send(new VerifyExternalUser($user, $token, $request->plan_id));
+
+        return response()->json(['success' => 'Genial, te hemos enviado las instrucciones, por favor revisa tu correo']);
+    }
+
+    /**
+     *  Expired all token related to the email, and generate and return a brand new token
+     *
+     *  @param   string  $email  has to receive an valid email of the system
+     *
+     *  @return  string  $token  150 characters
+     */
+    public function generateNewToken($email)
+    {
+        DB::table('password_resets')->where('email', $email)->update(['expired' => true]);
+
+        $token = Str::random(150);
+        DB::table('password_resets')->insert([
+            'email' => $email,
+            'token' => $token,
+        ]);
+
+        return $token;
+    }
+
+    /**
+     *  [validateEmail description]
+     *
+     *  @param   [type]  $request  [$request description]
+     *
+     *  @return  [type]            [return description]
+     * 
+     *  todo: maybe refactor to a Request
+     */
+    public function validateEmail($request)
+    {
+        Validator::make($request->all(), [
+            'email' => 'required|email'
+        ], [
+            'email.required' => 'Por favor ingresa tu correo',
+            'email.email' => 'El correo debe tener un formato valido'
+        ])->validate();
+
+        if (User::where('email', $request->email)->doesntExist('id')) {
+            return response([
+                'message' => 'La informacion es incorrecta',
+                'errors'  => [
+                    'email' => ['No existe este email en sistema']
+                ],
+                'status' => 422
+            ], 422);
+        }
     }
 }

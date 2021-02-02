@@ -61,4 +61,26 @@ class Bill extends Model
     {
         return $this->belongsTo('App\Models\Plans\PlanUser');
     }
+
+    /**
+     *  Generaate a bill for a plan_user
+     *
+     *  @param   PlanUser  $plan_user    [$plan_user description]
+     *  @param   Flow      $paymentData  [$paymentData description]
+     *
+     *  @return  $this
+     */
+    public function makeFlowBill($plan_user, $paymentData)
+    {
+        return $this->create([
+            'start_date' => $plan_user->start_date,
+            'finish_date' => $plan_user->finish_date,
+            'counter' => $plan_user->counter,
+            'payment_type_id' => PaymentType::FLOW,
+            'plan_user_id' => $plan_user->id,
+            'date' => today(),
+            'amount' => $paymentData['balance'],
+            'total_paid' => $paymentData['amount'],
+        ]);
+    }
 }
