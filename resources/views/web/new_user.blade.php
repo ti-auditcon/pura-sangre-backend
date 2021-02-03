@@ -8,9 +8,6 @@
                 <div class="ibox-title">
                     <h3>Paso 1 de 2. Completa tu compra registrandote</h3>
                 </div>
-
-                <div class="ibox-tools">
-                </div>
             </div>
 
             <div class="ibox-body">
@@ -27,6 +24,7 @@
 
                                         <span x-show.transition.in="errors.first_name" x-text="errors.first_name" class="text-warning"></span>
                                     </div>
+
                                     <div class="col-md-6 form-group">
                                         <label class="col-form-label">Apellido</label>
                                     
@@ -39,10 +37,10 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-5 form-group">
-                                        <label class="font-normal">Fecha de nacimiento</label>
+                                    <div class="col-md-6 form-group">
+                                        <label class="col-form-label">Fecha de nacimiento</label>
                                     
-                                        <div class="input-group date">
+                                        <div class="date">
                                             {{-- <input id="datepicker-birthdate" type="text" x-on:change="console.log($event)" class="form-control"/> --}}
                                                 <input class="form-control"
                                                         x-ref="input"
@@ -53,7 +51,20 @@
 
                                         <span x-show.transition.in="errors.birthdate" x-text="errors.birthdate" class="text-warning"></span>
                                     </div>
-                                    <div class="col-md-7 form-group">
+                                    <div class="col-md-6 form-group">
+                                            <label class="col-form-label">Teléfono</label>
+                                        
+                                            <div class="input-group">
+                                                <span class="input-group-addon">+56 9</span>
+                                            
+                                                <input class="form-control" x-on:keyup="fill('phone', $event)" name="phone" type="tel">
+                                            </div>
+
+                                            <span x-show.transition.in="errors.phone" x-text="errors.phone" class="text-warning"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 form-group">
                                         <label class="col-form-label">Dirección</label>
                             
                                         <input class="form-control"
@@ -64,19 +75,6 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group inline">
-                                            <label class="col-form-label">Teléfono</label>
-                                        
-                                            <div class="input-group">
-                                                <span class="input-group-addon">+56 9</span>
-                                            
-                                                <input class="form-control" x-on:keyup="fill('phone', $event)" name="phone" type="tel">
-                                            </div>
-
-                                            <span x-show.transition.in="errors.phone" x-text="errors.phone" class="text-warning"></span>
-                                        </div>
-                                    </div>
                                     <div class="col-md-6 form-group inline">
                                         <label class="col-form-label">Correo electronico</label>
                                     
@@ -87,6 +85,18 @@
                                             />
 
                                         <span x-show.transition.in="errors.email" x-text="errors.email" class="text-warning"></span>
+                                    </div>
+                                    
+                                    <div class="col-md-6 form-group inline">
+                                        <label class="col-form-label">Elige una contraseña</label>
+                                    
+                                        <input class="form-control"
+                                                x-on:keyup="fill('password', $event)" 
+                                                type="password" 
+                                                name="password"
+                                            />
+
+                                        <span x-show.transition.in="errors.password" x-text="errors.password" class="text-warning"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -116,7 +126,10 @@
                                         x-on:click="sendForm"
                                         type="button"
                                         x-bind:disabled="sendButton.disabled"
-                                        x-text="sendButton.text">Registrarme y pagar</a>
+                                        x-text="sendButton.text"
+                                >
+                                    Registrarme y pagar
+                                </a>
 
                                 <div x-show="redirectButton">
                                     Si no te redirige, has clic aqui
@@ -124,20 +137,24 @@
                                 </div>
                             </div>
                             <div x-show="formStatus.isFinished" x-text="formStatus.message"></div>
-                            <div x-show="!errors.email">
-                            {{-- <div x-show="errors.email"> --}}
-                                <span>Parece que ya tienes cuenta en PuraSangre. Tal vez quieras que:</span>
+                            <div x-show="errors.email">
+                                <span>Parece que ya tienes cuenta en PuraSangre. Tal vez quieras:</span>
                                 <br>
                                 <div>
                                     <div x-show="!instructions.areSended">
                                         <span>Tuve problemas al comprar y quiero que me envien las instrucciones de nuevo</span>
 
-                                        <input type="text" x-on:keyup="fillEmail($event)" x-model="instructions.email" class="form-control"/>
+                                        <input type="text" x-on:keyup="fillEmail($event)"
+                                                x-model="instructions.email" class="form-control" placeholder="Ingresa tu correo"/>
                                         {{-- <input type="text" x-on:keyup="instructions.email" class="form-control"/> --}}
                                         <div x-show="instructions.error !== null">
                                             <p x-text="instructions.error"></p>
                                         </div>
-                                        <button x-on:click="requestInstrutions()">Enviame las instrucciones nuevamente</button>
+                                        <button x-on:click="requestInstructions()"
+                                                x-bind:disabled="instructions.buttonIsDisabled"
+                                        >
+                                            Enviame las instrucciones nuevamente
+                                        </button>
                                     </div>
                                     <div x-show="instructions.areSended" x-text="instructions.message"></div>
                                 </div>
@@ -158,7 +175,8 @@
                         </span>
                     @endforeach
                 @endisset
-
+                
+                <br> <br>
                 Recuerda que la aplicacion de PuraSangre esta disponible para Android e IOS
             </div>
         </div>

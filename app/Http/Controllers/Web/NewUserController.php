@@ -59,9 +59,13 @@ class NewUserController extends Controller
     public function __construct()
     {
         $this->instanciateFlow('sandbox');
+        
         $this->planUserFlow = new PlanUserFlow;
+        
         $this->plan = new Plan;
+        
         $this->plan_user = new PlanUser;
+        
         $this->bill = new Bill;
     }
 
@@ -73,11 +77,12 @@ class NewUserController extends Controller
     private function instanciateFlow($environment)
     {
         $this->flow = Flow::make($environment, [
-            'apiKey' => config('flow.sandbox.apiKey'), /**  Credentials for FLOW platform */
-            'secret' => config('flow.sandbox.secret'), /**  Credentials for FLOW platform */
+            /**  Credentials for FLOW platform */
+            'apiKey' => config('flow.sandbox.apiKey'),
+            'secret' => config('flow.sandbox.secret'),
         ]);
     }
-    
+
     /**
      *  Show the form for creating a new resource.
      *
@@ -106,16 +111,11 @@ class NewUserController extends Controller
     public function store(NewUserRequest $request)
     {
         $dispatcher = $this->disableObservers(User::class);
+
         $user = User::create(array_merge($request->all(), ['password' => bcrypt('purasangre')]));
-        /*** 
-         *  todo: extract the generate a new token
-         */
-        $token = Str::random(150);
-        DB::table('password_resets')->insert([
-            'email' => $user->email,
-            'token' => $token,
-        ]);
+        $token = $this->generateNewToken($user->email);
         Mail::to($user->email)->send(new VerifyExternalUser($user, $token, $request->plan_id));
+
         $this->enableObservers(User::class, $dispatcher);
 
         return response()->json([
@@ -145,16 +145,17 @@ class NewUserController extends Controller
     /**
      * [enableObservers description]
      *
-     * @param   [type]  $class       [$class description]
-     * @param   [type]  $dispatcher  [$dispatcher description]
+     *  @param   [type]  $class       [$class description]
+     *  @param   [type]  $dispatcher  [$dispatcher description]
      *
-     * @return  void
+     *  @return  void
      */
     public function enableObservers($class, $dispatcher)
     {
         // enabling the event dispatcher
         $class::setEventDispatcher($dispatcher);
     }
+
     /**
      *  Show the form for editing the specified resource.
      *
@@ -164,25 +165,17 @@ class NewUserController extends Controller
      */
     public function edit($userId, Request $request)
     {
-        // find a plan
-        $this->plan = Plan::find($request->plan_id);
-        /**
-         *  todo: add the page to choose a contractable plan
-         */
-        if (!isset($this->plan->id)  || $this->plan->IsNotContractable()) return; // pagina para elegir el plan a pagar
-        
-        /** 
-         *  todod: extract this block
-         */
-        if ($error = $this->verifyToken($request->token)) {
-            $type = 'email';
-            return view('web.flow.error', compact('error', 'type'));
-        } else {
-            $this->spendToken($request->token);
+        $user = $this->validateUserData($userId, $request);
+        if (isset($user['error'])) {
+            $plans = Plan::where('contractable', true)->get(['id', 'plan', 'amount']);
+
+            return view('web.flow.error')->with([
+                'error' => $user['error'],
+                'type' => $user['type'],
+                'plans' => $plans
+            ]);
         }
 
-        $user = User::find($userId);
-        if (!isset($user->id)) return view('web.flow.error', compact('error', 'type'));; // pagina type error to choose between email token or create  in the system
         $this->planUserFlow = $this->planUserFlow->makeOrder($this->plan, $user->id);
 
         try {
@@ -199,12 +192,60 @@ class NewUserController extends Controller
             ]);
         } catch (\Exception $e) {
             return view('web.flow.error', [
-                'error' => 'Ups, algo ha salido mal, no desesperes, si crees que has realizado bien el pago, comunicate con nosotros al +569 56488542 para que podamos ayudarte', 
+                'error' => 'Ups, algo ha salido mal, no desesperes, si crees que has realizado bien el pago, comunicate con nosotros al +569 56488542 para que podamos ayudarte',
                 'type' => 'payment'
             ]);
         }
 
         return Redirect::to($paymentResponse->getUrl());
+    }
+
+    /**
+     *  [validateUserData description]
+     *
+     *  @param   [type]  $userId   [$userId description]
+     *  @param   [type]  $request  [$request description]
+     *
+     *  @return  [type]            [return description]
+     */
+    public function validateUserData($userId, $request)
+    {
+        /** find a plan */
+        $this->plan = Plan::find($request->plan_id);
+        if (!isset($this->plan->id)  || $this->plan->IsNotContractable()) {
+            $error = 'Parece que no has elegido un plan o no esta diponible para contratar, por favor selecciona uno de estos';
+            $type = 'email';
+            return compact('error', 'type');
+        }
+
+        $user = User::find($userId);
+        if (!isset($user->id)) {
+            $error = 'No hemos podido encontrarte en sistema, por favor pide nuevamente las instrucciones';
+            $type = 'email';
+            return compact('error', 'type');
+        }
+
+        if ($error = $this->verifyToken($request->token)) {
+            $type = 'email';
+            return view('web.flow.error', compact('error', 'type'));
+        } else {
+            $this->spendToken($request->token);
+        }
+
+        return $user;
+    }
+
+    /**
+     *  [spendToken description]
+     *
+     *  @param   [type]  $token  [$token description]
+     *
+     *  @return  [type]          [return description]
+     */
+    public function spendToken($token)
+    {
+        DB::table('password_resets')->where('token', $token)
+                                    ->update(['expired' => true]);
     }
 
     /**
@@ -267,7 +308,7 @@ class NewUserController extends Controller
         if ($planUserFlow->isPaid()) {
             return response()->json(['data' => 'ok']);
         }
-        
+
         /** Plan wasn't paid, then anuul payment */
         if ($payment->paymentData['date'] === null) {
             $planUserFlow->annul('Error fecha desde flow. Posiblemente error en el pago');
@@ -303,7 +344,7 @@ class NewUserController extends Controller
 
         /**
          *  todo: Pass the next two lines to the User class
-          */
+         */
         $user = User::where('email', $request->email)->first(['id', 'email_verified_at']);
         $user->update(['email_verified_at' => now()]);
 
@@ -311,16 +352,17 @@ class NewUserController extends Controller
     }
 
     /**
-     * [requestInstructions description]
+     *  Create a token for a valid email and send a email with instructions 
+     *  It needs a valid email that belongs to a user
      *
-     * @param   Request  $request  [$request description]
+     *  @param   Request  $request  [$request description]
      *
-     * @return  json
+     *  @return  json
      */
     public function requestInstructions(Request $request)
     {
         /** The email is valid and exists a user in the system with this email */
-        if($this->validateEmail($request)) return $this->validateEmail($request);
+        if ($this->validateEmail($request)) return $this->validateEmail($request);
 
         $token = $this->generateNewToken($request->email);
 
@@ -362,17 +404,19 @@ class NewUserController extends Controller
     public function validateEmail($request)
     {
         Validator::make($request->all(), [
-            'email' => 'required|email'
+            'email' => 'required|email',
+            'plan_id' => 'required'
         ], [
             'email.required' => 'Por favor ingresa tu correo',
-            'email.email' => 'El correo debe tener un formato valido'
+            'email.email' => 'El correo debe tener un formato valido',
+            'plan_id.required' => 'Elige un plan'
         ])->validate();
 
         if (User::where('email', $request->email)->doesntExist('id')) {
             return response([
                 'message' => 'La informacion es incorrecta',
                 'errors'  => [
-                    'email' => ['No existe este email en sistema']
+                    'email' => ['Lo siento pero ste correo no existe en nuestro sistema']
                 ],
                 'status' => 422
             ], 422);

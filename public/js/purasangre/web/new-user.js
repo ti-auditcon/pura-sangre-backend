@@ -7,6 +7,7 @@ function newUser() {
             { name: 'birthdate', value: '' },
             { name: 'phone', value: '' },
             { name: 'email', value: '' },
+            { name: 'password', value: '' },
             { name: 'address', value: '' }
         ],
         errors: {
@@ -14,7 +15,7 @@ function newUser() {
             last_name: '', birthdate: '', phone: ''
         },
         formStatus: { isFinished: false, message: ''},
-        instructions: { areSended: false, message: '', email: '', error: null },
+        instructions: { areSended: false, message: '', email: '', error: null, buttonIsDisabled: false },
         plan_id: '',
         redirectButton: null,
         sendButton: { text: 'Registrarme y pagar', disabled: false },
@@ -63,15 +64,16 @@ function newUser() {
                 }
             });
         },
-        requestInstrutions() {
+        requestInstructions() {
+            this.instructions.buttonIsDisabled = true;
             axios.post('/new-user/request-instructions?email=' + this.instructions.email)
                 .then(response => {
-                    console.log(response);
                     if (response.data.success) {
                         this.instructions.message = response.data.success;
                         this.instructions.areSended = true;
                     }
                 }).catch(error => {
+                    this.instructions.buttonIsDisabled = false;
                     this.instructions.error = error.response.data.errors.email[0];
                 });
         },

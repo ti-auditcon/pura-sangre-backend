@@ -172,7 +172,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 
  *   ******************************************************   */
 Route::post('new-user/request-instructions', 'Web\NewUserController@requestInstructions');
-Route::resource('/new-user', 'Web\NewUserController');
+Route::resource('/new-user', 'Web\NewUserController')->except('index', 'update', 'delete');
  
  /**   *****************************************************
   *    *******         EXTERNAL ROUTES        ************** 

@@ -72,15 +72,23 @@
                 </div>
                 <div class="alert alert-success">
                     @if (isset($error))
-                        {{ $error }}
-
                         @if ($type === 'email')
                             <div x-data="forInstructions()">
                                 <div x-show="!instructions.areSended">
-                                    <input type="text" x-on:keyup="fillEmail($event)" x-model="instructions.email" class="form-control"/>
-                                    <div x-show="instructions.error !== null">
-                                        <p x-text="instructions.error"></p>
-                                    </div>
+                                    {{ $error }}
+                                    <select name="plans" x-model="selectedOption">
+                                        <option value="">Selecciona un plan</option>
+                                        @foreach ($plans as $item)
+                                            <option value="{{ $item->id }}">{{ $item->plan }} - {{ $item->amount }}</option>
+                                        @endforeach
+                                    </select>
+                                    <input type="text" x-on:keyup="fillEmail($event)"
+                                             x-model="instructions.email" class="form-control"
+                                             value="{{ isset($email) ? $email : null }}"/>
+
+                                        <template x-for="error in errores">
+                                                <p x-text="error"></p>
+                                        </template>
                                     <button x-on:click="requestInstrutions()">Enviame las instrucciones nuevamente</button>
                                 </div>
                                 <div x-show="instructions.areSended" x-text="instructions.message"></div>
@@ -99,18 +107,23 @@
         <script>
             function forInstructions() {
                 return {
-                    instructions: { areSended: false, message: '', email: '', error: null },
-                    
+                    instructions: { areSended: false, message: '', email: ''},
+                    errores: [],
+                    selectedOption: '',
                     requestInstrutions() {
-                        axios.post('/new-user/request-instructions?email=' + this.instructions.email)
+                        console.log(this.selectedOption);
+                        axios.post(`/new-user/request-instructions?email=${this.instructions.email}&plan_id=${this.selectedOption}`)
                             .then(response => {
                                 console.log(response);
+                                console.log('response');
                                 if (response.data.success) {
                                     this.instructions.message = response.data.success;
                                     this.instructions.areSended = true;
                                 }
                             }).catch(error => {
-                                this.instructions.error = error.response.data.errors.email[0];
+                                this.errores = [];
+                                let data = error.response.data.errors;
+                                Object.values(data).map(error => this.errores.push(error));
                             });
                     },
 
