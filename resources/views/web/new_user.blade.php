@@ -16,9 +16,9 @@
 <body class="register-wrapper">
     <div class="register">
         <div class="header">
-            <p>
+            {{-- <p>
                 Paso 1 de 2
-            </p>
+            </p> --}}
             <h3>Completa tu compra registrandote</h3>
         </div>
         <div class="content">
