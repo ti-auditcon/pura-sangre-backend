@@ -22,6 +22,11 @@ class Role extends Model
 	    return $this->belongsToMany(User::class, 'role_user');
 	}
 
+    /**
+     * [coaches description]
+     *
+     * @return  [type]  [return description]
+     */
 	public function coaches()
 	{
 		return $this->belongsToMany(User::class)->using(RoleUser::class);

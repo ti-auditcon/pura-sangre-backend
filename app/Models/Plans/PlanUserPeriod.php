@@ -7,8 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class PlanUserPeriod extends Model
 {
-    protected $fillable = ['start_date', 'finish_date',
-    'counter', 'plan_user_id'];
+    /**
+     * [$fillable description]
+     *
+     * @var [type]
+     */
+    protected $fillable = [
+        'start_date', 'finish_date',
+        'counter', 'plan_user_id'
+    ];
 
     /**
      * [planuser description]

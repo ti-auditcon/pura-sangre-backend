@@ -3,10 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-
 Auth::routes();
-
-
 
 Route::get('maile', function () {
     // dd('asdasds');
@@ -34,33 +31,33 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
         ->name('incomes.calibrate');
     Route::get('update-reservations-plans', 'Users\UserController@putIdPlan')->middleware('role:1');
 
-    /**
+    /*
      * Clases routes (clases, clases-alumnos, bloques)
      */
     Route::resource('blocks', 'Clases\BlockController')->middleware('role:1');
     Route::resource('clases', 'Clases\ClaseController')->except('create', 'edit', 'update');
-        Route::post('clases/{clase}/confirm', 'Clases\ClaseController@confirm')->name('clase.confirm');
+    Route::post('clases/{clase}/confirm', 'Clases\ClaseController@confirm')->name('clase.confirm');
     Route::resource('reservation', 'Clases\ReservationController')->only('store', 'update', 'destroy');
-        Route::post('/reservation/{reservation}/confirm', 'Clases\ReservationController@confirm');
+    Route::post('/reservation/{reservation}/confirm', 'Clases\ReservationController@confirm');
     Route::get('get-wods', 'Clases\ClaseController@wods');
     Route::get('get-clases', 'Clases\ClaseController@clases');
     Route::post('clases/type-select/', 'Clases\ClaseController@typeSelect')->name('clases.type');
     Route::get('/asistencia-modal/{id}', 'Clases\ClaseController@asistencia')->name('asistencia');
 
-    /**
+    /*
      * Clases types routes
      */
     Route::resource('clases-types', 'Clases\ClaseTypeController')->except('create', 'edit');
     // Route::post('clases-types/update', 'Clases\ClaseTypeController@updateClaseTypeStage')
     //      ->name('clases-types.update-all');
 
-    /**
+    /*
      * CALENDAR CLASES ROUTES
      */
     Route::post('calendar/clases/delete', 'Clases\CalendarClasesController@destroy')
          ->name('admin.calendar.clasesday.destroy');
 
-    /**
+    /*
      *  POSTPONE PLANS ROUTE
      */
     Route::get('postpones', 'Plans\PostponeController@index')->middleware('role:1')->name('postpones.index');
@@ -71,7 +68,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
          ->only('store', 'destroy')
          ->middleware('role:1');
 
-    /**
+    /*
      * BILLS Routes
      */
     Route::resource('payments', 'Bills\BillController')->middleware('role:1')->only('index', 'update');
@@ -81,20 +78,19 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 
     Route::resource('payments', 'Bills\BillController')->middleware('role:1')->only('index', 'update');
 
-
-    /**
+    /*
      * Plans Routes
      */
     Route::resource('plans', 'Plans\PlanController')->middleware('role:1');
 
-    /**
+    /*
      * Exercises Routes (exercises)
      */
     Route::resource('exercises', 'Exercises\ExerciseController');
     Route::get('stage-types/{stage_type}', 'Wods\StageTypeController@show');
     // Route::resource('stages-types', 'Exercises\ExerciseController');
 
-    /**
+    /*
      * Messages Routes
      */
     Route::resource('alerts', 'Messages\AlertController')->only(['index', 'store'])->middleware('role:1');
@@ -109,14 +105,14 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
             ->middleware('role:1')
             ->name('notifications.destroy');
 
-    /**
+    /*
      *  Settings Routes
      */
     Route::get('json-density-parameters', 'Settings\DensityParameterController@clasesDensities');
     Route::resource('density-parameters', 'Settings\DensityParameterController')
             ->only('index', 'store', 'update', 'destroy');
 
-    /**
+    /*
      * Reports routes
      */
     Route::resource('reports', 'Reports\ReportController')->middleware('role:1')->only('index');
@@ -132,7 +128,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('reports/data-plans/', 'Reports\DataPlansController@index');
     Route::post('reports/data-plans/compare', 'Reports\DataPlansController@compare')->name('data-plans-compare');
 
-    /**
+    /*
      * Users Routes (ALUMNOS, PROFES, ADMINS, ALERTAS)
      */
     Route::get('users/{user}/plans/{plan}/info', 'Users\UserController@userinfo')->name('users.plans.info');
@@ -149,33 +145,34 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('users/{user}/plans/{plan}/info', 'Users\UserController@userinfo')->name('users.plans.info');
 
     Route::patch('users/{user}/reset-password', 'Users\UserController@resetPassword')->name('users.password-reset');
-  
-    /**
+
+    /*
      * ROLEUSER ROUTES
      */
     Route::resource('role-user', 'Users\RoleUserController')->only('edit', 'store', 'destroy');
 
-    /**
+    /*
      *  WODS Routes
      */
     Route::resource('wods', 'Wods\WodController')->except('index', 'show')->middleware('role:1');
 
-    /**
+    /*
      *  Notifications TESTS
      */
     Route::get('notifications-send-push/{user_id}', 'Messages\NotificationController@sendOnePush')->middleware('role:1');
 });
 
-/**  *****************************************************
+/*  *****************************************************
 
- *    *******         EXTERNAL ROUTES        ************** 
+ *    *******         EXTERNAL ROUTES        **************
 
  *   ******************************************************   */
 Route::post('new-user/request-instructions', 'Web\NewUserController@requestInstructions');
-Route::resource('/new-user', 'Web\NewUserController')->except('index', 'update', 'delete');
- 
- /**   *****************************************************
-  *    *******         EXTERNAL ROUTES        ************** 
+Route::get('/new-user/{plan}/create', 'Web\NewUserController@create');
+Route::resource('/new-user', 'Web\NewUserController')->except('index', 'update', 'destroy', 'create', 'show');
+
+ /*   *****************************************************
+  *    *******         EXTERNAL ROUTES        **************
   *   ******************************************************   */
 Route::post('/flow/return', 'Web\NewUserController@returnFlow');
 Route::post('/flow/confirm', 'Web\NewUserController@confirmFlow');
@@ -195,5 +192,11 @@ Route::get('test-email', function () {
         'token' => $token,
     ]);
 
-    return (new App\Mail\VerifyExternalUser($user, $token, 3));
+    return new App\Mail\VerifyExternalUser($user, $token, 3);
+});
+
+Route::get('first', function () {
+    $basePath = realpath(__DIR__.'/../');
+
+    return rtrim($basePath, '\/');
 });

@@ -18,7 +18,6 @@ use App\Models\Bills\Installment;
 use Laravel\Passport\HasApiTokens;
 use App\Models\Clases\Reservation;
 use App\Notifications\MyResetPassword;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;

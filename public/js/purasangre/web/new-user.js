@@ -66,7 +66,11 @@ function newUser() {
         },
         requestInstructions() {
             this.instructions.buttonIsDisabled = true;
-            axios.post('/new-user/request-instructions?email=' + this.instructions.email)
+            console.log('requestInstructions');
+            axios.post(`/new-user/request-instructions`, {
+                'email': this.instructions.email,
+                'plan_id': this.plan_id
+            })
                 .then(response => {
                     if (response.data.success) {
                         this.instructions.message = response.data.success;
