@@ -177,8 +177,8 @@ class NewUserController extends Controller
                 'subject' => "Compra de plan {$this->plan->plan}",
                 'amount' => $this->planUserFlow->amount,
                 'email' => $this->planUserFlow->user->email,
-                'urlConfirmation' => url('/').'/flow/confirm',
-                'urlReturn' => url('/').'/flow/return',
+                'urlConfirmation' => url('/flow/confirm-payment'),
+                'urlReturn' => url('/flow/return-from-payment'),
                 'optional' => [
                     'Message' => 'Tu orden esta en proceso!',
                 ],
@@ -286,9 +286,13 @@ class NewUserController extends Controller
      *
      *  @return  [type]             [return description]
      */
-    public function returnFlow(Request $request)
+    public function finishFlowPayment(Request $request)
     {
-        $this->makeFlowPayment($request);
+        if(! $this->makeFlowPayment($request)) {
+            return redirect('/flow/error');
+        }
+
+        return redirect('/flow/return');
     }
 
     /**
@@ -296,9 +300,13 @@ class NewUserController extends Controller
      *
      *  @return  view
      */
-    public function confirmFlow(Request $request)
+    public function confirmFlowPayment(Request $request)
     {
-        $this->makeFlowPayment($request);
+        if(! $this->makeFlowPayment($request)) {
+            return redirect('/flow/error');
+        }
+
+        return redirect('/flow/return');
     }
 
     /**
@@ -314,19 +322,18 @@ class NewUserController extends Controller
         $planUserFlow = $this->planUserFlow->find((int) $payment->commerceOrder);
 
         /* Plan has been paid already */
-        if ($planUserFlow->isPaid()) {
-            return response()->json(['data' => 'ok']);
-        }
+        if ($planUserFlow->isPaid())
+            return true;
 
         /* Plan wasn't paid, then anuul payment */
         if ($payment->paymentData['date'] === null) {
             $planUserFlow->annul('Error fecha desde flow. Posiblemente error en el pago');
 
-            return response()->json(['data' => 'no']);
+            return false;
         }
 
         /*  Chage status plan user flow to paid  */
-        $planUserFlow->toPay('Pago realizado desde web');
+        $planUserFlow->changeStatusToPaid('Pago realizado desde web');
         $user = User::find($planUserFlow->user_id);
 
         /** Register Plan User on system */
@@ -334,7 +341,7 @@ class NewUserController extends Controller
 
         $this->bill->makeFlowBill($plan_user, $payment->paymentData);
 
-        return response()->json(['data' => 'ok']);
+        return true;
     }
 
     /**
@@ -428,7 +435,8 @@ class NewUserController extends Controller
             return response([
                 'message' => 'La informacion es incorrecta',
                 'errors' => [
-                    'email' => ['Lo siento pero ste correo no existe en nuestro sistema'],
+                    'email' => ['Lo siento pero este correo no existe en nuestro sistema'],
+                    'not_founded' => true
                 ],
                 'status' => 422,
             ], 422);

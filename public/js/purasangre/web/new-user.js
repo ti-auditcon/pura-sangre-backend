@@ -11,7 +11,7 @@ function newUser() {
             { name: 'address', value: '' }
         ],
         errors: {
-            first_name: '', email: '',
+            first_name: '', email: '', not_founded: false,
             last_name: '', birthdate: '', phone: ''
         },
         formStatus: { isFinished: false, message: ''},
@@ -41,7 +41,10 @@ function newUser() {
         async sendForm() {
             this.sendButton.disabled = true;
             let formData = this.extractDataFormValues();
-            
+            // console.log('hola sedForm');
+            // setTimeout(() => {
+            //     this.sendButton.disabled = false;
+            // }, 3000);
             axios.post('/new-user', {
                 ...formData, plan_id: this.plan_id
             }).then(response => {

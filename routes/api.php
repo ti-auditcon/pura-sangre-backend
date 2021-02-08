@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Route;
 Route::post('/external/contact-form', 'Web\ContactEmailController@sendEmail');
 
 
+Route::get('/planes/contractables', 'Web\PlanController@index');
+
+
 /**
  * [Route Users ApiControllers]
  * @var [type]

@@ -93,11 +93,11 @@ class PlanUserFlow extends Model
     /**
      *  Checks if the Plan user flow is paid
      *
-     * @return  boolean
+     *  @return  boolean
      */
     public function isPaid()
     {
-        return $this->paid === FlowOrderStatus::PAGADO;
+        return $this->plan_status_id === FlowOrderStatus::PAGADO;
     }
 
     /**
@@ -122,7 +122,7 @@ class PlanUserFlow extends Model
      *
      *  @return  [type]               [return description]
      */
-    public function toPay($observations = null)
+    public function changeStatusToPaid($observations = null)
     {
         $this->update([
             'plan_status_id' => FlowOrderStatus::PAGADO,

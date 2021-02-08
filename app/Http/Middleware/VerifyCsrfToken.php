@@ -14,9 +14,10 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         'api/*',
         'web/new-user/store',
-        '/flow/confirm',
-        '/flow/return',
+        '/flow/confirm-payment',
+        '/flow/return-from-payment',
         'flow-return',
-        'flow-error'
+        'flow-error',
+        'planes/contractables'
     ];
 }

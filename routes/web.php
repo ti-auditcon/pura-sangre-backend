@@ -171,32 +171,31 @@ Route::post('new-user/request-instructions', 'Web\NewUserController@requestInstr
 Route::get('/new-user/{plan}/create', 'Web\NewUserController@create');
 Route::resource('/new-user', 'Web\NewUserController')->except('index', 'update', 'destroy', 'create', 'show');
 
- /*   *****************************************************
+ /**   *****************************************************
   *    *******         EXTERNAL ROUTES        **************
   *   ******************************************************   */
-Route::post('/flow/return', 'Web\NewUserController@returnFlow');
-Route::post('/flow/confirm', 'Web\NewUserController@confirmFlow');
-Route::get('/flow-return', function () {
-    return view('web.flow.return');
-});
-Route::get('/flow-error', function () {
-    return view('web.flow.error');
-});
+Route::post('/flow/return-from-payment', 'Web\NewUserController@finishFlowPayment');
+Route::post('/flow/confirm-payment', 'Web\NewUserController@confirmFlow');
+
+Route::get('/flow/return', function () { return view('web.flow.return'); });
+Route::get('/flow/error', function () { return view('web.flow.error'); });
+
 Route::get('finish-registration', 'Web\NewUserController@finishing');
 
-Route::get('test-email', function () {
-    $token = Illuminate\Support\Str::random(150);
-    $user = App\Models\Users\User::first();
-    \DB::table('password_resets')->insert([
-        'email' => $user->email,
-        'token' => $token,
-    ]);
 
-    return new App\Mail\VerifyExternalUser($user, $token, 3);
-});
+// Route::get('test-email', function () {
+//     $token = Illuminate\Support\Str::random(150);
+//     $user = App\Models\Users\User::first();
+//     \DB::table('password_resets')->insert([
+//         'email' => $user->email,
+//         'token' => $token,
+//     ]);
 
-Route::get('first', function () {
-    $basePath = realpath(__DIR__.'/../');
+//     return new App\Mail\VerifyExternalUser($user, $token, 3);
+// });
 
-    return rtrim($basePath, '\/');
-});
+// Route::get('first', function () {
+//     $basePath = realpath(__DIR__.'/../');
+
+//     return rtrim($basePath, '\/');
+// });

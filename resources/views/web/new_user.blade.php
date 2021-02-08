@@ -136,14 +136,14 @@
                                 </div>
                             </div>
 
-                            <a class="btn btn-sm btn-primary px-3 py-2"
+                            <button class="btn btn-sm btn-primary px-3 py-2"
                                 x-on:click="sendForm"
                                 type="button"
-                                x-bind:disabled="sendButton.disabled"
+                                :disabled="sendButton.disabled"
                                 x-text="sendButton.text"
                             >
                                 Registrarme y pagar
-                            </a>
+                            </button>
 
                             <div x-show="redirectButton">
                                 Si no te redirige, has clic aqui
@@ -152,7 +152,7 @@
                         </div>
                         <div x-show="formStatus.isFinished" x-text="formStatus.message"></div>
 
-                        <div x-show="errors.email" class="my-4 py-4 px-3 atention-message rounded">
+                        <div x-show="errors.email == 'El email ya ha sido registrado.'" class="my-4 py-4 px-3 atention-message rounded">
                             <span>Parece que ya tienes cuenta en PuraSangre. Tal vez quieras:</span>
                             <br>
                             <div>
