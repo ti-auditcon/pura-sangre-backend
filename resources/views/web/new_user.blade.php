@@ -19,7 +19,7 @@
             {{-- <p>
                 Paso 1 de 2
             </p> --}}
-            <h3>Completa tu compra registrandote</h3>
+            <h3 class="text-center">Completa tu compra registrandote</h3>
         </div>
         <div class="content">
             @isset($plan)
@@ -150,8 +150,6 @@
                                 <a :href="redirectButton">Ir a pagar</a>
                             </div>
                         </div>
-                        <div x-show="formStatus.isFinished" x-text="formStatus.message"></div>
-
                         <div x-show="errors.email == 'El email ya ha sido registrado.'" class="my-4 py-4 px-3 atention-message rounded">
                             <span>Parece que ya tienes cuenta en PuraSangre. Tal vez quieras:</span>
                             <br>
@@ -179,20 +177,35 @@
                             <span>Quiero terminar mi pago</span> --}}
                         </div>
 
+                        <div x-show="formStatus.isFinished" x-text="formStatus.message" class="text-center" style=""></div>
                     </div>
                 </div>
             @else
-                Lo siento el plan que elegiste no esta disponible por el momento para ser contratado
-                Pero puedes elegir entre los siguientes
-                @foreach ($contractable_plans as $plan)
-                    <span>
-                        <a href="/new-user/create?plan_id={{ $plan->id }}">{{ $plan->plan }}</a>
-                    </span>
-                @endforeach
+                <div>
+                    Lo siento el plan que elegiste no esta disponible por el momento para ser contratado
+                    Pero puedes elegir entre los siguientes
+                    @foreach ($contractable_plans as $plan)
+                        <span>
+                            <a href="/new-user/create?plan_id={{ $plan->id }}">{{ $plan->plan }}</a>
+                        </span>
+                    @endforeach
+                </div>
             @endisset
             {{-- <br> <br> --}}
-            <div class="text-muted">
-                Recuerda que la aplicacion de PuraSangre esta disponible para Android e IOS
+            <div class="mt-3">
+                <div class="text-center">
+                    <span class="text-muted" style="font-size: 15px">
+                        Recuerda que la aplicacion de Pura Sangre CrossFit esta disponible para Android e IOS
+                    </span>
+                    <div class="mt-2">
+                        <a href="https://play.google.com/store/apps/details?id=purasangrecrossfit.app.com&hl=es" target="_blank" style="text-decoration: none;">
+                            <img src="https://purasangrecrossfit.cl/images/google-play-badge-2.png" style="width: 120px">
+                        </a>
+                        <a href="https://itunes.apple.com/us/app/pura-sangre-crossfit/id1447657358" target="_blank" style="text-decoration: none;">
+                            <img src="https://purasangrecrossfit.cl/images/d_app.png" style="width: 110px">
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

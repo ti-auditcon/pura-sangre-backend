@@ -1,103 +1,60 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-
-        <title>Error en el Pago</title>
-
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Error — Pura Sangre CrossFit</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+        <link href="{{asset('/css/web-register.css')}}" rel="stylesheet" />
     </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-
-            <div class="content">
-                <div class="title m-b-md">
+    <body class="register-wrapper">
+        <div class="register">
+            <div class="header">
+                <h3 class="text-center">
                     Error
-                </div>
-                <div class="alert alert-success">
-                    @if (isset($error))
-                        @if ($type === 'email')
-                            <div x-data="forInstructions()">
-                                <div x-show="!instructions.areSended">
-                                    {{ $error }}
-                                    <select name="plans" x-model="selectedOption">
-                                        <option value="">Selecciona un plan</option>
-                                        @foreach ($plans as $item)
-                                            <option value="{{ $item->id }}">{{ $item->plan }} - {{ $item->amount }}</option>
-                                        @endforeach
-                                    </select>
-                                    <input type="text" x-on:keyup="fillEmail($event)"
-                                             x-model="instructions.email" class="form-control"
-                                             value="{{ isset($email) ? $email : null }}"/>
+                </h3>
+            </div>
+            <div class="content">
 
-                                        <template x-for="error in errores">
-                                                <p x-text="error"></p>
-                                        </template>
-                                    <button x-on:click="requestInstrutions()">Enviame las instrucciones nuevamente</button>
-                                </div>
-                                <div x-show="instructions.areSended" x-text="instructions.message"></div>
-                            </div>
-                         @endif
-                    @endif
+                <div class="flex-center position-ref">
+        
+                    <div class="content pt-0">
+                        {{-- <div> --}}
+                            @if (isset($error))
+                                @if ($type === 'email')
+                                    <div x-data="forInstructions()">
+                                        <div x-show="!instructions.areSended">
+                                            <div class="mb-2">
+                                                {{ $error }}
+                                            </div>
+                                            <input placeholder="Ingresa tu correo" type="text" x-on:keyup="fillEmail($event)" x-model="instructions.email" class="form-control mb-2" value="{{ isset($email) ? $email : null }}"/>
+                                            <select style="width: 100%; padding: .375rem .5rem" class="mb-2" name="plans" x-model="selectedOption">
+                                                <option value="">Selecciona un plan</option>
+                                                @foreach ($plans as $item)
+                                                    <option value="{{ $item->id }}">{{ $item->plan }} - {{ $item->amount }}</option>
+                                                @endforeach
+                                            </select>
+                                            <template x-for="error in errores">
+                                                    <p x-text="error"></p>
+                                            </template>
+                                            <button class="btn btn-sm btn-primary px-3 py-2" x-on:click="requestInstrutions()">Enviame las instrucciones nuevamente</button>
+                                        </div>
+                                        <div x-show="instructions.areSended" x-text="instructions.message"></div>
+                                    </div>
+                                 @endif
+                            @endif
+                        {{-- </div> --}}
+                    </div>
                 </div>
             </div>
         </div>
+
 
         {{-- AlpineJs --}}
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine.min.js" defer></script>
