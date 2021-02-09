@@ -305,6 +305,7 @@ class NewUserController extends Controller
     {
         if(! $this->makeFlowPayment($request)) {
             return redirect('/flow/error');
+
         }
 
         return redirect('/flow/return');
@@ -358,15 +359,16 @@ class NewUserController extends Controller
     {
         if ($error = $this->verifyToken($request->token)) {
             $type = 'email';
+            $plans = Plan::whereContractable(true)->get();
 
-            return view('web.flow.error', compact('error', 'type'));
+            return view('web.flow.error', compact('error', 'type', 'plans'));
         }
 
         /**
          *  todo: Pass the next two lines to the User class.
          */
         $user = User::where('email', $request->email)->first(['id', 'email_verified_at']);
-        if (!$user->email_verified_at) {
+        if (! $user->email_verified_at) {
             $user->update(['email_verified_at' => now()]);
         }
 
@@ -442,6 +444,16 @@ class NewUserController extends Controller
                 'errors' => [
                     'email' => ['Lo siento pero este correo no existe en nuestro sistema'],
                     'not_founded' => true
+                ],
+                'status' => 422,
+            ], 422);
+        }
+        
+        if (User::whereEmail($request->email)->where('email_verified_at', '!=', null)->first()) {
+            return response([
+                'message' => 'Usuario existente',
+                'errors' => [
+                    'email' => ['Este correo ya ha sido validado y puede comprar directamente desde la App movil'],
                 ],
                 'status' => 422,
             ], 422);
