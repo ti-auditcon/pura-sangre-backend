@@ -44,7 +44,7 @@ class User extends Authenticatable
         'rut', 'first_name', 'last_name', 'email',
         'password', 'avatar', 'phone', 'birthdate',
         'gender', 'address', 'lat', 'lng', 'since',
-        'emergency_id', 'status_user_id'
+        'emergency_id', 'status_user_id', 'email_verified_at'
     ];
 
     /**

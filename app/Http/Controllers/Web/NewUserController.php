@@ -2,21 +2,22 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Web\NewUserRequest;
-use App\Mail\VerifyExternalUser;
-use App\Models\Bills\Bill;
 use App\Models\Flow\Flow;
+use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
-use App\Models\Plans\PlanUser;
-use App\Models\Plans\PlanUserFlow;
 use App\Models\Users\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Mail\NewPlanUserEmail;
+use App\Models\Plans\PlanUser;
+use App\Mail\VerifyExternalUser;
+use App\Models\Plans\PlanUserFlow;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\Web\NewUserRequest;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class NewUserController extends Controller
 {
@@ -105,7 +106,7 @@ class NewUserController extends Controller
         $dispatcher = $this->disableObservers(User::class);
 
         $user = User::create(array_merge($request->all(), [
-            'password' => $request->password,
+            'password' => bcrypt($request->password),
             'gender' => $request->gender ? $request->gender : 'otro',
         ]));
         $token = $this->generateNewToken($user->email);
@@ -338,8 +339,10 @@ class NewUserController extends Controller
 
         /** Register Plan User on system */
         $plan_user = PlanUser::makePlanUser($planUserFlow, $user);
-
+        
         $this->bill->makeFlowBill($plan_user, $payment->paymentData);
+        
+        Mail::to($user->email)->send(new NewPlanUserEmail($user, $plan_user));
 
         return true;
     }
@@ -363,7 +366,9 @@ class NewUserController extends Controller
          *  todo: Pass the next two lines to the User class.
          */
         $user = User::where('email', $request->email)->first(['id', 'email_verified_at']);
-        $user->update(['email_verified_at' => now()]);
+        if (!$user->email_verified_at) {
+            $user->update(['email_verified_at' => now()]);
+        }
 
         return redirect("/new-user/{$user->id}/edit?plan_id={$request->plan_id}&token={$request->token}");
     }
