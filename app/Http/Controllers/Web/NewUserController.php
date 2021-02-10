@@ -395,7 +395,7 @@ class NewUserController extends Controller
         $user = User::where('email', $request->email)->first();
         Mail::to($user->email)->send(new VerifyExternalUser($user, $token, $request->plan_id));
 
-        return response()->json(['success' => 'Genial, te hemos enviado las instrucciones, por favor revisa tu correo']);
+        return response()->json(['success' => 'Te hemos enviado las instrucciones, por favor revisa tu correo']);
     }
 
     /**

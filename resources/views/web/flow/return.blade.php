@@ -27,7 +27,7 @@
                                     Pago Exitoso!
                                 </div> --}}
                                 <div class="alert alert-success">
-                                    El pago se ha realizado con exito. Que sigue ahora.
+                                    El pago se ha realizado con exito. ¿Que sigue ahora?. Descarga la App para tomar clases
                                 </div>
                             </div>
                         </div>

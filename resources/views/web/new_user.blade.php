@@ -151,17 +151,17 @@
                             </div>
                         </div>
                         <div x-show="errors.email == 'El email ya ha sido registrado.'" class="my-4 py-4 px-3 atention-message rounded">
-                            <span>Parece que ya tienes cuenta en PuraSangre. Tal vez quieras:</span>
+                            <span>Parece que ya tienes cuenta en PuraSangre.</span>
                             <br>
                             <div>
                                 <div x-show="!instructions.areSended">
-                                    <span>Tuve problemas al comprar y quiero que me envien las instrucciones de nuevo</span>
+                                    <span>-Si tuviste problemas al comprar y quieres que te enviemos las instrucciones de nuevo</span>
 
                                     <input type="text" x-on:keyup="fillEmail($event)"
                                             x-model="instructions.email" class="form-control mt-3 mb-2" placeholder="Ingresa tu correo"/>
                                     {{-- <input type="text" x-on:keyup="instructions.email" class="form-control"/> --}}
                                     <div x-show="instructions.error !== null">
-                                        <p x-text="instructions.error"></p>
+                                        <p class="text-danger" x-text="instructions.error"></p>
                                     </div>
                                     <button x-on:click="requestInstructions()"
                                             x-bind:disabled="instructions.buttonIsDisabled"

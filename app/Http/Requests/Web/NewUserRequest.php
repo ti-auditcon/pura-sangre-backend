@@ -65,7 +65,7 @@ class NewUserRequest extends FormRequest
             'email.email' => 'El campo correo electronico debe contener un correo valido',
             'phone.digits' => 'El numero de telefono debe contener solo :digits numeros',
             'password.required' => 'Crea una contraseña para tu cuenta',
-            'password.min' => 'La contraseña debe tener al menos :attribute caracteres',
+            'password.min' => 'La contraseña debe tener al menos :min caracteres',
         ];        
     }
 }
