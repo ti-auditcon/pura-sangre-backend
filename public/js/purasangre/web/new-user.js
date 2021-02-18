@@ -1,4 +1,3 @@
-
 function newUser() {
     return {
         data: [
@@ -7,7 +6,6 @@ function newUser() {
             { name: 'birthdate', value: '' },
             { name: 'phone', value: '' },
             { name: 'email', value: '' },
-            { name: 'password', value: '' },
             { name: 'address', value: '' }
         ],
         errors: {
@@ -19,6 +17,7 @@ function newUser() {
         plan_id: '',
         redirectButton: null,
         sendButton: { text: 'Registrarme y pagar', disabled: false },
+        tittle: 'Completa tu compra registrandote',
         fill(value, event) {
             this.data.map(field => {
                 if (field.name === value) {
@@ -34,23 +33,17 @@ function newUser() {
             this.errors[fieldName] = null;
         },
         extractDataFormValues() {
-            let arrayFormated = [];
-            this.data.map(data => arrayFormated[data.name] = data.value);
-            return arrayFormated;
+            let formatedArray = [];
+            this.data.map(data => formatedArray[data.name] = data.value);
+            return formatedArray;
         },
         async sendForm() {
             this.sendButton.disabled = true;
             let formData = this.extractDataFormValues();
-            // console.log('hola sedForm');
-            // setTimeout(() => {
-            //     this.sendButton.disabled = false;
-            // }, 3000);
-            axios.post('/new-user', {
-                ...formData, plan_id: this.plan_id
-            }).then(response => {
-                console.log(response.data);
-                this.finishResgistration(response.data.success);
-            }).catch(error => {
+
+            axios.post('/new-user', { ...formData, plan_id: this.plan_id })
+            .then(response => this.finishResgistration(response.data.success))
+            .catch(error => {
                 this.sendButton.disabled = false;
                 let responseErrors = error.response.data.errors;
                 this.showErrors(responseErrors)
@@ -59,6 +52,8 @@ function newUser() {
         finishResgistration(message) {
             this.formStatus.message = message;
             this.formStatus.isFinished = true;
+            this.tittle = 'Registro exitoso!';
+            this.errors.email = '';
         },
         showErrors(errors) {
             this.data.map(data => {
@@ -69,20 +64,19 @@ function newUser() {
         },
         requestInstructions() {
             this.instructions.buttonIsDisabled = true;
-            console.log('requestInstructions');
+
             axios.post(`/new-user/request-instructions`, {
                 'email': this.instructions.email,
                 'plan_id': this.plan_id
-            })
-                .then(response => {
-                    if (response.data.success) {
-                        this.instructions.message = response.data.success;
-                        this.instructions.areSended = true;
-                    }
-                }).catch(error => {
-                    this.instructions.buttonIsDisabled = false;
-                    this.instructions.error = error.response.data.errors.email[0];
-                });
+            }).then(response => {
+                if (response.data.success) {
+                    this.instructions.message = response.data.success;
+                    this.instructions.areSended = true;
+                }
+            }).catch(error => {
+                this.instructions.buttonIsDisabled = false;
+                this.instructions.error = error.response.data.errors.email[0];
+            });
         },
         fillEmail(event) {
             this.instructions.email = event.target.value;

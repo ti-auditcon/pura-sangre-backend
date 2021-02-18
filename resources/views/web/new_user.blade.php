@@ -14,20 +14,16 @@
     <link href="{{asset('/css/web-register.css')}}" rel="stylesheet" />
 </head>
 <body class="register-wrapper">
-    <div class="register">
+    <div class="register" x-data="newUser()" 
+                        x-init="flatpickr($refs.input, {{ json_encode((object)['dateFormat' => 'd-m-Y', 'locale' => 'es']) }});getSelectedPlan({{ $plan->id }});"
+                    >
         <div class="header">
-            {{-- <p>
-                Paso 1 de 2
-            </p> --}}
-            <h3 class="text-center">Completa tu compra registrandote</h3>
+            <h3 class="text-center" x-text="tittle">Completa tu compra registrandote</h3>
         </div>
         <div class="content">
             @isset($plan)
                 <div class="row justify-content-center">
-                    <div 
-                        class="col-12 mb-3" x-data="newUser()" 
-                        x-init="flatpickr($refs.input, {{ json_encode((object)['dateFormat' => 'd-m-Y', 'locale' => 'es']) }});getSelectedPlan({{ $plan->id }});"
-                    >
+                    <div class="col-12 mb-3">
                         <div class="ibox-body" x-show="!formStatus.isFinished">
                             <div class="row">
                                 <div class="col-md-6 form-group mb-3">
@@ -51,6 +47,18 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6 form-group mb-3">
+                                    <label class="col-form-label">Correo electronico</label>
+                                
+                                    <input class="form-control" 
+                                            x-on:keyup="fill('email', $event)" 
+                                            type="email" 
+                                            name="email"
+                                        />
+
+                                    <span x-show.transition.in="errors.email" x-text="errors.email" class="text-danger fs-6 fw-light lh-1"></span>
+                                </div>
+
+                                <div class="col-md-6 form-group mb-3">
                                     <label class="col-form-label">Fecha de nacimiento</label>
                                 
                                     <div class="date">
@@ -64,21 +72,22 @@
 
                                     <span x-show.transition.in="errors.birthdate" x-text="errors.birthdate" class="text-danger fs-6 fw-light lh-1"></span>
                                 </div>
-                                <div class="col-md-6 form-group mb-3">
-                                        <label class="col-form-label">Teléfono</label>
-                                    
-                                        <div class="input-group">
-                                            {{-- <span class="input-group-addon">+56 9</span> --}}
-                                            <span class="input-group-text" id="basic-addon1">+56 9</span>
-                                        
-                                            <input class="form-control" x-on:keyup="fill('phone', $event)" name="phone" type="tel">
-                                        </div>
 
-                                        <span x-show.transition.in="errors.phone" x-text="errors.phone" class="text-danger fs-6 fw-light lh-1"></span>
-                                </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12 form-group mb-3">
+                                <div class="col-md-6 form-group mb-3">
+                                    <label class="col-form-label">Teléfono</label>
+                                
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1">+56 9</span>
+                                    
+                                        <input class="form-control" x-on:keyup="fill('phone', $event)" name="phone" type="tel">
+                                    </div>
+
+                                    <span x-show.transition.in="errors.phone" x-text="errors.phone" class="text-danger fs-6 fw-light lh-1"></span>
+                                </div>
+
+                                <div class="col-md-6 form-group mb-3">
                                     <label class="col-form-label">Dirección</label>
                         
                                     <input class="form-control"
@@ -88,34 +97,9 @@
                                             autocomplete="off"/>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-6 form-group mb-3">
-                                    <label class="col-form-label">Correo electronico</label>
-                                
-                                    <input class="form-control" 
-                                            x-on:keyup="fill('email', $event)" 
-                                            type="email" 
-                                            name="email"
-                                        />
-
-                                    <span x-show.transition.in="errors.email" x-text="errors.email" class="text-danger fs-6 fw-light lh-1"></span>
-                                </div>
-                                
-                                <div class="col-md-6 form-group mb-3">
-                                    <label class="col-form-label">Elige una contraseña</label>
-                                
-                                    <input class="form-control"
-                                            x-on:keyup="fill('password', $event)" 
-                                            type="password" 
-                                            name="password"
-                                        />
-
-                                    <span x-show.transition.in="errors.password" x-text="errors.password" class="text-danger fs-6 fw-light lh-1"></span>
-                                </div>
-                            </div>
                             <div class="form-group row">
                                 <div class="col-6 mb-3">
-                                    <label class="d-block fw-light">Género</label>
+                                    <label class="d-block fw-light">Sexo</label>
                                     <label class="radio radio-inline radio-info">
                                         <input type="radio" name="gender" value="hombre">
                                         <span class="input-span"></span>
@@ -126,12 +110,6 @@
                                         <input type="radio" name="gender" value="mujer">
                                         <span class="input-span"></span>
                                         Femenino
-                                    </label>
-                                    
-                                    <label class="radio radio-inline radio-info">
-                                        <input type="radio" name="gender" value="other">
-                                        <span class="input-span"></span>
-                                        Otro
                                     </label>
                                 </div>
                             </div>
@@ -159,10 +137,11 @@
 
                                     <input type="text" x-on:keyup="fillEmail($event)"
                                             x-model="instructions.email" class="form-control mt-3 mb-2" placeholder="Ingresa tu correo"/>
-                                    {{-- <input type="text" x-on:keyup="instructions.email" class="form-control"/> --}}
+
                                     <div x-show="instructions.error !== null">
                                         <p class="text-danger" x-text="instructions.error"></p>
                                     </div>
+                                    
                                     <button x-on:click="requestInstructions()"
                                             x-bind:disabled="instructions.buttonIsDisabled"
                                             class="btn btn-sm btn-primary px-3 py-2"
