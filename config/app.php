@@ -51,6 +51,7 @@ return [
 
         // MY OWN PasswordResetServiceProvider ...
         App\Providers\CustomPasswordResetServiceProvider::class,
+        App\Providers\BirthdateUsersProvider::class,
 
         Illuminate\Session\SessionServiceProvider::class,
         Illuminate\Translation\TranslationServiceProvider::class,

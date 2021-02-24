@@ -6,13 +6,12 @@ use App\Models\Flow\Flow;
 use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\NewPlanUserEmail;
 use App\Models\Plans\PlanUser;
 use App\Mail\VerifyExternalUser;
 use App\Models\Plans\PlanUserFlow;
-use Illuminate\Support\Facades\DB;
+use App\Models\Users\PasswordReset;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
@@ -62,20 +61,19 @@ class NewUserController extends Controller
         $this->instanciateFlow('production');
 
         $this->planUserFlow = new PlanUserFlow();
-
         $this->plan = new Plan();
-
         $this->plan_user = new PlanUser();
-
         $this->bill = new Bill();
     }
 
     /**
-     *  Make an instance of Flow on Production.
+     *  Make an instance of Flow
      *
      *  @param  $environment  ('production', 'sandbox')
+     * 
+     *  @return  void
      */
-    private function instanciateFlow($environment = 'sandbox')
+    private function instanciateFlow($environment = 'sandbox'): void
     {
         $this->flow = Flow::make($environment, [
             'apiKey' => config("flow.${environment}.apiKey"),
@@ -85,6 +83,9 @@ class NewUserController extends Controller
 
     /**
      *  Show the form for creating a new resource.
+     *
+     *  @param   Plan     $plan   
+     *  @param   Request  $request
      *
      *  @return  \Illuminate\Http\Response
      */
@@ -108,7 +109,9 @@ class NewUserController extends Controller
             'password' => bcrypt('purasangre'),
             'gender' => $request->gender ? $request->gender : 'otro',
         ]));
-        $token = $this->generateNewToken($user->email);
+
+        $token = PasswordReset::generateNewToken($user->email);
+        
         Mail::to($user->email)->send(new VerifyExternalUser($user, $token, $request->plan_id));
 
         $this->enableObservers(User::class, $dispatcher);
@@ -159,6 +162,7 @@ class NewUserController extends Controller
     public function edit($userId, Request $request)
     {
         $user = $this->validateUserData($userId, $request);
+
         if (isset($user['error'])) {
             $plans = Plan::where('contractable', true)->get(['id', 'plan', 'amount']);
 
@@ -173,17 +177,17 @@ class NewUserController extends Controller
 
         try {
             $paymentResponse = $this->flow->payment()->commit([
-                'commerceOrder' => $this->planUserFlow->id,
-                'subject' => "Compra de plan {$this->plan->plan}",
-                'amount' => $this->planUserFlow->amount,
-                'email' => $this->planUserFlow->user->email,
+                'commerceOrder'   => $this->planUserFlow->id,
+                'subject'         => "Compra de plan {$this->plan->plan}",
+                'amount'          => $this->planUserFlow->amount,
+                'email'           => $this->planUserFlow->user->email,
                 'urlConfirmation' => url('/flow/confirm-payment'),
-                'urlReturn' => url('/flow/return-from-payment'),
+                'urlReturn'       => url('/flow/return-from-payment'),
                 'optional' => [
                     'Message' => 'Tu orden esta en proceso!',
                 ],
             ]);
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             return view('web.flow.error', [
                 'error' => 'Ups, algo ha salido mal, no desesperes, si crees que has realizado bien el pago, comunicate con nosotros al +569 56488542 para que podamos ayudarte',
                 'type' => 'payment',
@@ -225,7 +229,7 @@ class NewUserController extends Controller
 
             return view('web.flow.error', compact('error', 'type'));
         } else {
-            $this->spendToken($request->token);
+            PasswordReset::spendToken($request->token);
         }
 
         return $user;
@@ -238,26 +242,26 @@ class NewUserController extends Controller
      *
      *  @return  [type]          [return description]
      */
-    public function spendToken($token)
-    {
-        DB::table('password_resets')->where('token', $token)
-                                    ->update(['expired' => true]);
-    }
+    // public function spendToken($token)
+    // {
+    //     DB::table('password_resets')->where('token', $token)
+    //                                 ->update(['expired' => true]);
+    // }
 
     /**
      *  [verifyToken description].
      *
      *  @param   [type]  $token  [$token description]
      *
-     *  @return  [type]          [return description]
+     *  @return  string|boolean
      */
-    public function verifyToken($token)
+    public function verifyToken(string $token)
     {
         if (!isset($token) || $token === null) {
             return 'No tiene un token valido para poder seguir, puedes solicitar uno a tu correo';
         }
 
-        if ($this->tokenIsInvalid($token)) {
+        if (PasswordReset::tokenDoesntExists($token)) {
             return 'El token es invalido, puedes solicitar uno a tu correo';
         }
 
@@ -265,19 +269,19 @@ class NewUserController extends Controller
     }
 
     /**
-     * [tokenIsInvalid description].
+     *  [tokenIsInvalid description].
      *
-     * @param [type] $token [$token description]
+     *  @param   [type] $token [$token description]
      *
-     * @return [type] [return description]
+     *  @return  [type] [return description]
      */
-    public function tokenIsInvalid($token)
-    {
-        return DB::table('password_resets')
-                    ->where('token', $token)
-                    ->where('expired', false)
-                    ->doesntExist('id');
-    }
+    // public function tokenIsInvalid($token)
+    // {
+    //     return DB::table('password_resets')
+    //                 ->where('token', $token)
+    //                 ->where('expired', false)
+    //                 ->doesntExist('id');
+    // }
 
     /**
      *  desc.
@@ -389,7 +393,7 @@ class NewUserController extends Controller
             return $this->validateEmail($request);
         }
 
-        $token = $this->generateNewToken($request->email);
+        $token = PasswordReset::getNewToken($request->email);
 
         $user = User::where('email', $request->email)->first();
         Mail::to($user->email)->send(new VerifyExternalUser($user, $token, $request->plan_id));
@@ -404,18 +408,21 @@ class NewUserController extends Controller
      *
      *  @return  string  $token  150 characters
      */
-    public function generateNewToken($email)
-    {
-        DB::table('password_resets')->where('email', $email)->update(['expired' => true]);
+    // public function generateNewToken($email)
+    // {
+    //     /** Expired all olds tokens for an specific email */
+    //     DB::table('password_resets')->where('email', $email)
+    //                                 ->update(['expired' => true]);
 
-        $token = Str::random(150);
-        DB::table('password_resets')->insert([
-            'email' => $email,
-            'token' => $token,
-        ]);
+    //     $token = Str::random(150);
 
-        return $token;
-    }
+    //     DB::table('password_resets')->insert([
+    //         'email' => $email,
+    //         'token' => $token,
+    //     ]);
+
+    //     return $token;
+    // }
 
     /**
      *  [validateEmail description].
