@@ -59,7 +59,7 @@ class NewUserController extends Controller
      */
     public function __construct()
     {
-        $this->instanciateFlow('sandbox');
+        $this->instanciateFlow('production');
 
         $this->planUserFlow = new PlanUserFlow();
 
@@ -75,12 +75,11 @@ class NewUserController extends Controller
      *
      *  @param  $environment  ('production', 'sandbox')
      */
-    private function instanciateFlow($environment)
+    private function instanciateFlow($environment = 'sandbox')
     {
         $this->flow = Flow::make($environment, [
-            /*  Credentials for FLOW platform */
-            'apiKey' => config('flow.sandbox.apiKey'),
-            'secret' => config('flow.sandbox.secret'),
+            'apiKey' => config("flow.${environment}.apiKey"),
+            'secret' => config("flow.${environment}.secret"),
         ]);
     }
 
