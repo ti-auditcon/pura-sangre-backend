@@ -33,29 +33,13 @@
                 </li>
             @endif
 
-            @if (Auth::user()->hasRole(1))
-
-            <li @if( url()->current() == url("/payments") ) class="active" @endif>
-                <a href="{{ url('/payments') }}"><i class="sidebar-item-icon ti-money"></i>
-                    <span class="nav-label">Pagos</span>
-                </a>
-            </li>
-
-            <li @if( in_array(url()->current(), [
-                        url("/reports"),
-                        url("/reports/inactive_users"),
-                        url("/reports/data-plans")
-                     ]) ) class="active" @endif>
-                <a>
-                    <i class="sidebar-item-icon ti-bar-chart"></i>
-
-                    <span class="nav-label">Reportes</span>
-                </a>
-                <div class="nav-2-level">
-                    <ul>
-                        <li><a href="{{ url('/reports') }}">Gráficos</a></li>
-
-                        <li><a href="{{ url('/reports/inactive_users') }}">Usuarios Inactivos</a></li>
+            @if (Auth::user()->isAdmin())
+                <li @if( url()->current() == url("/payments") ) class="active" @endif>
+                    <a href="{{ url('/payments') }}">
+                        <i class="sidebar-item-icon ti-money"></i>
+                        <span class="nav-label">Pagos</span>
+                    </a>
+                </li>
 
                 <li @if( in_array(url()->current(), [
                             url("/reports"),
@@ -71,51 +55,56 @@
                         <ul>
                             <li><a href="{{ url('/reports') }}">Gráficos</a></li>
 
-            <li @if( in_array(url()->current(), [
-                        url("/messages"),
-                        url("/alerts"),
-                        url("/notifications")
-                     ]) ) class="active" @endif>
-                <a>
-                    <i class="sidebar-item-icon ti-email"></i>
+                            <li><a href="{{ url('/reports/inactive_users') }}">Usuarios Inactivos</a></li>
+                        </ul>
+                    </div>
 
-                    <span class="nav-label">Mensajería</span>
-                </a>
-                <div class="nav-2-level">
-                    <ul>
-                        <li><a href="{{ url('/messages') }}">Correos</a></li>
+                
+                <li @if( in_array(url()->current(), [
+                            url("/messages"),
+                            url("/alerts"),
+                            url("/notifications")
+                        ]) ) class="active" @endif>
+                    <a>
+                        <i class="sidebar-item-icon ti-email"></i>
 
-                        <li><a href="{{ url('/alerts') }}">Alertas</a></li>
+                        <span class="nav-label">Mensajería</span>
+                    </a>
+                    <div class="nav-2-level">
+                        <ul>
+                            <li><a href="{{ url('/messages') }}">Correos</a></li>
 
-                        <li><a href="{{ url('/notifications') }}">Notificaciones</a></li>
-                    </ul>
-                </div>
-            </li>
-            <li @if( in_array(url()->current(), [
-                        url("/plans"),
-                        url("/blocks"),
-                        url("/density-parameters")
-                     ]) ) class="active" @endif>
-                <a href="javascript:;">
-                    <i class="sidebar-item-icon ti-settings"></i>
+                            <li><a href="{{ url('/alerts') }}">Alertas</a></li>
 
-                    <span class="nav-label">Configuración<br /> del box</span>
-                </a>
+                            <li><a href="{{ url('/notifications') }}">Notificaciones</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li @if( in_array(url()->current(), [
+                            url("/plans"),
+                            url("/blocks"),
+                            url("/density-parameters")
+                        ]) ) class="active" @endif>
+                    <a href="javascript:;">
+                        <i class="sidebar-item-icon ti-settings"></i>
 
-                <div class="nav-2-level">
-                    <ul>
-                        <li><a href="{{ route('plans.index') }}">Planes</a></li>
+                        <span class="nav-label">Configuración<br /> del box</span>
+                    </a>
 
-                        <li><a href="{{ route('blocks.index') }}">Horarios</a></li>
+                    <div class="nav-2-level">
+                        <ul>
+                            <li><a href="{{ route('plans.index') }}">Planes</a></li>
 
-                        {{-- <li><a href="{{ route('blocks.index') }}">Horarios</a></li> --}}
+                            <li><a href="{{ route('blocks.index') }}">Horarios</a></li>
 
-                        <li><a href="{{ route('density-parameters.index') }}">Parámetros</a></li>
+                            {{-- <li><a href="{{ route('blocks.index') }}">Horarios</a></li> --}}
 
-                        <li><a href="{{ route('postpones.index') }}">Posponer planes</a></li>
-                    </ul>
-                </div>
-            </li>
+                            <li><a href="{{ route('density-parameters.index') }}">Parámetros</a></li>
+
+                            {{-- <li><a href="{{ route('postpones.index') }}">Posponer planes</a></li> --}}
+                        </ul>
+                    </div>
+                </li>
             @endif
 
             @if (! auth()->user()->isAdmin())

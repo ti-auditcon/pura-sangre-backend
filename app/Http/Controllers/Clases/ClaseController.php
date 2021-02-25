@@ -94,7 +94,7 @@ class ClaseController extends Controller
 
     public function store(Request $request)
     {
-        dd('hola store', $request->all());
+        // dd('hola store', $request->all());
 
         // $plan = Clase::create([
         //     // '' => ,

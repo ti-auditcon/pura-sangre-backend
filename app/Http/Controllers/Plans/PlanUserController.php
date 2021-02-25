@@ -175,11 +175,11 @@ class PlanUserController extends Controller
     }
 
     /**
-     * [updateBillIncome description]
+     *  [updateBillIncome description]
      *
-     * @param   [type]  $plan_saved  [$plan_saved description]
+     *  @param   [type]  $plan_saved  [$plan_saved description]
      *
-     * @return  [type]               [return description]
+     *  @return  [type]               [return description]
      */
     public function updateBillIncome($plan_saved)
     {
