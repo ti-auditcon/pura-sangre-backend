@@ -56,6 +56,8 @@
                             <li><a href="{{ url('/reports') }}">Gráficos</a></li>
 
                             <li><a href="{{ url('/reports/inactive_users') }}">Usuarios Inactivos</a></li>
+
+                            <li><a href="{{ url('/reports/data-plans') }}">Análisis Diarios</a></li>
                         </ul>
                     </div>
 
@@ -96,8 +98,6 @@
                             <li><a href="{{ route('plans.index') }}">Planes</a></li>
 
                             <li><a href="{{ route('blocks.index') }}">Horarios</a></li>
-
-                            {{-- <li><a href="{{ route('blocks.index') }}">Horarios</a></li> --}}
 
                             <li><a href="{{ route('density-parameters.index') }}">Parámetros</a></li>
 
