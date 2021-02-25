@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Clases;
 
-use App\Http\Controllers\Controller;
-use App\Models\Clases\Clase;
-use App\Models\Clases\ClaseType;
-use App\Models\Clases\Reservation;
-use App\Models\Settings\DensityParameter;
+use Redirect;
+use App\Models\Wods\Wod;
 use App\Models\Users\User;
 use App\Models\Wods\Stage;
-use App\Models\Wods\Wod;
+use App\Models\Clases\Clase;
 use Illuminate\Http\Request;
-use Redirect;
-use Session;
+use App\Models\Clases\ClaseType;
+use App\Models\Clases\Reservation;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
+use App\Models\Settings\DensityParameter;
 
 /** [ClaseController description] */
 class ClaseController extends Controller

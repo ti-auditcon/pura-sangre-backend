@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers\Plans;
 
-use Session;
 use Carbon\Carbon;
-use App\Models\Users\User;
-use Illuminate\Http\Request;
 use App\Models\Plans\PlanUser;
 use App\Models\Plans\PlanStatus;
 use App\Models\Plans\PostponePlan;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Plans\PostponePlanRequest;
 
 class PlanUserPostponesController extends Controller
