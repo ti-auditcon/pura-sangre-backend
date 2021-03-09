@@ -152,7 +152,7 @@ class PlanUserController extends Controller
      *
      *  @return  \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, User $user, planuser $plan)
+    public function update(PlanUserRequest $request, User $user, planuser $plan)
     {
         $plan->update([
             'start_date' => Carbon::parse($request->start_date),

@@ -41,6 +41,42 @@ class Bill extends Model
     ];
 
     /**
+     *  [setDateAttribute description]
+     *
+     *  @param   [type]  $value  [$value description]
+     *
+     *  @return  [type]          [return description]
+     */
+    public function setDateAttribute($value)
+    {
+        $this->attributes['date'] = Carbon::parse($value);
+    }
+
+    /**
+     * [setStartDateAttribute description]
+     *
+     * @param   [type]  $value  [$value description]
+     *
+     * @return  [type]          [return description]
+     */
+    public function setStartDateAttribute($value)
+    {
+        $this->attributes['start_date'] = Carbon::parse($value);
+    }
+
+    /**
+     * [setFinishDateAttribute description]
+     *
+     * @param   [type]  $value  [$value description]
+     *
+     * @return  [type]          [return description]
+     */
+    public function setFinishDateAttribute($value)
+    {
+        $this->attributes['finish_date'] = Carbon::parse($value);
+    }
+
+    /**
      *  [payment_type description]
      *
      *  @method payment_type
@@ -60,6 +96,25 @@ class Bill extends Model
     public function plan_user()
     {
         return $this->belongsTo('App\Models\Plans\PlanUser');
+    }
+
+    /**
+     *  Upate a registered payment
+     *
+     *  @param   Request  $request
+     *
+     *  @return  $this  
+     */
+    public function updateBill($request)
+    {
+        return $this->update([
+            'amount'          => (int) $request->amount,
+            'date'            => $request->date,
+            'payment_type_id' => (int) $request->payment_type_id,
+            'plan_user_id'    => $request->plan_user_id,
+            'start_date'      => $request->start_date,
+            'finish_date'     => $request->finish_date,
+        ]);
     }
 
     /**

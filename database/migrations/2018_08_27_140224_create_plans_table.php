@@ -18,28 +18,26 @@ class CreatePlansTable extends Migration
     {
         Schema::create('plan_periods', function (Blueprint $table) {
             $table->increments('id');
-            
             $table->string('period')->nullable();
-            
             $table->integer('period_number')->nullable();
-            
             $table->timestamps();
         });
 
         Schema::create('plans', function (Blueprint $table) {
             $table->increments('id');
             $table->string('plan');
+            $table->text('description')->nullable();
             $table->unsignedInteger('plan_period_id')->nullable();
             $table->boolean('has_clases');
             $table->integer('class_numbers');
             $table->integer('amount')->nullable();
             $table->boolean('custom')->nullable();
-            $table->boolean('contractable')->default(0);
             $table->boolean('convenio')->default(0);
-            $table->text('description')->nullable();
+            $table->boolean('contractable')->default(true);
+            $table->integer('daily_clases')->default(true);
+            $table->integer('plan_status_id')->default(true);
             
             $table->timestamps();
-            $table->foreign('plan_period_id')->references('id')->on('plan_periods')->onDelete('cascade');
         });
 
         // Schema::create('discounts', function (Blueprint $table) {

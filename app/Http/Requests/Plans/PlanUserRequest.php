@@ -24,32 +24,31 @@ class PlanUserRequest extends FormRequest
      */
     public function rules(Request $request)
     {
-        if ((int) $request->plan_id === 2 && !$request->counter) {
-            return [
-                'counter' => 'required',
-            ];
-        }
+        // if plan is INVITADO and hasn't counter, the it's need to be add some counters
+        $counterFieldIsRequired = ((int)$request->plan_id === 2 && !$request->counter) ? 'required' : '';
 
-        // if (\in_array($this->method(), ['PUT','PATCH'])) {
-        //     if ( $plan->finish_date->lt(today()) ) {
-        //     Session::flash('warning', 'No se puede modificar el estado de un plan cuya fecha de término es anterior a hoy');
-
-        //     return view('userplans.show')->with([
-        //         'user' => $user,
-        //         'plan_user' => $plan
-        //     ]);
-        // }
-
-        // }
         return [
-            //
+            'counter' => $counterFieldIsRequired,
+            'finish_date' => 'after_or_equal:start_date',
         ];
     }
 
+    /**
+     *  @return  array
+     */
     public function messages()
     {
         return [
-            'counter.required' => 'Campo numero de clases vacío',
+            'counter.required'           => 'Campo numero de clases vacío',
+            'finish_date.after_or_equal' => 'La fecha de termino del plan debe ser igual o mayor que la fecha de inicio',
         ];
+    }
+
+    /**
+     *  @return  bool
+     */
+    public function requestIsAnUpdate()
+    {
+        return in_array($this->method(), ['PUT', 'PATCH']);
     }
 }

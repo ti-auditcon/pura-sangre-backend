@@ -71,8 +71,8 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     /*
      * BILLS Routes
      */
-    Route::resource('payments', 'Bills\BillController')->middleware('role:1')->only('index', 'update');
     Route::post('payments/pagos', 'Bills\BillController@getPagos')->name('datapagos');
+    Route::resource('payments', 'Bills\BillController')->middleware('role:1')->only('index', 'store', 'update', 'destroy');
     Route::get('/bills', 'Bills\BillController@bills')->name('bills');
     Route::get('bills/export', 'Bills\BillController@export')->name('bills.export');
 
