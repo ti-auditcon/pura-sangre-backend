@@ -8,15 +8,30 @@ use App\Models\Plans\PlanStatus;
 use App\Models\Plans\PostponePlan;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
+use App\Repositories\Plans\PostponeRepository;
 use App\Http\Requests\Plans\PostponePlanRequest;
 
 class PlanUserPostponesController extends Controller
 {
+    // protected $postponeRepository;
+
+    // /**
+    //  *  [__construct description]
+    //  *
+    //  *  @param   PostponeRepository  $postpone  [$postpone description]
+    //  */
+    // public function __construct(PostponeRepository $postpone)
+    // {
+    //     // $this->postponeRepository = $postpone;
+    // }
+
+
     /**
-     * Freeze a PlanUser resource in storage.
+     *  Freeze a PlanUser resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     *  @param  \Illuminate\Http\Request  $request
+     *
+     *  @return \Illuminate\Http\Response
      */
     public function store(PostponePlanRequest $request, PlanUser $plan_user)
     {
@@ -74,32 +89,42 @@ class PlanUserPostponesController extends Controller
     }
 
     /**
-     * Unfreeze a PlanUser resource from storage.
+     *  Unfreeze a PlanUser resource from storage.
      *
-     * @param  \App\Models\Plans\PlanUser  $planUser
-     * @return \Illuminate\Http\Response
+     *  @param   \App\Models\Plans\PostponePlan     $postpone
+     *
+     *  @return  \Illuminate\Http\RedirectResponse
      */
-    public function destroy(PlanUser $plan_user, PostponePlan $postpone)
+    public function destroy(PostponePlan $postpone)
     {
-        $last_postpone = PostponePlan::where('plan_user_id', $plan_user->id)
-                                        ->where('finish_date', '>=', today())
-                                        ->orderByDesc('start_date')
-                                        ->first(); 
+        // $this->postponeRepository->delete($postpone);
 
-        if ($last_postpone) {
-            $diff_in_days = Carbon::parse($last_postpone->finish_date)->diffInDays(today()); 
+        $diff_in_days = Carbon::parse($postpone->finish_date)->diffInDays(today()); 
 
-            $plan_user->update([
-                'plan_status_id' => PlanStatus::ACTIVO,
-                'finish_date' => Carbon::parse($plan_user->finish_date)->subDays($diff_in_days + 1)
+        $postpone->plan_user->update([
+            'plan_status_id' => PlanStatus::ACTIVO,
+            'finish_date' => Carbon::parse($postpone->plan_user->finish_date)->subDays($diff_in_days + 1)
+        ]);
+
+        $planes_posteriores = PlanUser::where('user_id', $postpone->plan_user->user_id)
+                                ->where('start_date', '>', $postpone->plan_user->start_date)
+                                ->where('id', '!=', $postpone->plan_user->id)
+                                ->orderBy('finish_date')
+                                ->get([
+                                    'id', 'start_date', 'finish_date', 'user_id'
+                                ]);
+
+        foreach ($planes_posteriores as $plan) {
+            $plan->update([
+                'start_date' =>$plan->start_date->subDays($diff_in_days),
+                'finish_date' => $plan->finish_date->subDays($diff_in_days)
             ]);
-
-            $last_postpone->delete();
-            
-            return redirect('users/' . $plan_user->user->id)->with('success', 'Plan reanudado correctamente');
         }
 
-        $plan_user->update(['plan_status_id' => PlanStatus::ACTIVO]);
-        return redirect('users/' . $plan_user->user->id)->with('success', 'Plan reanudado correctamente');
+        $postpone->delete();
+        
+        return redirect("users/{$postpone->plan_user->user->id}")->with('success', 'Plan reanudado correctamente');
     }
+
+
 }

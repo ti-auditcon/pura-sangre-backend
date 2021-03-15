@@ -2,15 +2,16 @@
 
 namespace App\Observers\Plans;
 
-use Session;
 use Carbon\Carbon;
-use App\Models\Plans\Plan;
 use App\Models\Users\User;
 use App\Models\Plans\PlanUser;
 use App\Models\Plans\PlanStatus;
+use App\Models\Users\StatusUser;
 use App\Models\Clases\Reservation;
+use App\Models\Clases\ReservationStatus;
 use App\Models\Plans\PostponePlan;
 use App\Models\Plans\PlanIncomeSummary;
+use Illuminate\Support\Facades\Session;
 
 class PlanUserObserver
 {
@@ -63,6 +64,11 @@ class PlanUserObserver
      */
     public function updating(PlanUser $planUser)
     {
+        // Skip "updating" observer if plan is cancelled
+        if ($this->planUserIsBeingCancelled($planUser->plan_status_id)) {
+            return;
+        }
+
         $user = User::findOrFail($planUser->user_id);
 
         $fecha_inicio = Carbon::parse($planUser->start_date);
@@ -110,12 +116,25 @@ class PlanUserObserver
         }
     }
 
+    /**
+     *  Check if the plan to be update is actually being cancelled
+     *
+     *  @param   int   $planStatusId 
+     *
+     *  @return  bool  
+     */
+    public function planUserIsBeingCancelled($planStatusId)
+    {
+        return $planStatusId === PlanStatus::CANCELADO;
+    }
+
     //UPDATE PARA CANCELAR EL PLAN
     public function updated(PlanUser $planUser)
     {
-        if ($planUser->plan_status_id == 5) {
-            foreach ($planUser->reservations as $key => $reserv) {
-                if ($reserv->reservation_status_id == 1 || $reserv->reservation_status_id == 2) {
+        if ($planUser->plan_status_id == PlanStatus::CANCELADO) {
+            foreach ($planUser->reservations as $reserv) {
+                if ($reserv->reservation_status_id == ReservationStatus::PENDING ||
+                    $reserv->reservation_status_id == ReservationStatus::CONFIRMED) {
                     $reserv->delete();
                 } elseif ($reserv->reservation_status_id == 3 || $reserv->reservation_status_id == 4) {
                     $reserv->update(['plan_user_id' => null]);
@@ -233,12 +252,16 @@ class PlanUserObserver
         $user = $planUser->user;
 
         if (today()->between(Carbon::parse($planUser->start_date), Carbon::parse($planUser->finish_date)) &&
-            $planUser->plan_status_id === 1) {
-            $user->status_user_id = ($planUser->plan->id === 1) ? 3 : 1;
+            $planUser->plan_status_id === PlanStatus::ACTIVO) {
+            $user->status_user_id = ($planUser->plan->id === 1) ?
+                                                     StatusUser::TEST :
+                                                     StatusUser::ACTIVE;
         } elseif ($user->actual_plan && $user->actual_plan->id != $planUser->id) {
-            $user->status_user_id = $user->actual_plan->plan->id === 1 ? 3 : 1;
+            $user->status_user_id = $user->actual_plan->plan->id === 1 ?
+                                                           StatusUser::TEST :
+                                                           StatusUser::ACTIVE;
         } else {
-            $user->status_user_id = 2;
+            $user->status_user_id = StatusUser::INACTIVE;
         }
 
         $user->save();

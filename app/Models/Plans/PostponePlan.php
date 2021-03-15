@@ -8,26 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 class PostponePlan extends Model
 {
 	/**
-	 * [$table description]
-	 * @var string
+	 *  @var  string
 	 */
 	protected $table = 'freeze_plans';
 
 	/**
-	 * [$fillable description]
-	 * @var [type]
+     *  @var  array
 	 */
 	protected $fillable = ['plan_user_id', 'start_date', 'finish_date'];
 
 	/**
-	 * [$dates description]
-	 * @var [type]
+     *  @var  array
 	 */
 	protected $dates = ['start_date', 'finish_date'];
 
 	/**
-	 * PlanUser Relationship
-	 * @return Eloquent class
+	 *  PlanUser Relationship
+	 * 
+     *  @return  BelongsTo
 	 */
 	public function plan_user()
 	{

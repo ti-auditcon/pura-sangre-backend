@@ -31,7 +31,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
         ->name('incomes.calibrate');
     Route::get('update-reservations-plans', 'Users\UserController@putIdPlan')->middleware('role:1');
 
-    /*
+    /**
      * Clases routes (clases, clases-alumnos, bloques)
      */
     Route::resource('blocks', 'Clases\BlockController')->middleware('role:1');
@@ -44,31 +44,30 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::post('clases/type-select/', 'Clases\ClaseController@typeSelect')->name('clases.type');
     Route::get('/asistencia-modal/{id}', 'Clases\ClaseController@asistencia')->name('asistencia');
 
-    /*
+    /**
      * Clases types routes
      */
     Route::resource('clases-types', 'Clases\ClaseTypeController')->except('create', 'edit');
     // Route::post('clases-types/update', 'Clases\ClaseTypeController@updateClaseTypeStage')
     //      ->name('clases-types.update-all');
 
-    /*
+    /**
      * CALENDAR CLASES ROUTES
      */
     Route::post('calendar/clases/delete', 'Clases\CalendarClasesController@destroy')
          ->name('admin.calendar.clasesday.destroy');
 
-    /*
+    /**
      *  POSTPONE PLANS ROUTE
      */
     Route::get('postpones', 'Plans\PostponeController@index')->middleware('role:1')->name('postpones.index');
-
+    
     Route::post('postpones/all', 'Plans\PostponeController@postponeAll')->name('postpones.all');
+    Route::post('/plan-user/{plan_user}/postpones', 'Plans\PlanUserPostponesController@store')->name('plan-user.postpones.store');
+    Route::resource('postpones', 'Plans\PlanUserPostponesController')->only('destroy')
+            ->middleware('role:1');
 
-    Route::resource('plan-user.postpones', 'Plans\PlanUserPostponesController')
-         ->only('store', 'destroy')
-         ->middleware('role:1');
-
-    /*
+    /**
      * BILLS Routes
      */
     Route::post('payments/pagos', 'Bills\BillController@getPagos')->name('datapagos');

@@ -10,6 +10,17 @@ use App\Models\Clases\Reservation;
  */
 class ReservationStatus extends Model
 {
+    /** @var  int */
+    const PENDING = 1;
+    
+    /** @var  int */
+    const CONFIRMED = 2;
+    
+    /** @var  int */
+    const CANCELLED = 3;
+    
+    /** @var  int */
+    const CONSUMED = 4;
     /**
      * The attributes that are mass assignable.
      *
