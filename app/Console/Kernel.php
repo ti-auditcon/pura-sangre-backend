@@ -56,10 +56,12 @@ class Kernel extends ConsoleKernel
         $schedule->command('plans:unfreeze')->dailyAt('00:15');
 
         $schedule->command('messages:send-notifications')->everyMinute();
-
+        
         $schedule->command('clases:first')->everyFifteenMinutes();
         
         $schedule->command('users:gone-away-email')->daily();
+        /**  Revisar todos los planes, para cambiar estado del usuario y el plan  */
+        $schedule->command('invoicing:emite-receipts')->everyMinute();
     }
 
     /**

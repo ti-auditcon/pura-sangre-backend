@@ -31,7 +31,7 @@ class PlanUserFlow extends Model
      * @var  array
      */
     protected $fillable = [
-        'start_date', 'finish_date', 'amount',
+        'start_date', 'finish_date', 'amount', 'sii_token', 'observations',
         'counter', 'plan_status_id', 'discount_id', 'plan_id', 'user_id'
     ];
 
