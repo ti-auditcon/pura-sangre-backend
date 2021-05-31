@@ -72,7 +72,6 @@ class PlanUserObserver
         $user = User::findOrFail($planUser->user_id);
 
         $fecha_inicio = Carbon::parse($planUser->start_date);
-
         $fecha_termino = Carbon::parse($planUser->finish_date);
 
         $plan_users = PlanUser::whereIn('plan_status_id', [1, 3])
@@ -131,7 +130,7 @@ class PlanUserObserver
     //UPDATE PARA CANCELAR EL PLAN
     public function updated(PlanUser $planUser)
     {
-        if ($planUser->plan_status_id == PlanStatus::CANCELADO) {
+        if ($planUser->plan_status_id === PlanStatus::CANCELADO) {
             foreach ($planUser->reservations as $reserv) {
                 if ($reserv->reservation_status_id == ReservationStatus::PENDING ||
                     $reserv->reservation_status_id == ReservationStatus::CONFIRMED) {
