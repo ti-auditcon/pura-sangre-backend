@@ -28,10 +28,10 @@
                                 </div>
                                 <div class="col-8">
                                     <div class="row mt-4">
-                                        <div class="col-12">
+                                        {{-- <div class="col-12">
                                             <span>Rut:</span>
                                             <span id="rut"></span>
-                                        </div>
+                                        </div> --}}
                                         <div class="col-12 mt-4">
                                             <span>Nombre:</span>
                                             <span id="full_name"></span>

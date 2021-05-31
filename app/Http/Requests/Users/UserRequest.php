@@ -2,11 +2,6 @@
 
 namespace App\Http\Requests\Users;
 
-use App\Rules\RutUnique;
-use App\Rules\RutValidate;
-use App\Models\Users\User;
-use Illuminate\Validation\Rule;
-use Freshwork\ChileanBundle\Rut;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
@@ -34,7 +29,6 @@ class UserRequest extends FormRequest
                 return [
                     'first_name' => 'required',
                     'last_name' => 'required',
-                    'rut' => [new RutValidate, new RutUnique],
                     'email' => 'required|email|unique:users',
                     'since' => 'after_or_equal:' . today(),
                     'phone' => $this->phone != null ? 'digits:8': '',
@@ -54,7 +48,6 @@ class UserRequest extends FormRequest
                 return [
                     'first_name' => 'required',
                     'last_name' => 'required',
-                    'rut' => [new RutUnique($this->user), new RutValidate],
                     'image' => 'mimes:jpeg,png|max:1024',
                     'email' => $required.'|email'.$case,
                     'phone' => $this->phone != null ? 'digits:8': '',
