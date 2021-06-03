@@ -2,26 +2,21 @@
 
 namespace App\Http\Controllers\Users;
 
-use Session;
-use Redirect;
 use App\Models\Users\User;
-use Illuminate\Http\Request;
 use App\Exports\UsersExport;
+use Illuminate\Http\Request;
 use App\Models\Plans\PlanUser;
 use App\Models\Users\Emergency;
 use App\Models\Clases\Reservation;
-use Illuminate\Support\Facades\Log;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
-use Intervention\Image\Facades\Image;
-use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Users\UserRequest;
 
 class UserController extends Controller
 {
     public function __construct()
     {
-        // parent::__construct();
         $this->middleware('can:view,user')->only('show');
     }
 
