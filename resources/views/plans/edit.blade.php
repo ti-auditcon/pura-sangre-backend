@@ -92,7 +92,7 @@
                     </div>
 
                     <div class="col-sm-6 form-group mb-4">
-                        <label class="col-form-label">Horas validas del plan</label>
+                        <label class="col-form-label">Horas válidas del plan</label>
             
                         <input class="form-control form-control-air"
                                 name="schedule_hours"
