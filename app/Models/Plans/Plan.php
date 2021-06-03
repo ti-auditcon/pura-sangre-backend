@@ -20,7 +20,7 @@ class Plan extends Model
      * @var array
      */
     protected $fillable = [
-        'plan', 'description', 'plan_period_id',
+        'plan', 'description', 'plan_period_id', 'schedule_hours', 'schedule_days',
         'active', 'class_numbers', 'amount', 'custom',
         'daily_clases', 'contractable', 'convenio'
     ];

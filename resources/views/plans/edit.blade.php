@@ -81,6 +81,26 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-sm-6 form-group mb-4">
+                        <label class="col-form-label">Dias validas del plan</label>
+            
+                        <input class="form-control form-control-air"
+                                name="schedule_days"
+                                value="{{ $plan->schedule_days }}"
+                                required/>
+                    </div>
+
+                    <div class="col-sm-6 form-group mb-4">
+                        <label class="col-form-label">Horas válidas del plan</label>
+            
+                        <input class="form-control form-control-air"
+                                name="schedule_hours"
+                                value="{{ $plan->schedule_hours }}"
+                                required/>
+                    </div>
+                </div>
+
                 <div class="row mt-2">
                     <div class="col-12 form-group">
                         <label class="col-form-label">Descripción</label>
