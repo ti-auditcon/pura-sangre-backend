@@ -5,6 +5,7 @@ namespace App\Exports;
 use App\Models\Users\User;
 use App\Traits\ExpiredPlans;
 use App\Models\Plans\PlanUser;
+use Freshwork\ChileanBundle\Rut;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 

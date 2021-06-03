@@ -106,6 +106,8 @@
 
                                 <th width="10%">Correo</th>
 
+                                <th width="10%">RUN</th>
+
                                 <th width="10%">Plan Activo</th>
 
                                 <th width="10%">Vencimiento</th>
@@ -221,6 +223,7 @@
                       }
                     },
                     { "data": "email" },
+                    { "data": "rut_formated" },
                     { "data": "actual_plan",
                         "render": function (data, other, row) {
                             return data && data.plan ? data.plan.plan : 'no aplica';
@@ -251,7 +254,7 @@
                 ],
                 "columnDefs": [
                     {
-                        "targets": [ 6 ],
+                        "targets": [ 7 ],
                         "visible": false,
                         "searchable": true
                     }

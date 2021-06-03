@@ -3,6 +3,8 @@
 namespace App\Exports;
 
 use App\Models\Users\User;
+use Freshwork\ChileanBundle\Rut;
+// use App\Traits\EliminarTildes;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
@@ -28,6 +30,7 @@ class UsersExport implements FromCollection, WithHeadings
             }
             return [
                 $user->full_name,
+                $user->rut_formated,
                 $user->email,
                 $user->birthdate->format('d/m/Y'),
                 '+569 ' . $user->phone,
@@ -43,6 +46,7 @@ class UsersExport implements FromCollection, WithHeadings
     {
         return [
             'Alumno',
+            'RUN',
             'Correo',
             'Fecha de Nacimiento',
             'Telefono',

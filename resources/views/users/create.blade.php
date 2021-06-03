@@ -12,9 +12,9 @@
             </div>
             {!! Form::open(['route' => 'users.store']) !!}
             <div class="ibox-body">
-                {{-- <div class="col-12 p-0 my-0 mt-3">
+                <div class="col-12 p-0 my-0 mt-3">
                     <span class="col-form-label hidden">Por favor, ingrese un rut válido</span>
-                </div> --}}
+                </div>
                 <div class="row">
                     <div class="col-sm-6 form-group mb-2">
                         <div class="form-group inline @if($errors->has('first_name')) has-warning  @endif">
@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    {{-- <div class="col-sm-6 form-group mb-2">
+                    <div class="col-sm-6 form-group mb-2">
                         <div id="rut-group" class="form-group inline @if($errors->has('rut')) has-warning  @endif">
                             <label class="col-form-label">Rut</label>
                             
@@ -42,7 +42,7 @@
                                 <span class="col-form-label hidden">Por favor, ingrese un rut válido</span>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
                     <div class="col-sm-6 form-group mb-2">
                         <div class="form-group">
                             <label class="font-normal">Fecha de nacimiento</label>
@@ -199,7 +199,7 @@
 </script>
 
 {{-- RUT --}}
-{{-- <script src="{{ asset('js/jquery.rut.min.js') }}"></script>
+<script src="{{ asset('js/jquery.rut.min.js') }}"></script>
 
 <script>
     $(function()  {
@@ -220,7 +220,7 @@
             $('#rut-submit').prop('disabled', false);
         });
     })
-</script> --}}
+</script>
 {{-- END RUT --}}
 
     {{-- GOOGLE MAPS API --}}

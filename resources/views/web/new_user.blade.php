@@ -205,24 +205,24 @@
     <script src="{{ asset('js/jquery.rut.min.js') }}"></script>
 
     <script>
-        // $(function()  {
-        //     $("input#rut-src").rut({
-        //         formatOn: 'keyup',
-        //         minimumLength: 8, // validar largo mínimo; default: 2
-        //         validateOn: 'keyup' // si no se quiere validar, pasar null
-        //     });
+        $(function()  {
+            $("input#rut-src").rut({
+                formatOn: 'keyup',
+                minimumLength: 8, // validar largo mínimo; default: 2
+                validateOn: 'keyup' // si no se quiere validar, pasar null
+            });
             
-        //     $("input#rut-src").rut().on('rutInvalido', function(e) {
-        //         $('#rut-group').addClass('has-error');
-        //         $('#rut-group span').show();
-        //         $('#rut-submit').prop('disabled', true);
-        //     });
-        //     $("input#rut-src").rut().on('rutValido', function(e, rut, dv) {
-        //         $('#rut-group').removeClass('has-error');
-        //         $('#rut-group span').hide();
-        //         $('#rut-submit').prop('disabled', false);
-        //     });
-        // })
+            $("input#rut-src").rut().on('rutInvalido', function(e) {
+                $('#rut-group').addClass('has-error');
+                $('#rut-group span').show();
+                $('#rut-submit').prop('disabled', true);
+            });
+            $("input#rut-src").rut().on('rutValido', function(e, rut, dv) {
+                $('#rut-group').removeClass('has-error');
+                $('#rut-group span').hide();
+                $('#rut-submit').prop('disabled', false);
+            });
+        })
     </script>
 </body>
 </html>

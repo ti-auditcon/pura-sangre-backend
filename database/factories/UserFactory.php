@@ -5,7 +5,9 @@ use App\Models\Users\User;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 use App\Models\Users\RoleUser;
+use App\Models\Users\Emergency;
 use App\Models\Users\StatusUser;
+use Freshwork\ChileanBundle\Rut;
 
 
 $factory->define(StatusUser::class, function (Faker $faker) {
@@ -30,7 +32,7 @@ $factory->define(RoleUser::class, function (Faker $faker) {
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        // 'rut'            => Rut::parse($faker->numberBetween($min = 1000000, $max = 100000000))->normalize(),
+        'rut'            => Rut::parse($faker->numberBetween($min = 1000000, $max = 100000000))->normalize(),
         'first_name'     => $faker->firstName($gender = 'male'|'female'),
         'last_name'      => $faker->lastName,
         'email'          => $faker->unique()->safeEmail,

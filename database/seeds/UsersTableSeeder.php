@@ -20,6 +20,7 @@ class UsersTableSeeder extends Seeder
           0 =>
           array (
               'id' => 1,
+              'rut' => 5163619,
               'first_name' => 'Admin',
               'last_name' => 'Pura Sangre',
               'email' => 'contacto@purasangrecrossfit.cl',
@@ -39,6 +40,7 @@ class UsersTableSeeder extends Seeder
             400 =>
             array (
                 'id' => 4,
+                'rut' => 44444444,
                 'first_name' => 'Adrien',
                 'last_name' => 'Miller',
                 'email' => 'glynch@example.org',
@@ -57,6 +59,7 @@ class UsersTableSeeder extends Seeder
             1 =>
             array (
                 'id' => 5,
+                'rut' => 9121558,
                 'first_name' => 'Karelle',
                 'last_name' => 'Gutmann',
                 'email' => 'ohackett@example.org',
@@ -75,6 +78,7 @@ class UsersTableSeeder extends Seeder
             2 =>
             array (
                 'id' => 6,
+                'rut' => 4944789,
                 'first_name' => 'Theresa',
                 'last_name' => 'Ortiz',
                 'email' => 'rice.pat@example.com',
@@ -93,6 +97,7 @@ class UsersTableSeeder extends Seeder
             3 =>
             array (
                 'id' => 7,
+                'rut' => 844470,
                 'first_name' => 'Cameron',
                 'last_name' => 'Lemke',
                 'email' => 'jody.cassin@example.net',
@@ -111,6 +116,7 @@ class UsersTableSeeder extends Seeder
             4 =>
             array (
                 'id' => 8,
+                'rut' => 7761516,
                 'first_name' => 'Lily',
                 'last_name' => 'Rempel',
                 'email' => 'madelynn95@example.net',
@@ -129,6 +135,7 @@ class UsersTableSeeder extends Seeder
             5 =>
             array (
                 'id' => 9,
+                'rut' => 9206927,
                 'first_name' => 'Montana',
                 'last_name' => 'Runolfsson',
                 'email' => 'ilindgren@example.org',
@@ -147,6 +154,7 @@ class UsersTableSeeder extends Seeder
             6 =>
             array (
                 'id' => 10,
+                'rut' => 7122538,
                 'first_name' => 'Payton',
                 'last_name' => 'Kautzer',
                 'email' => 'kozey.cleora@example.net',
@@ -165,6 +173,7 @@ class UsersTableSeeder extends Seeder
             7 =>
             array (
                 'id' => 11,
+                'rut' => 8050308,
                 'first_name' => 'Emmanuelle',
                 'last_name' => 'Rogahn',
                 'email' => 'trevor00@example.org',
@@ -183,6 +192,7 @@ class UsersTableSeeder extends Seeder
             8 =>
             array (
                 'id' => 12,
+                'rut' => 1422232,
                 'first_name' => 'Timothy',
                 'last_name' => 'Davis',
                 'email' => 'beryl.kulas@example.com',
@@ -201,6 +211,7 @@ class UsersTableSeeder extends Seeder
             9 =>
             array (
                 'id' => 13,
+                'rut' => 5004085,
                 'first_name' => 'Tyrell',
                 'last_name' => 'Jakubowski',
                 'email' => 'schmidt.theresa@example.com',
@@ -219,6 +230,7 @@ class UsersTableSeeder extends Seeder
             10 =>
             array (
                 'id' => 14,
+                'rut' => 9963888,
                 'first_name' => 'Antonia',
                 'last_name' => 'Bernier',
                 'email' => 'alexzander93@example.net',
@@ -237,6 +249,7 @@ class UsersTableSeeder extends Seeder
             11 =>
             array (
                 'id' => 15,
+                'rut' => 4678415,
                 'first_name' => 'Amya',
                 'last_name' => 'Larkin',
                 'email' => 'farrell.adella@example.org',
@@ -255,6 +268,7 @@ class UsersTableSeeder extends Seeder
             12 =>
             array (
                 'id' => 16,
+                'rut' => 8109693,
                 'first_name' => 'Liliana',
                 'last_name' => 'Breitenberg',
                 'email' => 'clement.mosciski@example.com',
@@ -273,6 +287,7 @@ class UsersTableSeeder extends Seeder
             13 =>
             array (
                 'id' => 17,
+                'rut' => 6114802,
                 'first_name' => 'Daniela',
                 'last_name' => 'Buckridge',
                 'email' => 'hansen.gaylord@example.com',
@@ -291,6 +306,7 @@ class UsersTableSeeder extends Seeder
             14 =>
             array (
                 'id' => 18,
+                'rut' => 5714025,
                 'first_name' => 'Delia',
                 'last_name' => 'Gleichner',
                 'email' => 'okon.laurine@example.net',
@@ -309,6 +325,7 @@ class UsersTableSeeder extends Seeder
             15 =>
             array (
                 'id' => 19,
+                'rut' => 4718548,
                 'first_name' => 'Mckenna',
                 'last_name' => 'Jast',
                 'email' => 'bernardo33@example.org',
@@ -327,6 +344,7 @@ class UsersTableSeeder extends Seeder
             16 =>
             array (
                 'id' => 20,
+                'rut' => 1934473,
                 'first_name' => 'Ally',
                 'last_name' => 'Wiegand',
                 'email' => 'gottlieb.ana@example.com',
@@ -345,6 +363,7 @@ class UsersTableSeeder extends Seeder
             17 =>
             array (
                 'id' => 21,
+                'rut' => 6614191,
                 'first_name' => 'Rebeca',
                 'last_name' => 'Haag',
                 'email' => 'bailey.kevin@example.net',
@@ -363,6 +382,7 @@ class UsersTableSeeder extends Seeder
             18 =>
             array (
                 'id' => 22,
+                'rut' => 9732912,
                 'first_name' => 'Dixie',
                 'last_name' => 'Lakin',
                 'email' => 'stone65@example.net',
@@ -381,6 +401,7 @@ class UsersTableSeeder extends Seeder
             19 =>
             array (
                 'id' => 23,
+                'rut' => 2429710,
                 'first_name' => 'Jammie',
                 'last_name' => 'Okuneva',
                 'email' => 'alphonso.bayer@example.net',
@@ -399,6 +420,7 @@ class UsersTableSeeder extends Seeder
             20 =>
             array (
                 'id' => 24,
+                'rut' => 1495156,
                 'first_name' => 'Eldora',
                 'last_name' => 'Kessler',
                 'email' => 'elvie.klein@example.net',
@@ -417,6 +439,7 @@ class UsersTableSeeder extends Seeder
             21 =>
             array (
                 'id' => 25,
+                'rut' => 5825374,
                 'first_name' => 'Alexanne',
                 'last_name' => 'Wintheiser',
                 'email' => 'windler.scot@example.org',
@@ -435,6 +458,7 @@ class UsersTableSeeder extends Seeder
             22 =>
             array (
                 'id' => 26,
+                'rut' => 7257551,
                 'first_name' => 'Shanon',
                 'last_name' => 'Kshlerin',
                 'email' => 'ibeahan@example.net',
@@ -453,6 +477,7 @@ class UsersTableSeeder extends Seeder
             23 =>
             array (
                 'id' => 27,
+                'rut' => 1331304,
                 'first_name' => 'Coby',
                 'last_name' => 'Ernser',
                 'email' => 'bartell.elsie@example.com',
@@ -471,6 +496,7 @@ class UsersTableSeeder extends Seeder
             24 =>
             array (
                 'id' => 28,
+                'rut' => 9139116,
                 'first_name' => 'Erika',
                 'last_name' => 'Labadie',
                 'email' => 'kole.hegmann@example.org',
@@ -489,6 +515,7 @@ class UsersTableSeeder extends Seeder
             25 =>
             array (
                 'id' => 29,
+                'rut' => 9409718,
                 'first_name' => 'Rosalia',
                 'last_name' => 'Gerhold',
                 'email' => 'kattie64@example.net',
@@ -507,6 +534,7 @@ class UsersTableSeeder extends Seeder
             26 =>
             array (
                 'id' => 30,
+                'rut' => 9850190,
                 'first_name' => 'Lyda',
                 'last_name' => 'Waters',
                 'email' => 'moshe07@example.net',
@@ -525,6 +553,7 @@ class UsersTableSeeder extends Seeder
             27 =>
             array (
                 'id' => 31,
+                'rut' => 8926198,
                 'first_name' => 'Raphael',
                 'last_name' => 'Fay',
                 'email' => 'mferry@example.com',
@@ -543,6 +572,7 @@ class UsersTableSeeder extends Seeder
             28 =>
             array (
                 'id' => 32,
+                'rut' => 5133185,
                 'first_name' => 'Isac',
                 'last_name' => 'Quitzon',
                 'email' => 'raphael34@example.org',
@@ -561,6 +591,7 @@ class UsersTableSeeder extends Seeder
             29 =>
             array (
                 'id' => 33,
+                'rut' => 6191170,
                 'first_name' => 'Dominic',
                 'last_name' => 'Kunze',
                 'email' => 'jorge50@example.net',
@@ -579,6 +610,7 @@ class UsersTableSeeder extends Seeder
             30 =>
             array (
                 'id' => 34,
+                'rut' => 7793785,
                 'first_name' => 'Kattie',
                 'last_name' => 'Kertzmann',
                 'email' => 'iblick@example.org',
@@ -597,6 +629,7 @@ class UsersTableSeeder extends Seeder
             31 =>
             array (
                 'id' => 35,
+                'rut' => 2616877,
                 'first_name' => 'Weston',
                 'last_name' => 'Botsford',
                 'email' => 'treva97@example.net',
@@ -615,6 +648,7 @@ class UsersTableSeeder extends Seeder
             32 =>
             array (
                 'id' => 36,
+                'rut' => 9332036,
                 'first_name' => 'Hellen',
                 'last_name' => 'Runte',
                 'email' => 'jody.homenick@example.org',
@@ -633,6 +667,7 @@ class UsersTableSeeder extends Seeder
             33 =>
             array (
                 'id' => 37,
+                'rut' => 7143534,
                 'first_name' => 'Charley',
                 'last_name' => 'Stiedemann',
                 'email' => 'trantow.devonte@example.net',
@@ -651,6 +686,7 @@ class UsersTableSeeder extends Seeder
             34 =>
             array (
                 'id' => 38,
+                'rut' => 8473817,
                 'first_name' => 'Kennith',
                 'last_name' => 'Leannon',
                 'email' => 'smitchell@example.com',
@@ -669,6 +705,7 @@ class UsersTableSeeder extends Seeder
             35 =>
             array (
                 'id' => 39,
+                'rut' => 8736405,
                 'first_name' => 'Randy',
                 'last_name' => 'Cormier',
                 'email' => 'janice.pouros@example.net',
@@ -687,6 +724,7 @@ class UsersTableSeeder extends Seeder
             36 =>
             array (
                 'id' => 40,
+                'rut' => 5028130,
                 'first_name' => 'Otha',
                 'last_name' => 'Kub',
                 'email' => 'kianna.tromp@example.net',
@@ -705,6 +743,7 @@ class UsersTableSeeder extends Seeder
             37 =>
             array (
                 'id' => 41,
+                'rut' => 5473162,
                 'first_name' => 'Gerda',
                 'last_name' => 'Farrell',
                 'email' => 'ernestine09@example.net',
@@ -723,6 +762,7 @@ class UsersTableSeeder extends Seeder
             38 =>
             array (
                 'id' => 42,
+                'rut' => 3321067,
                 'first_name' => 'Yazmin',
                 'last_name' => 'Stehr',
                 'email' => 'alueilwitz@example.com',
@@ -741,6 +781,7 @@ class UsersTableSeeder extends Seeder
             39 =>
             array (
                 'id' => 43,
+                'rut' => 7869047,
                 'first_name' => 'Brent',
                 'last_name' => 'Kling',
                 'email' => 'jacobs.jermaine@example.net',
@@ -759,6 +800,7 @@ class UsersTableSeeder extends Seeder
             40 =>
             array (
                 'id' => 44,
+                'rut' => 8474292,
                 'first_name' => 'Jaunita',
                 'last_name' => 'Quitzon',
                 'email' => 'klocko.beaulah@example.com',
@@ -777,6 +819,7 @@ class UsersTableSeeder extends Seeder
             41 =>
             array (
                 'id' => 45,
+                'rut' => 4519585,
                 'first_name' => 'Krystina',
                 'last_name' => 'McClure',
                 'email' => 'utremblay@example.org',
@@ -795,6 +838,7 @@ class UsersTableSeeder extends Seeder
             42 =>
             array (
                 'id' => 46,
+                'rut' => 6633470,
                 'first_name' => 'Percival',
                 'last_name' => 'Olson',
                 'email' => 'bweissnat@example.com',
@@ -813,6 +857,7 @@ class UsersTableSeeder extends Seeder
             43 =>
             array (
                 'id' => 47,
+                'rut' => 9602147,
                 'first_name' => 'Brody',
                 'last_name' => 'Adams',
                 'email' => 'sheldon.spinka@example.com',
@@ -831,6 +876,7 @@ class UsersTableSeeder extends Seeder
             44 =>
             array (
                 'id' => 48,
+                'rut' => 6058513,
                 'first_name' => 'Colby',
                 'last_name' => 'Borer',
                 'email' => 'natasha61@example.net',
@@ -849,6 +895,7 @@ class UsersTableSeeder extends Seeder
             45 =>
             array (
                 'id' => 49,
+                'rut' => 3844620,
                 'first_name' => 'Jarred',
                 'last_name' => 'Dare',
                 'email' => 'watsica.magali@example.com',
@@ -867,6 +914,7 @@ class UsersTableSeeder extends Seeder
             46 =>
             array (
                 'id' => 50,
+                'rut' => 151486,
                 'first_name' => 'Giovanny',
                 'last_name' => 'Runolfsdottir',
                 'email' => 'oterry@example.net',
@@ -885,6 +933,7 @@ class UsersTableSeeder extends Seeder
             47 =>
             array (
                 'id' => 51,
+                'rut' => 5274570,
                 'first_name' => 'Jailyn',
                 'last_name' => 'Sporer',
                 'email' => 'julianne.zulauf@example.org',
@@ -903,6 +952,7 @@ class UsersTableSeeder extends Seeder
             48 =>
             array (
                 'id' => 52,
+                'rut' => 8872471,
                 'first_name' => 'Milan',
                 'last_name' => 'Waters',
                 'email' => 'rod64@example.org',
@@ -921,6 +971,7 @@ class UsersTableSeeder extends Seeder
             49 =>
             array (
                 'id' => 53,
+                'rut' => 7860768,
                 'first_name' => 'Jocelyn',
                 'last_name' => 'Funk',
                 'email' => 'shuels@example.org',
@@ -939,6 +990,7 @@ class UsersTableSeeder extends Seeder
             50 =>
             array (
                 'id' => 54,
+                'rut' => 5557083,
                 'first_name' => 'Elwyn',
                 'last_name' => 'Weissnat',
                 'email' => 'farrell.viviane@example.net',
@@ -957,6 +1009,7 @@ class UsersTableSeeder extends Seeder
             51 =>
             array (
                 'id' => 55,
+                'rut' => 6442437,
                 'first_name' => 'Briana',
                 'last_name' => 'Cummings',
                 'email' => 'labadie.lorena@example.com',
@@ -975,6 +1028,7 @@ class UsersTableSeeder extends Seeder
             52 =>
             array (
                 'id' => 56,
+                'rut' => 5428778,
                 'first_name' => 'Trent',
                 'last_name' => 'Armstrong',
                 'email' => 'sebastian64@example.org',
@@ -993,6 +1047,7 @@ class UsersTableSeeder extends Seeder
             53 =>
             array (
                 'id' => 57,
+                'rut' => 5887452,
                 'first_name' => 'Rene',
                 'last_name' => 'Fisher',
                 'email' => 'eliza.farrell@example.org',
@@ -1011,6 +1066,7 @@ class UsersTableSeeder extends Seeder
             54 =>
             array (
                 'id' => 58,
+                'rut' => 3162686,
                 'first_name' => 'Norbert',
                 'last_name' => 'Gulgowski',
                 'email' => 'awilliamson@example.org',
@@ -1029,6 +1085,7 @@ class UsersTableSeeder extends Seeder
             55 =>
             array (
                 'id' => 59,
+                'rut' => 6432999,
                 'first_name' => 'Pearline',
                 'last_name' => 'Homenick',
                 'email' => 'flavio33@example.net',
@@ -1047,6 +1104,7 @@ class UsersTableSeeder extends Seeder
             56 =>
             array (
                 'id' => 60,
+                'rut' => 919819,
                 'first_name' => 'Kian',
                 'last_name' => 'Cronin',
                 'email' => 'hoeger.pablo@example.org',
@@ -1065,6 +1123,7 @@ class UsersTableSeeder extends Seeder
             57 =>
             array (
                 'id' => 61,
+                'rut' => 4468572,
                 'first_name' => 'Nicolas',
                 'last_name' => 'Heidenreich',
                 'email' => 'uoberbrunner@example.net',
@@ -1083,6 +1142,7 @@ class UsersTableSeeder extends Seeder
             58 =>
             array (
                 'id' => 62,
+                'rut' => 178986,
                 'first_name' => 'Conor',
                 'last_name' => 'Zemlak',
                 'email' => 'savannah25@example.net',
@@ -1101,6 +1161,7 @@ class UsersTableSeeder extends Seeder
             59 =>
             array (
                 'id' => 63,
+                'rut' => 8336288,
                 'first_name' => 'Geo',
                 'last_name' => 'Stoltenberg',
                 'email' => 'vlynch@example.net',
@@ -1119,6 +1180,7 @@ class UsersTableSeeder extends Seeder
             60 =>
             array (
                 'id' => 64,
+                'rut' => 7686794,
                 'first_name' => 'Elias',
                 'last_name' => 'Kreiger',
                 'email' => 'rrobel@example.net',
@@ -1137,6 +1199,7 @@ class UsersTableSeeder extends Seeder
             61 =>
             array (
                 'id' => 65,
+                'rut' => 2489611,
                 'first_name' => 'Loraine',
                 'last_name' => 'Hane',
                 'email' => 'mrobel@example.com',
@@ -1155,6 +1218,7 @@ class UsersTableSeeder extends Seeder
             62 =>
             array (
                 'id' => 66,
+                'rut' => 5142312,
                 'first_name' => 'Marlin',
                 'last_name' => 'Kiehn',
                 'email' => 'lilliana30@example.net',
@@ -1173,6 +1237,7 @@ class UsersTableSeeder extends Seeder
             63 =>
             array (
                 'id' => 67,
+                'rut' => 2821154,
                 'first_name' => 'Hilton',
                 'last_name' => 'Graham',
                 'email' => 'willis66@example.org',
@@ -1191,6 +1256,7 @@ class UsersTableSeeder extends Seeder
             64 =>
             array (
                 'id' => 68,
+                'rut' => 1900341,
                 'first_name' => 'Tobin',
                 'last_name' => 'Cummerata',
                 'email' => 'kirk60@example.com',
@@ -1209,6 +1275,7 @@ class UsersTableSeeder extends Seeder
             65 =>
             array (
                 'id' => 69,
+                'rut' => 1185685,
                 'first_name' => 'Trisha',
                 'last_name' => 'Gutkowski',
                 'email' => 'leon73@example.com',
@@ -1227,6 +1294,7 @@ class UsersTableSeeder extends Seeder
             66 =>
             array (
                 'id' => 70,
+                'rut' => 503470,
                 'first_name' => 'Ben',
                 'last_name' => 'Kub',
                 'email' => 'sam76@example.net',
@@ -1245,6 +1313,7 @@ class UsersTableSeeder extends Seeder
             67 =>
             array (
                 'id' => 71,
+                'rut' => 1530897,
                 'first_name' => 'Leonard',
                 'last_name' => 'Gibson',
                 'email' => 'rpfeffer@example.net',
@@ -1263,6 +1332,7 @@ class UsersTableSeeder extends Seeder
             68 =>
             array (
                 'id' => 72,
+                'rut' => 9100529,
                 'first_name' => 'Gladys',
                 'last_name' => 'Terry',
                 'email' => 'enola55@example.com',
@@ -1281,6 +1351,7 @@ class UsersTableSeeder extends Seeder
             69 =>
             array (
                 'id' => 73,
+                'rut' => 4528693,
                 'first_name' => 'Jimmy',
                 'last_name' => 'Sauer',
                 'email' => 'wkohler@example.net',
@@ -1299,6 +1370,7 @@ class UsersTableSeeder extends Seeder
             70 =>
             array (
                 'id' => 74,
+                'rut' => 2549331,
                 'first_name' => 'Graham',
                 'last_name' => 'Moore',
                 'email' => 'marcos86@example.com',
@@ -1317,6 +1389,7 @@ class UsersTableSeeder extends Seeder
             71 =>
             array (
                 'id' => 75,
+                'rut' => 1966733,
                 'first_name' => 'Bernhard',
                 'last_name' => 'Turcotte',
                 'email' => 'krath@example.com',
@@ -1335,6 +1408,7 @@ class UsersTableSeeder extends Seeder
             72 =>
             array (
                 'id' => 76,
+                'rut' => 7575137,
                 'first_name' => 'Xzavier',
                 'last_name' => 'Hane',
                 'email' => 'meghan32@example.org',
@@ -1353,6 +1427,7 @@ class UsersTableSeeder extends Seeder
             73 =>
             array (
                 'id' => 77,
+                'rut' => 3656475,
                 'first_name' => 'Thurman',
                 'last_name' => 'Corwin',
                 'email' => 'vivien41@example.org',
@@ -1371,6 +1446,7 @@ class UsersTableSeeder extends Seeder
             74 =>
             array (
                 'id' => 78,
+                'rut' => 5243652,
                 'first_name' => 'Abraham',
                 'last_name' => 'Dickens',
                 'email' => 'zlangosh@example.com',
@@ -1389,6 +1465,7 @@ class UsersTableSeeder extends Seeder
             75 =>
             array (
                 'id' => 79,
+                'rut' => 829051,
                 'first_name' => 'Agustin',
                 'last_name' => 'Zulauf',
                 'email' => 'llakin@example.com',
@@ -1407,6 +1484,7 @@ class UsersTableSeeder extends Seeder
             76 =>
             array (
                 'id' => 80,
+                'rut' => 4781238,
                 'first_name' => 'Brenden',
                 'last_name' => 'Mosciski',
                 'email' => 'jessika.jacobson@example.com',
@@ -1425,6 +1503,7 @@ class UsersTableSeeder extends Seeder
             77 =>
             array (
                 'id' => 81,
+                'rut' => 6896429,
                 'first_name' => 'Donnie',
                 'last_name' => 'Deckow',
                 'email' => 'kris.milan@example.org',
@@ -1443,6 +1522,7 @@ class UsersTableSeeder extends Seeder
             78 =>
             array (
                 'id' => 82,
+                'rut' => 1262675,
                 'first_name' => 'Kyler',
                 'last_name' => 'Beatty',
                 'email' => 'christelle.nicolas@example.org',
@@ -1461,6 +1541,7 @@ class UsersTableSeeder extends Seeder
             79 =>
             array (
                 'id' => 83,
+                'rut' => 3237727,
                 'first_name' => 'Emmy',
                 'last_name' => 'Connelly',
                 'email' => 'jmurray@example.com',
@@ -1479,6 +1560,7 @@ class UsersTableSeeder extends Seeder
             80 =>
             array (
                 'id' => 84,
+                'rut' => 4297171,
                 'first_name' => 'Bulah',
                 'last_name' => 'Johns',
                 'email' => 'gregorio.collins@example.org',
@@ -1497,6 +1579,7 @@ class UsersTableSeeder extends Seeder
             81 =>
             array (
                 'id' => 85,
+                'rut' => 2014774,
                 'first_name' => 'Dovie',
                 'last_name' => 'Hahn',
                 'email' => 'fstrosin@example.org',
@@ -1515,6 +1598,7 @@ class UsersTableSeeder extends Seeder
             82 =>
             array (
                 'id' => 86,
+                'rut' => 8783064,
                 'first_name' => 'Marlen',
                 'last_name' => 'Rath',
                 'email' => 'semmerich@example.org',
@@ -1533,6 +1617,7 @@ class UsersTableSeeder extends Seeder
             83 =>
             array (
                 'id' => 87,
+                'rut' => 9525401,
                 'first_name' => 'Kelsi',
                 'last_name' => 'Fahey',
                 'email' => 'isaias96@example.net',
@@ -1551,6 +1636,7 @@ class UsersTableSeeder extends Seeder
             84 =>
             array (
                 'id' => 88,
+                'rut' => 3452318,
                 'first_name' => 'Florine',
                 'last_name' => 'Schaden',
                 'email' => 'kkemmer@example.net',
@@ -1569,6 +1655,7 @@ class UsersTableSeeder extends Seeder
             85 =>
             array (
                 'id' => 89,
+                'rut' => 3722510,
                 'first_name' => 'Dejuan',
                 'last_name' => 'Brakus',
                 'email' => 'klocko.freeman@example.com',
@@ -1587,6 +1674,7 @@ class UsersTableSeeder extends Seeder
             86 =>
             array (
                 'id' => 90,
+                'rut' => 4375793,
                 'first_name' => 'Tremaine',
                 'last_name' => 'Connelly',
                 'email' => 'bking@example.org',
@@ -1605,6 +1693,7 @@ class UsersTableSeeder extends Seeder
             87 =>
             array (
                 'id' => 91,
+                'rut' => 6358618,
                 'first_name' => 'Stacy',
                 'last_name' => 'Cremin',
                 'email' => 'skyla.kohler@example.com',
@@ -1623,6 +1712,7 @@ class UsersTableSeeder extends Seeder
             88 =>
             array (
                 'id' => 92,
+                'rut' => 9216328,
                 'first_name' => 'Ted',
                 'last_name' => 'Shanahan',
                 'email' => 'heathcote.schuyler@example.org',
@@ -1641,6 +1731,7 @@ class UsersTableSeeder extends Seeder
             89 =>
             array (
                 'id' => 93,
+                'rut' => 1794802,
                 'first_name' => 'Sienna',
                 'last_name' => 'Barrows',
                 'email' => 'irunolfsson@example.net',
@@ -1659,6 +1750,7 @@ class UsersTableSeeder extends Seeder
             90 =>
             array (
                 'id' => 94,
+                'rut' => 3999445,
                 'first_name' => 'Zechariah',
                 'last_name' => 'Haley',
                 'email' => 'sbergnaum@example.com',
@@ -1677,6 +1769,7 @@ class UsersTableSeeder extends Seeder
             91 =>
             array (
                 'id' => 95,
+                'rut' => 7777088,
                 'first_name' => 'Coleman',
                 'last_name' => 'Witting',
                 'email' => 'macejkovic.trenton@example.com',
@@ -1695,6 +1788,7 @@ class UsersTableSeeder extends Seeder
             92 =>
             array (
                 'id' => 96,
+                'rut' => 9001668,
                 'first_name' => 'Hattie',
                 'last_name' => 'Mueller',
                 'email' => 'queenie.hansen@example.net',
@@ -1713,6 +1807,7 @@ class UsersTableSeeder extends Seeder
             93 =>
             array (
                 'id' => 97,
+                'rut' => 8557277,
                 'first_name' => 'Tyree',
                 'last_name' => 'Lakin',
                 'email' => 'vhodkiewicz@example.org',
@@ -1731,6 +1826,7 @@ class UsersTableSeeder extends Seeder
             94 =>
             array (
                 'id' => 98,
+                'rut' => 2505671,
                 'first_name' => 'Lavern',
                 'last_name' => 'Quitzon',
                 'email' => 'jon43@example.net',
@@ -1749,6 +1845,7 @@ class UsersTableSeeder extends Seeder
             95 =>
             array (
                 'id' => 99,
+                'rut' => 7481638,
                 'first_name' => 'Tom',
                 'last_name' => 'Hane',
                 'email' => 'maxie72@example.net',
@@ -1767,6 +1864,7 @@ class UsersTableSeeder extends Seeder
             96 =>
             array (
                 'id' => 100,
+                'rut' => 4498442,
                 'first_name' => 'Damion',
                 'last_name' => 'Larkin',
                 'email' => 'dhodkiewicz@example.net',
@@ -1785,6 +1883,7 @@ class UsersTableSeeder extends Seeder
             97 =>
             array (
                 'id' => 101,
+                'rut' => 9867281,
                 'first_name' => 'Faustino',
                 'last_name' => 'Tromp',
                 'email' => 'gregory12@example.com',
@@ -1803,6 +1902,7 @@ class UsersTableSeeder extends Seeder
             98 =>
             array (
                 'id' => 102,
+                'rut' => 4589627,
                 'first_name' => 'Barney',
                 'last_name' => 'Ziemann',
                 'email' => 'norval.jakubowski@example.com',
@@ -1821,6 +1921,7 @@ class UsersTableSeeder extends Seeder
             99 =>
             array (
                 'id' => 103,
+                'rut' => 6797617,
                 'first_name' => 'Samson',
                 'last_name' => 'Kiehn',
                 'email' => 'alexys03@example.com',
@@ -1839,6 +1940,7 @@ class UsersTableSeeder extends Seeder
             100 =>
             array (
                 'id' => 104,
+                'rut' => 8179057,
                 'first_name' => 'Hubert',
                 'last_name' => 'Funk',
                 'email' => 'aletha27@example.org',
@@ -1857,6 +1959,7 @@ class UsersTableSeeder extends Seeder
             101 =>
             array (
                 'id' => 105,
+                'rut' => 9422718,
                 'first_name' => 'Kenna',
                 'last_name' => 'Weber',
                 'email' => 'ygutkowski@example.org',
@@ -1875,6 +1978,7 @@ class UsersTableSeeder extends Seeder
             102 =>
             array (
                 'id' => 106,
+                'rut' => 5193295,
                 'first_name' => 'Willy',
                 'last_name' => 'Weimann',
                 'email' => 'haag.bill@example.com',
@@ -1893,6 +1997,7 @@ class UsersTableSeeder extends Seeder
             103 =>
             array (
                 'id' => 107,
+                'rut' => 9119713,
                 'first_name' => 'Griffin',
                 'last_name' => 'Russel',
                 'email' => 'sbergstrom@example.com',
@@ -1911,6 +2016,7 @@ class UsersTableSeeder extends Seeder
             104 =>
             array (
                 'id' => 108,
+                'rut' => 914657,
                 'first_name' => 'Autumn',
                 'last_name' => 'Blanda',
                 'email' => 'dooley.dasia@example.com',
@@ -1929,6 +2035,7 @@ class UsersTableSeeder extends Seeder
             105 =>
             array (
                 'id' => 109,
+                'rut' => 7471509,
                 'first_name' => 'Tommie',
                 'last_name' => 'Lehner',
                 'email' => 'rosenbaum.leanne@example.org',
@@ -1947,6 +2054,7 @@ class UsersTableSeeder extends Seeder
             106 =>
             array (
                 'id' => 110,
+                'rut' => 7906233,
                 'first_name' => 'Fletcher',
                 'last_name' => 'O\'Reilly',
                 'email' => 'bartoletti.hertha@example.com',
@@ -1965,6 +2073,7 @@ class UsersTableSeeder extends Seeder
             107 =>
             array (
                 'id' => 111,
+                'rut' => 3834143,
                 'first_name' => 'Arvid',
                 'last_name' => 'Schinner',
                 'email' => 'hilbert13@example.net',
@@ -1983,6 +2092,7 @@ class UsersTableSeeder extends Seeder
             108 =>
             array (
                 'id' => 112,
+                'rut' => 3673654,
                 'first_name' => 'Ezequiel',
                 'last_name' => 'Stokes',
                 'email' => 'melody.mosciski@example.com',
@@ -2001,6 +2111,7 @@ class UsersTableSeeder extends Seeder
             109 =>
             array (
                 'id' => 113,
+                'rut' => 1863874,
                 'first_name' => 'Kailyn',
                 'last_name' => 'Goyette',
                 'email' => 'nolan.ashley@example.com',
@@ -2019,6 +2130,7 @@ class UsersTableSeeder extends Seeder
             110 =>
             array (
                 'id' => 114,
+                'rut' => 8127229,
                 'first_name' => 'Kattie',
                 'last_name' => 'Raynor',
                 'email' => 'wgusikowski@example.com',
@@ -2037,6 +2149,7 @@ class UsersTableSeeder extends Seeder
             111 =>
             array (
                 'id' => 115,
+                'rut' => 3019270,
                 'first_name' => 'Kody',
                 'last_name' => 'Lindgren',
                 'email' => 'osinski.trey@example.com',
@@ -2055,6 +2168,7 @@ class UsersTableSeeder extends Seeder
             112 =>
             array (
                 'id' => 116,
+                'rut' => 4253181,
                 'first_name' => 'Heather',
                 'last_name' => 'Jones',
                 'email' => 'ewald23@example.com',
@@ -2073,6 +2187,7 @@ class UsersTableSeeder extends Seeder
             113 =>
             array (
                 'id' => 117,
+                'rut' => 8651262,
                 'first_name' => 'Zita',
                 'last_name' => 'Hane',
                 'email' => 'durgan.chaim@example.org',
@@ -2091,6 +2206,7 @@ class UsersTableSeeder extends Seeder
             114 =>
             array (
                 'id' => 118,
+                'rut' => 5051494,
                 'first_name' => 'Wallace',
                 'last_name' => 'Jenkins',
                 'email' => 'lockman.saul@example.org',
@@ -2109,6 +2225,7 @@ class UsersTableSeeder extends Seeder
             115 =>
             array (
                 'id' => 119,
+                'rut' => 593367,
                 'first_name' => 'Waino',
                 'last_name' => 'Wisozk',
                 'email' => 'brandon07@example.com',
@@ -2127,6 +2244,7 @@ class UsersTableSeeder extends Seeder
             116 =>
             array (
                 'id' => 120,
+                'rut' => 4835353,
                 'first_name' => 'Ernestina',
                 'last_name' => 'Miller',
                 'email' => 'sprice@example.net',
@@ -2145,6 +2263,7 @@ class UsersTableSeeder extends Seeder
             117 =>
             array (
                 'id' => 121,
+                'rut' => 7482346,
                 'first_name' => 'Marisol',
                 'last_name' => 'Rice',
                 'email' => 'erika48@example.net',
@@ -2163,6 +2282,7 @@ class UsersTableSeeder extends Seeder
             118 =>
             array (
                 'id' => 122,
+                'rut' => 2938894,
                 'first_name' => 'Ellis',
                 'last_name' => 'Hand',
                 'email' => 'hamill.maureen@example.org',
@@ -2181,6 +2301,7 @@ class UsersTableSeeder extends Seeder
             119 =>
             array (
                 'id' => 123,
+                'rut' => 7447285,
                 'first_name' => 'Claude',
                 'last_name' => 'Pagac',
                 'email' => 'maggie44@example.com',
@@ -2199,6 +2320,7 @@ class UsersTableSeeder extends Seeder
             120 =>
             array (
                 'id' => 124,
+                'rut' => 2807554,
                 'first_name' => 'Nadia',
                 'last_name' => 'Bruen',
                 'email' => 'shuel@example.net',
@@ -2217,6 +2339,7 @@ class UsersTableSeeder extends Seeder
             121 =>
             array (
                 'id' => 125,
+                'rut' => 1402071,
                 'first_name' => 'Modesto',
                 'last_name' => 'Gulgowski',
                 'email' => 'agnes.dooley@example.net',
@@ -2235,6 +2358,7 @@ class UsersTableSeeder extends Seeder
             122 =>
             array (
                 'id' => 126,
+                'rut' => 1954161,
                 'first_name' => 'Jasmin',
                 'last_name' => 'Quigley',
                 'email' => 'monique76@example.net',
@@ -2253,6 +2377,7 @@ class UsersTableSeeder extends Seeder
             123 =>
             array (
                 'id' => 127,
+                'rut' => 7256533,
                 'first_name' => 'Creola',
                 'last_name' => 'Predovic',
                 'email' => 'chloe62@example.com',
@@ -2271,6 +2396,7 @@ class UsersTableSeeder extends Seeder
             124 =>
             array (
                 'id' => 128,
+                'rut' => 3276220,
                 'first_name' => 'Hazle',
                 'last_name' => 'Turcotte',
                 'email' => 'qborer@example.net',
@@ -2289,6 +2415,7 @@ class UsersTableSeeder extends Seeder
             125 =>
             array (
                 'id' => 129,
+                'rut' => 6396664,
                 'first_name' => 'Dave',
                 'last_name' => 'Gusikowski',
                 'email' => 'wilkinson.trisha@example.net',
@@ -2307,6 +2434,7 @@ class UsersTableSeeder extends Seeder
             126 =>
             array (
                 'id' => 130,
+                'rut' => 3088380,
                 'first_name' => 'Travon',
                 'last_name' => 'VonRueden',
                 'email' => 'nelson.langosh@example.org',
@@ -2325,6 +2453,7 @@ class UsersTableSeeder extends Seeder
             127 =>
             array (
                 'id' => 131,
+                'rut' => 7530967,
                 'first_name' => 'Emelia',
                 'last_name' => 'Nicolas',
                 'email' => 'laurie67@example.net',
@@ -2343,6 +2472,7 @@ class UsersTableSeeder extends Seeder
             128 =>
             array (
                 'id' => 132,
+                'rut' => 8808562,
                 'first_name' => 'Maxime',
                 'last_name' => 'Boehm',
                 'email' => 'jared24@example.org',
@@ -2361,6 +2491,7 @@ class UsersTableSeeder extends Seeder
             129 =>
             array (
                 'id' => 133,
+                'rut' => 9777575,
                 'first_name' => 'Evangeline',
                 'last_name' => 'Sanford',
                 'email' => 'rhermiston@example.net',
@@ -2379,6 +2510,7 @@ class UsersTableSeeder extends Seeder
             130 =>
             array (
                 'id' => 134,
+                'rut' => 9431826,
                 'first_name' => 'Josiah',
                 'last_name' => 'Kirlin',
                 'email' => 'gene65@example.net',
@@ -2397,6 +2529,7 @@ class UsersTableSeeder extends Seeder
             131 =>
             array (
                 'id' => 135,
+                'rut' => 7289597,
                 'first_name' => 'Keara',
                 'last_name' => 'Mayert',
                 'email' => 'lydia09@example.com',
@@ -2415,6 +2548,7 @@ class UsersTableSeeder extends Seeder
             132 =>
             array (
                 'id' => 136,
+                'rut' => 7830830,
                 'first_name' => 'Forrest',
                 'last_name' => 'Sanford',
                 'email' => 'mae59@example.net',
@@ -2433,6 +2567,7 @@ class UsersTableSeeder extends Seeder
             133 =>
             array (
                 'id' => 137,
+                'rut' => 4137091,
                 'first_name' => 'Cruz',
                 'last_name' => 'Reynolds',
                 'email' => 'farrell.estel@example.com',
@@ -2451,6 +2586,7 @@ class UsersTableSeeder extends Seeder
             134 =>
             array (
                 'id' => 138,
+                'rut' => 3682462,
                 'first_name' => 'Chance',
                 'last_name' => 'Kertzmann',
                 'email' => 'brody.olson@example.org',
@@ -2469,6 +2605,7 @@ class UsersTableSeeder extends Seeder
             135 =>
             array (
                 'id' => 139,
+                'rut' => 8254030,
                 'first_name' => 'Jerad',
                 'last_name' => 'Howe',
                 'email' => 'zachery91@example.com',
@@ -2487,6 +2624,7 @@ class UsersTableSeeder extends Seeder
             136 =>
             array (
                 'id' => 140,
+                'rut' => 6327500,
                 'first_name' => 'Rickie',
                 'last_name' => 'Deckow',
                 'email' => 'xhirthe@example.net',
@@ -2505,6 +2643,7 @@ class UsersTableSeeder extends Seeder
             137 =>
             array (
                 'id' => 141,
+                'rut' => 9117586,
                 'first_name' => 'Dulce',
                 'last_name' => 'Haag',
                 'email' => 'nquitzon@example.net',
@@ -2523,6 +2662,7 @@ class UsersTableSeeder extends Seeder
             138 =>
             array (
                 'id' => 142,
+                'rut' => 7242536,
                 'first_name' => 'Marina',
                 'last_name' => 'Wilderman',
                 'email' => 'ramon40@example.net',
@@ -2541,6 +2681,7 @@ class UsersTableSeeder extends Seeder
             139 =>
             array (
                 'id' => 143,
+                'rut' => 2843175,
                 'first_name' => 'Beau',
                 'last_name' => 'Leannon',
                 'email' => 'jason.ondricka@example.net',
@@ -2559,6 +2700,7 @@ class UsersTableSeeder extends Seeder
             140 =>
             array (
                 'id' => 144,
+                'rut' => 5356766,
                 'first_name' => 'Crystel',
                 'last_name' => 'Nikolaus',
                 'email' => 'nkerluke@example.net',
@@ -2577,6 +2719,7 @@ class UsersTableSeeder extends Seeder
             141 =>
             array (
                 'id' => 145,
+                'rut' => 3275097,
                 'first_name' => 'Lelah',
                 'last_name' => 'Carroll',
                 'email' => 'nakia.heaney@example.org',
@@ -2595,6 +2738,7 @@ class UsersTableSeeder extends Seeder
             142 =>
             array (
                 'id' => 146,
+                'rut' => 7346394,
                 'first_name' => 'Maxine',
                 'last_name' => 'Padberg',
                 'email' => 'bill00@example.org',
@@ -2613,6 +2757,7 @@ class UsersTableSeeder extends Seeder
             143 =>
             array (
                 'id' => 147,
+                'rut' => 1549570,
                 'first_name' => 'Tyler',
                 'last_name' => 'Gulgowski',
                 'email' => 'kristian59@example.net',
@@ -2631,6 +2776,7 @@ class UsersTableSeeder extends Seeder
             144 =>
             array (
                 'id' => 148,
+                'rut' => 7404904,
                 'first_name' => 'Sheldon',
                 'last_name' => 'Schuster',
                 'email' => 'macejkovic.forrest@example.org',
@@ -2649,6 +2795,7 @@ class UsersTableSeeder extends Seeder
             145 =>
             array (
                 'id' => 149,
+                'rut' => 4875327,
                 'first_name' => 'Korbin',
                 'last_name' => 'Tremblay',
                 'email' => 'levi29@example.org',
@@ -2667,6 +2814,7 @@ class UsersTableSeeder extends Seeder
             146 =>
             array (
                 'id' => 150,
+                'rut' => 9844253,
                 'first_name' => 'Sarah',
                 'last_name' => 'Lakin',
                 'email' => 'xwalsh@example.net',
@@ -2685,6 +2833,7 @@ class UsersTableSeeder extends Seeder
             147 =>
             array (
                 'id' => 151,
+                'rut' => 2260924,
                 'first_name' => 'Toni',
                 'last_name' => 'Hayes',
                 'email' => 'ledner.pauline@example.org',
@@ -2703,6 +2852,7 @@ class UsersTableSeeder extends Seeder
             148 =>
             array (
                 'id' => 152,
+                'rut' => 3505003,
                 'first_name' => 'Carli',
                 'last_name' => 'Heidenreich',
                 'email' => 'macejkovic.delphine@example.org',
@@ -2721,6 +2871,7 @@ class UsersTableSeeder extends Seeder
             149 =>
             array (
                 'id' => 153,
+                'rut' => 6105520,
                 'first_name' => 'Chester',
                 'last_name' => 'Predovic',
                 'email' => 'sgorczany@example.net',
@@ -2739,6 +2890,7 @@ class UsersTableSeeder extends Seeder
             150 =>
             array (
                 'id' => 154,
+                'rut' => 3720936,
                 'first_name' => 'Floyd',
                 'last_name' => 'Bins',
                 'email' => 'summer12@example.net',
@@ -2757,6 +2909,7 @@ class UsersTableSeeder extends Seeder
             151 =>
             array (
                 'id' => 155,
+                'rut' => 9747607,
                 'first_name' => 'Lindsey',
                 'last_name' => 'Upton',
                 'email' => 'beatrice.mcglynn@example.com',
@@ -2775,6 +2928,7 @@ class UsersTableSeeder extends Seeder
             152 =>
             array (
                 'id' => 156,
+                'rut' => 494065,
                 'first_name' => 'Niko',
                 'last_name' => 'Schaefer',
                 'email' => 'kmosciski@example.com',
@@ -2793,6 +2947,7 @@ class UsersTableSeeder extends Seeder
             153 =>
             array (
                 'id' => 157,
+                'rut' => 6915295,
                 'first_name' => 'Tyrell',
                 'last_name' => 'Stiedemann',
                 'email' => 'purdy.domingo@example.org',
@@ -2811,6 +2966,7 @@ class UsersTableSeeder extends Seeder
             154 =>
             array (
                 'id' => 158,
+                'rut' => 9056533,
                 'first_name' => 'Braxton',
                 'last_name' => 'Yundt',
                 'email' => 'uriah.jacobson@example.com',
@@ -2829,6 +2985,7 @@ class UsersTableSeeder extends Seeder
             155 =>
             array (
                 'id' => 159,
+                'rut' => 9202776,
                 'first_name' => 'Regan',
                 'last_name' => 'Hartmann',
                 'email' => 'gleichner.murphy@example.org',
@@ -2847,6 +3004,7 @@ class UsersTableSeeder extends Seeder
             156 =>
             array (
                 'id' => 160,
+                'rut' => 4353160,
                 'first_name' => 'Maxwell',
                 'last_name' => 'Weimann',
                 'email' => 'elliott94@example.net',
@@ -2865,6 +3023,7 @@ class UsersTableSeeder extends Seeder
             157 =>
             array (
                 'id' => 161,
+                'rut' => 6187027,
                 'first_name' => 'Abel',
                 'last_name' => 'Armstrong',
                 'email' => 'qfisher@example.net',
@@ -2883,6 +3042,7 @@ class UsersTableSeeder extends Seeder
             158 =>
             array (
                 'id' => 162,
+                'rut' => 9698074,
                 'first_name' => 'Korbin',
                 'last_name' => 'McGlynn',
                 'email' => 'baumbach.dandre@example.net',
@@ -2901,6 +3061,7 @@ class UsersTableSeeder extends Seeder
             159 =>
             array (
                 'id' => 163,
+                'rut' => 2154136,
                 'first_name' => 'Alysa',
                 'last_name' => 'Wisozk',
                 'email' => 'simone64@example.com',
@@ -2919,6 +3080,7 @@ class UsersTableSeeder extends Seeder
             160 =>
             array (
                 'id' => 164,
+                'rut' => 8277373,
                 'first_name' => 'Cedrick',
                 'last_name' => 'Schimmel',
                 'email' => 'ratke.mae@example.com',
@@ -2937,6 +3099,7 @@ class UsersTableSeeder extends Seeder
             161 =>
             array (
                 'id' => 165,
+                'rut' => 9776878,
                 'first_name' => 'Devon',
                 'last_name' => 'Bahringer',
                 'email' => 'stracke.wilton@example.net',
@@ -2955,6 +3118,7 @@ class UsersTableSeeder extends Seeder
             162 =>
             array (
                 'id' => 166,
+                'rut' => 3678988,
                 'first_name' => 'Rodrick',
                 'last_name' => 'Pagac',
                 'email' => 'nayeli.considine@example.net',
@@ -2973,6 +3137,7 @@ class UsersTableSeeder extends Seeder
             163 =>
             array (
                 'id' => 167,
+                'rut' => 8782459,
                 'first_name' => 'Darlene',
                 'last_name' => 'Howe',
                 'email' => 'reina.trantow@example.com',
@@ -2991,6 +3156,7 @@ class UsersTableSeeder extends Seeder
             164 =>
             array (
                 'id' => 168,
+                'rut' => 1057545,
                 'first_name' => 'Jerome',
                 'last_name' => 'Mayer',
                 'email' => 'marks.spencer@example.org',
@@ -3009,6 +3175,7 @@ class UsersTableSeeder extends Seeder
             165 =>
             array (
                 'id' => 169,
+                'rut' => 7269169,
                 'first_name' => 'Josue',
                 'last_name' => 'Hamill',
                 'email' => 'lmills@example.com',
@@ -3027,6 +3194,7 @@ class UsersTableSeeder extends Seeder
             166 =>
             array (
                 'id' => 170,
+                'rut' => 9318078,
                 'first_name' => 'Golden',
                 'last_name' => 'Conroy',
                 'email' => 'kiarra.schmeler@example.org',
@@ -3045,6 +3213,7 @@ class UsersTableSeeder extends Seeder
             167 =>
             array (
                 'id' => 171,
+                'rut' => 6233535,
                 'first_name' => 'Emmanuel',
                 'last_name' => 'Kling',
                 'email' => 'javier.fay@example.net',
@@ -3063,6 +3232,7 @@ class UsersTableSeeder extends Seeder
             168 =>
             array (
                 'id' => 172,
+                'rut' => 8533155,
                 'first_name' => 'Albertha',
                 'last_name' => 'Tremblay',
                 'email' => 'beer.breana@example.net',
@@ -3081,6 +3251,7 @@ class UsersTableSeeder extends Seeder
             169 =>
             array (
                 'id' => 173,
+                'rut' => 2781885,
                 'first_name' => 'Amelia',
                 'last_name' => 'Kutch',
                 'email' => 'flavie.schinner@example.net',
@@ -3099,6 +3270,7 @@ class UsersTableSeeder extends Seeder
             170 =>
             array (
                 'id' => 174,
+                'rut' => 9105771,
                 'first_name' => 'Tyree',
                 'last_name' => 'Cronin',
                 'email' => 'parisian.americo@example.com',
@@ -3117,6 +3289,7 @@ class UsersTableSeeder extends Seeder
             171 =>
             array (
                 'id' => 175,
+                'rut' => 7451426,
                 'first_name' => 'Annamae',
                 'last_name' => 'Jenkins',
                 'email' => 'everette.kiehn@example.com',
@@ -3135,6 +3308,7 @@ class UsersTableSeeder extends Seeder
             172 =>
             array (
                 'id' => 176,
+                'rut' => 1858115,
                 'first_name' => 'Dayton',
                 'last_name' => 'Boehm',
                 'email' => 'gwen.herman@example.net',
@@ -3153,6 +3327,7 @@ class UsersTableSeeder extends Seeder
             173 =>
             array (
                 'id' => 177,
+                'rut' => 3679536,
                 'first_name' => 'Annetta',
                 'last_name' => 'Zieme',
                 'email' => 'sschuster@example.net',
@@ -3171,6 +3346,7 @@ class UsersTableSeeder extends Seeder
             174 =>
             array (
                 'id' => 178,
+                'rut' => 5526619,
                 'first_name' => 'Nyah',
                 'last_name' => 'Hammes',
                 'email' => 'alexandrea.prohaska@example.com',
@@ -3189,6 +3365,7 @@ class UsersTableSeeder extends Seeder
             175 =>
             array (
                 'id' => 179,
+                'rut' => 8958721,
                 'first_name' => 'Letitia',
                 'last_name' => 'Bernier',
                 'email' => 'jacey.terry@example.com',
@@ -3207,6 +3384,7 @@ class UsersTableSeeder extends Seeder
             176 =>
             array (
                 'id' => 180,
+                'rut' => 403836,
                 'first_name' => 'Gilberto',
                 'last_name' => 'Abbott',
                 'email' => 'curtis.lindgren@example.org',
@@ -3225,6 +3403,7 @@ class UsersTableSeeder extends Seeder
             177 =>
             array (
                 'id' => 181,
+                'rut' => 2631396,
                 'first_name' => 'Carson',
                 'last_name' => 'Boyer',
                 'email' => 'hermann.domenick@example.net',
@@ -3243,6 +3422,7 @@ class UsersTableSeeder extends Seeder
             178 =>
             array (
                 'id' => 182,
+                'rut' => 7571902,
                 'first_name' => 'Marcelino',
                 'last_name' => 'Bosco',
                 'email' => 'brandon00@example.org',
@@ -3261,6 +3441,7 @@ class UsersTableSeeder extends Seeder
             179 =>
             array (
                 'id' => 183,
+                'rut' => 8284477,
                 'first_name' => 'Davon',
                 'last_name' => 'Dicki',
                 'email' => 'hamill.marcelino@example.org',
@@ -3279,6 +3460,7 @@ class UsersTableSeeder extends Seeder
             180 =>
             array (
                 'id' => 184,
+                'rut' => 6315447,
                 'first_name' => 'Gus',
                 'last_name' => 'Weber',
                 'email' => 'zelma.krajcik@example.org',
@@ -3297,6 +3479,7 @@ class UsersTableSeeder extends Seeder
             181 =>
             array (
                 'id' => 185,
+                'rut' => 9523568,
                 'first_name' => 'Nettie',
                 'last_name' => 'West',
                 'email' => 'justus.jerde@example.org',
@@ -3315,6 +3498,7 @@ class UsersTableSeeder extends Seeder
             182 =>
             array (
                 'id' => 186,
+                'rut' => 5378435,
                 'first_name' => 'Marcellus',
                 'last_name' => 'Moen',
                 'email' => 'audreanne.ferry@example.org',
@@ -3333,6 +3517,7 @@ class UsersTableSeeder extends Seeder
             183 =>
             array (
                 'id' => 187,
+                'rut' => 3541060,
                 'first_name' => 'Rudy',
                 'last_name' => 'Sanford',
                 'email' => 'brown.estrella@example.org',
@@ -3351,6 +3536,7 @@ class UsersTableSeeder extends Seeder
             184 =>
             array (
                 'id' => 188,
+                'rut' => 5857128,
                 'first_name' => 'Damian',
                 'last_name' => 'Volkman',
                 'email' => 'harold.cummings@example.com',
@@ -3369,6 +3555,7 @@ class UsersTableSeeder extends Seeder
             185 =>
             array (
                 'id' => 189,
+                'rut' => 6534824,
                 'first_name' => 'Christa',
                 'last_name' => 'Nolan',
                 'email' => 'ycarroll@example.com',
@@ -3387,6 +3574,7 @@ class UsersTableSeeder extends Seeder
             186 =>
             array (
                 'id' => 190,
+                'rut' => 5932276,
                 'first_name' => 'Marcelina',
                 'last_name' => 'Emmerich',
                 'email' => 'borer.mafalda@example.org',
@@ -3405,6 +3593,7 @@ class UsersTableSeeder extends Seeder
             187 =>
             array (
                 'id' => 191,
+                'rut' => 4279672,
                 'first_name' => 'Efren',
                 'last_name' => 'Block',
                 'email' => 'xbuckridge@example.net',
@@ -3423,6 +3612,7 @@ class UsersTableSeeder extends Seeder
             188 =>
             array (
                 'id' => 192,
+                'rut' => 2696179,
                 'first_name' => 'Jamaal',
                 'last_name' => 'Blick',
                 'email' => 'diana63@example.net',
@@ -3441,6 +3631,7 @@ class UsersTableSeeder extends Seeder
             189 =>
             array (
                 'id' => 193,
+                'rut' => 1811042,
                 'first_name' => 'Demarco',
                 'last_name' => 'Collier',
                 'email' => 'ratke.dangelo@example.net',
@@ -3459,6 +3650,7 @@ class UsersTableSeeder extends Seeder
             190 =>
             array (
                 'id' => 194,
+                'rut' => 9996635,
                 'first_name' => 'Demetrius',
                 'last_name' => 'Weber',
                 'email' => 'stanford.ziemann@example.org',
@@ -3477,6 +3669,7 @@ class UsersTableSeeder extends Seeder
             191 =>
             array (
                 'id' => 195,
+                'rut' => 5622945,
                 'first_name' => 'Benjamin',
                 'last_name' => 'McDermott',
                 'email' => 'king.pasquale@example.com',
@@ -3495,6 +3688,7 @@ class UsersTableSeeder extends Seeder
             192 =>
             array (
                 'id' => 196,
+                'rut' => 2697052,
                 'first_name' => 'Ambrose',
                 'last_name' => 'Purdy',
                 'email' => 'dare.alexis@example.net',
@@ -3513,6 +3707,7 @@ class UsersTableSeeder extends Seeder
             193 =>
             array (
                 'id' => 197,
+                'rut' => 5773641,
                 'first_name' => 'Cierra',
                 'last_name' => 'Adams',
                 'email' => 'winston.denesik@example.net',
@@ -3531,6 +3726,7 @@ class UsersTableSeeder extends Seeder
             194 =>
             array (
                 'id' => 198,
+                'rut' => 1197158,
                 'first_name' => 'Jordy',
                 'last_name' => 'Huels',
                 'email' => 'raoul.donnelly@example.com',
@@ -3549,6 +3745,7 @@ class UsersTableSeeder extends Seeder
             195 =>
             array (
                 'id' => 199,
+                'rut' => 8411496,
                 'first_name' => 'Rita',
                 'last_name' => 'Schinner',
                 'email' => 'ebert.chase@example.net',
@@ -3567,6 +3764,7 @@ class UsersTableSeeder extends Seeder
             196 =>
             array (
                 'id' => 200,
+                'rut' => 8784333,
                 'first_name' => 'Vincent',
                 'last_name' => 'Pfeffer',
                 'email' => 'kemmer.queen@example.org',
@@ -3585,6 +3783,7 @@ class UsersTableSeeder extends Seeder
             197 =>
             array (
                 'id' => 201,
+                'rut' => 8615606,
                 'first_name' => 'Janick',
                 'last_name' => 'Stark',
                 'email' => 'tkoelpin@example.org',
@@ -3603,6 +3802,7 @@ class UsersTableSeeder extends Seeder
             198 =>
             array (
                 'id' => 202,
+                'rut' => 4342771,
                 'first_name' => 'Kathryne',
                 'last_name' => 'Cummings',
                 'email' => 'tromp.annette@example.com',
@@ -3621,6 +3821,7 @@ class UsersTableSeeder extends Seeder
             199 =>
             array (
                 'id' => 203,
+                'rut' => 4306069,
                 'first_name' => 'Emelie',
                 'last_name' => 'Crist',
                 'email' => 'destini.feeney@example.org',
@@ -3639,6 +3840,7 @@ class UsersTableSeeder extends Seeder
             200 =>
             array (
                 'id' => 204,
+                'rut' => 9879729,
                 'first_name' => 'Ali',
                 'last_name' => 'Schaden',
                 'email' => 'jarrod.kertzmann@example.net',
@@ -3657,6 +3859,7 @@ class UsersTableSeeder extends Seeder
             201 =>
             array (
                 'id' => 205,
+                'rut' => 9960733,
                 'first_name' => 'Adrain',
                 'last_name' => 'Kulas',
                 'email' => 'zulauf.lizeth@example.com',
@@ -3675,6 +3878,7 @@ class UsersTableSeeder extends Seeder
             202 =>
             array (
                 'id' => 206,
+                'rut' => 9881570,
                 'first_name' => 'Cristopher',
                 'last_name' => 'Haley',
                 'email' => 'kellie.wuckert@example.com',
@@ -3693,6 +3897,7 @@ class UsersTableSeeder extends Seeder
             203 =>
             array (
                 'id' => 207,
+                'rut' => 4416212,
                 'first_name' => 'Kaden',
                 'last_name' => 'Windler',
                 'email' => 'alysha38@example.com',
@@ -3711,6 +3916,7 @@ class UsersTableSeeder extends Seeder
             204 =>
             array (
                 'id' => 208,
+                'rut' => 7894899,
                 'first_name' => 'Helene',
                 'last_name' => 'Walsh',
                 'email' => 'vickie.wyman@example.com',
@@ -3729,6 +3935,7 @@ class UsersTableSeeder extends Seeder
             205 =>
             array (
                 'id' => 209,
+                'rut' => 710782,
                 'first_name' => 'Cynthia',
                 'last_name' => 'Yundt',
                 'email' => 'murray.janie@example.net',
@@ -3747,6 +3954,7 @@ class UsersTableSeeder extends Seeder
             206 =>
             array (
                 'id' => 210,
+                'rut' => 5844148,
                 'first_name' => 'Vladimir',
                 'last_name' => 'Boehm',
                 'email' => 'skye20@example.com',
@@ -3765,6 +3973,7 @@ class UsersTableSeeder extends Seeder
             207 =>
             array (
                 'id' => 211,
+                'rut' => 7943492,
                 'first_name' => 'Magdalena',
                 'last_name' => 'Bailey',
                 'email' => 'ovonrueden@example.com',
@@ -3783,6 +3992,7 @@ class UsersTableSeeder extends Seeder
             208 =>
             array (
                 'id' => 212,
+                'rut' => 8528071,
                 'first_name' => 'Jeremy',
                 'last_name' => 'Glover',
                 'email' => 'okonopelski@example.org',
@@ -3801,6 +4011,7 @@ class UsersTableSeeder extends Seeder
             209 =>
             array (
                 'id' => 213,
+                'rut' => 4295934,
                 'first_name' => 'Elissa',
                 'last_name' => 'Kohler',
                 'email' => 'rebekah88@example.com',
@@ -3819,6 +4030,7 @@ class UsersTableSeeder extends Seeder
             210 =>
             array (
                 'id' => 214,
+                'rut' => 9227206,
                 'first_name' => 'Loraine',
                 'last_name' => 'Ebert',
                 'email' => 'arturo.waelchi@example.org',
@@ -3837,6 +4049,7 @@ class UsersTableSeeder extends Seeder
             211 =>
             array (
                 'id' => 215,
+                'rut' => 1644696,
                 'first_name' => 'Christine',
                 'last_name' => 'Hodkiewicz',
                 'email' => 'lolita.aufderhar@example.com',
@@ -3855,6 +4068,7 @@ class UsersTableSeeder extends Seeder
             212 =>
             array (
                 'id' => 216,
+                'rut' => 6172700,
                 'first_name' => 'Wilburn',
                 'last_name' => 'Jast',
                 'email' => 'arjun78@example.org',
@@ -3873,6 +4087,7 @@ class UsersTableSeeder extends Seeder
             213 =>
             array (
                 'id' => 217,
+                'rut' => 147402,
                 'first_name' => 'Camilla',
                 'last_name' => 'McClure',
                 'email' => 'richmond07@example.net',
@@ -3891,6 +4106,7 @@ class UsersTableSeeder extends Seeder
             214 =>
             array (
                 'id' => 218,
+                'rut' => 2741846,
                 'first_name' => 'Donny',
                 'last_name' => 'Lehner',
                 'email' => 'maximillia44@example.org',
@@ -3909,6 +4125,7 @@ class UsersTableSeeder extends Seeder
             215 =>
             array (
                 'id' => 219,
+                'rut' => 7732582,
                 'first_name' => 'Cassandre',
                 'last_name' => 'Bradtke',
                 'email' => 'theodora.halvorson@example.com',
@@ -3927,6 +4144,7 @@ class UsersTableSeeder extends Seeder
             216 =>
             array (
                 'id' => 220,
+                'rut' => 6911393,
                 'first_name' => 'Wilfredo',
                 'last_name' => 'Maggio',
                 'email' => 'concepcion91@example.net',
@@ -3945,6 +4163,7 @@ class UsersTableSeeder extends Seeder
             217 =>
             array (
                 'id' => 221,
+                'rut' => 5330506,
                 'first_name' => 'Ulises',
                 'last_name' => 'Stiedemann',
                 'email' => 'lila35@example.com',
@@ -3963,6 +4182,7 @@ class UsersTableSeeder extends Seeder
             218 =>
             array (
                 'id' => 222,
+                'rut' => 4086077,
                 'first_name' => 'Beryl',
                 'last_name' => 'Hettinger',
                 'email' => 'muller.chelsea@example.org',
@@ -3981,6 +4201,7 @@ class UsersTableSeeder extends Seeder
             219 =>
             array (
                 'id' => 223,
+                'rut' => 6242317,
                 'first_name' => 'Rasheed',
                 'last_name' => 'Sporer',
                 'email' => 'robbie82@example.com',
@@ -3999,6 +4220,7 @@ class UsersTableSeeder extends Seeder
             220 =>
             array (
                 'id' => 224,
+                'rut' => 6107792,
                 'first_name' => 'Ford',
                 'last_name' => 'Smith',
                 'email' => 'atrantow@example.org',
@@ -4017,6 +4239,7 @@ class UsersTableSeeder extends Seeder
             221 =>
             array (
                 'id' => 225,
+                'rut' => 557144,
                 'first_name' => 'Julianne',
                 'last_name' => 'Emmerich',
                 'email' => 'clovis.vandervort@example.com',
@@ -4035,6 +4258,7 @@ class UsersTableSeeder extends Seeder
             222 =>
             array (
                 'id' => 226,
+                'rut' => 4479665,
                 'first_name' => 'Hailey',
                 'last_name' => 'Pollich',
                 'email' => 'eprohaska@example.org',
@@ -4053,6 +4277,7 @@ class UsersTableSeeder extends Seeder
             223 =>
             array (
                 'id' => 227,
+                'rut' => 6048320,
                 'first_name' => 'Arnaldo',
                 'last_name' => 'Abshire',
                 'email' => 'tillman.estevan@example.org',
@@ -4071,6 +4296,7 @@ class UsersTableSeeder extends Seeder
             224 =>
             array (
                 'id' => 228,
+                'rut' => 8664738,
                 'first_name' => 'Breanna',
                 'last_name' => 'Kunde',
                 'email' => 'christina33@example.com',
@@ -4089,6 +4315,7 @@ class UsersTableSeeder extends Seeder
             225 =>
             array (
                 'id' => 229,
+                'rut' => 5299599,
                 'first_name' => 'Janis',
                 'last_name' => 'Jacobi',
                 'email' => 'kassulke.mackenzie@example.org',
@@ -4107,6 +4334,7 @@ class UsersTableSeeder extends Seeder
             226 =>
             array (
                 'id' => 230,
+                'rut' => 5717761,
                 'first_name' => 'Nigel',
                 'last_name' => 'Schaden',
                 'email' => 'lind.rubye@example.org',
@@ -4125,6 +4353,7 @@ class UsersTableSeeder extends Seeder
             227 =>
             array (
                 'id' => 231,
+                'rut' => 9741236,
                 'first_name' => 'Susana',
                 'last_name' => 'Dickens',
                 'email' => 'maudie.barton@example.com',
@@ -4143,6 +4372,7 @@ class UsersTableSeeder extends Seeder
             228 =>
             array (
                 'id' => 232,
+                'rut' => 2953284,
                 'first_name' => 'Jackie',
                 'last_name' => 'VonRueden',
                 'email' => 'denesik.susanna@example.com',
@@ -4161,6 +4391,7 @@ class UsersTableSeeder extends Seeder
             229 =>
             array (
                 'id' => 233,
+                'rut' => 2138955,
                 'first_name' => 'Carli',
                 'last_name' => 'Medhurst',
                 'email' => 'toy.wiza@example.com',
@@ -4179,6 +4410,7 @@ class UsersTableSeeder extends Seeder
             230 =>
             array (
                 'id' => 234,
+                'rut' => 6771382,
                 'first_name' => 'Hortense',
                 'last_name' => 'Ernser',
                 'email' => 'terry.goyette@example.org',
@@ -4197,6 +4429,7 @@ class UsersTableSeeder extends Seeder
             231 =>
             array (
                 'id' => 235,
+                'rut' => 7388555,
                 'first_name' => 'Marlin',
                 'last_name' => 'Gorczany',
                 'email' => 'durgan.broderick@example.com',
@@ -4215,6 +4448,7 @@ class UsersTableSeeder extends Seeder
             232 =>
             array (
                 'id' => 236,
+                'rut' => 618107,
                 'first_name' => 'Harvey',
                 'last_name' => 'Emard',
                 'email' => 'rsanford@example.net',
@@ -4233,6 +4467,7 @@ class UsersTableSeeder extends Seeder
             233 =>
             array (
                 'id' => 237,
+                'rut' => 4753140,
                 'first_name' => 'Daisy',
                 'last_name' => 'Haag',
                 'email' => 'kpouros@example.net',
@@ -4251,6 +4486,7 @@ class UsersTableSeeder extends Seeder
             234 =>
             array (
                 'id' => 238,
+                'rut' => 9646431,
                 'first_name' => 'Celestine',
                 'last_name' => 'Rohan',
                 'email' => 'fkunze@example.com',
@@ -4269,6 +4505,7 @@ class UsersTableSeeder extends Seeder
             235 =>
             array (
                 'id' => 239,
+                'rut' => 897859,
                 'first_name' => 'Carol',
                 'last_name' => 'Johnston',
                 'email' => 'windler.amelia@example.net',
@@ -4287,6 +4524,7 @@ class UsersTableSeeder extends Seeder
             236 =>
             array (
                 'id' => 240,
+                'rut' => 8776614,
                 'first_name' => 'Sebastian',
                 'last_name' => 'Dooley',
                 'email' => 'santos19@example.org',
@@ -4305,6 +4543,7 @@ class UsersTableSeeder extends Seeder
             237 =>
             array (
                 'id' => 241,
+                'rut' => 7048354,
                 'first_name' => 'Bernhard',
                 'last_name' => 'Gerhold',
                 'email' => 'bins.tatum@example.com',
@@ -4323,6 +4562,7 @@ class UsersTableSeeder extends Seeder
             238 =>
             array (
                 'id' => 242,
+                'rut' => 7012403,
                 'first_name' => 'Dariana',
                 'last_name' => 'Wisoky',
                 'email' => 'adriana.braun@example.com',
@@ -4341,6 +4581,7 @@ class UsersTableSeeder extends Seeder
             239 =>
             array (
                 'id' => 243,
+                'rut' => 8655612,
                 'first_name' => 'Alexandrea',
                 'last_name' => 'Nitzsche',
                 'email' => 'bborer@example.net',
@@ -4359,6 +4600,7 @@ class UsersTableSeeder extends Seeder
             240 =>
             array (
                 'id' => 244,
+                'rut' => 7617409,
                 'first_name' => 'Maida',
                 'last_name' => 'Schuppe',
                 'email' => 'kaci.daugherty@example.com',
@@ -4377,6 +4619,7 @@ class UsersTableSeeder extends Seeder
             241 =>
             array (
                 'id' => 245,
+                'rut' => 9415216,
                 'first_name' => 'Adriel',
                 'last_name' => 'Jones',
                 'email' => 'mina19@example.org',
@@ -4395,6 +4638,7 @@ class UsersTableSeeder extends Seeder
             242 =>
             array (
                 'id' => 246,
+                'rut' => 1140848,
                 'first_name' => 'Dax',
                 'last_name' => 'Hermiston',
                 'email' => 'vicky46@example.net',
@@ -4413,6 +4657,7 @@ class UsersTableSeeder extends Seeder
             243 =>
             array (
                 'id' => 247,
+                'rut' => 8923017,
                 'first_name' => 'Oswaldo',
                 'last_name' => 'Hermann',
                 'email' => 'chaya78@example.com',
@@ -4431,6 +4676,7 @@ class UsersTableSeeder extends Seeder
             244 =>
             array (
                 'id' => 248,
+                'rut' => 4081518,
                 'first_name' => 'Trace',
                 'last_name' => 'Hermiston',
                 'email' => 'towne.carolina@example.org',
@@ -4449,6 +4695,7 @@ class UsersTableSeeder extends Seeder
             245 =>
             array (
                 'id' => 249,
+                'rut' => 6360720,
                 'first_name' => 'Granville',
                 'last_name' => 'Connelly',
                 'email' => 'bschuster@example.net',
@@ -4467,6 +4714,7 @@ class UsersTableSeeder extends Seeder
             246 =>
             array (
                 'id' => 250,
+                'rut' => 2475660,
                 'first_name' => 'Mustafa',
                 'last_name' => 'Murphy',
                 'email' => 'runte.felipa@example.org',
@@ -4485,6 +4733,7 @@ class UsersTableSeeder extends Seeder
             247 =>
             array (
                 'id' => 251,
+                'rut' => 4505747,
                 'first_name' => 'Dovie',
                 'last_name' => 'Terry',
                 'email' => 'katelin95@example.com',
@@ -4503,6 +4752,7 @@ class UsersTableSeeder extends Seeder
             248 =>
             array (
                 'id' => 252,
+                'rut' => 9751629,
                 'first_name' => 'Billy',
                 'last_name' => 'Hammes',
                 'email' => 'lucio.turcotte@example.org',
@@ -4521,6 +4771,7 @@ class UsersTableSeeder extends Seeder
             249 =>
             array (
                 'id' => 253,
+                'rut' => 9944961,
                 'first_name' => 'Jameson',
                 'last_name' => 'Daugherty',
                 'email' => 'tyrell55@example.net',
@@ -4538,6 +4789,7 @@ class UsersTableSeeder extends Seeder
             ),
             array (
               'id' => 2,
+              'rut' => 11111111,
               'first_name' => 'User',
               'last_name' => 'Ps',
               'email' => 'raul.berrios@auditcon.cl',
@@ -4555,6 +4807,7 @@ class UsersTableSeeder extends Seeder
             ),
             array (
               'id' => 3,
+              'rut' => 22222222,
               'first_name' => 'Other',
               'last_name' => 'User',
               'email' => 'raulberrios8@gmail.com',
@@ -4573,6 +4826,7 @@ class UsersTableSeeder extends Seeder
             // 250 =>
             // array (
             //     'id' => 3000,
+            //     'rut' => 1111111,
             //     'first_name' => 'Audito',
             //     'last_name' => 'Asomic',
             //     'email' => 'sa@auditcon.cl',
@@ -4591,6 +4845,7 @@ class UsersTableSeeder extends Seeder
             // 251 =>
             // array (
             //     'id' => 3001,
+            //     'rut' => 2222222,
             //     'first_name' => 'User',
             //     'last_name' => 'Asomic',
             //     'email' => 'user@auditcon.cl',
@@ -4609,6 +4864,7 @@ class UsersTableSeeder extends Seeder
             // 252 =>
             // array (
             //     'id' => 3002,
+            //     'rut' => 3333333,
             //     'first_name' => 'Student',
             //     'last_name' => 'Crossfit',
             //     'email' => 'student@auditcon.cl',

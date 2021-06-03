@@ -27,8 +27,8 @@ class PaymentsExcel implements FromCollection, WithHeadings
         return $bills->map(function ($bill) {
             return [
             	$bill->created_at->format('d-m-Y'),
-                optional($bill->plan_user)->user !== null ? $bill->plan_user->user->full_name : '',
-                optional($bill->plan_user)->plan !== null ? $bill->plan_user->plan->plan : '',
+                $bill->plan_user->user->full_name,
+                $bill->plan_user->plan->plan,
                 $bill->payment_type->payment_type,
                 Carbon::parse($bill->date)->format('d-m-Y'),
                 Carbon::parse($bill->start_date)->format('d-m-Y'),

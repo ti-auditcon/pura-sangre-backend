@@ -27,7 +27,7 @@
                 <table id="users-table" class="table table-hover">
                     <thead class="thead-default">
                         <tr>
-                            {{-- <th width="30%">Rut</th> --}}
+                            <th width="30%">Rut</th>
                             <th width="50%">Alumno</th>
                             <th width="20%">Acciones</th>
                         </tr>
@@ -35,7 +35,7 @@
                     <tbody>
                         @foreach ($users as $user)
                         <tr>
-                            {{-- <td>{{ $user->rut }}</td> --}}
+                            <td>{{ $user->rut }}</td>
                             
                             <td>{{ $user->full_name }}</td>
                             

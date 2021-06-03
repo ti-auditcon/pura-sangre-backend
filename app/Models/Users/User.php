@@ -11,7 +11,10 @@ use App\Models\Clases\Clase;
 use App\Models\Plans\PlanUser;
 use App\Models\Users\RoleUser;
 use App\Models\Users\Emergency;
+use App\Models\Users\Millestone;
+use Freshwork\ChileanBundle\Rut;
 use App\Models\Users\StatusUser;
+use App\Models\Bills\Installment;
 use Laravel\Passport\HasApiTokens;
 use App\Models\Clases\Reservation;
 use App\Notifications\MyResetPassword;
@@ -38,7 +41,7 @@ class User extends Authenticatable
      *  @var  array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email',
+        'rut', 'first_name', 'last_name', 'email',
         'password', 'avatar', 'phone', 'birthdate',
         'gender', 'address', 'lat', 'lng', 'since',
         'emergency_id', 'status_user_id', 'email_verified_at'
@@ -56,7 +59,7 @@ class User extends Authenticatable
      *
      *  @var  array
      */
-    protected $appends = ['full_name', 'status', 'status_color'];
+    protected $appends = ['full_name', 'rut_formated', 'status', 'status_color'];
 
     /**
      * [setBirthdateAttribute description]
@@ -116,6 +119,16 @@ class User extends Authenticatable
     }
 
     /**
+     * [setRutAttribute description]
+     *
+     * @param [type] $value [description]
+     */
+    public function setRutAttribute($value)
+    {
+        $this->attributes['rut'] = Rut::parse($value)->number();
+    }
+
+    /**
      * [getFullNameAttribute description]
      *
      * @return [type] [description]
@@ -123,6 +136,16 @@ class User extends Authenticatable
     public function getFullNameAttribute()
     {
         return $this->first_name . ' ' . $this->last_name;
+    }
+
+    /**
+     * [getFullNameAttribute description]
+     *
+     * @return [type] [description]
+     */
+    public function getRutFormatedAttribute()
+    {
+        return Rut::set($this->rut)->fix()->format();
     }
 
     /**
@@ -138,7 +161,7 @@ class User extends Authenticatable
                     'actual_plan:id,start_date,finish_date,user_id,plan_id',
                     'actual_plan.plan:id,plan',
                 ])
-                ->get(['id', 'first_name', 'last_name', 'email', 'avatar', 'status_user_id']);
+                ->get(['id', 'rut', 'first_name', 'last_name', 'email', 'avatar', 'status_user_id']);
     }
 
     /**

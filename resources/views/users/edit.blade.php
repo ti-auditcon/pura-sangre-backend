@@ -46,16 +46,38 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-12 form-group mb-2">
-                        <label class="col-form-label">Contraseña</label>
-
-                        <button class="btn btn-warning form-control sweet-user-reset-password"
-                                data-user-name="{{ $user->full_name }}"
-                                data-user-id="{{ $user->id }}"
+                    <div class="col-sm-6 form-group mb-2">
+                        <div id="rut-group"
+                             class="form-group inline @if($errors->has('rut')) has-warning @endif"
                         >
-                            Restablecer contraseña
-                        </button>
+                            <label class="col-form-label">Rut</label>
+
+                            <input class="form-control"
+                                   id="rut-src"
+                                   name="rut"
+                                   type="text"
+                                   value="{{ old('rut', $user->rut_formated) }}"
+                                   required
+                            />
+
+                            <div class="col-12 p-0 my-0 mt-3">
+                                <span class="col-form-label hidden">
+                                    Por favor, ingrese un rut válido
+                                </span>
+                            </div>
+                        </div>
                     </div>
+
+                        <div class="col-sm-6 form-group mb-2">
+                            <label class="col-form-label">Contraseña</label>
+
+                            <button class="btn btn-warning form-control sweet-user-reset-password"
+                                    data-user-name="{{ $user->full_name }}"
+                                    data-user-id="{{ $user->id }}"
+                            >
+                                Restablecer contraseña
+                            </button>
+                        </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6 form-group mb-2">
@@ -268,31 +290,31 @@
 </script>
 
 {{-- RUT --}}
-{{-- <script src="{{ asset('/js/jquery.rut.min.js') }}"></script> --}}
+<script src="{{ asset('/js/jquery.rut.min.js') }}"></script>
 
 <script>
     $(function() {
-        // $("input#rut-src").rut({
-        //     formatOn: 'keyup',
-        //     minimumLength: 8, // validar largo mínimo; default: 2
-        //     validateOn: 'keyup' // si no se quiere validar, pasar null
-        // });
+        $("input#rut-src").rut({
+            formatOn: 'keyup',
+            minimumLength: 8, // validar largo mínimo; default: 2
+            validateOn: 'keyup' // si no se quiere validar, pasar null
+        });
 
-        // $("input#rut-src").rut().on('rutInvalido', function(e) {
-        //     $('#rut-group').addClass('has-error');
+        $("input#rut-src").rut().on('rutInvalido', function(e) {
+            $('#rut-group').addClass('has-error');
 
-        //     $('#rut-group span').show();
+            $('#rut-group span').show();
 
-        //     $('#rut-submit').prop('disabled', true);
-        // });
+            $('#rut-submit').prop('disabled', true);
+        });
 
-        // $("input#rut-src").rut().on('rutValido', function(e, rut, dv) {
-        //     $('#rut-group').removeClass('has-error');
+        $("input#rut-src").rut().on('rutValido', function(e, rut, dv) {
+            $('#rut-group').removeClass('has-error');
 
-        //     $('#rut-group span').hide();
+            $('#rut-group span').hide();
 
-        //     $('#rut-submit').prop('disabled', false);
-        // });
+            $('#rut-submit').prop('disabled', false);
+        });
     });
 </script>
 {{-- END RUT --}}
