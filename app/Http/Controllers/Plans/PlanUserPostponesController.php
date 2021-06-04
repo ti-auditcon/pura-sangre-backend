@@ -41,9 +41,7 @@ class PlanUserPostponesController extends Controller
 
         PostponePlan::create([
             'plan_user_id' => $plan_user->id,
-
             'start_date' => $start,
-
             'finish_date' => $finish
         ]);
 
@@ -55,11 +53,9 @@ class PlanUserPostponesController extends Controller
 
         foreach ($planes_posteriores as $plan) {
             $plan->update([
-
-                'start_date' =>$plan->start_date->addDays($diff_in_days),
+                'start_date' => $plan->start_date->addDays($diff_in_days),
 
                 'finish_date' => $plan->finish_date->addDays($diff_in_days)
-
             ]);
         }
 
@@ -67,7 +63,6 @@ class PlanUserPostponesController extends Controller
 
         $plan_user->update([
             'plan_status_id' => $start->isToday() ? 2 : $plan_user->plan_status_id,
-
             'finish_date' => $plan_user->finish_date->addDays($diff_in_days)
         ]);
 
@@ -97,8 +92,6 @@ class PlanUserPostponesController extends Controller
      */
     public function destroy(PostponePlan $postpone)
     {
-        // $this->postponeRepository->delete($postpone);
-
         $diff_in_days = Carbon::parse($postpone->finish_date)->diffInDays(today()); 
 
         $postpone->plan_user->update([
@@ -108,6 +101,7 @@ class PlanUserPostponesController extends Controller
 
         $planes_posteriores = PlanUser::where('user_id', $postpone->plan_user->user_id)
                                 ->where('start_date', '>', $postpone->plan_user->start_date)
+                                ->where('plan_status_id', PlanStatus::PRECOMPRA)
                                 ->where('id', '!=', $postpone->plan_user->id)
                                 ->orderBy('finish_date')
                                 ->get([
@@ -116,8 +110,8 @@ class PlanUserPostponesController extends Controller
 
         foreach ($planes_posteriores as $plan) {
             $plan->update([
-                'start_date' =>$plan->start_date->subDays($diff_in_days),
-                'finish_date' => $plan->finish_date->subDays($diff_in_days)
+                'start_date' => Carbon::parse($plan->start_date)->subDays($diff_in_days  + 1),
+                'finish_date' => Carbon::parse($plan->finish_date)->subDays($diff_in_days  + 1)
             ]);
         }
 

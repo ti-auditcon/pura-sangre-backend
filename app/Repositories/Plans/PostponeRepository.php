@@ -23,7 +23,7 @@ class PostponeRepository
      *
      *  @return  bool
      */
-        public function delete(PostponePlan $postpone)
+    public function delete(PostponePlan $postpone)
     {
         $diff_in_days = Carbon::parse($postpone->finish_date)->diffInDays(today()); 
 

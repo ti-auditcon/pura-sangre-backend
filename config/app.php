@@ -7,7 +7,7 @@ return [
 
     'env' => env('APP_ENV', 'production'),
 
-    'debug' => env('APP_DEBUG', false),
+    'debug' => (bool) env('APP_DEBUG', false),
 
     'url' => env('APP_URL', 'http://localhost'),
 
@@ -50,7 +50,7 @@ return [
         //Illuminate\Auth\Passwords\PasswordResetServiceProvider::class,
 
         // MY OWN PasswordResetServiceProvider ...
-        App\Providers\CustomPasswordResetServiceProvider::class,
+        // App\Providers\CustomPasswordResetServiceProvider::class,
         App\Providers\BirthdateUsersProvider::class,
 
         Illuminate\Session\SessionServiceProvider::class,

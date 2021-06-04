@@ -2,12 +2,11 @@
 
 namespace App\Exceptions;
 
-use Session;
 use Exception;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Exceptions\PostTooLargeException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * [Handler description]
@@ -36,8 +35,11 @@ class Handler extends ExceptionHandler
     /**
      * Report or log an exception.
      *
-     * @param  \Exception  $exception
-     * @return void
+     *  @param  \Exception  $exception
+     *  
+     *  @return  void
+     *
+     *  @throws  \Exception
      */
     public function report(Exception $exception)
     {
@@ -45,21 +47,26 @@ class Handler extends ExceptionHandler
     }
 
     /**
-     * Render an exception into an HTTP response.
+     *  Render an exception into an HTTP response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Illuminate\Http\Response
+     *  @param   \Illuminate\Http\Request                    $request
+     *  @param   \Exception                                  $exception
+     *  @return  \Symfony\Component\HttpFoundation\Response
+     *
+     *  @throws  \Exception
      */
-    public function render($request, Exception $e)
+    public function render($request, Exception $exception)
     {
-        if ($e instanceof AuthorizationException) {
-            Session::flash('error','No tiene permisos para realizar esta accion');
+        if ($exception instanceof AuthorizationException) {
+            Session::flash('error', 'No tiene permisos para realizar esta acción');
+
             return redirect('/');
         }
-        if ($e instanceof PostTooLargeException) {
+
+        if ($exception instanceof PostTooLargeException) {
             return redirect('/')->back();
         }       
-        return parent::render($request, $e);
+        
+        return parent::render($request, $exception);
     }
 }

@@ -8,6 +8,20 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 class RouteServiceProvider extends ServiceProvider
 {
     /**
+     *  First page of the app, main page
+     *
+     *  @var  string
+     */
+    const HOME = '/';
+
+    /**
+     *  The route to be redirect after a success client password reset
+     *
+     *  @var  string
+     */
+    const SUCCESS_RESET_PASSWORD = '/success-reset-password';
+
+    /**
      * This namespace is applied to your controller routes.
      *
      * In addition, it is set as the URL generator's root namespace.
@@ -23,8 +37,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-
         parent::boot();
     }
 
@@ -38,8 +50,6 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapApiRoutes();
 
         $this->mapWebRoutes();
-
-        //
     }
 
     /**

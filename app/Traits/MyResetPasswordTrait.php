@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Notifications\MyResetPassword;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 
 trait MyResetPasswordTrait
@@ -70,8 +69,8 @@ trait MyResetPasswordTrait
     protected function myRules()
     {
         return [
-            'token' => 'required',
-            'email' => 'required|email|exists:users',
+            'token'    => 'required',
+            'email'    => 'required|email|exists:users',
             'password' => 'required|confirmed|min:6',
         ];
     }
@@ -84,13 +83,14 @@ trait MyResetPasswordTrait
     protected function validationErrorMessages()
     {
         return [
-            'token.required' => 'No hay un token para un cambio de contraseña.',
-            'email.required' => 'Debe ingresar un email.',
-            'email.email' => 'El formato del email es incorrecto.',
-            'password.required' => 'Debe ingresar una contraseña',
+            'token.required'     => 'No hay un token para un cambio de contraseña.',
+            'email.required'     => 'Debe ingresar un email.',
+            'email.email'        => 'El formato del email es incorrecto.',
+            'password.required'  => 'Debe ingresar una contraseña',
             'password.confirmed' => 'deben coincidir los campos de contraseña',
-            'password.min' => 'la contraseña debe tener un mínimo de 6 dígitos',
-            'email.exists' => 'Email incorrecto'
+            'password.min'       => 'la contraseña debe tener un mínimo de :digits dígitos',
+            // The :attribute value :input is not between :min - :max.
+            'email.exists'       => 'Email incorrecto'
         ];
     }
 

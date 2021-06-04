@@ -95,9 +95,11 @@ class ReservationObserver
     }
 
     /**
-     * [deleted description]
-     * @param  Reservation $reservation [description]
-     * @return [type]                   [description]
+     *  [deleted description]
+     *  
+     *  @param  Reservation $reservation [description]
+     *  
+     *  @return [type]                   [description]
      */
     public function deleted(Reservation $reservation)
     {
