@@ -15,13 +15,14 @@ class NewPlanUserEmail extends Mailable
     public $planuser;
 
     /**
-     * Create a new message instance.
+     *  Create a new message instance.
      *
-     * @return void
+     *  @return  void
      */
     public function __construct($user, $planuser)
     {
         $this->user = $user;
+
         $this->planuser = $planuser;
     }
 

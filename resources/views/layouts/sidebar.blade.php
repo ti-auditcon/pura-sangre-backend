@@ -34,11 +34,22 @@
             @endif
 
             @if (Auth::user()->isAdmin())
-                <li @if( url()->current() == url("/payments") ) class="active" @endif>
-                    <a href="{{ url('/payments') }}">
+                <li @if(in_array(url()->current(), [
+                            url("/reports"),
+                            url("/invoices")
+                        ])) class="active" @endif>
+                    <a>
                         <i class="sidebar-item-icon ti-money"></i>
+
                         <span class="nav-label">Pagos</span>
                     </a>
+                    <div class="nav-2-level">
+                        <ul>
+                            <li><a href="{{ url('/reports') }}">Pagos</a></li>
+
+                            <li><a href="{{ url('/invoices') }}">DTEs</a></li>
+                        </ul>
+                    </div>
                 </li>
 
                 <li @if( in_array(url()->current(), [
