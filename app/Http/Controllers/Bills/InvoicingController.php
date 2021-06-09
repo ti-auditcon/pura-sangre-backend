@@ -71,201 +71,6 @@ class InvoicingController extends Controller
                 "Acuses" => null,
                 "FmaPago" => 0,
                 "TpoTranCompra" => 1
-            ],
-            [
-                "RUTEmisor" => 9071084,
-                "DV" => "2",
-                "RznSoc" => "MONICA EUGENIA NEUMANN BIRKE",
-                "TipoDTE" => 34,
-                "Folio" => 10,
-                "FchEmis" => "2021-06-07",
-                "MntExe" => 35000,
-                "MntNeto" => 0,
-                "IVA" => 0,
-                "MntTotal" => 35000,
-                "Acuses" => null,
-                "FmaPago" => 0,
-                "TpoTranCompra" => 1
-            ],
-            [
-                "RUTEmisor" => 9071084,
-                "DV" => "2",
-                "RznSoc" => "MONICA EUGENIA NEUMANN BIRKE",
-                "TipoDTE" => 61,
-                "Folio" => 11,
-                "FchEmis" => "2021-06-07",
-                "MntExe" => 200000,
-                "MntNeto" => 0,
-                "IVA" => 0,
-                "MntTotal" => 200000,
-                "Acuses" => null,
-                "FmaPago" => 0,
-                "TpoTranCompra" => 1
-            ],
-            [
-                "RUTEmisor" => 9071084,
-                "DV" => "2",
-                "RznSoc" => "MONICA EUGENIA NEUMANN BIRKE",
-                "TipoDTE" => 34,
-                "Folio" => 7,
-                "FchEmis" => "2021-06-07",
-                "MntExe" => 274000,
-                "MntNeto" => 0,
-                "IVA" => 0,
-                "MntTotal" => 274000,
-                "Acuses" => null,
-                "FmaPago" => 0,
-                "TpoTranCompra" => 1
-            ],
-            [
-                "RUTEmisor" => 9071084,
-                "DV" => "2",
-                "RznSoc" => "MONICA EUGENIA NEUMANN BIRKE",
-                "TipoDTE" => 34,
-                "Folio" => 6,
-                "FchEmis" => "2021-06-07",
-                "MntExe" => 200000,
-                "MntNeto" => 0,
-                "IVA" => 0,
-                "MntTotal" => 200000,
-                "Acuses" => null,
-                "FmaPago" => 0,
-                "TpoTranCompra" => 1
-            ],
-            [
-                "RUTEmisor" => 9071084,
-                "DV" => "2",
-                "RznSoc" => "MONICA EUGENIA NEUMANN BIRKE",
-                "TipoDTE" => 34,
-                "Folio" => 5,
-                "FchEmis" => "2021-06-07",
-                "MntExe" => 1030000,
-                "MntNeto" => 0,
-                "IVA" => 0,
-                "MntTotal" => 1030000,
-                "Acuses" => null,
-                "FmaPago" => 0,
-                "TpoTranCompra" => 1
-            ],
-            [
-                "RUTEmisor" => 9071084,
-                "DV" => "2",
-                "RznSoc" => "MONICA EUGENIA NEUMANN BIRKE",
-                "TipoDTE" => 43,
-                "Folio" => 5,
-                "FchEmis" => "2021-06-07",
-                "MntExe" => 0,
-                "MntNeto" => 0,
-                "IVA" => 0,
-                "MntTotal" => 0,
-                "Acuses" => null,
-                "FmaPago" => 0,
-                "TpoTranCompra" => 1
-            ],
-            [
-                "RUTEmisor" => 9071084,
-                "DV" => "2",
-                "RznSoc" => "MONICA EUGENIA NEUMANN BIRKE",
-                "TipoDTE" => 43,
-                "Folio" => 7,
-                "FchEmis" => "2021-06-07",
-                "MntExe" => 0,
-                "MntNeto" => 14411,
-                "IVA" => 2738,
-                "MntTotal" => 17149,
-                "Acuses" => null,
-                "FmaPago" => 0,
-                "TpoTranCompra" => 1
-            ],
-            [
-                "RUTEmisor" => 9071084,
-                "DV" => "2",
-                "RznSoc" => "MONICA EUGENIA NEUMANN BIRKE",
-                "TipoDTE" => 43,
-                "Folio" => 6,
-                "FchEmis" => "2021-06-07",
-                "MntExe" => 0,
-                "MntNeto" => 0,
-                "IVA" => 0,
-                "MntTotal" => 0,
-                "Acuses" => null,
-                "FmaPago" => 0,
-                "TpoTranCompra" => 1
-            ],
-            [
-                "RUTEmisor" => 9071084,
-                "DV" => "2",
-                "RznSoc" => "MONICA EUGENIA NEUMANN BIRKE",
-                "TipoDTE" => 61,
-                "Folio" => 7,
-                "FchEmis" => "2021-06-07",
-                "MntExe" => 0,
-                "MntNeto" => 0,
-                "IVA" => 0,
-                "MntTotal" => 0,
-                "Acuses" => null,
-                "FmaPago" => 0,
-                "TpoTranCompra" => 1
-            ],
-            [
-                "RUTEmisor" => 9071084,
-                "DV" => "2",
-                "RznSoc" => "MONICA EUGENIA NEUMANN BIRKE",
-                "TipoDTE" => 61,
-                "Folio" => 10,
-                "FchEmis" => "2021-06-07",
-                "MntExe" => 0,
-                "MntNeto" => 0,
-                "IVA" => 0,
-                "MntTotal" => 0,
-                "Acuses" => null,
-                "FmaPago" => 0,
-                "TpoTranCompra" => 1
-            ],
-            [
-                "RUTEmisor" => 9071084,
-                "DV" => "2",
-                "RznSoc" => "MONICA EUGENIA NEUMANN BIRKE",
-                "TipoDTE" => 61,
-                "Folio" => 8,
-                "FchEmis" => "2021-06-07",
-                "MntExe" => 0,
-                "MntNeto" => 63000,
-                "IVA" => 11970,
-                "MntTotal" => 74970,
-                "Acuses" => null,
-                "FmaPago" => 0,
-                "TpoTranCompra" => 1
-            ],
-            [
-                "RUTEmisor" => 9071084,
-                "DV" => "2",
-                "RznSoc" => "MONICA EUGENIA NEUMANN BIRKE",
-                "TipoDTE" => 56,
-                "Folio" => 4,
-                "FchEmis" => "2021-06-07",
-                "MntExe" => 0,
-                "MntNeto" => 35000,
-                "IVA" => 6650,
-                "MntTotal" => 41650,
-                "Acuses" => null,
-                "FmaPago" => 0,
-                "TpoTranCompra" => 1
-            ],
-            [
-                "RUTEmisor" => 9071084,
-                "DV" => "2",
-                "RznSoc" => "MONICA EUGENIA NEUMANN BIRKE",
-                "TipoDTE" => 61,
-                "Folio" => 9,
-                "FchEmis" => "2021-06-07",
-                "MntExe" => 0,
-                "MntNeto" => 35000,
-                "IVA" => 6650,
-                "MntTotal" => 41650,
-                "Acuses" => null,
-                "FmaPago" => 0,
-                "TpoTranCompra" => 1
             ]
         ]
     ];
@@ -282,8 +87,10 @@ class InvoicingController extends Controller
 
     public function getDTEs(Request $request)
     {
-        $response = json_encode($this->data_response);
-        $response = json_decode($response);
+         $response = json_encode($this->data_response);
+        return $response;
+        // $response = json_decode($response);
+
         // try {
         //     $client = new Client(['base_uri' => $this->urlDev]);
 
@@ -294,19 +101,32 @@ class InvoicingController extends Controller
         //     ]);
         //     $body = $response->getBody();
         //     $content = $body->getContents();
-        //     dd($content);
-        //     return json_encode($content);
-        // } catch (\Throwable $th) {
-        //     dd($th);
-        // }
-        $json_data = array(
-            "draw"            => intval($request->input('draw')),
-            "recordsFiltered" => intval(10),
-            "recordsTotal"    => intval($response->total),
-            "data"            => $response->data
-        );
+        //     $response = json_decode($content);
 
-        echo json_encode($json_data);
+        //     $json_data = array(
+        //         "draw"            => intval($request->input('draw')),
+        //         "recordsFiltered" => intval(10),
+        //         "recordsTotal"    => intval($response->total),
+        //         "data"            => $response->data
+        //     );
+
+        //     echo json_encode($json_data);
+
+        // } catch (\Throwable $th) {
+        //     return response()->json([
+        //         'status' => 'Error',
+        //         'message' => 'No se han podido traer los DTEs, Inténtalo de nuevo más tarde.'
+        //     ], 500);
+        // }
+        
+        // $json_data = array(
+        //     "draw"            => intval($request->input('draw')),
+        //     "recordsFiltered" => intval(10),
+        //     "recordsTotal"    => intval($response->total),
+        //     "data"            => $response->data
+        // );
+
+        // echo json_encode($json_data);
         // return response()->json(['data' => [$json_data]]);
 
 

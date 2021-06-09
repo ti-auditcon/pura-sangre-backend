@@ -9,7 +9,7 @@ use Freshwork\ChileanBundle\Rut;
 
 class DTEController extends Controller
 {
-        /**
+    /**
      *  url for developing and testing
      *
      *  @var  string
@@ -23,17 +23,6 @@ class DTEController extends Controller
     protected $apiKeyProduction = 'bab4ce50d3c9406b86ae536d44d6b172';
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      *  @param  Request
@@ -41,11 +30,7 @@ class DTEController extends Controller
      */
     public function show(Request $request)
     {
-        // dd($request->all());
-        if ($request->rut) {
-            $vn = Rut::set($request->rut)->calculateVerificationNumber();
-            $rut = "{$request->rut}-{$vn}";
-        }
+        $rut = "{$request->rut}-{$request->vn}";
 
         try {
             $client = new Client(['base_uri' => $this->urlDev]);
@@ -54,7 +39,6 @@ class DTEController extends Controller
                 'headers'  => [
                     "apikey" => $this->apiKeyDev
                 ]
-                // 'https://dev-api.haulmer.com/v2/dte/document/76423895-8/34/396/json
             ]);
             $body = $response->getBody();
             $content = $body->getContents();
@@ -67,42 +51,10 @@ class DTEController extends Controller
                 ]);
             }
         } catch (\Throwable $th) {
-            dd($th);
-            return response()->json(['status' => 'Error'], 500);
+            return response()->json([
+                'status' => 'Error',
+                'message' => 'No se ha podido traer el PDF correctamente, Inténtalo de nuevo más tarde.'
+            ], 500);
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

@@ -9,7 +9,9 @@
     <div class="col-12">
         <div class="ibox">
             <div class="ibox-head">
-                <div class="ibox-title">Documentos tributarios electrónicos sdfsd</div>
+                <div class="ibox-title">Documentos tributarios electrónicos recibidos</div>
+                
+
 
                 <div class="tools">
                     {{-- <a class="btn btn-info btn-labeled btn-labeled-left btn-icon"
@@ -22,6 +24,7 @@
                 </div>
             </div>
             <div class="ibox-body">
+
                     <table id="dtes-table" class="table table-hover">
                         <thead class="thead-default">
                             <tr>
@@ -43,6 +46,10 @@
 
 @endsection
 
+@section('css')
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">    
+@endsection
+
 @section('scripts') {{-- scripts para esta vista --}}
 {{--  datatable --}}
 <script src="{{ asset('js/datatables.min.js') }}"></script>
@@ -53,20 +60,22 @@
 <script>
     const dteNames = @json(App\Models\Invoicing\DTE::allDTES());
     const base_url = @json(url('/'));
-    console.log(dteNames);
-    // dteNames.push([43 => 'Factura exenta'])
+    let current_page = 1;
 
     $.ajaxSetup({
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
     });
 
     $(document).ready(function() {
-        $('#dtes-table').DataTable( {
+        $('#dtes-table').DataTable({
             "processing": true,
             "serverSide": true,
+            "searching": false,
+            "info": false,
+            "paging": false,
             "language": {
-                "loadingRecords": "Cargando datos...",
-                "processing": "Cargando datos...",
+                "loadingRecords": "Consultando datos al SII...",
+                "processing": "Consultando datos al SII...",
                 "lengthMenu": "Mostrar _MENU_ elementos",
                 "zeroRecords": "Sin resultados",
                 "info": "Mostrando página _PAGE_ de _PAGES_",
@@ -80,15 +89,16 @@
                     "previous":   "Anterior"
                 },
             },
+            // "ajax": '../dtes.txt',
             "ajax": {
                 "url": "invoices/dtes",
-                "type": "POST",
+                "type": "GET",
             },
             "columns": [
                 { "data": "RznSoc" },
                 { "data": "TipoDTE",
                     "render": function (data, other, row) {
-                        return dteNames[43];
+                        return dteNames[data];
                     }
                 },
                 { "data": "MntTotal",
@@ -107,55 +117,108 @@
                 {
                     "data": "actions",
                     "render": function(data, other, row) {
-                        return `<a class="dte-link" data-rut="${row.RUTEmisor}"
+                        return `<button class="dte-link btn btn-success text-white"
+                                    data-rut="${row.RUTEmisor}"
+                                    data-dv="${row.DV}"
                                     data-type="${row.TipoDTE}"
                                     data-document_number="${row.Folio}"
-                                    >Solicitar PDF</a>`
+                                >
+                                Soliciar PDF
+                                </button>`
                     }
                 }
             ],
             "drawCallback": function( settings ) {
-                $(".dte-link").click(function () {
-                    let dte_data = transformData($(this));
-                    console.log(dte_data);
-                    var decoded_pdf = getDteInPdf(dte_data);
-
-                    $('#modal-dte-show').modal('show');
+                $(".dte-link").click(function (action) {
+                    managePDFRequest($(this));
                 });
             }
         } );
     } );
 
-    function transformData(field)
+    /** */
+    async function managePDFRequest(event)
+    {
+        changeButtonToRequesting(event);        
+
+        let parametersForPDF = transformDataParameters(event);
+        requestPdfDataFromSii(parametersForPDF).then(success => {
+            generatePdfFromBase64(success.data);
+
+            changeButtonToCorrectFinishState(event);
+        }).catch(error => {
+            changeButtonToNormalState(event);
+            
+            return alert(error.responseJSON.message);
+        });
+    }
+
+    function changeButtonToRequesting(button)
+    {
+        button.prop('disabled', true);  // disable button
+        
+        button.text('Solicitando...');
+    }
+
+    function changeButtonToNormalState(button)
+    {
+        button.text('Solicitar PDF');    //  change text button
+        
+        button.prop('disabled', false);  //  enable button
+    }
+
+    function changeButtonToCorrectFinishState(button)
+    {
+        button.text('Listo');
+
+        button.prop('disabled', true);  //  disable button
+    }
+
+    /**
+     *
+     */
+    function transformDataParameters(field)
     {
         return {
             "rut": field.data('rut'),
+            "dv": field.data('dv'),
             "type": field.data('type'),
             "document_number": field.data('document_number')
         }
     }
 
-    function getDteInPdf(dte)
+    /**
+     *
+     */
+    function requestPdfDataFromSii(dte)
     {
-        $.ajax({                        
-            type: "POST",                 
-            url: "dte/get-pdf",                     
-            data: {
-                rut: dte.rut,
-                type: dte.type,
-                document_number: dte.document_number
-            }, 
-        }).done(function(response) {
-            var byteCharacters = atob(response.data);
-            var byteNumbers = new Array(byteCharacters.length);
-            for (var i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
-            }
-            var byteArray = new Uint8Array(byteNumbers);
-            var file = new Blob([byteArray], { type: 'application/pdf;base64' });
-            var fileURL = URL.createObjectURL(file);
-            window.open(fileURL);
+        return new Promise((resolve, reject) => {
+            $.ajax({                        
+                type: "POST",                 
+                url: "dte/get-pdf",                     
+                data: {
+                    rut: dte.rut, dv: dte.dv, type: dte.type,
+                    document_number: dte.document_number
+                }, 
+            }).done(successResponse => {
+                resolve(successResponse);
+            }).fail(errorResponse => {
+                reject(errorResponse)
+            });
         });
+    }
+
+    function generatePdfFromBase64(stringBase64)
+    {
+        var byteCharacters = atob(stringBase64);
+        var byteNumbers = new Array(byteCharacters.length);
+        for (var i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        }
+        var byteArray = new Uint8Array(byteNumbers);
+        var file = new Blob([byteArray], { type: 'application/pdf;base64' });
+        var fileURL = URL.createObjectURL(file);
+        window.open(fileURL);
     }
 </script>
 

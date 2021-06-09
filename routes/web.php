@@ -77,7 +77,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 
     Route::resource('payments', 'Bills\BillController')->middleware('role:1')->only('index', 'update');
 
-    Route::post('invoices/dtes', 'Bills\InvoicingController@getDTEs');
+    Route::get('invoices/dtes', 'Bills\InvoicingController@getDTEs');
     Route::resource('invoices', 'Bills\InvoicingController');
     Route::post('dte/get-pdf', 'Bills\DTEController@show');
 
