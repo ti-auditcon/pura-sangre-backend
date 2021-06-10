@@ -10,17 +10,22 @@
         <div class="ibox">
             <div class="ibox-head">
                 <div class="ibox-title">Documentos tributarios electrónicos recibidos</div>
-                
-
 
                 <div class="tools">
-                    {{-- <a class="btn btn-info btn-labeled btn-labeled-left btn-icon"
-                       style="display: inline-block;" href="{{ route('bills.export') }}"
-                    >
-                        <span class="btn-label"><i class="la la-cloud-download"></i></span>
-                        
-                        Exportar pagos
-                    </a> --}}
+                    <div class="docsPagination">
+                        <span class="docsPagination__text">1-30</span>
+
+                        <button class="dteList-button" data-direction="-" disabled="true">
+                            <span class="button-wrapper">
+                                <
+                            </span>
+                        </button>
+                        <button class="dteList-button" data-direction="+">
+                            <span class="button-wrapper">
+                                >
+                            </span>
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="ibox-body">
@@ -61,21 +66,22 @@
     const dteNames = @json(App\Models\Invoicing\DTE::allDTES());
     const base_url = @json(url('/'));
     let current_page = 1;
+    let last_page = 1;
 
     $.ajaxSetup({
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
     });
 
     $(document).ready(function() {
-        $('#dtes-table').DataTable({
+        let dtesTable = $('#dtes-table').DataTable({
             "processing": true,
-            "serverSide": true,
+            "serverSide": false,
             "searching": false,
             "info": false,
             "paging": false,
             "language": {
                 "loadingRecords": "Consultando datos al SII...",
-                "processing": "Consultando datos al SII...",
+                "processing": "Esta consulta puede tomar unos momentos...",
                 "lengthMenu": "Mostrar _MENU_ elementos",
                 "zeroRecords": "Sin resultados",
                 "info": "Mostrando página _PAGE_ de _PAGES_",
@@ -93,6 +99,9 @@
             "ajax": {
                 "url": "invoices/dtes",
                 "type": "GET",
+                "dataSrc": function (result) {
+                    return last_page = result.last_page;
+                } 
             },
             "columns": [
                 { "data": "RznSoc" },
@@ -219,6 +228,54 @@
         var file = new Blob([byteArray], { type: 'application/pdf;base64' });
         var fileURL = URL.createObjectURL(file);
         window.open(fileURL);
+    }
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('.dteList-button').click(function (action) {
+            let direction = $(this).data('direction');
+
+            if (direction === '+') {
+                if (current_page === last_page) {
+                    return;
+                }
+                addOneToCurrentPage();
+
+                manageGetDtesToTable();
+                
+                return;
+            }
+
+            if (current_page === 1) {
+                return;
+            }
+            subtractOneToCurrentPage();
+
+            manageGetDtesToTable();
+        });
+    });
+
+    function addOneToCurrentPage()
+    {
+        current_page++;
+    }
+    
+    function subtractOneToCurrentPage() 
+    {
+        current_page--;
+    }
+
+    function manageGetDtesToTable() 
+    {
+        $.ajax({
+            url: `invoices/dtes?page=${current_page}`,
+            type: 'GET',
+        }).then(function (result) {
+            dtesTable.ajax.reload();
+        }).fail(error => {
+            alert(error.message);
+        });
     }
 </script>
 

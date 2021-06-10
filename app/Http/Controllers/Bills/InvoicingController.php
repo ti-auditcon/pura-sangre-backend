@@ -87,37 +87,49 @@ class InvoicingController extends Controller
 
     public function getDTEs(Request $request)
     {
-         $response = json_encode($this->data_response);
-        return $response;
+        $current_page = $request->page ?? 1;
+
+        // $response = json_encode($this->data_response);
         // $response = json_decode($response);
 
-        // try {
-        //     $client = new Client(['base_uri' => $this->urlDev]);
+        try {
+            $client = new Client(['base_uri' => $this->urlDev]);
 
-        //     $response = $client->post("/v2/dte/document/received", [
-        //         'headers'  => [
-        //             "apikey" => $this->apiKeyDev
-        //         ]
-        //     ]);
-        //     $body = $response->getBody();
-        //     $content = $body->getContents();
-        //     $response = json_decode($content);
+            $response = $client->post("/v2/dte/document/received", [
+                'headers'  => [
+                    "apikey" => $this->apiKeyDev
+                ],
+                'json' => [
+                    'page' => $current_page,
+                ]
+            ]);
+            $body = $response->getBody();
+            $content = $body->getContents();
+            $response = json_decode($content);
 
-        //     $json_data = array(
-        //         "draw"            => intval($request->input('draw')),
-        //         "recordsFiltered" => intval(10),
-        //         "recordsTotal"    => intval($response->total),
-        //         "data"            => $response->data
-        //     );
+            $json_data = array(
+                "draw"            => intval($request->input('draw')),
+                "recordsFiltered" => intval(count($response->data)),
+                "recordsTotal"    => intval($response->total),
+                "data"            => $response->data,
+                "current_page"    => $response->current_page,
+                "last_page"       => $response->last_page
+            );
 
-        //     echo json_encode($json_data);
+            echo json_encode($json_data);
+        } catch (\Throwable $error) {
+            if ($this->hasGuzzleError($error)) {
+                return response()->json([
+                    'status' => 'Request failed',
+                    'message' => $error->response->reasonPhrase
+                ], $error->response->statusCode);
+            }
 
-        // } catch (\Throwable $th) {
-        //     return response()->json([
-        //         'status' => 'Error',
-        //         'message' => 'No se han podido traer los DTEs, Inténtalo de nuevo más tarde.'
-        //     ], 500);
-        // }
+            return response()->json([
+                'status' => 'Error',
+                'message' => 'No se han podido traer los DTEs, Inténtalo de nuevo más tarde.'
+            ], 500);
+        }
         
         // $json_data = array(
         //     "draw"            => intval($request->input('draw')),
@@ -128,79 +140,17 @@ class InvoicingController extends Controller
 
         // echo json_encode($json_data);
         // return response()->json(['data' => [$json_data]]);
-
-
-        // try {
-        //     $client = new Client(['base_uri' => $this->urlDev]);
-
-        //     $response = $client->post("/v2/dte/document/received", [
-        //         'headers'  => [
-        //             "apikey" => $this->apiKeyDev
-        //         ]
-        //     ]);
-        //     $body = $response->getBody();
-        //     $content = $body->getContents();
-        //     dd($content);
-        //     return json_encode($content);
-        // } catch (\Throwable $th) {
-        //     dd($th);
-        // }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function hasGuzzleError($error)
     {
-        //
-    }
+        dd($error);
+        if (isset($error->response) &&
+            isset($error->response->reasonPhrase) &&
+            isset($error->response->statusCode)) {
+            return true;
+        }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return false;
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
 }
