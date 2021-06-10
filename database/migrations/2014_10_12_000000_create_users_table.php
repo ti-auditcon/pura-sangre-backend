@@ -54,6 +54,7 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('phone')->nullable();
             $table->date('birthdate');
             $table->date('since')->nullable();
+            $table->date('email_verified_at')->nullable();
             $table->string('gender');
             $table->string('address')->nullable();
             $table->unsignedInteger('status_user_id')->nullable();
