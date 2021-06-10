@@ -28,11 +28,12 @@ class PlanUserFlow extends Model
     /**
      *  Massive assignment
      *
-     * @var  array
+     *  @var  array
      */
     protected $fillable = [
-        'start_date', 'finish_date', 'amount', 'sii_token', 'observations',
-        'counter', 'plan_status_id', 'discount_id', 'plan_id', 'user_id'
+        'start_date', 'finish_date', 'amount', 'observations',
+        'bill_pdf', 'sii_token', 'counter', 'plan_status_id',
+        'discount_id', 'plan_id', 'user_id', 'payment_date', 'paid'
     ];
 
     /**
@@ -79,14 +80,15 @@ class PlanUserFlow extends Model
         $total = $plan->amount + $fee;
 
         return $this->create([
-            'start_date' => today(),
-            'finish_date' => today()->addMonths($plan->plan_period_id),
-            'user_id' => $userId,
-            'plan_id' => $plan->id,
+            'start_date'      => today(),
+            'finish_date'     => today()->addMonths($plan->plan_period_id),
+            'user_id'         => $userId,
+            'plan_id'         => $plan->id,
             'payment_type_id' => PaymentType::FLOW,
-            'plan_status_id' => FlowOrderStatus::PENDIENTE,
-            'amount' => round($total),
-            'counter' => $plan->counter,
+            'plan_status_id'  => FlowOrderStatus::PENDIENTE,
+            'amount'          => round($total),
+            'counter'         => $plan->class_numbers,
+            'observations'    => "Compra de plan: {$plan->plan}",
         ]);
     }
 

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Mail\NewPlanUserEmail;
 use App\Models\Plans\PlanUser;
 use App\Mail\VerifyExternalUser;
+use App\Models\Users\StatusUser;
 use App\Models\Plans\PlanUserFlow;
 use App\Models\Users\PasswordReset;
 use App\Http\Controllers\Controller;
@@ -32,7 +33,7 @@ class NewUserController extends Controller
      *
      *  @var  App\Models\Plans\PlanUserFlow
      */
-    protected $PlanUserFlow;
+    protected PlanUserFlow $PlanUserFlow;
 
     /**
      *  Flow instance for purchases.
@@ -67,9 +68,9 @@ class NewUserController extends Controller
     }
 
     /**
-     *  Make an instance of Flow
+     *  Make an instance of Flow with PuraSangre credentials
      *
-     *  @param  $environment  ('production', 'sandbox')
+     *  @param   string  $environment  ('production', 'sandbox')
      * 
      *  @return  void
      */
@@ -106,8 +107,9 @@ class NewUserController extends Controller
         $dispatcher = $this->disableObservers(User::class);
 
         $user = User::create(array_merge($request->all(), [
-            'password' => bcrypt('purasangre'),
-            'gender' => $request->gender ? $request->gender : 'otro',
+            'password'       => bcrypt('purasangre'),
+            'gender'         => $request->gender ? $request->gender : 'otro',
+            'status_user_id' => StatusUser::INACTIVE
         ]));
 
         $token = PasswordReset::generateNewToken($user->email);
@@ -168,19 +170,18 @@ class NewUserController extends Controller
 
             return view('web.flow.error')->with([
                 'error' => $user['error'],
-                'type' => $user['type'],
+                'type'  => $user['type'],
                 'plans' => $plans,
             ]);
         }
 
-        $this->planUserFlow = $this->planUserFlow->makeOrder($this->plan, $user->id);
-
+        $planUserFlow = $this->planUserFlow->makeOrder($this->plan, $user->id);
         try {
             $paymentResponse = $this->flow->payment()->commit([
-                'commerceOrder'   => $this->planUserFlow->id,
+                'commerceOrder'   => $planUserFlow->id,
                 'subject'         => "Compra de plan {$this->plan->plan}",
-                'amount'          => $this->planUserFlow->amount,
-                'email'           => $this->planUserFlow->user->email,
+                'amount'          => $planUserFlow->amount,
+                'email'           => $planUserFlow->user->email,
                 'urlConfirmation' => url('/flow/confirm-payment'),
                 'urlReturn'       => url('/flow/return-from-payment'),
                 'optional' => [
