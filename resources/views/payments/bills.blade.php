@@ -72,8 +72,40 @@
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
     });
 
+    function getDTEsData() {
+        let dteData = {};
+        $.ajax({
+            type: "GET",
+            url: "invoices/dtes",
+            cache: false,
+            async: false,
+        }).done(successResponse => {
+            var data = JSON.parse(successResponse);
+    
+            last_page = data.last_page;
+            dteData = data.data;
+            return dteData;
+        });
+
+        return dteData;
+    }
+
     $(document).ready(function() {
-        let dtesTable = $('#dtes-table').DataTable({
+        // let dataDTETable = getDTEsData();
+        dtesTable = $('#dtes-table').DataTable({
+            "ajax": {
+                type: 'GET',
+                url: "invoices/dtes?page=" + current_page,
+                dataType: 'json',
+                error: function (e) {
+                    console.log(e);
+                    alert(`Se ha detectado un error, si al intentarlo de nuevo, vuelve a salir este mensaje,
+                                por favor comuniquese con algun administrador`);
+                },
+                complete: function(data) {
+                    last_page = data.responseJSON.last_page;
+                }
+            },
             "processing": true,
             "serverSide": false,
             "searching": false,
@@ -94,14 +126,6 @@
                     "next":       "Siguiente",
                     "previous":   "Anterior"
                 },
-            },
-            // "ajax": '../dtes.txt',
-            "ajax": {
-                "url": "invoices/dtes",
-                "type": "GET",
-                "dataSrc": function (result) {
-                    return last_page = result.last_page;
-                } 
             },
             "columns": [
                 { "data": "RznSoc" },
@@ -142,8 +166,33 @@
                     managePDFRequest($(this));
                 });
             }
-        } );
-    } );
+        });
+
+        $(document).on("click", '.dteList-button', function (action) {
+            let direction = $(this).data('direction');
+            console.log(dtesTable);
+            console.log(direction);
+            if (direction === '+') {
+                console.log(current_page, last_page);
+                if (current_page === last_page) {
+                    return;
+                }
+                addOneToCurrentPage();
+
+                manageGetDtesToTable();
+
+                
+                return;
+            }
+
+            if (current_page === 1) {
+                return;
+            }
+            subtractOneToCurrentPage();
+
+            manageGetDtesToTable();
+        });
+    });
 
     /** */
     async function managePDFRequest(event)
@@ -231,30 +280,17 @@
     }
 </script>
 
+{{--  --}}
+{{--  --}}
+{{--  --}}
+{{--  --}}
+{{--  --}}
+{{--  --}}
+{{--  --}}
+{{--  --}}
+
 <script>
-    $(document).ready(function() {
-        $('.dteList-button').click(function (action) {
-            let direction = $(this).data('direction');
 
-            if (direction === '+') {
-                if (current_page === last_page) {
-                    return;
-                }
-                addOneToCurrentPage();
-
-                manageGetDtesToTable();
-                
-                return;
-            }
-
-            if (current_page === 1) {
-                return;
-            }
-            subtractOneToCurrentPage();
-
-            manageGetDtesToTable();
-        });
-    });
 
     function addOneToCurrentPage()
     {
@@ -268,14 +304,41 @@
 
     function manageGetDtesToTable() 
     {
+        let resopnseJson = {};
+
         $.ajax({
-            url: `invoices/dtes?page=${current_page}`,
-            type: 'GET',
-        }).then(function (result) {
+            type: "GET",
+            url: "invoices/dtes",
+            cache: false,
+            // async: false,
+        }).done(successResponse => {
             dtesTable.ajax.reload();
+            console.log('si');
+            // var data = JSON.parse(successResponse);
+    
+            // last_page = data.last_page;
+            // dteData = data.data;
+            // return dteData;
         }).fail(error => {
-            alert(error.message);
+            console.log(error)
         });
+
+        // $.ajax({
+        //     url: `invoices/dtes?page=${current_page}`,
+        //     type: 'GET',
+        // }).then(successResponse => {
+        //     resopnseJson = JSON.parse(successResponse);
+        // }).then(function (data) {
+        //     console.log(resopnseJson.data);
+        //     dataDTETable = resopnseJson.data;
+        //     // console.log('second')
+        // }).then(function (result) {
+        //     console.log('third')
+        //     dtesTable.ajax.reload();
+        // }).fail(error => {
+        //     console.log(error);
+        //     alert(error.message);
+        // });
     }
 </script>
 

@@ -87,11 +87,13 @@ class InvoicingController extends Controller
 
     public function getDTEs(Request $request)
     {
+        dd($request->all());
         $current_page = $request->page ?? 1;
 
-        // $response = json_encode($this->data_response);
-        // $response = json_decode($response);
-
+        $response = json_encode($this->data_response);
+        return $response;
+        $response = json_decode($response);
+        
         try {
             $client = new Client(['base_uri' => $this->urlDev]);
 
@@ -144,7 +146,6 @@ class InvoicingController extends Controller
 
     public function hasGuzzleError($error)
     {
-        dd($error);
         if (isset($error->response) &&
             isset($error->response->reasonPhrase) &&
             isset($error->response->statusCode)) {
