@@ -38,11 +38,13 @@ class DTEController extends Controller
         $this->apiKeyProduction = config('invoicing.haulmer.production.api_key');
         $this->urlProduction = config('invoicing.haulmer.production.base_uri');
     }
+
     /**
-     * Display the specified resource.
+     *  Display the specified resource.
      *
-     *  @param  Request
-     *  @return \Illuminate\Http\Response
+     *  @param   Request
+     * 
+     *  @return  \Illuminate\Http\Response
      */
     public function show(Request $request)
     {
@@ -66,12 +68,12 @@ class DTEController extends Controller
                     'data'   => $decoded_json->pdf
                 ]);
             }
-        } catch (\Throwable $error) {
-            dd($error);
+        } catch (\GuzzleHttp\Exception\ClientException $error) {
+            $response = json_decode($error->getResponse()->getBody()->getContents(), true);
+
             return response()->json([
-                'status' => 'Error',
-                'message' => 'No se ha podido traer el PDF correctamente, Inténtalo de nuevo más tarde.'
-            ], 500);
+                'status' => 'Request failed', 'message' => $response['message']
+            ], $response['statusCode']);
         }
     }
 }

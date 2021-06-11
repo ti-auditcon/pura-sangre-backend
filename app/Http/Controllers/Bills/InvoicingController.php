@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Bills;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Config;
 
 class InvoicingController extends Controller
 {
@@ -95,33 +94,34 @@ class InvoicingController extends Controller
     ];
 
     /**
-     * Display a listing of the resource.
+     *  Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     *  @return  \Illuminate\Http\Response
      */
     public function index()
     {
         return view('payments.bills');
     }
 
+    /**
+     * [getDTEs description]
+     *
+     * @param   Request  $request  [$request description]
+     *
+     * @return  json
+     */
     public function getDTEs(Request $request)
     {
-        $current_page = $request->query('page') ?? 1;
-
-        // $response = json_encode($this->data_response);
-        // return $response;
-        // $response = json_decode($response);
-        
         try {
             $client = new Client(['base_uri' => $this->urlProduction]);
 
-            $response = $client->post("/v2/dte/document/received?page=2", [
+            $response = $client->post("/v2/dte/document/received", [
                 'headers'  => [
                     "apikey" => $this->apiKeyProduction,
                     'Accept' => 'application/json',
                 ],
                 'json' => [
-                    "Page" => $current_page
+                    "Page" => $request->query('page') ?? 1
                 ]
             ]);
             $body = $response->getBody();
@@ -138,33 +138,23 @@ class InvoicingController extends Controller
             );
 
             echo json_encode($json_data);
-        } catch (\Throwable $error) {
-            dd($error);
-            if ($this->hasGuzzleError($error)) {
-                return response()->json([
-                    'status' => 'Request failed',
-                    'message' => $error->response->reasonPhrase
-                ], $error->response->statusCode);
-            }
+        } catch (\GuzzleHttp\Exception\ClientException $error) {
+            $response = json_decode($error->getResponse()->getBody()->getContents(), true);
 
             return response()->json([
-                'status' => 'Error',
-                'message' => 'No se han podido traer los DTEs, Inténtalo de nuevo más tarde.'
-            ], 500);
+                'status' => 'Request failed', 'message' => $response['message']
+            ], $response['statusCode']);
         }
-        
-        // $json_data = array(
-        //     "draw"            => intval($request->input('draw')),
-        //     "recordsFiltered" => intval(10),
-        //     "recordsTotal"    => intval($response->total),
-        //     "data"            => $response->data
-        // );
-
-        // echo json_encode($json_data);
-        // return response()->json(['data' => [$json_data]]);
     }
 
-    public function hasGuzzleError($error)
+    /**
+     *  Check if there are posible handle errors with Guzzle to will be returned
+     *
+     *  @param   object  Could be Guzzle errors ot another type of error
+     *
+     *  @return  boolean
+     */
+    public function hasGuzzleError($error): bool
     {
         if (isset($error->response) &&
             isset($error->response->reasonPhrase) &&
