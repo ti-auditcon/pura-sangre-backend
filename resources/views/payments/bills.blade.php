@@ -15,12 +15,12 @@
                     <div class="docsPagination">
                         <span class="docsPagination__text">1-30</span>
 
-                        <button class="dteList-button" data-direction="-" disabled="true">
+                        <button class="dteList-button left-direction" data-direction="-" disabled="true">
                             <span class="button-wrapper">
                                 <
                             </span>
                         </button>
-                        <button class="dteList-button" data-direction="+">
+                        <button class="dteList-button right-direction" data-direction="+">
                             <span class="button-wrapper">
                                 >
                             </span>
@@ -72,43 +72,52 @@
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
     });
 
-    function getDTEsData() {
-        let dteData = {};
-        $.ajax({
-            type: "GET",
-            url: "invoices/dtes",
-            cache: false,
-            async: false,
-        }).done(successResponse => {
-            var data = JSON.parse(successResponse);
+    // function getDTEsData() {
+    //     let dteData = {};
+    //     $.ajax({
+    //         type: "GET",
+    //         url: "invoices/dtes",
+    //         cache: false,
+    //         async: false,
+    //     }).done(successResponse => {
+    //         var data = JSON.parse(successResponse);
     
-            last_page = data.last_page;
-            dteData = data.data;
-            return dteData;
-        });
+    //         last_page = data.last_page;
+    //         dteData = data.data;
+    //         return dteData;
+    //     });
 
-        return dteData;
-    }
+    //     return dteData;
+    // }
 
     $(document).ready(function() {
         // let dataDTETable = getDTEsData();
         dtesTable = $('#dtes-table').DataTable({
             "ajax": {
                 type: 'GET',
-                url: "invoices/dtes?page=" + current_page,
+                url: "invoices/dtes",
                 dataType: 'json',
                 error: function (e) {
                     console.log(e);
-                    alert(`Se ha detectado un error, si al intentarlo de nuevo, vuelve a salir este mensaje,
-                                por favor comuniquese con algun administrador`);
+                    alert(`Se ha detectado un error, si al intentarlo de nuevo, vuelve a salir este mensaje, por favor comuniquese con algun administrador`);
                 },
                 complete: function(data) {
+                    console.log(data);
+                    $('.docsPagination__text').text(`${data.responseJSON.recordsFiltered ?? 'sin'} entradas`);
                     last_page = data.responseJSON.last_page;
                 }
             },
             "processing": true,
             "serverSide": false,
             "searching": false,
+            "order": [[ 5, "desc" ]],
+            "columnDefs": [
+               {
+                   "targets": [ 5 ],
+                   "visible": false,
+                   "searchable": false
+               }
+            ],
             "info": false,
             "paging": false,
             "language": {
@@ -131,7 +140,7 @@
                 { "data": "RznSoc" },
                 { "data": "TipoDTE",
                     "render": function (data, other, row) {
-                        return dteNames[data];
+                        return dteNames[data] + ` Nº ${row.Folio}`;
                     }
                 },
                 { "data": "MntTotal",
@@ -156,10 +165,11 @@
                                     data-type="${row.TipoDTE}"
                                     data-document_number="${row.Folio}"
                                 >
-                                Soliciar PDF
+                                Solicitar PDF
                                 </button>`
                     }
-                }
+                },
+                { "data": "FchEmis" }
             ],
             "drawCallback": function( settings ) {
                 $(".dte-link").click(function (action) {
@@ -169,18 +179,29 @@
         });
 
         $(document).on("click", '.dteList-button', function (action) {
+            $('.left-direction').prop('disabled', true);  // enable button
+            $('.right-direction').prop('disabled', true);  // enable button
             let direction = $(this).data('direction');
-            console.log(dtesTable);
-            console.log(direction);
+
             if (direction === '+') {
-                console.log(current_page, last_page);
+                dtesTable.clear().draw();
+
                 if (current_page === last_page) {
                     return;
                 }
                 addOneToCurrentPage();
 
-                manageGetDtesToTable();
-
+                dtesTable.ajax.url(`invoices/dtes?page=${current_page}`);
+                dtesTable.ajax.reload(function () {
+                    if (current_page > 1) {
+                        $('.left-direction').prop('disabled', false);  // enable button
+                    }
+                    if (current_page >= last_page) {
+                        $('.right-direction').prop('disabled', true);  // enable button
+                    } else {
+                        $('.right-direction').prop('disabled', false);
+                    }
+                });
                 
                 return;
             }
@@ -188,9 +209,20 @@
             if (current_page === 1) {
                 return;
             }
-            subtractOneToCurrentPage();
+            dtesTable.clear().draw();
 
-            manageGetDtesToTable();
+            subtractOneToCurrentPage();
+            dtesTable.ajax.url(`invoices/dtes?page=${current_page}`);
+            dtesTable.ajax.reload(function () {
+                if (current_page === 1) {
+                    $('.left-direction').prop('disabled', true);  // enable button
+                } else {
+                    $('.left-direction').prop('disabled', false);  // enable button
+                }
+                if (current_page < last_page) {
+                    $('.right-direction').prop('disabled', false);  // enable button
+                }
+            });
         });
     });
 
@@ -250,6 +282,7 @@
      */
     function requestPdfDataFromSii(dte)
     {
+        console.log(dte);
         return new Promise((resolve, reject) => {
             $.ajax({                        
                 type: "POST",                 
@@ -290,8 +323,6 @@
 {{--  --}}
 
 <script>
-
-
     function addOneToCurrentPage()
     {
         current_page++;
@@ -300,45 +331,6 @@
     function subtractOneToCurrentPage() 
     {
         current_page--;
-    }
-
-    function manageGetDtesToTable() 
-    {
-        let resopnseJson = {};
-
-        $.ajax({
-            type: "GET",
-            url: "invoices/dtes",
-            cache: false,
-            // async: false,
-        }).done(successResponse => {
-            dtesTable.ajax.reload();
-            console.log('si');
-            // var data = JSON.parse(successResponse);
-    
-            // last_page = data.last_page;
-            // dteData = data.data;
-            // return dteData;
-        }).fail(error => {
-            console.log(error)
-        });
-
-        // $.ajax({
-        //     url: `invoices/dtes?page=${current_page}`,
-        //     type: 'GET',
-        // }).then(successResponse => {
-        //     resopnseJson = JSON.parse(successResponse);
-        // }).then(function (data) {
-        //     console.log(resopnseJson.data);
-        //     dataDTETable = resopnseJson.data;
-        //     // console.log('second')
-        // }).then(function (result) {
-        //     console.log('third')
-        //     dtesTable.ajax.reload();
-        // }).fail(error => {
-        //     console.log(error);
-        //     alert(error.message);
-        // });
     }
 </script>
 

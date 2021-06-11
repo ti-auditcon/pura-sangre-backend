@@ -11,17 +11,33 @@ class DTEController extends Controller
 {
     /**
      *  url for developing and testing
-     *
-     *  @var  string
      */
-    protected $urlDev = 'https://dev-api.haulmer.com/v2';
+    private string $urlDev;
 
-    protected $urlProduction = 'https://api.haulmer.com/v2';
+    private string $urlProduction;
 
-    protected $apiKeyDev = '928e15a2d14d4a6292345f04960f4bd3';
+    private  string $apiKeyDev;
 
-    protected $apiKeyProduction = 'bab4ce50d3c9406b86ae536d44d6b172';
+    private  string $apiKeyProduction;
 
+    public function __construct()
+    {
+        $this->fillProperties();
+    }
+
+    /**
+     *  Fill url and apis for requests
+     *
+     *  @return  void
+     */
+    public function fillProperties(): void
+    {
+        $this->urlDev = config('invoicing.haulmer.dev.base_uri');
+        $this->apiKeyDev = config('invoicing.haulmer.dev.api_key');
+
+        $this->apiKeyProduction = config('invoicing.haulmer.production.api_key');
+        $this->urlProduction = config('invoicing.haulmer.production.base_uri');
+    }
     /**
      * Display the specified resource.
      *
@@ -30,14 +46,14 @@ class DTEController extends Controller
      */
     public function show(Request $request)
     {
-        $rut = "{$request->rut}-{$request->vn}";
+        $rut = "{$request->rut}-{$request->dv}";
 
         try {
-            $client = new Client(['base_uri' => $this->urlDev]);
+            $client = new Client(['base_uri' => $this->urlProduction]);
 
             $response = $client->get("/v2/dte/document/{$rut}/{$request->type}/{$request->document_number}/pdf", [
                 'headers'  => [
-                    "apikey" => $this->apiKeyDev
+                    "apikey" => $this->apiKeyProduction
                 ]
             ]);
             $body = $response->getBody();
@@ -50,7 +66,8 @@ class DTEController extends Controller
                     'data'   => $decoded_json->pdf
                 ]);
             }
-        } catch (\Throwable $th) {
+        } catch (\Throwable $error) {
+            dd($error);
             return response()->json([
                 'status' => 'Error',
                 'message' => 'No se ha podido traer el PDF correctamente, Inténtalo de nuevo más tarde.'

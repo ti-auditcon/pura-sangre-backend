@@ -5,27 +5,46 @@ namespace App\Http\Controllers\Bills;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Config;
 
 class InvoicingController extends Controller
 {
     /**
      *  url for developing and testing
-     *
-     *  @var  string
      */
-    protected $urlDev = 'https://dev-api.haulmer.com/v2';
+    private string $urlDev;
 
-    protected $urlProduction = 'https://api.haulmer.com/v2';
+    private string $urlProduction;
 
-    protected $apiKeyDev = '928e15a2d14d4a6292345f04960f4bd3';
+    private  string $apiKeyDev;
 
-    protected $apiKeyProduction = 'bab4ce50d3c9406b86ae536d44d6b172';
+    private  string $apiKeyProduction;
+
+    public function __construct()
+    {
+        $this->fillProperties();
+    }
+
+    /**
+     *  Fill url and apis for requests
+     *
+     *  @return  void
+     */
+    public function fillProperties(): void
+    {
+        $this->urlDev = config('invoicing.haulmer.dev.base_uri');
+        $this->apiKeyDev = config('invoicing.haulmer.dev.api_key');
+
+        $this->apiKeyProduction = config('invoicing.haulmer.production.api_key');
+        $this->urlProduction = config('invoicing.haulmer.production.base_uri');
+    }
 
 
     public $data_response = [
         "current_page" => 1,
-        "last_page" => 6556,
-        "total" => 196654,
+        "last_page" => 6,
+        "recordsFiltered" => 30,
+        "total" => 196,
         "data" => [
             [
                 "RUTEmisor" => 10524550,
@@ -87,22 +106,22 @@ class InvoicingController extends Controller
 
     public function getDTEs(Request $request)
     {
-        dd($request->all());
-        $current_page = $request->page ?? 1;
+        $current_page = $request->query('page') ?? 1;
 
-        $response = json_encode($this->data_response);
-        return $response;
-        $response = json_decode($response);
+        // $response = json_encode($this->data_response);
+        // return $response;
+        // $response = json_decode($response);
         
         try {
-            $client = new Client(['base_uri' => $this->urlDev]);
+            $client = new Client(['base_uri' => $this->urlProduction]);
 
-            $response = $client->post("/v2/dte/document/received", [
+            $response = $client->post("/v2/dte/document/received?page=2", [
                 'headers'  => [
-                    "apikey" => $this->apiKeyDev
+                    "apikey" => $this->apiKeyProduction,
+                    'Accept' => 'application/json',
                 ],
                 'json' => [
-                    'page' => $current_page,
+                    "Page" => $current_page
                 ]
             ]);
             $body = $response->getBody();
@@ -120,6 +139,7 @@ class InvoicingController extends Controller
 
             echo json_encode($json_data);
         } catch (\Throwable $error) {
+            dd($error);
             if ($this->hasGuzzleError($error)) {
                 return response()->json([
                     'status' => 'Request failed',
