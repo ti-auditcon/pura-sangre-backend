@@ -77,8 +77,10 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 
     Route::resource('payments', 'Bills\BillController')->middleware('role:1')->only('index', 'update');
 
-    Route::get('invoices/dtes', 'Bills\InvoicingController@getDTEs');
-    Route::resource('invoices', 'Bills\InvoicingController');
+    Route::get('invoices/recevied', 'Bills\InvoicingController@recevied');
+    Route::get('invoices/issued', 'Bills\InvoicingController@issued');
+    Route::get('invoices/received/json', 'Bills\InvoicingController@receivedJson');
+    Route::get('invoices/issued/json', 'Bills\InvoicingController@issuedJson');
     Route::post('dte/get-pdf', 'Bills\DTEController@show');
 
     /*

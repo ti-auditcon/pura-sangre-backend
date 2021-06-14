@@ -21,18 +21,7 @@ class DTE
      */
     const RUT_GENERICO = "66666666-6";
 
-    /**
-     *  url for developing and testing
-     *
-     *  @var  string
-     */
-    protected $urlDev = 'https://dev-api.haulmer.com/v2';
 
-    protected $urlProduction = 'https://api.haulmer.com/v2';
-
-    protected $apiKeyDev = '928e15a2d14d4a6292345f04960f4bd3';
-
-    protected $apiKeyProduction = 'bab4ce50d3c9406b86ae536d44d6b172';
 
     /**
      *  La parte que va a emitir la boleta por el servicio o producto (ejemplo, PuraSangre, KatsuCrossFit)
@@ -79,26 +68,26 @@ class DTE
         112 => 'Nota de crédito de exportación electrónica'
     ];
 
-    /**
-     *  methodDescription
-     *
-     *  @return  returnType
-     */
-    public function __construct()
-    {
-        $this->emisor = [
-            'rut'                        => '76795561-8',
-            "razon_social"               => "HAULMER SPA",
-            "giro"                       => "VENTA AL POR MENOR EN EMPRESAS DE VENTA A DISTANCIA VÍA INTERNET; COMERCIO ELEC",
-            "address"                    => "ARTURO PRAT 527   CURICO",
-            "comuna"                     => "Curicó",
-            "city"                       => "Curicó",
-            "phone"                      => "954514528",
-            "email"                      => "correo@correo.com",
-            "codigo_sii_sucursal"        => 81303347,
-            "codigo_actividad_economica" => 479100,
-        ];
-    }
+    // /**
+    //  *  methodDescription
+    //  *
+    //  *  @return  returnType
+    //  */
+    // public function __construct()
+    // {
+    //     $this->emisor = [
+    //         'rut'                        => '76795561-8',
+    //         "razon_social"               => "HAULMER SPA",
+    //         "giro"                       => "VENTA AL POR MENOR EN EMPRESAS DE VENTA A DISTANCIA VÍA INTERNET; COMERCIO ELEC",
+    //         "address"                    => "ARTURO PRAT 527   CURICO",
+    //         "comuna"                     => "Curicó",
+    //         "city"                       => "Curicó",
+    //         "phone"                      => "954514528",
+    //         "email"                      => "correo@correo.com",
+    //         "codigo_sii_sucursal"        => 81303347,
+    //         "codigo_actividad_economica" => 479100,
+    //     ];
+    // }
 
     public static function allDTES()
     {

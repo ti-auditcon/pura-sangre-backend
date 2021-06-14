@@ -13,7 +13,7 @@
 
                 <div class="tools">
                     <div class="docsPagination">
-                        <span class="docsPagination__text">1-30</span>
+                        <span class="docsPagination__text"></span>
 
                         <button class="dteList-button left-direction" data-direction="-" disabled="true">
                             <span class="button-wrapper">
@@ -65,6 +65,7 @@
 <script>
     const dteNames = @json(App\Models\Invoicing\DTE::allDTES());
     const base_url = @json(url('/'));
+    const url_path = "/invoices/received/json";
     let current_page = 1;
     let last_page = 1;
 
@@ -72,37 +73,17 @@
         headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
     });
 
-    // function getDTEsData() {
-    //     let dteData = {};
-    //     $.ajax({
-    //         type: "GET",
-    //         url: "invoices/dtes",
-    //         cache: false,
-    //         async: false,
-    //     }).done(successResponse => {
-    //         var data = JSON.parse(successResponse);
-    
-    //         last_page = data.last_page;
-    //         dteData = data.data;
-    //         return dteData;
-    //     });
-
-    //     return dteData;
-    // }
-
     $(document).ready(function() {
         // let dataDTETable = getDTEsData();
         dtesTable = $('#dtes-table').DataTable({
             "ajax": {
                 type: 'GET',
-                url: "invoices/dtes",
+                url: url_path,
                 dataType: 'json',
                 error: function (e) {
-                    console.log(e);
                     alert(`Se ha detectado un error, si al intentarlo de nuevo, vuelve a salir este mensaje, por favor comuniquese con algun administrador`);
                 },
                 complete: function(data) {
-                    console.log(data);
                     $('.docsPagination__text').text(`${data.responseJSON.recordsFiltered ?? 'sin'} entradas`);
                     last_page = data.responseJSON.last_page;
                 }
@@ -191,7 +172,7 @@
                 }
                 addOneToCurrentPage();
 
-                dtesTable.ajax.url(`invoices/dtes?page=${current_page}`);
+                dtesTable.ajax.url(`${url_path}?page=${current_page}`);
                 dtesTable.ajax.reload(function () {
                     if (current_page > 1) {
                         $('.left-direction').prop('disabled', false);  // enable button
@@ -212,7 +193,7 @@
             dtesTable.clear().draw();
 
             subtractOneToCurrentPage();
-            dtesTable.ajax.url(`invoices/dtes?page=${current_page}`);
+            dtesTable.ajax.url(`${url_path}?page=${current_page}`);
             dtesTable.ajax.reload(function () {
                 if (current_page === 1) {
                     $('.left-direction').prop('disabled', true);  // enable button
@@ -282,11 +263,10 @@
      */
     function requestPdfDataFromSii(dte)
     {
-        console.log(dte);
         return new Promise((resolve, reject) => {
             $.ajax({                        
                 type: "POST",                 
-                url: "dte/get-pdf",                     
+                url: "/dte/get-pdf",                     
                 data: {
                     rut: dte.rut, dv: dte.dv, type: dte.type,
                     document_number: dte.document_number
