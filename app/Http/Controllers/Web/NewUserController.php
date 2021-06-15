@@ -7,14 +7,17 @@ use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
+use App\Models\Invoicing\DTE;
 use App\Mail\NewPlanUserEmail;
 use App\Models\Plans\PlanUser;
 use App\Mail\VerifyExternalUser;
 use App\Models\Users\StatusUser;
 use App\Models\Plans\PlanUserFlow;
+use App\Models\Invoicing\DTEErrors;
 use App\Models\Users\PasswordReset;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\Web\NewUserRequest;
 use Illuminate\Support\Facades\Validator;
@@ -237,19 +240,6 @@ class NewUserController extends Controller
     }
 
     /**
-     *  [spendToken description].
-     *
-     *  @param   [type]  $token  [$token description]
-     *
-     *  @return  [type]          [return description]
-     */
-    // public function spendToken($token)
-    // {
-    //     DB::table('password_resets')->where('token', $token)
-    //                                 ->update(['expired' => true]);
-    // }
-
-    /**
      *  [verifyToken description].
      *
      *  @param   [type]  $token  [$token description]
@@ -268,21 +258,6 @@ class NewUserController extends Controller
 
         return false;
     }
-
-    /**
-     *  [tokenIsInvalid description].
-     *
-     *  @param   [type] $token [$token description]
-     *
-     *  @return  [type] [return description]
-     */
-    // public function tokenIsInvalid($token)
-    // {
-    //     return DB::table('password_resets')
-    //                 ->where('token', $token)
-    //                 ->where('expired', false)
-    //                 ->doesntExist('id');
-    // }
 
     /**
      *  desc.
@@ -316,11 +291,11 @@ class NewUserController extends Controller
     }
 
     /**
-     * [makeFlowPayment description].
+     *  [makeFlowPayment description].
      *
-     * @param Request $request [$request description]
+     *  @param Request $request [$request description]
      *
-     * @return [type] [return description]
+     *  @return [type] [return description]
      */
     public function makeFlowPayment(Request $request)
     {
@@ -328,8 +303,9 @@ class NewUserController extends Controller
         $planUserFlow = $this->planUserFlow->find((int) $payment->commerceOrder);
 
         /* Plan has been paid already */
-        if ($planUserFlow->isPaid())
+        if ($planUserFlow->isPaid()) {
             return true;
+        }
 
         /* Plan wasn't paid, then anuul payment */
         if ($payment->paymentData['date'] === null) {
@@ -346,10 +322,44 @@ class NewUserController extends Controller
         $plan_user = PlanUser::makePlanUser($planUserFlow, $user);
         
         $this->bill->makeFlowBill($plan_user, $payment->paymentData);
+
+        $this->emiteReceiptToSII($planUserFlow);
+
+        $this->getPDF($planUserFlow);
         
-        Mail::to($user->email)->send(new NewPlanUserEmail($user, $plan_user));
+        Mail::to($user->email)->send(new NewPlanUserEmail($planUserFlow));
 
         return true;
+    }
+
+    /**
+     *  [emiteReceiptToSII description]
+     *
+     *  @param   [type]  $planUserflow  [$planUserflow description]
+     *
+     *  @return  null|bool|void
+     */
+    public function emiteReceiptToSII(PlanUserFlow $planUserflow)
+    {
+        if ($planUserflow->isAlreadyIssuedToSII()) {
+            return;
+        }
+
+        try {
+            $dte = new DTE;
+            $sii_response = $dte->issueReceipt($planUserflow);
+
+            if (isset($sii_response->TOKEN)) {
+                return $planUserflow->update([
+                    'payment_date' => today(),
+                    'sii_token' => $sii_response->TOKEN
+                ]);
+            }
+
+            new DTEErrors($sii_response);
+        } catch (\Throwable $error) {
+            new DTEErrors($error);
+        }
     }
 
     /**
@@ -403,29 +413,6 @@ class NewUserController extends Controller
     }
 
     /**
-     *  Expired all token related to the email, and generate and return a brand new token.
-     *
-     *  @param   string  $email  has to receive an valid email of the system
-     *
-     *  @return  string  $token  150 characters
-     */
-    // public function generateNewToken($email)
-    // {
-    //     /** Expired all olds tokens for an specific email */
-    //     DB::table('password_resets')->where('email', $email)
-    //                                 ->update(['expired' => true]);
-
-    //     $token = Str::random(150);
-
-    //     DB::table('password_resets')->insert([
-    //         'email' => $email,
-    //         'token' => $token,
-    //     ]);
-
-    //     return $token;
-    // }
-
-    /**
      *  [validateEmail description].
      *
      *  @param   [type]  $request  [$request description]
@@ -464,6 +451,39 @@ class NewUserController extends Controller
                 ],
                 'status' => 422,
             ], 422);
+        }
+    }
+
+    /**
+     *  [getPDF description]
+     *
+     *  @param   PlanUserFlow  $plan_user_flow  [$plan_user_flow description]
+     *
+     *  @return  [type]                         [return description]
+     */
+    public function getPDF(PlanUserFlow $plan_user_flow)
+    {
+        if ($plan_user_flow->hasPDFGeneratedAlready()) {
+            return true;
+        }
+
+        if ($plan_user_flow->hasNotSiiToken()) {
+            return true;
+        }
+
+        try {
+            $dte = new DTE;
+            $response = $dte->getReceipt($plan_user_flow->sii_token);
+            $decoded_pdf = base64_decode($response->pdf, true);
+
+            $pdf_name = "boleta_{$plan_user_flow->id}_{$plan_user_flow->user->first_name}.pdf";
+            Storage::disk('public')->put("/boletas/{$pdf_name}", $decoded_pdf);
+            $plan_user_flow->update(['bill_pdf' => "boletas/{$pdf_name}"]);
+
+            return true;
+        } catch (\Throwable $error) {
+            new DTEErrors($error);
+            return true;
         }
     }
 }

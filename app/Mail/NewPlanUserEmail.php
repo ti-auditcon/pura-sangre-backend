@@ -2,37 +2,77 @@
 
 namespace App\Mail;
 
+use App\Models\Invoicing\DTE;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use App\Models\Plans\PlanUserFlow;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Storage;
 
 class NewPlanUserEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
-    public $planuser;
+    /**
+     *  The user who made the purchase of the plan
+     *
+     *  @var  User
+     */
+    protected $user;
 
     /**
-     *  Create a new message instance.
+     *  The bill of the purchase
      *
-     *  @return  void
+     *  @var  PlanUserFlow
      */
-    public function __construct($user, $planuser)
-    {
-        $this->user = $user;
+    protected $planUserFlow;
 
-        $this->planuser = $planuser;
+    /**
+     *   At the start of creating the email get the data of the user and the bill
+     */
+    public function __construct($planUserFlow)
+    {
+        $this->user = $planUserFlow->user;
+
+        $this->planUserFlow = $planUserFlow;
     }
 
     /**
-     * Build the message.
+     *  Build the message.
      *
-     * @return $this
+     *  @return  $this
      */
     public function build()
     {
-        return $this->view('messages.plan_bought_template')->subject('Se registró un pago en PuraSangre');
+        if ($this->planUserFlowHasPDF()) {
+            return $this->markdown('mail.new_plan_user')->with([
+                'user' => $this->user,
+                'bill' => $this->planUserFlow
+            ])->attach(storage_path("app/public/{$this->planUserFlow->bill_pdf}"), [
+                'as' => "boleta_{$this->planUserFlow->id}_{$this->user->first_name}.pdf",
+                'mime' => 'application/pdf',
+            ])->subject('Se ha registrado un pago en PuraSangre');
+        }
+
+        return $this->markdown('mail.new_plan_user')->with([
+            'user' => $this->user,
+            'bill' => $this->planUserFlow
+        ])->subject('Se ha registrado un pago en PuraSangre');
+
+    }
+
+    /**
+     * [planUserFlowHasPDF description]
+     *
+     * @return  bool    [return description]
+     */
+    public function planUserFlowHasPDF(): bool
+    {
+        if (Storage::has($this->planUserFlow->bill_pdf) &&
+            $this->planUserFlow->hasPDFGeneratedAlready()) {
+            return true;
+        }
+
+        return false;
     }
 }

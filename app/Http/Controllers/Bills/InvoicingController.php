@@ -31,8 +31,8 @@ class InvoicingController extends Controller
      */
     public function fillProperties(): void
     {
-        $this->urlDev = config('invoicing.haulmer.dev.base_uri');
-        $this->apiKeyDev = config('invoicing.haulmer.dev.api_key');
+        $this->urlDev = config('invoicing.haulmer.sandbox.base_uri');
+        $this->apiKeyDev = config('invoicing.haulmer.sandbox.api_key');
 
         $this->apiKeyProduction = config('invoicing.haulmer.production.api_key');
         $this->urlProduction = config('invoicing.haulmer.production.base_uri');

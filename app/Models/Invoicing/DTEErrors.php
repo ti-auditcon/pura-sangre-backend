@@ -30,7 +30,6 @@ class DTEErrors
         if (isset($response->error)) {
             $this->error = $response->error;
         } else {
-            dd($response);
             $this->error = json_encode($response);
         }
     }

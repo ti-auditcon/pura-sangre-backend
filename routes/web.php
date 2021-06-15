@@ -1,6 +1,9 @@
 <?php
 
+use App\Mail\NewPlanUserEmail;
+use App\Models\Plans\PlanUserFlow;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 Auth::routes();
@@ -180,27 +183,15 @@ Route::resource('/new-user', 'Web\NewUserController')->except('index', 'update',
   *    *******         EXTERNAL ROUTES        **************
   *   ******************************************************   */
 Route::post('/flow/return-from-payment', 'Web\NewUserController@finishFlowPayment');
-Route::post('/flow/confirm-payment', 'Web\NewUserController@confirmFlow');
+Route::post('/flow/confirm-payment', 'Web\NewUserController@finishFlowPayment');
 
 Route::get('/flow/return', function () { return view('web.flow.return'); });
 Route::get('/flow/error', function () { return view('web.flow.error'); });
 
 Route::get('finish-registration', 'Web\NewUserController@finishing');
 
+Route::get('maila', function() {
+    $planuserFlow = App\Models\Plans\PlanUserFlow::find(2020);
 
-// Route::get('test-email', function () {
-//     $token = Illuminate\Support\Str::random(150);
-//     $user = App\Models\Users\User::first();
-//     \DB::table('password_resets')->insert([
-//         'email' => $user->email,
-//         'token' => $token,
-//     ]);
-
-//     return new App\Mail\VerifyExternalUser($user, $token, 3);
-// });
-
-// Route::get('first', function () {
-//     $basePath = realpath(__DIR__.'/../');
-
-//     return rtrim($basePath, '\/');
-// });
+    return Mail::to('raulberrios8@gmail.com')->send(new App\Mail\NewPlanUserEmail($planuserFlow));
+});

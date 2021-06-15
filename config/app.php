@@ -3,7 +3,7 @@
 
 return [
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'PuraSangre CrossFit'),
 
     'env' => env('APP_ENV', 'production'),
 

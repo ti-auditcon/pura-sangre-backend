@@ -1,7 +1,9 @@
 <?php 
 
 use App\Models\Flow\Flow;
+use App\Models\Users\User;
 use Illuminate\Http\Request;
+use App\Models\Plans\PlanUser;
 use App\Models\Plans\PlanUserFlow;
 use App\Http\Controllers\Controller;
 
@@ -33,18 +35,14 @@ class FlowPaymentController extends Controller
 
         return redirect('flow');
     }
-    
-    public function confirmFromPayment()
-    {
-        
-    }
 
-        /**
-     * [makeFlowPayment description].
+    /**
+     *  Check if the payment is corrctly done, and make the bill,
+     *  then return true is all was correct
      *
-     * @param Request $request [$request description]
+     *  @param   Request  $request
      *
-     * @return [type] [return description]
+     *  @return  bool
      */
     public function makeFlowPayment(Request $request)
     {
@@ -54,8 +52,9 @@ class FlowPaymentController extends Controller
         $planUserFlow = PlanUserFlow::find((int) $payment->commerceOrder);
 
         /* Plan has been paid already */
-        if ($planUserFlow->isPaid())
+        if ($planUserFlow->isPaid()) {
             return true;
+        }
 
         /* Plan wasn't paid, then anuul payment */
         if ($payment->paymentData['date'] === null) {

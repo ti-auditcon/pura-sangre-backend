@@ -23,19 +23,19 @@ class DTERequests extends DTE
         $this->fillProperties();
     }
 
-    /**
-     *  Fill url and apis for requests
-     *
-     *  @return  void
-     */
-    protected function fillProperties(): void
-    {
-        $this->urlDev = config('invoicing.haulmer.dev.base_uri');
-        $this->apiKeyDev = config('invoicing.haulmer.dev.api_key');
+    // /**
+    //  *  Fill url and apis for requests
+    //  *
+    //  *  @return  void
+    //  */
+    // protected function fillProperties(): void
+    // {
+    //     $this->urlDev = config('invoicing.haulmer.sandbox.base_uri');
+    //     $this->apiKeyDev = config('invoicing.haulmer.sandbox.api_key');
 
-        $this->apiKeyProduction = config('invoicing.haulmer.production.api_key');
-        $this->urlProduction = config('invoicing.haulmer.production.base_uri');
-    }
+    //     $this->apiKeyProduction = config('invoicing.haulmer.production.api_key');
+    //     $this->urlProduction = config('invoicing.haulmer.production.base_uri');
+    // }
 
     public function get($urlPath, $params)
     {

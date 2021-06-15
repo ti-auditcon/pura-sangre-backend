@@ -13,7 +13,7 @@ return [
     
     'haulmer' => [
 
-        'dev' => [
+        'sandbox' => [
             'api_key' => '928e15a2d14d4a6292345f04960f4bd3',
             'base_uri' => 'https://dev-api.haulmer.com/v2',
         ],
