@@ -15,7 +15,9 @@ class PostponePlan extends Model
 	/**
      *  @var  array
 	 */
-	protected $fillable = ['plan_user_id', 'start_date', 'finish_date'];
+	protected $fillable = [
+        'plan_user_id', 'start_date', 'finish_date', 'days', 'revoked'
+    ];
 
 	/**
      *  @var  array
@@ -31,4 +33,14 @@ class PostponePlan extends Model
 	{
 		return $this->belongsTo(PlanUser::class, 'plan_user_id');
 	}
+
+    /**
+     *  Remove the PostponePlan
+     *
+     *  @return  bool
+     */
+    public function revoke()
+    {
+        $this->update(['revoked' => true]);
+    }
 }

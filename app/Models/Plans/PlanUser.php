@@ -33,13 +33,22 @@ class PlanUser extends Model
     protected $dates = ['start_date', 'finish_date', 'deleted_at'];
 
     /**
-     * [$fillable description]
+     *  Castable values
      *
-     * @var [type]
+     *  @var  array
+     */
+    protected $casts = [
+        'history' => 'collection',
+    ];
+
+    /**
+     *  [$fillable description]
+     *
+     *  @var  [type]
      */
     protected $fillable = [
         'start_date', 'finish_date', 'counter',
-        'plan_status_id', 'plan_id', 'user_id', 'observations'
+        'plan_status_id', 'plan_id', 'user_id', 'observations', 'history'
     ];
 
     /**
@@ -126,13 +135,15 @@ class PlanUser extends Model
     }
 
     /**
-     * Get the information on the postponement of this plan.
+     *  Get the freezed log of this plan
+     *  taking just the one which is available
      *
-     * @return App\Models\Plans\PostponePlan
+     *  @return  App\Models\Plans\PostponePlan
      */
     public function postpone()
     {
-        return $this->hasOne(PostponePlan::class);
+        return $this->hasOne(PostponePlan::class)
+                    ->where('revoked', false);
     }
 
     /**

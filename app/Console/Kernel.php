@@ -53,7 +53,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('reports:daily')->dailyAt('23:50');
 
         $schedule->command('plans:freeze')->dailyAt('00:10');
-        $schedule->command('plans:unfreeze')->dailyAt('00:15');
+        $schedule->command('purasangre:plans:unfreeze')->dailyAt('00:15');
 
         $schedule->command('messages:send-notifications')->everyMinute();
 

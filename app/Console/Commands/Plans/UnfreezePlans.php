@@ -15,7 +15,7 @@ class UnfreezePlans extends Command
      *
      * @var string
      */
-    protected $signature = 'plans:unfreeze';
+    protected $signature = 'purasangre:plans:unfreeze';
 
     /**
      * The console command description.
@@ -41,24 +41,39 @@ class UnfreezePlans extends Command
      */
     public function handle()
     {
-        $yesterday_plans = PostponePlan::whereFinishDate(today()->subDay())
-                                        ->pluck('plan_user_id')
-                                        ->toArray();
+        $freezedPlansFinishedYesterday = PostponePlan::whereFinishDate(today()->subDay())
+                                                        ->where('revoked', false)
+                                                        ->get();
 
-        $plans_to_unfreeze = PlanUser::whereIn('id', array_values($yesterday_plans))
-                                        ->get();
+        foreach ($freezedPlansFinishedYesterday as  $freezedPlan) {
+            $collection = collect($freezedPlan->plan_user->only(
+                'start_date', 'finish_date', 'counter', 'plan_status_id', 'plan_id', 'observations'
+            ));
 
+            $previous = $freezedPlan->plan_user->history;
 
-        foreach ($plans_to_unfreeze as $plan) {
-            $finish_date = $plan->finish_date;
-            // getting the dispatcher instance (needed to enable again the event observer later on)
-            $dispatcher = PlanUser::getEventDispatcher();
-            // disabling the events
-            PlanUser::unsetEventDispatcher();
-            // perform the operation you want
-            $plan->update(['finish_date' => $finish_date->addMonth()]);
-            // enabling the event dispatcher
-            PlanUser::setEventDispatcher($dispatcher);
+            $diff_in_days = Carbon::parse($freezedPlan->finish_date)->diffInDays(today());
+
+            $freezedPlan->plan_user->update([
+                'plan_status_id' => PlanStatus::ACTIVO,
+                'finish_date'    => Carbon::parse($freezedPlan->plan_user->finish_date)->subDays($diff_in_days),
+                'history'        => $previous ? $previous->add($collection) : [$collection]
+            ]);
+            
+            $planes_posteriores = PlanUser::where('user_id', $freezedPlan->plan_user->user_id)
+                                            ->where('start_date', '>', $freezedPlan->plan_user->start_date)
+                                            ->where('id', '!=', $freezedPlan->plan_user->id)
+                                            ->orderBy('finish_date')
+                                            ->get(['id', 'start_date', 'finish_date', 'user_id']);
+
+            foreach ($planes_posteriores as $plan) {
+                $plan->update([
+                    'start_date'  => $plan->start_date->subDays($diff_in_days),
+                    'finish_date' => $plan->finish_date->subDays($diff_in_days)
+                ]);
+            }
+
+            $freezedPlan->revoke();
         }
     }
 }
