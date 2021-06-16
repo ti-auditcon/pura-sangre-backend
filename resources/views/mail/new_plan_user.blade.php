@@ -6,8 +6,12 @@ Hemos registrado el pago del **Plan {{ $bill->plan->plan }}** en el sistema, est
 Fecha de pago: {{\Carbon\Carbon::parse($bill->payment_date)->format('d/m/Y')}}<br>
 <b>Monto: {{'$ ' . number_format($bill->amount, $decimal = 0, '.', '.')}}</b>
 
-@if ($bill->bill_pdf)
-Además te hemos adjuntado la boleta de tu compra
+@if ($bill_pdf)
+Además puedes descargar tu boleta, a través del siguiente link:
+
+@component('mail::button', ['url' => $bill_pdf])
+Descargar boleta
+@endcomponent
 @endif
 
 Saludos,

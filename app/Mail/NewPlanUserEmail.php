@@ -28,13 +28,15 @@ class NewPlanUserEmail extends Mailable
     protected $planUserFlow;
 
     /**
-     *   At the start of creating the email get the data of the user and the bill
+     *  At the start of creating the email get the data of the user and the bill
      */
-    public function __construct($planUserFlow)
+    public function __construct($planUserFlow, $bill_pdf = null)
     {
         $this->user = $planUserFlow->user;
 
         $this->planUserFlow = $planUserFlow;
+
+        $this->bill_pdf = $bill_pdf;
     }
 
     /**
@@ -44,35 +46,10 @@ class NewPlanUserEmail extends Mailable
      */
     public function build()
     {
-        if ($this->planUserFlowHasPDF()) {
-            return $this->markdown('mail.new_plan_user')->with([
-                'user' => $this->user,
-                'bill' => $this->planUserFlow
-            ])->attach(storage_path("app/public/{$this->planUserFlow->bill_pdf}"), [
-                'as' => "boleta_{$this->planUserFlow->id}_{$this->user->first_name}.pdf",
-                'mime' => 'application/pdf',
-            ])->subject('Se ha registrado un pago en PuraSangre');
-        }
-
         return $this->markdown('mail.new_plan_user')->with([
             'user' => $this->user,
-            'bill' => $this->planUserFlow
+            'bill' => $this->planUserFlow,
+            'bill_pdf' => $this->bill_pdf
         ])->subject('Se ha registrado un pago en PuraSangre');
-
-    }
-
-    /**
-     * [planUserFlowHasPDF description]
-     *
-     * @return  bool    [return description]
-     */
-    public function planUserFlowHasPDF(): bool
-    {
-        if (Storage::has($this->planUserFlow->bill_pdf) &&
-            $this->planUserFlow->hasPDFGeneratedAlready()) {
-            return true;
-        }
-
-        return false;
     }
 }

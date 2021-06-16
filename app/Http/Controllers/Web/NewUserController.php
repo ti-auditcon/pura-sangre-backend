@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use GuzzleHttp\Client;
 use App\Models\Flow\Flow;
 use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
@@ -17,7 +18,6 @@ use App\Models\Invoicing\DTEErrors;
 use App\Models\Users\PasswordReset;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\Web\NewUserRequest;
 use Illuminate\Support\Facades\Validator;
@@ -52,6 +52,10 @@ class NewUserController extends Controller
      */
     private $bill;
 
+    protected $purasangreApiUrl = "https://purasangre-api.test";
+
+    protected $verifiedSSL;
+
     /**
      *  Instanciate Flow
      *  Instanciate PlanUserFlow
@@ -62,12 +66,14 @@ class NewUserController extends Controller
      */
     public function __construct()
     {
-        $this->instanciateFlow('production');
+        $this->instanciateFlow('sandbox');
 
         $this->planUserFlow = new PlanUserFlow();
         $this->plan = new Plan();
         $this->plan_user = new PlanUser();
         $this->bill = new Bill();
+
+        $this->verifiedSSL =  !env('APP_DEBUG');
     }
 
     /**
@@ -177,8 +183,8 @@ class NewUserController extends Controller
                 'plans' => $plans,
             ]);
         }
-
         $planUserFlow = $this->planUserFlow->makeOrder($this->plan, $user->id);
+
         try {
             $paymentResponse = $this->flow->payment()->commit([
                 'commerceOrder'   => $planUserFlow->id,
@@ -193,7 +199,7 @@ class NewUserController extends Controller
             ]);
         } catch (\Exception $exception) {
             return view('web.flow.error', [
-                'error' => 'Ups, algo ha salido mal, no desesperes, si crees que has realizado bien el pago, comunicate con nosotros al +569 56488542 para que podamos ayudarte',
+                'error' => 'Algo no salió como esperabamos, no desesperes, si crees que has realizado bien el pago, comunícate con nosotros al +569 56488542 para que podamos ayudarte',
                 'type' => 'payment',
             ]);
         }
@@ -325,9 +331,9 @@ class NewUserController extends Controller
 
         $this->emiteReceiptToSII($planUserFlow);
 
-        $this->getPDF($planUserFlow);
-        
-        Mail::to($user->email)->send(new NewPlanUserEmail($planUserFlow));
+        $response = $this->getPDF($planUserFlow);
+
+        Mail::to($user->email)->send(new NewPlanUserEmail($planUserFlow, $response->data->pdf));
 
         return true;
     }
@@ -472,18 +478,81 @@ class NewUserController extends Controller
         }
 
         try {
-            $dte = new DTE;
-            $response = $dte->getReceipt($plan_user_flow->sii_token);
-            $decoded_pdf = base64_decode($response->pdf, true);
+            $response = (new DTE)->getReceipt($plan_user_flow->sii_token);
 
-            $pdf_name = "boleta_{$plan_user_flow->id}_{$plan_user_flow->user->first_name}.pdf";
-            Storage::disk('public')->put("/boletas/{$pdf_name}", $decoded_pdf);
-            $plan_user_flow->update(['bill_pdf' => "boletas/{$pdf_name}"]);
-
-            return true;
+            return $this->savePDFThroughAPI($response, $plan_user_flow);
         } catch (\Throwable $error) {
             new DTEErrors($error);
+
             return true;
+        }
+    }
+
+    /**
+     * [getPlanUserFlowDTE description]
+     *
+     * @param   PlanUserFlow  $plan_user_flow  [$plan_user_flow description]
+     *
+     * @return  [type]                         [return description]
+     */
+    public function getPlanUserFlowDTE(PlanUserFlow $plan_user_flow)
+    {
+        if ($plan_user_flow->hasPDFGeneratedAlready()) {
+            return response()->json([
+                'status'  => 'Ok - Successful',
+                'message' => 'El PDF se ha guardado correctamente.',
+                'data' => [
+                    'pdf' => $plan_user_flow->bill_pdf
+                ]
+            ]);
+        }
+
+        if ($plan_user_flow->hasNotSiiToken()) {
+            return response()->json([
+                'status' => 'Failed - Missing value',
+                'message' => 'El DTE no posee un Token del SII',
+            ]);
+        }
+
+        try {
+            $response = (new DTE)->getReceipt($plan_user_flow->sii_token);
+
+            return $this->savePDFThroughAPI($response, $plan_user_flow);;
+        } catch (\Throwable $error) {
+            new DTEErrors($error);
+            
+            return response()->json([
+                'status' => 'Error - Do not respond correctly',
+                'message' => 'No se ha podido guardar correctamente el pdf',
+            ]);
+        }
+    }
+
+    public function savePDFThroughAPI($response, $planUserFlow)
+    {
+        try {
+            $client = new Client(['base_uri' => $this->purasangreApiUrl]);
+            $response = $client->post("/dte/save-pdf", [
+                'verify' => $this->verifiedSSL,
+                'headers'  => [
+                    'Accept' => "application/x-www-form-urlencoded",
+                ],
+                'form_params' => [
+                    "pdf"            => $response->pdf,
+                    "token"          => $planUserFlow->sii_token,
+                    "plan_user_flow" => $planUserFlow->id
+                ]
+            ]);
+            $content = $response->getBody()->getContents();
+
+            return json_decode($content);
+        } catch (\Throwable $th) {
+            new DTEErrors($th);
+
+            return response()->json([
+                'status' => 'Error - Do not respond correctly',
+                'message' => 'No se ha podido guardar correctamente el pdf',
+            ]);
         }
     }
 }

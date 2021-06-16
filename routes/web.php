@@ -177,13 +177,15 @@ Route::resource('/new-user', 'Web\NewUserController')->except('index', 'update',
 Route::post('/flow/return-from-payment', 'Web\NewUserController@finishFlowPayment');
 Route::post('/flow/confirm-payment', 'Web\NewUserController@finishFlowPayment');
 
+Route::get('get-pdf/{plan_user_flow}', 'Web\NewUserController@getPlanUserFlowDTE');
+
 Route::get('/flow/return', function () { return view('web.flow.return'); });
 Route::get('/flow/error', function () { return view('web.flow.error'); });
 
 Route::get('finish-registration', 'Web\NewUserController@finishing');
 
 Route::get('maila', function() {
-    $planuserFlow = App\Models\Plans\PlanUserFlow::find(2020);
+    $planuserFlow = App\Models\Plans\PlanUserFlow::find(2110);
 
     return Mail::to('raulberrios8@gmail.com')->send(new App\Mail\NewPlanUserEmail($planuserFlow));
 });
