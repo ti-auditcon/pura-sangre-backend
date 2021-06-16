@@ -6,17 +6,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
+/**
+ *  Auth Route lists
+ */
 Auth::routes();
 
-Route::get('maile', function () {
-    // dd('asdasds');
-    $user = \App\Models\Users\User::find(15);
-
-    // return new App\Mail\NewPlanUserEmail($user, $user->actual_plan);
-    // return new App\Mail\GoneAwayUserEmail($user->first_name);
-});
-// Route::get('/fix-clases', 'HomeController@fixClases');
-
+/**
+ *  General routes
+ */
 Route::get('/', 'HomeController@index');
 Route::get('/withoutrenewal', 'HomeController@withoutrenewal');
 Route::get('/genders', 'HomeController@genders');
@@ -51,8 +48,6 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
      * Clases types routes
      */
     Route::resource('clases-types', 'Clases\ClaseTypeController')->except('create', 'edit');
-    // Route::post('clases-types/update', 'Clases\ClaseTypeController@updateClaseTypeStage')
-    //      ->name('clases-types.update-all');
 
     /**
      * CALENDAR CLASES ROUTES
@@ -96,7 +91,6 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
      */
     Route::resource('exercises', 'Exercises\ExerciseController');
     Route::get('stage-types/{stage_type}', 'Wods\StageTypeController@show');
-    // Route::resource('stages-types', 'Exercises\ExerciseController');
 
     /*
      * Messages Routes
@@ -142,14 +136,12 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('users/{user}/plans/{plan}/info', 'Users\UserController@userinfo')->name('users.plans.info');
     Route::get('users/geolocations', 'Users\UserController@geolocations')->name('users.geolocations');
     Route::post('users/{user}/plans/{plan}/annul', 'Plans\PlanUserController@annul')->name('users.plans.annul');
-    // Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
     Route::resource('users', 'Users\UserController');
     Route::get('users-json', 'Users\UserController@usersJson')->name('users-json');
     Route::get('export', 'Users\UserController@export')->name('users.export');
     Route::get('update-avatar', 'Users\UserController@updateAvatar')->name('user.update.avatar');
     Route::resource('users.plans', 'Plans\PlanUserController');
     Route::post('users/{user}/plans/{plan}/annul', 'Plans\PlanUserController@annul')->name('users.plans.annul');
-    // Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
     Route::get('users/{user}/plans/{plan}/info', 'Users\UserController@userinfo')->name('users.plans.info');
 
     Route::patch('users/{user}/reset-password', 'Users\UserController@resetPassword')->name('users.password-reset');

@@ -155,24 +155,15 @@ class PlanUserController extends Controller
     public function update(PlanUserRequest $request, User $user, planuser $plan)
     {
         $plan->update([
-            'start_date'   => Carbon::parse($request->start_date),
-            'finish_date'  => Carbon::parse($request->finish_date),
-            'observations' => $request->observations,
-            'counter'      => $request->counter,
+            'start_date'     => Carbon::parse($request->start_date),
+            'finish_date'    => Carbon::parse($request->finish_date),
+            'observations'   => $request->observations,
+            'counter'        => $request->counter,
             'plan_status_id' => $request->reactivate ? PlanStatus::ACTIVO : $plan->plan_status_id
         ]);
 
-        if ($plan->plan_id != 1 && $plan->plan_id != 2) {
-            $plan = $this->updateBillIncome($plan);
-
-            if ($plan->bill) {
-                $plan->bill->amount = $request->amount;
-                $plan->bill->updated_at = now();
-                $plan->bill->save();
-            }
-        }
-
-        return redirect('users/' . $user->id)->with('success', 'El plan se actualizó correctamente');
+        return redirect("users/{$user->id}")
+                ->with('success', 'El plan se actualizó correctamente');
     }
 
     /**
