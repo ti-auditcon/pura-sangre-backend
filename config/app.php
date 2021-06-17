@@ -11,6 +11,8 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    'api_url' => env('API_URL', 'http://localhost'),
+
     'web_url' => env('APP_WEB_URL', 'https://purasangrecrossfit.cl/'),
 
     'timezone' => 'America/Santiago',

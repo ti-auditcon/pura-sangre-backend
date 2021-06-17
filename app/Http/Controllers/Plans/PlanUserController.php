@@ -9,24 +9,37 @@ use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
+use App\Models\Invoicing\DTE;
 use Illuminate\Http\Response;
 use App\Mail\NewPlanUserEmail;
 use App\Models\Plans\PlanUser;
 use App\Models\Plans\PlanStatus;
 use App\Models\Bills\PaymentType;
+use App\Models\Plans\PlanUserFlow;
+use App\Models\Invoicing\DTEErrors;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Plans\PlanIncomeSummary;
 use App\Http\Requests\Plans\PlanUserRequest;
+use App\Http\Repositories\Plans\PlanUserRepository;
 
 
 class PlanUserController extends Controller
 {
-    public function __construct()
+    /**
+     *  The repository for logic business
+     *
+     *  @var  PlanUserRepository
+     */
+    protected PlanUserRepository $planUserRepository;
+    
+    public function __construct(PlanUserRepository $planUserRepository)
     {
         // parent::__construct();
         $this->middleware('can:view,user')->only('show');
+
+        $this->planUserRepository = $planUserRepository;
     }
 
     /**
@@ -50,7 +63,7 @@ class PlanUserController extends Controller
     public function create(User $user)
     {
         $plans = Plan::where('plan_status_id', 1)
-                     ->get(['id', 'plan', 'amount', 'custom']);
+                     ->get(['id', 'plan', 'amount', 'custom', 'plan_period_id', 'class_numbers', 'daily_clases']);
 
         return view('userplans.create',
             ['user' => $user, 'plans' => $plans]
@@ -67,53 +80,20 @@ class PlanUserController extends Controller
      */
     public function store(PlanUserRequest $request, User $user)
     {
-        $plan = Plan::find($request->plan_id);
+        $this->planUserRepository->store($request, $user);
 
-        $plan_user = (new PlanUser)->asignPlanToUser($request, $plan, $user);
-
-        if ($plan->isNotcustom() && $request->amount > 0) {
-            $bill = (new Bill)->storeBill($request, $plan_user);
-
-            if ($request->to_sii) {
-                $bill_pdf = $this->emiteReceiptToSii($bill);
-            }
-        }
-
-        if ( ! App::environment(['local', 'testing']) ) {
-            Mail::to($user->email)->send(new NewPlanUserEmail($user, $bill_pdf));
-        }
-
-        return redirect("/admin/users/{$user->id}")->with('success', 'Plan asignado con éxito');
-
-        if ($planuser->save()) {
-            if (($plan->custom == 0) && ($request->amount > 0)) {
-                Bill::create([
-                    'plan_user_id' => $planuser->id,
-                    'payment_type_id' => $request->payment_type_id,
-                    'date' => Carbon::parse($request->date),
-                    'start_date' => $planuser->start_date,
-                    'finish_date' => $planuser->finish_date,
-                    'detail' => $request->detalle,
-                    'amount' => $request->amount,
-                ]);
-                if (!\App::environment('local')) {
-                    Mail::to($user->email)->send(new NewPlanUserEmail($user, $planuser));
-                }
-            }
-            Session::flash('success', 'Guardado con éxito');
-            return redirect('/users/' . $user->id);
-        } else {
-            return redirect('/users/' . $user->id);
-        }
+        return redirect("/users/{$user->id}")->with('success', 'Plan asignado con éxito');
     }
 
     /**
-     * [show description]
-     * @param  User     $user [description]
-     * @param  planuser $plan [description]
-     * @return [type]         [description]
+     *  [show description]
+     * 
+     *  @param   User     $user [description]
+     *  @param   PlanUser $plan [description]
+     *  
+     *  @return  [type]         [description]
      */
-    public function show(User $user, planuser $plan)
+    public function show(User $user, PlanUser $plan)
     {
         return view('userplans.show')->with('plan_user', $plan)->with('user', $user);
     }
@@ -157,8 +137,7 @@ class PlanUserController extends Controller
             'plan_status_id' => $request->reactivate ? PlanStatus::ACTIVO : $plan->plan_status_id
         ]);
 
-        return redirect("users/{$user->id}")
-                ->with('success', 'El plan se actualizó correctamente');
+        return redirect("users/{$user->id}")->with('success', 'El plan se actualizó correctamente');
     }
 
     /**

@@ -52,7 +52,7 @@ class NewUserController extends Controller
      */
     private $bill;
 
-    protected $purasangreApiUrl = "https://purasangre-api.test";
+    protected $purasangreApiUrl;
 
     protected $verifiedSSL;
 
@@ -73,7 +73,8 @@ class NewUserController extends Controller
         $this->plan_user = new PlanUser();
         $this->bill = new Bill();
 
-        $this->verifiedSSL =  !env('APP_DEBUG');
+        $this->verifiedSSL =  !config('app.debug');
+        $this->purasangreApiUrl = config('app.api_url');
     }
 
     /**

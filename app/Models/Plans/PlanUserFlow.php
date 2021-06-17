@@ -2,6 +2,7 @@
 
 namespace App\Models\Plans;
 
+use Carbon\Carbon;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
 use App\Models\Plans\PlanUser;
@@ -202,5 +203,26 @@ class PlanUserFlow extends Model
     public function hasntPDFGenerated(): bool
     {
         return !$this->hasPDFGeneratedAlready();
+    }
+
+    /**
+     *  [createOne description]
+     *
+     *  @return  $this
+     */
+    public function createOne($request, $plan_user)
+    {
+        return $this->create([
+            'start_date'      => $plan_user->start_date,
+            'finish_date'     => $plan_user->finish_date,
+            'user_id'         => $plan_user->user_id,
+            'plan_id'         => $plan_user->plan_id,
+            'payment_type_id' => $request->payment_type_id,
+            'plan_status_id'  => FlowOrderStatus::PAGADO,
+            'payment_date'    => Carbon::parse($request->date),
+            'amount'          => $request->amount,
+            'counter'         => $plan_user->counter,
+            'observations'    => "Compra de plan: {$plan_user->plan->plan}",
+        ]);
     }
 }

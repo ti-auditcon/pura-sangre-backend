@@ -2,12 +2,10 @@
 
 namespace App\Mail;
 
-use App\Models\Invoicing\DTE;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use App\Models\Plans\PlanUserFlow;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
 
 class NewPlanUserEmail extends Mailable
 {

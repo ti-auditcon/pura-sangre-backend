@@ -7,6 +7,7 @@ use App\Models\Users\User;
 use App\Models\Plans\PlanUser;
 use App\Models\Bills\Installment;
 use App\Models\Bills\PaymentType;
+use App\Models\Plans\PlanUserFlow;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -149,6 +150,7 @@ class Bill extends Model
      */
     public function storeBill($request, $planuser)
     {
+        dd($request, $planuser);
         $this->create([
             'plan_user_id'    => $planuser->id,
             'payment_type_id' => $request->payment_type_id,
