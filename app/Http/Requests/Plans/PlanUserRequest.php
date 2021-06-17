@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 class PlanUserRequest extends FormRequest
 {
+    const ADMIN = 1;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -14,41 +16,37 @@ class PlanUserRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->hasRole(1);
+        return auth()->user()->hasRole(self::ADMIN);
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     *  Get the validation rules that apply to the request.
      *
-     * @return array
+     *  @return  array
      */
     public function rules(Request $request)
     {
-        // if plan is INVITADO and hasn't counter, the it's need to be add some counters
-        $counterFieldIsRequired = ((int)$request->plan_id === 2 && !$request->counter) ? 'required' : '';
+        // If plan is INVITADO and the counter field is empty, it's required to add counters (class numbers)
+        $counterFieldIsRequired = ((int) $request->plan_id === 2 && !$request->counter) ? 'required' : '';
 
         return [
             'counter' => $counterFieldIsRequired,
             'finish_date' => 'after_or_equal:start_date',
+            'plan_id' => 'required'
         ];
     }
 
     /**
+     *  Messages
+     *
      *  @return  array
      */
     public function messages()
     {
         return [
+            'plan_id.required'           => 'Seleccione un plan para asignar',
             'counter.required'           => 'Campo numero de clases vacío',
             'finish_date.after_or_equal' => 'La fecha de termino del plan debe ser igual o mayor que la fecha de inicio',
         ];
-    }
-
-    /**
-     *  @return  bool
-     */
-    public function requestIsAnUpdate()
-    {
-        return in_array($this->method(), ['PUT', 'PATCH']);
     }
 }

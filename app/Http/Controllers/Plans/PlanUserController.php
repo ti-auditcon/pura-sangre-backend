@@ -14,6 +14,7 @@ use App\Mail\NewPlanUserEmail;
 use App\Models\Plans\PlanUser;
 use App\Models\Plans\PlanStatus;
 use App\Models\Bills\PaymentType;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Plans\PlanIncomeSummary;
@@ -57,38 +58,32 @@ class PlanUserController extends Controller
     }
 
     /**
-     * [store description]
+     *  Assign plan to a user
      *
-     * @param  Request $request [description]
-     * @param  User    $user    [description]
-     * @return [type]           [description]
+     *  @param   Request  $request
+     *  @param   User     $user   
+     * 
+     *  @return  \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
     public function store(PlanUserRequest $request, User $user)
     {
         $plan = Plan::find($request->plan_id);
-        $finish_date = null;
-        $counter = null;
-        if ($plan->id == 1) {
-            $finish_date = Carbon::parse($request->fecha_inicio)->addWeeks(1);
-            $counter = $plan->class_numbers;
-        } else {
-            $finish_date = Carbon::parse($request->fecha_inicio)
-                ->addMonths($plan->plan_period->period_number)
-                ->subDay();
-            $counter = $plan->class_numbers * $plan->plan_period->period_number * $plan->daily_clases;
+
+        $plan_user = (new PlanUser)->asignPlanToUser($request, $plan, $user);
+
+        if ($plan->isNotcustom() && $request->amount > 0) {
+            $bill = (new Bill)->storeBill($request, $plan_user);
+
+            if ($request->to_sii) {
+                $bill_pdf = $this->emiteReceiptToSii($bill);
+            }
         }
-        if ($plan->custom == 1) {
-            $finish_date = Carbon::parse($request->fecha_termino);
-            $counter = $request->counter * $plan->daily_clases;
+
+        if ( ! App::environment(['local', 'testing']) ) {
+            Mail::to($user->email)->send(new NewPlanUserEmail($user, $bill_pdf));
         }
-        $planuser = new PlanUser;
-        $planuser->start_date = Carbon::parse($request->fecha_inicio);
-        $planuser->finish_date = $finish_date;
-        $planuser->counter = $counter;
-        $planuser->plan_status_id = 1;
-        $planuser->user_id = $user->id;
-        $planuser->plan_id = $plan->id;
-        $planuser->observations = $request->observations;
+
+        return redirect("/admin/users/{$user->id}")->with('success', 'Plan asignado con éxito');
 
         if ($planuser->save()) {
             if (($plan->custom == 0) && ($request->amount > 0)) {

@@ -138,4 +138,25 @@ class Bill extends Model
             'total_paid' => $paymentData['amount'],
         ]);
     }
+
+    /**
+     *  [storeBill description]
+     *
+     *  @param   [type]  $request   [$request description]
+     *  @param   [type]  $planuser  [$planuser description]
+     *
+     *  @return  $this
+     */
+    public function storeBill($request, $planuser)
+    {
+        $this->create([
+            'plan_user_id'    => $planuser->id,
+            'payment_type_id' => $request->payment_type_id,
+            'date'            => Carbon::parse($request->date),
+            'start_date'      => $planuser->start_date,
+            'finish_date'     => $planuser->finish_date,
+            'detail'          => $request->detalle,
+            'amount'          => $request->amount,
+        ]);
+    }
 }

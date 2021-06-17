@@ -15,9 +15,16 @@ use Illuminate\Database\Eloquent\Model;
 class Plan extends Model
 {
     /**
-     * For massive assignment
+     *  First plan in the system [MUST ALWAYS BE "PRUEBA"]
      *
-     * @var array
+     *  @var  int
+     */
+    const PRUEBA = 1;
+
+    /**
+     *  For massive assignment
+     *
+     *  @var  array
      */
     protected $fillable = [
         'plan', 'description', 'plan_period_id', 'schedule_hours', 'schedule_days',
@@ -80,5 +87,35 @@ class Plan extends Model
     public function IsNotContractable()
     {
         return !$this->isContractable();
+    }
+
+    /**
+     *  Check if this is plan is "PRUEBA"
+     *
+     *  @return  bool
+     */
+    public function isPrueba(): bool
+    {
+        return $this->id === self::PRUEBA;
+    }
+    
+    /**
+     *  Check if this is plan is custom
+     *
+     *  @return  bool
+     */
+    public function isCustom(): bool
+    {
+        return boolval($this->custom);
+    }
+    
+    /**
+     *  Deny the custom function
+     *
+     *  @return  bool
+     */
+    public function isNotCustom(): bool
+    {
+        return !$this->isCustom();
     }
 }

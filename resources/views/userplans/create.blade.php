@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="row justify-content-center">
-    <div class="col-6">
+    <div class="col-8">
         <div class="ibox">
             <div class="ibox-head">
                 <div class="ibox-title">Agregar plan a: {{$user->first_name}} {{$user->last_name}}</div>
@@ -94,7 +94,7 @@
                         <div class="col-sm-6 form-group mb-2 is-not-custom">
                             <label>Forma de pago</label>
                             
-                            <select class="selectpicker form-control " name="payment_type_id">
+                            <select class="selectpicker form-control" name="payment_type_id">
                                 @foreach (App\Models\Bills\PaymentType::all() as $pt)
                                     <option value="{{ $pt->id }}">
                                         {{ $pt->payment_type }}
@@ -130,6 +130,28 @@
                                 </div>
                             </div>
                         </div>
+
+                        {{-- <div class="col-sm-6 form-group mb-2 is-not-custom">
+                            <label>Forma de pago</label>
+                            
+                            <select class="selectpicker form-control" name="payment_type_id">
+                                @foreach (App\Models\Bills\PaymentType::all() as $pt)
+                                    <option value="{{ $pt->id }}">
+                                        {{ $pt->payment_type }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div> --}}
+
+                        <div class="col-sm-6 mb-2 form-group is-not-custom">
+                            <label class="checkbox checkbox-success">
+                                <input type="checkbox" name="to_sii" checked/>
+                            
+                                <span class="input-span"></span>
+                            
+                                Enviar boleta al SII
+                            </label>
+                        </div>
                     </div>
 
                     <div class="ibox-footer pt-3 pb-2 my-1 is-not-custom"></div>
@@ -146,7 +168,10 @@
                 </div>
 
                 <div class="ibox-footer p-0 pt-3">
-                    <button class="btn btn-primary btn-air mr-2" type="submit">Asignar Plan</button>
+                    <button class="btn btn-primary btn-air mr-2" 
+                            type="submit"
+                            onclick="this.form.submit(); this.disabled=true; this.innerText='Asignando…';"
+                    >Asignar Plan</button>
                 
                     <a class="btn btn-secondary" href="{{ route('users.show', $user->id) }}">Volver</a>
                 </div>
