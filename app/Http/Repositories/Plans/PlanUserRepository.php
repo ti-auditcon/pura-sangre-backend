@@ -31,7 +31,7 @@ class PlanUserRepository
         $this->planUser = $planUser;
 
         $this->purasangreApiUrl = config('app.api_url');
-        $this->verifiedSSL = !config('app.debug');
+        $this->verifiedSSL = config('app.ssl');
     }
 
     /**
@@ -42,24 +42,39 @@ class PlanUserRepository
     public function store($data, $user)
     {
         $plan = Plan::find($data->plan_id);
-        $this->planUser->asignPlanToUser($data, $plan, $user);
-        // return redirect("/users/{$user->id}")->with('success', 'Plan asignado con éxito');
+        $this->planUser = $this->planUser->asignPlanToUser($data, $plan, $user);
 
-        if ($plan->isNotcustom() && $data->amount > 0) {
+        if ($plan->isNotcustom() && $this->shouldCreateABill($data)) {
             (new Bill)->storeBill($data, $this->planUser);
             $planUserFlow = (new PlanUserFlow)->createOne($data, $this->planUser);
-
+            
             if (boolval($data->is_issued_to_sii)) {
                 $this->emiteReceiptToSII($planUserFlow);
 
                 $response = $this->getPDF($planUserFlow);
 
-                Mail::to($user->email)->send(new NewPlanUserEmail($planUserFlow, $response->data->pdf));
-            } else {
-                Mail::to($user->email)->send(new NewPlanUserEmail($planUserFlow));
+                return Mail::to($user->email)->send(new NewPlanUserEmail($planUserFlow, $response->data->pdf));
             }
+
+            Mail::to($user->email)->send(new NewPlanUserEmail($planUserFlow));
         }
-    }    
+    }
+
+    /**
+     *  [shouldCreateABill description]
+     *
+     *  @param   [type]  $planData  [$planData description]
+     *
+     *  @return  bool               [return description]
+     */
+    public function shouldCreateABill($planData) :bool
+    {
+        if ($planData->amount > 0 && boolval($planData->billed)) {
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      *  [emiteReceiptToSII description]

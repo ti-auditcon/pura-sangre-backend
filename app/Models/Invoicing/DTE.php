@@ -2,7 +2,6 @@
 
 namespace App\Models\Invoicing;
 
-use Carbon\Carbon;
 use GuzzleHttp\Client;
 
 class DTE
@@ -37,47 +36,6 @@ class DTE
      */
     private string $apiKey;
 
-
-    public function __construct()
-    {
-        $this->fillProperties('sandbox');
-
-        $this->fillEmisor();
-    }
-
-    public function fillEmisor()
-    {
-        $this->emisor = [
-            'rut'                        => '76795561-8',
-            "razon_social"               => "HAULMER SPA",
-            "giro"                       => "VENTA AL POR MENOR EN EMPRESAS DE VENTA A DISTANCIA VÍA INTERNET; COMERCIO ELEC",
-            "address"                    => "ARTURO PRAT 527 CURICO",
-            "comuna"                     => "Curicó",
-            "city"                       => "Curicó",
-            "phone"                      => "954514528",
-            "email"                      => "correo@correo.com",
-            "codigo_sii_sucursal"        => 81303347,
-            "codigo_actividad_economica" => 479100,
-        ];
-    }
-
-    /**
-     *  Fill url and apis for requests
-     *
-     *  @return  void
-     */
-    public function fillProperties($environment = 'sandbox'): void
-    {
-        if ($environment === 'production') {
-            $this->apiKey = config('invoicing.haulmer.production.api_key');
-            $this->baseUrl = config('invoicing.haulmer.production.base_uri');
-            return;
-        }
-
-        $this->baseUrl = config('invoicing.haulmer.sandbox.base_uri');
-        $this->apiKey = config('invoicing.haulmer.sandbox.api_key');
-    }
-
     /**
      *  La parte que va a emitir la boleta por el servicio o producto (ejemplo, PuraSangre, KatsuCrossFit)
      *  Contiene los siguientes datos del emisor
@@ -96,6 +54,52 @@ class DTE
      *  @var  array
      */
     protected array $emisor;
+
+    /**
+     *  At start class fill values for Haulmer API
+     */
+    public function __construct()
+    {
+        $environment = "production";
+
+        $this->fillDataForInvoicerAPI($environment);
+    }
+
+    /**
+     * [fillDataForInvoicerAPI description]
+     *
+     *  @param   [type]   $environment  [$environment description]
+     *  @param   sandbox                [ description]
+     */
+    public function fillDataForInvoicerAPI($environment = 'sandbox')
+    {
+        $this->fillUrlAndKeys($environment);
+
+        $this->fillEmisor($environment);
+    }
+
+    /**
+     *  Fill url and apis for requests
+     *
+     *  @return  void
+     */
+    public function fillUrlAndKeys($environment = 'sandbox')
+    {
+        $this->baseUrl = config("invoicing.haulmer.{$environment}.base_uri");
+
+        $this->apiKey = config("invoicing.haulmer.{$environment}.api_key");
+    }
+
+    /**
+     * [fillEmisor description]
+     *
+     * @param   [type]  $environment  [$environment description]
+     *
+     */
+    public function fillEmisor($environment)
+    {
+        $this->emisor = config("invoicing.{$environment}.emisor");
+    }
 
     public static array $dtes = [
         30 => 'Factura',
@@ -124,9 +128,9 @@ class DTE
     ];
 
     /**
-     * [allDTES description]
+     *  [allDTES description]
      *
-     * @return  [type]  [return description]
+     *  @return  [type]  [return description]
      */
     public static function allDTES()
     {
@@ -134,11 +138,11 @@ class DTE
     }
 
     /**
-     * [issueReceipt description]
+     *  [issueReceipt description]
      *
-     * @param   [type]  $order  [$order description]
+     *  @param   [type]  $order  [$order description]
      *
-     * @return  [type]          [return description]
+     *  @return  [type]          [return description]
      */
     public function issueReceipt($order)
     {
@@ -148,9 +152,11 @@ class DTE
     }
 
     /**
-     *  methodDescription
+     *  [fillReceiptData description]
      *
-     *  @return  returnType
+     *  @param   [type]  $receipt  [$receipt description]
+     *
+     *  @return  [type]            [return description]
      */
     public function fillReceiptData($receipt)
     {
@@ -220,6 +226,13 @@ class DTE
         ];
     }
 
+    /**
+     * [issueToSII description]
+     *
+     * @param   [type]  $dte  [$dte description]
+     *
+     * @return  [type]        [return description]
+     */
     public function issueToSII($dte)
     {
         $curl = curl_init();

@@ -140,30 +140,30 @@ class PlanUserController extends Controller
         return redirect("users/{$user->id}")->with('success', 'El plan se actualizó correctamente');
     }
 
-    /**
-     *  [updateBillIncome description]
-     *
-     *  @param   [type]  $plan_saved  [$plan_saved description]
-     *
-     *  @return  [type]               [return description]
-     */
-    public function updateBillIncome($plan_saved)
-    {
-        if ($plan_saved->bill) {
-            $plan_income_sum = PlanIncomeSummary::where('month', $plan_saved->bill->date->month)
-                                                ->where('year', $plan_saved->bill->date->year)
-                                                ->where('plan_id', $plan_saved->bill->plan_user->plan->id)
-                                                ->first();
+    // /**
+    //  *  [updateBillIncome description]
+    //  *
+    //  *  @param   [type]  $plan_saved  [$plan_saved description]
+    //  *
+    //  *  @return  [type]               [return description]
+    //  */
+    // public function updateBillIncome($plan_saved)
+    // {
+    //     if ($plan_saved->bill) {
+    //         $plan_income_sum = PlanIncomeSummary::where('month', $plan_saved->bill->date->month)
+    //                                             ->where('year', $plan_saved->bill->date->year)
+    //                                             ->where('plan_id', $plan_saved->bill->plan_user->plan->id)
+    //                                             ->first();
 
-            $plan_income_sum->amount -= $plan_saved->bill->amount;
+    //         $plan_income_sum->amount -= $plan_saved->bill->amount;
 
-            $plan_income_sum->quantity -= 1;
+    //         $plan_income_sum->quantity -= 1;
 
-            $plan_income_sum->save();
-        }
+    //         $plan_income_sum->save();
+    //     }
 
-        return $plan_saved;
-    }
+    //     return $plan_saved;
+    // }
 
     /**
      * [destroy description]

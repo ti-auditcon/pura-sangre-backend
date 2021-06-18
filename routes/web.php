@@ -80,6 +80,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('invoices/received/json', 'Bills\InvoicingController@receivedJson');
     Route::get('invoices/issued/json', 'Bills\InvoicingController@issuedJson');
     Route::post('dte/get-pdf', 'Bills\DTEController@show');
+    Route::post('dte/get-issued-pdf', 'Bills\DTEController@getIssuedPDF');
 
     /*
      * Plans Routes

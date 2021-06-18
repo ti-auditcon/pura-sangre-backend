@@ -118,7 +118,11 @@
                 },
             },
             "columns": [
-                { "data": "RznSoc" },
+                { "data": "RznSocRecep",
+                    "render": function (data, other, row) {
+                        return data ?? "CLIENTE ANÓNIMO";
+                    }
+                },
                 { "data": "TipoDTE",
                     "render": function (data, other, row) {
                         return dteNames[data] + ` Nº ${row.Folio}`;
@@ -140,11 +144,9 @@
                 {
                     "data": "actions",
                     "render": function(data, other, row) {
+                        console.log(row);
                         return `<button class="dte-link btn btn-success text-white"
-                                    data-rut="${row.RUTEmisor}"
-                                    data-dv="${row.DV}"
-                                    data-type="${row.TipoDTE}"
-                                    data-document_number="${row.Folio}"
+                                    data-token="${row.Token}"
                                 >
                                 Solicitar PDF
                                 </button>`
@@ -213,7 +215,7 @@
         changeButtonToRequesting(event);        
 
         let parametersForPDF = transformDataParameters(event);
-        requestPdfDataFromSii(parametersForPDF).then(success => {
+        requestIssuedPdfDataFromSii(parametersForPDF).then(success => {
             generatePdfFromBase64(success.data);
 
             changeButtonToCorrectFinishState(event);
@@ -246,31 +248,25 @@
     }
 
     /**
-     *
+     *  
      */
     function transformDataParameters(field)
     {
         return {
-            "rut": field.data('rut'),
-            "dv": field.data('dv'),
-            "type": field.data('type'),
-            "document_number": field.data('document_number')
+            "token": field.data('token'),
         }
     }
 
     /**
      *
      */
-    function requestPdfDataFromSii(dte)
+    function requestIssuedPdfDataFromSii(dte)
     {
         return new Promise((resolve, reject) => {
             $.ajax({                        
                 type: "POST",                 
-                url: "/dte/get-pdf",                     
-                data: {
-                    rut: dte.rut, dv: dte.dv, type: dte.type,
-                    document_number: dte.document_number
-                }, 
+                url: "/dte/get-issued-pdf",                     
+                data: { token: dte.token }, 
             }).done(successResponse => {
                 resolve(successResponse);
             }).fail(errorResponse => {
@@ -289,6 +285,7 @@
         var byteArray = new Uint8Array(byteNumbers);
         var file = new Blob([byteArray], { type: 'application/pdf;base64' });
         var fileURL = URL.createObjectURL(file);
+        fileURL.download = "hola.pdf";
         window.open(fileURL);
     }
 </script>

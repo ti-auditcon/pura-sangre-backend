@@ -148,15 +148,14 @@ class Bill extends Model
      *
      *  @return  $this
      */
-    public function storeBill($request, $planuser)
+    public function storeBill($request, $plan_user)
     {
-        dd($request, $planuser);
-        $this->create([
-            'plan_user_id'    => $planuser->id,
+        return $this->create([
+            'plan_user_id'    => $plan_user->id,
             'payment_type_id' => $request->payment_type_id,
             'date'            => Carbon::parse($request->date),
-            'start_date'      => $planuser->start_date,
-            'finish_date'     => $planuser->finish_date,
+            'start_date'      => $plan_user->start_date,
+            'finish_date'     => $plan_user->finish_date,
             'detail'          => $request->detalle,
             'amount'          => $request->amount,
         ]);

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Bills;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Freshwork\ChileanBundle\Rut;
+use App\Http\Requests\Bills\IssuedDTERequest;
 
 class DTEController extends Controller
 {
@@ -49,11 +49,47 @@ class DTEController extends Controller
     public function show(Request $request)
     {
         $rut = "{$request->rut}-{$request->dv}";
-
         try {
             $client = new Client(['base_uri' => $this->urlProduction]);
 
             $response = $client->get("/v2/dte/document/{$rut}/{$request->type}/{$request->document_number}/pdf", [
+                'headers'  => [
+                    "apikey" => $this->apiKeyProduction
+                ]
+            ]);
+            $body = $response->getBody();
+            $content = $body->getContents();
+            $decoded_json = json_decode($content);
+
+            if ($decoded_json->pdf) {
+                return response()->json([
+                    'status' => 'Ok - Successful',
+                    'data'   => $decoded_json->pdf
+                ]);
+            }
+        } catch (\GuzzleHttp\Exception\ClientException $error) {
+            dd($error->getResponse()->getBody()->getContents());
+            $response = json_decode($error->getResponse()->getBody()->getContents(), true);
+
+            return response()->json([
+                'status' => 'Request failed', 'message' => $response['message']
+            ], $response['statusCode']);
+        }
+    }
+
+    /**
+     *  Display the specified resource.
+     *
+     *  @param   Request
+     * 
+     *  @return  \Illuminate\Http\Response
+     */
+    public function getIssuedPDF(IssuedDTERequest $request)
+    {
+        try {
+            $client = new Client(['base_uri' => $this->urlProduction]);
+
+            $response = $client->get("/v2/dte/document/{$request->token}/pdf", [
                 'headers'  => [
                     "apikey" => $this->apiKeyProduction
                 ]
