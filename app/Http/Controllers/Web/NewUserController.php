@@ -33,10 +33,8 @@ class NewUserController extends Controller
 
     /**
      *  Instance of FlowOrder.
-     *
-     *  @var  App\Models\Plans\PlanUserFlow
      */
-    protected PlanUserFlow $PlanUserFlow;
+    protected $PlanUserFlow;
 
     /**
      *  Flow instance for purchases.
@@ -57,10 +55,7 @@ class NewUserController extends Controller
     protected $verifiedSSL;
 
     /**
-     *  Instanciate Flow
-     *  Instanciate PlanUserFlow
-     *  Instanciate Plan
-     *  Instanciate PlanUser.
+     *  Instanciate Flow, PlanUserFlow, Plan, PlanUser.
      *
      *  @return  void
      */

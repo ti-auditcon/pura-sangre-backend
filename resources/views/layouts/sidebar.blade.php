@@ -47,9 +47,9 @@
                         <ul>
                             <li><a href="{{ url('/reports') }}">Pagos</a></li>
 
-                            <li><a href="{{ url('/invoices/recevied') }}">DTEs recibidas</a></li>
+                            <li><a href="{{ url('/invoices/recevied') }}">Documentos recibidas</a></li>
 
-                            <li><a href="{{ url('/invoices/issued') }}">DTEs emitidas</a></li>
+                            <li><a href="{{ url('/invoices/issued') }}">Documentos emitidas</a></li>
                         </ul>
                     </div>
                 </li>
