@@ -14,15 +14,15 @@ class Alert extends Model
      */
     protected $dates = ['from', 'to'];
 
-    /**
-     *  The attributes that should be cast to native types. Like a getter Method
-     *
-     *  @var  array
-     */
-    protected $casts = [
-        'from' => 'datetime:d-m-Y',
-        'to' => 'datetime:d-m-Y'
-    ];
+    // /**
+    //  *  The attributes that should be cast to native types. Like a getter Method
+    //  *
+    //  *  @var  array
+    //  */
+    // protected $casts = [
+    //     'from' => 'datetime:d-m-Y',
+    //     'to' => 'datetime:d-m-Y'
+    // ];
 
     /**
      * The attributes that are mass assignable.

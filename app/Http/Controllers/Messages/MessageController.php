@@ -28,10 +28,12 @@ class MessageController extends Controller
     public function usersJson()
     {
         $users = User::all();
+
         $json_data = array(
             "recordsTotal"  => intval($users->count()),
             "data"          => $users
         );
+        
         echo json_encode($json_data);
     }
 
