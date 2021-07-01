@@ -23,9 +23,9 @@ class PlanUserController extends Controller
 {
     protected $planUser;
 
-    protected string $purasangreApiUrl;
+    protected $purasangreApiUrl;
 
-    protected bool $verifiedSSL;
+    protected $verifiedSSL;
     
     public function __construct()
     {
