@@ -68,7 +68,6 @@ class DTEController extends Controller
                 ]);
             }
         } catch (\GuzzleHttp\Exception\ClientException $error) {
-            dd($error->getResponse()->getBody()->getContents());
             $response = json_decode($error->getResponse()->getBody()->getContents(), true);
 
             return response()->json([

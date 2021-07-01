@@ -35,7 +35,7 @@
 
             @if (Auth::user()->isAdmin())
                 <li @if(in_array(url()->current(), [
-                            url("/reports"),
+                            url("/payments"),
                             url("/invoices")
                         ])) class="active" @endif>
                     <a>
@@ -45,11 +45,11 @@
                     </a>
                     <div class="nav-2-level">
                         <ul>
-                            <li><a href="{{ url('/reports') }}">Pagos</a></li>
+                            <li><a href="{{ url('/payments') }}">Pagos</a></li>
 
-                            <li><a href="{{ url('/invoices/recevied') }}">Documentos recibidas</a></li>
+                            <li><a href="{{ url('/invoices/recevied') }}">Documentos recibidos</a></li>
 
-                            <li><a href="{{ url('/invoices/issued') }}">Documentos emitidas</a></li>
+                            <li><a href="{{ url('/invoices/issued') }}">Documentos emitidos</a></li>
                         </ul>
                     </div>
                 </li>
