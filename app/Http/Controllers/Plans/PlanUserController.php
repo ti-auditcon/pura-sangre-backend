@@ -208,16 +208,17 @@ class PlanUserController extends Controller
         if ($plan->isNotcustom() && $this->shouldCreateABill($request)) {
             (new Bill)->storeBill($request, $this->planUser);
             $planUserFlow = (new PlanUserFlow)->createOne($request, $this->planUser);
-            
+
             if (boolval($request->is_issued_to_sii)) {
                 $this->emiteReceiptToSII($planUserFlow);
-
+                
                 $response = $this->getPDF($planUserFlow);
 
-                return Mail::to($user->email)->send(new NewPlanUserEmail($planUserFlow, $response->request->pdf));
+                Mail::to($user->email)->send(new NewPlanUserEmail($planUserFlow, $response->data->pdf));
+            } else {
+                Mail::to($user->email)->send(new NewPlanUserEmail($planUserFlow));
             }
 
-            Mail::to($user->email)->send(new NewPlanUserEmail($planUserFlow));
         }
 
         return redirect("/users/{$user->id}")->with('success', 'Plan asignado con éxito');
@@ -256,7 +257,7 @@ class PlanUserController extends Controller
             $dte = new DTE;
             $sii_response = $dte->issueReceipt($planUserflow);
 
-            if (isset($sii_response->TOKEN)) {
+                        if (isset($sii_response->TOKEN)) {
                 return $planUserflow->update(['sii_token' => $sii_response->TOKEN]);
             }
 

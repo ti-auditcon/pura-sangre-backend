@@ -60,8 +60,7 @@ class DTE
      */
     public function __construct()
     {
-        $environment = "production";
-
+        $environment = 'sandbox';
         $this->fillDataForInvoicerAPI($environment);
     }
 
@@ -98,7 +97,7 @@ class DTE
      */
     public function fillEmisor($environment)
     {
-        $this->emisor = config("invoicing.{$environment}.emisor");
+        $this->emisor = config("invoicing.haulmer.{$environment}.emisor");
     }
 
     public static array $dtes = [
