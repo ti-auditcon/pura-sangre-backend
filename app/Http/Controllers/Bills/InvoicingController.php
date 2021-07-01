@@ -11,13 +11,13 @@ class InvoicingController extends Controller
     /**
      *  url for developing and testing
      */
-    private string $urlDev;
+    private $urlDev;
 
-    private string $urlProduction;
+    private $urlProduction;
 
-    private  string $apiKeyDev;
+    private $apiKeyDev;
 
-    private  string $apiKeyProduction;
+    private $apiKeyProduction;
 
     public function __construct()
     {
