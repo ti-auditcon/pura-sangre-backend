@@ -91,10 +91,7 @@ class DTE
      */
     public function __construct()
     {
-        $environment = config('app.env');
-
-        $this->fillDataForInvoicerAPI($environment);
-        // $this->fillDataForInvoicerAPI();
+        $this->fillDataForInvoicerAPI(config('app.env'));
     }
 
     /**
@@ -105,6 +102,10 @@ class DTE
      */
     public function fillDataForInvoicerAPI($environment = 'sandbox')
     {
+        if ($environment === 'local') {
+            $environment = 'sandbox';
+        }
+        
         $this->fillUrlAndKeys($environment);
 
         $this->fillEmisor($environment);
@@ -120,6 +121,8 @@ class DTE
         $this->baseUrl = config("invoicing.haulmer.{$environment}.base_uri");
 
         $this->apiKey = config("invoicing.haulmer.{$environment}.api_key");
+
+        $this->verifiedSSL = config('app.ssl');
     }
 
     /**

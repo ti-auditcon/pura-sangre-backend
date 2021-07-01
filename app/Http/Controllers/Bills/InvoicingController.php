@@ -9,19 +9,37 @@ use App\Http\Controllers\Controller;
 class InvoicingController extends Controller
 {
     /**
-     *  url for developing and testing
+     *  Base url for developing as for production
+     *
+     *  @var  string
      */
-    private $urlDev;
+    private $baseUrl;
 
-    private $urlProduction;
-
-    private $apiKeyDev;
-
-    private $apiKeyProduction;
+    /**
+     *  Api key for developing as for production
+     *
+     *  @var  string
+     */
+    private $apiKey;
 
     public function __construct()
     {
-        $this->fillProperties();
+        $this->fillDataForInvoicerAPI(config('app.env'));
+    }
+
+    /**
+     *  [fillDataForInvoicerAPI description]
+     *
+     *  @param   [type]   $environment  [$environment description]
+     *  @param   sandbox                [ description]
+     */
+    public function fillDataForInvoicerAPI($environment = 'sandbox')
+    {
+        if ($environment === 'local') {
+            $environment = 'sandbox';
+        }
+
+        $this->fillUrlAndKeys($environment);
     }
 
     /**
@@ -29,14 +47,28 @@ class InvoicingController extends Controller
      *
      *  @return  void
      */
-    public function fillProperties(): void
+    public function fillUrlAndKeys($environment = 'sandbox')
     {
-        $this->urlDev = config('invoicing.haulmer.sandbox.base_uri');
-        $this->apiKeyDev = config('invoicing.haulmer.sandbox.api_key');
+        $this->baseUrl = config("invoicing.haulmer.{$environment}.base_uri");
 
-        $this->apiKeyProduction = config('invoicing.haulmer.production.api_key');
-        $this->urlProduction = config('invoicing.haulmer.production.base_uri');
+        $this->apiKey = config("invoicing.haulmer.{$environment}.api_key");
+
+        $this->verifiedSSL = config('app.ssl');
     }
+
+    // /**
+    //  *  Fill url and apis for requests
+    //  *
+    //  *  @return  void
+    //  */
+    // public function fillProperties(): void
+    // {
+    //     $this->urlDev = config('invoicing.haulmer.sandbox.base_uri');
+    //     $this->apiKeyDev = config('invoicing.haulmer.sandbox.api_key');
+
+    //     $this->apiKeyProduction = config('invoicing.haulmer.production.api_key');
+    //     $this->urlProduction = config('invoicing.haulmer.production.base_uri');
+    // }
 
     // public $data_response = [
     //     "current_page" => 1,
@@ -122,11 +154,11 @@ class InvoicingController extends Controller
     public function receivedJson(Request $request)
     {
         try {
-            $client = new Client(['base_uri' => $this->urlProduction]);
+            $client = new Client(['base_uri' => $this->baseUrl]);
 
             $response = $client->post("/v2/dte/document/received", [
                 'headers'  => [
-                    "apikey" => $this->apiKeyProduction,
+                    "apikey" => $this->apiKey,
                     'Accept' => 'application/json',
                 ],
                 'json' => [
@@ -168,11 +200,11 @@ class InvoicingController extends Controller
     public function issuedJson(Request $request)
     {
         try {
-            $client = new Client(['base_uri' => $this->urlProduction]);
+            $client = new Client(['base_uri' => $this->baseUrl]);
 
             $response = $client->post("/v2/dte/document/issued", [
                 'headers'  => [
-                    "apikey" => $this->apiKeyProduction,
+                    "apikey" => $this->apiKey,
                     'Accept' => 'application/json',
                 ],
                 'json' => [
@@ -188,7 +220,7 @@ class InvoicingController extends Controller
             $json_data = array(
                 "draw"            => intval($request->input('draw')),
                 "recordsFiltered" => intval(count($response->data)),
-                "recordsTotal"    => intval($response->total),
+                "recordsTotal"    => intval($responsapikey->total),
                 "data"            => $response->data,
                 "current_page"    => $response->current_page,
                 "last_page"       => $response->last_page
