@@ -107,10 +107,10 @@ class PlanUserController extends Controller
         $payment_types = PaymentType::all();
 
         return view('userplans.edit', [
-            'user' => $user,
+            'user'          => $user,
             'payment_types' => $payment_types,
-            'plan_user' => $plan,
-            'plan_status' => new PlanStatus()
+            'plan_user'     => $plan,
+            'plan_status'   => new PlanStatus()
         ]);
     }
 

@@ -38,59 +38,59 @@ class InvoicingController extends Controller
         $this->urlProduction = config('invoicing.haulmer.production.base_uri');
     }
 
-    public $data_response = [
-        "current_page" => 1,
-        "last_page" => 6,
-        "recordsFiltered" => 30,
-        "total" => 196,
-        "data" => [
-            [
-                "RUTEmisor" => 10524550,
-                "DV" => "5",
-                "RznSoc" => "RUTH ERIKA GALLEGUILLOS ACEVEDO",
-                "TipoDTE" => 33,
-                "Folio" => 4,
-                "FchEmis" => "2021-06-07",
-                "MntExe" => 13520,
-                "MntNeto" => 61900,
-                "IVA" => 11761,
-                "MntTotal" => 87181,
-                "Acuses" => null,
-                "FmaPago" => 0,
-                "TpoTranCompra" => 1
-            ],
-            [
-                "RUTEmisor" => 10524550,
-                "DV" => "5",
-                "RznSoc" => "RUTH ERIKA GALLEGUILLOS ACEVEDO",
-                "TipoDTE" => 33,
-                "Folio" => 2,
-                "FchEmis" => "2021-06-07",
-                "MntExe" => 0,
-                "MntNeto" => 302333,
-                "IVA" => 57443,
-                "MntTotal" => 359776,
-                "Acuses" => null,
-                "FmaPago" => 0,
-                "TpoTranCompra" => 1
-            ],
-            [
-                "RUTEmisor" => 9071084,
-                "DV" => "2",
-                "RznSoc" => "MONICA EUGENIA NEUMANN BIRKE",
-                "TipoDTE" => 34,
-                "Folio" => 9,
-                "FchEmis" => "2021-06-07",
-                "MntExe" => 959500,
-                "MntNeto" => 0,
-                "IVA" => 0,
-                "MntTotal" => 959500,
-                "Acuses" => null,
-                "FmaPago" => 0,
-                "TpoTranCompra" => 1
-            ]
-        ]
-    ];
+    // public $data_response = [
+    //     "current_page" => 1,
+    //     "last_page" => 6,
+    //     "recordsFiltered" => 30,
+    //     "total" => 196,
+    //     "data" => [
+    //         [
+    //             "RUTEmisor" => 10524550,
+    //             "DV" => "5",
+    //             "RznSoc" => "RUTH ERIKA GALLEGUILLOS ACEVEDO",
+    //             "TipoDTE" => 33,
+    //             "Folio" => 4,
+    //             "FchEmis" => "2021-06-07",
+    //             "MntExe" => 13520,
+    //             "MntNeto" => 61900,
+    //             "IVA" => 11761,
+    //             "MntTotal" => 87181,
+    //             "Acuses" => null,
+    //             "FmaPago" => 0,
+    //             "TpoTranCompra" => 1
+    //         ],
+    //         [
+    //             "RUTEmisor" => 10524550,
+    //             "DV" => "5",
+    //             "RznSoc" => "RUTH ERIKA GALLEGUILLOS ACEVEDO",
+    //             "TipoDTE" => 33,
+    //             "Folio" => 2,
+    //             "FchEmis" => "2021-06-07",
+    //             "MntExe" => 0,
+    //             "MntNeto" => 302333,
+    //             "IVA" => 57443,
+    //             "MntTotal" => 359776,
+    //             "Acuses" => null,
+    //             "FmaPago" => 0,
+    //             "TpoTranCompra" => 1
+    //         ],
+    //         [
+    //             "RUTEmisor" => 9071084,
+    //             "DV" => "2",
+    //             "RznSoc" => "MONICA EUGENIA NEUMANN BIRKE",
+    //             "TipoDTE" => 34,
+    //             "Folio" => 9,
+    //             "FchEmis" => "2021-06-07",
+    //             "MntExe" => 959500,
+    //             "MntNeto" => 0,
+    //             "IVA" => 0,
+    //             "MntTotal" => 959500,
+    //             "Acuses" => null,
+    //             "FmaPago" => 0,
+    //             "TpoTranCompra" => 1
+    //         ]
+    //     ]
+    // ];
 
     /**
      *  Display a listing of the resource.
