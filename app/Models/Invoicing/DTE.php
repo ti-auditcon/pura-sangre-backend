@@ -27,14 +27,14 @@ class DTE
      *
      *  @var  string
      */
-    private string $baseUrl;
+    private $baseUrl;
 
     /**
      *  Api key for developing as for production
      *
      *  @var  string
      */
-    private string $apiKey;
+    private $apiKey;
 
     /**
      *  La parte que va a emitir la boleta por el servicio o producto (ejemplo, PuraSangre, KatsuCrossFit)
@@ -53,7 +53,7 @@ class DTE
      *
      *  @var  array
      */
-    protected array $emisor;
+    protected $emisor;
 
     /**
      *  At start class fill values for Haulmer API
