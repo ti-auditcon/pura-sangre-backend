@@ -32,7 +32,7 @@ class PlanUserController extends Controller
      *
      *  @var  PlanUserRepository
      */
-    protected PlanUserRepository $planUserRepository;
+    protected $planUserRepository;
     
     public function __construct(PlanUserRepository $planUserRepository)
     {
