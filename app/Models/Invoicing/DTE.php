@@ -60,7 +60,8 @@ class DTE
      */
     public function __construct()
     {
-        $environment = 'sandbox';
+        $environment = config('app.env');
+
         $this->fillDataForInvoicerAPI($environment);
     }
 
