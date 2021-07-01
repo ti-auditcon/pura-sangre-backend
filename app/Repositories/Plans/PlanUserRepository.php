@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Http\Repositories\Plans;
+namespace App\Repositories\Plans;
 
 use GuzzleHttp\Client;
 use App\Models\Bills\Bill;

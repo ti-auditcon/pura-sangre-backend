@@ -11,7 +11,7 @@ use App\Models\Plans\PlanStatus;
 use App\Models\Bills\PaymentType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Plans\PlanUserRequest;
-use App\Http\Repositories\Plans\PlanUserRepository;
+use App\Repositories\Plans\PlanUserRepository;
 
 class PlanUserController extends Controller
 {
