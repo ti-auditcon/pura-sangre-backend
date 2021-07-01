@@ -2,36 +2,19 @@
 
 namespace App\Http\Controllers\Plans;
 
-use Session;
-use Redirect;
 use Carbon\Carbon;
-use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
-use App\Models\Invoicing\DTE;
-use Illuminate\Http\Response;
-use App\Mail\NewPlanUserEmail;
 use App\Models\Plans\PlanUser;
 use App\Models\Plans\PlanStatus;
 use App\Models\Bills\PaymentType;
-use App\Models\Plans\PlanUserFlow;
-use App\Models\Invoicing\DTEErrors;
-use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Mail;
-use App\Models\Plans\PlanIncomeSummary;
 use App\Http\Requests\Plans\PlanUserRequest;
 use App\Http\Repositories\Plans\PlanUserRepository;
 
-
 class PlanUserController extends Controller
 {
-    /**
-     *  The repository for logic business
-     *
-     *  @var  PlanUserRepository
-     */
     protected $planUserRepository;
     
     public function __construct(PlanUserRepository $planUserRepository)
