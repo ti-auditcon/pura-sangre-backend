@@ -212,9 +212,9 @@ class PlanUserController extends Controller
             if (boolval($request->is_issued_to_sii)) {
                 $this->emiteReceiptToSII($planUserFlow);
                 
-                $response = $this->getPDF($planUserFlow);
-
-                Mail::to($user->email)->send(new NewPlanUserEmail($planUserFlow, $response->data->pdf));
+                if ($bill_pdf = $this->getPDF($planUserFlow)) {
+                    Mail::to($user->email)->send(new NewPlanUserEmail($planUserFlow, $bill_pdf));
+                }
             } else {
                 Mail::to($user->email)->send(new NewPlanUserEmail($planUserFlow));
             }
@@ -277,17 +277,21 @@ class PlanUserController extends Controller
     public function getPDF(PlanUserFlow $plan_user_flow)
     {
         if ($plan_user_flow->hasPDFGeneratedAlready()) {
-            return true;
+            return $plan_user_flow->bill_pdf;
         }
 
         if ($plan_user_flow->hasNotSiiToken()) {
-            return true;
+            return false;
         }
 
         try {
             $response = (new DTE)->getReceipt($plan_user_flow->sii_token);
 
-            return $this->savePDFThroughAPI($response, $plan_user_flow);
+            $result = $this->savePDFThroughAPI($response, $plan_user_flow);
+
+            if (isset($result->data->pdf)) {
+                return $result->data->pdf;
+            }
         } catch (\Throwable $error) {
             new DTEErrors($error);
 
