@@ -112,8 +112,8 @@ class BillController extends Controller
 
         $data = array();
 
-        if($bills){
-            foreach($bills as $bill){
+        if ($bills) {
+            foreach($bills as $bill) {
                 $nestedData['fecha_registro'] = $bill->created_at->format('d-m-Y');
                 $nestedData['alumno'] = isset($bill->plan_user) ? '<a href="'.url('/users/'.$bill->plan_user->user->id).'">'.$bill->plan_user->user->first_name.' '.$bill->plan_user->user->last_name.'</a>' : "no aplica";
                 $nestedData['plan'] = isset($bill->plan_user) ? $bill->plan_user->plan->plan : "no aplica";

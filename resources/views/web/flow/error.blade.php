@@ -47,6 +47,8 @@
                                     </button>
                                 </div>
                                 <div x-show="instructions.areSended" x-text="instructions.message"></div>
+                            @elseif ($type === 'payment')
+                                <div class="mb-2">{{ $error }}</div>
                             @endif
                         @else 
                             Hola, es raro verte por aqui, si no sabes como llegaste hasta aqui contacta con PuraSangre :)
@@ -68,7 +70,7 @@
                     errores: [],
                     selectedOption: '',
                     sendButtonisDisabled: false,
-                    title: 'Ups, algo ocurrio',
+                    title: 'Ups, algo ocurrió',
                     requestInstrutions() {
                         this.sendButtonisDisabled = true;
                         axios.post(`/new-user/request-instructions?email=${this.instructions.email}&plan_id=${this.selectedOption}`)

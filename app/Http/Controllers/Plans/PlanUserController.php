@@ -9,23 +9,37 @@ use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
 use Illuminate\Http\Request;
+use App\Models\Invoicing\DTE;
 use Illuminate\Http\Response;
 use App\Mail\NewPlanUserEmail;
 use App\Models\Plans\PlanUser;
 use App\Models\Plans\PlanStatus;
 use App\Models\Bills\PaymentType;
+use App\Models\Plans\PlanUserFlow;
+use App\Models\Invoicing\DTEErrors;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Plans\PlanIncomeSummary;
 use App\Http\Requests\Plans\PlanUserRequest;
+use App\Http\Repositories\Plans\PlanUserRepository;
 
 
 class PlanUserController extends Controller
 {
-    public function __construct()
+    /**
+     *  The repository for logic business
+     *
+     *  @var  PlanUserRepository
+     */
+    protected PlanUserRepository $planUserRepository;
+    
+    public function __construct(PlanUserRepository $planUserRepository)
     {
         // parent::__construct();
         $this->middleware('can:view,user')->only('show');
+
+        $this->planUserRepository = $planUserRepository;
     }
 
     /**
@@ -49,7 +63,7 @@ class PlanUserController extends Controller
     public function create(User $user)
     {
         $plans = Plan::where('plan_status_id', 1)
-                     ->get(['id', 'plan', 'amount', 'custom']);
+                     ->get(['id', 'plan', 'amount', 'custom', 'plan_period_id', 'class_numbers', 'daily_clases']);
 
         return view('userplans.create',
             ['user' => $user, 'plans' => $plans]
@@ -57,68 +71,29 @@ class PlanUserController extends Controller
     }
 
     /**
-     * [store description]
+     *  Assign plan to a user
      *
-     * @param  Request $request [description]
-     * @param  User    $user    [description]
-     * @return [type]           [description]
+     *  @param   Request  $request
+     *  @param   User     $user   
+     * 
+     *  @return  \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
     public function store(PlanUserRequest $request, User $user)
     {
-        $plan = Plan::find($request->plan_id);
-        $finish_date = null;
-        $counter = null;
-        if ($plan->id == 1) {
-            $finish_date = Carbon::parse($request->fecha_inicio)->addWeeks(1);
-            $counter = $plan->class_numbers;
-        } else {
-            $finish_date = Carbon::parse($request->fecha_inicio)
-                ->addMonths($plan->plan_period->period_number)
-                ->subDay();
-            $counter = $plan->class_numbers * $plan->plan_period->period_number * $plan->daily_clases;
-        }
-        if ($plan->custom == 1) {
-            $finish_date = Carbon::parse($request->fecha_termino);
-            $counter = $request->counter * $plan->daily_clases;
-        }
-        $planuser = new PlanUser;
-        $planuser->start_date = Carbon::parse($request->fecha_inicio);
-        $planuser->finish_date = $finish_date;
-        $planuser->counter = $counter;
-        $planuser->plan_status_id = 1;
-        $planuser->user_id = $user->id;
-        $planuser->plan_id = $plan->id;
-        $planuser->observations = $request->observations;
+        $this->planUserRepository->store($request, $user);
 
-        if ($planuser->save()) {
-            if (($plan->custom == 0) && ($request->amount > 0)) {
-                Bill::create([
-                    'plan_user_id' => $planuser->id,
-                    'payment_type_id' => $request->payment_type_id,
-                    'date' => Carbon::parse($request->date),
-                    'start_date' => $planuser->start_date,
-                    'finish_date' => $planuser->finish_date,
-                    'detail' => $request->detalle,
-                    'amount' => $request->amount,
-                ]);
-                if (!\App::environment('local')) {
-                    Mail::to($user->email)->send(new NewPlanUserEmail($user, $planuser));
-                }
-            }
-            Session::flash('success', 'Guardado con éxito');
-            return redirect('/users/' . $user->id);
-        } else {
-            return redirect('/users/' . $user->id);
-        }
+        return redirect("/users/{$user->id}")->with('success', 'Plan asignado con éxito');
     }
 
     /**
-     * [show description]
-     * @param  User     $user [description]
-     * @param  planuser $plan [description]
-     * @return [type]         [description]
+     *  [show description]
+     * 
+     *  @param   User     $user [description]
+     *  @param   PlanUser $plan [description]
+     *  
+     *  @return  [type]         [description]
      */
-    public function show(User $user, planuser $plan)
+    public function show(User $user, PlanUser $plan)
     {
         return view('userplans.show')->with('plan_user', $plan)->with('user', $user);
     }
@@ -162,34 +137,33 @@ class PlanUserController extends Controller
             'plan_status_id' => $request->reactivate ? PlanStatus::ACTIVO : $plan->plan_status_id
         ]);
 
-        return redirect("users/{$user->id}")
-                ->with('success', 'El plan se actualizó correctamente');
+        return redirect("users/{$user->id}")->with('success', 'El plan se actualizó correctamente');
     }
 
-    /**
-     *  [updateBillIncome description]
-     *
-     *  @param   [type]  $plan_saved  [$plan_saved description]
-     *
-     *  @return  [type]               [return description]
-     */
-    public function updateBillIncome($plan_saved)
-    {
-        if ($plan_saved->bill) {
-            $plan_income_sum = PlanIncomeSummary::where('month', $plan_saved->bill->date->month)
-                                                ->where('year', $plan_saved->bill->date->year)
-                                                ->where('plan_id', $plan_saved->bill->plan_user->plan->id)
-                                                ->first();
+    // /**
+    //  *  [updateBillIncome description]
+    //  *
+    //  *  @param   [type]  $plan_saved  [$plan_saved description]
+    //  *
+    //  *  @return  [type]               [return description]
+    //  */
+    // public function updateBillIncome($plan_saved)
+    // {
+    //     if ($plan_saved->bill) {
+    //         $plan_income_sum = PlanIncomeSummary::where('month', $plan_saved->bill->date->month)
+    //                                             ->where('year', $plan_saved->bill->date->year)
+    //                                             ->where('plan_id', $plan_saved->bill->plan_user->plan->id)
+    //                                             ->first();
 
-            $plan_income_sum->amount -= $plan_saved->bill->amount;
+    //         $plan_income_sum->amount -= $plan_saved->bill->amount;
 
-            $plan_income_sum->quantity -= 1;
+    //         $plan_income_sum->quantity -= 1;
 
-            $plan_income_sum->save();
-        }
+    //         $plan_income_sum->save();
+    //     }
 
-        return $plan_saved;
-    }
+    //     return $plan_saved;
+    // }
 
     /**
      * [destroy description]

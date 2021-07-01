@@ -10,7 +10,7 @@
 <div class="row justify-content-center">
     <div class="col-12 col-xl-6">
         <div class="ibox ibox-fullheight">
-            <div class="ibox-head">
+            <div class="ibox-head"www>
                 <div class="ibox-title">
                     <h5>Gestionar Roles a {{ $user->full_name }}</h5>
                 </div>

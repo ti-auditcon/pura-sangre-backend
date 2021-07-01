@@ -1,0 +1,114 @@
+<?php
+
+namespace App\Http\Controllers\Bills;
+
+use GuzzleHttp\Client;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Bills\IssuedDTERequest;
+
+class DTEController extends Controller
+{
+    /**
+     *  url for developing and testing
+     */
+    private string $urlDev;
+
+    private string $urlProduction;
+
+    private  string $apiKeyDev;
+
+    private  string $apiKeyProduction;
+
+    public function __construct()
+    {
+        $this->fillProperties();
+    }
+
+    /**
+     *  Fill url and apis for requests
+     *
+     *  @return  void
+     */
+    public function fillProperties(): void
+    {
+        $this->urlDev = config('invoicing.haulmer.sandbox.base_uri');
+        $this->apiKeyDev = config('invoicing.haulmer.sandbox.api_key');
+
+        $this->apiKeyProduction = config('invoicing.haulmer.production.api_key');
+        $this->urlProduction = config('invoicing.haulmer.production.base_uri');
+    }
+
+    /**
+     *  Display the specified resource.
+     *
+     *  @param   Request
+     * 
+     *  @return  \Illuminate\Http\Response
+     */
+    public function show(Request $request)
+    {
+        $rut = "{$request->rut}-{$request->dv}";
+        try {
+            $client = new Client(['base_uri' => $this->urlProduction]);
+
+            $response = $client->get("/v2/dte/document/{$rut}/{$request->type}/{$request->document_number}/pdf", [
+                'headers'  => [
+                    "apikey" => $this->apiKeyProduction
+                ]
+            ]);
+            $body = $response->getBody();
+            $content = $body->getContents();
+            $decoded_json = json_decode($content);
+
+            if ($decoded_json->pdf) {
+                return response()->json([
+                    'status' => 'Ok - Successful',
+                    'data'   => $decoded_json->pdf
+                ]);
+            }
+        } catch (\GuzzleHttp\Exception\ClientException $error) {
+            $response = json_decode($error->getResponse()->getBody()->getContents(), true);
+
+            return response()->json([
+                'status' => 'Request failed', 'message' => $response['message']
+            ], $response['statusCode']);
+        }
+    }
+
+    /**
+     *  Display the specified resource.
+     *
+     *  @param   Request
+     * 
+     *  @return  \Illuminate\Http\Response
+     */
+    public function getIssuedPDF(IssuedDTERequest $request)
+    {
+        try {
+            $client = new Client(['base_uri' => $this->urlProduction]);
+
+            $response = $client->get("/v2/dte/document/{$request->token}/pdf", [
+                'headers'  => [
+                    "apikey" => $this->apiKeyProduction
+                ]
+            ]);
+            $body = $response->getBody();
+            $content = $body->getContents();
+            $decoded_json = json_decode($content);
+
+            if ($decoded_json->pdf) {
+                return response()->json([
+                    'status' => 'Ok - Successful',
+                    'data'   => $decoded_json->pdf
+                ]);
+            }
+        } catch (\GuzzleHttp\Exception\ClientException $error) {
+            $response = json_decode($error->getResponse()->getBody()->getContents(), true);
+
+            return response()->json([
+                'status' => 'Request failed', 'message' => $response['message']
+            ], $response['statusCode']);
+        }
+    }
+}

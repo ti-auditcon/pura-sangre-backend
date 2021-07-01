@@ -1,6 +1,9 @@
 <?php
 
+use App\Mail\NewPlanUserEmail;
+use App\Models\Plans\PlanUserFlow;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -71,6 +74,13 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('bills/export', 'Bills\BillController@export')->name('bills.export');
 
     Route::resource('payments', 'Bills\BillController')->middleware('role:1')->only('index', 'update');
+
+    Route::get('invoices/recevied', 'Bills\InvoicingController@recevied');
+    Route::get('invoices/issued', 'Bills\InvoicingController@issued');
+    Route::get('invoices/received/json', 'Bills\InvoicingController@receivedJson');
+    Route::get('invoices/issued/json', 'Bills\InvoicingController@issuedJson');
+    Route::post('dte/get-pdf', 'Bills\DTEController@show');
+    Route::post('dte/get-issued-pdf', 'Bills\DTEController@getIssuedPDF');
 
     /*
      * Plans Routes
@@ -155,9 +165,9 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 
 /*  *****************************************************
 
- *    *******         EXTERNAL ROUTES        **************
+ *  *********         EXTERNAL ROUTES        ************
 
- *   ******************************************************   */
+ *  ************************************************** */
 Route::post('new-user/request-instructions', 'Web\NewUserController@requestInstructions');
 Route::get('/new-user/{plan}/create', 'Web\NewUserController@create');
 Route::resource('/new-user', 'Web\NewUserController')->except('index', 'update', 'destroy', 'create', 'show');
@@ -166,9 +176,17 @@ Route::resource('/new-user', 'Web\NewUserController')->except('index', 'update',
   *    *******         EXTERNAL ROUTES        **************
   *   ******************************************************   */
 Route::post('/flow/return-from-payment', 'Web\NewUserController@finishFlowPayment');
-Route::post('/flow/confirm-payment', 'Web\NewUserController@confirmFlow');
+Route::post('/flow/confirm-payment', 'Web\NewUserController@finishFlowPayment');
+
+Route::get('get-pdf/{plan_user_flow}', 'Web\NewUserController@getPlanUserFlowDTE');
 
 Route::get('/flow/return', function () { return view('web.flow.return'); });
 Route::get('/flow/error', function () { return view('web.flow.error'); });
 
 Route::get('finish-registration', 'Web\NewUserController@finishing');
+
+Route::get('maila', function() {
+    $planuserFlow = App\Models\Plans\PlanUserFlow::find(2110);
+
+    return Mail::to('raulberrios8@gmail.com')->send(new App\Mail\NewPlanUserEmail($planuserFlow));
+});

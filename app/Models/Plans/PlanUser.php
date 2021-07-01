@@ -187,12 +187,63 @@ class PlanUser extends Model
         }
 
         return self::create([
-            'start_date' => $data->start_date,
-            'finish_date' => $data->finish_date,
-            'counter' => $data->plan->class_numbers,
-            'user_id' => $data->user_id,
-            'plan_id' => $data->plan_id,
+            'counter'        => $data->plan->class_numbers,
+            'user_id'        => $data->user_id,
+            'plan_id'        => $data->plan_id,
+            'start_date'     => $data->start_date,
+            'finish_date'    => $data->finish_date,
             'plan_status_id' => $plan_status 
         ]);
     }
+
+    /**
+     *  methodDescription
+     *
+     *  @return  returnType
+     */
+    public function asignPlanToUser($request, Plan $plan, $user)
+    {
+        return $this->create([
+            'counter'        => $request->counter,
+            'user_id'        => $user->id,
+            'plan_id'        => $plan->id,
+            'start_date'     => Carbon::parse($request->start_date),
+            'finish_date'    => Carbon::parse($request->finish_date),
+            'observations'   => $request->observations,
+            'plan_status_id' => PlanStatus::ACTIVO,
+        ]);
+    }
+
+    // /**
+    //  *  The plan can be:
+    //  *  - Prueba: just add a week and the counter is equals to class_numbers
+    //  *  - Custom: The finish date of the plan is defined at creation part
+    //  *  - Others: add months and counter guided by plan
+    //  *
+    //  *  @param   [type]  $plan    
+    //  *  @param   [type]  $request 
+    //  *
+    //  *  @return  array
+    //  */
+    // public function manageSpecificParametersForPlan(Plan $plan, $request)
+    // {        
+    //     if ($plan->isPrueba()) {
+    //         $finish_date = Carbon::parse($request->fecha_inicio)->addWeeks(1);
+    //         $counter = $plan->class_numbers;
+
+    //         return [$finish_date, $counter];
+    //     }
+        
+    //     if ($plan->isCustom()) {
+    //         $finish_date = Carbon::parse($request->fecha_termino);
+    //         $counter = $request->counter;
+
+    //         return [$finish_date, $counter];
+    //     }
+
+    //     $finish_date = Carbon::parse($request->fecha_inicio)->addMonths($plan->plan_period->period_number)->subDay();
+    //     $counter = $plan->class_numbers * $plan->plan_period->period_number * $plan->daily_clases;
+
+    //     return [$finish_date, $counter];
+    // }
 }
