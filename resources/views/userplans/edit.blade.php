@@ -118,7 +118,15 @@
             </div>
         </div>
         <form action="{{ route('users.plans.update', [$user->id, $plan_user->id]) }}" method="POST">
-            @method('PUT') @csrf
+            @method('PUT')
+            
+            @csrf
+            <input name="user_id" type="hidden" value="{{ $user->id }}" hidden/>
+
+            <input name="plan_id" type="hidden" value="{{ $plan_user->plan_id }}" hidden/>
+
+            <input name="plan_user_id" type="hidden" value="{{ $plan_user->id }}" hidden/>
+
             <div class="ibox-body">
                 <div class="row">
                     <div class="col-sm-4 form-group is-custom">

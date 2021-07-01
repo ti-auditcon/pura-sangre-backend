@@ -93,7 +93,8 @@ class DTE
     {
         $environment = config('app.env');
 
-        $this->fillDataForInvoicerAPI($environment);
+        // $this->fillDataForInvoicerAPI($environment);
+        $this->fillDataForInvoicerAPI();
     }
 
     /**
