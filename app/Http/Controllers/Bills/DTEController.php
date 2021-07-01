@@ -10,19 +10,37 @@ use App\Http\Requests\Bills\IssuedDTERequest;
 class DTEController extends Controller
 {
     /**
-     *  url for developing and testing
+     *  Base url for developing as for production
+     *
+     *  @var  string
      */
-    private $urlDev;
+    private $baseUrl;
 
-    private $urlProduction;
-
-    private $apiKeyDev;
-
-    private $apiKeyProduction;
+    /**
+     *  Api key for developing as for production
+     *
+     *  @var  string
+     */
+    private $apiKey;
 
     public function __construct()
     {
-        $this->fillProperties();
+        $this->fillDataForInvoicer(config('app.env'));
+    }
+
+    /**
+     *  [fillDataForInvoicerAPI description]
+     *
+     *  @param   [type]   $environment  [$environment description]
+     *  @param   sandbox                [ description]
+     */
+    public function fillDataForInvoicer($environment = 'sandbox')
+    {
+        if ($environment === 'local') {
+            $environment = 'sandbox';
+        }
+
+        $this->fillUrlAndKeys($environment);
     }
 
     /**
@@ -30,13 +48,13 @@ class DTEController extends Controller
      *
      *  @return  void
      */
-    public function fillProperties(): void
+    public function fillUrlAndKeys($environment = 'sandbox')
     {
-        $this->urlDev = config('invoicing.haulmer.sandbox.base_uri');
-        $this->apiKeyDev = config('invoicing.haulmer.sandbox.api_key');
+        $this->baseUrl = config("invoicing.haulmer.{$environment}.base_uri");
 
-        $this->apiKeyProduction = config('invoicing.haulmer.production.api_key');
-        $this->urlProduction = config('invoicing.haulmer.production.base_uri');
+        $this->apiKey = config("invoicing.haulmer.{$environment}.api_key");
+
+        $this->verifiedSSL = config('app.ssl');
     }
 
     /**
@@ -50,11 +68,11 @@ class DTEController extends Controller
     {
         $rut = "{$request->rut}-{$request->dv}";
         try {
-            $client = new Client(['base_uri' => $this->urlProduction]);
+            $client = new Client(['base_uri' => $this->baseUrl]);
 
             $response = $client->get("/v2/dte/document/{$rut}/{$request->type}/{$request->document_number}/pdf", [
                 'headers'  => [
-                    "apikey" => $this->apiKeyProduction
+                    "apikey" => $this->apiKey
                 ]
             ]);
             $body = $response->getBody();
@@ -86,11 +104,11 @@ class DTEController extends Controller
     public function getIssuedPDF(IssuedDTERequest $request)
     {
         try {
-            $client = new Client(['base_uri' => $this->urlProduction]);
+            $client = new Client(['base_uri' => $this->baseUrl]);
 
             $response = $client->get("/v2/dte/document/{$request->token}/pdf", [
                 'headers'  => [
-                    "apikey" => $this->apiKeyProduction
+                    "apikey" => $this->apiKey
                 ]
             ]);
             $body = $response->getBody();
@@ -105,6 +123,7 @@ class DTEController extends Controller
             }
         } catch (\GuzzleHttp\Exception\ClientException $error) {
             $response = json_decode($error->getResponse()->getBody()->getContents(), true);
+            dd($response);
 
             return response()->json([
                 'status' => 'Request failed', 'message' => $response['message']

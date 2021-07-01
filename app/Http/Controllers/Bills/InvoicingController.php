@@ -220,7 +220,7 @@ class InvoicingController extends Controller
             $json_data = array(
                 "draw"            => intval($request->input('draw')),
                 "recordsFiltered" => intval(count($response->data)),
-                "recordsTotal"    => intval($responsapikey->total),
+                "recordsTotal"    => intval($response->total),
                 "data"            => $response->data,
                 "current_page"    => $response->current_page,
                 "last_page"       => $response->last_page
