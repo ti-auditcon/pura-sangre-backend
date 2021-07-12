@@ -164,7 +164,7 @@ class NewUserController extends Controller
     /**
      *  Show the form for editing the specified resource.
      *
-     *  @return \Illuminate\Http\Response
+     *  @return  \Illuminate\Http\Response
      */
     public function edit($userId, Request $request)
     {
