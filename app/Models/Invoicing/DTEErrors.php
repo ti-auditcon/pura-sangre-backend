@@ -59,7 +59,7 @@ class DTEErrors
         DB::table('errors')->insert([
             'error' => 'al intentar emitir boleta al sii a traves de haulmer, dio el siguiente error: ' .  $error->message .
                         '. Con los siguientes errores: ' . json_encode($errorBody),
-            'where' => 'FlowController@emiteReceiptToSII',
+            'where' => 'FlowController@emiteReceiptToSII con el usuario: ' . auth()->user()->first_name . auth()->user()->id,
             'created_at' => now(),
         ]);
     }
