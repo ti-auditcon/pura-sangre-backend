@@ -7,16 +7,20 @@ use App\Models\Flow\Flow;
 use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Invoicing\DTE;
 use App\Mail\NewPlanUserEmail;
+use App\Mail\SendNewUserEmail;
 use App\Models\Plans\PlanUser;
 use App\Mail\VerifyExternalUser;
 use App\Models\Users\StatusUser;
 use App\Models\Plans\PlanUserFlow;
+use Illuminate\Support\Facades\DB;
 use App\Models\Invoicing\DTEErrors;
 use App\Models\Users\PasswordReset;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\Web\NewUserRequest;
@@ -238,6 +242,13 @@ class NewUserController extends Controller
             PasswordReset::spendToken($request->token);
         }
 
+        $token = Str::random(64);
+        DB::table('password_resets')->insert([
+            'email' => $user->email, 
+            'token' => Hash::make($token),
+        ]);
+        Mail::to($user->email)->send(new SendNewUserEmail($user, $token));
+
         return $user;
     }
 
@@ -449,7 +460,7 @@ class NewUserController extends Controller
             return response([
                 'message' => 'Usuario existente',
                 'errors' => [
-                    'email' => ['Este correo ya ha sido validado y puede comprar directamente desde la App movil'],
+                    'email' => ['Este correo ya ha sido validado y puede comprar directamente desde la App móvil'],
                 ],
                 'status' => 422,
             ], 422);
