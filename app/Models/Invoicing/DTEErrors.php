@@ -16,7 +16,7 @@ class DTEErrors
     /**
      *  Instanciate with the errors passed and manage them
      *
-     * @param   stdClass|string|null  $errors  Errors for DTEs
+     *  @param   stdClass|string|null  $errors  Errors for DTEs
      */
     public function __construct($response)
     {
@@ -42,6 +42,12 @@ class DTEErrors
     {
         if (isset($this->error->message)) {
             $this->insertErrorIntoDB($this->error);
+        } else {
+            DB::table('errors')->insert([
+                'error'      => $this->error,
+                'where'      => 'unknown',
+                'created_at' => now(),
+            ]);
         }
     }
 

@@ -43,7 +43,7 @@ class Plan extends Model
 
     /**
      * [plan_period relation to this model]
-     * @return [model] [return plan_period model]
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function plan_period()
     {

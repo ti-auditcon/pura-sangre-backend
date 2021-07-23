@@ -45,23 +45,28 @@ class Reservation extends Model
 
     /**
      * [user description]
-     * @return [type] [description]
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
       return $this->belongsTo(User::class);
     }
-
+    // @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
     public function clase()
     {
         return $this->belongsTo(Clase::class);
     }
-
+    //  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
     public function reservation_status()
     {
       return $this->belongsTo(ReservationStatus::class);
     }
 
+    /**
+     * [plan_user description]
+     *
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function plan_user()
     {
       return $this->belongsTo(PlanUser::class);

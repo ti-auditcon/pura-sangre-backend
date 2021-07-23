@@ -82,7 +82,7 @@ class Bill extends Model
      *
      *  @method payment_type
      *
-     *  @return [model]       [description]
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function payment_type()
     {
@@ -92,7 +92,7 @@ class Bill extends Model
     /**
      *  [plan_user description]
      *
-     *  @return  [type]  [return description]
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function plan_user()
     {

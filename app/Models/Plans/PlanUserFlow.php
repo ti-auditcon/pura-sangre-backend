@@ -39,9 +39,9 @@ class PlanUserFlow extends Model
     ];
 
     /**
-     *  Undocumented function
+     *  Relationship with the user model (who belongs the plan)
      *
-     *  @return void
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
@@ -51,7 +51,7 @@ class PlanUserFlow extends Model
     /**
      *  Undocumented function
      *
-     *  @return void
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function plan()
     {
@@ -61,7 +61,7 @@ class PlanUserFlow extends Model
     /**
      *  methodDescription
      *
-     *  @return  returnType
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function planUser()
     {
@@ -186,7 +186,7 @@ class PlanUserFlow extends Model
     }
 
     /**
-     *  Check if the bill has the pdf generated or not
+     *  Check if the bill has the pdf generated
      *
      *  @return  bool
      */
@@ -223,6 +223,7 @@ class PlanUserFlow extends Model
             'amount'          => $request->amount,
             'counter'         => $plan_user->counter,
             'observations'    => "Compra de plan: {$plan_user->plan->plan}",
+            'sii_token'       => !boolval($request->is_issued_to_sii) ? 'sin emision' : null
         ]);
     }
 }

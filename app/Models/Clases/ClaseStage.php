@@ -19,7 +19,7 @@ class ClaseStage extends Model
 
 	/**
 	 * [clase relation to this model]
-	 * @return [model] [description]
+	 *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
 	public function clase()
 	{
@@ -28,7 +28,7 @@ class ClaseStage extends Model
 
 	/**
 	 * [stage relation to this model]
-	 * @return [model] [description]
+	 *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
 	public function stage()
 	{

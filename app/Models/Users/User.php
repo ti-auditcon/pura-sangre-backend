@@ -401,9 +401,9 @@ class User extends Authenticatable
     }
 
     /**
-     * [birthdate_users description]
+     *  [birthdate_users description]
      *
-     * @return [type] [description]
+     *  @return
      */
     public function birthdate_users()
     {

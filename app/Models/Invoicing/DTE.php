@@ -8,6 +8,8 @@ class DTE
 {
     const HAULMER = 1;
 
+    const NOT_ISSUED = 'sin emision';
+
     /**
      *  Número de tipo de DTE
      *
@@ -73,6 +75,13 @@ class DTE
      */
     public function fillDataForInvoicerAPI($environment = 'sandbox')
     {
+<<<<<<< Updated upstream
+=======
+        if ($environment === 'local' || $environment === 'testing') {
+            $environment = 'sandbox';
+        }
+        
+>>>>>>> Stashed changes
         $this->fillUrlAndKeys($environment);
 
         $this->fillEmisor($environment);
@@ -259,12 +268,12 @@ class DTE
         return json_decode($response);
     }
 
-        /**
+    /**
      * [getReceipt description]
      *
      * @param   [type]  $token  [$token description]
      *
-     * @return  [type]          [return description]
+     * @return  object|string
      */
     public function getReceipt($token)
     {

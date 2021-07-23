@@ -17,7 +17,21 @@ class InvoicingController extends Controller
 
     private  string $apiKeyDev;
 
+<<<<<<< Updated upstream
     private  string $apiKeyProduction;
+=======
+    /**
+     *  [fillDataForInvoicerAPI description]
+     *
+     *  @param   [type]   $environment  [$environment description]
+     *  @param   sandbox                [ description]
+     */
+    public function fillDataForInvoicerAPI($environment = 'sandbox')
+    {
+        if ($environment === 'local' || $environment === 'testing') {
+            $environment = 'sandbox';
+        }
+>>>>>>> Stashed changes
 
     public function __construct()
     {

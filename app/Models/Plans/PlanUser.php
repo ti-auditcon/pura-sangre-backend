@@ -87,7 +87,7 @@ class PlanUser extends Model
      *  [plan description]
      *
      *  @method plan
-     *  @return [model] [description]
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function plan()
     {
@@ -97,7 +97,7 @@ class PlanUser extends Model
     /**
      *  [plan_status description]
      *
-     *  @return [model] [description]
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function plan_status()
     {
@@ -160,7 +160,7 @@ class PlanUser extends Model
      * [user description]
      *
      * @method user
-     * @return [model] [description]
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {

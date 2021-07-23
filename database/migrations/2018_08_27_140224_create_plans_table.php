@@ -75,6 +75,26 @@ class CreatePlansTable extends Migration
             // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
+
+        Schema::create('plan_user_flows', function (Blueprint $table) {
+            $table->increments('id');
+            $table->date('start_date');
+            $table->date('finish_date');
+            $table->integer('counter')->nullable();
+            $table->unsignedInteger('plan_status_id')->nullable();
+            $table->unsignedInteger('plan_id')->nullable();
+            $table->unsignedInteger('user_id')->nullable();
+            $table->integer('paid')->default(false);
+            $table->integer('amount')->nullable();
+            $table->string('observations')->nullable();
+            $table->date('payment_date')->nullable();
+            $table->string('bill_pdf')->nullable();
+            $table->string('sii_token')->nullable();
+
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
         Schema::create('freeze_plans', function (Blueprint $table) {
             $table->mediumIncrements('id');
             $table->unsignedInteger('plan_user_id');
@@ -84,30 +104,12 @@ class CreatePlansTable extends Migration
             $table->timestamps();
         });
 
-        // Schema::create('plan_user_periods', function (Blueprint $table) {
-        //     $table->increments('id');
-        //     $table->date('start_date');
-        //     $table->date('finish_date');
-        //     $table->integer('counter')->nullable();
-        //     $table->unsignedInteger('plan_user_id')->nullable();
-        //     $table->timestamps();
-
-        //     $table->foreign('plan_user_id')->references('id')
-        //                                    ->on('plan_user')
-        //                                    ->onDelete('cascade');
-        // });
-
         Schema::create('plan_income_summaries', function (Blueprint $table) {
             $table->increments('id');
-            
             $table->unsignedInteger('plan_id')->nullable();
-            
             $table->integer('amount');
-            
             $table->integer('quantity');
-            
             $table->integer('month')->nullable();
-            
             $table->integer('year')->nullable();
             
             $table->timestamps();
@@ -118,26 +120,21 @@ class CreatePlansTable extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     *  Reverse the migrations.
      *
-     * @return void
+     *  @return  void
      */
     public function down()
     {
         Schema::disableForeignKeyConstraints();
         
         Schema::dropIfExists('plans');
-        
         Schema::dropIfExists('discounts');
-        
         Schema::dropIfExists('plan_status');
-        
         Schema::dropIfExists('plan_user');
-        
         Schema::dropIfExists('plan_periods');
-        
-        // Schema::dropIfExists('plan_user_periods');
-        
+        Schema::dropIfExists('plan_user_flows');
+        Schema::dropIfExists('freeze_plans');
         Schema::dropIfExists('plan_income_summaries');
     }
 }

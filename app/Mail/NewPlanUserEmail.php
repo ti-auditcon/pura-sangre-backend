@@ -30,9 +30,9 @@ class NewPlanUserEmail extends Mailable
      */
     public function __construct($planUserFlow, $bill_pdf = null)
     {
-        $this->user = $planUserFlow->user;
-
         $this->planUserFlow = $planUserFlow;
+
+        $this->user = $planUserFlow->user;
 
         $this->bill_pdf = $bill_pdf;
     }

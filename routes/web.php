@@ -81,7 +81,8 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('invoices/issued/json', 'Bills\InvoicingController@issuedJson');
     Route::post('dte/get-pdf', 'Bills\DTEController@show');
     Route::post('dte/get-issued-pdf', 'Bills\DTEController@getIssuedPDF');
-
+    
+    Route::post('dte/{plan_user_flow}/save-pdf', 'Bills\DTEController@savePDFThroughAPI');
     /*
      * Plans Routes
      */
