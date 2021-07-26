@@ -12,24 +12,18 @@ use App\Http\Requests\Bills\IssuedDTERequest;
 class DTEController extends Controller
 {
     /**
-     *  url for developing and testing
+     *  Base url for developing as for production
+     *
+     *  @var  string
      */
-    private string $urlDev;
+    private $baseUrl;
 
-<<<<<<< Updated upstream
-    private string $urlProduction;
-
-    private  string $apiKeyDev;
-
-    private  string $apiKeyProduction;
-=======
     /**
      *  Api key for developing as for production
      *
      *  @var  string
      */
     private $apiKey;
-    
 
     /**
      *  Check if the requests are with ssl connection
@@ -51,14 +45,6 @@ class DTEController extends Controller
     public function __construct()
     {
         $this->fillDataForInvoicer(config('app.env'));
-
-        /**
-         *  For production we need to send the requests through SSL connections,
-         *  but not in development environment
-         */
-        $this->verifiedSSL = boolval(config('app.sll'));
-
-        $this->purasangreApiUrl = config('app.api_url');
     }
 
     /**
@@ -72,11 +58,8 @@ class DTEController extends Controller
         if ($environment === 'local' || $environment === 'testing') {
             $environment = 'sandbox';
         }
->>>>>>> Stashed changes
 
-    public function __construct()
-    {
-        $this->fillProperties();
+        $this->fillUrlAndKeys($environment);
     }
 
     /**
@@ -84,13 +67,19 @@ class DTEController extends Controller
      *
      *  @return  void
      */
-    public function fillProperties(): void
+    public function fillUrlAndKeys($environment = 'sandbox')
     {
-        $this->urlDev = config('invoicing.haulmer.sandbox.base_uri');
-        $this->apiKeyDev = config('invoicing.haulmer.sandbox.api_key');
+        $this->baseUrl = config("invoicing.haulmer.{$environment}.base_uri");
 
-        $this->apiKeyProduction = config('invoicing.haulmer.production.api_key');
-        $this->urlProduction = config('invoicing.haulmer.production.base_uri');
+        $this->apiKey = config("invoicing.haulmer.{$environment}.api_key");
+
+        /**
+         *  For production we need to send the requests through SSL connections,
+         *  but not in development environment
+         */
+        $this->verifiedSSL = boolval(config('app.sll'));
+
+        $this->purasangreApiUrl = config('app.api_url');
     }
 
     /**
@@ -104,11 +93,11 @@ class DTEController extends Controller
     {
         $rut = "{$request->rut}-{$request->dv}";
         try {
-            $client = new Client(['base_uri' => $this->urlProduction]);
+            $client = new Client(['base_uri' => $this->baseUrl]);
 
             $response = $client->get("/v2/dte/document/{$rut}/{$request->type}/{$request->document_number}/pdf", [
                 'headers'  => [
-                    "apikey" => $this->apiKeyProduction
+                    "apikey" => $this->apiKey
                 ]
             ]);
             $body = $response->getBody();
@@ -140,11 +129,11 @@ class DTEController extends Controller
     public function getIssuedPDF(IssuedDTERequest $request)
     {
         try {
-            $client = new Client(['base_uri' => $this->urlProduction]);
+            $client = new Client(['base_uri' => $this->baseUrl]);
 
             $response = $client->get("/v2/dte/document/{$request->token}/pdf", [
                 'headers'  => [
-                    "apikey" => $this->apiKeyProduction
+                    "apikey" => $this->apiKey
                 ]
             ]);
             $body = $response->getBody();
@@ -159,6 +148,7 @@ class DTEController extends Controller
             }
         } catch (\GuzzleHttp\Exception\ClientException $error) {
             $response = json_decode($error->getResponse()->getBody()->getContents(), true);
+            dd($response);
 
             return response()->json([
                 'status' => 'Request failed', 'message' => $response['message']

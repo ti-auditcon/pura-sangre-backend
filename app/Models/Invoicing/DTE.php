@@ -6,12 +6,22 @@ use GuzzleHttp\Client;
 
 class DTE
 {
+    /**
+     *  Haulmer inviocing number
+     *
+     *  @var  int
+     */
     const HAULMER = 1;
 
+    /**
+     *  Value for receipts or invoices which are not issued
+     *
+     *  @var  string
+     */
     const NOT_ISSUED = 'sin emision';
 
     /**
-     *  Número de tipo de DTE
+     *  Número de tipo de DTE de BOLETA_ELECTRONICA_EXENTA
      *
      *  @var  int
      */
@@ -23,20 +33,19 @@ class DTE
      */
     const RUT_GENERICO = "66666666-6";
 
-    
     /**
-     *  Base url for developing as for production
+     *  Base url as for developing, as for production
      *
      *  @var  string
      */
-    private string $baseUrl;
+    private $baseUrl;
 
     /**
-     *  Api key for developing as for production
+     *  Api key as for developing as for production
      *
      *  @var  string
      */
-    private string $apiKey;
+    private $apiKey;
 
     /**
      *  La parte que va a emitir la boleta por el servicio o producto (ejemplo, PuraSangre, KatsuCrossFit)
@@ -55,62 +64,14 @@ class DTE
      *
      *  @var  array
      */
-    protected array $emisor;
+    protected $emisor;
 
     /**
-     *  At start class fill values for Haulmer API
-     */
-    public function __construct()
-    {
-        $environment = "production";
-
-        $this->fillDataForInvoicerAPI($environment);
-    }
-
-    /**
-     * [fillDataForInvoicerAPI description]
+     * [$dtes description]
      *
-     *  @param   [type]   $environment  [$environment description]
-     *  @param   sandbox                [ description]
+     *  @var  array
      */
-    public function fillDataForInvoicerAPI($environment = 'sandbox')
-    {
-<<<<<<< Updated upstream
-=======
-        if ($environment === 'local' || $environment === 'testing') {
-            $environment = 'sandbox';
-        }
-        
->>>>>>> Stashed changes
-        $this->fillUrlAndKeys($environment);
-
-        $this->fillEmisor($environment);
-    }
-
-    /**
-     *  Fill url and apis for requests
-     *
-     *  @return  void
-     */
-    public function fillUrlAndKeys($environment = 'sandbox')
-    {
-        $this->baseUrl = config("invoicing.haulmer.{$environment}.base_uri");
-
-        $this->apiKey = config("invoicing.haulmer.{$environment}.api_key");
-    }
-
-    /**
-     * [fillEmisor description]
-     *
-     * @param   [type]  $environment  [$environment description]
-     *
-     */
-    public function fillEmisor($environment)
-    {
-        $this->emisor = config("invoicing.{$environment}.emisor");
-    }
-
-    public static array $dtes = [
+    public static $dtes = [
         30 => 'Factura',
         32 => 'Factura de ventas y servicios no afectos o exentos de IVA',
         33 => 'Factura electrónica',
@@ -135,6 +96,56 @@ class DTE
         111 => 'Nota de débito de exportación electrónica',
         112 => 'Nota de crédito de exportación electrónica'
     ];
+
+    /**
+     *  At start class fill values for Haulmer API
+     */
+    public function __construct()
+    {
+        $this->fillDataForInvoicerAPI(config('app.env'));
+    }
+
+    /**
+     * [fillDataForInvoicerAPI description]
+     *
+     *  @param   [type]   $environment  [$environment description]
+     *  @param   sandbox                [ description]
+     */
+    public function fillDataForInvoicerAPI($environment = 'sandbox')
+    {
+        if ($environment === 'local' || $environment === 'testing') {
+            $environment = 'sandbox';
+        }
+        
+        $this->fillUrlAndKeys($environment);
+
+        $this->fillEmisor($environment);
+    }
+
+    /**
+     *  Fill url and apis for requests
+     *
+     *  @return  void
+     */
+    public function fillUrlAndKeys($environment = 'sandbox')
+    {
+        $this->baseUrl = config("invoicing.haulmer.{$environment}.base_uri");
+
+        $this->apiKey = config("invoicing.haulmer.{$environment}.api_key");
+
+        $this->verifiedSSL = boolval(config('app.ssl'));
+    }
+
+    /**
+     * [fillEmisor description]
+     *
+     * @param   [type]  $environment  [$environment description]
+     *
+     */
+    public function fillEmisor($environment)
+    {
+        $this->emisor = config("invoicing.haulmer.{$environment}.emisor");
+    }
 
     /**
      *  [allDTES description]

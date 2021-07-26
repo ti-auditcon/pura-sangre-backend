@@ -9,17 +9,26 @@ use App\Http\Controllers\Controller;
 class InvoicingController extends Controller
 {
     /**
-     *  url for developing and testing
+     *  Base url for developing as for production
+     *
+     *  @var  string
      */
-    private string $urlDev;
+    private $baseUrl;
 
-    private string $urlProduction;
+    /**
+     *  Api key for developing as for production
+     *
+     *  @var  string
+     */
+    private $apiKey;
 
-    private  string $apiKeyDev;
+    /**
+     *  Check if the requests are with ssl connection
+     *
+     *  @var  boolean
+     */
+    protected $verifiedSSL;
 
-<<<<<<< Updated upstream
-    private  string $apiKeyProduction;
-=======
     /**
      *  [fillDataForInvoicerAPI description]
      *
@@ -31,11 +40,8 @@ class InvoicingController extends Controller
         if ($environment === 'local' || $environment === 'testing') {
             $environment = 'sandbox';
         }
->>>>>>> Stashed changes
 
-    public function __construct()
-    {
-        $this->fillProperties();
+        $this->fillUrlAndKeys($environment);
     }
 
     /**
@@ -43,68 +49,14 @@ class InvoicingController extends Controller
      *
      *  @return  void
      */
-    public function fillProperties(): void
+    public function fillUrlAndKeys($environment = 'sandbox')
     {
-        $this->urlDev = config('invoicing.haulmer.sandbox.base_uri');
-        $this->apiKeyDev = config('invoicing.haulmer.sandbox.api_key');
+        $this->baseUrl = config("invoicing.haulmer.{$environment}.base_uri");
 
-        $this->apiKeyProduction = config('invoicing.haulmer.production.api_key');
-        $this->urlProduction = config('invoicing.haulmer.production.base_uri');
+        $this->apiKey = config("invoicing.haulmer.{$environment}.api_key");
+
+        $this->verifiedSSL = boolval(config('app.ssl'));
     }
-
-    public $data_response = [
-        "current_page" => 1,
-        "last_page" => 6,
-        "recordsFiltered" => 30,
-        "total" => 196,
-        "data" => [
-            [
-                "RUTEmisor" => 10524550,
-                "DV" => "5",
-                "RznSoc" => "RUTH ERIKA GALLEGUILLOS ACEVEDO",
-                "TipoDTE" => 33,
-                "Folio" => 4,
-                "FchEmis" => "2021-06-07",
-                "MntExe" => 13520,
-                "MntNeto" => 61900,
-                "IVA" => 11761,
-                "MntTotal" => 87181,
-                "Acuses" => null,
-                "FmaPago" => 0,
-                "TpoTranCompra" => 1
-            ],
-            [
-                "RUTEmisor" => 10524550,
-                "DV" => "5",
-                "RznSoc" => "RUTH ERIKA GALLEGUILLOS ACEVEDO",
-                "TipoDTE" => 33,
-                "Folio" => 2,
-                "FchEmis" => "2021-06-07",
-                "MntExe" => 0,
-                "MntNeto" => 302333,
-                "IVA" => 57443,
-                "MntTotal" => 359776,
-                "Acuses" => null,
-                "FmaPago" => 0,
-                "TpoTranCompra" => 1
-            ],
-            [
-                "RUTEmisor" => 9071084,
-                "DV" => "2",
-                "RznSoc" => "MONICA EUGENIA NEUMANN BIRKE",
-                "TipoDTE" => 34,
-                "Folio" => 9,
-                "FchEmis" => "2021-06-07",
-                "MntExe" => 959500,
-                "MntNeto" => 0,
-                "IVA" => 0,
-                "MntTotal" => 959500,
-                "Acuses" => null,
-                "FmaPago" => 0,
-                "TpoTranCompra" => 1
-            ]
-        ]
-    ];
 
     /**
      *  Display a listing of the resource.
@@ -136,11 +88,11 @@ class InvoicingController extends Controller
     public function receivedJson(Request $request)
     {
         try {
-            $client = new Client(['base_uri' => $this->urlProduction]);
+            $client = new Client(['base_uri' => $this->baseUrl]);
 
             $response = $client->post("/v2/dte/document/received", [
                 'headers'  => [
-                    "apikey" => $this->apiKeyProduction,
+                    "apikey" => $this->apiKey,
                     'Accept' => 'application/json',
                 ],
                 'json' => [
@@ -182,11 +134,11 @@ class InvoicingController extends Controller
     public function issuedJson(Request $request)
     {
         try {
-            $client = new Client(['base_uri' => $this->urlProduction]);
+            $client = new Client(['base_uri' => $this->baseUrl]);
 
             $response = $client->post("/v2/dte/document/issued", [
                 'headers'  => [
-                    "apikey" => $this->apiKeyProduction,
+                    "apikey" => $this->apiKey,
                     'Accept' => 'application/json',
                 ],
                 'json' => [

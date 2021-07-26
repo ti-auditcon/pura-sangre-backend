@@ -16,12 +16,20 @@ use App\Http\Requests\Plans\PlanUserRequest;
 
 class PlanUserController extends Controller
 {
-    /**
-     *  Give permissions to views at class instanciation
-     */    
+    protected $planUser;
+
+    protected $purasangreApiUrl;
+
+    protected $verifiedSSL;
+    
     public function __construct()
     {
         $this->middleware('can:view,user')->only('show');
+
+        $this->planUser = new PlanUser;
+
+        $this->purasangreApiUrl = config('app.api_url');
+        $this->verifiedSSL = config('app.ssl');
     }
 
     /**
@@ -67,8 +75,6 @@ class PlanUserController extends Controller
             
             (new PlanUserFlow)->createOne($request, $planUser);
         }
-
-        return redirect("/users/{$user->id}")->with('success', 'Plan asignado con éxito');
     }
 
     /**
@@ -86,20 +92,6 @@ class PlanUserController extends Controller
 
         return false;
     }
-    // /**
-    //  *  Assign plan to a user
-    //  *
-    //  *  @param   Request  $request
-    //  *  @param   User     $user   
-    //  * 
-    //  *  @return  \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
-    //  */
-    // public function store(PlanUserRequest $request, User $user)
-    // {
-    //     $this->planUserRepository->store($request, $user);
-
-    //     return redirect("/users/{$user->id}")->with('success', 'Plan asignado con éxito');
-    // }
 
     /**
      *  [show description]
@@ -127,10 +119,10 @@ class PlanUserController extends Controller
         $payment_types = PaymentType::all();
 
         return view('userplans.edit', [
-            'user' => $user,
+            'user'          => $user,
             'payment_types' => $payment_types,
-            'plan_user' => $plan,
-            'plan_status' => new PlanStatus()
+            'plan_user'     => $plan,
+            'plan_status'   => new PlanStatus()
         ]);
     }
 
@@ -155,31 +147,6 @@ class PlanUserController extends Controller
 
         return redirect("users/{$user->id}")->with('success', 'El plan se actualizó correctamente');
     }
-
-    // /**
-    //  *  [updateBillIncome description]
-    //  *
-    //  *  @param   [type]  $plan_saved  [$plan_saved description]
-    //  *
-    //  *  @return  [type]               [return description]
-    //  */
-    // public function updateBillIncome($plan_saved)
-    // {
-    //     if ($plan_saved->bill) {
-    //         $plan_income_sum = PlanIncomeSummary::where('month', $plan_saved->bill->date->month)
-    //                                             ->where('year', $plan_saved->bill->date->year)
-    //                                             ->where('plan_id', $plan_saved->bill->plan_user->plan->id)
-    //                                             ->first();
-
-    //         $plan_income_sum->amount -= $plan_saved->bill->amount;
-
-    //         $plan_income_sum->quantity -= 1;
-
-    //         $plan_income_sum->save();
-    //     }
-
-    //     return $plan_saved;
-    // }
 
     /**
      *  Change the status of the plan to CANCELADO,
@@ -217,5 +184,4 @@ class PlanUserController extends Controller
         return redirect()->route('users.show', $user->id)
                          ->with('success', 'Se eliminó el plan correctamente');
     }
-
 }

@@ -10,7 +10,14 @@
         <div class="ibox">
             <div class="ibox-head">
                 <div class="ibox-title">Agregar plan a {{$user->full_name}}</div>
+                
+                <div class="ibox-tools">
+                    <a href="/users/{{ $user->id }}" class="btn btn-info">
+                        Perfil de {{ $user->first_name }}
+                    </a>
+                </div>
             </div>
+            
             
             {{-- {!! Form::open(['route' => ['users.plans.store', $user->id]]) !!}
             <div class="ibox-body">
