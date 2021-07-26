@@ -30,6 +30,14 @@ class InvoicingController extends Controller
     protected $verifiedSSL;
 
     /**
+     *  Instanciate urls for this class
+     */
+    public function __construct()
+    {
+        $this->fillDataForInvoicerAPI(config('app.env'));
+    }
+
+    /**
      *  [fillDataForInvoicerAPI description]
      *
      *  @param   [type]   $environment  [$environment description]
@@ -99,6 +107,8 @@ class InvoicingController extends Controller
                     "Page" => $request->query('page') ?? 1
                 ]
             ]);
+
+
             $response = json_decode($response->getBody()->getContents());
 
             if (is_null($response)) {
