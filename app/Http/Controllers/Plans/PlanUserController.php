@@ -75,6 +75,8 @@ class PlanUserController extends Controller
             
             (new PlanUserFlow)->createOne($request, $planUser);
         }
+
+        return redirect("/users/{$user->id}")->with('success', 'Plan asignado con éxito');
     }
 
     /**
