@@ -2,26 +2,23 @@
 
 namespace App\Http\Repositories\Plans;
 
-use Carbon\Carbon;
 use GuzzleHttp\Client;
 use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
 use App\Models\Invoicing\DTE;
 use App\Mail\NewPlanUserEmail;
 use App\Models\Plans\PlanUser;
-use App\Models\Plans\PlanStatus;
 use App\Models\Plans\PlanUserFlow;
 use App\Models\Invoicing\DTEErrors;
 use Illuminate\Support\Facades\Mail;
-
 
 class PlanUserRepository 
 {
     protected $planUser;
 
-    protected string $purasangreApiUrl;
+    protected $purasangreApiUrl;
 
-    protected bool $verifiedSSL;
+    protected $verifiedSSL;
 
     /**
      *  @param   PlanUser  $planUser
