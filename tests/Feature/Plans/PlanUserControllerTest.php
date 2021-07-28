@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Plans;
 
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Plans\Plan;
 use App\Models\Users\Role;

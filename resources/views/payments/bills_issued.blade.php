@@ -33,11 +33,13 @@
                     <table id="dtes-table" class="table table-hover">
                         <thead class="thead-default">
                             <tr>
-                                <th width="30%">Nombre</th>
+                                <th width="20%">Nombre</th>
+                                <th width="10%">Servicio</th>
                                 <th width="20%">Tipo de DTE</th>
                                 <th width="15%">Monto toral</th>
                                 <th width="10%">Fecha emisión</th>
                                 <th width="10%">Acciones</th>
+                                <th hidden>fecha de emision</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -91,10 +93,10 @@
             "processing": true,
             "serverSide": false,
             "searching": false,
-            "order": [[ 5, "desc" ]],
+            "order": [[ 6, "desc" ]],
             "columnDefs": [
                {
-                   "targets": [ 5 ],
+                   "targets": [ 6 ],
                    "visible": false,
                    "searchable": false
                }
@@ -120,7 +122,13 @@
             "columns": [
                 { "data": "RznSocRecep",
                     "render": function (data, other, row) {
-                        return data ?? "CLIENTE ANÓNIMO";
+                        return data ?? `<a href="/users/${row.user_id}">${row.full_name}</a>`;
+                    }
+                },
+                { 
+                    "data": "service",
+                    "render": function (data, other, row) {
+                        return row.service;
                     }
                 },
                 { "data": "TipoDTE",
@@ -144,7 +152,6 @@
                 {
                     "data": "actions",
                     "render": function(data, other, row) {
-                        console.log(row);
                         return `<button class="dte-link btn btn-success text-white"
                                     data-token="${row.Token}"
                                 >
@@ -240,6 +247,9 @@
         button.prop('disabled', false);  //  enable button
     }
 
+    /**
+     *  @argument 
+     */
     function changeButtonToCorrectFinishState(button)
     {
         button.text('Listo');
@@ -289,15 +299,6 @@
         window.open(fileURL);
     }
 </script>
-
-{{--  --}}
-{{--  --}}
-{{--  --}}
-{{--  --}}
-{{--  --}}
-{{--  --}}
-{{--  --}}
-{{--  --}}
 
 <script>
     function addOneToCurrentPage()

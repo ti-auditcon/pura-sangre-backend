@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Bills;
 
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use App\Models\Plans\PlanUserFlow;
 use App\Http\Controllers\Controller;
 
 class InvoicingController extends Controller
@@ -28,6 +29,65 @@ class InvoicingController extends Controller
      *  @var  boolean
      */
     protected $verifiedSSL;
+
+    /**
+     *  [$fakeDTE description]
+     *
+     *  @var  array
+     */
+    public $data_response = [
+        "current_page" => 1,
+        "last_page" => 6,
+        "recordsFiltered" => 30,
+        "total" => 196,
+        "data" => [
+            [
+                "RUTEmisor" => 10524550,
+                "DV" => "5",
+                "RznSoc" => "RUTH ERIKA GALLEGUILLOS ACEVEDO",
+                "TipoDTE" => 33,
+                "Folio" => 4,
+                "FchEmis" => "2021-06-07",
+                "MntExe" => 13520,
+                "MntNeto" => 61900,
+                "IVA" => 11761,
+                "MntTotal" => 87181,
+                "Acuses" => null,
+                "FmaPago" => 0,
+                "TpoTranCompra" => 1
+            ],
+            [
+                "RUTEmisor" => 10524550,
+                "DV" => "5",
+                "RznSoc" => "RUTH ERIKA GALLEGUILLOS ACEVEDO",
+                "TipoDTE" => 33,
+                "Folio" => 2,
+                "FchEmis" => "2021-06-07",
+                "MntExe" => 0,
+                "MntNeto" => 302333,
+                "IVA" => 57443,
+                "MntTotal" => 359776,
+                "Acuses" => null,
+                "FmaPago" => 0,
+                "TpoTranCompra" => 1
+            ],
+            [
+                "RUTEmisor" => 9071084,
+                "DV" => "2",
+                "RznSoc" => "MONICA EUGENIA NEUMANN BIRKE",
+                "TipoDTE" => 34,
+                "Folio" => 9,
+                "FchEmis" => "2021-06-07",
+                "MntExe" => 959500,
+                "MntNeto" => 0,
+                "IVA" => 0,
+                "MntTotal" => 959500,
+                "Acuses" => null,
+                "FmaPago" => 0,
+                "TpoTranCompra" => 1
+            ]
+        ]
+    ];
 
     /**
      *  Instanciate urls for this class
@@ -110,10 +170,11 @@ class InvoicingController extends Controller
 
 
             $response = json_decode($response->getBody()->getContents());
+            // $response = json_decode(json_encode($this->data_response));
 
             if (is_null($response)) {
                 return $this->voidDataTableResponse(); 
-            } 
+            }
 
             $json_data = array(
                 "draw"            => intval($request->input('draw')),
@@ -124,7 +185,7 @@ class InvoicingController extends Controller
                 "last_page"       => $response->last_page
             );
 
-            echo json_encode($json_data);
+            return response()->json($json_data);
         } catch (\GuzzleHttp\Exception\ClientException $error) {
             $response = json_decode($error->getResponse()->getBody()->getContents(), true);
 
@@ -133,6 +194,7 @@ class InvoicingController extends Controller
             ], $response['statusCode']);
         }
     }
+
     
     /**
      * [getDTEs description]
@@ -160,6 +222,8 @@ class InvoicingController extends Controller
             if (is_null($response)) {
                 return $this->voidDataTableResponse(); 
             } 
+
+            $response = $this->addClientAndServiceToReceipts($response);
             
             $json_data = array(
                 "draw"            => intval($request->input('draw')),
@@ -170,7 +234,7 @@ class InvoicingController extends Controller
                 "last_page"       => $response->last_page
             );
 
-            echo json_encode($json_data);
+            return response()->json($json_data);
         } catch (\GuzzleHttp\Exception\ClientException $error) {
             $response = json_decode($error->getResponse()->getBody()->getContents(), true);
 
@@ -183,7 +247,7 @@ class InvoicingController extends Controller
     /**
      *  Simulate a void datatable response
      *
-     * @return  array
+     *  @return  array
      */
     public function voidDataTableResponse(): array
     {
@@ -195,5 +259,37 @@ class InvoicingController extends Controller
             "current_page"    => 1,
             "last_page"       => 1,
         ];
+    }
+
+    /**
+     *  Add name of the client receipt to the data
+     *
+     *  @param   \stdClass
+     *
+     *  @return  \stdClass
+     */
+    public function addClientAndServiceToReceipts($response)
+    {
+        foreach ($response->data as $data) {
+            if ($planUserFlow = PlanUserFlow::join('users', 'users.id', '=', 'plan_user_flows.user_id')
+                                            ->join('plans', 'plans.id', '=', 'plan_user_flows.plan_id')
+                                            ->where('plan_user_flows.sii_token', $data->Token)
+                                            ->first([
+                                                'plan_user_flows.id',
+                                                'users.id as user_id', 'users.first_name', 'users.last_name',
+                                                'plans.id', 'plans.plan'
+                                            ])) {
+                              
+                $data->full_name = ucwords("{$planUserFlow->first_name} {$planUserFlow->last_name}");
+                $data->service = ucfirst($planUserFlow->plan);
+                $data->user_id = ucfirst($planUserFlow->user_id);
+            } else {
+                $data->full_name = 'sin nombre';
+                $data->service = 'sin servicio';
+                $data->user_id = null;
+            }
+        }
+
+        return $response;
     }
 }

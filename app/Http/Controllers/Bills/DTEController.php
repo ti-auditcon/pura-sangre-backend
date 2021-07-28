@@ -50,8 +50,7 @@ class DTEController extends Controller
     /**
      *  [fillDataForInvoicerAPI description]
      *
-     *  @param   [type]   $environment  [$environment description]
-     *  @param   sandbox                [ description]
+     *  @param   string   $environment
      */
     public function fillDataForInvoicer($environment = 'sandbox')
     {
