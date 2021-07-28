@@ -101,14 +101,13 @@ class BillControllerTest extends TestCase
                 ->assertStatus(200);
 
         $this->assertDatabaseHas('bills', [
-            'plan_user_id' => $payment->plan_user_id,
+            'start_date'      => $payment->start_date,
+            'finish_date'     => $payment->finish_date,
+            'plan_user_id'    => $payment->plan_user_id,
+            'amount'          => $payment->amount,
             'payment_type_id' => $payment->payment_type_id,
-            'plan_user_id' => $payment->plan_user_id,
-            'date' => $payment->date,
-            'start_date' => $payment->start_date,
-            'finish_date' => $payment->finish_date,
-            'detail' => $payment->detail,
-            'amount' => $payment->amount
+            'date'            => $payment->date,
+            'detail'          => $payment->detail,
         ]);
     }
     

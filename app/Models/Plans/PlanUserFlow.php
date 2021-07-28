@@ -33,9 +33,18 @@ class PlanUserFlow extends Model
      *  @var  array
      */
     protected $fillable = [
-        'start_date', 'finish_date', 'amount', 'observations',
-        'bill_pdf', 'sii_token', 'counter', 'plan_status_id',
-        'discount_id', 'plan_id', 'user_id', 'payment_date', 'paid'
+        'start_date',
+        'finish_date',
+        'counter',
+        'plan_status_id',
+        'plan_id',
+        'user_id',
+        'paid',
+        'amount',
+        'observations',
+        'payment_date',
+        'bill_pdf',
+        'sii_token',
     ];
 
     /**
@@ -206,7 +215,7 @@ class PlanUserFlow extends Model
     }
 
     /**
-     *  [createOne description]
+     *  Create a PlanUserFlow into database
      *
      *  @return  $this
      */
@@ -215,15 +224,16 @@ class PlanUserFlow extends Model
         return $this->create([
             'start_date'      => $plan_user->start_date,
             'finish_date'     => $plan_user->finish_date,
-            'user_id'         => $plan_user->user_id,
+            'counter'         => $plan_user->counter,
             'plan_id'         => $plan_user->plan_id,
+            'user_id'         => $plan_user->user_id,
+            'paid'            => true,
+            'amount'          => $request->amount,
             'payment_type_id' => $request->payment_type_id,
             'plan_status_id'  => FlowOrderStatus::PAGADO,
+            'observations'    => "Compra de plan: {$plan_user->plan->plan} - {$plan_user->user->full_name}",
             'payment_date'    => Carbon::parse($request->date),
-            'amount'          => $request->amount,
-            'counter'         => $plan_user->counter,
-            'observations'    => "Compra de plan: {$plan_user->plan->plan}",
-            'sii_token'       => !boolval($request->is_issued_to_sii) ? 'sin emision' : null
+            'sii_token'       => !boolval($request->is_issued_to_sii) ? 'sin emision' : null,
         ]);
     }
 }

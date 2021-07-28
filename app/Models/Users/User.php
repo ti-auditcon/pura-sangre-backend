@@ -11,12 +11,13 @@ use App\Models\Clases\Clase;
 use App\Models\Plans\PlanUser;
 use App\Models\Users\RoleUser;
 use App\Models\Users\Emergency;
+use App\Models\Plans\PlanStatus;
 use App\Models\Users\Millestone;
-use Freshwork\ChileanBundle\Rut;
 use App\Models\Users\StatusUser;
+use Freshwork\ChileanBundle\Rut;
 use App\Models\Bills\Installment;
-use Laravel\Passport\HasApiTokens;
 use App\Models\Clases\Reservation;
+use Laravel\Passport\HasApiTokens;
 use App\Notifications\MyResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -228,15 +229,16 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the active plan of this User
+     *  Get the active current plan of this User
      *
-     * @return App\Models\Plans\PlanUser
+     *  @return  \App\Models\Plans\PlanUser
      */
     public function actual_plan()
     {
-        return $this->hasOne(PlanUser::class)->where('plan_status_id', 1)
-                                             ->where('start_date','<=', today())
-                                             ->where('finish_date','>=', today());
+        return $this->hasOne(PlanUser::class)
+                    ->where('plan_status_id', PlanStatus::ACTIVO)
+                    ->where('start_date', '<=', today())
+                    ->where('finish_date', '>=', today());
     }
 
     /**
