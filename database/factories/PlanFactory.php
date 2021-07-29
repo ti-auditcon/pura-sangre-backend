@@ -41,6 +41,7 @@ $factory->define(PlanUser::class, function (Faker $faker) {
         'plan_status_id' => $plan_status_id,
         'user_id' => factory(User::class)->create()->id,
         'plan_id' => $plan->id,
+                'amount'         => 19990,
     ];
 });
 
