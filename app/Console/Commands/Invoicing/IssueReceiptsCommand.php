@@ -7,6 +7,7 @@ use App\Models\Invoicing\DTE;
 use App\Mail\NewPlanUserEmail;
 use Illuminate\Console\Command;
 use App\Models\Plans\PlanUserFlow;
+use App\Models\Bills\PaymentStatus;
 use App\Models\Invoicing\DTEErrors;
 use Illuminate\Support\Facades\Mail;
 
@@ -88,6 +89,7 @@ class IssueReceiptsCommand extends Command
     public function issueAllReceiptsWithoutToken()
     {
         $bills = PlanUserFlow::where('created_at', '>=', today())
+                                ->wherePaid(PaymentStatus::PAID)
                                 ->whereNull('sii_token')
                                 ->get();
 
@@ -127,6 +129,7 @@ class IssueReceiptsCommand extends Command
     public function sendReceiptsThatHaveNotPDFYet()
     {
         $billsWithoutPDF = PlanUserFlow::where('created_at', '>=', today())
+                                        ->wherePaid(PaymentStatus::PAID)
                                         ->whereNotNull('sii_token')
                                         ->where('sii_token', '!=', DTE::NOT_ISSUED)
                                         ->whereNull('bill_pdf')
