@@ -36,7 +36,7 @@
                                 <th width="20%">Nombre</th>
                                 <th width="10%">Servicio</th>
                                 <th width="20%">Tipo de DTE</th>
-                                <th width="15%">Monto toral</th>
+                                <th width="15%">Monto total</th>
                                 <th width="10%">Fecha emisión</th>
                                 <th width="10%">Acciones</th>
                                 <th hidden>fecha de emision</th>
