@@ -89,7 +89,7 @@ class IssueReceiptsCommand extends Command
     public function issueAllReceiptsWithoutToken()
     {
         $bills = PlanUserFlow::where('created_at', '>=', today())
-                                ->wherePaid(PaymentStatus::PAID)
+                                ->where('paid', PaymentStatus::PAID)
                                 ->whereNull('sii_token')
                                 ->get();
 
@@ -129,7 +129,7 @@ class IssueReceiptsCommand extends Command
     public function sendReceiptsThatHaveNotPDFYet()
     {
         $billsWithoutPDF = PlanUserFlow::where('created_at', '>=', today())
-                                        ->wherePaid(PaymentStatus::PAID)
+                                        ->where('paid', PaymentStatus::PAID)
                                         ->whereNotNull('sii_token')
                                         ->where('sii_token', '!=', DTE::NOT_ISSUED)
                                         ->whereNull('bill_pdf')
