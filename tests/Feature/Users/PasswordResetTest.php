@@ -7,7 +7,7 @@ use App\Models\Users\PasswordReset;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class ExampleTest extends TestCase
+class PasswordResetTest extends TestCase
 {
     use RefreshDatabase, DatabaseMigrations;
 
