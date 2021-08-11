@@ -209,13 +209,17 @@
                             @foreach($user->planes_del_usuario() as $plan_user)
                             <tr>
                                 <td>
-                                    <a href="{{ url("/users/{$user->id}/plans/{$plan_user->id}/edit") }}"
-                                        {{-- class="sweet-user-plan-info" --}}
-                                        data-user-id="{{ $user->id }}"
-                                        data-plan-id="{{ $plan_user->id }}"
-                                    >
-                                        {{ optional($plan_user->plan)->plan }} <span class="la la-edit"></span>
-                                    </a>
+                                    @if ($plan_user->plan_status_id === App\Models\Plans\PlanStatus::CONGELADO)
+                                        {{ optional($plan_user->plan)->plan }}
+                                    @else
+                                        <a href="{{ url("/users/{$user->id}/plans/{$plan_user->id}/edit") }}"
+                                            {{-- class="sweet-user-plan-info" --}}
+                                            data-user-id="{{ $user->id }}"
+                                            data-plan-id="{{ $plan_user->id }}"
+                                        >
+                                            {{ optional($plan_user->plan)->plan }} <span class="la la-edit"></span>
+                                        </a>
+                                    @endif
                                 </td>
 
                                 @if ($plan_user->bill)
@@ -261,7 +265,7 @@
                                                     <i class="la la-ban"></i>
                                                 </button>
                                             </div>
-                                            @if ($plan_user->plan_status_id === 1)
+                                            @if ($plan_user->plan_status_id === 1 && !$plan_user->postpone)
                                                 <div class="col-2">
                                                     <button class="btn btn-icon-only btn-warning freeze-plan-button"
                                                             data-toggle="modal"
@@ -270,6 +274,18 @@
                                                             data-user="{{ optional($plan_user->user)->id }}"
                                                     >
                                                         <i class="la la-power-off"></i>
+                                                    </button>
+                                                </div>
+                                            @elseif($plan_user->plan_status_id === 1 && $plan_user->postpone)
+                                                <form action="/postpones/{{ $plan_user->postpone->id }}" class="remove-postpone" method="POST">
+                                                    @csrf @method('DELETE')
+                                                </form>
+                                                <div class="col-2">
+                                                    <button
+                                                        class="btn btn-icon-only btn-warning sweet-next-freezing"
+                                                        data-freezing="{{ $plan_user->postpone }}"
+                                                    >
+                                                        <i class="la la-info"></i>
                                                     </button>
                                                 </div>
                                             @endif
@@ -526,6 +542,26 @@
             closeOnConfirm: false,
         }, function() {
             $('form.user-plan-unfreeze').submit();
+        });
+    });
+</script>
+
+<script>
+    $('.sweet-next-freezing').click(function() {
+        var postpone = $(this).data('freezing');
+        let days = moment(postpone.finish_date).diff(moment(postpone.start_date), 'days') + 1;
+
+        swal({
+            title: "El plan se va a congelar",
+            text: `Las fechas de congelamiento son: \n ${moment(postpone.start_date).format('DD-MM-YYYY')} al ${moment(postpone.finish_date).format('DD-MM-YYYY')} (${days} días)`,
+            type: 'info',
+            showCancelButton: true,
+            confirmButtonClass: 'btn-warning',
+            confirmButtonText: 'Eliminar congelamiento',
+            cancelButtonText: 'Cerrar',
+            closeOnConfirm: false,
+        }, function() {
+            $('form.remove-postpone').submit();
         });
     });
 </script>

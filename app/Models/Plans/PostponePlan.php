@@ -14,10 +14,30 @@ class PostponePlan extends Model
 	protected $table = 'freeze_plans';
 
 	/**
+<<<<<<< Updated upstream
 	 * [$fillable description]
 	 * @var [type]
 	 */
 	protected $fillable = ['plan_user_id', 'start_date', 'finish_date'];
+=======
+     *  plan_user_id     int   
+     *  start_date       date   
+     *  finish_date      date  
+     *  days_consumed    int      Days already consumed of the PlanUser
+     *  total_plan_days  int      Days difference between start and end PlanUser
+     *  revoked          boolean  
+     * 
+     *  @var  array
+	 */
+	protected $fillable = [
+        'plan_user_id',
+        'start_date',
+        'finish_date',
+        'days_consumed',
+        'total_plan_days',
+        'revoked'
+    ];
+>>>>>>> Stashed changes
 
 	/**
 	 * [$dates description]

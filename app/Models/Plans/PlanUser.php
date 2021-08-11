@@ -128,11 +128,19 @@ class PlanUser extends Model
     /**
      * Get the information on the postponement of this plan.
      *
+<<<<<<< Updated upstream
      * @return App\Models\Plans\PostponePlan
      */
     public function postpone()
     {
         return $this->hasOne(PostponePlan::class);
+=======
+     *  @return  \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function postpone()
+    {
+        return $this->hasOne(PostponePlan::class)->where('revoked', false);
+>>>>>>> Stashed changes
     }
 
     /**

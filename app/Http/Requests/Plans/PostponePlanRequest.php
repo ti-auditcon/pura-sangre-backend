@@ -24,12 +24,9 @@ class PostponePlanRequest extends FormRequest
      */
     public function rules()
     {
-        // if (! PostponePlan::first()) {
-        //     return redirect('blocks')->with('error', 'No se puede eliminar');
-        // }
         return [
-            'start_freeze_date' => 'required | before_or_equal:end_freeze_date',
-            'end_freeze_date' => 'required'
+            'start_freeze_date' => 'required',
+            'end_freeze_date' => 'required | after_or_equal:start_freeze_date'
         ];
     }
 
@@ -41,9 +38,9 @@ class PostponePlanRequest extends FormRequest
     public function messages()
     {
         return [
-            'start_freeze_date.required' => 'Se requiere ingresar una fecha de inicio',
-            'start_freeze_date.before' => 'La fecha de inicio no puede ser mayor a la fecha de término',
-            'end_freeze_date.required' => 'Se requiere ingresar una fecha de término'
+            'start_freeze_date.required'        => 'Se requiere ingresar una fecha de inicio.',
+            'end_freeze_date.required'          => 'Se requiere ingresar una fecha de término.',
+            'end_freeze_date.after_or_equal'    => 'La fecha de término del congelamiento debe ser igual o mayor a la de inicio.',
         ];
     }
 }

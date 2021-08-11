@@ -9,6 +9,8 @@ class PlanStatus extends Model
 	/** ID status Plan */
 	const ACTIVO = 1;
 
+	const ACTIVE = 1;
+
 	/** ID status Plan */
 	const CONGELADO = 2;
 

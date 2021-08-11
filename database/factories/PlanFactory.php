@@ -10,7 +10,18 @@ use Carbon\Carbon;
 use Faker\Generator as Faker;
 
 
+$factory->define(PlanPeriod::class, function(Faker $faker) {
+    return [
+        'period' => 'mensual',
+        'period_number' => $faker->randomElement([
+            PlanPeriod::MONTHLY, PlanPeriod::BIMONTHLY,
+            PlanPeriod::QUARTERLY, PlanPeriod::BIANNUAL, PlanPeriod::ANNUAL
+        ])
+    ];
+});
+
 $factory->define(PlanUser::class, function (Faker $faker) {
+<<<<<<< Updated upstream
 //
   $plan = Plan::inRandomOrder()->where('id', $faker->numberBetween($min = 3, $max = 12))->first();
 
@@ -44,24 +55,88 @@ $factory->define(PlanUser::class, function (Faker $faker) {
       }else{
          $period_number = 1;
       }
+=======
+    $plan = factory(Plan::class)->create();
+
+    $starts_at = Carbon::createFromTimestamp($faker->dateTimeBetween($startDate = '-14 months', $endDate = '-1 weeks')->getTimeStamp());
+
+    $ends_at= Carbon::createFromFormat("Y-n-j G:i:s", $starts_at)
+                    ->addMonths($plan->plan_period->period_number ?? 1)
+                    ->subDay();
+
+    if ($starts_at >= today()) {
+        $plan_status_id = 3;
+    } elseif ($ends_at >= today()) {
+        $plan_status_id = 1;
+    } else {
+        $plan_status_id = 4;
+    }
+
+    $plan_period = PlanPeriod::find($plan->plan_period_id);
+
+    $period_number = $plan_period ? $plan_period->period_number : 1;
 
     return [
+        'start_date'     => $starts_at,
+        'finish_date'    => $ends_at,
+        'counter'        => $plan->class_numbers * $period_number,
+        'plan_status_id' => $plan_status_id,
+        'user_id'        => factory(User::class)->create()->id,
+        'plan_id'        => $plan->id,
+    ];
+});
+>>>>>>> Stashed changes
+
+    return [
+<<<<<<< Updated upstream
       'start_date' => $starts_at,
       'finish_date' => $ends_at,
       'counter' => $plan->class_numbers*$period_number,
       'plan_status_id' => $plan_status_id,
       'user_id' => 1,
       'plan_id' => $plan->id,
+=======
+        'plan'           => $faker->word,
+        'class_numbers'  => $faker->numberBetween($min = 12, $max = 24),
+        'description'    => $faker->sentence,
+        'plan_period_id' => 1,
+        'has_clases'     => true,
+        'amount'         => 19990,
+        'custom'         => false,
+        'convenio'       => false,
+        'contractable'   => true,
+        'daily_clases'   => 1,
+        'plan_status_id' => PlanStatus::ACTIVE
+>>>>>>> Stashed changes
     ];
 });
 
 
+<<<<<<< Updated upstream
 // $factory->define(Plan::class, function (Faker $faker) {
 //     return [
 //       'plan' => $faker->word,
 //       'class_numbers' => $faker->numberBetween($min = 12, $max = 24),
 //     ];
 // });
+=======
+    return [
+        'start_date'     => $starts_at,
+        'finish_date'    => $ends_at,
+        'amount'         => 19990,
+        'payment_date'   => null,
+        'bill_pdf'       => null,
+        'sii_token'      => null,
+        'counter'        => 10,
+        'plan_status_id' => 1,
+        'plan_id'        => $plan->id,
+        'user_id'        => factory(User::class)->create()->id,
+        'observations'   => $faker->sentence,
+        'paid'           => false
+    ];
+});
+
+>>>>>>> Stashed changes
 //
 // $factory->define(PlanUser::class, function (Faker $faker) {
 //
