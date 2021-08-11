@@ -2,18 +2,25 @@
 
 namespace App\Http\Controllers\Web;
 
+use GuzzleHttp\Client;
 use App\Models\Flow\Flow;
 use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\Invoicing\DTE;
 use App\Mail\NewPlanUserEmail;
+use App\Mail\SendNewUserEmail;
 use App\Models\Plans\PlanUser;
 use App\Mail\VerifyExternalUser;
+use App\Models\Users\StatusUser;
 use App\Models\Plans\PlanUserFlow;
 use Illuminate\Support\Facades\DB;
+use App\Models\Invoicing\DTEErrors;
+use App\Models\Users\PasswordReset;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\Web\NewUserRequest;
@@ -30,8 +37,6 @@ class NewUserController extends Controller
 
     /**
      *  Instance of FlowOrder.
-     *
-     *  @var  App\Models\Plans\PlanUserFlow
      */
     protected $PlanUserFlow;
 
@@ -49,11 +54,12 @@ class NewUserController extends Controller
      */
     private $bill;
 
+    protected $purasangreApiUrl;
+
+    protected $verifiedSSL;
+
     /**
-     *  Instanciate Flow
-     *  Instanciate PlanUserFlow
-     *  Instanciate Plan
-     *  Instanciate PlanUser.
+     *  Instanciate Flow, PlanUserFlow, Plan, PlanUser.
      *
      *  @return  void
      */
@@ -62,30 +68,34 @@ class NewUserController extends Controller
         $this->instanciateFlow('sandbox');
 
         $this->planUserFlow = new PlanUserFlow();
-
         $this->plan = new Plan();
-
         $this->plan_user = new PlanUser();
-
         $this->bill = new Bill();
+
+        $this->verifiedSSL =  !config('app.debug');
+        $this->purasangreApiUrl = config('app.api_url');
     }
 
     /**
-     *  Make an instance of Flow on Production.
+     *  Make an instance of Flow with PuraSangre credentials
      *
-     *  @param  $environment  ('production', 'sandbox')
+     *  @param   string  $environment  ('production', 'sandbox')
+     * 
+     *  @return  void
      */
-    private function instanciateFlow($environment)
+    private function instanciateFlow($environment = 'sandbox'): void
     {
         $this->flow = Flow::make($environment, [
-            /*  Credentials for FLOW platform */
-            'apiKey' => config('flow.sandbox.apiKey'),
-            'secret' => config('flow.sandbox.secret'),
+            'apiKey' => config("flow.${environment}.apiKey"),
+            'secret' => config("flow.${environment}.secret"),
         ]);
     }
 
     /**
      *  Show the form for creating a new resource.
+     *
+     *  @param   Plan     $plan   
+     *  @param   Request  $request
      *
      *  @return  \Illuminate\Http\Response
      */
@@ -106,10 +116,13 @@ class NewUserController extends Controller
         $dispatcher = $this->disableObservers(User::class);
 
         $user = User::create(array_merge($request->all(), [
-            'password' => bcrypt('purasangre'),
-            'gender' => $request->gender ? $request->gender : 'otro',
+            'password'       => bcrypt('purasangre'),
+            'gender'         => $request->gender ? $request->gender : 'otro',
+            'status_user_id' => StatusUser::INACTIVE
         ]));
-        $token = $this->generateNewToken($user->email);
+
+        $token = PasswordReset::generateNewToken($user->email);
+        
         Mail::to($user->email)->send(new VerifyExternalUser($user, $token, $request->plan_id));
 
         $this->enableObservers(User::class, $dispatcher);
@@ -155,38 +168,38 @@ class NewUserController extends Controller
     /**
      *  Show the form for editing the specified resource.
      *
-     *  @return \Illuminate\Http\Response
+     *  @return  \Illuminate\Http\Response
      */
     public function edit($userId, Request $request)
     {
         $user = $this->validateUserData($userId, $request);
+
         if (isset($user['error'])) {
             $plans = Plan::where('contractable', true)->get(['id', 'plan', 'amount']);
 
             return view('web.flow.error')->with([
                 'error' => $user['error'],
-                'type' => $user['type'],
+                'type'  => $user['type'],
                 'plans' => $plans,
             ]);
         }
-
-        $this->planUserFlow = $this->planUserFlow->makeOrder($this->plan, $user->id);
+        $planUserFlow = $this->planUserFlow->makeOrder($this->plan, $user->id);
 
         try {
             $paymentResponse = $this->flow->payment()->commit([
-                'commerceOrder' => $this->planUserFlow->id,
-                'subject' => "Compra de plan {$this->plan->plan}",
-                'amount' => $this->planUserFlow->amount,
-                'email' => $this->planUserFlow->user->email,
+                'commerceOrder'   => $planUserFlow->id,
+                'subject'         => "Compra de plan {$this->plan->plan}",
+                'amount'          => $planUserFlow->amount,
+                'email'           => $planUserFlow->user->email,
                 'urlConfirmation' => url('/flow/confirm-payment'),
-                'urlReturn' => url('/flow/return-from-payment'),
+                'urlReturn'       => url('/flow/return-from-payment'),
                 'optional' => [
                     'Message' => 'Tu orden esta en proceso!',
                 ],
             ]);
-        } catch (\Exception $e) {
+        } catch (\Exception $exception) {
             return view('web.flow.error', [
-                'error' => 'Ups, algo ha salido mal, no desesperes, si crees que has realizado bien el pago, comunicate con nosotros al +569 56488542 para que podamos ayudarte',
+                'error' => 'Algo no salió como esperabamos, no desesperes, si crees que has realizado bien el pago, comunícate con nosotros al +569 56488542 para que podamos ayudarte',
                 'type' => 'payment',
             ]);
         }
@@ -226,23 +239,17 @@ class NewUserController extends Controller
 
             return view('web.flow.error', compact('error', 'type'));
         } else {
-            $this->spendToken($request->token);
+            PasswordReset::spendToken($request->token);
         }
 
-        return $user;
-    }
+        $token = Str::random(64);
+        DB::table('password_resets')->insert([
+            'email' => $user->email, 
+            'token' => Hash::make($token),
+        ]);
+        Mail::to($user->email)->send(new SendNewUserEmail($user, $token));
 
-    /**
-     *  [spendToken description].
-     *
-     *  @param   [type]  $token  [$token description]
-     *
-     *  @return  [type]          [return description]
-     */
-    public function spendToken($token)
-    {
-        DB::table('password_resets')->where('token', $token)
-                                    ->update(['expired' => true]);
+        return $user;
     }
 
     /**
@@ -250,34 +257,19 @@ class NewUserController extends Controller
      *
      *  @param   [type]  $token  [$token description]
      *
-     *  @return  [type]          [return description]
+     *  @return  string|boolean
      */
-    public function verifyToken($token)
+    public function verifyToken(string $token)
     {
         if (!isset($token) || $token === null) {
             return 'No tiene un token valido para poder seguir, puedes solicitar uno a tu correo';
         }
 
-        if ($this->tokenIsInvalid($token)) {
+        if (PasswordReset::tokenDoesntExists($token)) {
             return 'El token es invalido, puedes solicitar uno a tu correo';
         }
 
         return false;
-    }
-
-    /**
-     * [tokenIsInvalid description].
-     *
-     * @param [type] $token [$token description]
-     *
-     * @return [type] [return description]
-     */
-    public function tokenIsInvalid($token)
-    {
-        return DB::table('password_resets')
-                    ->where('token', $token)
-                    ->where('expired', false)
-                    ->doesntExist('id');
     }
 
     /**
@@ -312,11 +304,11 @@ class NewUserController extends Controller
     }
 
     /**
-     * [makeFlowPayment description].
+     *  [makeFlowPayment description].
      *
-     * @param Request $request [$request description]
+     *  @param Request $request [$request description]
      *
-     * @return [type] [return description]
+     *  @return [type] [return description]
      */
     public function makeFlowPayment(Request $request)
     {
@@ -324,8 +316,9 @@ class NewUserController extends Controller
         $planUserFlow = $this->planUserFlow->find((int) $payment->commerceOrder);
 
         /* Plan has been paid already */
-        if ($planUserFlow->isPaid())
+        if ($planUserFlow->isPaid()) {
             return true;
+        }
 
         /* Plan wasn't paid, then anuul payment */
         if ($payment->paymentData['date'] === null) {
@@ -342,10 +335,44 @@ class NewUserController extends Controller
         $plan_user = PlanUser::makePlanUser($planUserFlow, $user);
         
         $this->bill->makeFlowBill($plan_user, $payment->paymentData);
-        
-        Mail::to($user->email)->send(new NewPlanUserEmail($user, $plan_user));
+
+        $this->emiteReceiptToSII($planUserFlow);
+
+        $response = $this->getPDF($planUserFlow);
+
+        Mail::to($user->email)->send(new NewPlanUserEmail($planUserFlow, $response->data->pdf));
 
         return true;
+    }
+
+    /**
+     *  [emiteReceiptToSII description]
+     *
+     *  @param   [type]  $planUserflow  [$planUserflow description]
+     *
+     *  @return  null|bool|void
+     */
+    public function emiteReceiptToSII(PlanUserFlow $planUserflow)
+    {
+        if ($planUserflow->isAlreadyIssuedToSII()) {
+            return;
+        }
+
+        try {
+            $dte = new DTE;
+            $sii_response = $dte->issueReceipt($planUserflow);
+
+            if (isset($sii_response->TOKEN)) {
+                return $planUserflow->update([
+                    'payment_date' => today(),
+                    'sii_token' => $sii_response->TOKEN
+                ]);
+            }
+
+            new DTEErrors($sii_response);
+        } catch (\Throwable $error) {
+            new DTEErrors($error);
+        }
     }
 
     /**
@@ -390,32 +417,12 @@ class NewUserController extends Controller
             return $this->validateEmail($request);
         }
 
-        $token = $this->generateNewToken($request->email);
+        $token = PasswordReset::getNewToken($request->email);
 
         $user = User::where('email', $request->email)->first();
         Mail::to($user->email)->send(new VerifyExternalUser($user, $token, $request->plan_id));
 
         return response()->json(['success' => 'Te hemos enviado las instrucciones, por favor revisa tu correo']);
-    }
-
-    /**
-     *  Expired all token related to the email, and generate and return a brand new token.
-     *
-     *  @param   string  $email  has to receive an valid email of the system
-     *
-     *  @return  string  $token  150 characters
-     */
-    public function generateNewToken($email)
-    {
-        DB::table('password_resets')->where('email', $email)->update(['expired' => true]);
-
-        $token = Str::random(150);
-        DB::table('password_resets')->insert([
-            'email' => $email,
-            'token' => $token,
-        ]);
-
-        return $token;
     }
 
     /**
@@ -453,10 +460,106 @@ class NewUserController extends Controller
             return response([
                 'message' => 'Usuario existente',
                 'errors' => [
-                    'email' => ['Este correo ya ha sido validado y puede comprar directamente desde la App movil'],
+                    'email' => ['Este correo ya ha sido validado y puede comprar directamente desde la App móvil'],
                 ],
                 'status' => 422,
             ], 422);
+        }
+    }
+
+    /**
+     *  [getPDF description]
+     *
+     *  @param   PlanUserFlow  $plan_user_flow  [$plan_user_flow description]
+     *
+     *  @return  [type]                         [return description]
+     */
+    public function getPDF(PlanUserFlow $plan_user_flow)
+    {
+        if ($plan_user_flow->hasPDFGeneratedAlready()) {
+            return true;
+        }
+
+        if ($plan_user_flow->hasNotSiiToken()) {
+            return true;
+        }
+
+        try {
+            $response = (new DTE)->getReceipt($plan_user_flow->sii_token);
+
+            return $this->savePDFThroughAPI($response, $plan_user_flow);
+        } catch (\Throwable $error) {
+            new DTEErrors($error);
+
+            return true;
+        }
+    }
+
+    /**
+     * [getPlanUserFlowDTE description]
+     *
+     * @param   PlanUserFlow  $plan_user_flow  [$plan_user_flow description]
+     *
+     * @return  [type]                         [return description]
+     */
+    public function getPlanUserFlowDTE(PlanUserFlow $plan_user_flow)
+    {
+        if ($plan_user_flow->hasPDFGeneratedAlready()) {
+            return response()->json([
+                'status'  => 'Ok - Successful',
+                'message' => 'El PDF se ha guardado correctamente.',
+                'data' => [
+                    'pdf' => $plan_user_flow->bill_pdf
+                ]
+            ]);
+        }
+
+        if ($plan_user_flow->hasNotSiiToken()) {
+            return response()->json([
+                'status' => 'Failed - Missing value',
+                'message' => 'El DTE no posee un Token del SII',
+            ]);
+        }
+
+        try {
+            $response = (new DTE)->getReceipt($plan_user_flow->sii_token);
+
+            return $this->savePDFThroughAPI($response, $plan_user_flow);;
+        } catch (\Throwable $error) {
+            new DTEErrors($error);
+            
+            return response()->json([
+                'status' => 'Error - Do not respond correctly',
+                'message' => 'No se ha podido guardar correctamente el pdf',
+            ]);
+        }
+    }
+
+    public function savePDFThroughAPI($response, $planUserFlow)
+    {
+        try {
+            $client = new Client(['base_uri' => $this->purasangreApiUrl]);
+            $response = $client->post("/dte/save-pdf", [
+                'verify' => $this->verifiedSSL,
+                'headers'  => [
+                    'Accept' => "application/x-www-form-urlencoded",
+                ],
+                'form_params' => [
+                    "pdf"            => $response->pdf,
+                    "token"          => $planUserFlow->sii_token,
+                    "plan_user_flow" => $planUserFlow->id
+                ]
+            ]);
+            $content = $response->getBody()->getContents();
+
+            return json_decode($content);
+        } catch (\Throwable $th) {
+            new DTEErrors($th);
+
+            return response()->json([
+                'status' => 'Error - Do not respond correctly',
+                'message' => 'No se ha podido guardar correctamente el pdf',
+            ]);
         }
     }
 }

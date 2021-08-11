@@ -37,42 +37,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        /** Wod observer */
-        Wod::observe(WodObserver::class);
-
-        /** Bill observer */
         Bill::observe(BillObserver::class);
-
-        /** User observer */
-        User::observe(UserObserver::class);
-
-        /** Block observer */
         Block::observe(BlockObserver::class);
-
-        /** Clase observer */
         Clase::observe(ClaseObserver::class);
-
-        /** observer */
-        Stage::observe(StageObserver::class);
-
-        /** observer */
-        PlanUser::observe(PlanUserObserver::class);
-
-        /** Plan observer */
-        Plan::observe(PlanObserver::class);
-
-        /** observer */
-        Reservation::observe(ReservationObserver::class);
-
-        /** Clases type observer */
         ClaseType::observe(ClaseTypeObserver::class);
-
+        Plan::observe(PlanObserver::class);
+        PlanUser::observe(PlanUserObserver::class);
+        Reservation::observe(ReservationObserver::class);
+        Stage::observe(StageObserver::class);
+        User::observe(UserObserver::class);
+        Wod::observe(WodObserver::class);
         /** Set language to Spanish Chile from Carbon */
         setlocale(LC_ALL, "es_CL.UTF-8");
-
-        $birthdate_users = app(User::class)->birthdate_users();
-
-        view()->share(compact('birthdate_users'));
     }
 
     /**
@@ -82,6 +58,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
     }
 }

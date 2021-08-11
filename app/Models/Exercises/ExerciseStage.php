@@ -25,7 +25,7 @@ class ExerciseStage extends Model
 
 	/**
 	 * [stage relation to this model]
-	 * @return [model] [return stage model]
+	 *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
 	public function stage()
 	{
@@ -34,7 +34,7 @@ class ExerciseStage extends Model
 
 	/**
 	 * [exercise relation to this model]
-	 * @return [model] [return exercise model]
+	 *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
 	public function exercise()
 	{

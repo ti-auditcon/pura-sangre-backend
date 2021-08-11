@@ -35,7 +35,7 @@ class ReservationStatisticStage extends Model
   /**
    * [stage description]
    * @method stage
-   * @return [type] [description]
+   *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
    */
   public function excercise_stage()
   {
@@ -45,7 +45,7 @@ class ReservationStatisticStage extends Model
   /**
    * [reservation description]
    * @method reservation
-   * @return [type]      [description]
+   *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
    */
   public function reservation()
   {
@@ -55,7 +55,7 @@ class ReservationStatisticStage extends Model
   /**
   * [statistic description]
   * @method statistic
-  * @return [type]    [description]
+  *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
   */
   public function statistic()
   {

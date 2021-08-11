@@ -104,17 +104,7 @@ class PlanUserControllerTest extends TestCase
         $studentUser = factory(User::class)->create();
         factory(Plan::class, 3)->create();
         
-        foreach (Plan::all() as $plan) {use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\Plans\Plan;
-use App\Models\Users\Role;
-use App\Models\Users\User;
-use App\Models\Plans\PlanUser;
-use App\Models\Users\RoleUser;
-use App\Models\Clases\ClaseType;
-use App\Models\Plans\PlanStatus;
-use App\Models\Bills\PaymentType;
-use App\Models\Plans\FlowOrderStatus;
+        foreach (Plan::all() as $plan) {
             $plan_user = factory(PlanUser::class)->make([
                 'plan_id'      => $plan->id,
                 'start_date'   => now()->format('Y-m-d'),

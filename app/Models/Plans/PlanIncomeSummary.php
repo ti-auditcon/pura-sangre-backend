@@ -23,7 +23,7 @@ class PlanIncomeSummary extends Model
     /**
      * [plan description]
      *
-     * @return [type] [description]
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function plan()
     {

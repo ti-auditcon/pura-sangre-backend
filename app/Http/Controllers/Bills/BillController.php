@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers\Bills;
 
-use App\Exports\PaymentsExcel;
-use App\Http\Controllers\Controller;
 use App\Models\Bills\Bill;
-use App\Models\Plans\Plan;
-use App\Models\Plans\PlanUser;
-use App\Models\Users\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Exports\PaymentsExcel;
+use App\Models\Plans\PlanUser;
+use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Http\Requests\Bills\BillRequest;
 
 class BillController extends Controller
 {
@@ -21,33 +19,42 @@ class BillController extends Controller
      */
     public function index()
     {
-        // $plans = Plan::all();
         return view('payments.index');
     }
 
     /**
-     *  methodDescription
+     *  Store a new bill into the system associated a PlanUser
      *
-     *  @return  returnType
-     */
-    public function update(Request $request, Bill $payment)
+     *  @param   PlanUser     $plan_user
+     *  @param   BillRequest  $request
+     *  
+     *  @return  \Illuminate\Http\RedirectResponse
+     */     
+    public function store(BillRequest $request)
     {
-        // dd((int)$request->amount);
-        $payment->update([
-            'date' => Carbon::parse($request->date),
-            'payment_type_id' => (int) $request->payment_type_id,
-            'amount' => (int) $request->amount,
-            'payment_type_id' => 1,
-            'plan_user_id' => 1,
-        ]);
+        Bill::create($request->all());
+
+        return back()->with('success', 'Boleta creada correctamente');
+    }
+
+    /**
+     *  Update data for a registered payment
+     *
+     *  @return  \Illuminate\Http\RedirectResponse
+     */
+    public function update(Bill $payment, BillRequest $request)
+    {
+        $payment->update($request->all());
 
         return back()->with('success', 'Boleta actualizada correctamente');
     }
 
     /**
-     * [getPagos description]
-     * @param  Request $request [description]
-     * @return [type]           [description]
+     *  [getPagos description]
+     * 
+     *  @param   Request $request [description]
+     *  
+     *  @return  [type]           [description]
      */
     public function getPagos(Request $request)
     {
@@ -105,8 +112,8 @@ class BillController extends Controller
 
         $data = array();
 
-        if($bills){
-            foreach($bills as $bill){
+        if ($bills) {
+            foreach($bills as $bill) {
                 $nestedData['fecha_registro'] = $bill->created_at->format('d-m-Y');
                 $nestedData['alumno'] = isset($bill->plan_user) ? '<a href="'.url('/users/'.$bill->plan_user->user->id).'">'.$bill->plan_user->user->first_name.' '.$bill->plan_user->user->last_name.'</a>' : "no aplica";
                 $nestedData['plan'] = isset($bill->plan_user) ? $bill->plan_user->plan->plan : "no aplica";
@@ -134,10 +141,11 @@ class BillController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     *  Display the specified resource.
      *
-     * @param  \App\Models\Bills\Bill  $bill
-     * @return \Illuminate\Http\Response
+     *  @param  \App\Models\Bills\Bill  $bill
+     * 
+     *  @return \Illuminate\Http\Response
      */
     public function show(Bill $bill)
     {
@@ -145,12 +153,26 @@ class BillController extends Controller
     }
 
     /**
-     * Export Excel of System bills
+     *  Export Excel of System bills
      *
-     * @return Maatwebsite\Excel\Facades\Excel
+     *  @return  Maatwebsite\Excel\Facades\Excel
      */
     public function export()
     {
         return Excel::download(new PaymentsExcel, toDay()->format('d-m-Y') . '_pagos.xlsx');
+    }
+
+    /**
+     *  Delete an payment associated to a PlanUser
+     *
+     *  @param   Bill   $payment
+     *
+     *  @return  \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Bill $payment)
+    {
+        $payment->delete();
+
+        return back()->with('succes', 'Se ha eliminado corretamente el pago asociado');
     }
 }

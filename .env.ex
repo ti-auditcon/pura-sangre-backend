@@ -2,7 +2,7 @@ APP_NAME=Laravel
 APP_ENV=local
 APP_KEY=base64:wgKeyu7VKYDRj0vTFKXMwy4mLyr7bnCt5MRTroOZr+8=
 APP_DEBUG=true
-APP_URL=http://adminps.test
+APP_URL=http://purasangre.test
 
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1

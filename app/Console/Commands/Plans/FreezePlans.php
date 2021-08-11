@@ -41,17 +41,13 @@ class FreezePlans extends Command
     public function handle()
     {
         $today_plans = PostponePlan::whereStartDate(today())
-
                                    ->pluck('plan_user_id')
-
                                    ->toArray();
 
         $plans_to_freeze = PlanUser::whereIn('id', array_values($today_plans))->get();
 
         foreach ($plans_to_freeze as $plan) {
-            
-            $plan->update(['plan_status_id' => PlanStatus::INACTIVO]);
-        
+            $plan->update(['plan_status_id' => PlanStatus::CONGELADO]);
         }
     }
 }

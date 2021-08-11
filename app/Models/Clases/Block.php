@@ -130,7 +130,7 @@ class Block extends Model
     /**
      * Get the User of this Model
      *
-     * @return Illuminate\Database\Eloquent
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
@@ -140,7 +140,7 @@ class Block extends Model
     /**
      * Get the clase type of this Model
      *
-     * @return Illuminate\Database\Eloquent
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function claseType()
     {

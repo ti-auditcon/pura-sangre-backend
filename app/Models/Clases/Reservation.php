@@ -22,13 +22,24 @@ class Reservation extends Model
     protected $dates = ['deleted_at'];
 
     /**
-     * The attributes that are mass assignable.
+     *  Massive asignment values for Reservation
      *
-     * @var array
+     *  plan_user_id            integer      Id of the PlaUser
+     *  clase_id                integer      Where this reservations belongs
+     *  reservation_status_id   integer      Could has the next statuses: (active, consumed, pendient, cancelled)
+     *  user_id                 integer      Who is gonna take the class
+     *  by_god                  tinyInteger  Who made the reservation (meanwhile used to determine if the admin made it)
+     *  details                 longText     **not used yet, goal is to student can make some notes after the class
+     *
+     *  @var  array
      */
     protected $fillable = [
-        'plan_user_id', 'clase_id',
-        'reservation_status_id', 'user_id', 'by_god', 'details'
+        'plan_user_id',
+        'clase_id',
+        'reservation_status_id',
+        'user_id',
+        'by_god',
+        'details'
     ];
 
     /**
@@ -45,23 +56,28 @@ class Reservation extends Model
 
     /**
      * [user description]
-     * @return [type] [description]
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
       return $this->belongsTo(User::class);
     }
-
+    // @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
     public function clase()
     {
         return $this->belongsTo(Clase::class);
     }
-
+    //  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
     public function reservation_status()
     {
       return $this->belongsTo(ReservationStatus::class);
     }
 
+    /**
+     * [plan_user description]
+     *
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function plan_user()
     {
       return $this->belongsTo(PlanUser::class);

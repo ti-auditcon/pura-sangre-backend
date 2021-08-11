@@ -19,7 +19,7 @@ class PlanUserPeriod extends Model
 
     /**
      * [planuser description]
-     * @return [model] [description]
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function planuser()
     {

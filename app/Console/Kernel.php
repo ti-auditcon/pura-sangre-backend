@@ -18,12 +18,13 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\Clases\ClearClases',
         'App\Console\Commands\Clases\CreateClases',
         // 'App\Console\Commands\Clases\AfterFirstClass',
+        'App\Console\Commands\Invoicing\IssueReceiptsCommand',
+        'App\Console\Commands\Messages\SendNotifications',
         'App\Console\Commands\Plans\FreezePlans',
         'App\Console\Commands\Plans\UnfreezePlans',
         'App\Console\Commands\Reports\PlanSummaryCommand',
         'App\Console\Commands\RefreshPlans',
         'App\Console\Commands\ToExpiredPlan',
-        'App\Console\Commands\Messages\SendNotifications',
         'App\Console\Commands\Users\UsersGoneAway',
     ];
 
@@ -53,13 +54,16 @@ class Kernel extends ConsoleKernel
         $schedule->command('reports:daily')->dailyAt('23:50');
 
         $schedule->command('plans:freeze')->dailyAt('00:10');
-        $schedule->command('plans:unfreeze')->dailyAt('00:15');
+        $schedule->command('purasangre:plans:unfreeze')->dailyAt('00:15');
 
         $schedule->command('messages:send-notifications')->everyMinute();
-
+        
         $schedule->command('clases:first')->everyFifteenMinutes();
         
         $schedule->command('users:gone-away-email')->daily();
+
+        /**  Issue to SII receipts and send bill receipt to student  */
+        $schedule->command('purasangre:invoicing:issue-receipts')->everyFifteenMinutes();
     }
 
     /**

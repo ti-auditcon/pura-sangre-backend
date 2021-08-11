@@ -18,7 +18,7 @@
                         x-init="flatpickr($refs.input, {{ json_encode((object)['dateFormat' => 'd-m-Y', 'locale' => 'es']) }});getSelectedPlan({{ $plan->id }});"
                     >
         <div class="header">
-            <h3 class="text-center" x-text="tittle">Completa tu compra registrandote</h3>
+            <h3 class="text-center" x-text="title">Completa tu compra registrandote</h3>
         </div>
         <div class="content">
             @isset($plan)
@@ -41,11 +41,22 @@
                                             x-on:keyup="fill('last_name', $event)"
                                             name="last_name"
                                     />
-                                        
+
                                     <span x-show.transition.in="errors.last_name" x-text="errors.last_name" class="text-danger fs-6 fw-light lh-1"></span>
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="col-md-6 form-group mb-3" id="rut-group">
+                                    <label class="col-form-label">Rut</label>
+                                
+                                    <input id="rut-src" class="form-control" x-on:keyup="fill('rut', $event)" name="rut">
+
+                                    <div id="div-invalid-message" class="col-12 p-0 my-0 mt-3" hidden>
+                                        <span class="col-form-label">Por favor, ingrese un rut válido</span>
+                                    </div>
+                                    <span x-show.transition.in="errors.rut" x-text="errors.rut" class="text-danger fs-6 fw-light lh-1"></span>
+                                </div>
+
                                 <div class="col-md-6 form-group mb-3">
                                     <label class="col-form-label">Correo electronico</label>
                                 
@@ -57,7 +68,8 @@
 
                                     <span x-show.transition.in="errors.email" x-text="errors.email" class="text-danger fs-6 fw-light lh-1"></span>
                                 </div>
-
+                            </div>
+                            <div class="row">
                                 <div class="col-md-6 form-group mb-3">
                                     <label class="col-form-label">Fecha de nacimiento</label>
                                 
@@ -73,8 +85,6 @@
                                     <span x-show.transition.in="errors.birthdate" x-text="errors.birthdate" class="text-danger fs-6 fw-light lh-1"></span>
                                 </div>
 
-                            </div>
-                            <div class="row">
                                 <div class="col-md-6 form-group mb-3">
                                     <label class="col-form-label">Teléfono</label>
                                 
@@ -87,7 +97,9 @@
                                     <span x-show.transition.in="errors.phone" x-text="errors.phone" class="text-danger fs-6 fw-light lh-1"></span>
                                 </div>
 
-                                <div class="col-md-6 form-group mb-3">
+                            </div>
+
+                                <div class="col-md-12 form-group mb-3">
                                     <label class="col-form-label">Dirección</label>
                         
                                     <input class="form-control"
@@ -96,7 +108,6 @@
                                             placeholder="Ingresa una dirección"
                                             autocomplete="off"/>
                                 </div>
-                            </div>
                             <div class="form-group row">
                                 <div class="col-6 mb-3">
                                     <label class="d-block fw-light">Sexo</label>
@@ -195,6 +206,7 @@
     <script>
         const ENDPOINT_URL = @json(url('/new-user/store'));
     </script>
+    <script src="{{ asset('/js/jquery.min.js') }}"></script>
     {{-- AlpineJs --}}
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.0/dist/alpine.min.js" defer></script>
     {{-- Axios library --}}
@@ -202,7 +214,7 @@
     {{-- New User logic --}}
     <script src="{{ asset('/js/purasangre/web/new-user.js') }}"></script>
     {{-- RUT --}}
-    <script src="{{ asset('js/jquery.rut.min.js') }}"></script>
+    <script src="{{ asset('/js/jquery.rut.min.js') }}"></script>
 
     <script>
         $(function()  {
@@ -213,14 +225,13 @@
             });
             
             $("input#rut-src").rut().on('rutInvalido', function(e) {
-                $('#rut-group').addClass('has-error');
-                $('#rut-group span').show();
-                $('#rut-submit').prop('disabled', true);
+                console.log('hola es inacisdfljsdk');
+                $('#rut-group').addClass('text-danger');
+                $('#div-invalid-message').attr('hidden', false);
             });
             $("input#rut-src").rut().on('rutValido', function(e, rut, dv) {
-                $('#rut-group').removeClass('has-error');
-                $('#rut-group span').hide();
-                $('#rut-submit').prop('disabled', false);
+                $('#rut-group').removeClass('text-danger');
+                $('#div-invalid-message').attr('hidden', true);
             });
         })
     </script>

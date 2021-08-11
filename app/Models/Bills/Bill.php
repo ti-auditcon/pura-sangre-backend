@@ -3,9 +3,7 @@
 namespace App\Models\Bills;
 
 use Carbon\Carbon;
-use App\Models\Users\User;
 use App\Models\Plans\PlanUser;
-use App\Models\Bills\Installment;
 use App\Models\Bills\PaymentType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -41,11 +39,47 @@ class Bill extends Model
     ];
 
     /**
+     *  [setDateAttribute description]
+     *
+     *  @param   [type]  $value  [$value description]
+     *
+     *  @return  [type]          [return description]
+     */
+    public function setDateAttribute($value)
+    {
+        $this->attributes['date'] = Carbon::parse($value);
+    }
+
+    /**
+     * [setStartDateAttribute description]
+     *
+     * @param   [type]  $value  [$value description]
+     *
+     * @return  [type]          [return description]
+     */
+    public function setStartDateAttribute($value)
+    {
+        $this->attributes['start_date'] = Carbon::parse($value);
+    }
+
+    /**
+     * [setFinishDateAttribute description]
+     *
+     * @param   [type]  $value  [$value description]
+     *
+     * @return  [type]          [return description]
+     */
+    public function setFinishDateAttribute($value)
+    {
+        $this->attributes['finish_date'] = Carbon::parse($value);
+    }
+
+    /**
      *  [payment_type description]
      *
      *  @method payment_type
      *
-     *  @return [model]       [description]
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function payment_type()
     {
@@ -55,11 +89,30 @@ class Bill extends Model
     /**
      *  [plan_user description]
      *
-     *  @return  [type]  [return description]
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function plan_user()
     {
         return $this->belongsTo('App\Models\Plans\PlanUser');
+    }
+
+    /**
+     *  Upate a registered payment
+     *
+     *  @param   Request  $request
+     *
+     *  @return  $this  
+     */
+    public function updateBill($request)
+    {
+        return $this->update([
+            'amount'          => (int) $request->amount,
+            'date'            => $request->date,
+            'payment_type_id' => (int) $request->payment_type_id,
+            'plan_user_id'    => $request->plan_user_id,
+            'start_date'      => $request->start_date,
+            'finish_date'     => $request->finish_date,
+        ]);
     }
 
     /**
@@ -81,6 +134,27 @@ class Bill extends Model
             'date' => today(),
             'amount' => $paymentData['balance'],
             'total_paid' => $paymentData['amount'],
+        ]);
+    }
+
+    /**
+     *  [storeBill description]
+     *
+     *  @param   [type]  $request   [$request description]
+     *  @param   [type]  $planuser  [$planuser description]
+     *
+     *  @return  $this
+     */
+    public function storeBill($request, $plan_user)
+    {
+        return $this->create([
+            'plan_user_id'    => $plan_user->id,
+            'payment_type_id' => $request->payment_type_id,
+            'date'            => Carbon::parse($request->date),
+            'start_date'      => $plan_user->start_date,
+            'finish_date'     => $plan_user->finish_date,
+            'detail'          => $request->detalle,
+            'amount'          => $request->amount,
         ]);
     }
 }

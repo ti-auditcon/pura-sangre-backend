@@ -26,20 +26,35 @@ class PlanUser extends Model
     protected $table = 'plan_user';
 
     /**
-     * [$dates description]
+     *  All values that are treated as dates
      *
-     * @var [type]
+     *  @var  array
      */
     protected $dates = ['start_date', 'finish_date', 'deleted_at'];
 
     /**
-     * [$fillable description]
+     *  Castable values
      *
-     * @var [type]
+     *  @var  array
+     */
+    protected $casts = [
+        'history' => 'collection',
+    ];
+
+    /**
+     *  [$fillable description]
+     *
+     *  @var  [type]
      */
     protected $fillable = [
-        'start_date', 'finish_date', 'counter',
-        'plan_status_id', 'plan_id', 'user_id', 'observations'
+        'start_date',
+        'finish_date',
+        'counter',
+        'plan_status_id',
+        'plan_id',
+        'user_id',
+        'observations',
+        'history'
     ];
 
     /**
@@ -78,7 +93,7 @@ class PlanUser extends Model
      *  [plan description]
      *
      *  @method plan
-     *  @return [model] [description]
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function plan()
     {
@@ -88,7 +103,7 @@ class PlanUser extends Model
     /**
      *  [plan_status description]
      *
-     *  @return [model] [description]
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function plan_status()
     {
@@ -126,21 +141,15 @@ class PlanUser extends Model
     }
 
     /**
-     * Get the information on the postponement of this plan.
+     *  Get the freezed log of this plan
+     *  taking just the one which is available
      *
-<<<<<<< Updated upstream
-     * @return App\Models\Plans\PostponePlan
+     *  @return  App\Models\Plans\PostponePlan
      */
     public function postpone()
     {
-        return $this->hasOne(PostponePlan::class);
-=======
-     *  @return  \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function postpone()
-    {
-        return $this->hasOne(PostponePlan::class)->where('revoked', false);
->>>>>>> Stashed changes
+        return $this->hasOne(PostponePlan::class)
+                    ->where('revoked', false);
     }
 
     /**
@@ -157,7 +166,7 @@ class PlanUser extends Model
      * [user description]
      *
      * @method user
-     * @return [model] [description]
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
@@ -184,12 +193,63 @@ class PlanUser extends Model
         }
 
         return self::create([
-            'start_date' => $data->start_date,
-            'finish_date' => $data->finish_date,
-            'counter' => $data->plan->class_numbers,
-            'user_id' => $data->user_id,
-            'plan_id' => $data->plan_id,
+            'counter'        => $data->plan->class_numbers,
+            'user_id'        => $data->user_id,
+            'plan_id'        => $data->plan_id,
+            'start_date'     => $data->start_date,
+            'finish_date'    => $data->finish_date,
             'plan_status_id' => $plan_status 
         ]);
     }
+
+    /**
+     *  methodDescription
+     *
+     *  @return  returnType
+     */
+    public function asignPlanToUser($request, Plan $plan, $user)
+    {
+        return $this->create([
+            'counter'        => $request->counter,
+            'user_id'        => $user->id,
+            'plan_id'        => $plan->id,
+            'start_date'     => Carbon::parse($request->start_date),
+            'finish_date'    => Carbon::parse($request->finish_date),
+            'observations'   => $request->observations,
+            'plan_status_id' => PlanStatus::ACTIVO,
+        ]);
+    }
+
+    // /**
+    //  *  The plan can be:
+    //  *  - Prueba: just add a week and the counter is equals to class_numbers
+    //  *  - Custom: The finish date of the plan is defined at creation part
+    //  *  - Others: add months and counter guided by plan
+    //  *
+    //  *  @param   [type]  $plan    
+    //  *  @param   [type]  $request 
+    //  *
+    //  *  @return  array
+    //  */
+    // public function manageSpecificParametersForPlan(Plan $plan, $request)
+    // {        
+    //     if ($plan->isPrueba()) {
+    //         $finish_date = Carbon::parse($request->fecha_inicio)->addWeeks(1);
+    //         $counter = $plan->class_numbers;
+
+    //         return [$finish_date, $counter];
+    //     }
+        
+    //     if ($plan->isCustom()) {
+    //         $finish_date = Carbon::parse($request->fecha_termino);
+    //         $counter = $request->counter;
+
+    //         return [$finish_date, $counter];
+    //     }
+
+    //     $finish_date = Carbon::parse($request->fecha_inicio)->addMonths($plan->plan_period->period_number)->subDay();
+    //     $counter = $plan->class_numbers * $plan->plan_period->period_number * $plan->daily_clases;
+
+    //     return [$finish_date, $counter];
+    // }
 }

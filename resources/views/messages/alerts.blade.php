@@ -110,6 +110,7 @@
 <script src="{{ asset('/js/datatables.min.js') }}"></script>
 <script src="{{ asset('/js/dataTables.checkboxes.min.js') }}"></script>
 <script src="{{ asset('/js/summernote.min.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
 <script>
 $(document).ready(function() {
@@ -164,6 +165,7 @@ var table = $('#alert-list-table').DataTable({
         "type": "GET",
         "data": {"_token": "<?= csrf_token() ?>"},
     },
+    "order": [4, 'desc'],
     "language": {
         "zeroRecords": "Sin resultados",
         "info": " ",
@@ -177,17 +179,31 @@ var table = $('#alert-list-table').DataTable({
     "dom": '<"top">rt<"bottom"ilp><"clear">',
     "lengthChange": false,
     "pageLength": 6,
-    "columnDefs": [ {
-        "targets": -1,
-        "orderable": false,
-        "data": "id",
-        "defaultContent": "<button class='btn btn-danger remove-item'>Borrar</button>",
-    } ],
+    "columnDefs": [
+        {
+            "targets": 3,
+            "orderable": false,
+            "data": "id",
+            "defaultContent": "<button class='btn btn-danger remove-item'>Borrar</button>",
+        },
+        { "targets": [ 4, 5 ], "visible": false, "searchable": false },
+        { "targets": [ 1 ], "orderData": [ 4 ] },
+        { "targets": [ 2 ], "orderData": [ 5 ] }
+    ],
     "columns":[
-        {"data": "message"},
-        {"data": "from"},
-        {"data": "to"}, 
-        {"data": null}
+        { "data": "message" },
+        { "data": "from",
+         "render": function(data, other, row) {
+            return moment(data).format('DD-MM-YYYY');
+        } },
+        { "data": "to",
+            "render": function(data, other, row) {
+            return moment(data).format('DD-MM-YYYY');
+            }
+        },  
+        { "data": null },
+        { "data": "from" },
+        { "data": "to" }
     ],
 });
 

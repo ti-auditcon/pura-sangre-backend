@@ -24,22 +24,17 @@ class NewUserRequest extends FormRequest
      */
     public function rules()
     {
-        if ($this->emailIsAlreadyRegistered(request('email'))) {
-            return [
-                'email' => function ($attribute, $value, $fail) {
-                    if (true) {
-                        $fail('El :attribute ya ha sido registrado.');
-                    }
-                },
-            ];
-        }
-
         return [
+            'rut'        => 'required',
             'first_name' => 'required',
-            'last_name' => 'required',
-            'birthdate' => 'required',
-            'email' => 'required|email',
-            'phone' => $this->phone ? 'digits:8' : '',
+            'last_name'  => 'required',
+            'birthdate'  => 'required',
+            'email'      => ['required', 'email', function($attribute, $value, $fail) {
+                if ($this->emailIsAlreadyRegistered(request('email'))) {
+                    return $fail('El :attribute ya ha sido registrado.');
+                }
+            }],
+            'phone'      => $this->phone ? 'digits:8' : '',
         ];
     }
 
@@ -58,11 +53,12 @@ class NewUserRequest extends FormRequest
     {
         return [
             'first_name.required' => 'El campo nombre es obligatorio',
-            'last_name.required' => 'El campo apellido es obligatorio',
-            'birthdate.required' => 'El campo fecha de nacimiento es obligatorio',
-            'email.required' => 'El campo correo electronico es obligatorio',
-            'email.email' => 'El campo correo electronico debe contener un correo valido',
-            'phone.digits' => 'El numero de telefono debe contener solo :digits numeros',
+            'last_name.required'  => 'El campo apellido es obligatorio',
+            'rut.required'        => 'El campo rut es obligatorio',
+            'birthdate.required'  => 'El campo fecha de nacimiento es obligatorio',
+            'email.required'      => 'El campo correo electronico es obligatorio',
+            'email.email'         => 'El campo correo electronico debe contener un correo valido',
+            'phone.digits'        => 'El numero de telefono debe contener solo :digits numeros',
         ];        
     }
 }

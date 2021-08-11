@@ -155,13 +155,15 @@
                                         
                                         <th width="40%">Mensaje</th>
 
-                                        <th>Fecha de envío</th>
+                                        <th width="13%">Fecha de envío</th>
 
                                         <th>Hora de envío</th>
                                         
-                                        <th width="10%">Estado</th>
+                                        <th>Estado</th>
 
-                                        <th width="10%">Acciones</th>
+                                        <th>Acciones</th>
+
+                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -211,6 +213,8 @@
                                                     </button>
                                                 </form>
                                             </td>
+
+                                            <td>{{ Carbon\Carbon::parse($notification->trigger_at) }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -362,7 +366,7 @@
                     {"data": "status_user_id"},
                 ],
                 'select': {'style': 'multi'},
-                'order': [[1, 'asc']],
+                'order': [1, 'asc'],
                 "infoCallback": function( settings, start, end, max, total, pre ) {
                     $('#filtered').html(total);
                     $('#filtered-from').html('de ' + max);
@@ -453,7 +457,12 @@
         $('#notifications-list').DataTable({
             'pageLength': 6,
             'lengthMenu': [ 6, 15, 25, 50 ],
-            'order': [[1, 'asc']],
+            'order': [2, 'desc'],
+            "columnDefs": [
+                { "targets": [ 6 ], "visible": false, "searchable": false , "orderable": false },
+                { "targets": [ 5 ], "searchable": false },
+                { "targets": [ 2 ], "orderData": [ 6 ] },
+            ],
             'language': {
                 'lengthMenu': '<p>Mostrar</p> _MENU_ <p>elementos</p>',
                 'zeroRecords': 'Sin resultados',

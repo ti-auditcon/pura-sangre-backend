@@ -16,7 +16,7 @@ class PlanController extends Controller
     {
         $plans = Plan::whereContractable(true)
                     ->join('plan_periods', 'plan_periods.id', '=', 'plans.plan_period_id')
-                    ->get(['plans.id', 'plan', 'description', 'plan_period_id', 'amount', 'plan_periods.period']);
+                    ->get(['plans.id', 'plan', 'schedule_hours', 'schedule_days', 'description', 'plan_period_id', 'amount', 'plan_periods.period']);
 
         return response()->json(compact('plans'));
     }    

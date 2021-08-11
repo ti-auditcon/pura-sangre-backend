@@ -60,11 +60,9 @@
             @include('layouts.header')
             @yield('sidebar')
 
-            <div class="wrapper content-wrapper">
+            <div id="app" class="wrapper content-wrapper">
                 <div class="page-content">
-                    
                     @yield('content')
-                
                 </div>
             </div>
         </div>

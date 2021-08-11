@@ -6,8 +6,10 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Plans\PlanUser;
 use App\Models\Plans\PlanStatus;
+use App\Models\Users\StatusUser;
 use App\Models\Plans\PostponePlan;
 use App\Http\Controllers\Controller;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class PostponeController extends Controller
 {
@@ -28,15 +30,12 @@ class PostponeController extends Controller
      */
     public function postponeAll(Request $request)
     {
-        $plans_to_postpone = PlanUser::whereIn('plan_status_id', [PlanStatus::ACTIVO, PlanStatus::PRECOMPRA])
-                                     ->get();
+        $plans_to_postpone = PlanUser::where('plan_status_id', PlanStatus::ACTIVO)
+                                        ->with('plan:id')
+                                        ->get(['id', 'start_date', 'finish_date', 'user_id', 'plan_status_id', 'plan_id']);
 
         foreach($plans_to_postpone as $planToPostpone) {
             $this->postpone($request, $planToPostpone);
-            // This update below change the state of the plan
-            // $planToPostpone->update([
-            //     'plan_status_id' => PlanStatus::CONGELADO,
-            // ]);
         }
 
         return view('postpones.index')->with('success', 'Todo pospuesto');
@@ -49,6 +48,12 @@ class PostponeController extends Controller
      */
     public function postpone($request, $plan_user)
     {
+        // getting the dispatcher instance (needed to enable again the event observer later on)
+        $dispatcher = PlanUser::getEventDispatcher();
+        // disabling the events
+        PlanUser::unsetEventDispatcher();
+            // perform the operation you want
+
         // Parse Dates
         $start = Carbon::parse($request->start_date); 
         $finish = Carbon::parse($request->finish_date);
@@ -56,36 +61,39 @@ class PostponeController extends Controller
         if ($plan_user->plan_status_id === PlanStatus::ACTIVO) {
             PostponePlan::create([
                 'plan_user_id' => $plan_user->id,
-                'start_date' => $start,
-                'finish_date' => $finish
+                'start_date'   => $start,
+                'finish_date'  => $finish
             ]);
         }
 
         $diff_in_days = $start->diffInDays($finish) + 1;
 
-        $planes_posteriores = $plan_user->user->plan_users->where('start_date', '>', $plan_user->start_date)
-                                                            ->where('id', '!=', $plan_user->id)
-                                                            ->sortByDesc('finish_date');
+        $planes_posteriores = PlanUser::where('user_id', $plan_user->user_id)
+                                        ->where('start_date', '>', $plan_user->start_date)
+                                        ->where('id', '!=', $plan_user->id)
+                                        ->orderByDesc('finish_date')
+                                        ->get([
+                                            'id', 'start_date', 'finish_date', 'user_id'
+                                        ]);
 
         foreach ($planes_posteriores as $plan) {
             $plan->update([
-                'start_date' =>$plan->start_date->addDays($diff_in_days),
+                'start_date'  =>$plan->start_date->addDays($diff_in_days),
                 'finish_date' => $plan->finish_date->addDays($diff_in_days)
             ]);
         }
 
-        if ($plan_user->plan_status_id === PlanStatus::PRECOMPRA) {
-            $start_date_plan = $plan_user->start_date->addDays($diff_in_days);
-        } else {
-            $start_date_plan = $plan_user->start_date;
+        $plan_user->update([
+            'plan_status_id' => PlanStatus::CONGELADO,
+            'finish_date'    => $plan_user->finish_date->addDays($diff_in_days)
+        ]);
+
+        if (!$plan_user->user->actual_plan) {
+            $plan_user->user->update(['status_user_id' => StatusUser::INACTIVE]);
         }
 
-        $plan_user->update([
-            'plan_status_id' => $start->isToday() ? PlanStatus::CONGELADO : $plan_user->plan_status_id,
-
-            'finish_date' => $plan_user->finish_date->addDays($diff_in_days)
-            // 'finish_date' => $plan_user->finish_date
-        ]);
+        // enabling the event dispatcher
+        PlanUser::setEventDispatcher($dispatcher);
 
         return true;
     }

@@ -127,7 +127,7 @@ class Clase extends Model
     // {
     //   return $this->belongsToMany(Stage::class)->using(ClaseStage::class);
     // }
-
+        // @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
     public function wod()
     {
       return $this->belongsTo(Wod::class);
@@ -139,12 +139,12 @@ class Clase extends Model
      */
     public function users()
     {
-    return $this->belongsToMany(User::Class)->using(Reservation::class);
+    return $this->belongsToMany(User::class)->using(Reservation::class);
     }
 
     /**
      * [claseType description]
-     * @return [type] [description]
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function claseType()
     {
@@ -166,12 +166,12 @@ class Clase extends Model
      */
     public function profesor()
     {
-        return $this->belongsToMany(User::Class)->using(Reservation::class);
+        return $this->belongsToMany(User::class)->using(Reservation::class);
     }
 
     /**
      * [block relation to this model]
-     * @return [model] [description]
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function block()
     {

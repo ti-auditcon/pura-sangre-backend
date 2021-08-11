@@ -12,7 +12,7 @@ class ClaseType extends Model
      *
      * @var array
      */
-	protected $fillable = ['clase_type', 'clase_color'];
+	protected $fillable = ['clase_type', 'clase_color', 'icon', 'icon_white', 'active'];
 
 	/**
 	 * Return all the clases associated to this Model
@@ -34,6 +34,11 @@ class ClaseType extends Model
 		return $this->hasMany('App\Models\Clases\Block');
 	}
 
+    /**
+     * [stage_types description]
+     *
+     * @return  [type]  [return description]
+     */
 	public function stage_types()
 	{
 		return $this->hasMany('App\Models\Wods\StageType');

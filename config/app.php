@@ -3,13 +3,17 @@
 
 return [
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'PuraSangre CrossFit'),
 
     'env' => env('APP_ENV', 'production'),
 
     'debug' => env('APP_DEBUG', false),
 
     'url' => env('APP_URL', 'http://localhost'),
+
+    'api_url' => env('API_URL', 'http://localhost'),
+
+    'ssl' => env('APP_SSL', true),
 
     'web_url' => env('APP_WEB_URL', 'https://purasangrecrossfit.cl/'),
 
@@ -51,6 +55,7 @@ return [
 
         // MY OWN PasswordResetServiceProvider ...
         App\Providers\CustomPasswordResetServiceProvider::class,
+        App\Providers\BirthdateUsersProvider::class,
 
         Illuminate\Session\SessionServiceProvider::class,
         Illuminate\Translation\TranslationServiceProvider::class,

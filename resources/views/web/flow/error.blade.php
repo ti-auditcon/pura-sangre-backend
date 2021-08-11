@@ -47,12 +47,29 @@
                                     </button>
                                 </div>
                                 <div x-show="instructions.areSended" x-text="instructions.message"></div>
+                            @elseif ($type === 'payment')
+                                <div class="mb-2">{{ $error }}</div>
                             @endif
                         @else 
                             Hola, es raro verte por aqui, si no sabes como llegaste hasta aqui contacta con PuraSangre :)
                         @endif
                     </div>
                 </div>
+                            <div class="mt-3">
+                <div class="text-center">
+                    <span class="text-muted" style="font-size: 15px">
+                        Recuerda que la aplicacion de Pura Sangre CrossFit esta disponible para Android e IOS
+                    </span>
+                    <div class="mt-2">
+                        <a href="https://play.google.com/store/apps/details?id=purasangrecrossfit.app.com&hl=es" target="_blank" style="text-decoration: none;">
+                            <img src="https://purasangrecrossfit.cl/images/google-play-badge-2.png" style="width: 120px">
+                        </a>
+                        <a href="https://itunes.apple.com/us/app/pura-sangre-crossfit/id1447657358" target="_blank" style="text-decoration: none;">
+                            <img src="https://purasangrecrossfit.cl/images/d_app.png" style="width: 110px">
+                        </a>
+                    </div>
+                </div>
+            </div>
             </div>
         </div>
 
@@ -68,7 +85,7 @@
                     errores: [],
                     selectedOption: '',
                     sendButtonisDisabled: false,
-                    title: 'Ups, algo ocurrio',
+                    title: 'Ups, algo ocurrió',
                     requestInstrutions() {
                         this.sendButtonisDisabled = true;
                         axios.post(`/new-user/request-instructions?email=${this.instructions.email}&plan_id=${this.selectedOption}`)

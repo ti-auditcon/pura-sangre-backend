@@ -35,8 +35,6 @@
             var locations_filtered = locations.filter(location => location.lat);
 
             locations_filtered.forEach((location, index) => {
-                // console.log('hola');
-                // console.log(location.lat);
                 heatmapData[index] = { 
                     location: new google.maps.LatLng(location.lat, location.lng),
                     weight: 0.6

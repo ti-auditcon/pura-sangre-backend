@@ -118,7 +118,15 @@
             </div>
         </div>
         <form action="{{ route('users.plans.update', [$user->id, $plan_user->id]) }}" method="POST">
-            @method('PUT') @csrf
+            @method('PUT')
+            
+            @csrf
+            <input name="user_id" type="hidden" value="{{ $user->id }}" hidden/>
+
+            <input name="plan_id" type="hidden" value="{{ $plan_user->plan_id }}" hidden/>
+
+            <input name="plan_user_id" type="hidden" value="{{ $plan_user->id }}" hidden/>
+
             <div class="ibox-body">
                 <div class="row">
                     <div class="col-sm-4 form-group is-custom">
@@ -137,25 +145,27 @@
                                 <span class="input-group-addon bg-white"><i class="la la-calendar"></i></span>
 
                                 <input class="form-control"
-                                name="start_date"
-                                type="text"
-                                value="{{ $plan_user->start_date->format('d-m-Y') }}"
-                                required/>
+                                        name="start_date"
+                                        id="plan-start-date"
+                                        type="text"
+                                        value="{{ $plan_user->start_date->format('d-m-Y') }}"
+                                        required/>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-4 form-group mb-2 is-custom">
-                        <div class="form-group"  id="finish_date">
+                        <div class="form-group" id="finish_date">
                             <label class="form-control-label">Fecha de término del plan</label>
 
                             <div class="input-group date">
                                 <span class="input-group-addon bg-white"><i class="la la-calendar"></i></span>
 
                                 <input class="form-control"
-                                name="finish_date"
-                                type="text"
-                                value="{{ $plan_user->finish_date->format('d-m-Y') }}"
-                                required/>
+                                        name="finish_date"
+                                        id="plan-finish-date"
+                                        type="text"
+                                        value="{{ $plan_user->finish_date->format('d-m-Y') }}"
+                                        required/>
                             </div>
                         </div>
                     </div>
@@ -204,16 +214,15 @@
     </div>
 
     {{----------------------- PLAN USER BILL EDIT  --------------------- --}}
-    <div class="col-sm-12 col-md-12 col-lg-6 ibox form-control-air">
+    {{-- <div class="col-sm-12 col-md-12 col-lg-6 ibox form-control-air">
         <div class="ibox-head">
             <div class="ibox-title">
                 Boleta asociada al Plan
             </div>
             <div class="ibox-tools">
-                tools
             </div>
         </div>
-{{-- {{ dd($plan_user->bill) }} --}}
+
         <form action="{{ route('payments.update', ['payment' => $plan_user->bill]) }}" method="POST">
             @csrf @method('PUT')
             <div class="ibox-body">
@@ -274,10 +283,107 @@
                 </button>
             </div>
         </form>
+    </div> --}}
+
+        <div class="col-md-6">
+        <div class="ibox">
+            @if (!$plan_user->bill)
+                <div class="ibox-body">
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-center py-2">
+                            Sin pago asociado a este plan
+                        </div>
+
+                        <div class="col-12 d-flex justify-content-center py-2">
+                            <button class="btn btn-info add-payment-modal" data-toggle="modal" data-target="#add-bill">
+                                Registrar un pago
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            @else
+                <div class="ibox-head">
+                    <div class="ibox-title">
+                        Editar Datos del pago asociado
+                    </div>
+                    <div class="ibox-tools">
+                        <form id="delete-bill" 
+                            action="{{ route('payments.destroy', ['payment' => $plan_user->bill->id]) }}"
+                            method="POST"
+                        >
+                            @csrf @method('DELETE')
+                        </form>
+                        <button class="btn btn-danger modal-bill-delete">
+                            Eliminar pago
+                        </button>
+                    </div>
+                </div>
+
+               <form action="{{ route('payments.update', ['payment' => $plan_user->bill->id]) }}"
+                    method="POST"
+                >
+                    @csrf
+                    @method('PUT')
+
+                    <input name="plan_user_id" type="hidden" value="{{ $plan_user->id }}" hidden/>
+
+                    <div class="ibox-body">
+                        <div class="row">
+                            <div class="col-sm-6 form-group">
+                                <label class="form-control-label">Tipo de pago</label>
+
+                                <select name="payment_type_id" class="form-control" required>
+                                    <option value="">Eliga un tipo de pago</option>
+
+                                    @foreach (\App\Models\Bills\PaymentType::humanList() as $key => $payment)
+                                        <option value="{{ $key }}" @if ($plan_user->bill->payment_type_id === $key) selected @endif>{{ $payment }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-sm-6 form-group mb-2 is-custom">
+                                <div class="form-group" id="finish_date">
+                                    <label class="form-control-label">Fecha del pago</label>
+
+                                    <div class="input-group date">
+                                        <span class="input-group-addon bg-white"><i class="la la-calendar"></i></span>
+
+                                        <input class="form-control" name="date" type="text" 
+                                                value="{{ $plan_user->bill->date->format('d-m-Y') }}" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 form-group is-not-custom">
+                                <label class="form-control-label">Total**</label>
+
+                                <div class="input-group-icon input-group-icon-left">
+                                    <span class="input-icon input-icon-left">
+                                        <i class="la la-dollar"></i>
+                                    </span>
+
+                                    <input class="form-control" id="plan-amount"
+                                            name="amount" value="{{ optional($plan_user->bill)->amount ?? 0 }}"
+                                            type="text" placeholder="solo números" required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary mt-3" type="submit">
+                            Actualizar pago
+                        </button>
+                        </div>
+                        <div class="ibox-footer is-not-custom">
+                            **Si el plan es de invitado, el total debe ser dejado en 0
+                        </div>
+                </form>
+            @endif
+        </div>
     </div>
 </div>
-
 @endsection
+
+@include('userplans.modals.create-bill')
 
 
 @section('css') {{-- stylesheet para esta vista --}}
@@ -285,25 +391,37 @@
 @endsection
 
 
-
 @section('scripts') {{-- scripts para esta vista --}}
   {{-- // BOOTSTRAP DATEPICKER // --}}
-   <script defer>
-      $('#start_date .input-group.date').datepicker({
-         todayBtn: "linked",
-         keyboardNavigation: false,
-         forceParse: false,
-         calendarWeeks: true,
-         format: "dd-mm-yyyy",
-         startDate: "01-01-1910",
-         endDate: "01-01-2030",
-         language: "es",
-         orientation: "bottom auto",
-         autoclose: true,
-         maxViewMode: 3,
-         todayHighlight: true
-     });
-   </script>
+<script defer>
+    $('#start_date .input-group.date').datepicker({
+        todayBtn: "linked",
+        keyboardNavigation: false,
+        forceParse: false,
+        format: "dd-mm-yyyy",
+        startDate: "01-01-1910",
+        endDate: "01-01-2030",
+        language: "es",
+        orientation: "bottom auto",
+        autoclose: true,
+        maxViewMode: 3,
+        todayHighlight: true
+    });
+
+    $('.bill-date').datepicker({
+        todayBtn: "linked",
+        keyboardNavigation: false,
+        forceParse: false,
+        format: "dd-mm-yyyy",
+        startDate: "01-01-1910",
+        endDate: "01-01-2030",
+        language: "es",
+        orientation: "bottom auto",
+        autoclose: true,
+        maxViewMode: 3,
+        todayHighlight: true
+    });
+</script>
 
    <script defer>
       $('#finish_date .input-group.date').datepicker({
@@ -320,5 +438,39 @@
          maxViewMode: 3,
          todayHighlight: true
       });
+
+    $(document).on('click', '.modal-bill-delete', function(e) {
+        const form = document.getElementById('delete-bill');
+
+        swal({
+            title: "Desea eliminar el pago asociado a este plan?",
+            text: "",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonClass: 'btn-danger',
+            cancelButtonText: 'Cancelar',
+            confirmButtonText: 'Eliminar',
+            closeOnConfirm: false,
+        }, function() {
+            form.submit();
+        });
+    });
+
+    let createBillId = 1;
+    /**
+     *  Show modal to make sure that user want to delete the associated payment
+     */
+    $(document).on('click', '.add-payment-modal', function() {
+        // get the date of start and end from plan and pass to the fields to the bill modal
+        let planStartDate = document.getElementById('plan-start-date').value;
+        let planFinishDate = document.getElementById('plan-finish-date').value;
+        let planUserId = {!! $plan_user->id !!};
+
+        document.getElementById('bill-start-date').value = planStartDate;
+        document.getElementById('bill-finish-date').value = planFinishDate;
+        document.getElementById('plan-user-id').value = planUserId;
+
+        // $('#add-bill-form').attr('action', `/payments/${planUserId}/`);
+    });
    </script>
 @endsection

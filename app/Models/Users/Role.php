@@ -5,6 +5,7 @@ namespace App\Models\Users;
 use App\Models\Users\User;
 use App\Models\Users\RoleUser;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Role extends Model
 {
@@ -21,6 +22,7 @@ class Role extends Model
 	{
 	    return $this->belongsToMany(User::class, 'role_user');
 	}
+
 
     /**
      * [coaches description]

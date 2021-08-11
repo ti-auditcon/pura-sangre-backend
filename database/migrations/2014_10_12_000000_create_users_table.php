@@ -19,13 +19,9 @@ class CreateUsersTable extends Migration
     {
         Schema::create('alerts', function (Blueprint $table) {
             $table->increments('id');
-            
             $table->longText('message');
-            
             $table->date('from');
-            
             $table->date('to');
-            
             $table->timestamps();
         });
         
@@ -49,7 +45,7 @@ class CreateUsersTable extends Migration
 
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('rut');
+            $table->string('rut')->default(11111111);
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
@@ -57,13 +53,14 @@ class CreateUsersTable extends Migration
             $table->string('avatar')->nullable();
             $table->unsignedInteger('phone')->nullable();
             $table->date('birthdate');
+            $table->date('since')->nullable();
+            $table->date('email_verified_at')->nullable();
             $table->string('gender');
             $table->string('address')->nullable();
-            $table->date('since')->nullable();
+            $table->unsignedInteger('status_user_id')->nullable();
             $table->longText('fcm_token')->nullable();
             $table->boolean('tutorial')->default(false);
-            $table->unsignedInteger('emergency_id')->nullable();
-            $table->unsignedInteger('status_user_id')->nullable();
+            // $table->unsignedInteger('emergency_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

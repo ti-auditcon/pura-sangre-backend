@@ -11,26 +11,78 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentType extends Model
 {
     /**
-     * [FLOW description]
+     *  Efectivo payment Id
      *
-     * @var [type]
+     *  @var  int
      */
-    const FLOW = 6;
+    const EFECTIVO = 1;
+    
+    /**
+     *  Transferencia payment Id
+     *
+     *  @var  int
+     */
+    const TRANSFERENCIA = 2;
+    
+    /**
+     *  Cheque payment Id
+     *
+     *  @var  int
+     */
+    const CHEQUE = 3;
+    
+    /**
+     *  Debito payment Id
+     *
+     *  @var  int
+     */
+    const DEBITO = 4;
+    
+    /**
+     *  Credito payment Id
+     *
+     *  @var  int
+     */
+    const CREDITO = 5;
 
     /**
-     * The attributes that are mass assignable.
+     *  Flow payment Id
      *
-     * @var array
+     *  @var  int
+     */
+    const FLOW = 6;
+    
+    /**
+     *  The attributes that are mass assignable.
+     *
+     *  @var  array
      */
     protected $fillable = ['payment_type'];
 
     /**
-     * [bill description]
-     * @method bill
-     * @return [model] [description]
+     *  Return the relationship of this PaymentType with their bills
+     * 
+     *  @return  \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function bills()
     {
         return $this->hasMany(Bill::class);
+    }
+
+    /**
+     *  Return list of PaymentTypes
+     *
+     *  @return  [type]           [return description]
+     */
+    public static function humanList()
+    {
+        return [
+            self::EFECTIVO      => 'Efectivo',
+            self::TRANSFERENCIA => 'Transferencia',
+            self::CHEQUE        => 'Cheque',
+            self::DEBITO        => 'Debito',
+            self::CREDITO       => 'Credito',
+            self::FLOW          => 'Flow',
+        ];
     }
 }

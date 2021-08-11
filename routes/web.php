@@ -1,19 +1,19 @@
 <?php
 
+use App\Mail\NewPlanUserEmail;
+use App\Models\Plans\PlanUserFlow;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
+/**
+ *  Auth Route lists
+ */
 Auth::routes();
 
-Route::get('maile', function () {
-    // dd('asdasds');
-    $user = \App\Models\Users\User::find(15);
-
-    // return new App\Mail\NewPlanUserEmail($user, $user->actual_plan);
-    // return new App\Mail\GoneAwayUserEmail($user->first_name);
-});
-// Route::get('/fix-clases', 'HomeController@fixClases');
-
+/**
+ *  General routes
+ */
 Route::get('/', 'HomeController@index');
 Route::get('/withoutrenewal', 'HomeController@withoutrenewal');
 Route::get('/genders', 'HomeController@genders');
@@ -31,7 +31,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
         ->name('incomes.calibrate');
     Route::get('update-reservations-plans', 'Users\UserController@putIdPlan')->middleware('role:1');
 
-    /*
+    /**
      * Clases routes (clases, clases-alumnos, bloques)
      */
     Route::resource('blocks', 'Clases\BlockController')->middleware('role:1');
@@ -44,40 +44,45 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::post('clases/type-select/', 'Clases\ClaseController@typeSelect')->name('clases.type');
     Route::get('/asistencia-modal/{id}', 'Clases\ClaseController@asistencia')->name('asistencia');
 
-    /*
+    /**
      * Clases types routes
      */
     Route::resource('clases-types', 'Clases\ClaseTypeController')->except('create', 'edit');
-    // Route::post('clases-types/update', 'Clases\ClaseTypeController@updateClaseTypeStage')
-    //      ->name('clases-types.update-all');
 
-    /*
+    /**
      * CALENDAR CLASES ROUTES
      */
     Route::post('calendar/clases/delete', 'Clases\CalendarClasesController@destroy')
          ->name('admin.calendar.clasesday.destroy');
 
-    /*
+    /**
      *  POSTPONE PLANS ROUTE
      */
     Route::get('postpones', 'Plans\PostponeController@index')->middleware('role:1')->name('postpones.index');
-
+    
     Route::post('postpones/all', 'Plans\PostponeController@postponeAll')->name('postpones.all');
+    Route::post('/plan-user/{plan_user}/postpones', 'Plans\PlanUserPostponesController@store')->name('plan-user.postpones.store');
+    Route::resource('postpones', 'Plans\PlanUserPostponesController')->only('destroy')
+            ->middleware('role:1');
 
-    Route::resource('plan-user.postpones', 'Plans\PlanUserPostponesController')
-         ->only('store', 'destroy')
-         ->middleware('role:1');
-
-    /*
+    /**
      * BILLS Routes
      */
-    Route::resource('payments', 'Bills\BillController')->middleware('role:1')->only('index', 'update');
     Route::post('payments/pagos', 'Bills\BillController@getPagos')->name('datapagos');
+    Route::resource('payments', 'Bills\BillController')->middleware('role:1')->only('index', 'store', 'update', 'destroy');
     Route::get('/bills', 'Bills\BillController@bills')->name('bills');
     Route::get('bills/export', 'Bills\BillController@export')->name('bills.export');
 
     Route::resource('payments', 'Bills\BillController')->middleware('role:1')->only('index', 'update');
 
+    Route::get('invoices/recevied', 'Bills\InvoicingController@recevied');
+    Route::get('invoices/issued', 'Bills\InvoicingController@issued');
+    Route::get('invoices/received/json', 'Bills\InvoicingController@receivedJson');
+    Route::get('invoices/issued/json', 'Bills\InvoicingController@issuedJson');
+    Route::post('dte/get-pdf', 'Bills\DTEController@show');
+    Route::post('dte/get-issued-pdf', 'Bills\DTEController@getIssuedPDF');
+    
+    Route::post('dte/{plan_user_flow}/save-pdf', 'Bills\DTEController@savePDFThroughAPI');
     /*
      * Plans Routes
      */
@@ -88,7 +93,6 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
      */
     Route::resource('exercises', 'Exercises\ExerciseController');
     Route::get('stage-types/{stage_type}', 'Wods\StageTypeController@show');
-    // Route::resource('stages-types', 'Exercises\ExerciseController');
 
     /*
      * Messages Routes
@@ -134,14 +138,12 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('users/{user}/plans/{plan}/info', 'Users\UserController@userinfo')->name('users.plans.info');
     Route::get('users/geolocations', 'Users\UserController@geolocations')->name('users.geolocations');
     Route::post('users/{user}/plans/{plan}/annul', 'Plans\PlanUserController@annul')->name('users.plans.annul');
-    // Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
     Route::resource('users', 'Users\UserController');
     Route::get('users-json', 'Users\UserController@usersJson')->name('users-json');
     Route::get('export', 'Users\UserController@export')->name('users.export');
     Route::get('update-avatar', 'Users\UserController@updateAvatar')->name('user.update.avatar');
     Route::resource('users.plans', 'Plans\PlanUserController');
     Route::post('users/{user}/plans/{plan}/annul', 'Plans\PlanUserController@annul')->name('users.plans.annul');
-    // Route::resource('users.plans.payments', 'Plans\PlanUserPaymentController');
     Route::get('users/{user}/plans/{plan}/info', 'Users\UserController@userinfo')->name('users.plans.info');
 
     Route::patch('users/{user}/reset-password', 'Users\UserController@resetPassword')->name('users.password-reset');
@@ -164,9 +166,9 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 
 /*  *****************************************************
 
- *    *******         EXTERNAL ROUTES        **************
+ *  *********         EXTERNAL ROUTES        ************
 
- *   ******************************************************   */
+ *  ************************************************** */
 Route::post('new-user/request-instructions', 'Web\NewUserController@requestInstructions');
 Route::get('/new-user/{plan}/create', 'Web\NewUserController@create');
 Route::resource('/new-user', 'Web\NewUserController')->except('index', 'update', 'destroy', 'create', 'show');
@@ -175,27 +177,17 @@ Route::resource('/new-user', 'Web\NewUserController')->except('index', 'update',
   *    *******         EXTERNAL ROUTES        **************
   *   ******************************************************   */
 Route::post('/flow/return-from-payment', 'Web\NewUserController@finishFlowPayment');
-Route::post('/flow/confirm-payment', 'Web\NewUserController@confirmFlow');
+Route::post('/flow/confirm-payment', 'Web\NewUserController@finishFlowPayment');
+
+Route::get('get-pdf/{plan_user_flow}', 'Web\NewUserController@getPlanUserFlowDTE');
 
 Route::get('/flow/return', function () { return view('web.flow.return'); });
 Route::get('/flow/error', function () { return view('web.flow.error'); });
 
 Route::get('finish-registration', 'Web\NewUserController@finishing');
 
+Route::get('maila', function() {
+    $planuserFlow = App\Models\Plans\PlanUserFlow::find(2110);
 
-// Route::get('test-email', function () {
-//     $token = Illuminate\Support\Str::random(150);
-//     $user = App\Models\Users\User::first();
-//     \DB::table('password_resets')->insert([
-//         'email' => $user->email,
-//         'token' => $token,
-//     ]);
-
-//     return new App\Mail\VerifyExternalUser($user, $token, 3);
-// });
-
-// Route::get('first', function () {
-//     $basePath = realpath(__DIR__.'/../');
-
-//     return rtrim($basePath, '\/');
-// });
+    return Mail::to('raulberrios8@gmail.com')->send(new App\Mail\NewPlanUserEmail($planuserFlow));
+});

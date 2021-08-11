@@ -2,12 +2,11 @@
 
 namespace App\Exceptions;
 
-use Session;
 use Exception;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Exceptions\PostTooLargeException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * [Handler description]
@@ -61,5 +60,14 @@ class Handler extends ExceptionHandler
             return redirect('/')->back();
         }       
         return parent::render($request, $e);
+    }
+
+    protected function whoopsHandler()
+    {
+        try {
+            return app(\Whoops\Handler\HandlerInterface::class);
+        } catch (\Illuminate\Contracts\Container\BindingResolutionException $e) {
+            return parent::whoopsHandler();
+        }
     }
 }

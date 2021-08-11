@@ -289,16 +289,12 @@
                                                     </button>
                                                 </div>
                                             @endif
-                                            @if($plan_user->plan_status_id == 2)
-                                                <form
-                                                    action="{{ route('plan-user.postpones.destroy', [
-                                                                    'plan_user' => $plan_user->id,
-                                                                    'postpone' => $plan_user->postpone
-                                                            ]) }}"
-                                                    method="POST"
-                                                    class="user-plan-unfreeze"
+                                            @if($plan_user->plan_status_id === App\Models\Plans\PlanStatus::CONGELADO && $plan_user->postpone)
+                                                <form method="POST" class="user-plan-unfreeze"
+                                                        action="{{ route('postpones.destroy', ['postpone' => $plan_user->postpone->id]) }}"
                                                 >
-                                                    @csrf @method('DELETE')
+                                                    @csrf
+                                                    @method('DELETE')
                                                 </form>
                                                 <div class="col-2">
                                                     <button

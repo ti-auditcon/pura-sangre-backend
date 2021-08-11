@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class PlanUserTableSeeder extends Seeder
 {
@@ -12,11 +13,9 @@ class PlanUserTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('plan_user')->delete();
         
-
-        \DB::table('plan_user')->delete();
-        
-        \DB::table('plan_user')->insert(array (
+        DB::table('plan_user')->insert(array (
             0 => 
             array (
                 'id' => 1,
@@ -6518,7 +6517,7 @@ class PlanUserTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
         ));
-        \DB::table('plan_user')->insert(array (
+        DB::table('plan_user')->insert(array (
             0 => 
             array (
                 'id' => 501,
@@ -13020,7 +13019,7 @@ class PlanUserTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
         ));
-        \DB::table('plan_user')->insert(array (
+        DB::table('plan_user')->insert(array (
             0 => 
             array (
                 'id' => 1001,

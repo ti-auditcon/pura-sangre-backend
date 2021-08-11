@@ -3,13 +3,14 @@ function newUser() {
         data: [
             { name: 'first_name', value: '' },
             { name: 'last_name', value: '' },
+            { name: 'rut', value: '' },
             { name: 'birthdate', value: '' },
             { name: 'phone', value: '' },
             { name: 'email', value: '' },
             { name: 'address', value: '' }
         ],
         errors: {
-            first_name: '', email: '', not_founded: false,
+            rut: '', first_name: '', email: '', not_founded: false,
             last_name: '', birthdate: '', phone: ''
         },
         formStatus: { isFinished: false, message: ''},
@@ -17,7 +18,7 @@ function newUser() {
         plan_id: '',
         redirectButton: null,
         sendButton: { text: 'Registrarme y pagar', disabled: false },
-        tittle: 'Completa tu compra registrandote',
+        title: 'Completa tu compra registrandote',
         fill(value, event) {
             this.data.map(field => {
                 if (field.name === value) {
