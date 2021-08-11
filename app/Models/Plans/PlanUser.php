@@ -26,9 +26,9 @@ class PlanUser extends Model
     protected $table = 'plan_user';
 
     /**
-     * [$dates description]
+     *  All values that are treated as dates
      *
-     * @var [type]
+     *  @var  array
      */
     protected $dates = ['start_date', 'finish_date', 'deleted_at'];
 
@@ -47,8 +47,14 @@ class PlanUser extends Model
      *  @var  [type]
      */
     protected $fillable = [
-        'start_date', 'finish_date', 'counter',
-        'plan_status_id', 'plan_id', 'user_id', 'observations', 'history'
+        'start_date',
+        'finish_date',
+        'counter',
+        'plan_status_id',
+        'plan_id',
+        'user_id',
+        'observations',
+        'history'
     ];
 
     /**

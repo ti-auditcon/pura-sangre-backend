@@ -3,11 +3,8 @@
 namespace App\Models\Bills;
 
 use Carbon\Carbon;
-use App\Models\Users\User;
 use App\Models\Plans\PlanUser;
-use App\Models\Bills\Installment;
 use App\Models\Bills\PaymentType;
-use App\Models\Plans\PlanUserFlow;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 

@@ -80,7 +80,7 @@ class PlanUserPostponesController extends Controller
     public function deletePlanReservationsFromADate($planUser, $fromDate)
     {
         $planUser->reservations()->each(function($reservation) use ($fromDate) {
-            if (Carbon::parse($reservation->clase->date)->gt($fromDate)) {
+            if ($reservation->clase && Carbon::parse($reservation->clase->date)->gt($fromDate)) {
                 $reservation->delete();
             }
         });
