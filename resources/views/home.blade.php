@@ -51,10 +51,7 @@
                         <div class="ibox-body">
                             <div>
                                 <h5>
-                                    Alumnos en
-                                    <span style="text-transform: capitalize;">
-                                        {{ today()->formatLocalized('%B') }}
-                                    </span>
+                                    Alumnos en {{ today()->formatLocalized('%B') }}
                                 </h5>
 
                                 <div class="row mt-3">
@@ -83,12 +80,12 @@
                                 <div class="row mt-4">
                                     <div class="col-6 text-center">
                                         <span class="h2"><i class="fa fa-male text-primary h1 mb-0 ml-2 mr-2"></i>
-                                            <span id="hombres">-</span>
+                                            <span id="hombres"> - </span>
                                         </span>
                                     </div>
                                     <div class="col-6 text-center">
                                         <span class="h2"><i class="fa fa-female text-pink h1 mb-0 ml-2 mr-2"></i>
-                                            <span id="mujeres">-</span>
+                                            <span id="mujeres"> - </span>
                                         </span>
                                     </div>
                                 </div>
@@ -101,30 +98,29 @@
                     <div class="ibox">
                         <div class="ibox-body">
                             <h5>
-                                Planes vendidos hoy vs. mes <span style="text-transform: capitalize;">{{today()->formatLocalized('%B')}}</span>
+                                Planes vendidos hoy vs. mes de {{ today()->formatLocalized('%B') }}
                             </h5>
                                 <div class="row mt-5">
                                     <div class="col-6 text-center" style="border-right: 1px solid rgba(0,0,0,.1);">
                                         <div class="text-muted">HOY</div>
 
-                                        <h2 id="hoy_total">-</h2>
+                                        <h2 id="hoy_total"> - </h2>
 
                                         <div class="text-muted mt-4">PLANES</div>
 
-                                        <h4 id="hoy_cantidad">-</h4>
+                                        <h4 id="hoy_cantidad"> - </h4>
                                     </div>
 
                                     <div class="col-6 text-center">
                                         <div class="text-muted"> {{ strtoupper(today()->formatLocalized('%B')) }}</div>
 
-                                        <h2 id="mes_total">-</h2>
+                                        <h2 id="mes_total"> - </h2>
 
                                         <div class="text-muted mt-4">PLANES</div>
 
-                                        <h4 id="mes_cantidad">-</h4>
+                                        <h4 id="mes_cantidad"> - </h4>
                                     </div>
                                 </div>
-                            {{-- <div class="ibox-body" id="incomes-summary"></div> --}}
                         </div>
                     </div>
                 </div>
@@ -151,7 +147,11 @@
                                     <tbody>
                                         @foreach ($plan_users->take(5) as $pu)
                                         <tr>
-                                            <td><a href="{{ url('/users/'.$pu['user_id']) }}">{{ $pu['alumno'] }}</a></td>
+                                            <td>
+                                                <a href="{{ url("/users/{$pu['user_id']}") }}">
+                                                    {{ $pu['alumno'] }}
+                                                </a>
+                                            </td>
                                             <td>{{ $pu['plan'] }}</td>
                                             <td>{{ $pu['fecha_termino'] }}</td>
                                             <td>{{ $pu['telefono'] }}</td>
@@ -312,7 +312,7 @@
     var uri = "{{ url('withoutrenewal') }}";
 
     $( document ).ready(function () {
-        $.get('/incomes-summary/', function (res) {
+        $.get("/incomes-summary/", function (res) {
             Object.keys(res).forEach(element => {
                 $('#' + element).text(res[element]);
             });

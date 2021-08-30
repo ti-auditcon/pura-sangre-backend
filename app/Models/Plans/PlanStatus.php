@@ -13,9 +13,11 @@ class PlanStatus extends Model
 
 	/** ID status Plan */
 	const CONGELADO = 2;
+	const FREEZED = 2;
 
 	/** ID status Plan */
 	const PRECOMPRA = 3;
+	const PRE_PURCHASE = 3;
 
 	/** ID status Plan */
 	const COMPLETADO = 4;

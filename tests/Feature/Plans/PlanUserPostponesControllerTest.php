@@ -7,12 +7,17 @@ use App\Models\Users\Role;
 use App\Models\Users\User;
 use App\Models\Plans\PlanUser;
 use App\Models\Users\RoleUser;
+use App\Models\Plans\PlanStatus;
+use App\Models\Plans\PostponePlan;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class PlanUserPostponesControllerTest extends TestCase
 {
     use RefreshDatabase, DatabaseMigrations;
+
+    // if the plan is freezed, it can't be updated until is unfreezed
 
     /**
      *  A created admin for tests
@@ -30,18 +35,10 @@ class PlanUserPostponesControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->createAnAdminUser();
+        $this->createAnAdmin();
 
         $birthdate_users = app(User::class)->birthdate_users();
         view()->share(compact('birthdate_users'));
-
-        // ClaseType::create([
-        //     'clase_type' => 'CrossFit',
-        //     'clase_color' => 'CrossFit',
-        //     'icon' => 'crossfit.svg',
-        //     'icon_white' => 'crossfit.svg',
-        //     'active' => true,
-        // ]);
     }
 
     /**
@@ -49,7 +46,7 @@ class PlanUserPostponesControllerTest extends TestCase
      *
      *  @return  void
      */
-    public function createAnAdminUser(): void
+    public function createAnAdmin(): void
     {
         $user = factory(User::class)->create();
         $this->createAdminRole();
@@ -72,7 +69,8 @@ class PlanUserPostponesControllerTest extends TestCase
     {
         factory(RoleUser::class)->create(['user_id' => $user->id, 'role_id' => Role::ADMIN]);
     }
-    
+
+
     /** 
      *  Validations are:
      *    -  start and end dates are required
@@ -84,7 +82,6 @@ class PlanUserPostponesControllerTest extends TestCase
     {
         $plan_user = factory(PlanUser::class)->create();
 
-        
         /**    -  start and end dates are required  */
         $this->actingAs($this->admin)
             ->post("/plan-user/{$plan_user->id}/postpones", [])
@@ -103,11 +100,111 @@ class PlanUserPostponesControllerTest extends TestCase
                 "end_freeze_date" => "La fecha de término del congelamiento debe ser igual o mayor a la de inicio."
             ]);
     }
+    
+    /** @test */
+    public function testing_days_of_a_freezed_plan_are_calculated_correctly()
+    {
+        // we set days for an active current plan to be setted (for finish_date)
+        $testingPlanDays = 10;
+
+        $plan_user = factory(PlanUser::class)->create([
+            'plan_status_id' => PlanStatus::ACTIVE,
+            'finish_date' => today()->addDays($testingPlanDays)
+        ]);
+
+        $this->actingAs($this->admin)
+            ->post("/plan-user/{$plan_user->id}/postpones", [
+                "start_freeze_date" => today()->format('d-m-Y'),
+                "end_freeze_date"   => today()->format('d-m-Y')
+            ]);
+
+        $this->assertDatabaseHas('freeze_plans', [
+            'plan_user_id' => $plan_user->id,
+            'start_date'   => today()->format('Y-m-d'),
+            'finish_date'  => today()->format('Y-m-d'),
+            'days'         => $testingPlanDays
+        ]);
+    }
+
+    /**  @test  */
+    public function at_unfreeze_a_plan_the_postpone_record_is_revoked_correctly()
+    {
+        $plan_user = factory(PlanUser::class)->create();
+        
+        $postpone = factory(PostponePlan::class)->create([
+            'plan_user_id' => $plan_user->id
+        ]);
+
+        $this->actingAs($this->admin)->delete("/postpones/{$postpone->id}");
+
+        $this->assertDatabaseHas('freeze_plans', [
+            'id'      => $postpone->id,
+            'revoked' => true,
+        ]);
+    }
 
     /** @test */
-    public function admin_can_freeze_a_plan_user_for_student()
+    public function at_unfreeze_the_plan_has_a_correct_finish_date()
     {
-        // $this->withoutExceptionHandling();
+        $plan_user = factory(PlanUser::class)->create();
 
+        $testingPlanDays = today()->diffInDays($plan_user->finish_date);
+
+        $postpone = factory(PostponePlan::class)->create([
+            'days'         => $testingPlanDays,
+            'plan_user_id' => $plan_user->id
+        ]);
+
+        $this->actingAs($this->admin)->delete("/postpones/{$postpone->id}");
+
+        $this->assertDatabaseHas('plan_user', [
+            'id'          => $plan_user->id,
+            'finish_date' => today()->addDays($testingPlanDays)->format('Y-m-d'),
+        ]);
+    }
+
+    /** @test */
+    public function once_plan_is_freezed_it_has_freezed_status()
+    {
+        $plan_user = factory(PlanUser::class)->create([
+            'plan_status_id' => PlanStatus::ACTIVE,
+        ]);
+
+        $this->actingAs($this->admin)
+            ->post("/plan-user/{$plan_user->id}/postpones", [
+                "start_freeze_date" => today()->format('d-m-Y'),
+                "end_freeze_date"   => today()->format('d-m-Y')
+            ]);
+
+        $this->assertDatabaseHas('plan_user', [
+            'id'             => $plan_user->id,
+            'plan_status_id' => PlanStatus::CONGELADO
+        ]);
+    }
+
+    // despues de congelar un plan, este queda con estado congelado
+    // la tabla freeze_plans tiene el revoked en false, y los days son correctos
+    // al descongelar el plan pasa a activo
+
+    /** 
+     *  Being freezed the plan can't be edited until the admin unfreezed 
+     * 
+     *  @test
+     */
+    public function plan_user_with_status_freezed_can_not_be_edited()
+    {
+        $plan_user = Model::withoutEvents(function () {
+            return factory(PlanUser::class)->create([
+                'plan_status_id' => PlanStatus::CONGELADO,
+            ]);
+        });
+
+        $this->actingAs($this->admin)
+                ->patch("users/{$plan_user->user_id}/plans/{$plan_user->id}" , [
+                    'class_numbers' => 1,
+                    'clases_by_day' => 1,
+                ])->assertSessionHas([
+                    'warning' => 'El plan no puede ser editado estando congelado.'
+                ]);
     }
 }

@@ -192,12 +192,12 @@ class DTE
                         "IndServicio" => 3, // tipo de transacción (3 = Boletas de venta y servicios)
                     ],
                     'Emisor' => [
-                        "RUTEmisor"    => $this->emisor['rut'],                  //  "76795561-8",
-                        "RznSocEmisor" => $this->emisor['razon_social'],         //  "HAULMER SPA",
-                        "GiroEmisor"   => $this->emisor['giro'],                 //  "VENTA AL POR MENOR POR CORREO, POR INTERNET Y VIA TELEFONICA",
-                        "DirOrigen"    => $this->emisor['address'],              //  "ARTURO PRAT 527, CURICO",
-                        "CmnaOrigen"   => $this->emisor['comuna'],               //  "Curicó",
-                        "CiudadOrigen" => $this->emisor['city'],                 //  "Curicó",
+                        "RUTEmisor"    => $this->emisor['rut'],                     //  "76795561-8",
+                        "RznSocEmisor" => $this->emisor['razon_social'],            //  "HAULMER SPA",
+                        "GiroEmisor"   => $this->emisor['giro'],                    //  "VENTA AL POR MENOR POR CORREO, POR INTERNET Y VIA TELEFONICA",
+                        "DirOrigen"    => $this->emisor['address'],                 //  "ARTURO PRAT 527, CURICO",
+                        "CmnaOrigen"   => $this->emisor['comuna'],                  //  "Curicó",
+                        "CiudadOrigen" => $this->emisor['city'],                    //  "Curicó",
                         // "CdgSIISucur"  => $this->emisor['codigo_sii_sucursal'],  //  81303347
                     ],
                     'Receptor' => [

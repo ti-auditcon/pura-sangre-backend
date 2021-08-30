@@ -1,6 +1,8 @@
 <?php
 
+use Carbon\Carbon;
 use App\Mail\NewPlanUserEmail;
+use App\Models\Plans\PlanStatus;
 use App\Models\Plans\PlanUserFlow;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -26,6 +28,122 @@ Route::get('/success-reset-password', function () {
 Route::post('expired-plans', 'HomeController@ExpiredPlan')->name('expiredplans');
 
 Route::middleware(['auth'])->prefix('/')->group(function () {
+    Route::get('freeze-plans/fix', function() {
+        // $postpone = App\Models\Plans\PostponePlan::join('plan_user', 'plan_user.id', '=', 'freeze_plans.plan_user_id')
+        //                                 ->join('plans', 'plan_user.plan_id', '=', 'plans.id')
+        //                                 ->find(1526, [
+        //                                     'freeze_plans.id', 'freeze_plans.plan_user_id',
+        //                                     'freeze_plans.start_date', 'freeze_plans.finish_date',
+        //                                     'freeze_plans.revoked', 'freeze_plans.days',
+        //                                     'plan_user.id as planUserId', 'plan_user.start_date as planUserStartDate',
+        //                                     'plan_user.finish_date as planUserFinishDate',
+        //                                     'plans.id as planId', 'plans.plan'
+        //                                 ]);
+
+        // $days_freezed = Carbon::parse($postpone->start_date)->diffInDays(Carbon::parse($postpone->finish_date));
+        // // remove days freezed to actual planUserFinishDate
+        // $realFinishDatePlan = Carbon::parse($postpone->planUserFinishDate)->subDays($days_freezed);
+        // // calculate resting days with the difference start freeze and PlanUser finishDate
+        // $restingDays = Carbon::parse($postpone->start_date)->diffInDays($realFinishDatePlan);
+
+        $freezed_plans = App\Models\Plans\PostponePlan::where('revoked', false)
+                                                        ->join('plan_user', 'plan_user.id', '=', 'freeze_plans.plan_user_id')
+                                                        ->join('plans', 'plans.id', '=', 'plan_user.plan_id')
+                                                        ->join('plan_periods', 'plan_periods.id', '=', 'plans.plan_period_id')
+                                                        ->leftJoin('bills', 'plan_user.id', '=', 'bills.plan_user_id')
+                                                        ->whereNull('days')
+                                                        ->get([
+                                                            'freeze_plans.id', 'freeze_plans.plan_user_id',
+                                                            'freeze_plans.start_date as startFreeze', 'freeze_plans.finish_date as finishFreeze',
+                                                            'freeze_plans.revoked', 'freeze_plans.days',
+                                                            'plan_user.id as planUserId', 'plan_user.start_date as planUserStartDate',
+                                                            'plan_user.finish_date as planUserFinishDate', 'plan_user.plan_status_id',
+                                                            'bills.id as billId', 'bills.start_date as billStartDate', 'bills.finish_date as billFinishDate',
+                                                            'plans.id as planId', 'plan_periods.period_number'
+                                                        ]);
+
+        // calculo los dias en que el plan estuvo congelado
+        foreach ($freezed_plans as $freeze_plan) {
+            $planStartDate = Carbon::parse($freeze_plan->planUserStartDate);
+            $startFreezing = Carbon::parse($freeze_plan->startFreeze);
+            $finishFreezing = Carbon::parse($freeze_plan->finishFreeze);
+            $billStart = Carbon::parse($freeze_plan->billStartDate);
+            $billFinish = Carbon::parse($freeze_plan->billFinishDate);
+
+            if ($startFreezing > $planStartDate && $finishFreezing < today()) {
+                $days_of_freezing = $startFreezing->diffInDays($finishFreezing);
+                // remove days freezed to actual planUserFinishDate
+                $removedFinishDatePlan = Carbon::parse($freeze_plan->planUserFinishDate)->subDays($days_of_freezing + 1);
+                // calculate resting days with the difference start freeze and PlanUser finishDate
+                $restingDays = $startFreezing->diffInDays($removedFinishDatePlan);
+
+
+                    // dias que fueron consumidos del plan
+                    // dd(
+                    //     $freeze_plan,
+                    //     $planStartDate,
+                    //     Carbon::parse($freeze_plan->startFreeze),
+                    //     $planStartDate->diffInDays(Carbon::parse($freeze_plan->startFreeze))
+                    // );
+                    // $consumed_days = $planStartDate->diffInDays(Carbon::parse($freeze_plan->startFreeze));
+
+                    // dias que le quedan (/formula)  dia de inicio - dia de termino real del plan - consumed days
+                    // para calcular el dia de termino real del plan tomamos el dia de inicio del plan y calculamos en base al plan (mensual, anual, etc)
+                    // $total_plan_days = $planStartDate->diffInDays($planStartDate->copy()->addMonths($freeze_plan->period_number));
+                    // dd('dias que le quedan al plan', $);
+                    // $restingDays = $total_plan_days - $consumed_days;
+
+                $differenceDaysBillStartAgainstBillEnd = $billStart->diffInDays($billFinish);
+                //  si los dias entre el inicio y termino del plan segun la boleta, es menor a los restringDays, algo anda mal
+
+                if ($differenceDaysBillStartAgainstBillEnd < $restingDays) {
+                    $freeze_plan->update(['days' => 15]);
+                } else {
+                    $freeze_plan->update(['days' => $restingDays]);
+                }
+
+                continue;
+            }
+               
+            // arreglar planes que la fecha de inicio es mayor a la fecha de inicio de su congelacionamiento
+            if ($freeze_plan->billId &&
+                $startFreezing < $planStartDate && 
+                $billStart < $startFreezing &&
+                $billFinish > $finishFreezing) {
+                // if the plan associated to this freezing is currently not freezed, this record should be revoked
+                if ($freeze_plan->plan_status_id !== PlanStatus::FREEZED) {
+                    $freeze_plan->update(['revoked' => true]);
+                } else {
+                    $restingDays = Carbon::parse($freeze_plan->startFreeze)->diffInDays(Carbon::parse($freeze_plan->billFinishDate));
+
+                    $differenceDaysBillStartAgainstBillEnd = Carbon::parse($freeze_plan->billStartDate)->diffInDays(Carbon::parse($freeze_plan->billFinishDate));
+                    
+                    if ($differenceDaysBillStartAgainstBillEnd < $restingDays) {
+                        $freeze_plan->update(['days' => 15]);
+                    } else {
+                        $freeze_plan->update(['days' => $restingDays]);
+                    }
+                }
+            }
+        }
+    });
+
+    Route::get('freeze-plans/revoked-activateds', function() {
+
+        $freezed_plans = App\Models\Plans\PostponePlan::where('revoked', false)
+                                                        ->join('plan_user', 'plan_user.id', '=', 'freeze_plans.plan_user_id')
+                                                        ->get([
+                                                            'freeze_plans.id', 'freeze_plans.plan_user_id', 'freeze_plans.revoked',
+                                                            'plan_user.id as planUserId', 'plan_user.plan_status_id',
+                                                        ]);
+        
+        foreach ($freezed_plans as $freezed) {
+            if ($freezed->plan_status_id !== PlanStatus::FREEZED) {
+                $freezed->update(['revoked' => true]);
+            }
+        }
+    });
+
     // Calibrate plan_income_summaries
     Route::post('plan-incomes-summaries/calibrate', 'Reports\ReportController@incomesCalibrate')
         ->name('incomes.calibrate');
@@ -191,3 +309,5 @@ Route::get('maila', function() {
 
     return Mail::to('raulberrios8@gmail.com')->send(new App\Mail\NewPlanUserEmail($planuserFlow));
 });
+
+

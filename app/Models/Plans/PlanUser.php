@@ -80,6 +80,16 @@ class PlanUser extends Model
     }
 
     /**
+     *  If the plan has the status freezed return true
+     *
+     *  @return  bool
+     */
+    public function isFreezed() :bool
+    {
+        return $this->plan_status_id === PlanStatus::CONGELADO;
+    }
+
+    /**
      *  [bill description]
      *
      *  @return [model] [description]

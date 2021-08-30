@@ -11,37 +11,16 @@ use App\Models\Plans\PlanStatus;
 use App\Models\Bills\Installment;
 use App\Models\Plans\PlanUserFlow;
 use App\Models\Bills\PaymentStatus;
-
+use App\Models\Plans\PostponePlan;
 
 $factory->define(PlanUser::class, function (Faker $faker) {
-    $plan = factory(Plan::class)->create();
-    
-    $starts_at = Carbon::createFromTimestamp($faker->dateTimeBetween($startDate = '-14 months', $endDate = '-1 weeks')->getTimeStamp());
-    
-    $ends_at= Carbon::createFromFormat("Y-n-j G:i:s", $starts_at)
-                    ->addMonths($plan->plan_period->period_number ?? 1)
-                    ->subDay();
-    
-    if ($starts_at >= today()) {
-        $plan_status_id = 3;
-    } elseif ($ends_at >= today()) {
-        $plan_status_id = 1;
-    } else {
-        $plan_status_id = 4;
-    }
-   
-    $plan_period = PlanPeriod::find($plan->plan_period_id);
-    
-    $period_number = $plan_period ? $plan_period->period_number : 1;
-
     return [
-        'start_date' => $starts_at,
-        'finish_date' => $ends_at,
-        'counter' => $plan->class_numbers * $period_number,
-        'plan_status_id' => $plan_status_id,
-        'user_id' => factory(User::class)->create()->id,
-        'plan_id' => $plan->id,
-                'amount'         => 19990,
+        'start_date'     => $faker->dateTimeBetween('- 2 months', 'now'),
+        'finish_date'    => $faker->dateTimeBetween('now', '+ 2 months'),
+        'counter'        => 20,
+        'plan_status_id' => PlanStatus::ACTIVE,
+        'user_id'        => factory(User::class)->create()->id,
+        'plan_id'        => factory(Plan::class)->create()->id,
     ];
 });
 
@@ -85,30 +64,13 @@ $factory->define(PlanUserFlow::class, function(Faker $faker)  {
         'paid'           => false
     ];
 });
-//
-// $factory->define(PlanUser::class, function (Faker $faker) {
-//
-// $starts_at = Carbon::createFromTimestamp($faker->dateTimeBetween($startDate = '-1 months', $endDate = 'now')->getTimeStamp());
-// $ends_at= Carbon::createFromFormat("Y-n-j G:i:s", $starts_at)->addMonths($faker->numberBetween( 1, 2, 3));
-//
-//     return [
-//       'start_date' => $starts_at,
-//       'finish_date' => $ends_at,
-//       'counter' => 5,
-//       'plan_status_id' => $faker->randomElement($array = array ('1', '2', '3', '4', '5')),
-//       // 'plan_status_id' => 1,
-//       'plan_id' => Plan::all()->random()->id,
-//     ];
-// });
-//
 
-// $factory->define(Installment::class, function (Faker $faker) {
-//     return [
-//         'bill_id' => Bill::all()->random()->id,
-//         'payment_status_id' => PaymentStatus::all()->random()->id,
-//         'commitment_date' => $faker->date($format = 'Y-n-j G:i:s', $max = 'now'),
-//         'payment_date' => $faker->date($format = 'Y-n-j G:i:s', $max = 'now'),
-//         'expiration_date' => $faker->date($format = 'Y-n-j G:i:s', $max = 'now'),
-//         'amount' => $faker->randomNumber($nbDigits = 7, $strict = false),
-//     ];
-// });
+$factory->define(PostponePlan::class, function(Faker $faker) {
+    return [
+        'plan_user_id' => factory(PlanUser::class)->create()->id,
+        'start_date'   => $faker->date(),
+        'finish_date'  => $faker->date(),
+        'days'         => $faker->randomDigit,
+        'revoked'      => false
+    ];
+});

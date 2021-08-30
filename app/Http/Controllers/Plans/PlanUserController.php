@@ -137,8 +137,12 @@ class PlanUserController extends Controller
      *
      *  @return  \Illuminate\Http\RedirectResponse
      */
-    public function update(PlanUserRequest $request, User $user, planuser $plan)
+    public function update(PlanUserRequest $request, User $user, PlanUser $plan)
     {
+        if ($plan->isFreezed()) {
+            return redirect("users/{$user->id}")->with('warning', 'El plan no puede ser editado estando congelado.');
+        }
+
         $plan->update([
             'start_date'     => Carbon::parse($request->start_date),
             'finish_date'    => Carbon::parse($request->finish_date),

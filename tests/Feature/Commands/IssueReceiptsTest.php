@@ -13,7 +13,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 class IssueReceiptsTest extends TestCase
 {
     use RefreshDatabase, DatabaseMigrations;
- 
+
     /** @test */
     public function bill_pdf_is_stored_through_api_correctly()
     {
@@ -36,7 +36,7 @@ class IssueReceiptsTest extends TestCase
             'bill_pdf'  => config('app.api_url') . "/storage/boletas/boleta_{$planUserFlow->id}_{$planUserFlow->user->first_name}.pdf"
         ]);
     }
-   
+
     /** @test */
     public function receipt_is_issued_correctly()
     {

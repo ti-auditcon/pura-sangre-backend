@@ -96,11 +96,12 @@ class CreatePlansTable extends Migration
         });
 
         Schema::create('freeze_plans', function (Blueprint $table) {
-            $table->mediumIncrements('id');
+            $table->increments('id');
             $table->unsignedInteger('plan_user_id');
-            $table->unsignedTinyInteger('revoked');
             $table->date('start_date');
             $table->date('finish_date');
+            $table->unsignedTinyInteger('revoked')->default(false);
+            $table->unsignedInteger('days');
             $table->timestamps();
         });
 
