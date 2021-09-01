@@ -12,10 +12,10 @@ class DTETest extends TestCase
     use RefreshDatabase, DatabaseMigrations;
     
     /** @test */
-    public function get_received_dtes()
-    {
-        $response = $this->get('/');
+    // public function get_received_dtes()
+    // {
+    //     $response = $this->get('/');
 
-        $response->assertStatus(200);
-    }
+    //     $response->assertStatus(200);
+    // }
 }

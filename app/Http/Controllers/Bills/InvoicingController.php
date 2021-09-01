@@ -197,11 +197,11 @@ class InvoicingController extends Controller
 
     
     /**
-     * [getDTEs description]
+     *  [getDTEs description]
      *
-     * @param   Request  $request  [$request description]
+     *  @param   Request  $request  [$request description]
      *
-     * @return  json
+     *  @return  json
      */
     public function issuedJson(Request $request)
     {
