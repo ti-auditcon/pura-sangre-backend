@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use App\Models\Invoicing\DTE;
 use App\Mail\NewPlanUserEmail;
 use App\Models\Plans\PlanStatus;
 use App\Models\Plans\PlanUserFlow;
@@ -194,4 +195,7 @@ Route::get('maila', function() {
     return Mail::to('raulberrios8@gmail.com')->send(new App\Mail\NewPlanUserEmail($planuserFlow));
 });
 
+Route::get('cancel-dte', function() {
+    app(DTE::class)->cancel(36046);
+});
 

@@ -27,6 +27,7 @@ class DTE
      */
     const BOLETA_ELECTRONICA_EXENTA = 41;
 
+
     /**
      *  En el Rut Receptor se permite el uso de RUT genérico en caso de Boletas de Ventas y Servicios
      *  (no periódicos ni domiciliarios): valor: 66.666.666-6
@@ -72,25 +73,25 @@ class DTE
      *  @var  array
      */
     public static $dtes = [
-        30 => 'Factura',
-        32 => 'Factura de ventas y servicios no afectos o exentos de IVA',
-        33 => 'Factura electrónica',
-        34 => 'Factura no afecta o exenta electrónica',
-        35 => 'Boleta',
-        38 => 'Boleta exenta',
-        39 => 'Boleta electrónica',
-        40 => 'Liquidación factura',
-        41 => 'Boleta exenta electrónica',
-        43 => 'Liquidación factura electrónica',
-        45 => 'Factura de compra',
-        46 => 'Factura de compra electrónica',
-        48 => 'Pago electrónico',
-        50 => 'Guía de despacho',
-        52 => 'Guía de despacho electrónica',
-        55 => 'Nota de débito',
-        56 => 'Nota de débito electrónica',
-        60 => 'Nota de crédito',
-        61 => 'Nota de crédito electrónica',
+        30  => 'Factura',
+        32  => 'Factura de ventas y servicios no afectos o exentos de IVA',
+        33  => 'Factura electrónica',
+        34  => 'Factura no afecta o exenta electrónica',
+        35  => 'Boleta',
+        38  => 'Boleta exenta',
+        39  => 'Boleta electrónica',
+        40  => 'Liquidación factura',
+        41  => 'Boleta exenta electrónica',
+        43  => 'Liquidación factura electrónica',
+        45  => 'Factura de compra',
+        46  => 'Factura de compra electrónica',
+        48  => 'Pago electrónico',
+        50  => 'Guía de despacho',
+        52  => 'Guía de despacho electrónica',
+        55  => 'Nota de débito',
+        56  => 'Nota de débito electrónica',
+        60  => 'Nota de crédito',
+        61  => 'Nota de crédito electrónica',
         103 => 'Liquidación',
         110 => 'Factura de exportación electrónica',
         111 => 'Nota de débito de exportación electrónica',
@@ -166,7 +167,7 @@ class DTE
      */
     public function issueReceipt($order)
     {
-        $dte = $this->fillReceiptData($order);
+        $dte = $this->fillReceiptData($order, self::BOLETA_ELECTRONICA_EXENTA);
 
         return $this->issueToSII(json_encode($dte));
     }
@@ -174,11 +175,12 @@ class DTE
     /**
      *  [fillReceiptData description]
      *
-     *  @param   [type]  $receipt  [$receipt description]
+     *  @param   object   $receipt      
+     *  @param   integer  $invoiceType
      *
-     *  @return  [type]            [return description]
+     *  @return  array
      */
-    public function fillReceiptData($receipt)
+    public function fillReceiptData($receipt, $invoiceType)
     {
         $boleta = $this->calculateValues($receipt);
 
@@ -186,7 +188,7 @@ class DTE
             'dte' => [
                 'Encabezado' => [
                     'IdDoc' => [
-                        "TipoDTE"     => self::BOLETA_ELECTRONICA_EXENTA,
+                        "TipoDTE"     => $invoiceType,
                         "Folio"       => $receipt->id,
                         "FchEmis"     => today()->format('Y-m-d'), //  "2020-08-05"
                         "IndServicio" => 3, // tipo de transacción (3 = Boletas de venta y servicios)
@@ -300,6 +302,37 @@ class DTE
             return json_decode($content);
         } catch (\Throwable $th) {
             new DTEErrors($th);
+        }
+    }
+
+    public function cancel($folio)
+    {
+        // dd($obj = (object) ['torrr' => 'foo'], $obj->torrr);
+        // '{"Dte": 52,"Folio": 34972,"Fecha": "2020-10-16"}'
+        try {
+            $client = new Client(['base_uri' => $this->baseUrl]);
+            $response = $client->post("/v2/dte/document", [
+                'headers'  => [
+                    "apikey" => $this->apiKey,
+                    // 'Accept' => 'application/json',
+                    'Content-Type' => 'application/json',
+                ],
+                'json' => app(ElectronicCreditNote::class)->get(
+                    (object) [
+                        'id'            => $folio,
+                        'observations'  => 'Devolución',
+                        'amount'        => 19000,
+                        'id_referencia' => self::BOLETA_ELECTRONICA_EXENTA,
+                        'issue_date'    => today()->format("Y-m-d")
+                    ]
+                )
+            ]);
+            $content = $response->getBody()->getContents();
+            dd($response);
+            return json_decode($content);
+        } catch (\Throwable $error) {
+            dd(json_decode($error->getResponse()->getBody()->getContents(), true));
+            new DTEErrors($error);
         }
     }
 }
