@@ -4,7 +4,7 @@ namespace App\Http\Requests\Bills;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class IssuedDTERequest extends FormRequest
+class IssuedTaxDocumentRequest extends FormRequest
 {
     /**
      *  Determine if the user is authorized to make this request.

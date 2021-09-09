@@ -3,12 +3,12 @@
 namespace App\Console\Commands\Invoicing;
 
 use GuzzleHttp\Client;
-use App\Models\Invoicing\DTE;
+use App\Models\Invoicing\TaxDocument;
 use App\Mail\NewPlanUserEmail;
 use Illuminate\Console\Command;
 use App\Models\Plans\PlanUserFlow;
 use App\Models\Bills\PaymentStatus;
-use App\Models\Invoicing\DTEErrors;
+use App\Models\Invoicing\TaxDocumentErrors;
 use Illuminate\Support\Facades\Mail;
 
 class IssueReceiptsCommand extends Command
@@ -25,7 +25,7 @@ class IssueReceiptsCommand extends Command
      *
      *  @var  string
      */
-    protected $description = 'Send DTEs to SII through Haulmer API';
+    protected $description = 'Send TaxDocuments to SII through Haulmer API';
 
     /**
      *  Check if the requests are with ssl connection
@@ -96,7 +96,7 @@ class IssueReceiptsCommand extends Command
         foreach ($bills as $bill) {
             dump('el id del plan que esta siendo iterado es: ' . $bill->id);
             try {
-                $dte = new DTE;
+                $dte = new TaxDocument;
                 $sii_response = $dte->issueReceipt($bill);
 
                 if (isset($sii_response->TOKEN)) {
@@ -114,9 +114,9 @@ class IssueReceiptsCommand extends Command
                     continue;
                 }
 
-                new DTEErrors($sii_response);
+                new TaxDocumentErrors($sii_response);
             } catch (\Throwable $error) {
-                new DTEErrors($error->getMessage());
+                new TaxDocumentErrors($error->getMessage());
             }
         }
     }
@@ -131,7 +131,7 @@ class IssueReceiptsCommand extends Command
         $billsWithoutPDF = PlanUserFlow::where('created_at', '>=', today())
                                         ->where('paid', PaymentStatus::PAID)
                                         ->whereNotNull('sii_token')
-                                        ->where('sii_token', '!=', DTE::NOT_ISSUED)
+                                        ->where('sii_token', '!=', TaxDocument::NOT_ISSUED)
                                         ->whereNull('bill_pdf')
                                         ->get();
 
@@ -162,11 +162,11 @@ class IssueReceiptsCommand extends Command
         }
 
         try {
-            $response = (new DTE)->getReceipt($plan_user_flow->sii_token);
+            $response = (new TaxDocument)->getReceipt($plan_user_flow->sii_token);
 
             return $this->savePDFThroughAPI($response, $plan_user_flow);
         } catch (\Throwable $error) {
-            new DTEErrors($error->getMessage());
+            new TaxDocumentErrors($error->getMessage());
         }
     }
 
@@ -197,7 +197,7 @@ class IssueReceiptsCommand extends Command
 
             return json_decode($result->getBody()->getContents());
         } catch (\Throwable $error) {
-            new DTEErrors($error->getMessage());
+            new TaxDocumentErrors($error->getMessage());
 
             return response()->json([
                 'status' => 'Error - Do not respond correctly',

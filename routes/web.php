@@ -1,7 +1,7 @@
 <?php
 
 use Carbon\Carbon;
-use App\Models\Invoicing\DTE;
+use App\Models\Invoicing\TaxDocument;
 use App\Mail\NewPlanUserEmail;
 use App\Models\Plans\PlanStatus;
 use App\Models\Plans\PlanUserFlow;
@@ -82,10 +82,10 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('invoices/issued', 'Bills\InvoicingController@issued');
     Route::get('invoices/received/json', 'Bills\InvoicingController@receivedJson');
     Route::get('invoices/issued/json', 'Bills\InvoicingController@issuedJson');
-    Route::post('dte/get-pdf', 'Bills\DTEController@show');
-    Route::post('dte/get-issued-pdf', 'Bills\DTEController@getIssuedPDF');
+    Route::post('dte/get-pdf', 'Bills\TaxDocumentController@show');
+    Route::post('dte/get-issued-pdf', 'Bills\TaxDocumentController@getIssuedPDF');
     
-    Route::post('dte/{plan_user_flow}/save-pdf', 'Bills\DTEController@savePDFThroughAPI');
+    Route::post('dte/{plan_user_flow}/save-pdf', 'Bills\TaxDocumentController@savePDFThroughAPI');
     /*
      * Plans Routes
      */
@@ -182,7 +182,7 @@ Route::resource('/new-user', 'Web\NewUserController')->except('index', 'update',
 Route::post('/flow/return-from-payment', 'Web\NewUserController@finishFlowPayment');
 Route::post('/flow/confirm-payment', 'Web\NewUserController@finishFlowPayment');
 
-Route::get('get-pdf/{plan_user_flow}', 'Web\NewUserController@getPlanUserFlowDTE');
+Route::get('get-pdf/{plan_user_flow}', 'Web\NewUserController@getPlanUserFlowTaxDocument');
 
 Route::get('/flow/return', function () { return view('web.flow.return'); });
 Route::get('/flow/error', function () { return view('web.flow.error'); });
@@ -196,6 +196,6 @@ Route::get('maila', function() {
 });
 
 Route::get('cancel-dte', function() {
-    app(DTE::class)->cancel(36046);
+    app(TaxDocument::class)->cancel(109444);
 });
 

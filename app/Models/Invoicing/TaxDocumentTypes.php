@@ -2,7 +2,7 @@
 
 namespace App\Models\Invoicing;
 
-class DTETypes 
+class TaxDocumentTypes 
 {
 
 }

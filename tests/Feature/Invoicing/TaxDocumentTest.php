@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class DTETest extends TestCase
+class TaxDocumentTest extends TestCase
 {
     use RefreshDatabase, DatabaseMigrations;
     

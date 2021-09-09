@@ -31,15 +31,15 @@ class InvoicingController extends Controller
     protected $verifiedSSL;
 
     /**
-     *  [$fakeDTE description]
+     *  [$fakeTaxDocument description]
      *
-     *  @var  array
+     *  @var  object
      */
-    public $data_response = [
-        "current_page" => 1,
-        "last_page" => 6,
+    public $data_response = array(
+        "current_page"    => 1,
+        "last_page"       => 6,
         "recordsFiltered" => 30,
-        "total" => 196,
+        "total"           => 196,
         "data" => [
             [
                 "RUTEmisor" => 10524550,
@@ -54,7 +54,8 @@ class InvoicingController extends Controller
                 "MntTotal" => 87181,
                 "Acuses" => null,
                 "FmaPago" => 0,
-                "TpoTranCompra" => 1
+                "TpoTranCompra" => 1,
+                "Token" => 1
             ],
             [
                 "RUTEmisor" => 10524550,
@@ -69,7 +70,8 @@ class InvoicingController extends Controller
                 "MntTotal" => 359776,
                 "Acuses" => null,
                 "FmaPago" => 0,
-                "TpoTranCompra" => 1
+                "TpoTranCompra" => 1,
+                "Token" => 1
             ],
             [
                 "RUTEmisor" => 9071084,
@@ -84,10 +86,11 @@ class InvoicingController extends Controller
                 "MntTotal" => 959500,
                 "Acuses" => null,
                 "FmaPago" => 0,
-                "TpoTranCompra" => 1
+                "TpoTranCompra" => 1,
+                "Token" => 1
             ]
         ]
-    ];
+    );
 
     /**
      *  Instanciate urls for this class
@@ -147,7 +150,7 @@ class InvoicingController extends Controller
     }
 
     /**
-     * [getDTEs description]
+     * [getTaxDocuments description]
      *
      * @param   Request  $request  [$request description]
      *
@@ -170,7 +173,6 @@ class InvoicingController extends Controller
 
 
             $response = json_decode($response->getBody()->getContents());
-            // $response = json_decode(json_encode($this->data_response));
 
             if (is_null($response)) {
                 return $this->voidDataTableResponse(); 
@@ -197,7 +199,7 @@ class InvoicingController extends Controller
 
     
     /**
-     *  [getDTEs description]
+     *  [getTaxDocuments description]
      *
      *  @param   Request  $request  [$request description]
      *
@@ -208,23 +210,24 @@ class InvoicingController extends Controller
         try {
             $client = new Client(['base_uri' => $this->baseUrl]);
 
-            $response = $client->post("/v2/dte/document/issued", [
-                'headers'  => [
-                    "apikey" => $this->apiKey,
-                    'Accept' => 'application/json',
-                ],
-                'json' => [
-                    "Page" => $request->query('page') ?? 1
-                ]
-            ]);
-            $response = json_decode($response->getBody()->getContents());
+            // $response = $client->post("/v2/dte/document/issued", [
+            //     'headers'  => [
+            //         "apikey" => $this->apiKey,
+            //         'Accept' => 'application/json',
+            //     ],
+            //     'json' => [
+            //         "Page" => $request->query('page') ?? 1
+            //     ]
+            // ]);
+            // $response = json_decode($response->getBody()->getContents());
 
-            if (is_null($response)) {
-                return $this->voidDataTableResponse(); 
-            } 
+            // if (is_null($response)) {
+            //     return $this->voidDataTableResponse(); 
+            // } 
 
+            $response = (object) $this->data_response;
             $response = $this->addClientAndServiceToReceipts($response);
-            
+
             $json_data = array(
                 "draw"            => intval($request->input('draw')),
                 "recordsFiltered" => intval(count($response->data)),
@@ -270,12 +273,13 @@ class InvoicingController extends Controller
      */
     public function addClientAndServiceToReceipts($response)
     {
+        dd($response);
         foreach ($response->data as $data) {
             if ($planUserFlow = PlanUserFlow::join('users', 'users.id', '=', 'plan_user_flows.user_id')
                                             ->join('plans', 'plans.id', '=', 'plan_user_flows.plan_id')
                                             ->where('plan_user_flows.sii_token', $data->Token)
                                             ->first([
-                                                'plan_user_flows.id',
+                                                'plan_user_flows.id', 'plan_user_flows.paid',
                                                 'users.id as user_id', 'users.first_name', 'users.last_name',
                                                 'plans.id', 'plans.plan'
                                             ])) {
@@ -283,10 +287,12 @@ class InvoicingController extends Controller
                 $data->full_name = ucwords("{$planUserFlow->first_name} {$planUserFlow->last_name}");
                 $data->service = ucfirst($planUserFlow->plan);
                 $data->user_id = ucfirst($planUserFlow->user_id);
+                $data->paid = $planUserFlow->paid;
             } else {
                 $data->full_name = 'sin nombre';
                 $data->service = 'sin servicio';
                 $data->user_id = null;
+                $data->paid = 0;
             }
         }
 

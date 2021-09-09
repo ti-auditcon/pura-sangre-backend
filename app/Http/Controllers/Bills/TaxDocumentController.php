@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Bills;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Models\Plans\PlanUserFlow;
-use App\Models\Invoicing\DTEErrors;
+use App\Models\Invoicing\TaxDocumentErrors;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Bills\IssuedDTERequest;
+use App\Http\Requests\Bills\IssuedTaxDocumentRequest;
 
-class DTEController extends Controller
+class TaxDocumentController extends Controller
 {
     /**
      *  Base url for developing as for production
@@ -125,7 +125,7 @@ class DTEController extends Controller
      * 
      *  @return  \Illuminate\Http\Response
      */
-    public function getIssuedPDF(IssuedDTERequest $request)
+    public function getIssuedPDF(IssuedTaxDocumentRequest $request)
     {
         try {
             $client = new Client(['base_uri' => $this->baseUrl]);
@@ -184,7 +184,7 @@ class DTEController extends Controller
                 json_decode($result->getBody()->getContents())
             ); 
         } catch (\Throwable $error) {
-            new DTEErrors($error);
+            new TaxDocumentErrors($error);
 
             return response()->json([
                 'status' => 'Error - Do not respond correctly',

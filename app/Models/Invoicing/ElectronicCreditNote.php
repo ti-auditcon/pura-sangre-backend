@@ -2,9 +2,9 @@
 
 namespace App\Models\Invoicing;
 
-use App\Models\Invoicing\DTE;
+use App\Models\Invoicing\TaxDocument;
 
-class ElectronicCreditNote extends DTE
+class ElectronicCreditNote extends TaxDocument
 {
     /**    Código utilizado para los siguientes
      *     casos:
@@ -46,7 +46,7 @@ class ElectronicCreditNote extends DTE
     const FIX_AMOUNTS = 3;
     
     /**
-     *  Número de tipo de DTE de BOLETA_ELECTRONICA_EXENTA
+     *  Número de tipo de TaxDocument de BOLETA_ELECTRONICA_EXENTA
      *
      *  @var  int
      */
@@ -74,15 +74,15 @@ class ElectronicCreditNote extends DTE
                         "RUTEmisor"    => $this->emisor['rut'],           //  "76795561-8",
                         "RznSoc"       => $this->emisor['razon_social'],  //  "HAULMER SPA",
                         "GiroEmis"     => $this->emisor['giro'],          //  "VENTA AL POR MENOR POR CORREO, POR INTERNET Y VIA TELEFONICA",
-                        "Telefono"     => "98745655",
-                        "CorreoEmisor" => "correo@correo.cl",
-                        "Acteco"       => 479100,
+                        "Telefono"     => $this->emisor['phone'],
+                        "CorreoEmisor" => $this->emisor['email'],
+                        "Acteco"       => $this->emisor['codigo_actividad_economica'],
                         "DirOrigen"    => $this->emisor['address'],       //  "ARTURO PRAT 527, CURICO",
                         "CmnaOrigen"   => $this->emisor['comuna'],        //  "Curicó",
                         "CiudadOrigen" => $this->emisor['city'],          //  "Curicó",
                     ],
                     'Receptor' => [
-                        "RUTRecep"    => self::RUT_GENERICO, //  "66666666-6"
+                        "RUTRecep"    => self::RUT_GENERICO,
                         "RznSocRecep" => "NACIONALES SIN RUT   (USO EXCLUSIVO F-29, NO USAR PARA PRUEBAS)",
                         "CdgIntRecep" => 1
                     ],
@@ -108,7 +108,7 @@ class ElectronicCreditNote extends DTE
                 ],
                 "Referencia" => [
                     "NroLinRef" => 1,
-                    "TpoDocRef" => $receipt->id_referencia,
+                    "TpoDocRef" => $receipt->reference_id,
                     "FolioRef"  => $receipt->id,
                     "RUTOtr"    => self::RUT_GENERICO,
                     "FchRef"    => $receipt->issue_date,

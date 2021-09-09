@@ -5,11 +5,11 @@ namespace App\Repositories\Plans;
 use GuzzleHttp\Client;
 use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
-use App\Models\Invoicing\DTE;
+use App\Models\Invoicing\TaxDocument;
 use App\Mail\NewPlanUserEmail;
 use App\Models\Plans\PlanUser;
 use App\Models\Plans\PlanUserFlow;
-use App\Models\Invoicing\DTEErrors;
+use App\Models\Invoicing\TaxDocumentErrors;
 use Illuminate\Support\Facades\Mail;
 
 class PlanUserRepository 
@@ -87,16 +87,16 @@ class PlanUserRepository
         }
 
         try {
-            $dte = new DTE;
+            $dte = new TaxDocument;
             $sii_response = $dte->issueReceipt($planUserflow);
 
             if (isset($sii_response->TOKEN)) {
                 return $planUserflow->update(['sii_token' => $sii_response->TOKEN]);
             }
 
-            new DTEErrors($sii_response);
+            new TaxDocumentErrors($sii_response);
         } catch (\Throwable $error) {
-            new DTEErrors($error);
+            new TaxDocumentErrors($error);
         }
     }
 
@@ -118,11 +118,11 @@ class PlanUserRepository
         }
 
         try {
-            $response = (new DTE)->getReceipt($plan_user_flow->sii_token);
+            $response = (new TaxDocument)->getReceipt($plan_user_flow->sii_token);
 
             return $this->savePDFThroughAPI($response, $plan_user_flow);
         } catch (\Throwable $error) {
-            new DTEErrors($error);
+            new TaxDocumentErrors($error);
 
             return true;
         }
@@ -155,7 +155,7 @@ class PlanUserRepository
 
             return json_decode($content);
         } catch (\Throwable $th) {
-            new DTEErrors($th);
+            new TaxDocumentErrors($th);
 
             return response()->json([
                 'status' => 'Error - Do not respond correctly',

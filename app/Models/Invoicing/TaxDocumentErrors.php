@@ -4,10 +4,10 @@ namespace App\Models\Invoicing;
 
 use Illuminate\Support\Facades\DB;
 
-class DTEErrors
+class TaxDocumentErrors
 {
     /**
-     *  Errors for DTEs
+     *  Errors for TaxDocuments
      *
      *  @var  stdClass|string
      */
@@ -16,7 +16,7 @@ class DTEErrors
     /**
      *  Instanciate with the errors passed and manage them
      *
-     *  @param   stdClass|string|null  $errors  Errors for DTEs
+     *  @param   stdClass|string|null  $errors  Errors for TaxDocuments
      */
     public function __construct($response)
     {

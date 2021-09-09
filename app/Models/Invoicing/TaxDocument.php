@@ -4,7 +4,7 @@ namespace App\Models\Invoicing;
 
 use GuzzleHttp\Client;
 
-class DTE
+class TaxDocument
 {
     /**
      *  Haulmer inviocing number
@@ -21,7 +21,7 @@ class DTE
     const NOT_ISSUED = 'sin emision';
 
     /**
-     *  Número de tipo de DTE de BOLETA_ELECTRONICA_EXENTA
+     *  Número de tipo de TaxDocument de BOLETA_ELECTRONICA_EXENTA
      *
      *  @var  int
      */
@@ -149,11 +149,11 @@ class DTE
     }
 
     /**
-     *  [allDTES description]
+     *  [allTaxDocumentS description]
      *
      *  @return  [type]  [return description]
      */
-    public static function allDTES()
+    public static function allTaxDocumentS()
     {
         return self::$dtes;
     }
@@ -188,10 +188,10 @@ class DTE
             'dte' => [
                 'Encabezado' => [
                     'IdDoc' => [
-                        "TipoDTE"     => $invoiceType,
-                        "Folio"       => $receipt->id,
-                        "FchEmis"     => today()->format('Y-m-d'), //  "2020-08-05"
-                        "IndServicio" => 3, // tipo de transacción (3 = Boletas de venta y servicios)
+                        "TipoTaxDocument" => $invoiceType,
+                        "Folio"           => $receipt->id,
+                        "FchEmis"         => today()->format('Y-m-d'), //  "2020-08-05"
+                        "IndServicio"     => 3, // tipo de transacción (3 = Boletas de venta y servicios)
                     ],
                     'Emisor' => [
                         "RUTEmisor"    => $this->emisor['rut'],                     //  "76795561-8",
@@ -301,11 +301,11 @@ class DTE
 
             return json_decode($content);
         } catch (\Throwable $th) {
-            new DTEErrors($th);
+            new TaxDocumentErrors($th);
         }
     }
 
-    public function cancel($folio)
+    public function cancel($documento)
     {
         // dd($obj = (object) ['torrr' => 'foo'], $obj->torrr);
         // '{"Dte": 52,"Folio": 34972,"Fecha": "2020-10-16"}'
@@ -319,20 +319,19 @@ class DTE
                 ],
                 'json' => app(ElectronicCreditNote::class)->get(
                     (object) [
-                        'id'            => $folio,
-                        'observations'  => 'Devolución',
-                        'amount'        => 19000,
-                        'id_referencia' => self::BOLETA_ELECTRONICA_EXENTA,
+                        'id'            => $documento->Folio,
+                        'observations'  => $documento->observations ?? 'nota de credito para anulacion de documento',
+                        'amount'        => $documento->MntTotal,
+                        'reference_id' => $documento->TipoDTE,
                         'issue_date'    => today()->format("Y-m-d")
                     ]
                 )
             ]);
-            $content = $response->getBody()->getContents();
-            dd($response);
-            return json_decode($content);
+
+            return json_decode($response->getBody()->getContents());
         } catch (\Throwable $error) {
-            dd(json_decode($error->getResponse()->getBody()->getContents(), true));
-            new DTEErrors($error);
+            return json_decode($error->getResponse()->getBody()->getContents(), true);
+            // return new TaxDocumentErrors($error);
         }
     }
 }

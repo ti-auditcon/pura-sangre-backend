@@ -3,9 +3,9 @@
 namespace App\Models\Invoicing;
 
 use GuzzleHttp\Client;
-use App\Models\Invoicing\DTE;
+use App\Models\Invoicing\TaxDocument;
 
-class DTERequests extends DTE
+class TaxDocumentRequests extends TaxDocument
 {
     /**
      *  url for developing and testing

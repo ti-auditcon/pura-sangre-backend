@@ -34,7 +34,7 @@
                         <thead class="thead-default">
                             <tr>
                                 <th width="30%">Nombre</th>
-                                <th width="20%">Tipo de DTE</th>
+                                <th width="20%">Tipo de documento</th>
                                 <th width="15%">Monto toral</th>
                                 <th width="10%">Fecha emisión</th>
                                 <th width="10%">Acciones</th>
@@ -63,7 +63,7 @@
 <script src="{{ asset('js/moment.min.js') }}"></script>
 
 <script>
-    const dteNames = @json(App\Models\Invoicing\DTE::allDTES());
+    const dteNames = @json(App\Models\Invoicing\TaxDocument::allTaxDocumentS());
     const base_url = @json(url('/'));
     const url_path = "/invoices/received/json";
     let current_page = 1;
@@ -74,7 +74,7 @@
     });
 
     $(document).ready(function() {
-        // let dataDTETable = getDTEsData();
+        // let dataTaxDocumentTable = getTaxDocumentsData();
         dtesTable = $('#dtes-table').DataTable({
             "ajax": {
                 type: 'GET',
@@ -119,7 +119,7 @@
             },
             "columns": [
                 { "data": "RznSoc" },
-                { "data": "TipoDTE",
+                { "data": "TipoTaxDocument",
                     "render": function (data, other, row) {
                         return dteNames[data] + ` Nº ${row.Folio}`;
                     }
@@ -143,7 +143,7 @@
                         return `<button class="dte-link btn btn-success text-white"
                                     data-rut="${row.RUTEmisor}"
                                     data-dv="${row.DV}"
-                                    data-type="${row.TipoDTE}"
+                                    data-type="${row.TipoTaxDocument}"
                                     data-document_number="${row.Folio}"
                                 >
                                 Solicitar PDF
