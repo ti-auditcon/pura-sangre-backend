@@ -70,7 +70,7 @@ jQuery(function () {
             {
                 "data": "TipoDTE",
                 "render": function (data, other, row) {
-                    return `${dteNames[data]} Nº ${row.Folio} ${row.paid === 3 ? '<span class="badge badge-warning badge-pill">ANULADA</span>' : '' }`;
+                    return `${taxDocuments[data]} Nº ${row.Folio} ${row.paid === 3 ? '<span class="badge badge-warning badge-pill">ANULADA</span>' : '' }`;
                 }
             },
             {
@@ -101,10 +101,13 @@ jQuery(function () {
                             </button>
                             ${ row.paid !== 3 ?
                                 `<button 
-                                    data-toggle="modal"
-                                    data-target="#canceBillModal"
-                                    class="ml-2 btn btn-warning text-white"
+                                    class="ml-2 btn btn-warning text-white cancel-bill-button"
                                     data-token="${row.Token}"
+                                    data-fchemis="${row.FchEmis}"
+                                    data-mnttotal="${row.MntTotal}"
+                                    data-folio="${row.Folio}"
+                                    data-tipodte="${row.TipoDTE}"
+                                    data-iva="${row.IVA}"
                                 >
                                     Anular
                                 </button>` :

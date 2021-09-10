@@ -146,13 +146,28 @@ class TaxDocumentController extends Controller
                 ]);
             }
         } catch (\GuzzleHttp\Exception\ClientException $error) {
-            $response = json_decode($error->getResponse()->getBody()->getContents(), true);
-            dd($response);
+            $response = json_decode($error->getResponse()->getBody()->getContents(), false);
 
             return response()->json([
-                'status' => 'Request failed', 'message' => $response['message']
-            ], $response['statusCode']);
+                'status' => 'Request failed', 'message' => $this->getErrorMessage($response)
+            ], 401);
         }
+    }
+
+    /**
+     * [getErrorMessage description]
+     *
+     * @param   [type]  $response  [$response description]
+     *
+     * @return  [type]             [return description]
+     */
+    public function getErrorMessage($response)
+    {
+        if (isset($response->message)) return $response->message;
+
+        if (isset($response->error) && isset($response->error->message)) return $response->error->message;
+
+        return 'Error al intentar traer documento';
     }
 
     /**
@@ -191,5 +206,18 @@ class TaxDocumentController extends Controller
                 'message' => isset($error->mesage) ? $error->message : 'No se ha podido guardar correctamente el pdf',
             ]);
         }
+    }
+
+    function convertToObject($array) {
+        $object = new \stdClass();
+
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $value = $this->convertToObject($value);
+            }
+            $object->$key = $value;
+        }
+
+        return $object;
     }
 }

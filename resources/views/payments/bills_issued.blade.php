@@ -69,92 +69,91 @@
 {{-- Javasctipt to get issued invoices --}}
 <script src="{{ asset('js/purasangre/payments/issued.js') }}"></script>
 
+{{-- Javasctipt to get issued invoices --}}
+<script src="{{ asset('js/purasangre/payments/manage-pdf.js') }}"></script>
+
 <script>
-    const dteNames = @json(App\Models\Invoicing\TaxDocument:: allTaxDocuments());
+    const taxDocuments = @json(App\Models\Invoicing\TaxDocument::list());
     const base_url = @json(url('/'));
+    let previousTaxToken = 1;
+    let currentTaxToken = 1;
 
-    /** */
-    async function managePDFRequest(event)
+    jQuery(document).on('click', ".cancel-bill-button", function() {
+        $("#canceBillModal").modal();
+
+        currentTaxToken = $(this).data("token");
+
+        fillCancelBillModal($(this).data());
+    });
+
+    function fillCancelBillModal(billData)
     {
-        changeButtonToRequesting(event);        
-
-        let parametersForPDF = transformDataParameters(event);
-        requestIssuedPdfDataFromSii(parametersForPDF).then(success => {
-            generatePdfFromBase64(success.data);
-
-            changeButtonToCorrectFinishState(event);
-        }).catch(error => {
-            changeButtonToNormalState(event);
-            
-            return alert(error.responseJSON.message);
+        Object.keys(billData).forEach(key => {
+            $(`#${key}`).text(new BillData(billData[key])[key]());
         });
     }
 
-    function changeButtonToRequesting(button)
+    class BillData
     {
-        button.prop('disabled', true);  // disable button
-        
-        button.text('Solicitando...');
-    }
+        constructor(data) {
+            this.data = data;
 
-    function changeButtonToNormalState(button)
-    {
-        button.text('Solicitar PDF');    //  change text button
-        
-        button.prop('disabled', false);  //  enable button
-    }
-
-    /**
-     *  @argument 
-     */
-    function changeButtonToCorrectFinishState(button)
-    {
-        button.text('Listo');
-
-        button.prop('disabled', true);  //  disable button
-    }
-
-    /**
-     *  
-     */
-    function transformDataParameters(field)
-    {
-        return {
-            "token": field.data('token'),
+            this.taxes = {
+                41: 'Boleta exenta electrónica'
+            };
         }
-    }
 
-    /**
-     *
-     */
-    function requestIssuedPdfDataFromSii(dte)
-    {
-        return new Promise((resolve, reject) => {
-            $.ajax({                        
-                type: "POST",                 
-                url: "/dte/get-issued-pdf",                     
-                data: { token: dte.token }, 
-            }).done(successResponse => {
-                resolve(successResponse);
-            }).fail(errorResponse => {
-                reject(errorResponse)
-            });
-        });
-    }
-
-    function generatePdfFromBase64(stringBase64)
-    {
-        var byteCharacters = atob(stringBase64);
-        var byteNumbers = new Array(byteCharacters.length);
-        for (var i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
+        getTaxDocument(value) {
+            return this.taxes[value] ? `${value} - ${this.taxes[value]}` : false;
         }
-        var byteArray = new Uint8Array(byteNumbers);
-        var file = new Blob([byteArray], { type: 'application/pdf;base64' });
-        var fileURL = URL.createObjectURL(file);
-        fileURL.download = "hola.pdf";
-        window.open(fileURL);
+
+        iva() {
+            return `${this.data}%`;
+        }
+        
+        fchemis() {
+            return moment(this.data).format('DD-MM-YYYY');
+        }
+        
+        mnttotal() {
+            return new Intl.NumberFormat("es-CL", { style: 'currency', currency: 'CLP' })
+                            .format(this.data);
+        }
+        
+        folio() {
+
+            return this.data;
+        }
+        
+        tipodte() {
+            return this.getTaxDocument(this.data) || this.data;
+        }
+
+        token() { }
     }
+
+    //
+    //
+    //  send credit note
+    //
+    //
+    $("#cancel-bill-form").on('submit', function(event) {
+        // disable emitir button
+        $("#issue-cancel-document").text("Emitiendo...");
+        $("#issue-cancel-document").attr("disabled", true);
+        event.preventDefault();
+
+        let url = $(this).attr('action');
+
+        let new_url = url.replace(previousTaxToken, currentTaxToken);
+
+        $('#cancel-bill-form').attr('action', new_url);
+
+        previousTaxToken = currentTaxToken;
+
+        // send form
+        $('#cancel-bill-form').submit();
+    });
 </script>
 
 

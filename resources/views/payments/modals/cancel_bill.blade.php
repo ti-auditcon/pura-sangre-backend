@@ -8,20 +8,44 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="canceBillModal">
+            <form class="canceBillModal" id="cancel-bill-form" method="POST" action="/invoices/issued/1/cancel">
+                @method('DELETE') 
+                @csrf
+
+                <span class="bg-warning text-white" hidden>
+                    Mientras dure este proceso por favor no cierre esta ventana, una vez terminado la ventana se recargará sola...
+                </span>
                 <div class="modal-body">
-                    <div class="col">
-                        <span>Fecha de emisión: </span>
-                        <span>MntTotal: 30000</span>
-                        <span>Folio: 5700</span>
-                        <span>DV: "6"</span>
-                        <span>TipoDTE: 41</span>
-                        <span>IVA: 0</span>
+                    <h5>Datos de la boleta a anular</h5>
+
+                    <div class="row mb-2">
+                        <div class="col-12 text-muted">Fecha de emisión:</div>
+                        <div class="col-12" id="fchemis" name="ho"> - </div>
+                    </div>
+
+                    <div class="row mb-2">
+                        <div class="col-12 text-muted">Monto total: </div>
+                        <div class="col-12" id="mnttotal">-</div>
+                    </div> 
+
+                    <div class="row mb-2">
+                        <div class="col-12 text-muted">Folio de documento:</div>
+                        <div class="col-12" id="folio">-</div>
+                    </div>    
+
+                    <div class="row mb-2">
+                        <div class="col-12 text-muted">Tipo:</div>
+                        <div class="col-12" id="tipodte">-</div>
+                    </div>
+                    
+                    <div class="row mb-2">
+                        <div class="col-12 text-muted">IVA:</div>
+                        <div class="col-12" id="iva">-</div>
                     </div>
                 </div>
 
                 <div class="modal-footer">                    
-                    <button id="cancel_bill_button" class="btn btn-primary">
+                    <button id="issue-cancel-document" class="btn btn-primary">
                         Emitir
                     </button>
 

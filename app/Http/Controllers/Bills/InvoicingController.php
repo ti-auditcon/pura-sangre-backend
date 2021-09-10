@@ -55,7 +55,7 @@ class InvoicingController extends Controller
                 "Acuses" => null,
                 "FmaPago" => 0,
                 "TpoTranCompra" => 1,
-                "Token" => 1
+                "Token" => "54ksjgd84gjrwo8hgrjwg8932jrewgjuqw899gj9"
             ],
             [
                 "RUTEmisor" => 10524550,
@@ -71,7 +71,7 @@ class InvoicingController extends Controller
                 "Acuses" => null,
                 "FmaPago" => 0,
                 "TpoTranCompra" => 1,
-                "Token" => 1
+                "Token" => "alkjewyurj89gj893a4hj42398v8sdfjga8dsfgdgdfdssd"
             ],
             [
                 "RUTEmisor" => 9071084,
@@ -87,7 +87,39 @@ class InvoicingController extends Controller
                 "Acuses" => null,
                 "FmaPago" => 0,
                 "TpoTranCompra" => 1,
-                "Token" => 1
+                "Token" => "skadljflj4klwjt689j8493vjkfds98gj9w823232223"
+            ],
+            [
+                "RUTEmisor" => 9071084,
+                "DV" => "2",
+                "RznSoc" => "MONICA EUGENIA NEUMANN BIRKE",
+                "TipoDTE" => 41,
+                "Folio" => 9,
+                "FchEmis" => "2021-06-07",
+                "MntExe" => 959500,
+                "MntNeto" => 0,
+                "IVA" => 0,
+                "MntTotal" => 959500,
+                "Acuses" => null,
+                "FmaPago" => 0,
+                "TpoTranCompra" => 1,
+                "Token" => "33333333333333333333333333333"
+            ],
+            [
+                "RUTEmisor" => 9071084,
+                "DV" => "2",
+                "RznSoc" => "MONICA EUGENIA NEUMANN BIRKE",
+                "TipoDTE" => 41,
+                "Folio" => 9,
+                "FchEmis" => "2021-06-07",
+                "MntExe" => 959500,
+                "MntNeto" => 0,
+                "IVA" => 0,
+                "MntTotal" => 959500,
+                "Acuses" => null,
+                "FmaPago" => 0,
+                "TpoTranCompra" => 1,
+                "Token" => "fsadg44444444_we46444444"
             ]
         ]
     );
@@ -208,7 +240,7 @@ class InvoicingController extends Controller
     public function issuedJson(Request $request)
     {
         try {
-            $client = new Client(['base_uri' => $this->baseUrl]);
+            // $client = new Client(['base_uri' => $this->baseUrl]);
 
             // $response = $client->post("/v2/dte/document/issued", [
             //     'headers'  => [
@@ -225,7 +257,7 @@ class InvoicingController extends Controller
             //     return $this->voidDataTableResponse(); 
             // } 
 
-            $response = (object) $this->data_response;
+            $response = json_decode(json_encode($this->data_response));
             $response = $this->addClientAndServiceToReceipts($response);
 
             $json_data = array(
@@ -273,7 +305,6 @@ class InvoicingController extends Controller
      */
     public function addClientAndServiceToReceipts($response)
     {
-        dd($response);
         foreach ($response->data as $data) {
             if ($planUserFlow = PlanUserFlow::join('users', 'users.id', '=', 'plan_user_flows.user_id')
                                             ->join('plans', 'plans.id', '=', 'plan_user_flows.plan_id')
@@ -297,5 +328,15 @@ class InvoicingController extends Controller
         }
 
         return $response;
+    }
+
+    public function cancel($token)
+    {
+        // check if the bill is already canceled
+        // response with json "Esta boleta ya ha sido anulada"
+
+        // annul bill
+        // change the status of the bill
+        // 
     }
 }

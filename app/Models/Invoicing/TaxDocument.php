@@ -68,11 +68,11 @@ class TaxDocument
     protected $emisor;
 
     /**
-     * [$dtes description]
+     * [$list description]
      *
      *  @var  array
      */
-    public static $dtes = [
+    public static $list = [
         30  => 'Factura',
         32  => 'Factura de ventas y servicios no afectos o exentos de IVA',
         33  => 'Factura electrónica',
@@ -153,9 +153,9 @@ class TaxDocument
      *
      *  @return  [type]  [return description]
      */
-    public static function allTaxDocumentS()
+    public static function list()
     {
-        return self::$dtes;
+        return self::$list;
     }
 
     /**
