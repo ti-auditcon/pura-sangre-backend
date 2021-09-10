@@ -8,7 +8,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="canceBillModal" id="cancel-bill-form" method="POST" action="/invoices/issued/1/cancel">
+            <form class="canceBillModal" id="cancel-bill-form" method="POST" action="{{ route('taxes.cancel', 1) }}">
                 @method('DELETE') 
                 @csrf
 

@@ -137,22 +137,23 @@
     //  send credit note
     //
     //
-    $("#cancel-bill-form").on('submit', function(event) {
-        // disable emitir button
-        $("#issue-cancel-document").text("Emitiendo...");
-        $("#issue-cancel-document").attr("disabled", true);
+    $("#issue-cancel-document").on('click', function(event) {
         event.preventDefault();
+        // disable emitir button
+        $(this).text("Emitiendo...");
+        $(this).attr("disabled", true);
 
-        let url = $(this).attr('action');
+        url = $("#cancel-bill-form").attr('action');
 
-        let new_url = url.replace(previousTaxToken, currentTaxToken);
+        new_url = url.replace(previousTaxToken, currentTaxToken);
 
-        $('#cancel-bill-form').attr('action', new_url);
+        $("#cancel-bill-form").attr('action', new_url);
 
         previousTaxToken = currentTaxToken;
 
         // send form
-        $('#cancel-bill-form').submit();
+        $("#cancel-bill-form").submit();
+
     });
 </script>
 

@@ -332,6 +332,7 @@ class InvoicingController extends Controller
 
     public function cancel($token)
     {
+        dd($token);
         // check if the bill is already canceled
         // response with json "Esta boleta ya ha sido anulada"
 
