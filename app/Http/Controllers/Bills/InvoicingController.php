@@ -6,6 +6,8 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Models\Plans\PlanUserFlow;
 use App\Http\Controllers\Controller;
+use App\Models\Invoicing\TaxDocument;
+use App\Models\Plans\FlowOrderStatus;
 
 class InvoicingController extends Controller
 {
@@ -29,6 +31,13 @@ class InvoicingController extends Controller
      *  @var  boolean
      */
     protected $verifiedSSL;
+
+    /**
+     *  Instance of a tax document
+     *
+     *  @var  TaxDocument
+     */
+    protected $documents;
 
     /**
      *  [$fakeTaxDocument description]
@@ -127,8 +136,10 @@ class InvoicingController extends Controller
     /**
      *  Instanciate urls for this class
      */
-    public function __construct()
+    public function __construct(TaxDocument $taxDocument)
     {
+        $this->documents = $taxDocument;
+
         $this->fillDataForInvoicerAPI(config('app.env'));
     }
 
@@ -330,9 +341,29 @@ class InvoicingController extends Controller
         return $response;
     }
 
-    public function cancel($token)
+    public function cancel($token, Request $request)
     {
-        dd($token);
+        dd($request->all());
+        if ($document = PlanUserFlow::where('sii_token', $token)->first()) {
+            if ($document->paid === FlowOrderStatus::CANCELED) {
+                return back()->with('warning', "La boleta ya ha sido anulada"); 
+            }
+
+            $response  = $this->documents->cancel($document);
+
+            dd($response);
+            return back()->with('success', "El documento ha sido anulado correctamente");
+        }
+
+        // $this->documents->cancel((object) [
+        //     'id'           => $documento->Folio,
+        //     'observations' => $documento->observations ?? 'Nota de crédito para anulación de documento.',
+        //     'amount'       => $documento->MntTotal,
+        //     'reference_id' => $documento->TipoDTE,
+        //     'issue_date'   => today()->format("Y-m-d")
+        // ]);
+
+
         // check if the bill is already canceled
         // response with json "Esta boleta ya ha sido anulada"
 

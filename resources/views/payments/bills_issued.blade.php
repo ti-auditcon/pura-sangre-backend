@@ -89,7 +89,7 @@
     function fillCancelBillModal(billData)
     {
         Object.keys(billData).forEach(key => {
-            $(`#${key}`).text(new BillData(billData[key])[key]());
+            $(`#${key}`).val(new BillData(billData[key])[key]());
         });
     }
 
@@ -143,18 +143,63 @@
         $(this).text("Emitiendo...");
         $(this).attr("disabled", true);
 
-        url = $("#cancel-bill-form").attr('action');
+        issueElectronicNote();
+        // url = $("#cancel-bill-form").attr('action');
 
-        new_url = url.replace(previousTaxToken, currentTaxToken);
+        // new_url = url.replace(previousTaxToken, currentTaxToken);
 
-        $("#cancel-bill-form").attr('action', new_url);
+        // $("#cancel-bill-form").attr('action', new_url);
 
-        previousTaxToken = currentTaxToken;
+        // previousTaxToken = currentTaxToken;
 
-        // send form
-        $("#cancel-bill-form").submit();
+        // // send form
+        // $("#cancel-bill-form").submit();
 
     });
+
+    async function issueElectronicNote()
+    {
+        // issue document
+        // reload the page on success
+        // warning on failure
+        issue(currentTaxToken).then(success => {
+            alert(success.data);
+
+            window.location = "/invoices/issued";
+        }).catch(error => {
+            alert(error.data);
+        });
+
+        changeTextAndStatusToButton(event, "Emitir", false);
+    }
+
+    /**
+     *
+     */
+    function issue(token)
+    {
+        return new Promise((resolve, reject) => {
+            $.ajax({                        
+                type: "POST",
+                url: `invoices/issued/${token}/cancel`,
+            }).done(successResponse => resolve(successResponse))
+            .fail(errorResponse => reject(errorResponse));
+        });
+    }
+
+    /** 
+     *  the first one is the button itself
+     *  the second is the text inside the button
+     *  the last is the status of the button (true means is disabled) 
+     *  
+     *  @return  void
+     */
+    function changeTextAndStatusToButton(button, text, isDisabled)
+    {
+        button.text(text);
+        
+        button.prop('disabled', isDisabled);
+    }
 </script>
 
 

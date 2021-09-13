@@ -20,6 +20,7 @@ class FlowOrderStatus extends Model
      *  Order status ID
      */
     const ANULADO = 3;
+    const CANCELED = 3;
 
     /**
      *  Order status ID

@@ -20,27 +20,27 @@
 
                     <div class="row mb-2">
                         <div class="col-12 text-muted">Fecha de emisión:</div>
-                        <div class="col-12" id="fchemis" name="ho"> - </div>
+                        <div class="col-12" id="fchemis"> - </div>
                     </div>
 
                     <div class="row mb-2">
                         <div class="col-12 text-muted">Monto total: </div>
-                        <div class="col-12" id="mnttotal">-</div>
+                        <div class="col-12" id="mnttotal"> - </div>
                     </div> 
 
                     <div class="row mb-2">
                         <div class="col-12 text-muted">Folio de documento:</div>
-                        <div class="col-12" id="folio">-</div>
+                        <div class="col-12" id="folio"> - </div>
                     </div>    
 
                     <div class="row mb-2">
                         <div class="col-12 text-muted">Tipo:</div>
-                        <div class="col-12" id="tipodte">-</div>
+                        <div class="col-12" id="tipodte"> - </div>
                     </div>
                     
                     <div class="row mb-2">
                         <div class="col-12 text-muted">IVA:</div>
-                        <div class="col-12" id="iva">-</div>
+                        <div class="col-12" id="iva"> - </div>
                     </div>
                 </div>
 

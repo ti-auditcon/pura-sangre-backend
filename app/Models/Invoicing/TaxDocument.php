@@ -319,11 +319,11 @@ class TaxDocument
                 ],
                 'json' => app(ElectronicCreditNote::class)->get(
                     (object) [
-                        'id'            => $documento->Folio,
-                        'observations'  => $documento->observations ?? 'nota de credito para anulacion de documento',
-                        'amount'        => $documento->MntTotal,
+                        'id'           => $documento->Folio,
+                        'observations' => $documento->observations ?? 'Nota de crédito para anulación de documento.',
+                        'amount'       => $documento->MntTotal,
                         'reference_id' => $documento->TipoDTE,
-                        'issue_date'    => today()->format("Y-m-d")
+                        'issue_date'   => today()->format("Y-m-d")
                     ]
                 )
             ]);
