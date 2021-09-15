@@ -82,8 +82,9 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('invoices/issued', 'Bills\InvoicingController@issued');
     Route::get('invoices/received/json', 'Bills\InvoicingController@receivedJson');
     Route::get('invoices/issued/json', 'Bills\InvoicingController@issuedJson');
-    Route::delete('invoices/issued/{tax}/cancel', 'Bills\InvoicingController@cancel')->name('taxes.cancel');
+    Route::post('tax-documents/{token}/cancel', 'Bills\InvoicingController@cancel')->name('taxes.cancel');
     Route::post('dte/get-pdf', 'Bills\TaxDocumentController@show');
+    Route::get('tax-documents/{token}/status', 'Bills\TaxDocumentController@status');
     Route::post('dte/get-issued-pdf', 'Bills\TaxDocumentController@getIssuedPDF');
     
     Route::post('dte/{plan_user_flow}/save-pdf', 'Bills\TaxDocumentController@savePDFThroughAPI');

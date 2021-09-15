@@ -62,61 +62,67 @@ class ElectronicCreditNote extends TaxDocument
     public function get($receipt)
     {
         return [
-            'dte' => [
-                'Encabezado' => [
-                    'IdDoc' => [
-                        "TipoDTE"     => self::NOTA_CREDITO_ELECTRONICA,
-                        "Folio"       => $receipt->id,
-                        "FchEmis"     => today()->format('Y-m-d'), //  "2020-08-05"
-                        "IndServicio" => 3, // tipo de transacción (3 = Boletas de venta y servicios)
+            "dte" => [
+                "Encabezado" => [
+                    "IdDoc" => [
+                        "TipoDTE"      => self::NOTA_CREDITO_ELECTRONICA,
+                        "Folio"        => $receipt->folio,
+                        "FchEmis"      => today()->format('Y-m-d'), //  "2020-08-05"
+                        "IndServicio"  => $receipt->tpotranventa,  // tipo de transacción (3 = Boletas de venta y servicios)
+                        "PeriodoDesde" => today()->format('Y-m-d'),
+                        "PeriodoHasta" => today()->format('Y-m-d'),
+                        "FchVenc"      => today()->format('Y-m-d'),
                     ],
-                    'Emisor' => [
-                        "RUTEmisor"    => $this->emisor['rut'],           //  "76795561-8",
-                        "RznSoc"       => $this->emisor['razon_social'],  //  "HAULMER SPA",
-                        "GiroEmis"     => $this->emisor['giro'],          //  "VENTA AL POR MENOR POR CORREO, POR INTERNET Y VIA TELEFONICA",
-                        "Telefono"     => $this->emisor['phone'],
-                        "CorreoEmisor" => $this->emisor['email'],
-                        "Acteco"       => $this->emisor['codigo_actividad_economica'],
-                        "DirOrigen"    => $this->emisor['address'],       //  "ARTURO PRAT 527, CURICO",
-                        "CmnaOrigen"   => $this->emisor['comuna'],        //  "Curicó",
-                        "CiudadOrigen" => $this->emisor['city'],          //  "Curicó",
+                    "Emisor" => [
+                        "RUTEmisor"    => $this->emisor["rut"],           //  "76795561-8",
+                        "RznSoc"       => $this->emisor["razon_social"],  //  "HAULMER SPA",
+                        "GiroEmis"     => $this->emisor["giro"],          //  "VENTA AL POR MENOR POR CORREO, POR INTERNET Y VIA TELEFONICA",
+                        "Telefono"     => $this->emisor["phone"],
+                        "CorreoEmisor" => $this->emisor["email"],
+                        "Acteco"       => $this->emisor["codigo_actividad_economica"],
+                        "DirOrigen"    => $this->emisor["address"],       //  "ARTURO PRAT 527, CURICO",
+                        "CmnaOrigen"   => $this->emisor["comuna"],        //  "Curicó",
+                        "CiudadOrigen" => $this->emisor["city"],          //  "Curicó",
                     ],
-                    'Receptor' => [
-                        "RUTRecep"    => self::RUT_GENERICO,
+                    "Receptor" => [
+                        "RUTRecep"    => $receipt->rutrecep,
+                        "CdgIntRecep" => $receipt->cdgintrecep ?? 1,
                         "RznSocRecep" => "NACIONALES SIN RUT   (USO EXCLUSIVO F-29, NO USAR PARA PRUEBAS)",
-                        "CdgIntRecep" => 1
                     ],
-                    'Totales' => [
-                        "MntExe"   => $receipt->amount,
-                        "MntTotal" => $receipt->amount,
-                        "VlrPagar" => $receipt->amount
+                    "Totales" => [
+                        "MntNeto"  => $receipt->mntneto,
+                        "IVA"      => $receipt->iva,
+                        "MntExe"   => 0, // suma de todos los valores exentos de iva
+                        "MntTotal" => $receipt->mnttotal,
+                        "VlrPagar" => $receipt->mnttotal
                     ],
                 ],
-                'Detalle' => [
+                "Detalle" => [
                     0 => [
-                        "NroLinDet"       => 1,
-                        "TpoCodigo"       => null,
-                        "IndExe"          => 1,
-                        "NmbItem"         => $receipt->observations,
-                        "InfoTicket"      => "",
-                        "DscItem"         => "",
-                        "QtyItem"         => 1,
-                        "UnmdItem"        => "",
-                        "PrcItem"         => $receipt->amount,
-                        "MontoItem"       => $receipt->amount
+                        "NroLinDet"       => $receipt->nrolindet,
+                        // "TpoCodigo"       => null,
+                        // "IndExe"          => 1,
+                        "NmbItem"         => $receipt->nmbitem,
+                        // "InfoTicket"      => "",
+                        // "DscItem"         => "",
+                        "QtyItem"         => $receipt->qtyitem,
+                        // "UnmdItem"        => null,
+                        "PrcItem"         => $receipt->mntneto,
+                        "MontoItem"       => $receipt->mntneto
                     ]
                 ],
                 "Referencia" => [
                     "NroLinRef" => 1,
-                    "TpoDocRef" => $receipt->reference_id,
-                    "FolioRef"  => $receipt->id,
-                    "RUTOtr"    => self::RUT_GENERICO,
-                    "FchRef"    => $receipt->issue_date,
+                    "TpoDocRef" => $receipt->tipodte,
+                    "FolioRef"  => $receipt->folio,
+                    // "RUTOtr"    => self::RUT_GENERICO,
+                    "FchRef"    => $receipt->fchemis,
                     "CodRef"    => self::CANCEL_REFERENCE_DOCUMENT,
                 ],
             ]
         ];
     }
+
 }
 //  Tipos de documentos tributarios
 //  Como respaldo para las operaciones de recibo y entrega de mercancía o dinero; entre los documentos tributarios de uso común se encuentran:

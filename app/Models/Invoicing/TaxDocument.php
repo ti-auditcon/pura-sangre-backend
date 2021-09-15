@@ -2,6 +2,7 @@
 
 namespace App\Models\Invoicing;
 
+use App\Models\Invoicing\Haulmer\TaxDocumentStatus;
 use GuzzleHttp\Client;
 
 class TaxDocument
@@ -27,12 +28,44 @@ class TaxDocument
      */
     const BOLETA_ELECTRONICA_EXENTA = 41;
 
-
     /**
      *  En el Rut Receptor se permite el uso de RUT genérico en caso de Boletas de Ventas y Servicios
      *  (no periódicos ni domiciliarios): valor: 66.666.666-6
      */
     const RUT_GENERICO = "66666666-6";
+
+    protected $fillable = [
+        "token",
+        // Encabezado
+        'Folio',
+        'FchEmis',
+        'FmaPago',
+        "TipoDTE",
+        "TpoTranVenta",
+        "TpoTranCompra",
+        // Totales
+        'IVA',
+        'MntNeto',
+        'TasaIVA',
+        'MntTotal',
+
+        "Contacto",
+        "DirRecep",
+        "RUTRecep",
+        "CmnaRecep",
+        "GiroRecep",
+        "RznSocRecep",
+        
+        // "CdgIntRecep",
+        "NroLinDet" ,
+        "TpoCodigo",
+        "IndExe",
+        // Detalle
+        "NmbItem",
+        "InfoTicket",
+        "DscItem",
+        "QtyItem",
+    ];
 
     /**
      *  Base url as for developing, as for production
@@ -47,6 +80,46 @@ class TaxDocument
      *  @var  string
      */
     private $apiKey;
+
+    /**
+     *  Tax data
+     */
+    protected $token;
+
+    // Encabezado
+    public $folio;
+    public $fchemis;
+    public $fmapago;
+    public $tipodte;
+    public $tpotranventa;
+    public $tpotrancompra;
+    // totales
+    public $iva;
+    public $mntneto;
+    public $tasaiva;
+    public $mnttotal;
+
+    public $status;
+    //   +"TasaIVA": "19"
+    public $contacto;
+    public $DirRecep;
+    public $rutrecep;
+    public $girorecep;
+    public $rznsocrecep;
+    // public $cdgintrecep;
+    // Detalle
+    public $nrolindet;
+    public $TpoCodigo;
+    public $IndExe;
+    public $nmbitem;
+    public $infoticket;
+    public $dscitem;
+    public $qtyitem;
+
+    public function getToken()
+    {
+        return $this->token;
+    }
 
     /**
      *  La parte que va a emitir la boleta por el servicio o producto (ejemplo, PuraSangre, KatsuCrossFit)
@@ -101,10 +174,13 @@ class TaxDocument
     /**
      *  At start class fill values for Haulmer API
      */
-    public function __construct()
+    public function __construct($token = null)
     {
         $this->fillDataForInvoicerAPI(config('app.env'));
+
+        $this->create($token);
     }
+
 
     /**
      * [fillDataForInvoicerAPI description]
@@ -148,6 +224,13 @@ class TaxDocument
         $this->emisor = config("invoicing.haulmer.{$environment}.emisor");
     }
 
+    public function canBeCancelled() :bool
+    {
+        $this->status = $this->status($this->token);
+
+        return in_array($this->status, TaxDocumentStatus::cancellableStatuses());
+    }
+
     /**
      *  [allTaxDocumentS description]
      *
@@ -156,6 +239,51 @@ class TaxDocument
     public static function list()
     {
         return self::$list;
+    }
+    
+    /**
+     *  Get the data of a tax document an fill it into $tax property
+     *
+     *  @param   string|null  $token 
+     *
+     *  @return  json|null|object
+     */
+    public function create($token)
+    {
+        if (is_null($token)) return;
+
+        try {
+            $client = new Client(['base_uri' => $this->baseUrl]);
+
+            $response = $client->get("/v2/dte/document/{$token}/json", [
+                'headers'  => [ "apikey" => $this->apiKey ]
+            ]);
+
+            $this->setTax(json_decode($response->getBody()->getContents()));
+        } catch (\GuzzleHttp\Exception\ClientException $error) {
+            return null;
+        }
+    }
+
+    /**
+     *  [setTax description]
+     *
+     *  @param   [type]  $data  [$data description]
+     *
+     *  @return  [type]         [return description]
+     */
+    public function setTax($data)
+    {
+        // dd($data);
+        foreach ($data as $key => $value) {
+            if (is_array($value) || is_object($value)) {
+                $value = $this->setTax($value);
+            }
+
+            if (in_array($key, $this->fillable)) {
+                $this->{strtolower($key)} = $value;
+            }
+        }
     }
 
     /**
@@ -305,33 +433,55 @@ class TaxDocument
         }
     }
 
-    public function cancel($documento)
+    public function cancel()
     {
-        // dd($obj = (object) ['torrr' => 'foo'], $obj->torrr);
-        // '{"Dte": 52,"Folio": 34972,"Fecha": "2020-10-16"}'
         try {
             $client = new Client(['base_uri' => $this->baseUrl]);
             $response = $client->post("/v2/dte/document", [
                 'headers'  => [
                     "apikey" => $this->apiKey,
-                    // 'Accept' => 'application/json',
                     'Content-Type' => 'application/json',
                 ],
-                'json' => app(ElectronicCreditNote::class)->get(
-                    (object) [
-                        'id'           => $documento->Folio,
-                        'observations' => $documento->observations ?? 'Nota de crédito para anulación de documento.',
-                        'amount'       => $documento->MntTotal,
-                        'reference_id' => $documento->TipoDTE,
-                        'issue_date'   => today()->format("Y-m-d")
-                    ]
-                )
+                'json' => app(ElectronicCreditNote::class)->get($this)
             ]);
 
             return json_decode($response->getBody()->getContents());
-        } catch (\Throwable $error) {
+        } catch (\Exception $error) {
+
+            dd($error->getResponse()->getBody()->getContents());
             return json_decode($error->getResponse()->getBody()->getContents(), true);
-            // return new TaxDocumentErrors($error);
         }
+    }
+
+
+    /**
+     *  Check the status of a tax document
+     *
+     *  @param   string  $token  Has to be a valid token by Openfactura
+     *
+     *  @return  json
+     */
+    public function status($token)
+    {
+        try {
+            $client = new Client(['base_uri' => $this->baseUrl]);
+
+            $response = $client->get("/v2/dte/document/{$token}/status", [
+                'headers'  => [
+                    "apikey" => $this->apiKey
+                ]
+            ]);
+
+            $response = json_decode($response->getBody()->getContents());
+
+            if ($response->estado) return $response->estado;
+        } catch (\GuzzleHttp\Exception\ClientException $error) {
+            return null;
+        }
+    }
+
+    public function hasIVA()
+    {
+        return boolval($this->tasaiva > 0);
     }
 }

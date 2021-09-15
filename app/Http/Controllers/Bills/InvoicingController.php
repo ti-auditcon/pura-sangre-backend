@@ -8,6 +8,7 @@ use App\Models\Plans\PlanUserFlow;
 use App\Http\Controllers\Controller;
 use App\Models\Invoicing\TaxDocument;
 use App\Models\Plans\FlowOrderStatus;
+use Symfony\Component\HttpFoundation\Response;
 
 class InvoicingController extends Controller
 {
@@ -38,6 +39,8 @@ class InvoicingController extends Controller
      *  @var  TaxDocument
      */
     protected $documents;
+
+    protected $document;
 
     /**
      *  [$fakeTaxDocument description]
@@ -136,10 +139,8 @@ class InvoicingController extends Controller
     /**
      *  Instanciate urls for this class
      */
-    public function __construct(TaxDocument $taxDocument)
+    public function __construct()
     {
-        $this->documents = $taxDocument;
-
         $this->fillDataForInvoicerAPI(config('app.env'));
     }
 
@@ -251,24 +252,24 @@ class InvoicingController extends Controller
     public function issuedJson(Request $request)
     {
         try {
-            // $client = new Client(['base_uri' => $this->baseUrl]);
+            $client = new Client(['base_uri' => $this->baseUrl]);
 
-            // $response = $client->post("/v2/dte/document/issued", [
-            //     'headers'  => [
-            //         "apikey" => $this->apiKey,
-            //         'Accept' => 'application/json',
-            //     ],
-            //     'json' => [
-            //         "Page" => $request->query('page') ?? 1
-            //     ]
-            // ]);
-            // $response = json_decode($response->getBody()->getContents());
+            $response = $client->post("/v2/dte/document/issued", [
+                'headers'  => [
+                    "apikey" => $this->apiKey,
+                    'Accept' => 'application/json',
+                ],
+                'json' => [
+                    "Page" => $request->query('page') ?? 1
+                ]
+            ]);
+            $response = json_decode($response->getBody()->getContents());
 
-            // if (is_null($response)) {
-            //     return $this->voidDataTableResponse(); 
-            // } 
+            if (is_null($response)) {
+                return $this->voidDataTableResponse(); 
+            } 
 
-            $response = json_decode(json_encode($this->data_response));
+            // $response = json_decode(json_encode($this->data_response));
             $response = $this->addClientAndServiceToReceipts($response);
 
             $json_data = array(
@@ -341,28 +342,50 @@ class InvoicingController extends Controller
         return $response;
     }
 
-    public function cancel($token, Request $request)
+    public function cancel($token)
     {
-        dd($request->all());
         if ($document = PlanUserFlow::where('sii_token', $token)->first()) {
             if ($document->paid === FlowOrderStatus::CANCELED) {
-                return back()->with('warning', "La boleta ya ha sido anulada"); 
+                return response()->json([
+                    'status' => 'Request failed', 'message' => "Este documento ya ha sido anulado anteriormente."
+                ], Response::HTTP_UNAUTHORIZED);
             }
 
-            $response  = $this->documents->cancel($document);
+            $this->documents->cancel($document);
 
-            dd($response);
-            return back()->with('success', "El documento ha sido anulado correctamente");
+            return response()->json([
+                'status' => 'Ok', 'message' => "Se ha anulado el documento correctamente."
+            ], Response::HTTP_CREATED);
         }
 
-        // $this->documents->cancel((object) [
-        //     'id'           => $documento->Folio,
-        //     'observations' => $documento->observations ?? 'Nota de crédito para anulación de documento.',
-        //     'amount'       => $documento->MntTotal,
-        //     'reference_id' => $documento->TipoDTE,
-        //     'issue_date'   => today()->format("Y-m-d")
-        // ]);
+        // get document data
+        $document = new TaxDocument($token);
 
+        if ($document && $document->canBeCancelled()) {
+            $response = $document->cancel();
+
+            if ($response->TOKEN) {
+                PlanUserFlow::create([
+                    'start_date'   => $document->fchemis,
+                    'finish_date'  => $document->fchemis,
+                    'counter'      => 0,
+                    'paid'         => FlowOrderStatus::CANCELED,
+                    'amount'       => $document->mnttotal,
+                    'observations' => $document->nmbitem,
+                    'payment_date' => $document->fchemis,
+                    'sii_token'    => $response->TOKEN
+                ]);
+
+                return response()->json([
+                    'status' => 'Ok', 'message' => "Se ha anulado el documento correctamente."
+                ], Response::HTTP_CREATED);
+            }
+
+        }
+
+        return response()->json([
+            'status' => 'Ok', 'message' => "No se ha podido anular el documento."
+        ], Response::HTTP_UNAUTHORIZED);
 
         // check if the bill is already canceled
         // response with json "Esta boleta ya ha sido anulada"

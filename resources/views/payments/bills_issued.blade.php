@@ -89,7 +89,7 @@
     function fillCancelBillModal(billData)
     {
         Object.keys(billData).forEach(key => {
-            $(`#${key}`).val(new BillData(billData[key])[key]());
+            $(`#${key}`).text(new BillData(billData[key])[key]());
         });
     }
 
@@ -162,15 +162,34 @@
         // issue document
         // reload the page on success
         // warning on failure
-        issue(currentTaxToken).then(success => {
-            alert(success.data);
+        issue(currentTaxToken).then(response => {
+            console.log(response)
+            console.log(response.status)
+            if (response.status >= 400) {
+                alert(response.message);
 
-            window.location = "/invoices/issued";
+                return;
+            }
+            console.log('by-pass if (response.status >= 400) {');
+            console.log(response.message);
+
+            // window.location = "/invoices/issued";
         }).catch(error => {
             alert(error.data);
         });
 
-        changeTextAndStatusToButton(event, "Emitir", false);
+        enableIssueButton(true);
+    }
+
+    function enableIssueButton(enable = false)
+    {
+        let button = $("#issue-cancel-document");
+
+        if (enable) {
+            return changeTextAndStatusToButton(button, "Emitir", false);
+        }    
+
+        changeTextAndStatusToButton(button, "Emitiendo...", true);
     }
 
     /**
@@ -178,12 +197,13 @@
      */
     function issue(token)
     {
+        console.log('inside issue method with token ' + token);
         return new Promise((resolve, reject) => {
             $.ajax({                        
                 type: "POST",
-                url: `invoices/issued/${token}/cancel`,
+                url: `/tax-documents/${token}/cancel`,
             }).done(successResponse => resolve(successResponse))
-            .fail(errorResponse => reject(errorResponse));
+              .fail(errorResponse => reject(errorResponse));
         });
     }
 

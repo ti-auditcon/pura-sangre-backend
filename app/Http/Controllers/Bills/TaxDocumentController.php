@@ -220,4 +220,5 @@ class TaxDocumentController extends Controller
 
         return $object;
     }
+
 }
