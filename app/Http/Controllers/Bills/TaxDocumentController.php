@@ -48,7 +48,7 @@ class TaxDocumentController extends Controller
     }
 
     /**
-     *  [fillDataForInvoicerAPI description]
+     *  [setTaxIssuerData description]
      *
      *  @param   string   $environment
      */

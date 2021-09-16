@@ -80,6 +80,13 @@ class TaxDocument
     private $apiKey;
 
     /**
+     *  To ckech if the requests are goin to be through SSL
+     *
+     *  @var  boolean
+     */
+    protected $verifiedSSL;
+
+    /**
      *  Tax data
      */
     protected $token;
@@ -151,7 +158,7 @@ class TaxDocument
      */
     public function __construct($token = null)
     {
-        $this->fillDataForInvoicerAPI(config('app.env'));
+        $this->setTaxIssuerData(config('app.env'));
 
         $this->initializeGuzzleClient();
 
@@ -160,12 +167,12 @@ class TaxDocument
     }
 
     /**
-     * [fillDataForInvoicerAPI description]
+     * [setTaxIssuerData description]
      *
      *  @param   [type]   $environment  [$environment description]
      *  @param   sandbox                [ description]
      */
-    public function fillDataForInvoicerAPI($environment = 'sandbox')
+    public function setTaxIssuerData($environment = 'sandbox')
     {
         if ($environment === 'local' || $environment === 'testing') {
             $environment = 'sandbox';
@@ -190,6 +197,41 @@ class TaxDocument
     }
 
     /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function getBaseUri()
+    {
+        return $this->baseUrl;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function getVerifiedSsl()
+    {
+        return $this->verifiedSSL;
+    }
+
+    /**
+     *  Check if this class has setted the apiKey
+     *
+     *  @return  boolean
+     */
+    public function hasApiKey() :bool
+    {
+        return boolval($this->apiKey);
+    }
+
+    function getEmisor()
+    {
+        return $this->emisor;
+    }
+
+    /**
      *  Fill url and apis for requests
      *
      *  @return  void
@@ -211,7 +253,7 @@ class TaxDocument
      */
     public function fillEmisor($environment)
     {
-        $this->emisor = config("invoicing.haulmer.{$environment}.emisor");
+        $this->emisor = $this->arrayToObject(config("invoicing.haulmer.{$environment}.emisor"));
     }
 
 
@@ -258,9 +300,19 @@ class TaxDocument
     }
 
     /**
-     * Undocumented function
+     *  Check if this tax document has IVA, it means affected to taxes (19%)
      *
-     * @return boolean
+     *  @return  boolean
+     */
+    public function hasIVA()
+    {
+        return boolval($this->tasaiva > 0);
+    }
+
+    /**
+     *  Get the status of this tax document and check if has an cancellable status
+     *
+     *  @return  boolean
      */
     public function canBeCancelled() :bool
     {
@@ -281,11 +333,7 @@ class TaxDocument
         if ($this->tokenIsNotSetted()) return;
 
         try {
-            $client = new Client(['base_uri' => $this->baseUrl]);
-
-            $response = $client->get("/v2/dte/document/{$token}/json", [
-                'headers'  => [ "apikey" => $this->apiKey ]
-            ]);
+            $response = $this->httpRequest->get("/v2/dte/document/{$token}/json");
 
             $this->setTax(json_decode($response->getBody()->getContents()));
         } catch (\GuzzleHttp\Exception\ClientException $error) {
@@ -302,7 +350,6 @@ class TaxDocument
      */
     public function setTax($data)
     {
-        // dd($data);
         foreach ($data as $key => $value) {
             if (is_array($value) || is_object($value)) {
                 $value = $this->setTax($value);
@@ -325,7 +372,7 @@ class TaxDocument
     {
         $dte = $this->fillReceiptData($order, self::BOLETA_ELECTRONICA_EXENTA);
 
-        return $this->issueToSII(json_encode($dte));
+        return $this->issue(json_encode($dte));
     }
 
     /**
@@ -360,56 +407,39 @@ class TaxDocument
     }
 
     /**
-     * [issueToSII description]
+     *  Issue invoice to SII
      *
-     * @param   [type]  $dte  [$dte description]
+     *  todo: the sended dte should be $this instead
+     *  @param   TaxDocument  $dte
      *
-     * @return  [type]        [return description]
+     *  @return  json
      */
-    public function issueToSII($dte)
+    public function issue($dte)
     {
-        $curl = curl_init();
+        $response = $this->httpRequest->post("/dte/document", [
+            $dte
+        ]);
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL            => "{$this->baseUrl}/dte/document",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING       => "",
-            CURLOPT_MAXREDIRS      => 10,
-            CURLOPT_TIMEOUT        => 10,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST  => "POST",
-            CURLOPT_POSTFIELDS     => $dte,
-            CURLOPT_HTTPHEADER     => array(
-                "apikey: {$this->apiKey}"
-            ),
-        ));
-
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-
-        return json_decode($response);
+        return json_decode($response->getBody()->getContents());
     }
 
     /**
-     * [get description]
+     *  Fetch invoice data from SII according the given $token
      *
-     * @param   [type]  $token  [$token description]
+     *  @param   string         $token
      *
-     * @return  object|string
+     *  @return  object|string
      */
     public function get($token)
     {
         try {
-            $response = $this->httpRequest->get("/v2/dte/document/{$token}/pdf", [
+            $response = $this->httpRequest->get("/v2/dte/document/{$token}/pdf");
 
-            ]);
-            $content = $response->getBody()->getContents();
-
-            return json_decode($content);
-        } catch (\Throwable $th) {
-            new TaxDocumentErrors($th);
+            return json_decode($response->getBody()->getContents());
+        } catch (\Throwable $error) {
+            new TaxDocumentErrors($error);
+            
+            return json_decode($error->getResponse()->getBody()->getContents(), true);
         }
     }
 
@@ -421,10 +451,8 @@ class TaxDocument
     public function cancel()
     {
         try {
-            $client = new Client(['base_uri' => $this->baseUrl]);
-            $response = $client->post("/v2/dte/document", [
+            $response = $this->httpRequest->post("/v2/dte/document", [
                 'headers'  => [
-                    "apikey" => $this->apiKey,
                     'Content-Type' => 'application/json',
                 ],
                 'json' => app(ElectronicCreditNote::class)->get($this)
@@ -447,13 +475,7 @@ class TaxDocument
     public function status($token)
     {
         try {
-            $client = new Client(['base_uri' => $this->baseUrl]);
-
-            $response = $client->get("/v2/dte/document/{$token}/status", [
-                'headers'  => [
-                    "apikey" => $this->apiKey
-                ]
-            ]);
+            $response = $this->httpRequest->get("/v2/dte/document/{$token}/status");
 
             $response = json_decode($response->getBody()->getContents());
 
@@ -463,8 +485,18 @@ class TaxDocument
         }
     }
 
-    public function hasIVA()
+    public function arrayToObject($array)
     {
-        return boolval($this->tasaiva > 0);
+        $object = (object) [];
+
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $this->arrayToObject($value);
+            }
+
+            $object->$key = $value;
+        }
+
+        return $object;
     }
 }

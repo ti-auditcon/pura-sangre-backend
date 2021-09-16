@@ -141,16 +141,16 @@ class InvoicingController extends Controller
      */
     public function __construct()
     {
-        $this->fillDataForInvoicerAPI(config('app.env'));
+        $this->setTaxIssuerData(config('app.env'));
     }
 
     /**
-     *  [fillDataForInvoicerAPI description]
+     *  [setTaxIssuerData description]
      *
      *  @param   [type]   $environment  [$environment description]
      *  @param   sandbox                [ description]
      */
-    public function fillDataForInvoicerAPI($environment = 'sandbox')
+    public function setTaxIssuerData($environment = 'sandbox')
     {
         if ($environment === 'local' || $environment === 'testing') {
             $environment = 'sandbox';
