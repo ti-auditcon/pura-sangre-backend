@@ -3,6 +3,10 @@
 namespace Tests\Feature\Invoicing;
 
 use Tests\TestCase;
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Handler\MockHandler;
 use App\Models\Invoicing\TaxDocument;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -20,6 +24,42 @@ class TaxDocumentTest extends TestCase
         $this->assertNotNull($taxDocument->getEmisor());
 
     }
+
+    /** @test */
+    public function it_set_tax_document_data_correctly()
+    {
+        // Create a mock and queue two responses.
+        $mock = new MockHandler([new Response(200, [], 'All settled')]);
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handlerStack]);
+
+        // dd($client->request('GET', '/')->getStatusCode());
+
+        $taxDocument = new TaxDocument();
+        // dump($taxDocument->getData());
+        $this->assertNotNull($taxDocument->getData());
+    }
+
+    /** @test */
+    public function tax_document_data_is_an_object()
+    {
+        // Create a mock and queue two responses.
+        $mock = new MockHandler([new Response(200, [], 'All settled')]);
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handlerStack]);
+
+        $taxDocument = new TaxDocument();
+        $this->assertTrue(is_object($taxDocument->getData()));
+    }
+
+    // /** @test */
+    // public function it_starts_guzzle_client_correctly()
+    // {
+    //     $this->httpRequest = new Client([
+    //         'base_uri' => $this->baseUrl,
+    //         'headers'  => [ "apikey" => $this->apiKey ]
+    //     ]);
+    // }
 
         // $this->setTaxIssuerData(config('app.env'));
 
@@ -52,20 +92,4 @@ class TaxDocumentTest extends TestCase
         //$this->withoutExceptionHandler();
         //test here
     }
-
-            //         if ($environment === 'local' || $environment === 'testing') {
-        //     $environment = 'sandbox';
-        // }
-
-        // $this->fillUrlAndKeys($environment);
-
-        // $this->fillEmisor($environment);
-    
-    /** @test */
-    // public function get_received_dtes()
-    // {
-    //     $response = $this->get('/');
-
-    //     $response->assertStatus(200);
-    // }
 }

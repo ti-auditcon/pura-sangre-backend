@@ -107,15 +107,16 @@ class TaxDocument
     public $status;
     //   +"TasaIVA": "19"
     public $contacto;
-    public $DirRecep;
+    public $dirrecep;
     public $rutrecep;
     public $girorecep;
     public $rznsocrecep;
+    public $cmnarecep;
     // public $cdgintrecep;
     // Detalle
     public $nrolindet;
-    public $TpoCodigo;
-    public $IndExe;
+    public $tpocodigo;
+    public $indexe;
     public $nmbitem;
     public $infoticket;
     public $dscitem;
@@ -204,6 +205,22 @@ class TaxDocument
     public function getBaseUri()
     {
         return $this->baseUrl;
+    }
+
+    /**
+     *  Transform all the fillable value into an object,
+     *  and fill them all with the tax document fetched
+     *
+     *  @return  object
+     */
+    public function getData()
+    {
+        $object = (object) [];
+        foreach ($this->fillable as $key => $value) {
+            $object->{strtolower($value)} = $this->{strtolower($value)};
+        }
+
+        return $object;
     }
 
     /**
