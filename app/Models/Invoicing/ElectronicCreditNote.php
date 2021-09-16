@@ -3,8 +3,9 @@
 namespace App\Models\Invoicing;
 
 use App\Models\Invoicing\TaxDocument;
+use App\Models\Invoicing\InvoiceIssuerInterface;
 
-class ElectronicCreditNote extends TaxDocument
+class ElectronicCreditNote extends TaxDocument implements InvoiceIssuerInterface
 {
     /**    Código utilizado para los siguientes
      *     casos:

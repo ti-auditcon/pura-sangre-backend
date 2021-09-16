@@ -182,7 +182,7 @@ class InvoicingController extends Controller
     {
         return view('payments.bills_issued');
     }
-    
+
     /**
      *  Display a listing of the resource.
      *
@@ -219,7 +219,7 @@ class InvoicingController extends Controller
             $response = json_decode($response->getBody()->getContents());
 
             if (is_null($response)) {
-                return $this->voidDataTableResponse(); 
+                return $this->voidDataTableResponse();
             }
 
             $json_data = array(
@@ -241,7 +241,7 @@ class InvoicingController extends Controller
         }
     }
 
-    
+
     /**
      *  [getTaxDocuments description]
      *
@@ -266,8 +266,8 @@ class InvoicingController extends Controller
             $response = json_decode($response->getBody()->getContents());
 
             if (is_null($response)) {
-                return $this->voidDataTableResponse(); 
-            } 
+                return $this->voidDataTableResponse();
+            }
 
             // $response = json_decode(json_encode($this->data_response));
             $response = $this->addClientAndServiceToReceipts($response);
@@ -326,7 +326,7 @@ class InvoicingController extends Controller
                                                 'users.id as user_id', 'users.first_name', 'users.last_name',
                                                 'plans.id', 'plans.plan'
                                             ])) {
-                              
+
                 $data->full_name = ucwords("{$planUserFlow->first_name} {$planUserFlow->last_name}");
                 $data->service = ucfirst($planUserFlow->plan);
                 $data->user_id = ucfirst($planUserFlow->user_id);
@@ -380,7 +380,6 @@ class InvoicingController extends Controller
                     'status' => 'Ok', 'message' => "Se ha anulado el documento correctamente."
                 ], Response::HTTP_CREATED);
             }
-
         }
 
         return response()->json([
@@ -392,6 +391,6 @@ class InvoicingController extends Controller
 
         // annul bill
         // change the status of the bill
-        // 
+        //
     }
 }

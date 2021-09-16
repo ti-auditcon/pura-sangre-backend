@@ -34,6 +34,11 @@ class TaxDocument
      */
     const RUT_GENERICO = "66666666-6";
 
+    /**
+     * Undocumented variable
+     *
+     * @var array
+     */
     protected $fillable = [
         "token",
         // Encabezado
@@ -55,7 +60,7 @@ class TaxDocument
         "CmnaRecep",
         "GiroRecep",
         "RznSocRecep",
-        
+
         // "CdgIntRecep",
         "NroLinDet" ,
         "TpoCodigo",
@@ -193,7 +198,7 @@ class TaxDocument
         if ($environment === 'local' || $environment === 'testing') {
             $environment = 'sandbox';
         }
-        
+
         $this->fillUrlAndKeys($environment);
 
         $this->fillEmisor($environment);
@@ -240,13 +245,13 @@ class TaxDocument
     {
         return self::$list;
     }
-    
+
     /**
      *  Get the data of a tax document an fill it into $tax property
      *
-     *  @param   string|null  $token 
+     *  @param   string|null  $token
      *
-     *  @return  json|null|object
+     *  @return  void|null
      */
     public function create($token)
     {
@@ -270,7 +275,7 @@ class TaxDocument
      *
      *  @param   [type]  $data  [$data description]
      *
-     *  @return  [type]         [return description]
+     *  @return  void
      */
     public function setTax($data)
     {
@@ -303,7 +308,7 @@ class TaxDocument
     /**
      *  [fillReceiptData description]
      *
-     *  @param   object   $receipt      
+     *  @param   object   $receipt
      *  @param   integer  $invoiceType
      *
      *  @return  array
