@@ -153,16 +153,13 @@ class IssueReceiptsCommand extends Command
      */
     public function getPDF(PlanUserFlow $plan_user_flow)
     {
-        if ($plan_user_flow->hasPDFGeneratedAlready()) {
-            return;
-        }
-
-        if ($plan_user_flow->hasNotSiiToken()) {
+        if ($plan_user_flow->hasPDFGeneratedAlready() ||
+            $plan_user_flow->hasNotSiiToken()) {
             return;
         }
 
         try {
-            $response = (new TaxDocument)->getReceipt($plan_user_flow->sii_token);
+            $response = (new TaxDocument)->get($plan_user_flow->sii_token);
 
             return $this->savePDFThroughAPI($response, $plan_user_flow);
         } catch (\Throwable $error) {

@@ -63,7 +63,7 @@
 <script src="{{ asset('js/moment.min.js') }}"></script>
 
 <script>
-    const dteNames = @json(App\Models\Invoicing\TaxDocument::allTaxDocumentS());
+    const dteNames = @json(App\Models\Invoicing\TaxDocumentType::list());
     const base_url = @json(url('/'));
     const url_path = "/invoices/received/json";
     let current_page = 1;

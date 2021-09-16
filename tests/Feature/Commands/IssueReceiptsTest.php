@@ -22,7 +22,7 @@ class IssueReceiptsTest extends TestCase
     //         'sii_token' => '7ee8a1bf916af5255bc2e23f5e06b499360ae10384bfb1d36085593fbea5dcf1' 
     //     ]);
 
-    //     $response = (new TaxDocument)->getReceipt($planUserFlow->sii_token);
+    //     $response = (new TaxDocument)->get($planUserFlow->sii_token);
 
     //     $this->actingAs($this->admin)
     //             ->post("/dte/{$planUserFlow->id}/save-pdf", [

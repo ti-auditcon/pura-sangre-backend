@@ -118,7 +118,7 @@ class PlanUserRepository
         }
 
         try {
-            $response = (new TaxDocument)->getReceipt($plan_user_flow->sii_token);
+            $response = (new TaxDocument)->get($plan_user_flow->sii_token);
 
             return $this->savePDFThroughAPI($response, $plan_user_flow);
         } catch (\Throwable $error) {

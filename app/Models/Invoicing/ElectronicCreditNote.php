@@ -3,6 +3,7 @@
 namespace App\Models\Invoicing;
 
 use App\Models\Invoicing\TaxDocument;
+use App\Models\Invoicing\TaxDocumentType;
 use App\Models\Invoicing\InvoiceIssuerInterface;
 
 class ElectronicCreditNote extends TaxDocument implements InvoiceIssuerInterface
@@ -45,13 +46,6 @@ class ElectronicCreditNote extends TaxDocument implements InvoiceIssuerInterface
      *  @var  integer
      */
     const FIX_AMOUNTS = 3;
-    
-    /**
-     *  Número de tipo de TaxDocument de BOLETA_ELECTRONICA_EXENTA
-     *
-     *  @var  int
-     */
-    const NOTA_CREDITO_ELECTRONICA = 61;
 
     /**
      *  [get description]
@@ -66,7 +60,7 @@ class ElectronicCreditNote extends TaxDocument implements InvoiceIssuerInterface
             "dte" => [
                 "Encabezado" => [
                     "IdDoc" => [
-                        "TipoDTE"      => self::NOTA_CREDITO_ELECTRONICA,
+                        "TipoDTE"      => TaxDocumentType::NOTA_DE_CREDITO_ELECTRONICA,
                         "Folio"        => $receipt->folio,
                         "FchEmis"      => today()->format('Y-m-d'), //  "2020-08-05"
                         "IndServicio"  => $receipt->tpotranventa,  // tipo de transacción (3 = Boletas de venta y servicios)
@@ -75,20 +69,20 @@ class ElectronicCreditNote extends TaxDocument implements InvoiceIssuerInterface
                         "FchVenc"      => today()->format('Y-m-d'),
                     ],
                     "Emisor" => [
-                        "RUTEmisor"    => $this->emisor["rut"],           //  "76795561-8",
-                        "RznSoc"       => $this->emisor["razon_social"],  //  "HAULMER SPA",
-                        "GiroEmis"     => $this->emisor["giro"],          //  "VENTA AL POR MENOR POR CORREO, POR INTERNET Y VIA TELEFONICA",
-                        "Telefono"     => $this->emisor["phone"],
-                        "CorreoEmisor" => $this->emisor["email"],
-                        "Acteco"       => $this->emisor["codigo_actividad_economica"],
-                        "DirOrigen"    => $this->emisor["address"],       //  "ARTURO PRAT 527, CURICO",
-                        "CmnaOrigen"   => $this->emisor["comuna"],        //  "Curicó",
-                        "CiudadOrigen" => $this->emisor["city"],          //  "Curicó",
+                        "RUTEmisor"    => $this->emisor->rut,           //  "76795561-8",
+                        "RznSoc"       => $this->emisor->razon_social,  //  "HAULMER SPA",
+                        "GiroEmis"     => $this->emisor->giro,          //  "VENTA AL POR MENOR POR CORREO, POR INTERNET Y VIA TELEFONICA",
+                        "Telefono"     => $this->emisor->phone,
+                        "CorreoEmisor" => $this->emisor->email,
+                        "Acteco"       => $this->emisor->codigo_actividad_economica,
+                        "DirOrigen"    => $this->emisor->address,       //  "ARTURO PRAT 527, CURICO",
+                        "CmnaOrigen"   => $this->emisor->comuna,        //  "Curicó",
+                        "CiudadOrigen" => $this->emisor->city,          //  "Curicó",
                     ],
                     "Receptor" => [
                         "RUTRecep"    => $receipt->rutrecep,
                         "CdgIntRecep" => $receipt->cdgintrecep ?? 1,
-                        "RznSocRecep" => "NACIONALES SIN RUT   (USO EXCLUSIVO F-29, NO USAR PARA PRUEBAS)",
+                        "RznSocRecep" => $receipt->rznsocrecep,
                     ],
                     "Totales" => [
                         "MntNeto"  => $receipt->mntneto,

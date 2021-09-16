@@ -39,7 +39,7 @@ class TaxDocumentStatus
         ];
     }
 
-    public static function cancellableStatuses()
+    public static function cancellableList()
     {
         return [
             self::ACCEPTED                 => 'Aceptado',

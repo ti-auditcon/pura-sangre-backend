@@ -22,13 +22,6 @@ class TaxDocument
     const NOT_ISSUED = 'sin emision';
 
     /**
-     *  Número de tipo de TaxDocument de BOLETA_ELECTRONICA_EXENTA
-     *
-     *  @var  int
-     */
-    const BOLETA_ELECTRONICA_EXENTA = 41;
-
-    /**
      *  En el Rut Receptor se permite el uso de RUT genérico en caso de Boletas de Ventas y Servicios
      *  (no periódicos ni domiciliarios): valor: 66.666.666-6
      */
@@ -121,10 +114,7 @@ class TaxDocument
     public $dscitem;
     public $qtyitem;
 
-    public function getToken()
-    {
-        return $this->token;
-    }
+
 
     /**
      *  La parte que va a emitir la boleta por el servicio o producto (ejemplo, PuraSangre, KatsuCrossFit)
@@ -146,46 +136,28 @@ class TaxDocument
     protected $emisor;
 
     /**
-     * [$list description]
+     *  Instance of the Guzzle Client to make requests to Openfactura
      *
-     *  @var  array
+     *  @var  Client
      */
-    public static $list = [
-        30  => 'Factura',
-        32  => 'Factura de ventas y servicios no afectos o exentos de IVA',
-        33  => 'Factura electrónica',
-        34  => 'Factura no afecta o exenta electrónica',
-        35  => 'Boleta',
-        38  => 'Boleta exenta',
-        39  => 'Boleta electrónica',
-        40  => 'Liquidación factura',
-        41  => 'Boleta exenta electrónica',
-        43  => 'Liquidación factura electrónica',
-        45  => 'Factura de compra',
-        46  => 'Factura de compra electrónica',
-        48  => 'Pago electrónico',
-        50  => 'Guía de despacho',
-        52  => 'Guía de despacho electrónica',
-        55  => 'Nota de débito',
-        56  => 'Nota de débito electrónica',
-        60  => 'Nota de crédito',
-        61  => 'Nota de crédito electrónica',
-        103 => 'Liquidación',
-        110 => 'Factura de exportación electrónica',
-        111 => 'Nota de débito de exportación electrónica',
-        112 => 'Nota de crédito de exportación electrónica'
-    ];
+    protected $httpRequest;
 
     /**
      *  At start class fill values for Haulmer API
+     *  
+     *  note: fillDataForInvoiceAPI must be before than the initialization of Guzzle Client,
+     *        because we need to fill the baseUrl first in order to fill the base_uri of the Guzzle Client
+     * 
      */
     public function __construct($token = null)
     {
         $this->fillDataForInvoicerAPI(config('app.env'));
 
-        $this->create($token);
-    }
+        $this->initializeGuzzleClient();
 
+        $this->setToken($token);
+        $this->create();
+    }
 
     /**
      * [fillDataForInvoicerAPI description]
@@ -205,6 +177,19 @@ class TaxDocument
     }
 
     /**
+     *  Set baseUrl and apiKey for Guzzle requests
+     *
+     *  @return  void
+     */
+    public function initializeGuzzleClient()
+    {
+        $this->httpRequest = new Client([
+            'base_uri' => $this->baseUrl,
+            'headers'  => [ "apikey" => $this->apiKey ]
+        ]);
+    }
+
+    /**
      *  Fill url and apis for requests
      *
      *  @return  void
@@ -219,9 +204,9 @@ class TaxDocument
     }
 
     /**
-     * [fillEmisor description]
+     *  [fillEmisor description]
      *
-     * @param   [type]  $environment  [$environment description]
+     *  @param   [type]  $environment  [$environment description]
      *
      */
     public function fillEmisor($environment)
@@ -229,21 +214,59 @@ class TaxDocument
         $this->emisor = config("invoicing.haulmer.{$environment}.emisor");
     }
 
+
+    /**
+     *  Get the protected token of this tax document
+     *
+     *  @return  string
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     *  Set token value
+     *
+     *  @param   string  $token
+     * 
+     *  @return  void
+     */
+    public function setToken($token)
+    {
+        $this->token = $token;
+    }
+
+    /**
+     *  Check if there is a token
+
+     *  @return  boolean
+     */
+    public function tokenIsSetted()
+    {
+        return boolval($this->getToken());
+    }
+
+    /**
+     *  The opposite of tokenIsSetted method
+     *
+     *  @return boolean
+     */
+    public function tokenIsNotSetted()
+    {
+        return !$this->tokenIsSetted();
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return boolean
+     */
     public function canBeCancelled() :bool
     {
         $this->status = $this->status($this->token);
 
-        return in_array($this->status, TaxDocumentStatus::cancellableStatuses());
-    }
-
-    /**
-     *  [allTaxDocumentS description]
-     *
-     *  @return  [type]  [return description]
-     */
-    public static function list()
-    {
-        return self::$list;
+        return in_array($this->status, TaxDocumentStatus::cancellableList());
     }
 
     /**
@@ -253,9 +276,9 @@ class TaxDocument
      *
      *  @return  void|null
      */
-    public function create($token)
+    public function create()
     {
-        if (is_null($token)) return;
+        if ($this->tokenIsNotSetted()) return;
 
         try {
             $client = new Client(['base_uri' => $this->baseUrl]);
@@ -317,52 +340,7 @@ class TaxDocument
     {
         $boleta = $this->calculateValues($receipt);
 
-        return [
-            'dte' => [
-                'Encabezado' => [
-                    'IdDoc' => [
-                        "TipoTaxDocument" => $invoiceType,
-                        "Folio"           => $receipt->id,
-                        "FchEmis"         => today()->format('Y-m-d'), //  "2020-08-05"
-                        "IndServicio"     => 3, // tipo de transacción (3 = Boletas de venta y servicios)
-                    ],
-                    'Emisor' => [
-                        "RUTEmisor"    => $this->emisor['rut'],                     //  "76795561-8",
-                        "RznSocEmisor" => $this->emisor['razon_social'],            //  "HAULMER SPA",
-                        "GiroEmisor"   => $this->emisor['giro'],                    //  "VENTA AL POR MENOR POR CORREO, POR INTERNET Y VIA TELEFONICA",
-                        "DirOrigen"    => $this->emisor['address'],                 //  "ARTURO PRAT 527, CURICO",
-                        "CmnaOrigen"   => $this->emisor['comuna'],                  //  "Curicó",
-                        "CiudadOrigen" => $this->emisor['city'],                    //  "Curicó",
-                        // "CdgSIISucur"  => $this->emisor['codigo_sii_sucursal'],  //  81303347
-                    ],
-                    'Receptor' => [
-                        "RUTRecep"  => self::RUT_GENERICO, //  "66666666-6"
-                    ],
-                    'Totales' => [
-                        "MntExe"   => $boleta['total'],
-                        "MntTotal" => $boleta['total'],
-                        "VlrPagar" => $boleta['total']
-                    ]
-                ],
-                'Detalle' => [
-                    0 => [
-                        "NroLinDet"       => 1,
-                        "TpoCodigo"       => null,
-                        "IndExe"          => 1,
-                        "ItemEspectaculo" => 2,
-                        "RUTMandante"     => $this->emisor['rut'],
-                        "NmbItem"         => $receipt->observations,
-                        "InfoTicket"      => "",
-                        "DscItem"         => "",
-                        "QtyItem"         => 1,
-                        "UnmdItem"        => "",
-                        "PrcItem"         => $boleta['total'],
-                        "RecargoMonto"    => 0,
-                        "MontoItem"       => $boleta['total']
-                    ]
-                ]
-            ]
-        ];
+        return app(ExemptElectronicInvoice::class)->get($boleta);
     }
 
     /**
@@ -415,20 +393,17 @@ class TaxDocument
     }
 
     /**
-     * [getReceipt description]
+     * [get description]
      *
      * @param   [type]  $token  [$token description]
      *
      * @return  object|string
      */
-    public function getReceipt($token)
+    public function get($token)
     {
         try {
-            $client = new Client(['base_uri' => $this->baseUrl]);
-            $response = $client->get("/v2/dte/document/{$token}/pdf", [
-                'headers'  => [
-                    "apikey" => $this->apiKey
-                ]
+            $response = $this->httpRequest->get("/v2/dte/document/{$token}/pdf", [
+
             ]);
             $content = $response->getBody()->getContents();
 
@@ -438,6 +413,11 @@ class TaxDocument
         }
     }
 
+    /**
+     *  Issue a credit note to cancel an specific invoice
+     *
+     *  @return  json
+     */
     public function cancel()
     {
         try {
@@ -452,8 +432,6 @@ class TaxDocument
 
             return json_decode($response->getBody()->getContents());
         } catch (\Exception $error) {
-
-            dd($error->getResponse()->getBody()->getContents());
             return json_decode($error->getResponse()->getBody()->getContents(), true);
         }
     }

@@ -73,7 +73,7 @@
 <script src="{{ asset('js/purasangre/payments/manage-pdf.js') }}"></script>
 
 <script>
-    const taxDocuments = @json(App\Models\Invoicing\TaxDocument::list());
+    const taxDocuments = @json(App\Models\Invoicing\TaxDocumentType::list());
     const base_url = @json(url('/'));
     let previousTaxToken = 1;
     let currentTaxToken = 1;
