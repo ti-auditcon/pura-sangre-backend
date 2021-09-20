@@ -98,9 +98,7 @@
         constructor(data) {
             this.data = data;
 
-            this.taxes = {
-                41: 'Boleta exenta electrónica'
-            };
+            this.taxes = taxDocuments;
         }
 
         getTaxDocument(value) {
@@ -163,8 +161,6 @@
         // reload the page on success
         // warning on failure
         issue(currentTaxToken).then(response => {
-            console.log(response)
-            console.log(response.status)
             if (response.status >= 400) {
                 alert(response.message);
 
@@ -175,7 +171,7 @@
 
             // window.location = "/invoices/issued";
         }).catch(error => {
-            alert(error.data);
+            alert(error.responseJSON.message);
         });
 
         enableIssueButton(true);
@@ -197,7 +193,6 @@
      */
     function issue(token)
     {
-        console.log('inside issue method with token ' + token);
         return new Promise((resolve, reject) => {
             $.ajax({                        
                 type: "POST",

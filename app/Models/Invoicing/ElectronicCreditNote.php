@@ -4,9 +4,9 @@ namespace App\Models\Invoicing;
 
 use App\Models\Invoicing\TaxDocument;
 use App\Models\Invoicing\TaxDocumentType;
-use App\Models\Invoicing\InvoiceIssuerInterface;
+use App\Models\Invoicing\TaxIssuerInterface;
 
-class ElectronicCreditNote extends TaxDocument implements InvoiceIssuerInterface
+class ElectronicCreditNote implements TaxIssuerInterface
 {
     /**    Código utilizado para los siguientes
      *     casos:
@@ -48,83 +48,65 @@ class ElectronicCreditNote extends TaxDocument implements InvoiceIssuerInterface
     const FIX_AMOUNTS = 3;
 
     /**
-     *  [get description]
+     *  Build the invoice with all the data to be issue
      *
-     *  @param   [type]  $receipt  [$receipt description]
-     *
+     *  @param   TaxDocument  $receipt
+     *  
      *  @return  array
      */
-    public function get($receipt)
+    public function get(TaxDocument $receipt)
     {
         return [
-            "dte" => [
-                "Encabezado" => [
-                    "IdDoc" => [
-                        "TipoDTE"      => TaxDocumentType::NOTA_DE_CREDITO_ELECTRONICA,
-                        "Folio"        => $receipt->folio,
-                        "FchEmis"      => today()->format('Y-m-d'), //  "2020-08-05"
-                        "IndServicio"  => $receipt->tpotranventa,  // tipo de transacción (3 = Boletas de venta y servicios)
-                        "PeriodoDesde" => today()->format('Y-m-d'),
-                        "PeriodoHasta" => today()->format('Y-m-d'),
-                        "FchVenc"      => today()->format('Y-m-d'),
+            'dte' => [
+                'Encabezado' => [
+                    'IdDoc'   => [
+                        'TipoDTE'      => TaxDocumentType::NOTA_DE_CREDITO_ELECTRONICA,
+                        'Folio'        => $receipt->folio,
+                        'FchEmis'      => today()->format('Y-m-d'), //  '2020-08-05'
+                        'TpoTranVenta' => $receipt->tpotranventa, // tipo de transacción (3 = Boletas de venta y servicios)
+                        'FmaPago'      => 2 // credito Valor 1: Contado; 2: Crédito 3: Sin costo (entrega gratuita)
+                        // 'PeriodoDesde' => today()->format('Y-m-d'),
+                        // 'PeriodoHasta' => today()->format('Y-m-d'),
+                        // 'FchVenc'      => today()->format('Y-m-d'),
                     ],
-                    "Emisor" => [
-                        "RUTEmisor"    => $this->emisor->rut,           //  "76795561-8",
-                        "RznSoc"       => $this->emisor->razon_social,  //  "HAULMER SPA",
-                        "GiroEmis"     => $this->emisor->giro,          //  "VENTA AL POR MENOR POR CORREO, POR INTERNET Y VIA TELEFONICA",
-                        "Telefono"     => $this->emisor->phone,
-                        "CorreoEmisor" => $this->emisor->email,
-                        "Acteco"       => $this->emisor->codigo_actividad_economica,
-                        "DirOrigen"    => $this->emisor->address,       //  "ARTURO PRAT 527, CURICO",
-                        "CmnaOrigen"   => $this->emisor->comuna,        //  "Curicó",
-                        "CiudadOrigen" => $this->emisor->city,          //  "Curicó",
+                    'Emisor'  => [
+                        'RUTEmisor'   => $receipt->sender->rut,           //  '76795561-8',
+                        'RznSoc'      => $receipt->sender->razon_social,  //  'HAULMER SPA',
+                        'GiroEmis'    => $receipt->sender->giro,          //  'VENTA AL POR MENOR POR CORREO, POR INTERNET Y VIA TELEFONICA',
+                        'Acteco'      => $receipt->sender->codigo_actividad_economica,
+                        'DirOrigen'   => $receipt->sender->address,       //  'ARTURO PRAT 527, CURICO',
+                        'CmnaOrigen'  => $receipt->sender->comuna,        //  'Curicó',
+                        'Telefono'    => $receipt->sender->phone,
+                        'CdgSIISucur' => $receipt->sender->codigo_sii_sucursal
                     ],
-                    "Receptor" => [
-                        "RUTRecep"    => $receipt->rutrecep,
-                        "CdgIntRecep" => $receipt->cdgintrecep ?? 1,
-                        "RznSocRecep" => $receipt->rznsocrecep,
+                    'Receptor' => [
+                        'RUTRecep'    => $receipt->rutrecep,
+                        'RznSocRecep' => $receipt->rznsocrecep,
+                        // "CdgIntRecep" => $receipt->cdgintrecep ?? 1,
+                        'GiroRecep'   => $receipt->girorecep,
+                        'Contacto'    => $receipt->contacto,
+                        'DirRecep'    => $receipt->dirrecep,
+                        'CmnaRecep'   => $receipt->cmnarecep,
                     ],
-                    "Totales" => [
-                        "MntNeto"  => $receipt->mntneto,
-                        "IVA"      => $receipt->iva,
-                        "MntExe"   => 0, // suma de todos los valores exentos de iva
-                        "MntTotal" => $receipt->mnttotal,
-                        "VlrPagar" => $receipt->mnttotal
+                    'Totales'  => [
+                        'MntNeto'      => $receipt->mntneto,
+                        'TasaIVA'      => 19,
+                        'IVA'          => $receipt->iva,
+                        'MntTotal'     => $receipt->mnttotal,
+                        'MontoPeriodo' => $receipt->mnttotal,
+                        'MntExe'       => $receipt->mntexe,
+                        'VlrPagar'     => $receipt->mnttotal
                     ],
                 ],
-                "Detalle" => [
-                    0 => [
-                        "NroLinDet"       => $receipt->nrolindet,
-                        // "TpoCodigo"       => null,
-                        // "IndExe"          => 1,
-                        "NmbItem"         => $receipt->nmbitem,
-                        // "InfoTicket"      => "",
-                        // "DscItem"         => "",
-                        "QtyItem"         => $receipt->qtyitem,
-                        // "UnmdItem"        => null,
-                        "PrcItem"         => $receipt->mntneto,
-                        "MontoItem"       => $receipt->mntneto
-                    ]
-                ],
-                "Referencia" => [
-                    "NroLinRef" => 1,
-                    "TpoDocRef" => $receipt->tipodte,
-                    "FolioRef"  => $receipt->folio,
-                    // "RUTOtr"    => self::RUT_GENERICO,
-                    "FchRef"    => $receipt->fchemis,
-                    "CodRef"    => self::CANCEL_REFERENCE_DOCUMENT,
+                'Detalle'    => $receipt->detalle,
+                'Referencia' => [
+                    'NroLinRef' => 1,
+                    'TpoDocRef' => $receipt->tipodte,
+                    'FolioRef'  => $receipt->folio,
+                    'FchRef'    => $receipt->fchemis,
+                    'CodRef'    => self::CANCEL_REFERENCE_DOCUMENT,
                 ],
             ]
         ];
     }
-
 }
-//  Tipos de documentos tributarios
-//  Como respaldo para las operaciones de recibo y entrega de mercancía o dinero; entre los documentos tributarios de uso común se encuentran:
-//  
-//  Notas de crédito
-//  Notas de débito
-//  Guías de despacho
-//  Liquidaciones de facturas
-//  Boletas
-//  Facturas

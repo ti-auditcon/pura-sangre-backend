@@ -4,7 +4,7 @@ namespace App\Models\Invoicing;
 
 use App\Models\Invoicing\TaxDocument;
 
-interface InvoiceIssuerInterface
+interface TaxIssuerInterface
 {
     /**
      *  Build the invoice with all the data to be issue
@@ -13,5 +13,5 @@ interface InvoiceIssuerInterface
      *  
      *  @return  array
      */
-    public function get(TaxDocument $receipt) :array;
+    public function get(TaxDocument $receipt);
 }

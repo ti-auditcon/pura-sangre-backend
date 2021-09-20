@@ -2,8 +2,11 @@
 
 namespace App\Models\Invoicing;
 
-use App\Models\Invoicing\Haulmer\TaxDocumentStatus;
 use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
+use App\Models\Invoicing\TaxDocumentType;
+use App\Models\Invoicing\ElectronicCreditNote;
+use App\Models\Invoicing\Haulmer\TaxDocumentStatus;
 
 class TaxDocument
 {
@@ -25,7 +28,8 @@ class TaxDocument
      *  En el Rut Receptor se permite el uso de RUT genérico en caso de Boletas de Ventas y Servicios
      *  (no periódicos ni domiciliarios): valor: 66.666.666-6
      */
-    const RUT_GENERICO = "66666666-6";
+    const GENERIC_RUT = "66666666-6";
+    const GENERIC_RAZON_SOCIAL = "NACIONALES SIN RUT (USO EXCLUSIVO F-29, NO USAR PARA PRUEBAS)";
 
     /**
      * Undocumented variable
@@ -46,6 +50,7 @@ class TaxDocument
         'MntNeto',
         'TasaIVA',
         'MntTotal',
+        'MntExe',
 
         "Contacto",
         "DirRecep",
@@ -103,6 +108,7 @@ class TaxDocument
     public $mntneto;
     public $tasaiva;
     public $mnttotal;
+    public $mntexe;
 
     public $status;
     //   +"TasaIVA": "19"
@@ -122,6 +128,8 @@ class TaxDocument
     public $dscitem;
     public $qtyitem;
 
+    public $detalle = [];
+
 
 
     /**
@@ -139,9 +147,9 @@ class TaxDocument
      *      codigo_sii_sucursal:  codigo_sii_sucursal
      *      acteco:               codigo_actividades_economicas  código de actividades economicas  // actividades economicas
      *
-     *  @var  array
+     *  @var  object
      */
-    protected $emisor;
+    public $sender;
 
     /**
      *  Instance of the Guzzle Client to make requests to Openfactura
@@ -193,7 +201,10 @@ class TaxDocument
     {
         $this->httpRequest = new Client([
             'base_uri' => $this->baseUrl,
-            'headers'  => [ "apikey" => $this->apiKey ]
+            'headers'  => [
+                'Content-Type' => 'application/json',
+                "apikey"       => $this->apiKey
+            ]
         ]);
     }
 
@@ -243,9 +254,14 @@ class TaxDocument
         return boolval($this->apiKey);
     }
 
+    /**
+     * [getEmisor description]
+     *
+     * @return  [type]  [return description]
+     */
     function getEmisor()
     {
-        return $this->emisor;
+        return $this->sender;
     }
 
     /**
@@ -270,7 +286,7 @@ class TaxDocument
      */
     public function fillEmisor($environment)
     {
-        $this->emisor = $this->arrayToObject(config("invoicing.haulmer.{$environment}.emisor"));
+        $this->sender = $this->arrayToObject(config("invoicing.haulmer.{$environment}.emisor"));
     }
 
 
@@ -350,7 +366,7 @@ class TaxDocument
         if ($this->tokenIsNotSetted()) return;
 
         try {
-            $response = $this->httpRequest->get("/v2/dte/document/{$token}/json");
+            $response = $this->httpRequest->get("/v2/dte/document/{$this->token}/json");
 
             $this->setTax(json_decode($response->getBody()->getContents()));
         } catch (\GuzzleHttp\Exception\ClientException $error) {
@@ -368,6 +384,11 @@ class TaxDocument
     public function setTax($data)
     {
         foreach ($data as $key => $value) {
+            if ($key === "Detalle") {
+                $this->detalle = $value;
+                continue;
+            }
+
             if (is_array($value) || is_object($value)) {
                 $value = $this->setTax($value);
             }
@@ -375,6 +396,22 @@ class TaxDocument
             if (in_array($key, $this->fillable)) {
                 $this->{strtolower($key)} = $value;
             }
+        }
+
+
+
+        $this->manageAnonymousReceptor();
+    }
+
+    public function manageAnonymousReceptor()
+    {
+        if (!$this->rutrecep || $this->rutrecep === self::GENERIC_RUT) {
+            $this->contacto = "00";
+            $this->dirrecep = "";
+            $this->rutrecep = self::GENERIC_RUT;
+            $this->cmnarecep = "";
+            $this->girorecep = "";
+            $this->rznsocrecep = self::GENERIC_RAZON_SOCIAL;
         }
     }
 
@@ -387,7 +424,7 @@ class TaxDocument
      */
     public function issueReceipt($order)
     {
-        $dte = $this->fillReceiptData($order, self::BOLETA_ELECTRONICA_EXENTA);
+        $dte = $this->fillReceiptData($order, TaxDocumentType::BOLETA_EXENTA_ELECTRONICA);
 
         return $this->issue(json_encode($dte));
     }
@@ -456,7 +493,7 @@ class TaxDocument
         } catch (\Throwable $error) {
             new TaxDocumentErrors($error);
             
-            return json_decode($error->getResponse()->getBody()->getContents(), true);
+            return json_decode($error->getMessage(), true);
         }
     }
 
@@ -467,17 +504,23 @@ class TaxDocument
      */
     public function cancel()
     {
+        if (!$this->canBeCancelled()) {
+            return false;
+        }
         try {
-            $response = $this->httpRequest->post("/v2/dte/document", [
-                'headers'  => [
-                    'Content-Type' => 'application/json',
-                ],
-                'json' => app(ElectronicCreditNote::class)->get($this)
-            ]);
+            $response = $this->httpRequest->post(
+                "/v2/dte/document", [
+                    \GuzzleHttp\RequestOptions::JSON => app(ElectronicCreditNote::class)->get($this)
+                ]
+            );
 
             return json_decode($response->getBody()->getContents());
-        } catch (\Exception $error) {
+        } catch (\GuzzleHttp\Exception\ClientException $error) {
+            dd($error->getResponse()->getBody()->getContents());
             return json_decode($error->getResponse()->getBody()->getContents(), true);
+
+            dd($error->getMessage());
+            
         }
     }
 
