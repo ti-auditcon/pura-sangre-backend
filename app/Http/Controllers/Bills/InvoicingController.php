@@ -8,6 +8,7 @@ use App\Models\Plans\PlanUserFlow;
 use App\Http\Controllers\Controller;
 use App\Models\Invoicing\TaxDocument;
 use App\Models\Plans\FlowOrderStatus;
+use App\Models\Invoicing\Haulmer\HaulmerError;
 use Symfony\Component\HttpFoundation\Response;
 
 class InvoicingController extends Controller
@@ -343,7 +344,7 @@ class InvoicingController extends Controller
     }
 
     public function cancel($token)
-    {
+    {    
         if ($document = PlanUserFlow::where('sii_token', $token)->first()) {
             if ($document->paid === FlowOrderStatus::CANCELED) {
                 return response()->json([
@@ -360,37 +361,28 @@ class InvoicingController extends Controller
 
         // get document data
         $document = new TaxDocument($token);
+        $response = $document->cancel();
 
-        if ($document && $document->canBeCancelled()) {
-            $response = $document->cancel();
+        if (isset($response->TOKEN)) {
+            PlanUserFlow::create([
+                'start_date'   => $document->fchemis,
+                'finish_date'  => $document->fchemis,
+                'counter'      => 0,
+                'paid'         => FlowOrderStatus::CANCELED,
+                'amount'       => $document->mnttotal,
+                'observations' => $document->nmbitem,
+                'payment_date' => $document->fchemis,
+                'sii_token'    => $response->TOKEN
+            ]);
 
-            if ($response->TOKEN) {
-                PlanUserFlow::create([
-                    'start_date'   => $document->fchemis,
-                    'finish_date'  => $document->fchemis,
-                    'counter'      => 0,
-                    'paid'         => FlowOrderStatus::CANCELED,
-                    'amount'       => $document->mnttotal,
-                    'observations' => $document->nmbitem,
-                    'payment_date' => $document->fchemis,
-                    'sii_token'    => $response->TOKEN
-                ]);
-
-                return response()->json([
-                    'status' => 'Ok', 'message' => "Se ha anulado el documento correctamente."
-                ], Response::HTTP_CREATED);
-            }
+            return response()->json([
+                'status' => 'Ok', 'message' => "Se ha anulado el documento correctamente."
+            ], Response::HTTP_CREATED);
         }
 
         return response()->json([
-            'status' => 'Ok', 'message' => "No se ha podido anular el documento."
-        ], Response::HTTP_UNAUTHORIZED);
-
-        // check if the bill is already canceled
-        // response with json "Esta boleta ya ha sido anulada"
-
-        // annul bill
-        // change the status of the bill
-        //
+            'status' => 'Bad Request',
+            'message' => app(HaulmerError::class)->manage($response) ?: "No se ha podido anular el documento."
+        ], Response::HTTP_BAD_REQUEST);
     }
 }

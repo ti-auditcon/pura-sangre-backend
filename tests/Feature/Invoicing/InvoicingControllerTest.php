@@ -11,11 +11,13 @@ class InvoicingControllerTest extends TestCase
     use RefreshDatabase, DatabaseMigrations;
     
     /** @test */
-    public function iva_tax_document_is_canceled_correctly()
+    public function vat_tax_document_is_canceled_correctly()
     {
+        $this->withoutExceptionHandling();
+
         $this->actingAs($this->admin)
                 ->post(
-                    "/tax-documents/47fff2b7c0c14c3a3b2e31d33535b513cf888a92092c81da55c7860bb8c505c0/cancel"
+                    "/tax-documents/a570adf5c727bfc266ea5bb2416364f3dc6e8ddf304086bfa5ff408d698f1a7d/cancel"
                 )->assertSuccessful();
 
         $this->assertTrue(true);

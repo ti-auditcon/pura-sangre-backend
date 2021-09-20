@@ -3,9 +3,9 @@
 namespace App\Models\Invoicing;
 
 use App\Models\Invoicing\TaxDocument;
-use App\Models\Invoicing\InvoiceIssuerInterface;
+use App\Models\Invoicing\TaxIssuerInterface;
 
-class ExemptElectronicInvoice extends TaxDocument implements InvoiceIssuerInterface
+class ExemptElectronicInvoice extends TaxDocument implements TaxIssuerInterface
 {
     /**
      *  Give form the receipt to be issue to SII

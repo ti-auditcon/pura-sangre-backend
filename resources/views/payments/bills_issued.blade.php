@@ -38,7 +38,7 @@
                                 <th width="20%">Tipo de documento</th>
                                 <th width="15%">Monto total</th>
                                 <th width="10%">Fecha emisión</th>
-                                <th width="10%">Acciones</th>
+                                <th width="20%">Acciones</th>
                                 <th hidden>fecha de emision</th>
                             </tr>
                         </thead>
@@ -98,9 +98,7 @@
         constructor(data) {
             this.data = data;
 
-            this.taxes = {
-                41: 'Boleta exenta electrónica'
-            };
+            this.taxes = taxDocuments;
         }
 
         getTaxDocument(value) {
@@ -163,19 +161,18 @@
         // reload the page on success
         // warning on failure
         issue(currentTaxToken).then(response => {
-            console.log(response)
-            console.log(response.status)
             if (response.status >= 400) {
                 alert(response.message);
 
                 return;
             }
-            console.log('by-pass if (response.status >= 400) {');
-            console.log(response.message);
+            console.log(response);
+            alert(response.message);
 
             // window.location = "/invoices/issued";
         }).catch(error => {
-            alert(error.data);
+            console.log(error);
+            alert(error.responseJSON.message);
         });
 
         enableIssueButton(true);
@@ -197,7 +194,6 @@
      */
     function issue(token)
     {
-        console.log('inside issue method with token ' + token);
         return new Promise((resolve, reject) => {
             $.ajax({                        
                 type: "POST",
