@@ -38,7 +38,7 @@
                                 <th width="20%">Tipo de documento</th>
                                 <th width="15%">Monto total</th>
                                 <th width="10%">Fecha emisión</th>
-                                <th width="10%">Acciones</th>
+                                <th width="20%">Acciones</th>
                                 <th hidden>fecha de emision</th>
                             </tr>
                         </thead>
@@ -166,11 +166,12 @@
 
                 return;
             }
-            console.log('by-pass if (response.status >= 400) {');
-            console.log(response.message);
+            console.log(response);
+            alert(response.message);
 
             // window.location = "/invoices/issued";
         }).catch(error => {
+            console.log(error);
             alert(error.responseJSON.message);
         });
 

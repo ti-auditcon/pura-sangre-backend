@@ -5,6 +5,9 @@ namespace App\Models\Invoicing\Haulmer;
 class TaxDocumentStatus
 {
     /** Status of a tax docuemnt by Haulmer */
+    const NO_STATUS = 0;
+    
+    /** Status of a tax docuemnt by Haulmer */
     const ACCEPTED = 1;
     
     /** Status of a tax docuemnt by Haulmer */
@@ -39,6 +42,11 @@ class TaxDocumentStatus
         ];
     }
 
+    /**
+     *  Return all the status of tax documents that apply to be cancel
+     *
+     *  @return  array
+     */
     public static function cancellableList()
     {
         return [

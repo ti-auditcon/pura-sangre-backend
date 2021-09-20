@@ -13,9 +13,11 @@ class InvoicingControllerTest extends TestCase
     /** @test */
     public function vat_tax_document_is_canceled_correctly()
     {
+        $this->withoutExceptionHandling();
+
         $this->actingAs($this->admin)
                 ->post(
-                    "/tax-documents/6af59abd745b870188f9a6d038d2459102459949d0ebdf5ec2b25109164936b5/cancel"
+                    "/tax-documents/a570adf5c727bfc266ea5bb2416364f3dc6e8ddf304086bfa5ff408d698f1a7d/cancel"
                 )->assertSuccessful();
 
         $this->assertTrue(true);

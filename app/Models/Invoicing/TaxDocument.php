@@ -386,6 +386,7 @@ class TaxDocument
         foreach ($data as $key => $value) {
             if ($key === "Detalle") {
                 $this->detalle = $value;
+
                 continue;
             }
 
@@ -401,6 +402,24 @@ class TaxDocument
 
 
         $this->manageAnonymousReceptor();
+    }
+
+    public function removeUnusedValues()
+    {
+        foreach ($this->detalle as $key => $value) {
+            if (isset($value->RUTMandante)) {
+                unset($value->RUTMandante);
+            }
+            
+            if (isset($value->RecargoMonto)) {
+                unset($value->RecargoMonto);
+            }
+
+            if (isset($value->ItemEspectaculo)) {
+                unset($value->ItemEspectaculo);
+            }
+        }
+        // dd($this->detalle);
     }
 
     public function manageAnonymousReceptor()
@@ -507,6 +526,9 @@ class TaxDocument
         if (!$this->canBeCancelled()) {
             return false;
         }
+
+        $this->removeUnusedValues();
+
         try {
             $response = $this->httpRequest->post(
                 "/v2/dte/document", [
@@ -516,11 +538,7 @@ class TaxDocument
 
             return json_decode($response->getBody()->getContents());
         } catch (\GuzzleHttp\Exception\ClientException $error) {
-            dd($error->getResponse()->getBody()->getContents());
             return json_decode($error->getResponse()->getBody()->getContents(), true);
-
-            dd($error->getMessage());
-            
         }
     }
 
@@ -541,7 +559,7 @@ class TaxDocument
 
             if ($response->estado) return $response->estado;
         } catch (\GuzzleHttp\Exception\ClientException $error) {
-            return null;
+            return TaxDocumentStatus::NO_STATUS;
         }
     }
 
