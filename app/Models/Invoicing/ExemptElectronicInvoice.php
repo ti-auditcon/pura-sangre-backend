@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Models\Invoicing;
 
@@ -11,13 +11,14 @@ class ExemptElectronicInvoice extends TaxDocument implements InvoiceIssuerInterf
      *  Give form the receipt to be issue to SII
      *
      *  @param   object  $receipt
-     * 
-     *  @return  array
+     *
+     *  @return  object
      */
     public function get($receipt)
     {
         $boleta = $this->calculateValues($receipt);
 
+        // set taxDocument data with this data below
         return [
             'dte' => [
                 'Encabezado' => [

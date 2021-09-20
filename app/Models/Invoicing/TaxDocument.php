@@ -4,11 +4,12 @@ namespace App\Models\Invoicing;
 
 use App\Models\Invoicing\Haulmer\TaxDocumentStatus;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 
 class TaxDocument
 {
     /**
-     *  Haulmer inviocing number
+     *  Haulmer invoicing number
      *
      *  @var  int
      */
@@ -152,10 +153,10 @@ class TaxDocument
 
     /**
      *  At start class fill values for Haulmer API
-     *  
+     *
      *  note: fillDataForInvoiceAPI must be before than the initialization of Guzzle Client,
      *        because we need to fill the baseUrl first in order to fill the base_uri of the Guzzle Client
-     * 
+     *
      */
     public function __construct($token = null)
     {
@@ -171,7 +172,7 @@ class TaxDocument
      * [setTaxIssuerData description]
      *
      *  @param   [type]   $environment  [$environment description]
-     *  @param   sandbox                [ description]
+     *  @param   string    sandbox                [ description]
      */
     public function setTaxIssuerData($environment = 'sandbox')
     {
@@ -198,9 +199,9 @@ class TaxDocument
     }
 
     /**
-     * Undocumented function
+     *  Get the base url
      *
-     * @return void
+     *  @return  string
      */
     public function getBaseUri()
     {
@@ -224,9 +225,9 @@ class TaxDocument
     }
 
     /**
-     * Undocumented function
+     *  To check if the requests are going to be through ssl
      *
-     * @return void
+     *  @return bool
      */
     public function getVerifiedSsl()
     {
@@ -288,7 +289,7 @@ class TaxDocument
      *  Set token value
      *
      *  @param   string  $token
-     * 
+     *
      *  @return  void
      */
     public function setToken($token)
@@ -350,10 +351,10 @@ class TaxDocument
         if ($this->tokenIsNotSetted()) return;
 
         try {
-            $response = $this->httpRequest->get("/v2/dte/document/{$token}/json");
+            $response = $this->httpRequest->get("/v2/dte/document/$this->token/json");
 
             $this->setTax(json_decode($response->getBody()->getContents()));
-        } catch (\GuzzleHttp\Exception\ClientException $error) {
+        } catch (ClientException) {
             return null;
         }
     }
@@ -383,38 +384,37 @@ class TaxDocument
      *
      *  @param   [type]  $order  [$order description]
      *
-     *  @return  [type]          [return description]
+     *  @return  json
      */
-    public function issueReceipt($order)
+    public function issueReceipt($order): json
     {
-        $dte = $this->fillReceiptData($order, self::BOLETA_ELECTRONICA_EXENTA);
+        $dte = $this->fillReceiptData($order, TaxDocumentType::BOLETA_EXENTA_ELECTRONICA);
 
         return $this->issue(json_encode($dte));
     }
 
     /**
-     *  [fillReceiptData description]
+     *  Calculate values and return the tax document
      *
-     *  @param   object   $receipt
-     *  @param   integer  $invoiceType
+     *  @param  object   $receipt
      *
-     *  @return  array
+     *  @return  TaxDocument
      */
-    public function fillReceiptData($receipt, $invoiceType)
+    public function fillReceiptData(object $receipt): TaxDocument
     {
-        $boleta = $this->calculateValues($receipt);
+        $receipt = $this->calculateValues($receipt);
 
-        return app(ExemptElectronicInvoice::class)->get($boleta);
+        return app(ExemptElectronicInvoice::class)->get($receipt);
     }
 
     /**
      *  [calculateValues description]
      *
-     *  @param   Request  $request
+     *  @param   object  $request
      *
      *  @return  array
      */
-    public function calculateValues($request)
+    public function calculateValues(object $request)
     {
         return [
             'monto_neto' => round((int) $request->amount / 1.19),
@@ -427,14 +427,14 @@ class TaxDocument
      *  Issue invoice to SII
      *
      *  todo: the sended dte should be $this instead
-     *  @param   TaxDocument  $dte
+     *  @param TaxDocument $taxDocument
      *
      *  @return  json
      */
-    public function issue($dte)
+    public function issue(TaxDocument $taxDocument): json
     {
         $response = $this->httpRequest->post("/dte/document", [
-            $dte
+            $taxDocument
         ]);
 
         return json_decode($response->getBody()->getContents());
@@ -455,17 +455,17 @@ class TaxDocument
             return json_decode($response->getBody()->getContents());
         } catch (\Throwable $error) {
             new TaxDocumentErrors($error);
-            
+
             return json_decode($error->getResponse()->getBody()->getContents(), true);
         }
     }
 
     /**
-     *  Issue a credit note to cancel an specific invoice
+     *  Issue a credit note to cancel a specific invoice
      *
      *  @return  json
      */
-    public function cancel()
+    public function cancel(): json
     {
         try {
             $response = $this->httpRequest->post("/v2/dte/document", [
@@ -485,19 +485,23 @@ class TaxDocument
     /**
      *  Check the status of a tax document
      *
-     *  @param   string  $token  Has to be a valid token by Openfactura
+     *  @param string $token  Has to be a valid token by Openfactura
      *
-     *  @return  json
+     *  @return  ?json
      */
-    public function status($token)
+    public function status(string $token): ?json
     {
         try {
             $response = $this->httpRequest->get("/v2/dte/document/{$token}/status");
 
             $response = json_decode($response->getBody()->getContents());
 
-            if ($response->estado) return $response->estado;
-        } catch (\GuzzleHttp\Exception\ClientException $error) {
+            if ($response->estado) {
+                return $response->estado;
+            }
+
+            return null;
+        } catch (ClientException $error) {
             return null;
         }
     }

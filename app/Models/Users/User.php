@@ -36,7 +36,7 @@ class User extends Authenticatable
     protected $dates = ['birthdate', 'since', 'deleted_at'];
 
     /**
-     * 
+     *
      *  The attributes that are mass assignable.
      *
      *  @var  array
