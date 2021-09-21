@@ -576,4 +576,22 @@ class TaxDocument
 
         return $object;
     }
+
+    /**
+     *  We iterate over all the nmbitem for the tax document details
+     *
+     *  @return  [type]      [return description]
+     */
+    public function getAllDetails()
+    {
+        $observations = [];
+
+        foreach ($this->detalle as $key => $detalle) {
+            if ($key > 5) break;
+
+            array_push($observations, $detalle->NmbItem);
+        }
+
+        return implode(",", $observations);
+    }
 }

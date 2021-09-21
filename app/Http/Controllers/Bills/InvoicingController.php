@@ -329,7 +329,7 @@ class InvoicingController extends Controller
                                                 'plans.id', 'plans.plan'
                                             ])) {
 
-                $data->full_name = ucwords("{$planUserFlow->first_name} {$planUserFlow->last_name}");
+                $data->full_name = $planUserFlow->user_id ? ucwords("{$planUserFlow->first_name} {$planUserFlow->last_name}") : "sin nombre";
                 $data->service = $planUserFlow->plan ? ucfirst($planUserFlow->plan) : "sin servicio";
                 $data->user_id = ucfirst($planUserFlow->user_id);
                 $data->paid = $planUserFlow->paid;
@@ -355,6 +355,8 @@ class InvoicingController extends Controller
 
             $this->documents->cancel($document);
 
+            $document->update(['paid' => TaxDocumentStatus::CANCELED]);
+
             return response()->json([
                 'status' => 'Ok', 'message' => "Se ha anulado el documento correctamente."
             ], Response::HTTP_CREATED);
@@ -362,6 +364,7 @@ class InvoicingController extends Controller
 
         // get document data
         $document = new TaxDocument($token);
+        $this->createPlanUserFlow($document);
         $response = $document->cancel();
 
         if (isset($response->TOKEN)) {
@@ -385,5 +388,19 @@ class InvoicingController extends Controller
             'status' => 'Bad Request',
             'message' => app(HaulmerError::class)->manage($response) ?: "No se ha podido anular el documento."
         ], Response::HTTP_BAD_REQUEST);
+    }
+
+    public function createPlanUserFlow($document)
+    {
+        PlanUserFlow::create([
+            'start_date'     => $document->fchemis,
+            'finish_date'    => $document->fchemis,
+            'counter'        => 0,
+            'plan_status_id' => 0,
+            'paid'           => FlowOrderStatus::PENDIENTE,
+            'amount'         => $document->mnttotal,
+            'observations'   => $document->getAllDetails(),
+            'sii_token'      => $document->getToken(),
+        ]);
     }
 }

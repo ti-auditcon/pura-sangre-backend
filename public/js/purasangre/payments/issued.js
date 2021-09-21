@@ -94,6 +94,14 @@ jQuery(function () {
                 "render": function (data, other, row) {
                     let cancelButton = '';
                     let assignUser = '';
+                    // let withoutUser = `<button class="badge badge-default badge-circle"
+                    //                             data-toggle="popover"
+                    //                             data-trigger="hover"
+                    //                             data-placement="right"
+                    //                             data-content="Este documento no esta asociado a un usuario."
+                    //                     >
+                    //                         ?
+                    //                     </button>`;
                     if (cancellableTaxDocuments.includes(row.paid)) {
                         cancelButton = `<button class="ml-2 btn btn-warning text-white cancel-bill-button"
                                                 data-token="${row.Token}"
@@ -120,7 +128,6 @@ jQuery(function () {
                                     Solicitar PDF
                                 </button>
                                 ${cancelButton}
-                                ${assignUser}
                             </div>
                         `;
                 }
