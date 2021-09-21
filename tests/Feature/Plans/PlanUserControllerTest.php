@@ -125,8 +125,10 @@ class PlanUserControllerTest extends TestCase
                 'plan_id'        => $plan_user->plan_id,
                 'user_id'        => $studentUser->id,
                 'counter'        => $plan_user->counter,
-                'start_date'     => $plan_user->start_date->format('Y-m-d'),
-                'finish_date'    => $plan->plan_period_id ? now()->copy()->addMonths($plan->plan_period_id)->format('Y-m-d') : now()->addDays(7)->format('Y-m-d'),
+                'start_date'     => $plan_user->start_date->format('Y-m-d H:i:s'),
+                // 'finish_date'    => $plan->plan_period_id ?
+                //                     now()->copy()->addMonths($plan->plan_period_id)->format('Y-m-d H:i:s') :
+                //                     now()->addDays(7)->format('Y-m-d H:i:s'),
                 'observations'   => $plan_user->observations,
                 'plan_status_id' => PlanStatus::ACTIVO
             ]);
@@ -163,8 +165,8 @@ class PlanUserControllerTest extends TestCase
         )->assertRedirect("/users/{$studentUser->id}");
 
         $this->assertDatabaseHas('plan_user_flows', [
-            'start_date'      => $plan_user->start_date->format('Y-m-d'),
-            'finish_date'     => $plan_user->finish_date->format('Y-m-d'),
+            'start_date'      => $plan_user->start_date->format('Y-m-d H:i:s'),
+            'finish_date'     => $plan_user->finish_date->format('Y-m-d H:i:s'),
             'payment_type_id' => PaymentType::TRANSFERENCIA,
             'date'            => date('Y-m-d'),
             'amount'          => 30000,
@@ -174,9 +176,9 @@ class PlanUserControllerTest extends TestCase
             'paid'            => true,
             'plan_status_id'  => FlowOrderStatus::PAGADO,
             'observations'    => "Compra de plan: {$plan_user->plan->plan} - {$plan_user->user->full_name}",
-            'payment_date'    => Carbon::parse($request->date),
-            'bill_pdf'       => null,
-            'sii_token'       => null,
+            'payment_date'    => today()->format('Y-m-d H:i:s'),
+            'bill_pdf'        => null,
+            'sii_token'       => "sin emision",
         ]);
     }
 }

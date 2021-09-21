@@ -86,10 +86,10 @@ class TaxDocumentTest extends TestCase
         $this->assertTrue(is_object($taxDocument->getEmisor()), "emisor is not an object");
     }
 
-    /** @test */
-    public function it_issue_tax_documents_correctly()
-    {
-        //$this->withoutExceptionHandler();
-        //test here
-    }
+    // /** @test */
+    // public function it_issue_tax_documents_correctly()
+    // {
+    //     //$this->withoutExceptionHandler();
+    //     //test here
+    // }
 }

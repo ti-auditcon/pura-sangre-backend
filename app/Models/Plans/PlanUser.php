@@ -86,7 +86,7 @@ class PlanUser extends Model
      */
     public function isFreezed() :bool
     {
-        return $this->plan_status_id === PlanStatus::CONGELADO;
+        return (int) $this->plan_status_id === PlanStatus::CONGELADO;
     }
 
     /**

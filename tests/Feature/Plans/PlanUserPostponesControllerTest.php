@@ -120,8 +120,8 @@ class PlanUserPostponesControllerTest extends TestCase
 
         $this->assertDatabaseHas('freeze_plans', [
             'plan_user_id' => $plan_user->id,
-            'start_date'   => today()->format('Y-m-d'),
-            'finish_date'  => today()->format('Y-m-d'),
+            'start_date'   => today()->format('Y-m-d H:i:s'),
+            'finish_date'  => today()->format('Y-m-d H:i:s'),
             'days'         => $testingPlanDays
         ]);
     }
@@ -159,7 +159,7 @@ class PlanUserPostponesControllerTest extends TestCase
 
         $this->assertDatabaseHas('plan_user', [
             'id'          => $plan_user->id,
-            'finish_date' => today()->addDays($testingPlanDays)->format('Y-m-d'),
+            'finish_date' => today()->addDays($testingPlanDays)->format('Y-m-d H:i:s'),
         ]);
     }
 
@@ -193,11 +193,13 @@ class PlanUserPostponesControllerTest extends TestCase
      */
     public function plan_user_with_status_freezed_can_not_be_edited()
     {
+        $this->withoutExceptionHandling();
         $plan_user = Model::withoutEvents(function () {
             return factory(PlanUser::class)->create([
                 'plan_status_id' => PlanStatus::CONGELADO,
             ]);
         });
+
 
         $this->actingAs($this->admin)
                 ->patch("users/{$plan_user->user_id}/plans/{$plan_user->id}" , [
