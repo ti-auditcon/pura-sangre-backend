@@ -53,6 +53,8 @@
 
 @include('payments.modals.cancel_bill')
 
+@include('payments.modals.assign_tax_document')
+
 @endsection
 
 @section('css')
@@ -69,154 +71,24 @@
 {{-- Javasctipt to get issued invoices --}}
 <script src="{{ asset('js/purasangre/payments/issued.js') }}"></script>
 
+<script src="{{ asset('js/purasangre/payments/cancel-tax-documents.js') }}"></script>
+
 {{-- Javasctipt to get issued invoices --}}
 <script src="{{ asset('js/purasangre/payments/manage-pdf.js') }}"></script>
 
 <script>
     const taxDocuments = @json(App\Models\Invoicing\TaxDocumentType::list());
+    const cancellableTaxDocuments = @json(App\Models\Invoicing\Haulmer\TaxDocumentStatus::cancellableIds());
     const base_url = @json(url('/'));
-    let previousTaxToken = 1;
     let currentTaxToken = 1;
 
-    jQuery(document).on('click', ".cancel-bill-button", function() {
-        $("#canceBillModal").modal();
+    // jQuery(document).on('click', ".assign-tax-document-button", function () {
+    //     $("#assignTaxDocumentModal").modal();
 
-        currentTaxToken = $(this).data("token");
+    //     currentTaxToken = $(this).data("token");
 
-        fillCancelBillModal($(this).data());
-    });
-
-    function fillCancelBillModal(billData)
-    {
-        Object.keys(billData).forEach(key => {
-            $(`#${key}`).text(new BillData(billData[key])[key]());
-        });
-    }
-
-    class BillData
-    {
-        constructor(data) {
-            this.data = data;
-
-            this.taxes = taxDocuments;
-        }
-
-        getTaxDocument(value) {
-            return this.taxes[value] ? `${value} - ${this.taxes[value]}` : false;
-        }
-
-        iva() {
-            return `${this.data}%`;
-        }
-        
-        fchemis() {
-            return moment(this.data).format('DD-MM-YYYY');
-        }
-        
-        mnttotal() {
-            return new Intl.NumberFormat("es-CL", { style: 'currency', currency: 'CLP' })
-                            .format(this.data);
-        }
-        
-        folio() {
-
-            return this.data;
-        }
-        
-        tipodte() {
-            return this.getTaxDocument(this.data) || this.data;
-        }
-
-        token() { }
-    }
-
-    //
-    //
-    //  send credit note
-    //
-    //
-    $("#issue-cancel-document").on('click', function(event) {
-        event.preventDefault();
-        // disable emitir button
-        $(this).text("Emitiendo...");
-        $(this).attr("disabled", true);
-
-        issueElectronicNote();
-        // url = $("#cancel-bill-form").attr('action');
-
-        // new_url = url.replace(previousTaxToken, currentTaxToken);
-
-        // $("#cancel-bill-form").attr('action', new_url);
-
-        // previousTaxToken = currentTaxToken;
-
-        // // send form
-        // $("#cancel-bill-form").submit();
-
-    });
-
-    async function issueElectronicNote()
-    {
-        // issue document
-        // reload the page on success
-        // warning on failure
-        issue(currentTaxToken).then(response => {
-            if (response.status >= 400) {
-                alert(response.message);
-
-                return;
-            }
-            console.log(response);
-            alert(response.message);
-
-            // window.location = "/invoices/issued";
-        }).catch(error => {
-            console.log(error);
-            alert(error.responseJSON.message);
-        });
-
-        enableIssueButton(true);
-    }
-
-    function enableIssueButton(enable = false)
-    {
-        let button = $("#issue-cancel-document");
-
-        if (enable) {
-            return changeTextAndStatusToButton(button, "Emitir", false);
-        }    
-
-        changeTextAndStatusToButton(button, "Emitiendo...", true);
-    }
-
-    /**
-     *
-     */
-    function issue(token)
-    {
-        return new Promise((resolve, reject) => {
-            $.ajax({                        
-                type: "POST",
-                url: `/tax-documents/${token}/cancel`,
-            }).done(successResponse => resolve(successResponse))
-              .fail(errorResponse => reject(errorResponse));
-        });
-    }
-
-    /** 
-     *  the first one is the button itself
-     *  the second is the text inside the button
-     *  the last is the status of the button (true means is disabled) 
-     *  
-     *  @return  void
-     */
-    function changeTextAndStatusToButton(button, text, isDisabled)
-    {
-        button.text(text);
-        
-        button.prop('disabled', isDisabled);
-    }
+    //     fillCancelBillModal($(this).data());
+    // });
 </script>
-
 
 @endsection

@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Invoicing\TaxDocument;
 use App\Models\Plans\FlowOrderStatus;
 use App\Models\Invoicing\Haulmer\HaulmerError;
+use App\Models\Invoicing\Haulmer\TaxDocumentStatus;
 use Symfony\Component\HttpFoundation\Response;
 
 class InvoicingController extends Controller
@@ -319,8 +320,8 @@ class InvoicingController extends Controller
     public function addClientAndServiceToReceipts($response)
     {
         foreach ($response->data as $data) {
-            if ($planUserFlow = PlanUserFlow::join('users', 'users.id', '=', 'plan_user_flows.user_id')
-                                            ->join('plans', 'plans.id', '=', 'plan_user_flows.plan_id')
+            if ($planUserFlow = PlanUserFlow::leftJoin('users', 'users.id', '=', 'plan_user_flows.user_id')
+                                            ->leftJoin('plans', 'plans.id', '=', 'plan_user_flows.plan_id')
                                             ->where('plan_user_flows.sii_token', $data->Token)
                                             ->first([
                                                 'plan_user_flows.id', 'plan_user_flows.paid',
@@ -329,7 +330,7 @@ class InvoicingController extends Controller
                                             ])) {
 
                 $data->full_name = ucwords("{$planUserFlow->first_name} {$planUserFlow->last_name}");
-                $data->service = ucfirst($planUserFlow->plan);
+                $data->service = $planUserFlow->plan ? ucfirst($planUserFlow->plan) : "sin servicio";
                 $data->user_id = ucfirst($planUserFlow->user_id);
                 $data->paid = $planUserFlow->paid;
             } else {
@@ -344,7 +345,7 @@ class InvoicingController extends Controller
     }
 
     public function cancel($token)
-    {    
+    {   
         if ($document = PlanUserFlow::where('sii_token', $token)->first()) {
             if ($document->paid === FlowOrderStatus::CANCELED) {
                 return response()->json([
@@ -368,7 +369,7 @@ class InvoicingController extends Controller
                 'start_date'   => $document->fchemis,
                 'finish_date'  => $document->fchemis,
                 'counter'      => 0,
-                'paid'         => FlowOrderStatus::CANCELED,
+                'paid'         => TaxDocumentStatus::CANCELED,
                 'amount'       => $document->mnttotal,
                 'observations' => $document->nmbitem,
                 'payment_date' => $document->fchemis,

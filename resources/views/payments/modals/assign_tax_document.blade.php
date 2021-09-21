@@ -1,20 +1,19 @@
-<div class="modal fade" id="canceBillModal" aria-hidden="true">
+<div class="modal fade" id="assignTaxDocumentModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Emitir nota de crédito</h5>
+                <h5 class="modal-title">Asignar un documento</h5>
                 
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form class="canceBillModal" id="cancel-bill-form">
-
+            <form class="canceBillModal" id="assign-tax-document-form">
                 <span class="bg-warning text-white" hidden>
                     Mientras dure este proceso por favor no cierre esta ventana, una vez terminado la ventana se recargará sola...
                 </span>
                 <div class="modal-body">
-                    <h5>Datos de la boleta a anular</h5>
+                    <h5>Datos del documento</h5>
 
                     <div class="row mb-2">
                         <div class="col-12 text-muted">Fecha de emisión:</div>
@@ -43,7 +42,7 @@
                 </div>
 
                 <div class="modal-footer">                    
-                    <button id="issue-cancel-document" class="btn btn-primary" type="button">
+                    <button class="btn btn-primary">
                         Emitir
                     </button>
 

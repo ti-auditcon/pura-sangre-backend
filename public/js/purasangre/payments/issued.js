@@ -92,29 +92,37 @@ jQuery(function () {
             {
                 "data": "actions",
                 "render": function (data, other, row) {
-                    return `
-                        <div class="row">
-                            <button class="dte-link btn btn-success text-white"
-                                    data-token="${row.Token}"
+                    let cancelButton = '';
+                    let assignUser = '';
+                    if (cancellableTaxDocuments.includes(row.paid)) {
+                        cancelButton = `<button class="ml-2 btn btn-warning text-white cancel-bill-button"
+                                                data-token="${row.Token}"
+                                                data-fchemis="${row.FchEmis}"
+                                                data-mnttotal="${row.MntTotal}"
+                                                data-folio="${row.Folio}"
+                                                data-tipodte="${row.TipoDTE}"
+                                                data-iva="${row.IVA}"
                             >
-                                Solicitar PDF
-                            </button>
-                            ${ row.paid !== 3 ?
-                                `<button 
-                                    class="ml-2 btn btn-warning text-white cancel-bill-button"
+                            Anular
+                                </button >`;
+                    }
+                    // if (row.user_id === null) {
+                    //     assignUser = `<button class="ml-2 btn btn-info text-white assign-tax-document-button"
+                    //                             data-token="${row.Token}"
+                    //                 >
+                    //                     Asignar documento
+                    //                 </button >`;
+                    // }
+                    return `<div class="row">
+                                <button class="dte-link btn btn-success text-white"
                                     data-token="${row.Token}"
-                                    data-fchemis="${row.FchEmis}"
-                                    data-mnttotal="${row.MntTotal}"
-                                    data-folio="${row.Folio}"
-                                    data-tipodte="${row.TipoDTE}"
-                                    data-iva="${row.IVA}"
                                 >
-                                    Anular
-                                </button>` :
-                                ''
-                            }
-                        </div>
-                    `;
+                                    Solicitar PDF
+                                </button>
+                                ${cancelButton}
+                                ${assignUser}
+                            </div>
+                        `;
                 }
             },
             { "data": "FchEmis" }

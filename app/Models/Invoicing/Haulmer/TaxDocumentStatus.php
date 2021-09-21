@@ -18,6 +18,9 @@ class TaxDocumentStatus
     
     /** Status of a tax docuemnt by Haulmer */
     const ACCEPTED_WITH_OBJECTIONS = 4;
+    
+    /** Status of a tax docuemnt by NFIT */
+    const CANCELED = 5;
 
     /**
      *  The status names are define by Haulmer Openfactura documentation
@@ -35,6 +38,7 @@ class TaxDocumentStatus
     public static function list()
     {
         return [
+            self::NO_STATUS                => 'Sin estado',
             self::ACCEPTED                 => 'Aceptado',
             self::PENDING                  => 'Pendiente',
             self::REJECTED                 => 'Rechazado',
@@ -50,9 +54,15 @@ class TaxDocumentStatus
     public static function cancellableList()
     {
         return [
+            self::NO_STATUS                => 'Sin estado',
             self::ACCEPTED                 => 'Aceptado',
             self::ACCEPTED_WITH_OBJECTIONS => 'Aceptado con Reparo',
         ];
+    }
+
+    public static function cancellableIds()
+    {
+        return array_keys(self::cancellableList());
     }
 }
 

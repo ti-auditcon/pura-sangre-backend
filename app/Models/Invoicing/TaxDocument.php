@@ -29,7 +29,7 @@ class TaxDocument
      *  (no periódicos ni domiciliarios): valor: 66.666.666-6
      */
     const GENERIC_RUT = "66666666-6";
-    const GENERIC_RAZON_SOCIAL = "NACIONALES SIN RUT (USO EXCLUSIVO F-29, NO USAR PARA PRUEBAS)";
+    const GENERIC_RAZON_SOCIAL = "NACIONALES SIN RUT";
 
     /**
      * Undocumented variable
@@ -520,7 +520,7 @@ class TaxDocument
      *
      *  @return  json
      */
-    public function cancel(): json
+    public function cancel()
     {
         if (!$this->canBeCancelled()) {
             return false;
@@ -549,7 +549,7 @@ class TaxDocument
      *
      *  @return  ?json
      */
-    public function status(string $token): ?json
+    public function status(string $token)
     {
         try {
             $response = $this->httpRequest->get("/v2/dte/document/{$token}/status");
