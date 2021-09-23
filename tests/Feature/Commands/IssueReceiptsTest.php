@@ -3,16 +3,26 @@
 namespace Tests\Feature\Commands;
 
 use Tests\TestCase;
-use App\Models\Invoicing\TaxDocument;
-use App\Mail\NewPlanUserEmail;
 use App\Models\Plans\PlanUserFlow;
-use Illuminate\Support\Facades\Mail;
+use App\Models\Invoicing\TaxDocument;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class IssueReceiptsTest extends TestCase
 {
     use RefreshDatabase, DatabaseMigrations;
+
+    /** @test */
+    public function it_issue_tax_document_for_plan_user_flows_table()
+    {
+        // $this->withoutExceptionHandling();
+        $planUser = factory(PlanUserFlow::class)->create();
+               
+        $dte = new TaxDocument;
+        $sii_response = $dte->issueReceipt($planUser);
+
+        $this->assertNotEmpty($sii_response->TOKEN);
+    }
 
     /** @test */
     // public function bill_pdf_is_stored_through_api_correctly()

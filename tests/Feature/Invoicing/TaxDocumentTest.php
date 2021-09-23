@@ -8,7 +8,6 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Handler\MockHandler;
 use App\Models\Invoicing\TaxDocument;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -32,7 +31,6 @@ class TaxDocumentTest extends TestCase
         $mock = new MockHandler([new Response(200, [], 'All settled')]);
         $handlerStack = HandlerStack::create($mock);
         $client = new Client(['handler' => $handlerStack]);
-
         // dd($client->request('GET', '/')->getStatusCode());
 
         $taxDocument = new TaxDocument();

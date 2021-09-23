@@ -5,6 +5,7 @@ namespace App\Models\Invoicing;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use App\Models\Invoicing\TaxDocumentType;
+use GuzzleHttp\Exception\ClientException;
 use App\Models\Invoicing\ElectronicCreditNote;
 use App\Models\Invoicing\Haulmer\TaxDocumentStatus;
 
@@ -369,7 +370,7 @@ class TaxDocument
             $response = $this->httpRequest->get("/v2/dte/document/$this->token/json");
 
             $this->setTax(json_decode($response->getBody()->getContents()));
-        } catch (\ClientException $error) {
+        } catch (ClientException $error) {
             return null;
         }
     }
@@ -404,6 +405,11 @@ class TaxDocument
         $this->manageAnonymousReceptor();
     }
 
+    /**
+     *  [removeUnusedValues description]
+     *
+     *  @return  [type]  [return description]
+     */
     public function removeUnusedValues()
     {
         foreach ($this->detalle as $key => $value) {
@@ -422,6 +428,11 @@ class TaxDocument
         // dd($this->detalle);
     }
 
+    /**
+     *  Changes adding or modifyng data if there is a empty receptor
+     *
+     *  @return  void
+     */
     public function manageAnonymousReceptor()
     {
         if (!$this->rutrecep || $this->rutrecep === self::GENERIC_RUT) {
@@ -441,11 +452,11 @@ class TaxDocument
      *
      *  @return  json
      */
-    public function issueReceipt($order): json
+    public function issueReceipt($order)
     {
-        $dte = $this->fillReceiptData($order, TaxDocumentType::BOLETA_EXENTA_ELECTRONICA);
+        $this->fillReceiptData($order);
 
-        return $this->issue(json_encode($dte));
+        return $this->issue($this);
     }
 
     /**
@@ -455,11 +466,24 @@ class TaxDocument
      *
      *  @return  TaxDocument
      */
-    public function fillReceiptData(object $receipt): TaxDocument
+    public function fillReceiptData($receipt)
     {
-        $receipt = $this->calculateValues($receipt);
+        $this->folio = 0;
+        $this->fchemis =  today()->format('Y-m-d');
+        $this->indservicio =  3;
+        $this->rutrecep = self::GENERIC_RUT;
+        
+        $this->mntexe = $receipt->amount;
+        $this->mnttotal = $receipt->amount;
+        $this->vlrpagar = $receipt->amount;
+        $this->vlrpagar = $receipt->amount;
 
-        return app(ExemptElectronicInvoice::class)->get($receipt);
+        $this->NroLinDet = 1; 
+        $this->IndExe = 1;
+        $this->NmbItem = $receipt->observations;
+        $this->QtyItem = 1;
+        $this->PrcItem = $receipt->amount;
+        $this->MontoItem = $receipt->amount;
     }
 
     /**
@@ -486,13 +510,21 @@ class TaxDocument
      *
      *  @return  json
      */
-    public function issue(TaxDocument $taxDocument): json
+    public function issue(TaxDocument $taxDocument)
     {
-        $response = $this->httpRequest->post("/dte/document", [
-            $taxDocument
-        ]);
+        try {
+            $response = $this->httpRequest->post("/v2/dte/document", [
+                \GuzzleHttp\RequestOptions::JSON => app(ExemptElectronicInvoice::class)->get($taxDocument)
+            ]);
 
-        return json_decode($response->getBody()->getContents());
+            return json_decode($response->getBody()->getContents());
+        } catch (ClientException $error) {
+            dump('sendo error');
+            dd($error->getResponse()->getBody()->getContents());
+            //throw $th;
+        }
+
+
     }
 
     /**

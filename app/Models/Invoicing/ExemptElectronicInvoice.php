@@ -16,53 +16,54 @@ class ExemptElectronicInvoice extends TaxDocument implements TaxIssuerInterface
      */
     public function get($receipt)
     {
-        $boleta = $this->calculateValues($receipt);
+        // $boleta = $this->calculateValues($receipt);
 
         // set taxDocument data with this data below
         return [
             'dte' => [
                 'Encabezado' => [
                     'IdDoc' => [
-                        "TipoTaxDocument" => self::BOLETA_ELECTRONICA_EXENTA,
+                        "TipoDTE" => TaxDocumentType::BOLETA_EXENTA_ELECTRONICA,
                         "Folio"           => $receipt->folio,
                         "FchEmis"         => today()->format('Y-m-d'), //  "2020-08-05"
                         "IndServicio"     => 3, // tipo de transacción (3 = Boletas de venta y servicios)
                     ],
                     'Emisor' => [
-                        "RUTEmisor"    => $this->emisor->rut,                    //  "76795561-8",
-                        "RznSocEmisor" => $this->emisor->razon_social,            //  "HAULMER SPA",
-                        "GiroEmisor"   => $this->emisor->giro,                    //  "VENTA AL POR MENOR POR CORREO, POR INTERNET Y VIA TELEFONICA",
-                        "DirOrigen"    => $this->emisor->address,                 //  "ARTURO PRAT 527, CURICO",
-                        "CmnaOrigen"   => $this->emisor->comuna,                  //  "Curicó",
-                        "CiudadOrigen" => $this->emisor->city,                    //  "Curicó",
+                        "RUTEmisor"    => $this->sender->rut,                    //  "76795561-8",
+                        "RznSocEmisor" => $this->sender->razon_social,            //  "HAULMER SPA",
+                        "GiroEmisor"   => $this->sender->giro,                    //  "VENTA AL POR MENOR POR CORREO, POR INTERNET Y VIA TELEFONICA",
+                        "DirOrigen"    => $this->sender->address,                 //  "ARTURO PRAT 527, CURICO",
+                        "CmnaOrigen"   => $this->sender->comuna,                  //  "Curicó",
+                        "CiudadOrigen" => $this->sender->city,                    //  "Curicó",
                         // "CdgSIISucur"  => $this->emisor['codigo_sii_sucursal'],  //  81303347
                     ],
                     'Receptor' => [
                         "RUTRecep"    => $receipt->rutrecep,
-                        "CdgIntRecep" => $receipt->cdgintrecep ?? 1,
-                        "RznSocRecep" => $receipt->rznsocrecep ?? "NACIONALES SIN RUT   (USO EXCLUSIVO F-29, NO USAR PARA PRUEBAS)",
+                        // "CdgIntRecep" => $receipt->cdgintrecep ?? 1,
+                        // "RznSocRecep" => $receipt->rznsocrecep ?? "NACIONALES SIN RUT   (USO EXCLUSIVO F-29, NO USAR PARA PRUEBAS)",
                     ],
                     'Totales' => [
-                        "MntExe"   => $boleta->mntexe,
-                        "MntTotal" => $boleta->mnttotal,
-                        "VlrPagar" => $boleta->vlrpagar,
+                        "MntExe"       => $receipt->mntexe,
+                        "MntTotal"     => $receipt->mnttotal,
+                        "TotalPeriodo" => $receipt->vlrpagar,
+                        "VlrPagar"     => $receipt->vlrpagar,
                     ]
                 ],
                 'Detalle' => [
-                    0 => [
+                    (object) [
                         "NroLinDet"       => $receipt->NroLinDet,
-                        "TpoCodigo"       => $receipt->TpoCodigo,
                         "IndExe"          => $receipt->IndExe,
-                        "ItemEspectaculo" => $receipt->ItemEspectaculo,
-                        "RUTMandante"     => $receipt->RUTMandante,
                         "NmbItem"         => $receipt->NmbItem,
-                        "InfoTicket"      => $receipt->InfoTicket,
-                        "DscItem"         => $receipt->DscItem,
                         "QtyItem"         => $receipt->QtyItem,
-                        "UnmdItem"        => $receipt->UnmdItem,
                         "PrcItem"         => $receipt->PrcItem,
-                        "RecargoMonto"    => $receipt->RecargoMonto,
                         "MontoItem"       => $receipt->MontoItem,
+                        // "TpoCodigo"       => $receipt->TpoCodigo,
+                        // "ItemEspectaculo" => $receipt->ItemEspectaculo,
+                        // "RUTMandante"     => $receipt->RUTMandante,
+                        // "InfoTicket"      => $receipt->InfoTicket,
+                        // "DscItem"         => $receipt->DscItem,
+                        // "UnmdItem"        => $receipt->UnmdItem,
+                        // "RecargoMonto"    => $receipt->RecargoMonto,
                     ]
                 ]
             ]

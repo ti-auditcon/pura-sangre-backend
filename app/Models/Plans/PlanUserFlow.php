@@ -10,9 +10,12 @@ use App\Models\Bills\PaymentType;
 use App\Models\Bills\PaymentStatus;
 use App\Models\Plans\FlowOrderStatus;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PlanUserFlow extends Model
 {
+    use SoftDeletes;
+    
     /**
      * Name of the table inthe Database
      *
