@@ -329,7 +329,7 @@ class TaxDocument
      *  @return boolean
      */
     public function tokenIsNotSetted()
-    {
+    {>
         return !$this->tokenIsSetted();
     }
 
@@ -519,9 +519,7 @@ class TaxDocument
 
             return json_decode($response->getBody()->getContents());
         } catch (ClientException $error) {
-            dump('sendo error');
-            dd($error->getResponse()->getBody()->getContents());
-            //throw $th;
+            return json_decode($error->getResponse()->getBody()->getContents(), true);
         }
 
 
