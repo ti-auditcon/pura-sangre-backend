@@ -329,7 +329,7 @@ class TaxDocument
      *  @return boolean
      */
     public function tokenIsNotSetted()
-    {>
+    {
         return !$this->tokenIsSetted();
     }
 
