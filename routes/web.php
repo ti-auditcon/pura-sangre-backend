@@ -1,13 +1,15 @@
 <?php
 
 use Carbon\Carbon;
-use App\Models\Invoicing\TaxDocument;
 use App\Mail\NewPlanUserEmail;
 use App\Models\Plans\PlanStatus;
+use App\Models\Clases\Reservation;
 use App\Models\Plans\PlanUserFlow;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use App\Models\Invoicing\TaxDocument;
 use Illuminate\Support\Facades\Route;
+use App\Models\Clases\ReservationStatus;
 
 /**
  *  Auth Route lists
@@ -29,6 +31,50 @@ Route::get('/success-reset-password', function () {
 Route::post('expired-plans', 'HomeController@ExpiredPlan')->name('expiredplans');
 
 Route::middleware(['auth'])->prefix('/')->group(function () {
+    // Calibrate reservations fro a user
+    Route::get('users/{user}/calibrate-reservations-plans', function(App\Models\Users\User $user) {
+        $user_plans = App\Models\Plans\PlanUser::where('plan_user.user_id', $user->id)
+                                ->whereIn('plan_user.plan_status_id', [
+                                    App\Models\Plans\PlanStatus::ACTIVO,
+                                    App\Models\Plans\PlanStatus::PRECOMPRA,
+                                    App\Models\Plans\PlanStatus::COMPLETADO
+                                ])
+                                ->join('plans', 'plan_user.plan_id', 'plans.id')
+                                ->get([
+                                    'plans.id as planId', 'plans.class_numbers',
+                                    'plan_user.id as planUserId', 'plan_user.user_id', 'plan_user.plan_status_id',
+                                    'plan_user.start_date', 'plan_user.finish_date', 'plan_user.counter', 'plan_user.plan_id'
+                                ]);
+
+        foreach ($user_plans as $plan_user) {
+            $reservations = App\Models\Clases\Reservation::leftJoin('clases', 'reservations.clase_id', '=', 'clases.id')
+                                                            ->where('reservations.user_id', $user->id)
+                                                            ->where('clases.date', '>=', $plan_user->start_date)
+                                                            ->where('clases.date', '<=', $plan_user->finish_date)
+                                                            ->get([
+                                                                'reservations.id as reservationId',
+                                                                'reservations.user_id', 'reservations.clase_id',
+                                                                'reservations.reservation_status_id', 
+                                                                'clases.id as claseId', 'clases.date',
+                                                            ]);
+            foreach ($reservations as $reservation) {
+                if ($reservation->reservation_status_id === ReservationStatus::CONFIRMED && Carbon::parse($reservation->date) < today()) {
+                    Reservation::find($reservation->reservationId)->update([
+                        'reservation_status_id' => ReservationStatus::CONSUMED,
+                        'plan_user_id' => $plan_user->planUserId
+                    ]);
+                } else {
+                    Reservation::find($reservation->reservationId)->update([
+                        'plan_user_id' => $plan_user->planUserId
+                    ]);
+                }
+            }
+
+            $plan_user->update(['counter' => $plan_user->class_numbers - count($reservations)]);
+        }
+    });
+
+
     // Calibrate plan_income_summaries
     Route::post('plan-incomes-summaries/calibrate', 'Reports\ReportController@incomesCalibrate')
         ->name('incomes.calibrate');
