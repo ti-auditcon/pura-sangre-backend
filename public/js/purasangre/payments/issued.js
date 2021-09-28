@@ -124,7 +124,7 @@ jQuery(function () {
                     return `<div class="row">
                                 <button class="dte-link btn btn-success text-white"
                                     data-token="${row.Token}"
-                                >
+                                
                                     Solicitar PDF
                                 </button>
                                 ${cancelButton}

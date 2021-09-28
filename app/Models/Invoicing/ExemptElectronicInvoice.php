@@ -23,10 +23,10 @@ class ExemptElectronicInvoice extends TaxDocument implements TaxIssuerInterface
             'dte' => [
                 'Encabezado' => [
                     'IdDoc' => [
-                        "TipoDTE" => TaxDocumentType::BOLETA_EXENTA_ELECTRONICA,
-                        "Folio"           => $receipt->folio,
-                        "FchEmis"         => today()->format('Y-m-d'), //  "2020-08-05"
-                        "IndServicio"     => 3, // tipo de transacción (3 = Boletas de venta y servicios)
+                        "TipoDTE"     => TaxDocumentType::BOLETA_EXENTA_ELECTRONICA,
+                        "Folio"       => $receipt->folio,
+                        "FchEmis"     => today()->format('Y-m-d'), //  "2020-08-05"
+                        "IndServicio" => 3, // tipo de transacción (3 = Boletas de venta y servicios)
                     ],
                     'Emisor' => [
                         "RUTEmisor"    => $this->sender->rut,                    //  "76795561-8",
