@@ -106,7 +106,7 @@ class TaxDocument
     public $tpotrancompra;
     // totales
     public $iva;
-    public $mntneto;k
+    public $mntneto;
     public $tasaiva;
     public $mnttotal;
     public $mntexe;
