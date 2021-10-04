@@ -440,27 +440,22 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($past_reservations as $reserv)
+                                @foreach($past_reservations as $reservation)
                                 <tr>
-                                    @if ($reserv->clase)
-                                        <td>
-                                            <a href="{{ url("/clases/{$reserv->clase->id}") }}">
-                                                {{ $reserv->clase->id }}
-                                            </a>
-                                        </td>
-                                        <td>{{ $reserv->clase->date }}</td>
-                                        <td>{{ Carbon\Carbon::parse($reserv->clase->start_at)->format('H:i') }} a {{ Carbon\Carbon::parse($reserv->clase->finish_at)->format('H:i') }}</td>
-                                    @else 
-                                        <td>sin clase asociada</td>
-                                        <td>sin fecha</td>
-                                        <td>sin hora</td>
-                                    @endif
+                                    <td>
+                                        <a href="{{ url("/clases/{$reservation->clase_id}") }}">
+                                            {{ $reservation->clase_id }}
+                                        </a>
+                                    </td>
+                                    <td>{{ $reservation->date }}</td>
+
+                                    <td>{{ Carbon\Carbon::parse($reservation->start_at)->format('H:i') }} a {{ Carbon\Carbon::parse($reservation->finish_at)->format('H:i') }}</td>
                                     
-                                    <td>{{ $reserv->reservation_status->reservation_status }}</td>
+                                    <td>{{ \App\Models\Clases\ReservationStatus::getReservationStatus($reservation->reservation_status_id) }}</td>
 
-                                    <td>{{ optional($reserv->plan_user)->id ?? 'No Aplica' }}</td>
+                                    <td>{{ $reservation->plan_user_id }}</td>
 
-                                    <td>{{ $reserv->plan_user ? optional($reserv->plan_user->plan)->plan : 'No Aplica' }}</td>
+                                    <td>{{ $reservation->plan }}</td>
 
                                 </tr>
                                 @endforeach

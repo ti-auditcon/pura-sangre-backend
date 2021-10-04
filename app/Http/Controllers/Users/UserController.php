@@ -92,9 +92,9 @@ class UserController extends Controller
 
         return view(
             'users.show', [
-                'user' => $user,
+                'user'              => $user,
                 'past_reservations' => $user->past_reservations(),
-                'auth_roles' => $auth_roles
+                'auth_roles'        => $auth_roles
             ]
         );
     }

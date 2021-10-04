@@ -17,6 +17,7 @@ use App\Models\Users\StatusUser;
 use Freshwork\ChileanBundle\Rut;
 use App\Models\Bills\Installment;
 use App\Models\Clases\Reservation;
+use App\Models\Clases\ReservationStatus;
 use Laravel\Passport\HasApiTokens;
 use App\Notifications\MyResetPassword;
 use Illuminate\Notifications\Notifiable;
@@ -435,14 +436,16 @@ class User extends Authenticatable
      */
     public function past_reservations()
     {
-        return Reservation::where('user_id', $this->id)
-                          ->whereIn('reservation_status_id', [3,4])
-                          ->with(['clase:id,date,start_at,finish_at',
-                                  'reservation_status:id,reservation_status',
-                                  'plan_user:id,plan_id',
-                                  'plan_user.plan:id,plan'])
-                          ->get(['id', 'clase_id', 'user_id', 'plan_user_id', 'reservation_status_id']);
+        return Reservation::leftJoin('clases', 'clases.id', '=', 'reservations.clase_id')
+                            ->leftJoin('plan_user', 'reservations.plan_user_id', '=', 'plan_user.id')
+                            ->join('plans', 'plan_user.plan_id', '=', 'plans.id')
+                            ->where('reservations.user_id', $this->id)
+                            ->whereIn('reservations.reservation_status_id', [ReservationStatus::CONSUMED, ReservationStatus::LOST])
+                        ->get([
+                            'reservations.id as reservationId', 'reservations.clase_id', 'reservations.user_id',
+                            'reservations.plan_user_id', 'reservations.reservation_status_id',
+                            'clases.date', 'clases.start_at', 'clases.finish_at',
+                            'plans.plan'
+                        ]);
     }
-
-    //
 }

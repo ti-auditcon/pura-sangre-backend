@@ -94,7 +94,11 @@ class ReservationStatus extends Model implements StatusInterface
      */
     public static function getReservationStatus($id)
     {
-        return self::list()[$id] ?? 'SIN ESTADO';
+        if (self::list()[$id]) {
+            return self::list()[$id]['status'];
+        }
+        
+        return 'SIN ESTADO';
     }
 
     /**
