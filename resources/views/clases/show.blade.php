@@ -168,20 +168,15 @@
                 <div class="ibox-title">Alumnos de esta clase</div>
                 
                 <div class="ibox-tools">
-                
                     @if (in_array(1, $auth_roles) || in_array(2, $auth_roles))
-
                         @if($clase->start_at <= now()->subMinute()->format('H:i:s') && $clase->date == toDay()->format('Y-m-d'))
-
                             <button id="button-modal" class="btn btn-warning btn-icon-only" data-toggle="modal" data-target="#confirm-assistance-modal"><i class="la la-check-square"></i></button>
                         @endif
 
                         @if (in_array(1, $auth_roles) || in_array(2, $auth_roles))
-
                             <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">
                                 Agregar un Alumno
                             </button>
-
                         @endif
 
                     @else
@@ -238,9 +233,13 @@
                                     ></div>
 
                                    <span class="badge-{{$reservation->user->status_user->type}} badge-point"></span>
-                                   <a @if (in_array(1, $auth_roles) || in_array(2, $auth_roles)) href="{{url('/users/'.$reservation->user->id)}}" @endif>
-                                      {{$reservation->user->first_name}} {{$reservation->user->last_name}}
-                                   </a>
+                                    <a @if (in_array(1, $auth_roles) || in_array(2, $auth_roles)) href="{{ url("/users/{$reservation->user->id}") }}" @endif>
+                                        {{$reservation->user->first_name}} {{$reservation->user->last_name}}
+                                    </a>
+
+                                    @if ($reservation->user->itsBirthDay())
+                                        <span class="badge badge-primary" style="margin-left: 4px;"><i class="la la-birthday-cake"></i>Cumpleañero</span>
+                                    @endif
                                 </td>
                                 <td>
                                    <span id="status-user-badge-{{ $reservation->id }}" class="badge badge-{{ $reservation->reservation_status->type }} badge-pill">{{ strtoupper($reservation->reservation_status->reservation_status) }}</span>
@@ -358,15 +357,15 @@ $(document).ready(function(){
          success: function(data2){
             op+='<table class="table table-striped">';
             op+='<tr><th width="60%">Alumno</th><th width="25%">Estado de reserva</th><th width="15%">Asistencia</th></tr>';
-            for(var i=0;i<data2.length;i++){
+            for(var i = 0; i < data2.length; i++) {
                op += '<tr>';
-                 if (data2[i].estado_reserva == 'Consumida') {
-                  var estado = 'checked';
-                  var disabled = '';
-               }else{
-                  var estado = '';
-                  var disabled = 'disabled';
-               }
+                if (data2[i].estado_reserva == 'Consumida') {
+                    var estado = 'checked';
+                    var disabled = '';
+                } else {
+                    var estado = '';
+                    var disabled = 'disabled';
+                }
                op += '<td><div class="img-avatar" style="background-image: url(\''+data2[i].avatar+'\')"></div><span class="badge-'+data2[i].user_status+' badge-point"></span>'+data2[i].alumno+' '+ data2[i].birthdate +'</td>'+
 
                      '<td><span class="badge badge-'+data2[i].tipo+' badge-pill">'+data2[i].estado_reserva.toUpperCase()+'</td>'+

@@ -67,7 +67,7 @@ class ClaseController extends Controller
         $outclase = $this->outClass($clase->id);
 
         $reservations = Reservation::where('clase_id', $clase->id)
-                                   ->with(['user:id,first_name,last_name,avatar,status_user_id',
+                                   ->with(['user:id,first_name,last_name,avatar,status_user_id,birthdate',
                                            'user.status_user:id,type',
                                            'user.status_user:id,type',
                                            'reservation_status:id,reservation_status,type', ])
