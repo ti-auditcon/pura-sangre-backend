@@ -1,46 +1,32 @@
 <?php
 
 use App\Models\Users\User;
-use Faker\Generator as Faker;
+use App\Models\Clases\Block;
 use App\Models\Clases\Clase;
-use App\Models\Clases\Reservation;
-use App\Models\Exercises\Statistic;
-// use App\Models\Clases\ClassStage;
-use App\Models\Exercises\ExerciseStage;
-use App\Models\Clases\ReservationStatus;
-use App\Models\Clases\ReservationStatisticStage;
+use Faker\Generator as Faker;
+use App\Models\Clases\ClaseType;
 
-// $factory->define(Clase::class, function (Faker $faker) {
-//     return [
-//       'date' => $faker->date($format = 'Y-m-d', $max = 'now'),
-//       'profesor_id' => User::all()->random()->id,
-//       'quota' => $faker->numberBetween($min = 22, $max = 24),
-//     ];
-// });
+$factory->define(Clase::class, function (Faker $faker) {
+    return [
+        'date'          => today(),
+        'start_at'      => $faker->time(),
+        'finish_at'     => $faker->time(),
+        'block_id'      => factory(Block::class)->create()->id,
+        'room'          => 1,
+        'profesor_id'   => factory(User::class)->create()->id,
+        'wod_id'        => 1,
+        'quota'         => 20,
+        'clase_type_id' => factory(ClaseType::class)->create()->id,
+    ];
+});
 
+$factory->define(ClaseType::class, function (Faker $faker) {
+    return [
+        'clase_type'  => $faker->randomElement(['CrossFit', 'HIIT', 'Yoga', 'Levantamiento de Pesas', 'Halterofilia', 'Calistenia']),
+        'clase_color' => '#0045b3',
+        'icon'        => 'crossfit',
+        'icon_white'  => 'crossfit',
+        'active'      => $faker->boolean(80) // percentage of this class is going to be active
+    ];
+});
 
-// $factory->define(ReservationStatus::class, function (Faker $faker) {
-//   return [
-//       'reservation_status' => $faker->word,
-//   ];
-// });
-
-// $factory->define(Reservation::class, function (Faker $faker) {
-//   return [
-//     'clase_id' => Clase::all()->random()->id,
-//     'reservation_status_id' => ReservationStatus::all()->random()->id,
-//     'user_id' => User::all()->random()->id,
-//   ];
-// });
-
-// $factory->define(ReservationStatisticStage::class, function (Faker $faker) {
-//   return [
-//     'statistic_id' => Statistic::all()->random()->id,
-//     'reservation_id' => Reservation::all()->random()->id,
-//     'exercise_stage_id' => ExerciseStage::all()->random()->id,
-//     'weight' => $faker->randomElement($array = array ('5', '10', '15', '20', '25')),
-//     'time' => $faker->numberBetween($min = 1, $max = 45),
-//     'round' => $faker->numberBetween($min = 1, $max = 6),
-//     'repetitions' => $faker->numberBetween($min = 1, $max = 4),
-//   ];
-// });

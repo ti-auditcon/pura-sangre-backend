@@ -10,18 +10,6 @@ use App\Models\Users\StatusUser;
 use Freshwork\ChileanBundle\Rut;
 
 
-$factory->define(StatusUser::class, function (Faker $faker) {
-    return [
-        'status_user' => $faker->word,
-    ];
-});
-
-$factory->define(Role::class, function (Faker $faker) {
-    return [
-        'role' => $faker->word,
-    ];
-});
-
 $factory->define(RoleUser::class, function (Faker $faker) {
     return [
         'role_id' => factory(Role::class)->create()->id,
@@ -49,10 +37,3 @@ $factory->define(User::class, function (Faker $faker) {
         'tutorial'       => true,
     ];
 });
-
-// $factory->define(Emergency::class, function (Faker $faker) {
-//     return [
-//         'contact_name' => $faker->name,
-//         'contact_phone' => $faker->numberBetween($min = 50000001, $max = 99999999),
-//     ];
-// });

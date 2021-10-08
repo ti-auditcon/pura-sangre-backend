@@ -18,11 +18,11 @@ class Clase extends Model
     protected $table = 'clases';
 
     /**
-     * The attributes that should be mutated to dates.
+     *  The attributes that should be mutated to dates.
      *
-     * @var array
+     *  @var  array
      */
-    protected $dates = ['deleted_at'];
+    protected $dates = [ 'date', 'deleted_at' ];
 
      /**
      * The attributes that are mass assignable.
@@ -30,9 +30,15 @@ class Clase extends Model
      * @var array
      */
     protected $fillable = [
-        'date', 'start_at', 'finish_at',
-        'room', 'profesor_id', 'quota',
-        'wod_id', 'block_id', 'clase_type_id'
+        'date',
+        'start_at',
+        'finish_at',
+        'room',
+        'profesor_id',
+        'quota',
+        'wod_id',
+        'block_id',
+        'clase_type_id'
     ];
 
     protected $appends = ['start', 'end', 'url', 'reservation_count', 'color'];

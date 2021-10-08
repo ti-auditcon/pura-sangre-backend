@@ -13,12 +13,10 @@ class CreateSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('density_parameters', function (Blueprint $table) {
+        Schema::create('settings', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('level');
-            $table->integer('from');
-            $table->integer('to');
-            $table->string('color');
+            $table->integer('minutes_to_send_notifications')->nullable();
+            $table->integer('minutes_to_remove_users')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ class CreateSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('density_parameters');
+        Schema::dropIfExists('settings');
     }
 }
