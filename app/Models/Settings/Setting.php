@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
+    protected $fillable = [
+        'minutes_to_send_notifications',
+        'minutes_to_remove_users',
+    ];
+
     /**
      *  Return an array list with the available minutes
      *

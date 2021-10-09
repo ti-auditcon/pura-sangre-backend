@@ -42,7 +42,7 @@ class PushClases extends Command
      * @return mixed
      */
     public function handle()
-    {
+    {@
             $settings = Setting::first(['id', 'minutes_for_confirmation_clases', 'minutes_to_remove_users']);
 
             $current_dateTime = now()->copy();

@@ -114,6 +114,8 @@
 
                             <li><a href="{{ route('density-parameters.index') }}">Parámetros</a></li>
 
+                            <li><a href="{{ route('settings.index') }}">General</a></li>
+
                             {{-- <li><a href="{{ route('postpones.index') }}">Posponer planes</a></li> --}}
                         </ul>
                     </div>

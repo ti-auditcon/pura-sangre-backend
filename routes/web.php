@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Invoicing\TaxDocument;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 use App\Models\Clases\ReservationStatus;
+use Illuminate\Database\Schema\Blueprint;
 
 /**
  *  Auth Route lists
@@ -31,6 +33,38 @@ Route::get('/success-reset-password', function () {
 Route::post('expired-plans', 'HomeController@ExpiredPlan')->name('expiredplans');
 
 Route::middleware(['auth'])->prefix('/')->group(function () {
+    Route::get('add-table-settings', function() {
+        if (Schema::hasTable('settings')) {
+            
+            if (!Schema::hasColumn('settings', 'id')) {
+                 Schema::table('settings', function (Blueprint $table) {
+                    $table->increments('id');
+                });
+            }    
+            if (!Schema::hasColumn('settings', 'minutes_to_send_notifications')) {
+                Schema::table('settings', function (Blueprint $table) {
+                    $table->integer('minutes_to_send_notifications')->nullable();
+                });
+            }    
+            if (!Schema::hasColumn('settings', 'minutes_to_remove_users')) {
+                Schema::table('settings', function (Blueprint $table) {
+                    $table->integer('minutes_to_remove_users')->nullable();
+                });
+            }    
+            if (!Schema::hasColumn('settings', 'created_at')) {
+                Schema::table('settings', function (Blueprint $table) {
+                    $table->timestamps();
+                });
+            }    
+        } else {
+            Schema::create('settings', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('minutes_to_send_notifications')->nullable();
+                $table->integer('minutes_to_remove_users')->nullable();
+                $table->timestamps();
+            });
+        }
+    });
     // Calibrate reservations fro a user
     Route::get('users/{user}/calibrate-reservations-plans', function(App\Models\Users\User $user) {
         $user_plans = App\Models\Plans\PlanUser::where('plan_user.user_id', $user->id)
@@ -166,6 +200,9 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('json-density-parameters', 'Settings\DensityParameterController@clasesDensities');
     Route::resource('density-parameters', 'Settings\DensityParameterController')
             ->only('index', 'store', 'update', 'destroy');
+    Route::resource('settings', 'Settings\SettingsController')
+            ->only('index', 'store', 'update', 'destroy');
+    
 
     /*
      * Reports routes
