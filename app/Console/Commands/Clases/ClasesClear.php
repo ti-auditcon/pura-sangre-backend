@@ -49,22 +49,22 @@ class ClasesClear extends Command
             
         $this->info("The class hour being iterated is: {$clase_hour}");
 
-        dump(
-            today()->copy()->format('Y-m-d H:i:s'),
-            Carbon::parse($clase_hour)->copy()->format('H:i:s')
-        );
+        // dump(
+        //     today()->copy()->format('Y-m-d H:i:s'),
+        //     Carbon::parse($clase_hour)->copy()->format('H:i:s')
+        // );
 
-        dd(Reservation::join('users', 'users.id', '=', 'reservations.user_id')
-                                    ->join('clases', 'clases.id', '=', 'reservations.clase_id')
-                                    ->join('clase_types', 'clase_types.id', '=', 'clases.clase_type_id')
-                                    ->join('plan_user', 'plan_user.id', '=', 'reservations.plan_user_id')
-                                    ->get([
-                                        'reservations.id', 'reservation_status_id', 'reservations.plan_user_id',
-                                        'users.first_name', 'users.fcm_token',
-                                        'clase_types.clase_type',
-                                        'clases.start_at', 'clases.date',
-                                        'plan_user.id as planUserId', 'plan_user.counter'
-                                    ]));
+        // dd(Reservation::join('users', 'users.id', '=', 'reservations.user_id')
+        //                             ->join('clases', 'clases.id', '=', 'reservations.clase_id')
+        //                             ->join('clase_types', 'clase_types.id', '=', 'clases.clase_type_id')
+        //                             ->join('plan_user', 'plan_user.id', '=', 'reservations.plan_user_id')
+        //                             ->get([
+        //                                 'reservations.id', 'reservation_status_id', 'reservations.plan_user_id',
+        //                                 'users.first_name', 'users.fcm_token',
+        //                                 'clase_types.clase_type',
+        //                                 'clases.start_at', 'clases.date',
+        //                                 'plan_user.id as planUserId', 'plan_user.counter'
+        //                             ]));
 
         $reservations = Reservation::join('users', 'users.id', '=', 'reservations.user_id')
                                     ->join('clases', 'clases.id', '=', 'reservations.clase_id')
@@ -81,15 +81,16 @@ class ClasesClear extends Command
                                         'clases.start_at', 'clases.date',
                                         'plan_user.id as planUserId', 'plan_user.counter'
                                     ]);
-        dd($reservations);
-        foreach ($reservations as $reservation) {
+        // dd($reservations);
+        foreach ($reservations as $key => $reservation) {
+            dump($key);
             $reservation->delete();
 
-            SendPushNotification::dispatch(
-                $reservation->fcm_token,
-                "Tu reserva ha sido eliminada. 😱",
-                "No has confirmado tu clase de {$reservation->clase_type} de las {$reservation->start_at} hrs."
-            );
+            // SendPushNotification::dispatch(
+            //     $reservation->fcm_token,
+            //     "Tu reserva ha sido eliminada. 😱",
+            //     "No has confirmado tu clase de {$reservation->clase_type} de las {$reservation->start_at} hrs."
+            // );
         }
 
         $this->info("PUSH notifications sended: " . count($reservations));

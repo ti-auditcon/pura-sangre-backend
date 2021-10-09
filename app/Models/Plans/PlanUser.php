@@ -229,6 +229,22 @@ class PlanUser extends Model
             'plan_status_id' => PlanStatus::ACTIVO,
         ]);
     }
+    
+    /**
+     *  Update the planUser substracting quotas of it
+     *
+     *  @param   int  $number
+     *
+     *  @return  void
+     */
+    public function subQuotas(int $number)
+    {
+        dump('subquotas');
+        $this->update([
+            'counter' => $this->counter - $number
+        ]);
+        dump('subquotas updated');
+    }
 
     // /**
     //  *  The plan can be:

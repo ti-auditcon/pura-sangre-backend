@@ -57,6 +57,16 @@ class SendPushNotification implements ShouldQueue
         $this->body = $body;
     }
 
+        /**
+     *  The fcm_token runs as address to know to who send the PUSH notification
+     *
+     *  @return  string
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
     /**
      * Execute the job.
      *

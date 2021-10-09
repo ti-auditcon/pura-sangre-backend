@@ -83,12 +83,10 @@ class ClasesClearTest extends TestCase
             now()->startofminute()->addminutes($settings->minutes_to_remove_users)
         )->format('H:i');
 
-        dump($clase_hour);
-
         // create a class for today
         $clase = factory(Clase::class)->create([
             'date'      => today(),
-            'start_at'  => $clase_hour,
+            'start_at'  => Carbon::parse($clase_hour)->format('H:i:s'),
             'finish_at' => Carbon::parse($clase_hour)->copy()->startofhour()->addhours(1)->format('h:i:s')
         ]);
 
@@ -206,65 +204,77 @@ class ClasesClearTest extends TestCase
     //     ]);
     // }
 
-    /**
-     *  todo: this does not belongs here
-     *
-     *  @test
-     */
-    public function pushes_are_sended_correctly()
+    // /**
+    //  *  todo: this does not belongs here
+    //  *
+    //  *  @test
+    //  */
+    // public function pushes_are_sended_correctly()
+    // {
+    //     // Bus::fake();
+
+    //     /**
+    //      *  Igual necesitamos redondear a un multiplo de 5,
+    //      *  debido a que el rango minimo de diferencia es de 5 minutos
+    //      */
+    //     $clase_hour = $this->roundMinutesToMultipleOfFive(
+    //         now()->startOfMinute()->addMinutes(Setting::value('minutes_to_remove_users'))
+    //     )->format('H:i');
+
+    //     // create a class for today
+    //     $clase = $this->createTodayClassAt($clase_hour);
+
+    //     $times = 5;
+
+    //     $this->createReservationsForClass($clase->id, $times);
+
+    //     $this->artisan($this->signature)
+    //             ->expectsOutput("PUSH notifications sended: {$times}")
+    //             ->assertExitCode(0);
+
+    //     // Bus::assertDispatched(SendPushNotification::class);
+    // }
+
+    public function createReservationsForClass($claseId, $times)
     {
-        Bus::fake();
+        for ($i = 0; $i < $times; $i++) { 
+            $planUser = factory(PlanUser::class)->create();
 
-        $times = 5;
-        /**
-         *  Igual necesitamos redondear a un multiplo de 5,
-         *  debido a que el rango minimo de diferencia es de 5 minutos
-         */
-        $clase_hour = $this->roundMinutesToMultipleOfFive(
-            now()->startOfMinute()->addMinutes(Setting::value('minutes_to_remove_users'))
-        )->format('H:i');
+            factory(Reservation::class)->create([
+                'reservation_status_id' => ReservationStatus::PENDING,
+                'clase_id' => $claseId,
+                'plan_user_id' => $planUser->id,
+                'user_id' => $planUser->user_id
+            ]);
+        }
+    }
 
-        // create a class for today
-        $clase = $this->createTodayClassAt($clase_hour);
-
-        dump(
-            $clase->date,
-            $clase->start_at
-        );
-
-        // factory(Reservation::class, $times)->create([
-        //     'reservation_status_id' => ReservationStatus::PENDING,
-        //     'clase_id'              => $clase->id
-        // ]);
-
-        factory(Reservation::class)->create([
-            'reservation_status_id' => ReservationStatus::PENDING,
-            'clase_id'              => $clase->id,
+    /**
+     * [createActivePlanUserFor description]
+     *
+     * @param   [type]  $userId  [$userId description]
+     *
+     * @return  [type]           [return description]
+     */
+    public function createActivePlanUserFor($userId)
+    {
+        return factory(PlanUser::class)->create([
+            'start_date'     => today()->startOfMonth()->format('Y-m-d'),
+            'finish_date'    => today()->endOfMonth()->format('Y-m-d'),
+            'plan_status_id' => PlanStatus::ACTIVO,
+            'user_id'        => $userId
         ]);
-
-        dd(Reservation::all());
-
-
-        $this->artisan($this->signature)
-                ->expectsOutput("PUSH notifications sended: {$times}")
-                ->assertExitCode(0);
-
-        Bus::assertDispatched(SendPushNotification::class);
     }
 
     /** @test */
     public function it_return_quota_to_plan_user_when_is_removed()
     {
-        Bus::fake();
+        $user = factory(User::class)->create();
+        $planUser = $this->createActivePlanUserFor($user->id);
 
-        $planUser = factory(PlanUser::class)->create([
-            'plan_status_id' => PlanStatus::ACTIVO,
-            'counter'        => 1
-        ]);
-
+        $quotas = $planUser->counter;
         $this->assertDatabaseHas('plan_user', [
-            'id'      => $planUser->id,
-            'counter' => 1
+            'id' => $planUser->id, 'counter' => $quotas
         ]);
 
         $settings = Setting::first(['id', 'minutes_to_remove_users']);
@@ -278,31 +288,19 @@ class ClasesClearTest extends TestCase
         )->format('H:i');
 
         // create a class for today
-        $clase = factory(Clase::class)->create([
-            'date'      => today(),
-            'start_at'  => $clase_hour,
-            'finish_at' => now()->startOfHour()->addHours(2)->format('H:i:s')
-        ]);
+        $clase = $this->createTodayClassAt($clase_hour);
 
         $pending_reservation = factory(Reservation::class)->create([
+            'clase_id'              => $clase->id,
             'reservation_status_id' => ReservationStatus::PENDING,
-            'plan_user_id'          => $planUser->id,
             'user_id'               => $planUser->user_id,
-            'clase_id'              => $clase->id
         ]);
 
-        $this->artisan($this->signature)
-                ->expectsOutput("The class hour being iterated is: {$clase_hour}")
-                ->assertExitCode(0);
-
-
-        $this->assertSoftDeleted('reservations', [
-            'id' => $pending_reservation->id
-        ]);
+        $this->artisan($this->signature)->assertExitCode(0);
 
         $this->assertDatabaseHas('plan_user', [
             'id'      => $planUser->id,
-            'counter' => 1
+            'counter' => $quotas
         ]);
     }
 }

@@ -64,6 +64,7 @@ class PlanUserObserver
      */
     public function updating(PlanUser $planUser)
     {
+        dump('entring updating PlanUserObserver');
         // Skip "updating" observer if plan is cancelled
         if ($this->planUserIsBeingCancelled($planUser->plan_status_id)) {
             return;
@@ -130,6 +131,7 @@ class PlanUserObserver
     //UPDATE PARA CANCELAR EL PLAN
     public function updated(PlanUser $planUser)
     {
+        dump('into updated PlanUserObserver');
         if ($planUser->plan_status_id === PlanStatus::CANCELADO) {
             foreach ($planUser->reservations as $reserv) {
                 if ($reserv->reservation_status_id == ReservationStatus::PENDING ||
@@ -215,13 +217,15 @@ class PlanUserObserver
     {
         $reservations = Reservation::join('clases', 'reservations.clase_id', '=', 'clases.id')
                                     ->where('reservations.user_id', $planUser->user_id)
-                                    ->whereBetween('date', [Carbon::parse($planUser->start_date)->format('Y-m-d'), Carbon::parse($planUser->finish_date)->format('Y-m-d')])
+                                    ->where('date', '>=', Carbon::parse($planUser->start_date)->format('Y-m-d'))
+                                    ->where('date', '<=', Carbon::parse($planUser->finish_date)->format('Y-m-d'))
                                     ->get('reservations.id');
 
         $reservations_out = Reservation::join('clases', 'reservations.clase_id', '=', 'clases.id')
                                         ->where('reservations.user_id', $planUser->user_id)
                                         ->whereNotBetween('date', [Carbon::parse($planUser->start_date)->format('Y-m-d'), Carbon::parse($planUser->finish_date)->format('Y-m-d')])
                                         ->get('reservations.id');
+        
 
         foreach ($reservations as $reserv) {
             $reservation = Reservation::find($reserv->id, ['id', 'plan_user_id']);

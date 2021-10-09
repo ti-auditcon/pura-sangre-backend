@@ -11,6 +11,7 @@ class Role extends Model
 {
 	const ADMIN = 1;
 
+
     /**
      *  [users description]
      *

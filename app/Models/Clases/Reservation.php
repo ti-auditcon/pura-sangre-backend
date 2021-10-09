@@ -14,12 +14,12 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Reservation extends Model
 {
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = ['deleted_at'];
+    // /**
+    //  * The attributes that should be mutated to dates.
+    //  *
+    //  * @var array
+    //  */
+    // protected $dates = ['deleted_at'];
 
     /**
      *  Massive asignment values for Reservation

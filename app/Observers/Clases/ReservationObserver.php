@@ -2,10 +2,11 @@
 
 namespace App\Observers\Clases;
 
-use App\Models\Clases\Clase;
-use App\Models\Clases\Reservation;
-use Carbon\Carbon;
 use Session;
+use Carbon\Carbon;
+use App\Models\Clases\Clase;
+use App\Models\Plans\PlanUser;
+use App\Models\Clases\Reservation;
 
 class ReservationObserver
 {
@@ -76,20 +77,29 @@ class ReservationObserver
 
     public function created(Reservation $reservation)
     {
+        dump('created of ReservationObserver');
         $clase = $reservation->clase;
         $plans = $reservation->user->reservable_plans;
         $date_class = Carbon::parse($clase->date);
 
         $period_plan = null;
         foreach ($plans as $planuser) {
+            dump('looping plans of the user');
             if ($date_class->between(Carbon::parse($planuser->start_date), Carbon::parse($planuser->finish_date))) {
                 $period_plan = $planuser;
             }
         }
+        
         if ($period_plan) {
-            $period_plan->updated_at = now();
-            $period_plan->save();
             $reservation->update(['plan_user_id' => $period_plan->id]);
+            
+            // getting the dispatcher instance (needed to enable again the event observer later on)
+            $dispatcher = PlanUser::getEventDispatcher();
+            // disabling the events
+            PlanUser::unsetEventDispatcher();
+            // perform the operation you want
+            $period_plan->subQuotas(1);
+            PlanUser::setEventDispatcher($dispatcher);
         }
         return true;
     }
