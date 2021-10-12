@@ -2,11 +2,12 @@
 
 namespace Tests\Feature\Commands\Clases;
 
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Users\Role;
 use App\Models\Users\User;
+use Illuminate\Support\Str;
 use App\Jobs\SendPushNotification;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -44,7 +45,7 @@ class SendPushNotificationTest extends TestCase
 
         $tokens= [];
         for ($i = 0; $i < 10; $i++) { 
-            array_push($tokens, str_random(100));
+            array_push($tokens, Str::random(100));
         }
 
         foreach ($tokens as $fcm_token) {
@@ -76,6 +77,22 @@ class SendPushNotificationTest extends TestCase
 
         $this->assertTrue(true);
     }    
+
+
+        /**
+     *  Get the rounded minute from an specific time,
+     *  useful in case of server trigger after the specific hour and minute
+     *  Also add the 0
+     *
+     *  @param   Carbon\Carbon|string  $time
+     *
+     *  @return  Carbon\Carbon
+     */
+    public function roundMinutesToMultipleOfFive($time) {
+        $minutes = date('i', strtotime($time));
+
+        return $time->setTime($time->format('H'), $minutes - ($minutes % 5));
+    }
 }
 
 

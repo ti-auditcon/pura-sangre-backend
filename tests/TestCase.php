@@ -25,7 +25,6 @@ abstract class TestCase extends BaseTestCase
         $this->manageSharedViewData();
     }
 
-    /** @test */
     public function getPurasangreReady()
     {
         $this->admin = factory(User::class)->create();

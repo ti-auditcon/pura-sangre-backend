@@ -49,23 +49,6 @@ class ClasesClear extends Command
             
         $this->info("The class hour being iterated is: {$clase_hour}");
 
-        // dump(
-        //     today()->copy()->format('Y-m-d H:i:s'),
-        //     Carbon::parse($clase_hour)->copy()->format('H:i:s')
-        // );
-
-        // dd(Reservation::join('users', 'users.id', '=', 'reservations.user_id')
-        //                             ->join('clases', 'clases.id', '=', 'reservations.clase_id')
-        //                             ->join('clase_types', 'clase_types.id', '=', 'clases.clase_type_id')
-        //                             ->join('plan_user', 'plan_user.id', '=', 'reservations.plan_user_id')
-        //                             ->get([
-        //                                 'reservations.id', 'reservation_status_id', 'reservations.plan_user_id',
-        //                                 'users.first_name', 'users.fcm_token',
-        //                                 'clase_types.clase_type',
-        //                                 'clases.start_at', 'clases.date',
-        //                                 'plan_user.id as planUserId', 'plan_user.counter'
-        //                             ]));
-
         $reservations = Reservation::join('users', 'users.id', '=', 'reservations.user_id')
                                     ->join('clases', 'clases.id', '=', 'reservations.clase_id')
                                     ->join('clase_types', 'clase_types.id', '=', 'clases.clase_type_id')
@@ -83,7 +66,6 @@ class ClasesClear extends Command
                                     ]);
         // dd($reservations);
         foreach ($reservations as $key => $reservation) {
-            dump($key);
             $reservation->delete();
 
             // SendPushNotification::dispatch(

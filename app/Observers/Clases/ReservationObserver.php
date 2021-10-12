@@ -2,11 +2,11 @@
 
 namespace App\Observers\Clases;
 
-use Session;
 use Carbon\Carbon;
 use App\Models\Clases\Clase;
 use App\Models\Plans\PlanUser;
 use App\Models\Clases\Reservation;
+use Illuminate\Support\Facades\Session;
 
 class ReservationObserver
 {

@@ -26,8 +26,6 @@ class SettingRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'box_country'                     => 'required',
-            // 'box_image'                       => 'mimes:jpeg,jpg,png',
             "minutes_to_send_notifications" => Rule::in(Setting::listOfAvailableMinutesToSendPushes()),
             "minutes_to_remove_users"       => [Rule::in(Setting::listOfAvailableMinutesToRemoveUsersFromClases()), 'lt:minutes_to_send_notifications'],
         ];
@@ -55,9 +53,9 @@ class SettingRequest extends FormRequest
     public function messages()
     {
         return [
-            "minutes_for_confirmation_clases.in" => 'Los minutos para la confirmación de clases debe ser uno de los tiempos definidos en la lista',
-            "minutes_to_remove_users.in"         => 'Los minutos para remover a los alumnos debe ser uno de los tiempos definidos en la lista',
-            'minutes_to_remove_users.lt'         => 'Los minutos para remover a los alumnos debe ser un número menor a el envío de la confirmación de la clase.',
+            "minutes_to_send_notifications.in" => 'Los minutos para la confirmación de clases debe ser uno de los tiempos definidos en la lista',
+            "minutes_to_remove_users.in"       => 'Los minutos para remover a los alumnos debe ser uno de los tiempos definidos en la lista',
+            'minutes_to_remove_users.lt'       => 'Los minutos para remover a los alumnos debe ser un número menor a el envío de la confirmación de la clase.',
         ];
     }
 }

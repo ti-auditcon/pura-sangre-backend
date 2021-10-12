@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         'App\Console\Commands\Clases\CloseClass',
-        'App\Console\Commands\Clases\PushClases',
+        'App\Console\Commands\Clases\ClasesSendPushes',
         'App\Console\Commands\Clases\ClasesClear',
         'App\Console\Commands\Clases\CreateClases',
         // 'App\Console\Commands\Clases\AfterFirstClass',
@@ -29,21 +29,16 @@ class Kernel extends ConsoleKernel
     ];
 
     /**
-     * Define the application's command schedule.
+     *  Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
-     * @return void
+     *  @param   \Illuminate\Console\Scheduling\Schedule  $schedule
+     *  
+     *  @return  void
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('clases:push')->hourlyAt(0);
-        $schedule->command('clases:push')->hourlyAt(15);
-        $schedule->command('clases:push')->hourlyAt(30);
-        $schedule->command('clases:push')->hourlyAt(45);
-
         /**  Send Push Notifications to users certain minutes before class starts  */
-        // $schedule->command('nfit:tenant:clases:send-pushes')->everyFiveMinutes();
-
+        $schedule->command('purasangre:clases:send-notifications')->everyFiveMinutes();
         /**  Remove users who don't confirm assistance to clases  */
         $schedule->command('purasangre:clases:clear')->everyFiveMinutes();
 
@@ -68,9 +63,9 @@ class Kernel extends ConsoleKernel
     }
 
     /**
-     * Register the commands for the application.
+     *  Register the commands for the application.
      *
-     * @return void
+     *  @return  void
      */
     protected function commands()
     {

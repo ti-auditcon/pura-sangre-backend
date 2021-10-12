@@ -235,6 +235,35 @@ class ClasesClearTest extends TestCase
     //     // Bus::assertDispatched(SendPushNotification::class);
     // }
 
+    /** 
+     *  the loooped iterations should run only on clases according to "minutes_to_remove_users"
+     *  
+     *  @test
+     */
+    public function it_runs_at_correct_hour()
+    {
+        /**  MUST be a multiple of five, because that's the minimum lapse of differencia as start as end a class */
+        $fake_minutes_to_remove_users = 45;
+        Setting::first(['id', 'minutes_to_remove_users'])->update([
+            'minutes_to_remove_users' => $fake_minutes_to_remove_users
+        ]);
+        $settings = Setting::first(['id','minutes_to_remove_users']);
+        /**
+         *  Igual necesitamos redondear a un multiplo de 5,
+         *  debido a que el rango minimo de diferencia es de 5 minutos
+         */
+        $clase_hour = $this->roundMinutesToMultipleOfFive(
+            now()->startOfMinute()->addMinutes($settings->minutes_to_remove_users)
+        )->format('H:i');
+        
+        $minutes_by_five = Carbon::parse($clase_hour)->copy()->minute - (Carbon::parse($clase_hour)->copy()->minute % 5);
+        
+        $this->assertEquals(
+            $settings->minutes_to_remove_users,
+            $minutes_by_five
+        );
+    }
+
     public function createReservationsForClass($claseId, $times)
     {
         for ($i = 0; $i < $times; $i++) { 
