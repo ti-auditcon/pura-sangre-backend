@@ -65,7 +65,7 @@ class Clase extends Model
     public function getStartAttribute()
     {
         if ( $this->block->date == null ) {
-            return $this->date." ".$this->block->start;
+            return $this->date->format('Y-m-d') . " ". $this->block->start;
         }
 
         return $this->block->start;
@@ -79,7 +79,7 @@ class Clase extends Model
     {
         if ($this->block->date == null) {
 
-          return $this->date . " " . $this->block->end;
+          return $this->date->format('Y-m-d') . " " . $this->block->end;
 
         } else {
 
