@@ -28,8 +28,8 @@ class SettingRequest extends FormRequest
         return [
             // 'box_country'                     => 'required',
             // 'box_image'                       => 'mimes:jpeg,jpg,png',
-            "minutes_to_remove_users"         => [Rule::in(Setting::listOfAvailableMinutesToRemoveUsersFromClases()), 'lt:minutes_for_confirmation_clases'],
             "minutes_to_send_notifications" => Rule::in(Setting::listOfAvailableMinutesToSendPushes()),
+            "minutes_to_remove_users"       => [Rule::in(Setting::listOfAvailableMinutesToRemoveUsersFromClases()), 'lt:minutes_to_send_notifications'],
         ];
     }
 

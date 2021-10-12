@@ -200,8 +200,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('json-density-parameters', 'Settings\DensityParameterController@clasesDensities');
     Route::resource('density-parameters', 'Settings\DensityParameterController')
             ->only('index', 'store', 'update', 'destroy');
-    Route::resource('settings', 'Settings\SettingsController')
-            ->only('index', 'store', 'update', 'destroy');
+    Route::resource('settings', 'Settings\SettingsController')->only('index', 'update');
     
 
     /*

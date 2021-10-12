@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\Users\Role;
 use App\Models\Users\User;
 use App\Jobs\SendPushNotification;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -41,12 +42,10 @@ class SendPushNotificationTest extends TestCase
     {
         Queue::fake();
 
-        $tokens = [
-            // // pablo's token
-            // "fy5XNRPh704:APA91bGDOiJy0oseAKA7kWLSjhtTVjfDD2Lh3XuIrWTw636oZFh5T4nPjcZBBUrpzZbKpvbykwag75e5B0QYJ4MYOEJO-UFgeuZwcd2CR81r7C75ptrJMHZ3-VUMAisJztJUoVdHDHTB",
-            // // raul's token
-            "f7R7RPyWTwuE3JKHdmytvZ:APA91bG0gmfOlwjhe2NEmFsh04c843QjBMuua4LXRJx55ESiO6nHBqgSqeeBHAd-y6HUXX-xk23SxvHyinz2s2W3uQ_FImPGzvqEa0TfguUs8K7ih2XbBlS7JeScX2CzurgSK8obpBd7"
-        ];
+        $tokens= [];
+        for ($i = 0; $i < 10; $i++) { 
+            array_push($tokens, str_random(100));
+        }
 
         foreach ($tokens as $fcm_token) {
             SendPushNotification::dispatch(
@@ -61,7 +60,22 @@ class SendPushNotificationTest extends TestCase
         });
     }
 
-    
+    /** 
+     *  IT'S NEED TO BE TESTED HARDCODE
+     * 
+     *  @test
+     */
+    public function it_user_receive_push_notification()
+    {
+        SendPushNotification::dispatch(
+            // Rauls Purasangre fcm_token
+            "djAtXTBg79M:APA91bExgsYenQ-l9rL_Emu4KnrumIA_4uyT2XcMuxl_fs3HV_ofSg_O-9SOQAmg9bME5UjwaFfZEIytVIX3DdVENENe_QgN08Cx_DOZBExR_hdZoGTQdOH_VOwP4ge0454UNgxI5P6Y",
+            "Notificación de prueba para eliminacion de clase",
+            "Fecha/hora envío: " . now()->format('d-m-Y H:i:s')
+        );
+
+        $this->assertTrue(true);
+    }    
 }
 
 

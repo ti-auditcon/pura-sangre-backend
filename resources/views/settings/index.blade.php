@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="ibox-body">
-            <form action="/settings/{{ $settings->id }}" method="POST">
+            <form method="POST" action="{{ route('settings.update', $settings->id) }}">
                 @method('PATCH')
                 @csrf
                 <div class="row">
@@ -21,11 +21,11 @@
                         <div class="form-group inline">
                             <label class="col-form-label">Minutos para enviar confirmacion de la clase</label>
 
-                            <select name="minutes_for_confirmation_clases" class="form-control">
+                            <select name="minutes_to_send_notifications" class="form-control">
                                 <option value="">Eliga los minutos</option>
                                 @foreach (App\Models\Settings\Setting::listOfAvailableMinutesToSendPushes() as $minutes)
                                     <option value="{{ $minutes }}"
-                                        @if ($settings->minutes_for_confirmation_clases === $minutes) selected @endif>
+                                        @if ($settings->minutes_to_send_notifications === $minutes) selected @endif>
                                         {{ $minutes }} minutos / {{ $minutes/60 }} horas
                                     </option>
                                 @endforeach
@@ -41,21 +41,19 @@
                                 <option value="">Eliga los minutos</option>
                                 
                                 @foreach (App\Models\Settings\Setting::listOfAvailableMinutesToRemoveUsersFromClases() as $minutes)
-                                <option value="{{ $minutes }}" @if ($settings->minutes_to_remove_users === $minutes) selected @endif>
-                                    {{ $minutes }} minutos / {{ $minutes/60 }} horas
-                                </option>
+                                    <option value="{{ $minutes }}" @if ($settings->minutes_to_remove_users === $minutes) selected @endif>
+                                        {{ $minutes }} minutos / {{ $minutes/60 }} horas
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                     <button class="btn btn-primary" type="submit">Actualizar datos</button> 
-            </div>
-        </form>
-
+                </div>
+            </form>
         </div>
     </div>
 </div>
-
 @endsection
 
 @section('css')
