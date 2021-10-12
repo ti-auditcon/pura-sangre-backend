@@ -34,4 +34,11 @@ class ClasesSendPushesTest extends TestCase
         return factory(User::class)->create();
     }
 
+    /** @test */
+    public function test_name()
+    {
+        // $this->withoutExceptionHandling();
+        $this->assertTrue(true);
+    }
+
 }

@@ -233,49 +233,14 @@ class PlanUser extends Model
     /**
      *  Update the planUser substracting quotas of it
      *
-     *  @param   int  $number
+     *  @param   int  $quotas_number
      *
      *  @return  void
      */
-    public function subQuotas(int $number)
+    public function subQuotas(int $quotas_number)
     {
-        dump('subquotas');
         $this->update([
-            'counter' => $this->counter - $number
+            'counter' => $this->counter - $quotas_number
         ]);
-        dump('subquotas updated');
     }
-
-    // /**
-    //  *  The plan can be:
-    //  *  - Prueba: just add a week and the counter is equals to class_numbers
-    //  *  - Custom: The finish date of the plan is defined at creation part
-    //  *  - Others: add months and counter guided by plan
-    //  *
-    //  *  @param   [type]  $plan    
-    //  *  @param   [type]  $request 
-    //  *
-    //  *  @return  array
-    //  */
-    // public function manageSpecificParametersForPlan(Plan $plan, $request)
-    // {        
-    //     if ($plan->isPrueba()) {
-    //         $finish_date = Carbon::parse($request->fecha_inicio)->addWeeks(1);
-    //         $counter = $plan->class_numbers;
-
-    //         return [$finish_date, $counter];
-    //     }
-        
-    //     if ($plan->isCustom()) {
-    //         $finish_date = Carbon::parse($request->fecha_termino);
-    //         $counter = $request->counter;
-
-    //         return [$finish_date, $counter];
-    //     }
-
-    //     $finish_date = Carbon::parse($request->fecha_inicio)->addMonths($plan->plan_period->period_number)->subDay();
-    //     $counter = $plan->class_numbers * $plan->plan_period->period_number * $plan->daily_clases;
-
-    //     return [$finish_date, $counter];
-    // }
 }

@@ -5,7 +5,6 @@ use App\Models\Users\User;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 use App\Models\Users\RoleUser;
-use App\Models\Users\Emergency;
 use App\Models\Users\StatusUser;
 use Freshwork\ChileanBundle\Rut;
 
@@ -14,6 +13,12 @@ $factory->define(RoleUser::class, function (Faker $faker) {
     return [
         'role_id' => factory(Role::class)->create()->id,
         'user_id' => factory(User::class)->create()->id,
+    ];
+});
+
+$factory->define(Role::class, function (Faker $faker) {
+    return [
+        'role' => $faker->word,
     ];
 });
 

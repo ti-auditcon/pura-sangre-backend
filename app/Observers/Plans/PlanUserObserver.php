@@ -64,7 +64,6 @@ class PlanUserObserver
      */
     public function updating(PlanUser $planUser)
     {
-        dump('entring updating PlanUserObserver');
         // Skip "updating" observer if plan is cancelled
         if ($this->planUserIsBeingCancelled($planUser->plan_status_id)) {
             return;
@@ -131,7 +130,6 @@ class PlanUserObserver
     //UPDATE PARA CANCELAR EL PLAN
     public function updated(PlanUser $planUser)
     {
-        dump('into updated PlanUserObserver');
         if ($planUser->plan_status_id === PlanStatus::CANCELADO) {
             foreach ($planUser->reservations as $reserv) {
                 if ($reserv->reservation_status_id == ReservationStatus::PENDING ||

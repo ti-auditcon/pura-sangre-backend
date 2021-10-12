@@ -94,8 +94,8 @@ class IssueReceiptsCommand extends Command
                                 ->get();
 
         foreach ($bills as $bill) {
+            $this->info('PlanUserFlow id being iterated is: ' . $bill->id);
 
-        $this->info('PlanUserFlow id being iterated is: ' . $bill->id);
             try {
                 $dte = new TaxDocument;
                 $sii_response = $dte->issueReceipt($bill);

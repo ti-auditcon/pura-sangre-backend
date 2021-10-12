@@ -77,14 +77,12 @@ class ReservationObserver
 
     public function created(Reservation $reservation)
     {
-        dump('created of ReservationObserver');
         $clase = $reservation->clase;
         $plans = $reservation->user->reservable_plans;
         $date_class = Carbon::parse($clase->date);
 
         $period_plan = null;
         foreach ($plans as $planuser) {
-            dump('looping plans of the user');
             if ($date_class->between(Carbon::parse($planuser->start_date), Carbon::parse($planuser->finish_date))) {
                 $period_plan = $planuser;
             }

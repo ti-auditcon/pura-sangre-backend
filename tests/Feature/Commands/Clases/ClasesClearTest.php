@@ -49,9 +49,47 @@ class ClasesClearTest extends TestCase
         return $time->setTime($time->format('H'), $minutes - ($minutes % 5));
     }
 
+    /**
+     * [createReservationsForClass description]
+     *
+     * @param   [type]  $claseId  [$claseId description]
+     * @param   [type]  $times    [$times description]
+     *
+     * @return  [type]            [return description]
+     */
+    public function createReservationsForClass($claseId, $times)
+    {
+        for ($i = 0; $i < $times; $i++) { 
+            $planUser = factory(PlanUser::class)->create();
+
+            factory(Reservation::class)->create([
+                'reservation_status_id' => ReservationStatus::PENDING,
+                'clase_id' => $claseId,
+                'plan_user_id' => $planUser->id,
+                'user_id' => $planUser->user_id
+            ]);
+        }
+    }
+
+    /**
+     * [createActivePlanUserFor description]
+     *
+     * @param   [type]  $userId  [$userId description]
+     *
+     * @return  [type]           [return description]
+     */
+    public function createActivePlanUserFor($userId)
+    {
+        return factory(PlanUser::class)->create([
+            'start_date'     => today()->startOfMonth()->format('Y-m-d'),
+            'finish_date'    => today()->endOfMonth()->format('Y-m-d'),
+            'plan_status_id' => PlanStatus::ACTIVO,
+            'user_id'        => $userId
+        ]);
+    }
+
     //
     // las reservaciones iteradas son solo las que tienen estado pendientes, no cuenta las confirmadas
-    // el push es enviado correctamente
     // el alumno se le devuelve el cupo correctamente
     // el alumno confirmado no se le borra la clase
     // si se elimina la reserva, esta queda softdeletes en la base de datos
@@ -188,112 +226,6 @@ class ClasesClearTest extends TestCase
         ]);
     }
 
-    // /**
-    //  *   Create a fake class
-    //  *
-    //  *  @param   [type]  $claseId  [$claseId description]
-    //  *  @param   integer  $times  [$claseId description]
-    //  *
-    //  *  @return  factory
-    //  */
-    // public function fakeConfirmedReservationForClass($claseId)
-    // {
-    //     return factory(Reservation::class)->create([
-    //         'reservation_status_id' => ReservationStatus::CONFIRMED,
-    //         'clase_id'              => $claseId
-    //     ]);
-    // }
-
-    // /**
-    //  *  todo: this does not belongs here
-    //  *
-    //  *  @test
-    //  */
-    // public function pushes_are_sended_correctly()
-    // {
-    //     // Bus::fake();
-
-    //     /**
-    //      *  Igual necesitamos redondear a un multiplo de 5,
-    //      *  debido a que el rango minimo de diferencia es de 5 minutos
-    //      */
-    //     $clase_hour = $this->roundMinutesToMultipleOfFive(
-    //         now()->startOfMinute()->addMinutes(Setting::value('minutes_to_remove_users'))
-    //     )->format('H:i');
-
-    //     // create a class for today
-    //     $clase = $this->createTodayClassAt($clase_hour);
-
-    //     $times = 5;
-
-    //     $this->createReservationsForClass($clase->id, $times);
-
-    //     $this->artisan($this->signature)
-    //             ->expectsOutput("PUSH notifications sended: {$times}")
-    //             ->assertExitCode(0);
-
-    //     // Bus::assertDispatched(SendPushNotification::class);
-    // }
-
-    /** 
-     *  the loooped iterations should run only on clases according to "minutes_to_remove_users"
-     *  
-     *  @test
-     */
-    public function it_runs_at_correct_hour()
-    {
-        /**  MUST be a multiple of five, because that's the minimum lapse of differencia as start as end a class */
-        $fake_minutes_to_remove_users = 45;
-        Setting::first(['id', 'minutes_to_remove_users'])->update([
-            'minutes_to_remove_users' => $fake_minutes_to_remove_users
-        ]);
-        $settings = Setting::first(['id','minutes_to_remove_users']);
-        /**
-         *  Igual necesitamos redondear a un multiplo de 5,
-         *  debido a que el rango minimo de diferencia es de 5 minutos
-         */
-        $clase_hour = $this->roundMinutesToMultipleOfFive(
-            now()->startOfMinute()->addMinutes($settings->minutes_to_remove_users)
-        )->format('H:i');
-        
-        $minutes_by_five = Carbon::parse($clase_hour)->copy()->minute - (Carbon::parse($clase_hour)->copy()->minute % 5);
-        
-        $this->assertEquals(
-            $settings->minutes_to_remove_users,
-            $minutes_by_five
-        );
-    }
-
-    public function createReservationsForClass($claseId, $times)
-    {
-        for ($i = 0; $i < $times; $i++) { 
-            $planUser = factory(PlanUser::class)->create();
-
-            factory(Reservation::class)->create([
-                'reservation_status_id' => ReservationStatus::PENDING,
-                'clase_id' => $claseId,
-                'plan_user_id' => $planUser->id,
-                'user_id' => $planUser->user_id
-            ]);
-        }
-    }
-
-    /**
-     * [createActivePlanUserFor description]
-     *
-     * @param   [type]  $userId  [$userId description]
-     *
-     * @return  [type]           [return description]
-     */
-    public function createActivePlanUserFor($userId)
-    {
-        return factory(PlanUser::class)->create([
-            'start_date'     => today()->startOfMonth()->format('Y-m-d'),
-            'finish_date'    => today()->endOfMonth()->format('Y-m-d'),
-            'plan_status_id' => PlanStatus::ACTIVO,
-            'user_id'        => $userId
-        ]);
-    }
 
     /** @test */
     public function it_return_quota_to_plan_user_when_is_removed()
@@ -319,7 +251,7 @@ class ClasesClearTest extends TestCase
         // create a class for today
         $clase = $this->createTodayClassAt($clase_hour);
 
-        $pending_reservation = factory(Reservation::class)->create([
+        factory(Reservation::class)->create([
             'clase_id'              => $clase->id,
             'reservation_status_id' => ReservationStatus::PENDING,
             'user_id'               => $planUser->user_id,
