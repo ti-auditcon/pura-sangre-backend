@@ -46,13 +46,13 @@ class ClasesClear extends Command
         $clase_hour = $this->roundMinutesToMultipleOfFive(
             now()->copy()->addMinutes($settings->minutes_to_remove_users)
         )->format('H:i');
-            
+
         $this->info("The class hour being iterated is: {$clase_hour}");
 
         $reservations = Reservation::join('users', 'users.id', '=', 'reservations.user_id')
                                     ->join('clases', 'clases.id', '=', 'reservations.clase_id')
                                     ->join('clase_types', 'clase_types.id', '=', 'clases.clase_type_id')
-                                    ->join('plan_user', 'plan_user.id', '=', 'reservations.plan_user_id')
+                                    ->leftJoin('plan_user', 'plan_user.id', '=', 'reservations.plan_user_id')
                                     ->where('reservation_status_id', ReservationStatus::PENDING)
                                     // start_at deberia tener la zona horaria del box y no utc
                                     ->where('clases.start_at', Carbon::parse($clase_hour)->copy()->format('H:i:s'))
@@ -64,7 +64,9 @@ class ClasesClear extends Command
                                         'clases.start_at', 'clases.date',
                                         'plan_user.id as planUserId', 'plan_user.counter'
                                     ]);
-                                    
+                     
+                                    // dd($reservations);
+
         foreach ($reservations as $key => $reservation) {
             $reservation->delete();
         }

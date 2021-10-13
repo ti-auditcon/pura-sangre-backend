@@ -5,7 +5,6 @@ namespace App\Console\Commands\Clases;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use App\Models\Settings\Setting;
-use App\Jobs\SendPushNotification;
 use App\Models\Clases\Reservation;
 use App\Models\Clases\ReservationStatus;
 
@@ -65,15 +64,14 @@ class ClasesSendPushes extends Command
                                     ]);
 
         foreach ($reservations as $reservation) {
-            // dd($reservation);
             $title = $reservation->first_name . ' recuerda confirmar ahora';
 
             $body = 'Tienes una clase de ' . strtoupper($reservation->clase_type) .
                     ' a las ' . Carbon::parse($reservation->start_at)->format('H:i') .
                     'hrs. No te olvides confirmar o tu reserva será eliminada en ' .
-                    $this->minutesOfDifferenceBetweenPushesAndRemove($settings) . ' minutos';
+                    $this->minutesOfDifferenceBetweenPushesAndRemove($settings) . ' minutos.';
 
-            SendPushNotification::dispatch($reservation->fcm_token, $title, $body);
+            $this->notification($reservation->fcm_token, $title, $body);
         }
     }
 
@@ -147,5 +145,43 @@ class ClasesSendPushes extends Command
         $minutes = date('i', strtotime($time));
         
         return $time->setTime($time->format('H'), $minutes - ($minutes % 15));
+    }
+
+    public function notification($token, $title, $body)
+    {
+        $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
+        $token = $token;
+
+        $notification = [
+            'title' => $title,
+            'body' => $body,
+            'sound' => true,
+        ];
+
+        $extraNotificationData = ["message" => $notification, "moredata" => 'dd'];
+
+        $fcmNotification = [
+            //'registration_ids' => $tokenList, //multple token array
+            'to' => $token, //single token
+            'notification' => $notification,
+            'data' => $extraNotificationData,
+        ];
+
+        $headers = [
+            'Authorization: key=AAAAEWU-ai4:APA91bFCm4Yxb9Hh4m8te_RCrvk8HY_IaR9LfXUGQcuClcFs5Fy6a7d4irPoSbcIi48ei6kNnvodQCUua1Mb8h9QKEFtusbeCAcPpEAwSXxbKIjyrKDl3Ncm_tTFfnoQmqT9ZCD2hPSH',
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $fcmUrl);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmNotification));
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        return true;
     }
 }
