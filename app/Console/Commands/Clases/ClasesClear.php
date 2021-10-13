@@ -64,18 +64,10 @@ class ClasesClear extends Command
                                         'clases.start_at', 'clases.date',
                                         'plan_user.id as planUserId', 'plan_user.counter'
                                     ]);
-        // dd($reservations);
+                                    
         foreach ($reservations as $key => $reservation) {
             $reservation->delete();
-
-            // SendPushNotification::dispatch(
-            //     $reservation->fcm_token,
-            //     "Tu reserva ha sido eliminada. 😱",
-            //     "No has confirmado tu clase de {$reservation->clase_type} de las {$reservation->start_at} hrs."
-            // );
         }
-
-        $this->info("PUSH notifications sended: " . count($reservations));
     }
 
     /**

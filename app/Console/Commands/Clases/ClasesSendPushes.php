@@ -54,7 +54,6 @@ class ClasesSendPushes extends Command
                                     ->join('clases', 'clases.id', '=', 'reservations.clase_id')
                                     ->join('clase_types', 'clase_types.id', '=', 'clases.clase_type_id')
                                     ->where('reservation_status_id', ReservationStatus::PENDING)
-                                    ->whereNull('reservations.deleted_at')
                                     ->where('clases.start_at', Carbon::parse($clase_hour)->copy()->format('H:i:s'))
                                     /** Keep the timezone day all the time */
                                     ->where('clases.date', $current_dateTime->copy()->format('Y-m-d'))
@@ -66,6 +65,7 @@ class ClasesSendPushes extends Command
                                     ]);
 
         foreach ($reservations as $reservation) {
+            // dd($reservation);
             $title = $reservation->first_name . ' recuerda confirmar ahora';
 
             $body = 'Tienes una clase de ' . strtoupper($reservation->clase_type) .

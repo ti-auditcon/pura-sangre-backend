@@ -79,13 +79,13 @@ class SendPushNotification implements ShouldQueue
         $notification = ['title' => $this->title, 'body' => $this->body, 'sound' => true];
         
         $fcmNotification = [
-            'to' => $this->token, //single token
+            'to'           => $this->token, //single token
             'notification' => $notification,
-            'data' => $notification
+            'data'         => $notification
         ];
 
         $headers = [
-            'Authorization: key=' . env('FIREBASE_AUTHORIZATION_KEY', 'AAAAyEVqUCs:APA91bE77nkMYX2gfQmz9pA813fWzqfslJWYK6cLUUie9uwechvjAE6wler6W9oy-MMMZPsXY6v5KmlLyTGfkQ-PB0tdO-Dn0yGeqeU6NaQTL7XhtOG-7PkwHJv3-NoLxjqHooIvLCzr'),
+            'Authorization: key=' . env('FIREBASE_AUTHORIZATION_KEY', 'AAAAEWU-ai4:APA91bFCm4Yxb9Hh4m8te_RCrvk8HY_IaR9LfXUGQcuClcFs5Fy6a7d4irPoSbcIi48ei6kNnvodQCUua1Mb8h9QKEFtusbeCAcPpEAwSXxbKIjyrKDl3Ncm_tTFfnoQmqT9ZCD2hPSH'),
             'Content-Type: application/json'
         ];
 
