@@ -79,7 +79,7 @@ class Clase extends Model
     {
         if ($this->block->date == null) {
 
-          return $this->date->format('Y-m-d')k . " " . $this->block->end;
+          return $this->date->format('Y-m-d') . " " . $this->block->end;
 
         } else {
 
