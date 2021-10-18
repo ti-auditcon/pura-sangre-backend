@@ -457,8 +457,8 @@
 			header: {
 					right:  'agendaWeek',
 			},
-			minTime: "07:00:00",
-			maxTime: "22:00:00",
+			minTime: "06:00:00",
+			maxTime: "23:59:59",
 			events: {!! $blocks !!},
 			editable: false,
 			defaultView: 'agendaWeek',
