@@ -347,11 +347,22 @@ class InvoicingController extends Controller
             }
 
             $taxDocument = new TaxDocument($token);
-            $this->createPlanUserFlow($taxDocument);
+            // $this->createPlanUserFlow($taxDocument);
             $response = $taxDocument->cancel();
 
             if (isset($response->TOKEN)) {
                 $planPayment->update(['paid' => TaxDocumentStatus::CANCELED]);
+
+                PlanUserFlow::create([
+                    'start_date'   => $taxDocument->fchemis,
+                    'finish_date'  => $taxDocument->fchemis,
+                    'counter'      => 0,
+                    'paid'         => TaxDocumentStatus::ACCEPTED,
+                    'amount'       => $taxDocument->mnttotal,
+                    'observations' => $taxDocument->nmbitem,
+                    'payment_date' => $taxDocument->fchemis,
+                    'sii_token'    => $response->TOKEN
+                ]);
             }
 
             return response()->json([
@@ -361,15 +372,17 @@ class InvoicingController extends Controller
 
         // get document data
         $document = new TaxDocument($token);
-        $this->createPlanUserFlow($document);
+        $planUser = $this->createPlanUserFlow($document);
         $response = $document->cancel();
 
         if (isset($response->TOKEN)) {
+            $planPayment->update(['paid' => TaxDocumentStatus::CANCELED]);
+
             PlanUserFlow::create([
                 'start_date'   => $document->fchemis,
                 'finish_date'  => $document->fchemis,
                 'counter'      => 0,
-                'paid'         => TaxDocumentStatus::CANCELED,
+                'paid'         => TaxDocumentStatus::ACCEPTED,
                 'amount'       => $document->mnttotal,
                 'observations' => $document->nmbitem,
                 'payment_date' => $document->fchemis,
@@ -389,7 +402,7 @@ class InvoicingController extends Controller
 
     public function createPlanUserFlow($document)
     {
-        PlanUserFlow::create([
+        return PlanUserFlow::create([
             'start_date'     => $document->fchemis,
             'finish_date'    => $document->fchemis,
             'counter'        => 0,
