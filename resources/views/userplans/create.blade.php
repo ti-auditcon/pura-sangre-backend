@@ -213,7 +213,7 @@
                                                     @if(old('plan_id') == $plan->id) selected @endif
                                                     data-amount="{{ $plan->amount }}"
                                                     data-custom="{{ $plan->custom }}"
-                                                    data-period-id="{{ $plan->plan_period_id }}"
+                                                    data-period-id="{{ optional($plan->plan_period)->period_number }}"
                                                     data-class-numbers="{{ $plan->class_numbers }}"
                                                     data-daily-clases="{{ $plan->daily_clases }}"
                                             >

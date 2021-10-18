@@ -53,7 +53,8 @@ class PlanUserController extends Controller
     public function create(User $user)
     {
         $plans = Plan::where('plan_status_id', 1)
-                     ->get(['id', 'plan', 'amount', 'custom', 'plan_period_id', 'class_numbers', 'daily_clases']);
+                        ->with('plan_period:id,period_number')
+                        ->get(['id', 'plan', 'amount', 'custom', 'plan_period_id', 'class_numbers', 'daily_clases']);
 
         return view('userplans.create',
             ['user' => $user, 'plans' => $plans]
