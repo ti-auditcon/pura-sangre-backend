@@ -35,13 +35,6 @@ class InvoicingController extends Controller
      */
     protected $verifiedSSL;
 
-    /**
-     *  Instance of a tax document
-     *
-     *  @var  TaxDocument
-     */
-    protected $documents;
-
     protected $document;
 
     /**
@@ -346,16 +339,20 @@ class InvoicingController extends Controller
 
     public function cancel($token)
     {   
-        if ($document = PlanUserFlow::where('sii_token', $token)->first()) {
-            if ($document->paid === FlowOrderStatus::CANCELED) {
+        if ($planPayment = PlanUserFlow::where('sii_token', $token)->first()) {
+            if ($planPayment->paid === FlowOrderStatus::CANCELED) {
                 return response()->json([
                     'status' => 'Request failed', 'message' => "Este documento ya ha sido anulado anteriormente."
                 ], Response::HTTP_UNAUTHORIZED);
             }
 
-            $this->documents->cancel($document);
+            $taxDocument = new TaxDocument($token);
+            $this->createPlanUserFlow($taxDocument);
+            $response = $taxDocument->cancel();
 
-            $document->update(['paid' => TaxDocumentStatus::CANCELED]);
+            if (isset($response->TOKEN)) {
+                $planPayment->update(['paid' => TaxDocumentStatus::CANCELED]);
+            }
 
             return response()->json([
                 'status' => 'Ok', 'message' => "Se ha anulado el documento correctamente."
