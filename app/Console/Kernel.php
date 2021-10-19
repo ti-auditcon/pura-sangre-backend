@@ -38,9 +38,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         /**  Send Push Notifications to users certain minutes before class starts  */
-        $schedule->command('purasangre:clases:send-notifications')->everyFiveMinutes();
+        $schedule->command('purasangre:clases:send-notifications')->everyFifteenMinutes();
         /**  Remove users who don't confirm assistance to clases  */
-        $schedule->command('purasangre:clases:clear')->everyFiveMinutes();
+        $schedule->command('purasangre:clases:clear')->everyFifteenMinutes();
 
         $schedule->command('clases:close')->hourlyAt(15);
         $schedule->command('plans:refresh')->daily();
@@ -54,7 +54,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('messages:send-notifications')->everyMinute();
         
-        $schedule->command('clases:first')->everyFifteenMinutes();
+        // $schedule->command('clases:first')->everyFifteenMinutes();
         
         $schedule->command('users:gone-away-email')->daily();
 

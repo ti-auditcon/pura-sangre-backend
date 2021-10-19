@@ -65,9 +65,7 @@ class ClasesClear extends Command
                                         'plan_user.id as planUserId', 'plan_user.counter'
                                     ]);
                      
-                                    // dd($reservations);
-
-        foreach ($reservations as $key => $reservation) {
+        foreach ($reservations as $reservation) {
             $reservation->delete();
         }
     }

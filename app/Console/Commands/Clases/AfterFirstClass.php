@@ -6,6 +6,7 @@ use App\Models\Users\User;
 use App\Models\Clases\Clase;
 use Illuminate\Console\Command;
 use App\Mail\SendFirstClassEmail;
+use App\Models\Clases\Reservation;
 use Illuminate\Support\Facades\Mail;
 
 class AfterFirstClass extends Command
