@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notification extends Model
 {
-	/**
-	 * [$table description]
-	 *
-	 * @var string
-	 */
+    /**
+     *  Name of the table in the database
+     *
+     *  @var  string
+     */
 	protected $table = 'notifications';
 
     /**

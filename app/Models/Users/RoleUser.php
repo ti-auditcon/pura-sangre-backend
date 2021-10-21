@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class RoleUser extends Model
 {
     /**
-     * [$table description]
+     *  Name of the table in the database
      *
-     * @var [type]
+     *  @var  string
      */
     protected $table = 'role_user';
 

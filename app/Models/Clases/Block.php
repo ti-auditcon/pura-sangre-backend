@@ -15,9 +15,9 @@ class Block extends Model
     // ];
 
     /**
-     * $table variable to define table name
+     *  Name of the table in the database
      *
-     * @var string
+     *  @var  string
      */
     protected $table = 'blocks';
 

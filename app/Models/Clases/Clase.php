@@ -4,9 +4,7 @@ namespace App\Models\Clases;
 
 use App\Models\Wods\Wod;
 use App\Models\Users\User;
-use App\Models\Wods\Stage;
 use App\Models\Clases\ClaseType;
-use App\Models\Clases\ClaseStage;
 use App\Models\Clases\Reservation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,6 +13,11 @@ class Clase extends Model
 {
     use SoftDeletes;
 
+    /**
+     *  Name of the table in the database
+     *
+     *  @var  string
+     */
     protected $table = 'clases';
 
     /**
@@ -24,10 +27,10 @@ class Clase extends Model
      */
     protected $dates = [ 'date', 'deleted_at' ];
 
-     /**
-     * The attributes that are mass assignable.
+    /**
+     *  The attributes that are mass assignable.
      *
-     * @var array
+     *  @var  array
      */
     protected $fillable = [
         'date',
@@ -41,17 +44,17 @@ class Clase extends Model
         'clase_type_id'
     ];
 
+    /**
+     *  [$appends description]
+     *
+     *  @var  array
+     */
     protected $appends = ['start', 'end', 'url', 'reservation_count', 'color'];
 
-    // protected static function boot()
-    // {
-    //     parent::boot();
-    // }
-
-
     /**
-     * [getReservationCountAttribute description]
-     * @return [type] [description]
+     *  Get all of the getReservationCountAttribute for the Clase
+     *
+     *  @return  \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function getReservationCountAttribute()
     {
@@ -59,8 +62,9 @@ class Clase extends Model
     }
 
     /**
-     * [getStartAttribute description]
-     * @return [type] [description]
+     *  [getStartAttribute description]
+     * 
+     *  @return  [type] [description]
      */
     public function getStartAttribute()
     {
@@ -72,34 +76,23 @@ class Clase extends Model
     }
 
     /**
-     * [getEndAttribute description]
-     * @return [type] [description]
+     *  Get the end of the clase, date/date-time format
+     * 
+     *  @return  string
      */
     public function getEndAttribute()
     {
         if ($this->block->date == null) {
-
-          return $this->date->format('Y-m-d') . " " . $this->block->end;
-
-        } else {
-
-          return $this->block->end;
-
+            return $this->date->format('Y-m-d') . " " . $this->block->end;
         }
+
+        return $this->block->end;
     }
 
     /**
-     * [getTitleAttribute description]
-     * @return [type] [description]
-     */
-    // public function getTitleAttribute()
-    // {
-    //     return '';
-    // }
-
-    /**
-     * [getUrlAttribute description]
-     * @return [type] [description]
+     *  [getUrlAttribute description]
+     * 
+     *  @return [type] [description]
      */
     public function getUrlAttribute()
     {
@@ -107,18 +100,19 @@ class Clase extends Model
     }
 
     /**
-     * [getColorAttribute description]
-     * @return [type] [description]
+     *  [getColorAttribute description]
+     * 
+     *  @return [type] [description]
      */
     public function getColorAttribute()
     {
         return $this->claseType->clase_color;
     }
 
-
     /**
-     * [reservations description]
-     * @return [type] [description]
+     * Get all of the comments for the Clase
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function reservations()
     {
@@ -126,22 +120,19 @@ class Clase extends Model
     }
 
     /**
-     * [stages relation to this model]
-     * @return [model] [description]
+     *  Get the wod that owns the Clase
+     *
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    // public function stages()
-    // {
-    //   return $this->belongsToMany(Stage::class)->using(ClaseStage::class);
-    // }
-        // @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
     public function wod()
     {
       return $this->belongsTo(Wod::class);
     }
 
     /**
-     * [users relation to this model]
-     * @return [model] [description]
+     *  The users that belong to the Clase
+     *
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users()
     {
@@ -149,7 +140,8 @@ class Clase extends Model
     }
 
     /**
-     * [claseType description]
+     *  Get the user that owns the Clase
+     *
      *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function claseType()
@@ -158,8 +150,9 @@ class Clase extends Model
     }
 
     /**
-     * [profresor relation to this model]
-     * @return [model] [description]
+     *  [profresor description]
+     *
+     *  @return  [type]  [return description]
      */
     public function profresor()
     {
@@ -167,8 +160,9 @@ class Clase extends Model
     }
 
     /**
-     * [profesor relation to this model]
-     * @return [model] [description]
+     *  The profesor that belong to the Clase
+     *
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function profesor()
     {
@@ -176,12 +170,12 @@ class Clase extends Model
     }
 
     /**
-     * [block relation to this model]
+     *  Get the block that owns the Clase
+     *
      *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function block()
     {
         return $this->belongsTo(Block::class);
     }
-
 }

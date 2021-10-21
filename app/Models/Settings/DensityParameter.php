@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class DensityParameter extends Model
 {
-	/**
-	 * Name of the table in the DataBase
-	 * 
-	 * @var string
-	 */
+    /**
+     *  Name of the table in the database
+     *
+     *  @var  string
+     */
 	protected $table = 'density_parameters';
 	
 	/**

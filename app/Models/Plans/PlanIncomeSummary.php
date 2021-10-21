@@ -15,8 +15,9 @@ class PlanIncomeSummary extends Model
     protected $fillable = ['plan_id', 'amount', 'month', 'year', 'quantity'];
 
     /**
+     *  Name of the table in the database
      *
-     * @var string
+     *  @var  string
      */
     protected $table = 'plan_income_summaries';
 

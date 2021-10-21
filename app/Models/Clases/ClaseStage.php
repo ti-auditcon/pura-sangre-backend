@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class ClaseStage extends Model
 {
+    /**
+     *  Name of the table in the database
+     *
+     *  @var  string
+     */
     protected $table = 'clase_stage';
 
     /**

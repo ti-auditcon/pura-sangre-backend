@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class PostponePlan extends Model
 {
-	/**
+    /**
      *  Name of the table in the database
-     * 
-	 *  @var  string
-	 */
+     *
+     *  @var  string
+     */
 	protected $table = 'freeze_plans';
 
 	/**

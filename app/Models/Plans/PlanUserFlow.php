@@ -17,9 +17,9 @@ class PlanUserFlow extends Model
     use SoftDeletes;
     
     /**
-     * Name of the table inthe Database
+     *  Name of the table in the database
      *
-     * @var  string
+     *  @var  string
      */
     protected $table = 'plan_user_flows';
     

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PasswordReset extends Model
 {
     /**
-     *  Name in for the database
+     *  Name of the table in the database
      *
      *  @var  string
      */

@@ -25,10 +25,11 @@ class PlanStatus extends Model
 	/** ID status Plan */
 	const CANCELADO = 5;
 
-	/**
-	 * Define table name
-	 * @var string
-	 */
+    /**
+     *  Name of the table in the database
+     *
+     *  @var  string
+     */
     protected $table = 'plan_status';
 
     /**

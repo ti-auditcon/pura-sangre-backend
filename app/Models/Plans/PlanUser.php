@@ -19,10 +19,10 @@ class PlanUser extends Model
     use SoftDeletes;
 
     /**
-     * Define table name
+     *  Name of the table in the database
      *
-     * @var string
-    */
+     *  @var  string
+     */
     protected $table = 'plan_user';
 
     /**
