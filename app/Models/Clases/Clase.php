@@ -64,12 +64,12 @@ class Clase extends Model
     /**
      *  [getStartAttribute description]
      * 
-     *  @return  [type] [description]
+     *  @return  string|Carbon
      */
     public function getStartAttribute()
     {
         if ( $this->block->date == null ) {
-            return $this->date->format('Y-m-d') . " ". $this->block->start;
+            return $this->date->format('Y-m-d') . " " . $this->block->start;
         }
 
         return $this->block->start;
@@ -92,7 +92,7 @@ class Clase extends Model
     /**
      *  [getUrlAttribute description]
      * 
-     *  @return [type] [description]
+     *  @return  string
      */
     public function getUrlAttribute()
     {
@@ -102,7 +102,7 @@ class Clase extends Model
     /**
      *  [getColorAttribute description]
      * 
-     *  @return [type] [description]
+     *  @return  string
      */
     public function getColorAttribute()
     {
@@ -116,7 +116,7 @@ class Clase extends Model
      */
     public function reservations()
     {
-      return $this->hasMany(Reservation::class);
+        return $this->hasMany(Reservation::class);
     }
 
     /**
@@ -126,7 +126,7 @@ class Clase extends Model
      */
     public function wod()
     {
-      return $this->belongsTo(Wod::class);
+        return $this->belongsTo(Wod::class);
     }
 
     /**
@@ -136,7 +136,7 @@ class Clase extends Model
      */
     public function users()
     {
-    return $this->belongsToMany(User::class)->using(Reservation::class);
+        return $this->belongsToMany(User::class)->using(Reservation::class);
     }
 
     /**
@@ -177,5 +177,37 @@ class Clase extends Model
     public function block()
     {
         return $this->belongsTo(Block::class);
+    }
+
+    /**
+     *  Corroborate date and time of this class to check if can check attendance 
+     *
+     *  @return  bool
+     */
+    public function canCheckAttendance() :bool
+    {
+        return $this->isToday() && $this->startIsBeforeThanNow();
+    }
+
+    /**
+     *  Check if the start_at hour is before than now
+     * 
+     *  Ex. If now= 18:00 and $this->start_at= 17:00, then return true
+     *
+     *  @return  bool
+     */
+    public function startIsBeforeThanNow() :bool
+    {
+        return $this->start_at <= now()->format('H:i:s');
+    }
+
+    /**
+     *  Return true if the class date is today
+     *
+     *  @return  bool
+     */
+    public function isToday() :bool
+    {
+        return $this->date->format('Y-m-d') === today()->format('Y-m-d');
     }
 }

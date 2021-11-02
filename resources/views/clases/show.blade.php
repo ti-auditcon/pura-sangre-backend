@@ -1,6 +1,7 @@
 @extends('layouts.app')
+
 @section('sidebar')
-  @include('layouts.sidebar')
+    @include('layouts.sidebar')
 @endsection
 
 @section('content')
@@ -168,21 +169,24 @@
                 <div class="ibox-title">Alumnos de esta clase</div>
                 
                 <div class="ibox-tools">
-                    @if (in_array(1, $auth_roles) || in_array(2, $auth_roles))
-                        @if($clase->start_at <= now()->subMinute()->format('H:i:s') && $clase->date == toDay()->format('Y-m-d'))
-                            <button id="button-modal" class="btn btn-warning btn-icon-only" data-toggle="modal" data-target="#confirm-assistance-modal"><i class="la la-check-square"></i></button>
+                    @if (in_array(\App\Models\Users\Role::ADMIN, $auth_roles) || in_array(\App\Models\Users\Role::COACH, $auth_roles))
+                        @if ($clase->canCheckAttendance())
+                                <button id="button-modal" 
+                                        class="btn btn-warning btn-icon-only"
+                                        data-toggle="modal"
+                                        data-target="#confirm-assistance-modal"
+                                >
+                                    <i class="la la-check-square"></i>
+                                </button>
                         @endif
 
-                        @if (in_array(1, $auth_roles) || in_array(2, $auth_roles))
-                            <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">
-                                Agregar un Alumno
-                            </button>
-                        @endif
-
+                        <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">
+                            Agregar un Alumno
+                        </button>
                     @else
 
                         {!! Form::open(['route' => ['reservation.store'], 'method' => 'post' ,'id' => 'user-join']) !!}
-                            <input type="hidden" value="{{ Auth::user()->id }}" name="user_id">
+                            <input type="hidden" value="{{ Auth::id() }}" name="user_id">
                             
                             <input type="hidden" value="{{ $clase->id }}" name="clase_id">
                             

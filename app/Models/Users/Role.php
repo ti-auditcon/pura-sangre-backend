@@ -5,30 +5,32 @@ namespace App\Models\Users;
 use App\Models\Users\User;
 use App\Models\Users\RoleUser;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Role extends Model
 {
+    /**
+     *  List of roles into system
+     *
+     *  @var  int
+     */
 	const ADMIN = 1;
-
+	const COACH = 2;
+	const STUDENT = 3;
 
     /**
-     *  [users description]
+     *  The users that belong to the Role
      *
-     *  @method users
-     *
-     *  @return [model] [description]
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
 	public function users()
 	{
 	    return $this->belongsToMany(User::class, 'role_user');
 	}
 
-
     /**
-     * [coaches description]
+     *  The coaches that belong to the Role
      *
-     * @return  [type]  [return description]
+     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
 	public function coaches()
 	{

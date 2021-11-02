@@ -136,8 +136,8 @@ class ClasesClearTest extends TestCase
         ]);
 
         $this->artisan($this->signature)
-                ->expectsoutput("The class hour being iterated is: {$clase_hour}")
-                ->assertexitcode(0);
+                ->expectsOutput("The class hour being iterated is: {$clase_hour}")
+                ->assertExitCode(0);
     }
 
     public function createTodayClassAt($clase_hour)

@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 class InvoicingControllerTest extends TestCase
 {
     use RefreshDatabase, DatabaseMigrations;
-    
+
     /** @test */
     // public function vat_tax_document_is_canceled_correctly()
     // {

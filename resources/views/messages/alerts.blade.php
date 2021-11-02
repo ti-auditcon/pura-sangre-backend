@@ -222,6 +222,7 @@ $('#key-search').on('keyup', function() {
 /* REMOVE ALERT */
 $("body").on("click",".remove-item",function() {
     var data = table.row( $(this).parents('tr') ).data();
+    
     var c_obj = $(this).parents("tr");
     swal({
         title: "Seguro desea eliminar esta alerta?",
