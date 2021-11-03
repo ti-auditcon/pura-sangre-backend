@@ -93,7 +93,6 @@ class IssueReceiptsCommand extends Command
                                 ->whereNull('sii_token')
                                 ->get();
 
-                                dd($bills);
         foreach ($bills as $bill) {
             $this->info('PlanUserFlow id being iterated is: ' . $bill->id);
 
