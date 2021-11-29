@@ -206,22 +206,21 @@
       });
 
       var form = document.getElementById('form-input');
-
-        $('#save_value').click(function(e){
+        $('#save_value').click(function (e) {
         var form = this;
         var rows_selected = table.rows('.selected').data();
-        $.each(rows_selected, function(index, rowId){
-          if ($('#'+rowId.id).length === 0) {
-            $(form).append(
-              $('<input>')
-              .attr('type', 'hidden')
-              .attr('id', rowId.id)
-              .attr('name', 'id[]')
-              .val(rowId.id)
-            );
-          $('.tass').tagsinput('add', { "id": rowId.id, "text": rowId.email });
-          }
-        });
+        $.each(rows_selected, function(index, rowId) {
+            if ($('#'+rowId.id).length === 0) {
+                $(form).append(
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('id', rowId.id)
+                        .attr('name', 'id[]')
+                        .val(rowId.id)
+                );
+                $('.tass').tagsinput('add', { "id": rowId.id, "text": rowId.email });
+            }
+            });
         e.preventDefault();
         $('#user-assign').modal('show');
       });

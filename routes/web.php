@@ -1,10 +1,13 @@
 <?php
 
 use Carbon\Carbon;
+use App\Models\Users\User;
+use App\Mail\SendEmailQueue;
 use App\Mail\NewPlanUserEmail;
 use App\Models\Plans\PlanStatus;
 use App\Models\Clases\Reservation;
 use App\Models\Plans\PlanUserFlow;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Invoicing\TaxDocument;
@@ -33,36 +36,33 @@ Route::get('/success-reset-password', function () {
 Route::post('expired-plans', 'HomeController@ExpiredPlan')->name('expiredplans');
 
 Route::middleware(['auth'])->prefix('/')->group(function () {
-    Route::get('add-table-settings', function() {
-        if (Schema::hasTable('settings')) {
-            
-            if (!Schema::hasColumn('settings', 'id')) {
-                 Schema::table('settings', function (Blueprint $table) {
-                    $table->increments('id');
-                });
-            }    
-            if (!Schema::hasColumn('settings', 'minutes_to_send_notifications')) {
-                Schema::table('settings', function (Blueprint $table) {
-                    $table->integer('minutes_to_send_notifications')->nullable();
-                });
-            }    
-            if (!Schema::hasColumn('settings', 'minutes_to_remove_users')) {
-                Schema::table('settings', function (Blueprint $table) {
-                    $table->integer('minutes_to_remove_users')->nullable();
-                });
-            }    
-            if (!Schema::hasColumn('settings', 'created_at')) {
-                Schema::table('settings', function (Blueprint $table) {
-                    $table->timestamps();
-                });
-            }    
-        } else {
-            Schema::create('settings', function (Blueprint $table) {
-                $table->increments('id');
-                $table->integer('minutes_to_send_notifications')->nullable();
-                $table->integer('minutes_to_remove_users')->nullable();
-                $table->timestamps();
-            });
+    Route::get('send-emails', function() {
+        $lineas = file(__DIR__ . '/emails.txt');
+
+        foreach ($lineas as $linea) {
+            $errors = null;
+            $users = User::whereIn('email', explode(",", trim($lineas[0], "\n\,")))
+                        ->get(['id', 'first_name', 'email']);
+
+            foreach ($users as $user) {
+                $mail = collect();
+                $mail->subject = "Encuesta Evaluación Cierre de año 2021 💪";
+                $mail->text = "ESTA ENCUESTA ES 100% ANÓNIMA, Y CERRANDO EL AÑO 2021 QUEREMOS EVALUAR EL TRABAJO REALIZADO DURANTE EL 2DO SEMESTRE, PARA SEGUIR MEJORANDO NUESTROS SERVICIOS A LA COMUNIDAD. TU OPINIÓN ES FUNDAMENTAL, ES  NUESTRO ALIENTO!!.  3...2...1..GO!!
+PARA RESPONDER LA ENCUESTA, DEBES HACER CLICK EN EL SIGUIENTE ENLACE:
+https://forms.gle/Vw2GKRizaav13N1f6";
+                $mail->user = $user->first_name;
+
+                try{
+                    Mail::to($user->email)->send(new SendEmailQueue($mail, $user));
+                } catch(\Exception $e) {
+                    DB::table('errors')->insert([
+                        'error'      => $e,
+                        'where'      => 'email',
+                        'created_at' => now(),
+                    ]);
+                    $errors += 1;
+                }
+            }
         }
     });
     // Calibrate reservations fro a user
