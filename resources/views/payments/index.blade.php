@@ -25,21 +25,15 @@
                     <table id="payments-table" class="table table-hover">
                         <thead class="thead-default">
                             <tr>
-                                <th width="8%">Fecha registro</th>
-                                
-                                <th width="20%">Alumno</th>
-                                
-                                <th width="15%">Plan</th>
-                                
-                                <th width="10%">Tipo de Pago</th>
-                                
-                                <th width="15%">Fecha Boleta</th>
-                                
-                                <th width="10%">Fecha de Inicio</th>
-                                
-                                <th width="10%">Fecha de Término</th>
-                                
-                                <th width="12%">Total</th>
+                                <th >Fecha registro</th>
+                                <th >Alumno</th>
+                                <th>Correo</th>
+                                <th>Plan</th>
+                                <th>Tipo de Pago</th>
+                                <th>Fecha Boleta</th>
+                                <th>Fecha de Inicio</th>
+                                <th>Fecha de Término</th>
+                                <th>Total</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -86,6 +80,7 @@
         "columns": [
             { "data": "fecha_registro" },
             { "data": "alumno" },
+            { "data": "email" },
             { "data": "plan"} , 
             { "data": "payment_type"} , 
             { "data": "date" },
