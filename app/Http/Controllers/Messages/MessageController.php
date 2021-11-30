@@ -61,7 +61,9 @@ class MessageController extends Controller
             $mail->subject = $request->subject;
             $mail->text = $request->text;
             $mail->user = $user->first_name;
-            $mail->image_url = $request->image ? url('/') . '/storage/emails/' . $random_name . '.jpg' : null;
+            if ($request->image) {
+                $mail->image_url = url("/storage/emails/{$random_name}.jpg");
+            }
 
             try{
                 Mail::to($user->email)->send(new $mailable($mail, $user));

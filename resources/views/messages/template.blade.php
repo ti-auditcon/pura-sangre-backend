@@ -468,7 +468,7 @@
 <font face="lato, helvetica neue, helvetica, arial, sans-serif"><span style="font-size:17px">{{$demo->text}}</span></font></p>
 
 
-          @if ($demo->image_url)
+          @if (isset($demo->image_url) && $demo->image_url)
             <img src="{{ $demo->image_url }}">
           @endif
         </td>

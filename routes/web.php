@@ -36,35 +36,35 @@ Route::get('/success-reset-password', function () {
 Route::post('expired-plans', 'HomeController@ExpiredPlan')->name('expiredplans');
 
 Route::middleware(['auth'])->prefix('/')->group(function () {
-//     Route::get('send-emails', function() {
-//         $lineas = file(__DIR__ . '/emails.txt');
+    Route::get('send-emails', function() {
+        $lineas = file(__DIR__ . '/emails.txt');
 
-//         foreach ($lineas as $linea) {
-//             $errors = null;
-//             $users = User::whereIn('email', explode(",", trim($lineas[0], "\n\,")))
-//                         ->get(['id', 'first_name', 'email']);
+        foreach ($lineas as $linea) {
+            $errors = null;
+            $users = User::whereIn('email', explode(",", trim($lineas[0], "\n\,")))
+                        ->get(['id', 'first_name', 'email']);
 
-//             foreach ($users as $user) {
-//                 $mail = collect();
-//                 $mail->subject = "Encuesta Evaluación Cierre de año 2021 💪";
-//                 $mail->text = "ESTA ENCUESTA ES 100% ANÓNIMA, Y CERRANDO EL AÑO 2021 QUEREMOS EVALUAR EL TRABAJO REALIZADO DURANTE EL 2DO SEMESTRE, PARA SEGUIR MEJORANDO NUESTROS SERVICIOS A LA COMUNIDAD. TU OPINIÓN ES FUNDAMENTAL, ES  NUESTRO ALIENTO!!.  3...2...1..GO!!
-// PARA RESPONDER LA ENCUESTA, DEBES HACER CLICK EN EL SIGUIENTE ENLACE:
-// https://forms.gle/Vw2GKRizaav13N1f6";
-//                 $mail->user = $user->first_name;
+            foreach ($users as $user) {
+                $mail = collect();
+                $mail->subject = "Encuesta Evaluación Cierre de año 2021 💪";
+                $mail->text = "ESTA ENCUESTA ES 100% ANÓNIMA, Y CERRANDO EL AÑO 2021 QUEREMOS EVALUAR EL TRABAJO REALIZADO DURANTE EL 2DO SEMESTRE, PARA SEGUIR MEJORANDO NUESTROS SERVICIOS A LA COMUNIDAD. TU OPINIÓN ES FUNDAMENTAL, ES  NUESTRO ALIENTO!!.  3...2...1..GO!!
+PARA RESPONDER LA ENCUESTA, DEBES HACER CLICK EN EL SIGUIENTE ENLACE:
+https://forms.gle/Vw2GKRizaav13N1f6";
+                $mail->user = $user->first_name;
 
-//                 try{
-//                     Mail::to($user->email)->send(new SendEmailQueue($mail, $user));
-//                 } catch(\Exception $e) {
-//                     DB::table('errors')->insert([
-//                         'error'      => $e,
-//                         'where'      => 'email',
-//                         'created_at' => now(),
-//                     ]);
-//                     $errors += 1;
-//                 }
-//             }
-//         }
-//     });
+                try{
+                    Mail::to($user->email)->send(new SendEmailQueue($mail, $user));
+                } catch(\Exception $e) {
+                    DB::table('errors')->insert([
+                        'error'      => $e,
+                        'where'      => 'email',
+                        'created_at' => now(),
+                    ]);
+                    $errors += 1;
+                }
+            }
+        }
+    });
     // Calibrate reservations fro a user
     Route::get('users/{user}/calibrate-reservations-plans', function(App\Models\Users\User $user) {
         $user_plans = App\Models\Plans\PlanUser::where('plan_user.user_id', $user->id)
