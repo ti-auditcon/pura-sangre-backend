@@ -32,22 +32,35 @@ class UserController extends Controller
         return view('users.index', ['status_users' => $status_users]);
     }
 
+    // /**
+    //  * [usersJson description]
+    //  *
+    //  * @return json
+    //  */
+    // public function usersJson()
+    // {
+    //     $users = User::allUsers()->get();
+
+    //     return response()->json(['data' => $users]);
+    // }
+    
     /**
-     * [usersJson description]
+     *  Through ajax, get all users who meet certain requirements,
+     *   indicated in the table of all users
      *
-     * @return json
+     *  @return  json
      */
     public function usersJson()
     {
-        $users = User::allUsers()->get();
-
-        return response()->json(['data' => $users]);
+        return response()->json([
+            'data' => app(User::class)->listStudents()
+        ]);
     }
 
     /**
-     * [export description]
+     *  [export description]
      *
-     * @return Maatwebsite\Excel\Facades\Excel
+     *  @return  Maatwebsite\Excel\Facades\Excel
      */
     public function export()
     {
@@ -56,10 +69,10 @@ class UserController extends Controller
         );
     }
 
-    /**
-     * Show the form for creating a new resource.
+    /** 
+     *  Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     *  @return  \Illuminate\Http\Response
      */
     public function create()
     {

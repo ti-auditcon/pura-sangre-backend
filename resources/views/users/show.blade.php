@@ -60,30 +60,20 @@
                 </div>
             </div>
             <div class="flexbox-b align-self-start">
-
                 {{-- @if ($user->actual_plan && $user->actual_plan->plan->has_clases == true) --}}
-
                     <div class="pr-2 text-right">
-
                         <div class="h2 mt-2 mb-0 text-warning">
-
                             {{ $user->actual_plan->counter ?? '-' }}
-
                         </div>
-
                         <div class="text-muted font-13">Clases disponibles</div>
-
                     </div>
-
                 {{-- @endif --}}
-
             </div>
         </div>
     </div>
 </div>
 
 <div class="row justify-content-center">
-
     {{-- ///////////////////////////////////////////////////////////////// --}}
     {{--                                                                   --}}
     {{-- //                      USER PERSONAL DATA                      //--}}
@@ -92,7 +82,6 @@
     <div class="col-12 col-xl-3">
         <div class="ibox">
             <div class="ibox-head d-flex">
-
                 <div class="ibox-title">Datos</div>
 
                 <div class="ibox-tools">
@@ -352,7 +341,7 @@
         {{-- //                      PPROXIMAS CLASES                        //--}}
         {{--                                                                   --}}
         {{-- ///////////////////////////////////////////////////////////////// --}}
-        {{-- @if ($user->future_reservs) --}}
+        {{-- @if ($user->futureReservations) --}}
 
         <div class="ibox proximas-clases">
             <div class="ibox-head">
@@ -363,21 +352,21 @@
                     <table id="next-clases-table" class="table table-hover">
                         <thead class="thead-default thead-lg">
                             <tr>
-                                <th width="10%">ID Clase</th>
+                                <th>ID Clase</th>
 
-                                <th width="20%">Fecha Clase</th>
+                                <th>Fecha Clase</th>
 
-                                <th width="20%">Hora</th>
+                                <th>Hora</th>
 
-                                <th width="20%">Estado</th>
+                                <th>Estado</th>
 
-                                <th width="10%">N° Plan</th>
+                                <th>N° Plan</th>
 
-                                <th width="20%">Plan</th>
+                                <th>Plan</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($user->future_reservs as $reserv)
+                            @forelse($user->futureReservations as $reserv)
                             <tr>
                                 <td>
                                     <a href="{{ url('/clases/' . optional($reserv->clase)->id) }}">

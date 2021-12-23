@@ -151,9 +151,9 @@ class User extends Authenticatable
     /**
      *  Scope a query to get all the users.
      *
-     *  @param  \Illuminate\Database\Eloquent\Builder  $query
+     *  @param   \Illuminate\Database\Eloquent\Builder   $query
      *
-     *  @return \Illuminate\Database\Eloquent\Builder
+     *  @return  \Illuminate\Database\Eloquent\Builder
      */
     public function scopeAllUsers($query)
     {
@@ -253,20 +253,22 @@ class User extends Authenticatable
     }
 
     /**
-     * Return the 10 first next reservations of this User
+     *  Return the 10 first next reservations of this User
      *
-     * @return App\Models\Clases\Reservation
+     *  @return  App\Models\Clases\Reservation
      */
-    public function future_reservs()
+    public function futureReservations()
     {
         return $this->HasMany(Reservation::class)
-                    ->whereIn('reservation_status_id', [1,2])
-                    ->take(10);
+                    ->whereIn('reservation_status_id', [
+                        ReservationStatus::PENDING,
+                        ReservationStatus::CONFIRMED
+                    ]);
     }
 
     /**
-     * Return all the plans of the user,
-     * with plan status: 'activo' and 'precompra'
+     *  Return all the plans of the user,
+     *   with plan status: 'activo' and 'precompra'
      *
      * @return App\Models\Plans\PlanUser
      */
@@ -274,6 +276,49 @@ class User extends Authenticatable
     {
         return $this->hasMany(PlanUser::class)
                     ->whereIn('plan_status_id', [1,3]);
+    }
+
+    /**
+     *  [listStudents description]
+     *
+     *  @return  collection
+     */
+    public function listStudents()
+    {
+        return $this->leftJoin('plan_user', 'plan_user.user_id', 'users.id')
+                    ->with(['todayPlan' => function ($todayPlan) {
+                        $todayPlan->with(['plan:id,plan'])
+                            ->select(
+                                'id',
+                                'user_id',
+                                'plan_id',
+                                'start_date',
+                                'finish_date',
+                                'counter',
+                                'plan_status_id'
+                            );
+                    }])
+                    ->distinct()
+                    ->get([
+                        'users.id', 'users.rut', 'users.first_name', 'users.last_name',
+                        'users.email', 'users.avatar', 'users.status_user_id'
+                    ]);
+    }
+
+    /**
+     *  Get a plan that:
+     *    -  Be active or freezed
+     *    -  Start be before or equals today
+     *    -  End be after or equals today
+     *
+     *  @return  \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function todayPlan()
+    {
+        return $this->hasOne(PlanUser::class)
+                    ->whereIn('plan_status_id', [PlanStatus::ACTIVO, PlanStatus::CONGELADO])
+                    ->where('start_date', '<=', today())
+                    ->where('finish_date', '>=', today());
     }
 
     /**
