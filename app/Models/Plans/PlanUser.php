@@ -58,6 +58,13 @@ class PlanUser extends Model
     ];
 
     /**
+     *  Appended values to queries
+     *
+     *  @var  array
+     */
+    protected $appends = ['human_start_date', 'human_finish_date'];
+
+    /**
      * [getStartDateAttribute description]
      *
      * @param  [type] $value [description]
@@ -77,6 +84,27 @@ class PlanUser extends Model
     public function getFinishDateAttribute($value)
     {
         return Carbon::parse($value);
+    }
+
+    /**
+     *  Undocumented function
+     *
+     *  @return  Carbon
+     */
+    public function getHumanStartDateAttribute()
+    {
+        // return $this->attributes['start_date']->format('d-m-Y');
+        return $this->start_date->format('d-m-Y');
+    }
+
+    /**
+     *  Undocumented function
+     *
+     *  @return  Carbon
+     */
+    public function getHumanFinishDateAttribute()
+    {
+        return $this->finish_date->format('d-m-Y');
     }
 
     /**

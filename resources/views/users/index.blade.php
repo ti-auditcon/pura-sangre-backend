@@ -102,21 +102,15 @@
                     <table id="students-table" class="table table-hover">
                         <thead class="thead-default thead-lg">
                             <tr>
-                                <th width="30%">Alumno</th>
-
-                                <th width="10%">Correo</th>
-
-                                <th width="10%">RUN</th>
-
-                                <th width="10%">Plan Activo</th>
-
-                                <th width="10%">Vencimiento</th>
-
-                                <th width="15%">Período</th>
-
-                                <th width="5%">Acciones</th>
-
-                                <th width="10%">status</th>
+                                <th width="20%">Alumno</th>
+                                <th>Correo</th>
+                                <th>RUN</th>
+                                <th>Plan</th>
+                                <th>Estado del plan</th>
+                                <th>Vencimiento</th>
+                                <th>Período</th>
+                                <th>Acciones</th>
+                                <th>status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -136,17 +130,17 @@
 
                                 <td>{{ Rut::set($user->rut)->fix()->format() }}</td>
 
-                                @if ($user->actual_plan)
+                                @if ($user->today_plan)
 
-                                    <td>{{ $user->actual_plan->plan->plan ?? 'No aplica' }}</td>
+                                    <td>{{ $user->today_plan->plan->plan ?? 'No aplica' }}</td>
 
-                                    @if ($user->actual_plan->finish_date >= (Carbon\Carbon::today()))
-                                        <td>{{ 'Quedan ' }}{{ $user->actual_plan->finish_date->diffInDays(Carbon\Carbon::now()) }}{{ ' días' }}
+                                    @if ($user->today_plan->finish_date >= (Carbon\Carbon::today()))
+                                        <td>{{ 'Quedan ' }}{{ $user->today_plan->finish_date->diffInDays(Carbon\Carbon::now()) }}{{ ' días' }}
                                         </td>
                                     @else
                                         <td>{{ '--' }}</td>
                                     @endif
-                                <td>{{ $user->actual_plan->start_date->format('d-m-Y') }} a {{ $user->actual_plan->finish_date->format('d-m-Y') }}</td>
+                                <td>{{ $user->today_plan->start_date->format('d-m-Y') }} a {{ $user->today_plan->finish_date->format('d-m-Y') }}</td>
                                 @else
                                     <td>{{ 'Sin plan' }}</td>
 
@@ -187,7 +181,15 @@
 
     <script src="{{ asset('js/moment.min.js') }}"></script>
 
-	<script >
+	<script>
+        const planStatuses = {
+            1: { status: 'ACTIVO', class: 'success', 'text-color': 'text-white' },
+            2: { status: 'CONGELADO', class: 'info', 'text-color': 'text-black' },
+            3: { status: 'PRECOMPRA', class: 'warning', 'text-color': 'text-white' },
+            4: { status: 'COMPLETADO', class: 'info', 'text-color': 'text-black' },
+            5: { status: 'CANCELADO', class: 'danger', 'text-color': 'text-white' }
+        };
+
 		$(document).ready(function() {
 			table = $('#students-table').DataTable({
                 "ajax": {
@@ -198,7 +200,7 @@
 				"paging": true,
                 "processing": true,
 				"ordering": true,
-                "order": [[ 3, "asc" ]],
+                "order": [[ 2, "asc" ]],
 				"language": {
                     "processing": "Cargando...",
 					"lengthMenu": "Mostrar _MENU_ elementos",
@@ -206,7 +208,13 @@
 					"info": "Mostrando página _PAGE_ de _PAGES_",
 					"infoEmpty": "Sin resultados",
 					"infoFiltered": "(filtrado de _MAX_ registros totales)",
-					"search": "Filtrar:"
+					"search": "Filtrar:",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Ultimo",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
 				},
                 "columns":[
                     { "data": "full_name",
@@ -224,21 +232,30 @@
                     },
                     { "data": "email" },
                     { "data": "rut_formated" },
-                    { "data": "actual_plan",
+                    {  "data": "today_plan",
                         "render": function (data, other, row) {
-                            return data && data.plan ? data.plan.plan : 'no aplica';
+                            return data ? data.plan.plan : 'sin plan';
                         },
                     },
-                    { "data": "actual_plan",
+                    {  "data": "today_plan",
                         "render": function (data, other, row) {
-                            return data && data.plan ? moment(data.finish_date).format("DD-MM-YYYY") : 'no aplica';
+                            return data ?
+                                    `<span class="badge badge-${planStatuses[data.plan_status_id].class} ${planStatuses[data.plan_status_id]["text-color"]} badge-pill">
+                                        ${planStatuses[data.plan_status_id].status}
+                                    </span>` :
+                                    'no aplica';
                         },
                     },
-                    { "data": "actual_plan",
+                    { "data": "today_plan",
                         "render": function (data, other, row) {
-                            return data && data.plan ?
-                                   moment(data.start_date).format("DD-MM-YYYY") +' al '+ moment(data.finish_date).format("DD-MM-YYYY") :
-                                   'no aplica';
+                            return data ? data.human_finish_date : 'no aplica';
+                        },
+                    },
+                    { "data": "today_plan",
+                        "render": function (data, other, row) {
+                            return data ?
+                                    `${data.human_start_date} al ${row.today_plan.human_finish_date}` :
+                                    'no aplica';
                         }
                     },
                     { "data": "actions",
@@ -254,7 +271,7 @@
                 ],
                 "columnDefs": [
                     {
-                        "targets": [ 7 ],
+                        "targets": [ 8 ],
                         "visible": false,
                         "searchable": true
                     }
@@ -271,7 +288,7 @@
 
 
   $('button.user-filter').on("click", function(){
-      table.columns( 7 ).search( $(this).data('status') ).draw();
+      table.columns( 8 ).search( $(this).data('status') ).draw();
     });
 
 	</script>
