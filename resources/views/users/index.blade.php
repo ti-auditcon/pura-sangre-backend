@@ -287,8 +287,8 @@
 		});
 
 
-  $('button.user-filter').on("click", function(){
-      table.columns( 8 ).search( $(this).data('status') ).draw();
+    $('button.user-filter').on("click", function() {
+        table.columns( 8 ).search( $(this).data('status') ).draw();
     });
 
 	</script>
