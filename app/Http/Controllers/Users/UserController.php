@@ -43,7 +43,7 @@ class UserController extends Controller
 
     //     return response()->json(['data' => $users]);
     // }
-    
+
     /**
      *  Through ajax, get all users who meet certain requirements,
      *   indicated in the table of all users
