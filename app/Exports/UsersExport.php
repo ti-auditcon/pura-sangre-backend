@@ -5,7 +5,6 @@ namespace App\Exports;
 use DateTime;
 use App\Models\Users\User;
 use App\Models\Plans\PlanStatus;
-use Freshwork\ChileanBundle\Rut;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -28,11 +27,15 @@ class UsersExport implements FromCollection, WithHeadings
                     'counter',
                     'plan_status_id'
                 );
-            }])
+            }, 
+            'emergency:id,contact_name,contact_phone,user_id'])
             ->distinct()
             ->get([
                 'users.id',
-                DB::raw('CONCAT(users.first_name, " ", users.last_name) as alumno'),
+                'users.first_name',
+                'users.last_name',
+                'users.address',
+                // DB::raw('CONCAT(users.first_name, " ", users.last_name) as alumno'),
                 'users.birthdate',
                 'users.rut',
                 'users.email',
@@ -41,8 +44,10 @@ class UsersExport implements FromCollection, WithHeadings
                 $hasTodayPlan = boolval($user->todayPlan);
 
                 return [
-                    $user->alumno,
+                    $user->first_name,
+                    $user->last_name,
                     $user->rut_formated,
+                    $user->address,
                     $user->email,
                     $user->birthdate->format('d/m/Y'),
                     $user->telefono,
@@ -50,7 +55,9 @@ class UsersExport implements FromCollection, WithHeadings
                     $hasTodayPlan ? app(PlanStatus::class)->getPlanStatus($user->todayPlan->plan_status_id) : 'no aplica',
                     $hasTodayPlan ? (new DateTime($user->todayPlan->finish_date))->format('d/m/Y') : 'no aplica',
                     $hasTodayPlan ? (new DateTime($user->todayPlan->start_date))->format('d/m/Y') : 'no aplica',
-                    $hasTodayPlan ? (new DateTime($user->todayPlan->finish_date))->format('d/m/Y') : 'no aplica'
+                    $hasTodayPlan ? (new DateTime($user->todayPlan->finish_date))->format('d/m/Y') : 'no aplica',
+                    optional($user->emergency)->contact_name,
+                    optional($user->emergency)->contact_phone,
                 ];
             }
         );
@@ -64,16 +71,20 @@ class UsersExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'Alumno',
+            'Nombre',
+            'Apellido',
             'RUN',
+            'Dirección',
             'Correo',
             'Fecha de Nacimiento',
             'Teléfono',
             'Plan',
             'Estado del plan',
             'Vencimiento',
-            'inicio',
-            'termino',
+            'Inicio',
+            'Término',
+            'Contacto de emergencia',
+            'Nº contacto de emergencia'
         ];
     }
 }

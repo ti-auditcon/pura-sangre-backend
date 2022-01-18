@@ -58,30 +58,29 @@ class IssueReceiptsCommandTest extends TestCase
     // it only issue tax documents created last twelve hours
     // 
 
-    /** @test */
-    public function it_issue_tax_documents_correctly()
-    {
-        // $this->withoutExceptionHandling();
+    // /** @test */
+    // public function it_issue_tax_documents_correctly()
+    // {
+    //     // $this->withoutExceptionHandling();
 
-    }
+    // }
 
-    /**  @test  */
-    public function it_issues_tax_documents_created_last_twelve_hours()
-    {
-
-        $this->artisan($this->signature)->assertExitCode(0);
+    // /**  @test  */
+    // public function it_issues_tax_documents_created_last_twelve_hours()
+    // {
+    //     $this->artisan($this->signature)->assertExitCode(0);
                 
-        $this->assertFalse($this->expectOutputString('foo'));
-    }
+    //     $this->assertFalse($this->expectOutputString('foo'));
+    // }
     
-    /**  @test  */
-    public function it_doenst_issues_tax_documents_created_before_twelve_hours()
-    {
+    // /**  @test  */
+    // public function it_doenst_issues_tax_documents_created_before_twelve_hours()
+    // {
 
-        $this->artisan($this->signature)->assertExitCode(0);
+    //     $this->artisan($this->signature)->assertExitCode(0);
                 
-        $this->assertFalse($this->expectOutputString('foo'));
-    }
+    //     $this->assertFalse($this->expectOutputString('foo'));
+    // }
 
     /**
      *  @test

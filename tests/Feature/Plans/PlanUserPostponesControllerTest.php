@@ -102,14 +102,14 @@ class PlanUserPostponesControllerTest extends TestCase
     }
     
     /** @test */
-    public function testing_days_of_a_freezed_plan_are_calculated_correctly()
+    public function resting_days_of_a_freezed_plan_are_calculated_correctly()
     {
         // we set days for an active current plan to be setted (for finish_date)
-        $testingPlanDays = 10;
+        $restingPlanDays = 10;
 
         $plan_user = factory(PlanUser::class)->create([
             'plan_status_id' => PlanStatus::ACTIVE,
-            'finish_date' => today()->addDays($testingPlanDays)
+            'finish_date' => today()->addDays($restingPlanDays)
         ]);
 
         $this->actingAs($this->admin)
@@ -122,7 +122,7 @@ class PlanUserPostponesControllerTest extends TestCase
             'plan_user_id' => $plan_user->id,
             'start_date'   => today()->format('Y-m-d H:i:s'),
             'finish_date'  => today()->format('Y-m-d H:i:s'),
-            'days'         => $testingPlanDays
+            'days'         => $restingPlanDays
         ]);
     }
 
@@ -148,10 +148,10 @@ class PlanUserPostponesControllerTest extends TestCase
     {
         $plan_user = factory(PlanUser::class)->create();
 
-        $testingPlanDays = today()->diffInDays($plan_user->finish_date);
+        $restingPlanDays = today()->diffInDays($plan_user->finish_date);
 
         $postpone = factory(PostponePlan::class)->create([
-            'days'         => $testingPlanDays,
+            'days'         => $restingPlanDays,
             'plan_user_id' => $plan_user->id
         ]);
 
@@ -159,7 +159,7 @@ class PlanUserPostponesControllerTest extends TestCase
 
         $this->assertDatabaseHas('plan_user', [
             'id'          => $plan_user->id,
-            'finish_date' => today()->addDays($testingPlanDays)->format('Y-m-d H:i:s'),
+            'finish_date' => today()->addDays($restingPlanDays)->format('Y-m-d H:i:s'),
         ]);
     }
 
