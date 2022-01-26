@@ -214,10 +214,10 @@ class UserController extends Controller
         $avatar_name = md5(mt_rand());
 
         try {
-            request()->file('avatar')->storePubliclyAs('/public/users', "{$avatar_name}.jpg");
+            request()->file('avatar')->storePubliclyAs('public/users', "{$avatar_name}.jpg");
 
             $user->update([
-                'avatar' => url("public/users/{$avatar_name}.jpg")
+                'avatar' => url("/storage/public/users/{$avatar_name}.jpg")
             ]);
 
             return response()->json([
