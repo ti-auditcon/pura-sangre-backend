@@ -9,9 +9,11 @@ use App\Models\Plans\PlanUser;
 use App\Models\Users\Emergency;
 use App\Models\Clases\Reservation;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Users\UserControllerImageRequest;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Users\UserRequest;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -202,15 +204,33 @@ class UserController extends Controller
      */
     public function image(Request $request, User $user)
     {
+        if (!$request->hasFile('avatar') || !$request->file('avatar')->isValid()) {
+            return response()->json([
+                'code'  => Response::HTTP_UNPROCESSABLE_ENTITY,
+                'error' => 'Debe cargar una imagen y debe tener un formato válido (jpeg, png, bmp, gif, svg, o webp).',
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
         $avatar_name = md5(mt_rand());
 
-        request()->file('avatar')->storeAs('public/users', "{$avatar_name}.jpg");
+        try {
+            request()->file('avatar')->storePubliclyAs('/public/users', "{$avatar_name}.jpg");
 
-        $user->avatar = url('/') . '/storage/users/' . $avatar_name . '.jpg';
+            $user->update([
+                'avatar' => url("public/users/{$avatar_name}.jpg")
+            ]);
 
-        $user->save();
+            return response()->json([
+                'success' => 'Imagen actualizada correctamente.',
+                'url'     => $user->avatar,
+            ], Response::HTTP_CREATED);
+        } catch (\Throwable $error) {
+            return response()->json([
+                'code'  => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'error' => 'No se ha podido cargar la imagen, por favor intente mas tarde.',
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
-        return response()->json(['success' => 'Sesion finalizada'], 200);
     }
 
     /**

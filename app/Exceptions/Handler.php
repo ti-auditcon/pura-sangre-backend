@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Exceptions\PostTooLargeException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -50,16 +51,25 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $e)
+    public function render($request, Exception $exception)
     {
-        if ($e instanceof AuthorizationException) {
+        if ($exception instanceof AuthorizationException) {
             Session::flash('error','No tiene permisos para realizar esta accion');
             return redirect('/');
         }
-        if ($e instanceof PostTooLargeException) {
+        
+        if ($exception instanceof PostTooLargeException) {
             return redirect('/')->back();
         }       
-        return parent::render($request, $e);
+
+        if ($exception instanceof ValidationException && !$this->isFrontend(request())) {
+            return response()->json([
+                'message' => 'Los siguientes datos son inválidos',
+                'errors'  => $exception->validator->getMessageBag()
+            ], 422);
+        }
+
+        return parent::render($request, $exception);
     }
 
     protected function whoopsHandler()
@@ -69,5 +79,17 @@ class Handler extends ExceptionHandler
         } catch (\Illuminate\Contracts\Container\BindingResolutionException $e) {
             return parent::whoopsHandler();
         }
+    }
+
+    /**
+     *  [isFrontend description]
+     *
+     *  @param   [type]  $request  [$request description]
+     *
+     *  @return  [type]            [return description]
+     */
+    private function isFrontend($request)
+    {
+        return $request->acceptsHtml() && collect($request->route()->middleware())->contains('web');
     }
 }
