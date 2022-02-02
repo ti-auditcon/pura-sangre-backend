@@ -62,6 +62,7 @@ class CreatePlansTable extends Migration
             $table->date('finish_date');
             $table->integer('counter')->nullable();
             $table->text('observations')->nullable();
+            $table->json('history')->nullable();
             $table->unsignedInteger('plan_status_id')->nullable();
             // $table->unsignedInteger('discount_id')->nullable();
             $table->unsignedInteger('plan_id')->nullable();
