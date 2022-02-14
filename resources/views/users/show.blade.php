@@ -278,7 +278,8 @@
                                                     </button>
                                                 </div>
                                             @endif
-                                            @if($plan_user->plan_status_id === App\Models\Plans\PlanStatus::CONGELADO && $plan_user->postpone)
+                                                {{ dd($plan_user->postpone) }}
+                                            @if($plan_user->isFreezed() && $plan_user->postpone)
                                                 <form method="POST" class="user-plan-unfreeze"
                                                         action="{{ route('postpones.destroy', ['postpone' => $plan_user->postpone->id]) }}"
                                                 >

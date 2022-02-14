@@ -184,7 +184,26 @@ class PlanUserPostponesControllerTest extends TestCase
 
     // despues de congelar un plan, este queda con estado congelado
     // la tabla freeze_plans tiene el revoked en false, y los days son correctos
-    // al descongelar el plan pasa a activo
+
+    /** @test */
+    public function it_plan_changes_to_active_status_at_unfreeze_it()
+    {
+        $plan_user = factory(PlanUser::class)->create();
+
+        $restingPlanDays = today()->diffInDays($plan_user->finish_date);
+
+        $postpone = factory(PostponePlan::class)->create([
+            'days'         => $restingPlanDays,
+            'plan_user_id' => $plan_user->id
+        ]);
+
+        $this->actingAs($this->admin)->delete("/postpones/{$postpone->id}");
+
+        $this->assertDatabaseHas('plan_user', [
+            'id'          => $plan_user->id,
+            'finish_date' => today()->addDays($restingPlanDays)->format('Y-m-d H:i:s'),
+        ]);
+    }
 
     /** 
      *  Being freezed the plan can't be edited until the admin unfreezed 
@@ -209,4 +228,5 @@ class PlanUserPostponesControllerTest extends TestCase
                     'warning' => 'El plan no puede ser editado estando congelado.'
                 ]);
     }
+
 }
