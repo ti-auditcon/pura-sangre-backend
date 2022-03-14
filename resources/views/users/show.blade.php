@@ -278,7 +278,6 @@
                                                     </button>
                                                 </div>
                                             @endif
-                                                {{ dd($plan_user->postpone) }}
                                             @if($plan_user->isFreezed() && $plan_user->postpone)
                                                 <form method="POST" class="user-plan-unfreeze"
                                                         action="{{ route('postpones.destroy', ['postpone' => $plan_user->postpone->id]) }}"
