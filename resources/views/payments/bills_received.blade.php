@@ -119,7 +119,7 @@
             },
             "columns": [
                 { "data": "RznSoc" },
-                { "data": "TipoTaxDocument",
+                { "data": "TipoDTE",
                     "render": function (data, other, row) {
                         return dteNames[data] + ` Nº ${row.Folio}`;
                     }
@@ -143,7 +143,7 @@
                         return `<button class="dte-link btn btn-success text-white"
                                     data-rut="${row.RUTEmisor}"
                                     data-dv="${row.DV}"
-                                    data-type="${row.TipoTaxDocument}"
+                                    data-type="${row.TipoDTE}"
                                     data-document_number="${row.Folio}"
                                 >
                                 Solicitar PDF
