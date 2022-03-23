@@ -21,6 +21,7 @@ class PlanStatus extends Model
 
 	/** ID status Plan */
 	const COMPLETADO = 4;
+	const COMPLETED = 4;
 
 	/** ID status Plan */
 	const CANCELADO = 5;

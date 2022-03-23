@@ -279,6 +279,16 @@ class User extends Authenticatable
     }
 
     /**
+     *  Check if the user is currently inactive into the system
+     *
+     *  @return  bool
+     */
+    public function isInactive(): bool
+    {
+        return (int) $this->status_user_id === StatusUser::INACTIVE;
+    }
+
+    /**
      *  [listStudents description]
      *
      *  @return  collection
