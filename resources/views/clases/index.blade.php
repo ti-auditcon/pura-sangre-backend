@@ -153,7 +153,7 @@
                 slotDuration: '00:30:00',
                 slotLabelFormat: 'h(:mm)a',
                 eventRender: function( event, element, view ) {
-                    let percent = (event.reservation_count * 100) / event.quota;
+                    let percent = (event.reservations_count * 100) / event.quota;
                     let colorPercentage = null;
                     densities.forEach(function (density) {
                         if (percent >= density.from && percent <= density.to) {
@@ -162,7 +162,7 @@
                     });
 
                     element.find('.fc-time').append(
-                        `<div> reservas: ${event.reservation_count}/${event.quota}</div>
+                        `<div> reservas: ${event.reservations_count}/${event.quota}</div>
                         <div class="closeon circle-color"
                             style="background-color: ${colorPercentage}">
                         </div>`

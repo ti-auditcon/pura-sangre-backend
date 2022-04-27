@@ -28,9 +28,9 @@ class ReservationObserver
             return true;
         }
 
-        // Verified if class is full
-        if ($clase->reservation_count >= $clase->quota) {
+        if ($clase->isFull()) {
             Session::flash('warning', 'La clase esta llena');
+            
             return false;
         }
         
