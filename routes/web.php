@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use App\Mail\SendEmail;
 use App\Models\Users\User;
 use App\Mail\SendEmailQueue;
 use App\Mail\NewPlanUserEmail;
@@ -283,3 +284,15 @@ Route::get('cancel-dte', function() {
     app(TaxDocument::class)->cancel(109444);
 });
 
+// Route::get('/test-mail', function() {
+//     $demo = (object) [
+//         'subject' => 'Prueba',
+//         'user'    => 'Raul',
+//         'text'    => 'Raul',
+//         'image_url' => 'https://via.placeholder.com/1200',
+//     ];
+
+//     // Mail::to('raulberrios8@gmail.com')->send(new SendEmail($demo));
+//     // return true;
+//     return new SendEmail($demo);
+// });

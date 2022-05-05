@@ -17,3 +17,4 @@ config/telescope\.php
 package-lock\.json
 
 package\.json
+.editorconfig
