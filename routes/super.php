@@ -6,54 +6,54 @@ use App\Models\Plans\PlanStatus;
 
 Route::middleware(['auth'])->prefix('/')->group(function () {
     /** add 6 days to every plan of all users */
-    Route::get('add-days-active-or-pre-purchase-plans', function() {
-        $days = 6;
+    // Route::get('add-days-active-or-pre-purchase-plans', function() {
+    //     $days = 6;
 
-        $users = User::join('plan_user', 'plan_user.user_id', '=', 'users.id')
-                        ->where('plan_user.plan_status_id', PlanStatus::ACTIVE)
-                        ->orWhere('plan_user.plan_status_id', PlanStatus::PRECOMPRA)
-                        ->distinct()
-                        ->get(['users.id']);
+    //     $users = User::join('plan_user', 'plan_user.user_id', '=', 'users.id')
+    //                     ->where('plan_user.plan_status_id', PlanStatus::ACTIVE)
+    //                     ->orWhere('plan_user.plan_status_id', PlanStatus::PRECOMPRA)
+    //                     ->distinct()
+    //                     ->get(['users.id']);
 
-        // getting the dispatcher instance (needed to enable again the event observer later on)
-        $dispatcher = PlanUser::getEventDispatcher();
-        // disabling the events
-        PlanUser::unsetEventDispatcher();
+    //     // getting the dispatcher instance (needed to enable again the event observer later on)
+    //     $dispatcher = PlanUser::getEventDispatcher();
+    //     // disabling the events
+    //     PlanUser::unsetEventDispatcher();
 
-        foreach ($users as $user) {
-            $plan_user = PlanUser::where('user_id', $user->id)
-                            ->whereIn('plan_status_id', [PlanStatus::ACTIVE, PlanStatus::PRECOMPRA])
-                            ->orderBy('finish_date', 'asc')
-                            ->first([
-                                'id', 'start_date', 'finish_date', 'user_id'
-                            ]);
+    //     foreach ($users as $user) {
+    //         $plan_user = PlanUser::where('user_id', $user->id)
+    //                         ->whereIn('plan_status_id', [PlanStatus::ACTIVE, PlanStatus::PRECOMPRA])
+    //                         ->orderBy('finish_date', 'asc')
+    //                         ->first([
+    //                             'id', 'start_date', 'finish_date', 'user_id'
+    //                         ]);
 
-            if ($plan_user) {
-                $plan_user->finish_date = $plan_user->finish_date->addDays($days);
-                $plan_user->save();
+    //         if ($plan_user) {
+    //             $plan_user->finish_date = $plan_user->finish_date->addDays($days);
+    //             $plan_user->save();
 
-                $planes_posteriores = PlanUser::where('user_id', $user->id)
-                                                ->where('start_date', '>', $plan_user->start_date)
-                                                ->where('id', '!=', $plan_user->id)
-                                                ->orderByDesc('finish_date')
-                                                ->get([
-                                                    'id', 'start_date', 'finish_date', 'user_id'
-                                                ]);
+    //             $planes_posteriores = PlanUser::where('user_id', $user->id)
+    //                                             ->where('start_date', '>', $plan_user->start_date)
+    //                                             ->where('id', '!=', $plan_user->id)
+    //                                             ->orderByDesc('finish_date')
+    //                                             ->get([
+    //                                                 'id', 'start_date', 'finish_date', 'user_id'
+    //                                             ]);
 
-                foreach ($planes_posteriores as $plan) {
-                    $plan->update([
-                        'start_date'  => $plan->start_date->addDays($days),
-                        'finish_date' => $plan->finish_date->addDays($days)
-                    ]);
-                }
-            }
-        }
+    //             foreach ($planes_posteriores as $plan) {
+    //                 $plan->update([
+    //                     'start_date'  => $plan->start_date->addDays($days),
+    //                     'finish_date' => $plan->finish_date->addDays($days)
+    //                 ]);
+    //             }
+    //         }
+    //     }
 
-        // enabling the event dispatcher
-        PlanUser::setEventDispatcher($dispatcher);
+    //     // enabling the event dispatcher
+    //     PlanUser::setEventDispatcher($dispatcher);
 
-        return 'all done';
-    });
+    //     return 'all done';
+    // });
 
     /**
      *  Calibrate reservations fro a user
