@@ -131,12 +131,12 @@
                                 :disabled="sendButton.disabled"
                                 x-text="sendButton.text"
                             >
-                                Registrarme y pagar
+                                Registrarme y pagar &gt;
                             </button>
 
                             <div x-show="redirectButton">
                                 Si no te redirige, has clic aqui
-                                <a :href="redirectButton">Ir a pagar</a>
+                                <a :href="redirectButton">Ir a pagar &gt;</a>
                             </div>
                         </div>
                         <div x-show="errors.email == 'El email ya ha sido registrado.'" class="my-4 py-4 px-3 atention-message rounded">
@@ -157,7 +157,7 @@
                                             x-bind:disabled="instructions.buttonIsDisabled"
                                             class="btn btn-sm btn-primary px-3 py-2"
                                     >
-                                        Enviame las instrucciones nuevamente
+                                        Enviame las instrucciones nuevamente &gt;
                                     </button>
                                 </div>
                                 <div x-show="instructions.areSended" x-text="instructions.message"></div>
