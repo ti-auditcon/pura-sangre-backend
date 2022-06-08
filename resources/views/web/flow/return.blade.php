@@ -16,7 +16,7 @@
     <body class="register-wrapper">
         <div class="register">
             <div class="header">
-                <h3 class="text-center">¡Pago Exitoso!</h3>
+                <h3 class="text-center">¡Pago recibido!</h3>
             </div>
             <div class="content">
                 <div class="row justify-content-center">
@@ -27,7 +27,7 @@
                                     Pago Exitoso!
                                 </div> --}}
                                 <div class="alert alert-success">
-                                    El pago se ha realizado con exito. ¿Que sigue ahora?. Descarga la App para tomar clases
+                                    El pago se ha realizado con éxito ¿Que sigue ahora?. Descargar la App para tomar tus clases.
                                 </div>
                             </div>
                         </div>
@@ -37,15 +37,15 @@
                 <div class="mt-3">
                     <div class="text-center">
                         <span class="text-muted" style="font-size: 15px">
-                            Recuerda que la aplicacion de Pura Sangre CrossFit esta disponible para Android e IOS
+                            Recuerda que la aplicación de Pura Sangre CrossFit esta disponible para Android e IOS
                         </span>
                         <div class="mt-2">
-                            <a href="https://play.google.com/store/apps/details?id=purasangrecrossfit.app.com&hl=es" target="_blank" style="text-decoration: none;">
-                                <img src="https://purasangrecrossfit.cl/images/google-play-badge-2.png" style="width: 120px">
-                            </a>
-                            <a href="https://itunes.apple.com/us/app/pura-sangre-crossfit/id1447657358" target="_blank" style="text-decoration: none;">
-                                <img src="https://purasangrecrossfit.cl/images/d_app.png" style="width: 110px">
-                            </a>
+                          <a href="https://play.google.com/store/apps/details?id=purasangrecrossfit.app.com&hl=es" target="_blank" style="text-decoration: none;">
+                            <img src='{{ asset('/img/icon-store-android.png') }}' style="width: 120px">
+                          </a>
+                          <a href="https://itunes.apple.com/us/app/pura-sangre-crossfit/id1447657358" target="_blank" style="text-decoration: none;">
+                            <img src='{{ asset('/img/icon-store-ios.png') }}' style="width: 110px">
+                          </a>
                         </div>
                     </div>
                 </div>
