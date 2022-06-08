@@ -289,6 +289,16 @@ class User extends Authenticatable
     }
 
     /**
+     *  Check if the user is "Test user" into the system
+     *
+     *  @return  bool
+     */
+    public function isTest(): bool
+    {
+        return (int) $this->status_user_id === StatusUser::TEST;
+    }
+
+    /**
      *  [listStudents description]
      *
      *  @return  collection
@@ -500,5 +510,27 @@ class User extends Authenticatable
                             'clases.date', 'clases.start_at', 'clases.finish_at',
                             'plans.plan'
                         ]);
+    }
+
+    /**
+     *  Assign test plan to the user
+     *
+     *  @param   Plan  $plan
+     *
+     *  @return void
+     */
+    public function assignTestPlan(Plan $plan)
+    {
+        $start_date = request('since') 
+                        ? Carbon::parse(request('since'))
+                        : today();
+
+        $this->plan_users()->create([
+            'plan_id'        => $plan->id,
+            'start_date'     => $start_date,
+            'finish_date'    => $start_date->copy()->addDays(7),
+            'plan_status_id' => PlanStatus::ACTIVO,
+            'counter'        => $plan->class_numbers
+        ]);
     }
 }

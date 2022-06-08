@@ -5,6 +5,7 @@ namespace App\Observers\Users;
 use Session;
 use Redirect;
 use Carbon\Carbon;
+use App\Models\Plans\Plan;
 use App\Models\Users\User;
 use Illuminate\Support\Str;
 use App\Mail\SendNewUserEmail;
@@ -34,10 +35,11 @@ class UserObserver
     }
 
     /**
-     * Handle the user "created" event.
+     *  Handle the user "created" event.
      *
-     * @param  \App\Models\Users\User  $user
-     * @return void
+     *  @param   \App\Models\Users\User  $user
+     *
+     *  @return  void
      */
     public function created(User $user)
     {
@@ -53,25 +55,17 @@ class UserObserver
             Log::error('Hemos tenido el siguiente error: ' . $e);
         }
         
-        if ($user->status_user_id == 3) {
-            $planuser = new PlanUser;
-            $planuser->plan_id = 1;
-            $planuser->user_id = $user->id;
-            $planuser->counter = 3;
-            $planuser->plan_status_id = 1;
-            $planuser->start_date = request('since') ?
-                                    Carbon::parse(request('since')) :
-                                    today();
-            $planuser->finish_date = $planuser->start_date->copy()->addDays(7);
-            $planuser->save();
+        if ($user->isTest()) {
+            $user->assignTestPlan(Plan::find(1));
         }
     }
 
     /**
-     * Handle the user "deleted" event.
+     *  Handle the user "deleted" event.
      *
-     * @param  \App\Models\Users\User  $user
-     * @return void
+     *  @param   \App\Models\Users\User  $user
+     * 
+     *  @return  void
      */
     public function deleted(User $user)
     {
