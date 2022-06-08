@@ -42,3 +42,9 @@ $factory->define(User::class, function (Faker $faker) {
         'tutorial'       => true,
     ];
 });
+
+$factory->define(StatusUser::class, function (Faker $faker) {
+    return [
+        'status_user' => $faker->word,
+    ];
+});

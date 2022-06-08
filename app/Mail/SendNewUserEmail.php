@@ -43,7 +43,7 @@ class SendNewUserEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('users.welcome.new')
+        return $this->markdown('mail.new_user')
                     ->subject('Bienvenido a PuraSangre!');
     }
 }

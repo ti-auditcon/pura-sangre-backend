@@ -74,3 +74,9 @@ $factory->define(PostponePlan::class, function(Faker $faker) {
         'revoked'      => false
     ];
 });
+
+$factory->define(PlanStatus::class, function(Faker $faker) {
+    return [
+        'plan_status' => $faker->word()
+    ];
+});

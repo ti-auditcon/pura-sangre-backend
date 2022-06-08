@@ -27,7 +27,9 @@ abstract class TestCase extends BaseTestCase
 
     public function getPurasangreReady()
     {
-        $this->admin = factory(User::class)->create();
+        $this->admin = User::withoutEvents(function () {
+            return factory(User::class)->create();
+        });
 
         RoleUser::create(['user_id' => $this->admin->id, 'role_id' => 1]);
 
