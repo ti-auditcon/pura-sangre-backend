@@ -41,10 +41,10 @@
                         </span>
                         <div class="mt-2">
                             <a href="https://play.google.com/store/apps/details?id=purasangrecrossfit.app.com&hl=es" target="_blank" style="text-decoration: none;">
-                                <img src="https://purasangrecrossfit.cl/images/google-play-badge-2.png" style="width: 120px">
+                                <img src="https://purasangrecrossfit.cl/static/742bfdbbf3bf40c98083a857d2b86366/28cc6/badge-googleplay.webp" style="width: 120px">
                             </a>
                             <a href="https://itunes.apple.com/us/app/pura-sangre-crossfit/id1447657358" target="_blank" style="text-decoration: none;">
-                                <img src="https://purasangrecrossfit.cl/images/d_app.png" style="width: 110px">
+                                <img src="https://purasangrecrossfit.cl/static/518a43709f3b8eec33fb05e43db48533/4d1c6/badge-appstore.webp" style="width: 110px">
                             </a>
                         </div>
                     </div>
