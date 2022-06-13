@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Messages;
 use Redirect;
 use App\Mail\SendEmail;
 use App\Models\Users\User;
+use Illuminate\Support\Str;
 use App\Mail\SendEmailQueue;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -51,7 +52,7 @@ class MessageController extends Controller
         $mailable = count($users) > 18 ? SendEmailQueue::class : SendEmail::class;
 
         if ($request->image) {
-            $random_name = str_shuffle(str_replace([' ', ':'], '', $request->subject . now()));
+            $random_name = strtolower(Str::random(20) . now()->timestamp);
 
             request()->file('image')->storeAs('/emails', $random_name . '.jpg');
         }
@@ -59,7 +60,7 @@ class MessageController extends Controller
         foreach ($users as $user) {
             $mail = collect();
             $mail->subject = $request->subject;
-            $mail->text = $request->text;
+            $mail->message = $request->text;
             $mail->user = $user->first_name;
             if ($request->image) {
                 $mail->image_url = url("/storage/emails/{$random_name}.jpg");
@@ -69,8 +70,8 @@ class MessageController extends Controller
                 Mail::to($user->email)->send(new $mailable($mail, $user));
             } catch(\Exception $e) {
                 DB::table('errors')->insert([
-                    'error' => $e,
-                    'where' => 'email',
+                    'error'      => $e,
+                    'where'      => 'email',
                     'created_at' => now(),
                 ]);
                 $errors += 1;
