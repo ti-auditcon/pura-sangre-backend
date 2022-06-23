@@ -200,8 +200,8 @@ class PlanUserPostponesControllerTest extends TestCase
         $this->actingAs($this->admin)->delete("/postpones/{$postpone->id}");
 
         $this->assertDatabaseHas('plan_user', [
-            'id'          => $plan_user->id,
-            'finish_date' => today()->addDays($restingPlanDays)->format('Y-m-d H:i:s'),
+            'id'             => $plan_user->id,
+            'plan_status_id' => PlanStatus::ACTIVE
         ]);
     }
 

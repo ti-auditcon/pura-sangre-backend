@@ -23,7 +23,7 @@ class InactiveUsersExport implements FromCollection, WithHeadings
 
     /**
      * headings for excel export
-     * 
+     *
      * @return [type] [description]
      */
     public function headings(): array
@@ -56,18 +56,18 @@ class InactiveUsersExport implements FromCollection, WithHeadings
         }
 
         return $plan_users->map(function ($plan) {
-            
-            return [                
-                $plan->user->full_name,
+            $user = $plan->user;
+            return [
+                $user ? $user->full_name : 'sin datos',
 
-                $plan->user->email,
+                $user ? $user->email : 'sin datos',
 
-                '+56 9 ' . $plan->user->phone,
+                $user ? '+56 9 ' . $user->phone : 'no aplica',
 
-                $plan->user->since->format('d-m-Y'),
-                                
-                $plan->plan->plan,
-                
+                $user ? $user->since->format('d-m-Y') : 'no aplica',
+
+                optional($plan->plan)->plan,
+
                 $plan->finish_date->format('d-m-Y'),
 
                 $plan->counter
