@@ -43,17 +43,15 @@ class Block extends Model
     /**
      * [getEndAttribute description]
      *
-     * @param  [type] $value [description]
+     *  @param  [type] $value [description]
      *
-     * @return [type]        [description]
+     *  @return [type]        [description]
      */
     public function getEndAttribute($value)
     {
-        if($this->date != null) {
-            return "{$this->date} {$value}";
-        }
-
-        return $value;
+        return $this->date 
+                ? "{$this->date} {$value}" 
+                : $value;
     }
 
     /**
@@ -100,11 +98,9 @@ class Block extends Model
      */
     public function getStartAttribute($value)
     {
-        if($this->date) {
-            return "{$this->date}  {$value}";
-        }
-
-        return $value;
+        return $this->date 
+                ? "{$this->date} {$value}" 
+                : $value;
     }
 
     /**

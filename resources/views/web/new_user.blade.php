@@ -15,9 +15,9 @@
 </head>
 <body class="register-wrapper">
     <div class="register" x-data="newUser()" 
-                        x-init="flatpickr($refs.input, {{ json_encode((object)['dateFormat' => 'd-m-Y', 'locale' => 'es']) }});getSelectedPlan({{ $plan->id }});"
-                    >
-        <div class="header">
+      x-init="flatpickr($refs.input, {{ json_encode((object)['dateFormat' => 'd-m-Y', 'locale' => 'es']) }});getSelectedPlan({{ $plan->id }});"
+    >
+      <div class="header">
             <h3 class="text-center" x-text="title">Completa tu compra registrandote</h3>
         </div>
         <div class="content">
