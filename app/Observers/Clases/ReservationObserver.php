@@ -16,10 +16,22 @@ class ReservationObserver
         $plans = $reservation->user->reservable_plans;
         $date_class = Carbon::parse($clase->date);
 
+        if ($clase->claseType->special) {
+            $exists = Reservation::where('clase_id', $clase->id)
+                                ->where('user_id', $reservation->user_id)
+                                ->exists('id');
+            if ($exists) {
+                Session::flash('warning', 'Ya tiene clase tomada este día');
+                return false;
+            }
+
+            return true;
+        }
+
         // Check if has class yet
-        $response = $this->hasReserve($clase, $reservation);
-        if ($response) {
+        if ($response = $this->hasReserve($clase, $reservation->user_id)) {
             Session::flash('warning', $response);
+
             return false;
         }
 
@@ -51,19 +63,37 @@ class ReservationObserver
         }
     }
 
-    private function hasReserve($clase, $reservation)
+    /**
+     *  Check if user had reserve
+     *
+     *  @param   Clase  $clase   Class to check
+     *  @param   int    $userId  The user who make the reservation
+     *
+     *  @return  boolean|string
+     */
+    public function hasReserve($clase, $userId)
     {
-        $response = '';
-        $clases = Clase::where('date', $clase->date)->get();
+        $clases = Clase::join('clase_types', 'clase_types.id', '=', 'clases.clase_type_id')
+                        ->where('clase_types.special', false)
+                        ->where('clases.date', $clase->date)
+                        ->get([
+                            'clases.id as id',
+                            'clases.date',
+                            'clases.clase_type_id',
+                            'clase_types.special',
+                        ]);
+
         foreach ($clases as $clase) {
             $reservations = Reservation::where('clase_id', $clase->id)
-                ->where('user_id', $reservation->user_id)
-                ->get();
-            if (count($reservations) != 0) {
+                                ->where('user_id', $userId)
+                                ->count('id');
+
+            if ($reservations > 0) {
                 $response = 'Ya tiene clase tomada este día';
             }
         }
-        return $response;
+
+        return $response ?? false;
     }
 
     private function userBadReserve($clase, $period_plan)
@@ -88,7 +118,11 @@ class ReservationObserver
             }
         }
         
-        if ($period_plan) {
+        /**
+         *  we discount a quota of the plan only if the user has a valid plan
+         *  and if the class type is not special class
+         */
+        if ($period_plan && !$clase->claseType->special) {
             $reservation->update(['plan_user_id' => $period_plan->id]);
             
             // getting the dispatcher instance (needed to enable again the event observer later on)
@@ -99,6 +133,7 @@ class ReservationObserver
             $period_plan->subQuotas(1);
             PlanUser::setEventDispatcher($dispatcher);
         }
+
         return true;
     }
 

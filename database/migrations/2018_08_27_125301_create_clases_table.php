@@ -28,6 +28,7 @@ class CreateClasesTable extends Migration
             $table->string('icon')->nullable();
             $table->string('icon_white')->nullable();
             $table->boolean('active')->default(true);
+            $table->unsignedTinyInteger('special')->default(false);
             $table->timestamps();
         });
 
