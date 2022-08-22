@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use App\Mail\SendEmail;
 use App\Models\Users\User;
 use App\Mail\SendEmailQueue;
 use App\Mail\NewPlanUserEmail;
@@ -20,6 +21,8 @@ use Illuminate\Database\Schema\Blueprint;
  *  Auth Route lists
  */
 Auth::routes();
+
+include __DIR__ . '/super.php';
 
 /**
  *  General routes
@@ -65,48 +68,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 //             }
 //         }
 //     });
-    // Calibrate reservations fro a user
-    Route::get('users/{user}/calibrate-reservations-plans', function(App\Models\Users\User $user) {
-        $user_plans = App\Models\Plans\PlanUser::where('plan_user.user_id', $user->id)
-                                ->whereIn('plan_user.plan_status_id', [
-                                    App\Models\Plans\PlanStatus::ACTIVO,
-                                    App\Models\Plans\PlanStatus::PRECOMPRA,
-                                    App\Models\Plans\PlanStatus::COMPLETADO
-                                ])
-                                ->join('plans', 'plan_user.plan_id', 'plans.id')
-                                ->get([
-                                    'plans.id as planId', 'plans.class_numbers',
-                                    'plan_user.id as planUserId', 'plan_user.user_id', 'plan_user.plan_status_id',
-                                    'plan_user.start_date', 'plan_user.finish_date', 'plan_user.counter', 'plan_user.plan_id'
-                                ]);
 
-        foreach ($user_plans as $plan_user) {
-            $reservations = App\Models\Clases\Reservation::leftJoin('clases', 'reservations.clase_id', '=', 'clases.id')
-                                                            ->where('reservations.user_id', $user->id)
-                                                            ->where('clases.date', '>=', $plan_user->start_date)
-                                                            ->where('clases.date', '<=', $plan_user->finish_date)
-                                                            ->get([
-                                                                'reservations.id as reservationId',
-                                                                'reservations.user_id', 'reservations.clase_id',
-                                                                'reservations.reservation_status_id', 
-                                                                'clases.id as claseId', 'clases.date',
-                                                            ]);
-            foreach ($reservations as $reservation) {
-                if ($reservation->reservation_status_id === ReservationStatus::CONFIRMED && Carbon::parse($reservation->date) < today()) {
-                    Reservation::find($reservation->reservationId)->update([
-                        'reservation_status_id' => ReservationStatus::CONSUMED,
-                        'plan_user_id' => $plan_user->planUserId
-                    ]);
-                } else {
-                    Reservation::find($reservation->reservationId)->update([
-                        'plan_user_id' => $plan_user->planUserId
-                    ]);
-                }
-            }
-
-            $plan_user->update(['counter' => $plan_user->class_numbers - count($reservations)]);
-        }
-    });
 
 
     // Calibrate plan_income_summaries
@@ -274,12 +236,26 @@ Route::get('/flow/error', function () { return view('web.flow.error'); });
 Route::get('finish-registration', 'Web\NewUserController@finishing');
 
 Route::get('maila', function() {
+    return new App\Mail\SendNewUserEmail(App\Models\Users\User::find(1), 123);
     $planuserFlow = App\Models\Plans\PlanUserFlow::find(2110);
 
-    return Mail::to('raulberrios8@gmail.com')->send(new App\Mail\NewPlanUserEmail($planuserFlow));
+    return new App\Mail\NewPlanUserEmail($planuserFlow);
+    // return Mail::to('raulberrios8@gmail.com')->send(new App\Mail\NewPlanUserEmail($planuserFlow));
 });
 
 Route::get('cancel-dte', function() {
     app(TaxDocument::class)->cancel(109444);
 });
 
+// Route::get('/test-mail', function() {
+//     $demo = (object) [
+//         'subject' => 'Prueba',
+//         'user'    => 'Raul',
+//         'text'    => 'Raul',
+//         'image_url' => 'https://via.placeholder.com/1200',
+//     ];
+
+//     // Mail::to('raulberrios8@gmail.com')->send(new SendEmail($demo));
+//     // return true;
+//     return new SendEmail($demo);
+// });

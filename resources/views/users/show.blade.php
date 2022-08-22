@@ -278,7 +278,7 @@
                                                     </button>
                                                 </div>
                                             @endif
-                                                {{-- {{ dd($plan_user->postpone) }} --}}
+
                                             @if($plan_user->isFreezed() && $plan_user->postpone)
                                                 <form method="POST" class="user-plan-unfreeze"
                                                         action="{{ route('postpones.destroy', ['postpone' => $plan_user->postpone->id]) }}"
@@ -440,7 +440,7 @@
                                     <td>{{ $reservation->date }}</td>
 
                                     <td>{{ Carbon\Carbon::parse($reservation->start_at)->format('H:i') }} a {{ Carbon\Carbon::parse($reservation->finish_at)->format('H:i') }}</td>
-                                    
+
                                     <td>{{ \App\Models\Clases\ReservationStatus::getReservationStatus($reservation->reservation_status_id) }}</td>
 
                                     <td>{{ $reservation->plan_user_id }}</td>

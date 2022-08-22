@@ -183,6 +183,7 @@ class NewUserController extends Controller
                 'plans' => $plans,
             ]);
         }
+
         $planUserFlow = $this->planUserFlow->makeOrder($this->plan, $user->id);
 
         try {
@@ -237,7 +238,7 @@ class NewUserController extends Controller
         if ($error = $this->verifyToken($request->token)) {
             $type = 'email';
 
-            return view('web.flow.error', compact('error', 'type'));
+            return compact('error', 'type');
         } else {
             PasswordReset::spendToken($request->token);
         }
@@ -266,7 +267,7 @@ class NewUserController extends Controller
         }
 
         if (PasswordReset::tokenDoesntExists($token)) {
-            return 'El token es invalido, puedes solicitar uno a tu correo';
+            return 'El token ha expirado, puedes solicitar uno a tu correo';
         }
 
         return false;

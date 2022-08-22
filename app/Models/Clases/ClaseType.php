@@ -12,7 +12,14 @@ class ClaseType extends Model
      *
      * @var array
      */
-	protected $fillable = ['clase_type', 'clase_color', 'icon', 'icon_white', 'active'];
+	protected $fillable = [
+        'clase_type',
+        'clase_color',
+        'icon',
+        'icon_white',
+        'active',
+        'special'
+    ];
 
 	/**
 	 * Return all the clases associated to this Model

@@ -112,6 +112,18 @@ class TaxDocumentController extends Controller
         } catch (\GuzzleHttp\Exception\ClientException $error) {
             $response = json_decode($error->getResponse()->getBody()->getContents(), true);
 
+            // dd($response);
+            //  "error" => array:3 [
+            //     "message" => "Validación de Campos"
+            //     "code" => "OF-10"
+            //     "details" => array:1 [
+            //       0 => array:2 [
+            //         "field" => "TipoDte"
+            //         "issue" => "undefined es Incorrecto"
+            //       ]
+            //     ]
+            //   ]
+            // ]
             return response()->json([
                 'status' => 'Request failed', 'message' => $response['message']
             ], $response['statusCode']);

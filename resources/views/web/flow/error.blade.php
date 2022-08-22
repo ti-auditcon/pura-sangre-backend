@@ -43,7 +43,7 @@
                                     </template>
                                     
                                     <button x-bind:disabled="sendButtonisDisabled" class="btn btn-sm btn-primary px-3 py-2" x-on:click="requestInstrutions()">
-                                        Enviame las instrucciones nuevamente
+                                        Envíame las instrucciones nuevamente
                                     </button>
                                 </div>
                                 <div x-show="instructions.areSended" x-text="instructions.message"></div>
@@ -51,21 +51,21 @@
                                 <div class="mb-2">{{ $error }}</div>
                             @endif
                         @else 
-                            Hola, es raro verte por aqui, si no sabes como llegaste hasta aqui contacta con PuraSangre :)
+                            Hola, es raro verte por aquí, si no sabes como llegaste, contacta con PuraSangre :)
                         @endif
                     </div>
                 </div>
                             <div class="mt-3">
                 <div class="text-center">
                     <span class="text-muted" style="font-size: 15px">
-                        Recuerda que la aplicacion de Pura Sangre CrossFit esta disponible para Android e IOS
+                        Recuerda que la aplicación de Pura Sangre CrossFit esta disponible para Android e IOS
                     </span>
                     <div class="mt-2">
                         <a href="https://play.google.com/store/apps/details?id=purasangrecrossfit.app.com&hl=es" target="_blank" style="text-decoration: none;">
-                            <img src="https://purasangrecrossfit.cl/images/google-play-badge-2.png" style="width: 120px">
+                          <img src='{{ asset('/img/icon-store-android.png') }}' style="width: 120px">
                         </a>
                         <a href="https://itunes.apple.com/us/app/pura-sangre-crossfit/id1447657358" target="_blank" style="text-decoration: none;">
-                            <img src="https://purasangrecrossfit.cl/images/d_app.png" style="width: 110px">
+                          <img src='{{ asset('/img/icon-store-ios.png') }}' style="width: 110px">
                         </a>
                     </div>
                 </div>

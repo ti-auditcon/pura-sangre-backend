@@ -18,6 +18,11 @@
         @endslot
     @endisset
 
+    @slot('prefooter')
+        @component('mail::prefooter')
+        @endcomponent
+    @endslot   
+
     {{-- Footer --}}
     @slot('footer')
         @component('mail::footer')

@@ -15,9 +15,9 @@
 </head>
 <body class="register-wrapper">
     <div class="register" x-data="newUser()" 
-                        x-init="flatpickr($refs.input, {{ json_encode((object)['dateFormat' => 'd-m-Y', 'locale' => 'es']) }});getSelectedPlan({{ $plan->id }});"
-                    >
-        <div class="header">
+      x-init="flatpickr($refs.input, {{ json_encode((object)['dateFormat' => 'd-m-Y', 'locale' => 'es']) }});getSelectedPlan({{ $plan->id }});"
+    >
+      <div class="header">
             <h3 class="text-center" x-text="title">Completa tu compra registrandote</h3>
         </div>
         <div class="content">
@@ -34,7 +34,7 @@
                                     <span x-show.transition.in="errors.first_name" x-text="errors.first_name" class="text-danger fs-6 fw-light lh-1"></span>
                                 </div>
 
-                                <div class="col-md-6 form-group">
+                                <div class="col-md-6 form-group mb-3">
                                     <label class="col-form-label">Apellido</label>
                                 
                                     <input class="form-control" 
@@ -131,12 +131,12 @@
                                 :disabled="sendButton.disabled"
                                 x-text="sendButton.text"
                             >
-                                Registrarme y pagar
+                                Registrarme y pagar &gt;
                             </button>
 
                             <div x-show="redirectButton">
                                 Si no te redirige, has clic aqui
-                                <a :href="redirectButton">Ir a pagar</a>
+                                <a :href="redirectButton">Ir a pagar &gt;</a>
                             </div>
                         </div>
                         <div x-show="errors.email == 'El email ya ha sido registrado.'" class="my-4 py-4 px-3 atention-message rounded">
@@ -157,7 +157,7 @@
                                             x-bind:disabled="instructions.buttonIsDisabled"
                                             class="btn btn-sm btn-primary px-3 py-2"
                                     >
-                                        Enviame las instrucciones nuevamente
+                                        Enviame las instrucciones nuevamente &gt;
                                     </button>
                                 </div>
                                 <div x-show="instructions.areSended" x-text="instructions.message"></div>
@@ -189,10 +189,10 @@
                     </span>
                     <div class="mt-2">
                         <a href="https://play.google.com/store/apps/details?id=purasangrecrossfit.app.com&hl=es" target="_blank" style="text-decoration: none;">
-                            <img src="https://purasangrecrossfit.cl/images/google-play-badge-2.png" style="width: 120px">
+                            <img src="https://purasangrecrossfit.cl/static/742bfdbbf3bf40c98083a857d2b86366/28cc6/badge-googleplay.webp" style="width: 120px">
                         </a>
                         <a href="https://itunes.apple.com/us/app/pura-sangre-crossfit/id1447657358" target="_blank" style="text-decoration: none;">
-                            <img src="https://purasangrecrossfit.cl/images/d_app.png" style="width: 110px">
+                            <img src="https://purasangrecrossfit.cl/static/518a43709f3b8eec33fb05e43db48533/4d1c6/badge-appstore.webp" style="width: 110px">
                         </a>
                     </div>
                 </div>

@@ -5,6 +5,8 @@ namespace App\Exports;
 use App\Models\Users\User;
 use App\Traits\ExpiredPlans;
 use App\Models\Plans\PlanUser;
+use App\Models\Plans\PlanStatus;
+use App\Models\Users\StatusUser;
 use Freshwork\ChileanBundle\Rut;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -14,7 +16,7 @@ class InactiveUsersExport implements FromCollection, WithHeadings
     use ExpiredPlans;
 
     /**
-     * @return \Illuminate\Support\Collection
+     *  @return  \Illuminate\Support\Collection
      */
     public function collection()
     {
@@ -22,9 +24,9 @@ class InactiveUsersExport implements FromCollection, WithHeadings
     }
 
     /**
-     * headings for excel export
-     *
-     * @return [type] [description]
+     *  Headings for excel export
+     * 
+     *  @return  array
      */
     public function headings(): array
     {
@@ -39,43 +41,67 @@ class InactiveUsersExport implements FromCollection, WithHeadings
         ];
     }
 
+    /**
+     *  Export users with inactive plans
+     *
+     *  @return  \Illuminate\Support\Collection
+     */
     public function exportUsers()
     {
-        $plan_users = collect(new PlanUser);
+        $users = User::where('status_user_id', StatusUser::INACTIVE)
+                        ->with('last_plan')
+                        ->get();
 
-        foreach (User::all() as $user) {
-            if ($user->status_user_id == 2) {
-                $plan_user = $user->plan_users->whereIn('plan_status_id', [3, 4])
-                                              ->where('finish_date', '<', today())
-                                              ->sortByDesc('finish_date')
-                                              ->first();
-                if ($plan_user) {
-                    $plan_users->push($plan_user);
-                }
-            }
-        }
+        return $users->map(function ($user) {
+            $plan_user = $user->last_plan;
 
-        return $plan_users->map(function ($plan) {
-            if (!isset($plan->user)) {
-                return false;
-            }
-
-            $user = $plan->user;
             return [
-                $user ? $user->full_name : 'sin datos',
-
-                $user ? $user->email : 'sin datos',
-
-                $user ? '+56 9 ' . $user->phone : 'no aplica',
-
-                $user ? $user->since->format('d-m-Y') : 'no aplica',
-
-                optional($plan->plan)->plan,
-
-                $plan->finish_date->format('d-m-Y'),
-
-                $plan->counter
+                $user->full_name,
+                $user->email,
+                $user->phone,
+                $user->since ? $user->since->format('d-m-Y') : 'sin información',
+                $plan_user ? $plan_user->plan->plan : 'sin registro',
+                $plan_user ? $plan_user->finish_date->format('d-m-Y') : 'no aplica',
+                $plan_user ? $plan_user->counter : 'no aplica',
             ];
         });
     }
 }
+
+
+        // get all users with expired plans
+        // $users = PlanUser::join('users', 'users.id', '=', 'plan_user.user_id')
+        //                     ->join('plans', 'plans.id', '=', 'plan_user.plan_id')
+        //                     ->where('users.status_user_id', '=', StatusUser::INACTIVE)
+        //                     ->whereIn('plan_user.plan_status_id', '=', [PlanStatus::ACTIVE, PlanStatus::COMPLETED])
+        //                     ->where('plan_user.expiration_date', '<', date('Y-m-d'))
+        //                     ->select('users.*', 'plan_user.plan_id', 'plan_user.expiration_date')
+        //                     ->get();
+        //             //          ->where('plan_status_id', '!=', 5)
+        //             // ->orderByDesc('finish_date');
+
+        // foreach (User::all(['id', 'status_user_id']) as $user) {
+        //     if ($user->isInactive()) {
+        //         $plan_user = $user->plan_user()
+        //                             ->whereIn('plan_status_id', [PlanStatus::PRE_PURCHASE, PlanStatus::COMPLETED])
+        //                             ->where('finish_date', '<', today())
+        //                             ->orderBy('finish_date')
+        //                             ->first();
+
+        //         if ($plan_user) {
+        //             $plan_user->push($plan_user);
+        //         }
+        //     }
+        // }
+
+        // return $plan_users->map(function ($plan) {
+        //     return [                
+        //         $plan->user->full_name,
+        //         $plan->user->email,
+        //         '+56 9 ' . $plan->user->phone,
+        //         optional($plan->user->since)->format('d-m-Y'),
+        //         $plan->plan->plan,
+        //         $plan->finish_date->format('d-m-Y'),
+        //         $plan->counter
+        //     ];
+        // });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Clases;
 
 use Redirect;
+use Carbon\Carbon;
 use App\Models\Wods\Wod;
 use App\Models\Users\User;
 use App\Models\Wods\Stage;
@@ -10,6 +11,7 @@ use App\Models\Clases\Clase;
 use Illuminate\Http\Request;
 use App\Models\Clases\ClaseType;
 use App\Models\Clases\Reservation;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use App\Models\Settings\DensityParameter;
@@ -35,24 +37,42 @@ class ClaseController extends Controller
     }
 
     /**
-     * Get all the classes for a given type class.
+     *  Get all the classes for a given class type
      *
-     * @param request $request [description]
+     *  @param   Request  $request
      *
-     * @return json
+     *  @return  JsonResponse
      */
     public function clases(Request $request)
     {
-        $clases = Clase::where('clase_type_id', Session::get('clases-type-id'))
+        $clases = DB::table('clases')
+                        ->leftJoin('reservations', 'clases.id', '=', 'reservations.clase_id')
+                        ->where('clases.clase_type_id', Session::get('clases-type-id'))
+                        ->where('clases.date', '>=', Carbon::parse($request->datestart)->format('Y-m-d'))
+                        ->where('clases.date', '<=', Carbon::parse($request->dateend)->format('Y-m-d'))
+                        ->select(
+                            'clases.id as id',
+                            'clases.quota', 'clases.room', 
+                            DB::raw("count(reservations.id) as reservations_count"),
+                            DB::raw("DATE_FORMAT(clases.date, '%Y-%m-%d %H:%i:%s') as date"),
+                            DB::raw("CONCAT_WS(' ', clases.date, clases.start_at) as start"),
+                            DB::raw("CONCAT_WS(' ', clases.date, clases.finish_at) as end"),
+                            DB::raw("CONCAT('', '". url('/clases') ."', '/', clases.id) as url"),
+                            DB::raw('CONCAT("#DCDCDC") as color')
+                        )
+                        ->groupBy('clases.id')
+                        ->get();
 
-                       ->where('date', '>=', $request->datestart)
+                // $clases = Clase::where('clase_type_id', Session::get('clases-type-id'))
 
-                       ->where('date', '<=', $request->dateend)
+                //        ->where('date', '>=', $request->datestart)
 
-                       ->with(['claseType:id,clase_color',
-                               'block:id,start,end', ])
+                //        ->where('date', '<=', $request->dateend)
 
-                       ->get(['id', 'date', 'quota', 'block_id', 'clase_type_id']);
+                //        ->with(['claseType:id,clase_color',
+                //                'block:id,start,end', ])
+
+                //        ->get(['id', 'date', 'quota', 'block_id', 'clase_type_id']);
 
         return response()->json($clases, 200);
     }

@@ -49,7 +49,7 @@ class Clase extends Model
      *
      *  @var  array
      */
-    protected $appends = ['start', 'end', 'url', 'reservation_count', 'color'];
+    protected $appends = ['start', 'end', 'url', 'color'];
 
     /**
      *  Get all of the getReservationCountAttribute for the Clase
@@ -146,13 +146,13 @@ class Clase extends Model
      */
     public function claseType()
     {
-      return $this->belongsTo(ClaseType::class);
+        return $this->belongsTo(ClaseType::class);
     }
 
     /**
      *  [profresor description]
      *
-     *  @return  [type]  [return description]
+     *  @return  \App\Models\Users\User
      */
     public function profresor()
     {
@@ -209,5 +209,15 @@ class Clase extends Model
     public function isToday() :bool
     {
         return $this->date->format('Y-m-d') === today()->format('Y-m-d');
+    }
+
+    /**
+     *  Check if the class is full or overload
+     *
+     *  @return  bool
+     */
+    public function isFull(): bool
+    {
+        return $this->reservations()->count('id') >= $this->quota;
     }
 }
