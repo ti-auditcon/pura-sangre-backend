@@ -42,10 +42,10 @@ class ReservationObserver
 
         if ($clase->isFull()) {
             Session::flash('warning', 'La clase esta llena');
-            
+
             return false;
         }
-        
+
         $period_plan = null;
         foreach ($plans as $planuser) {
             if ($date_class->between(Carbon::parse($planuser->start_date), Carbon::parse($planuser->finish_date))) {
@@ -73,27 +73,15 @@ class ReservationObserver
      */
     public function hasReserve($clase, $userId)
     {
-        $clases = Clase::join('clase_types', 'clase_types.id', '=', 'clases.clase_type_id')
-                        ->where('clase_types.special', false)
-                        ->where('clases.date', $clase->date)
-                        ->get([
-                            'clases.id as id',
-                            'clases.date',
-                            'clases.clase_type_id',
-                            'clase_types.special',
-                        ]);
+        $has_a_reservation = Reservation::where('user_id', $userId)
+                                ->join('clases', 'reservations.clase_id', '=', 'clases.id')
+                                ->where('clases.date', $clase->date)
+                                ->where('clases.clase_type_id', $clase->clase_type_id)
+                                ->exists('id');
 
-        foreach ($clases as $clase) {
-            $reservations = Reservation::where('clase_id', $clase->id)
-                                ->where('user_id', $userId)
-                                ->count('id');
-
-            if ($reservations > 0) {
-                $response = 'Ya tiene clase tomada este día';
-            }
-        }
-
-        return $response ?? false;
+        return $has_a_reservation
+            ? "Ya tiene una clase tomada para {$clase->claseType->clase_type} este día."
+            : false;
     }
 
     private function userBadReserve($clase, $period_plan)
@@ -101,10 +89,16 @@ class ReservationObserver
         $badResponse = $period_plan->counter <= 0 ?
                        'Ya ha ocupado o reservado todas sus clases de su plan actual' :
                        null;
-                       
+
         return $badResponse;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param Reservation $reservation
+     * @return void
+     */
     public function created(Reservation $reservation)
     {
         $clase = $reservation->clase;
@@ -117,14 +111,14 @@ class ReservationObserver
                 $period_plan = $planuser;
             }
         }
-        
+
         /**
          *  we discount a quota of the plan only if the user has a valid plan
          *  and if the class type is not special class
          */
         if ($period_plan && !$clase->claseType->special) {
             $reservation->update(['plan_user_id' => $period_plan->id]);
-            
+
             // getting the dispatcher instance (needed to enable again the event observer later on)
             $dispatcher = PlanUser::getEventDispatcher();
             // disabling the events
@@ -139,7 +133,7 @@ class ReservationObserver
 
     /**
      *  @param   Reservation  $reservation
-     *  
+     *
      *  @return  bool
      */
     public function deleted(Reservation $reservation)

@@ -3,11 +3,13 @@
 namespace Tests\Unit\Observers\Clases;
 
 use Tests\TestCase;
+use App\Models\Plans\Plan;
 use App\Models\Users\User;
+use App\Models\Clases\Clase;
+use App\Models\Plans\PlanUser;
+use App\Models\Clases\ClaseType;
 use App\Models\Clases\Reservation;
 use Illuminate\Foundation\Testing\WithFaker;
-use App\Models\Clases\Clase;
-use App\Models\Clases\ClaseType;
 use App\Observers\Clases\ReservationObserver;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -80,31 +82,53 @@ class ReservationObserverTest extends TestCase
         );
     }
 
-    /**
-     *  If a use has a special class taken,
-     *  it is not considered in hasReserve function
-     *
-     *  @test
-     */
-    public function it_hasReserve_method_doesnt_count_special_clase_types()
+    /** @test */
+    public function it_user_can_book_a_special_clase_even_if_he_doesnt_have_more_quotas_for_the_day()
     {
-        $special_clase = factory(Clase::class)->create([
-            'clase_type_id' => factory(ClaseType::class)->create([
-                'special' => true
-            ])->id,
-        ]);
+        $user = factory(User::class)->create();
 
-         // we call the hasReserve method from the observer and we expect it to return false
-        $observer = app(ReservationObserver::class);
-
-        $reservation = Reservation::withoutEvents(function () use ($special_clase) {
-            return factory(Reservation::class)->create([
-                'clase_id' => $special_clase->id,
+        $plan_user = PlanUser::withoutEvents(function () use ($user) {
+            return factory(PlanUser::class)->create([
+                'user_id' => $user->id,
+                'plan_id' => factory(Plan::class)->create([
+                    'class_numbers' => 1,
+                    'daily_clases' => 1,
+                ]),
+                'counter' => 1,
             ]);
         });
 
-        $this->assertFalse(
-            $observer->hasReserve($special_clase, $reservation->user_id)
+        $this->assertDatabaseHas('plan_user', [
+            'user_id' => $user->id,
+            'plan_id' => $plan_user->plan_id,
+            'counter' => 1,
+        ]);
+
+        $clase = factory(\App\Models\Clases\Clase::class)->create([
+            'date' => '2018-01-01',
+            'clase_type_id' => factory(\App\Models\Clases\ClaseType::class)->create()->id,
+        ]);
+        $other_clase = factory(\App\Models\Clases\Clase::class)->create([
+            'date' => '2018-01-01',
+            'clase_type_id' => factory(\App\Models\Clases\ClaseType::class)->create(['special' => true])->id,
+        ]);
+
+        $reservation = Reservation::withoutEvents(function () use ($user, $clase) {
+            return factory(\App\Models\Clases\Reservation::class)->create([
+                'user_id' => $user->id,
+                'clase_id' => $clase->id,
+            ]);
+        });
+
+        $observer = new \App\Observers\Clases\ReservationObserver();
+
+        $new_reservation = factory(\App\Models\Clases\Reservation::class)->make([
+            'user_id' => $user->id,
+            'clase_id' => $other_clase->id,
+        ]);
+
+        $this->assertTrue(
+            $observer->creating($new_reservation)
         );
     }
 }
