@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Commands\Clases;
+namespace Tests\Feature\Jobs;
 
 use Carbon\Carbon;
 use Tests\TestCase;
@@ -44,7 +44,7 @@ class SendPushNotificationTest extends TestCase
         Queue::fake();
 
         $tokens= [];
-        for ($i = 0; $i < 10; $i++) { 
+        for ($i = 0; $i < 10; $i++) {
             array_push($tokens, Str::random(100));
         }
 
@@ -61,9 +61,9 @@ class SendPushNotificationTest extends TestCase
         });
     }
 
-    /** 
+    /**
      *  IT'S NEED TO BE TESTED HARDCODE
-     * 
+     *
      *  @test
      */
     public function it_user_receive_push_notification()
@@ -76,7 +76,7 @@ class SendPushNotificationTest extends TestCase
         );
 
         $this->assertTrue(true);
-    }    
+    }
 
 
         /**

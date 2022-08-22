@@ -56,6 +56,10 @@ class InactiveUsersExport implements FromCollection, WithHeadings
         }
 
         return $plan_users->map(function ($plan) {
+            if (!isset($plan->user)) {
+                return false;
+            }
+
             $user = $plan->user;
             return [
                 $user ? $user->full_name : 'sin datos',
