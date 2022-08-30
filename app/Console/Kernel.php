@@ -32,7 +32,7 @@ class Kernel extends ConsoleKernel
      *  Define the application's command schedule.
      *
      *  @param   \Illuminate\Console\Scheduling\Schedule  $schedule
-     *  
+     *
      *  @return  void
      */
     protected function schedule(Schedule $schedule)
@@ -42,7 +42,9 @@ class Kernel extends ConsoleKernel
         /**  Remove users who don't confirm assistance to clases  */
         $schedule->command('purasangre:clases:clear')->everyFifteenMinutes();
 
-        $schedule->command('clases:close')->hourlyAt(15);
+        // $schedule->command('clases:close')->hourlyAt(15);
+        /**  Close all the clases, changing status of the users */
+        $schedule->command('clases:close')->everyFiveMinutes();
         $schedule->command('plans:refresh')->daily();
         $schedule->command('clases:create')->weekly();
         $schedule->command('plans:toexpire')->dailyAt('9:10');
@@ -53,9 +55,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('purasangre:plans:unfreeze')->dailyAt('00:15');
 
         $schedule->command('messages:send-notifications')->everyMinute();
-        
+
         // $schedule->command('clases:first')->everyFifteenMinutes();
-        
+
         $schedule->command('users:gone-away-email')->daily();
 
         /**  Issue to SII receipts and send bill receipt to student  */

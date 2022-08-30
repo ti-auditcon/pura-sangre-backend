@@ -14,6 +14,8 @@ class CloseClass extends Command
      */
     protected $signature = 'clases:close';
 
+    public const MINUTES_TO_PASS_LIST = 15;
+
     /**
      * The console command description.
      *
@@ -38,10 +40,15 @@ class CloseClass extends Command
      */
     public function handle()
     {
+        /**  Adjust hour */
+        $clase_hour = $this->roundToMultipleOfFive(
+            now()->subMinutes(self::MINUTES_TO_PASS_LIST)
+        );
+
         $clases = Clase::where('date', today())
-                       ->where('start_at', now()->startOfHour())
+                       ->where('start_at', $clase_hour)
                        ->get();
-                       
+
         if (count($clases) != 0) {
             foreach ($clases as $clase) {
                 foreach ($clase->reservations as $reservation) {
@@ -56,5 +63,21 @@ class CloseClass extends Command
                 }
             }
         }
+    }
+
+    /**
+     *  Get the rounded minute from an specific time,
+     *  useful in case of server trigger after the specific hour and minute
+     *  Also add the 0
+     *
+     *  @param   Carbon\Carbon|string  $time
+     *
+     *  @return  Carbon\Carbon
+     */
+    public function roundToMultipleOfFive($time)
+    {
+        $minutes = date('i', strtotime($time));
+
+        return $time->setTime($time->format('H'), $minutes - ($minutes % 5));
     }
 }
