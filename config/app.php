@@ -17,7 +17,8 @@ return [
 
     'web_url' => env('APP_WEB_URL', 'https://purasangrecrossfit.cl/'),
 
-    'timezone' => 'America/Santiago',
+    // 'timezone' => 'America/Santiago',
+    'timezone' => 'America/La_Paz',
 
     'locale' => 'es_ES',
 
