@@ -44,7 +44,16 @@ claseTypesTable = $('#clases-types-table').DataTable({
                                 data-name="${row.clase_type}"
                         >
                             <i class="la la-trash"></i>
-                        </button>`;
+                        </button>
+                        <button class="btn btn-info btn-icon-only btn-${row.active ? 'danger' : 'success'} sweet-clase-type-activation"
+                                type="button"
+                                data-clase-type-id="${row.id}"
+                                data-name="${row.clase_type}"
+                                data-status="${row.active}"
+                        >
+                            <i class="la la-power-off"></i>
+                        </button>
+                        `;
         },
     },
     ],
@@ -228,6 +237,15 @@ $(document).on('click', '.sweet-clase-type-delete', function () {
 });
 
 /**
+ * Action to "trash button" on some ClaseType clicked
+ */
+$(document).on('click', '.sweet-clase-type-activation', function () {
+    manageActivationClaseType($(this), claseTypesTable);
+});
+
+
+
+/**
  *
  */
 function manageDeleteClaseType(ClaseType, table) {
@@ -246,6 +264,45 @@ function manageDeleteClaseType(ClaseType, table) {
         deleteClaseType(claseTypeId, table);
 
         swal.close();
+    });
+}
+
+function manageActivationClaseType(ClaseType, table) {
+    var claseTypeId = ClaseType.data('clase-type-id');
+    let status = ClaseType.data('status');
+
+    swal({
+        title: `¿Confirma la ${status ? 'desactivación' : 'activación'} del tipo de clase "${ClaseType.data('name')}"?`,
+        // text: "Esta acción no de podrá deshacer",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: `btn-${status ? 'danger' : 'success'}`,
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: status ? 'Desactivar' : 'Activar',
+        closeOnConfirm: false
+    }, () => {
+        activationClaseType(claseTypeId, table, status);
+
+        swal.close();
+    });
+}
+
+function activationClaseType(claseTypeId, table, status) {
+    $.ajax({
+        url: `/clases-types/${claseTypeId}/activation`,
+        type: 'PATCH',
+        data: {
+            _method: 'POST',
+            _token: $('meta[name=csrf-token]').attr("content")
+        },
+        success: function (result) {
+            toastr.success(result.success);
+
+            table.ajax.reload();
+        },
+        error: () => {
+            console.log('Ha fallado la activación/desactivación del tipo de clase');
+        }
     });
 }
 

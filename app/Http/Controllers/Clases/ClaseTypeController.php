@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Clases;
 use Illuminate\Http\Request;
 use App\Models\Clases\ClaseType;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\Clases\ClaseTypeStoreRequest;
 
 class ClaseTypeController extends Controller
@@ -126,5 +127,19 @@ class ClaseTypeController extends Controller
         $clases_type->delete();
 
         return response()->json('Tipo de clase eliminada correctamente', 201);
+    }
+
+    /**
+     * Change the status of the claseType
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function activation(ClaseType $clases_type)
+    {
+        $clases_type->update([
+            'active' => !$clases_type->active
+        ]);
+
+        return response()->json(['success' => 'Tipo de clase actualizada correctamente'], 200);
     }
 }

@@ -29,9 +29,9 @@
                     <table id="clases-types-table" class="table table-hover">
                         <thead class="thead-default">
                             <tr>
-                                <th width="70%">Tipo de Clase</th>
+                                <th width="60%">Tipo de Clase</th>
 
-                                <th width="30%">Acciones</th>
+                                <th width="40%">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>

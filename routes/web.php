@@ -50,6 +50,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('/clases-types-all', 'Clases\ClaseTypeController@allClaseTypes')->name('tenant.admin.clases-types-all');
     Route::post('/clases-types/{clase_type}', 'Wods\StageTypeController@addStage');
     Route::get('/clases-types/{clase_type}/stages-types', 'Clases\ClaseTypeStageTypeController@index');
+    Route::patch('/clases-types/{clases_type}/activation', 'Clases\ClaseTypeController@activation');
     Route::resource('clases-types', 'Clases\ClaseTypeController');
     Route::resource('stages-types', 'Wods\StageTypeController')->only('show', 'update', 'destroy');
 
