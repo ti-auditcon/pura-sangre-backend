@@ -106,7 +106,7 @@ class IconClaseType
             ],
             self::FITNESS => [
                 'name'       => 'fitness',
-                'human_name' => 'Funcional',
+                'human_name' => 'Musculación',
                 'url_path'   => config('app.api_url') . '/icon/clases/fitness.svg',
             ],
             self::PRE_NATAL => [
