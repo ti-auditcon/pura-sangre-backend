@@ -11,7 +11,7 @@ class IconClaseType
     public const HIIT = 4;
     public const YOGA = 5;
     public const RUNNING = 6;
-    public const WHEIGHT_LIFTING = 7;
+    public const WEIGHTLIFTING = 7;
     public const FOOTBALL = 8;
     public const SPINNING = 9;
     public const BASKETBALL = 10;
@@ -69,10 +69,10 @@ class IconClaseType
                 'human_name' => 'Running',
                 'url_path'   => config('app.api_url') . '/icon/clases/running.svg',
             ],
-            self::WHEIGHT_LIFTING => [
+            self::WEIGHTLIFTING => [
                 'name'       => 'weightlifting',
                 'human_name' => 'Levantamiento de pesas',
-                'url_path'   => config('app.api_url') . '/icon/clases/weight.svg',
+                'url_path'   => config('app.api_url') . '/icon/clases/weightlifting.svg',
             ],
             self::FOOTBALL => [
                 'name'       => 'football',
