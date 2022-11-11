@@ -26,7 +26,7 @@
 
 					<div class="ibox-tools">
 
-		                <button
+		                {{-- <button
 		                    id="clases-type-button-modal"
 		                    class="btn btn-info"
 		                    data-toggle="modal"
@@ -34,7 +34,7 @@
 		                >
 		                    <i class="la la-calendar-o"></i>
 		                    Tipos de clases
-		                </button>
+		                </button> --}}
 
 					</div>
 				</div>
