@@ -7,30 +7,30 @@ use Illuminate\Database\Eloquent\Model;
 class FlowOrderStatus extends Model
 {
     /**
-     *  Order status ID
+     * Order status ID
      */
      const PAGADO = 1;
 
     /**
-     *  Order status ID
+     * Order status ID
      */
     const PENDIENTE = 2;
 
     /**
-     *  Order status ID
+     * Order status ID
      */
     const ANULADO = 3;
     const CANCELED = 3;
 
     /**
-     *  Order status ID
+     * Order status ID
      */
     const OTRO = 4;
 
     /**
-     *  Undocumented function
+     * Undocumented function
      *
-     *  @return  void
+     * @return  void
      */
     public function listAllStatus()
     {
@@ -43,9 +43,9 @@ class FlowOrderStatus extends Model
     }
 
     /**
-     *  Retrieve Flow Status Order by Id
+     * Retrieve Flow Status Order by Id
      *
-     *  @return  returnType
+     * @return  returnType
      */
     public function getStatus($statusOrderId)
     {

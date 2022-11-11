@@ -7,9 +7,9 @@ use Illuminate\Foundation\Http\FormRequest;
 class IssuedTaxDocumentRequest extends FormRequest
 {
     /**
-     *  Determine if the user is authorized to make this request.
+     * Determine if the user is authorized to make this request.
      *
-     *  @return  bool
+     * @return  bool
      */
     public function authorize()
     {
@@ -17,9 +17,9 @@ class IssuedTaxDocumentRequest extends FormRequest
     }
 
     /**
-     *  Get the validation rules that apply to the request.
+     * Get the validation rules that apply to the request.
      *
-     *  @return  array
+     * @return  array
      */
     public function rules()
     {
@@ -29,9 +29,9 @@ class IssuedTaxDocumentRequest extends FormRequest
     }
     
     /**
-     *  [messages description]
+     * [messages description]
      *
-     *  @return  [type]  [return description]
+     * @return  [type]  [return description]
      */
     public function messages()
     {

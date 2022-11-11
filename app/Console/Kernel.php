@@ -29,21 +29,21 @@ class Kernel extends ConsoleKernel
     ];
 
     /**
-     *  Define the application's command schedule.
+     * Define the application's command schedule.
      *
-     *  @param   \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param   \Illuminate\Console\Scheduling\Schedule  $schedule
      *
-     *  @return  void
+     * @return  void
      */
     protected function schedule(Schedule $schedule)
     {
-        /**  Send Push Notifications to users certain minutes before class starts  */
+        /** Send Push Notifications to users certain minutes before class starts  */
         $schedule->command('purasangre:clases:send-notifications')->everyFifteenMinutes();
-        /**  Remove users who don't confirm assistance to clases  */
+        /** Remove users who don't confirm assistance to clases  */
         $schedule->command('purasangre:clases:clear')->everyFifteenMinutes();
 
         // $schedule->command('clases:close')->hourlyAt(15);
-        /**  Close all the clases, changing status of the users */
+        /** Close all the clases, changing status of the users */
         $schedule->command('clases:close')->everyFiveMinutes();
         $schedule->command('plans:refresh')->daily();
         $schedule->command('clases:create')->weekly();
@@ -60,14 +60,14 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('users:gone-away-email')->daily();
 
-        /**  Issue to SII receipts and send bill receipt to student  */
+        /** Issue to SII receipts and send bill receipt to student  */
         $schedule->command('purasangre:invoicing:issue-receipts')->everyFifteenMinutes();
     }
 
     /**
-     *  Register the commands for the application.
+     * Register the commands for the application.
      *
-     *  @return  void
+     * @return  void
      */
     protected function commands()
     {

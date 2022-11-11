@@ -22,16 +22,16 @@ class Reservation extends Model
     // protected $dates = ['deleted_at'];
 
     /**
-     *  Massive asignment values for Reservation
+     * Massive asignment values for Reservation
      *
-     *  plan_user_id            integer      Id of the PlaUser
-     *  clase_id                integer      Where this reservations belongs
-     *  reservation_status_id   integer      Could has the next statuses: (active, consumed, pendient, cancelled)
-     *  user_id                 integer      Who is gonna take the class
-     *  by_god                  tinyInteger  Who made the reservation (meanwhile used to determine if the admin made it)
-     *  details                 longText     **not used yet, goal is to student can make some notes after the class
+     * plan_user_id            integer      Id of the PlaUser
+     * clase_id                integer      Where this reservations belongs
+     * reservation_status_id   integer      Could has the next statuses: (active, consumed, pendient, cancelled)
+     * user_id                 integer      Who is gonna take the class
+     * by_god                  tinyInteger  Who made the reservation (meanwhile used to determine if the admin made it)
+     * details                 longText     **not used yet, goal is to student can make some notes after the class
      *
-     *  @var  array
+     * @var  array
      */
     protected $fillable = [
         'plan_user_id',
@@ -43,9 +43,9 @@ class Reservation extends Model
     ];
 
     /**
-     *  [reservation_statistic_stages description]
+     * [reservation_statistic_stages description]
      *
-     *  @method reservation_statistic_stages
+     * @method reservation_statistic_stages
      *
      * @return [type]                       [description]
      */
@@ -56,7 +56,7 @@ class Reservation extends Model
 
     /**
      * [user description]
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
@@ -76,7 +76,7 @@ class Reservation extends Model
     /**
      * [plan_user description]
      *
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function plan_user()
     {

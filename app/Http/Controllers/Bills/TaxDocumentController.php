@@ -12,30 +12,30 @@ use App\Http\Requests\Bills\IssuedTaxDocumentRequest;
 class TaxDocumentController extends Controller
 {
     /**
-     *  Base url for developing as for production
+     * Base url for developing as for production
      *
-     *  @var  string
+     * @var  string
      */
     private $baseUrl;
 
     /**
-     *  Api key for developing as for production
+     * Api key for developing as for production
      *
-     *  @var  string
+     * @var  string
      */
     private $apiKey;
 
     /**
-     *  Check if the requests are with ssl connection
+     * Check if the requests are with ssl connection
      *
-     *  @var  boolean
+     * @var  boolean
      */
     protected $verifiedSSL;
     
     /**
-     *  url of the Purasangre API 
+     * url of the Purasangre API 
      *
-     *  @var  string
+     * @var  string
      */
     protected $purasangreApiUrl;
 
@@ -48,9 +48,9 @@ class TaxDocumentController extends Controller
     }
 
     /**
-     *  [setTaxIssuerData description]
+     * [setTaxIssuerData description]
      *
-     *  @param   string   $environment
+     * @param   string   $environment
      */
     public function fillDataForInvoicer($environment = 'sandbox')
     {
@@ -62,9 +62,9 @@ class TaxDocumentController extends Controller
     }
 
     /**
-     *  Fill url and apis for requests
+     * Fill url and apis for requests
      *
-     *  @return  void
+     * @return  void
      */
     public function fillUrlAndKeys($environment = 'sandbox')
     {
@@ -73,8 +73,8 @@ class TaxDocumentController extends Controller
         $this->apiKey = config("invoicing.haulmer.{$environment}.api_key");
 
         /**
-         *  For production we need to send the requests through SSL connections,
-         *  but not in development environment
+         * For production we need to send the requests through SSL connections,
+         * but not in development environment
          */
         $this->verifiedSSL = boolval(config('app.sll'));
 
@@ -82,11 +82,11 @@ class TaxDocumentController extends Controller
     }
 
     /**
-     *  Display the specified resource.
+     * Display the specified resource.
      *
-     *  @param   Request
+     * @param   Request
      * 
-     *  @return  \Illuminate\Http\Response
+     * @return  \Illuminate\Http\Response
      */
     public function show(Request $request)
     {
@@ -131,11 +131,11 @@ class TaxDocumentController extends Controller
     }
 
     /**
-     *  Display the specified resource.
+     * Display the specified resource.
      *
-     *  @param   Request
+     * @param   Request
      * 
-     *  @return  \Illuminate\Http\Response
+     * @return  \Illuminate\Http\Response
      */
     public function getIssuedPDF(IssuedTaxDocumentRequest $request)
     {
@@ -183,12 +183,12 @@ class TaxDocumentController extends Controller
     }
 
     /**
-     *  [savePDFThroughAPI description]
+     * [savePDFThroughAPI description]
      *
-     *  @param   [type]  $response      [$response description]
-     *  @param   [type]  $planUserFlow  [$planUserFlow description]
+     * @param   [type]  $response      [$response description]
+     * @param   [type]  $planUserFlow  [$planUserFlow description]
      *
-     *  @return  [type]                 [return description]
+     * @return  [type]                 [return description]
      */
     public function savePDFThroughAPI(PlanUserFlow $plan_user_flow, Request $request)
     {

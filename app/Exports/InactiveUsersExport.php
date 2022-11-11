@@ -16,7 +16,7 @@ class InactiveUsersExport implements FromCollection, WithHeadings
     use ExpiredPlans;
 
     /**
-     *  @return  \Illuminate\Support\Collection
+     * @return  \Illuminate\Support\Collection
      */
     public function collection()
     {
@@ -24,9 +24,9 @@ class InactiveUsersExport implements FromCollection, WithHeadings
     }
 
     /**
-     *  Headings for excel export
+     * Headings for excel export
      *
-     *  @return  array
+     * @return  array
      */
     public function headings(): array
     {
@@ -42,9 +42,9 @@ class InactiveUsersExport implements FromCollection, WithHeadings
     }
 
     /**
-     *  Export users with inactive plans
+     * Export users with inactive plans
      *
-     *  @return  \Illuminate\Support\Collection
+     * @return  \Illuminate\Support\Collection
      */
     public function exportUsers()
     {

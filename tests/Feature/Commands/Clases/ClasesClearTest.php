@@ -35,13 +35,13 @@ class ClasesClearTest extends TestCase
     protected $description = "Remove users that don't confirm assistance xx min before class start";
 
     /**
-     *  Get the rounded minute from an specific time,
-     *  useful in case of server trigger after the specific hour and minute
-     *  Also add the 0
+     * Get the rounded minute from an specific time,
+     * useful in case of server trigger after the specific hour and minute
+     * Also add the 0
      *
-     *  @param   Carbon\Carbon|string  $time
+     * @param   Carbon\Carbon|string  $time
      *
-     *  @return  Carbon\Carbon
+     * @return  Carbon\Carbon
      */
     public function roundMinutesToMultipleOfFive($time) {
         $minutes = date('i', strtotime($time));
@@ -98,10 +98,10 @@ class ClasesClearTest extends TestCase
 
     // usuario con plan con 0 counters no se le cierra el plan y tampoco le elimina la clase
     /**
-     *  la clase a limpiar es la de la hora correspondiente,
-     *  según los minutos para remover a los alumnos de la tabla Settings
+     * la clase a limpiar es la de la hora correspondiente,
+     * según los minutos para remover a los alumnos de la tabla Settings
      *
-     *  @test
+     * @test
      */
     public function clase_hour_corresponds_to_hour_by_minutes_to_remove_users_from_settings_table()
     {
@@ -114,8 +114,8 @@ class ClasesClearTest extends TestCase
         $settings = Setting::first(['id', 'minutes_to_remove_users']);
 
         /**
-         *  igual necesitamos redondear a un multiplo de 5,
-         *  debido a que el rango minimo de diferencia es de 5 minutos
+         * igual necesitamos redondear a un multiplo de 5,
+         * debido a que el rango minimo de diferencia es de 5 minutos
          */
         $clase_hour = $this->roundMinutesToMultipleOfFive(
             now()->startofminute()->addminutes($settings->minutes_to_remove_users)
@@ -162,8 +162,8 @@ class ClasesClearTest extends TestCase
         $settings = Setting::first(['id', 'minutes_to_remove_users']);
 
         /**
-         *  Igual necesitamos redondear a un multiplo de 5,
-         *  debido a que el rango minimo de diferencia es de 5 minutos
+         * Igual necesitamos redondear a un multiplo de 5,
+         * debido a que el rango minimo de diferencia es de 5 minutos
          */
         $clase_hour = $this->roundMinutesToMultipleOfFive(
             now()->startOfMinute()->addMinutes($settings->minutes_to_remove_users)
@@ -196,8 +196,8 @@ class ClasesClearTest extends TestCase
         $planUser = factory(PlanUser::class)->create(['plan_status_id' => PlanStatus::ACTIVO]);
 
         /**
-         *  Igual necesitamos redondear a un multiplo de 5,
-         *  debido a que el rango minimo de diferencia es de 5 minutos
+         * Igual necesitamos redondear a un multiplo de 5,
+         * debido a que el rango minimo de diferencia es de 5 minutos
          */
         $clase_hour = $this->roundMinutesToMultipleOfFive(
             now()->startOfMinute()->addMinutes($settings->minutes_to_remove_users)
@@ -241,8 +241,8 @@ class ClasesClearTest extends TestCase
         $settings = Setting::first(['id', 'minutes_to_remove_users']);
 
         /**
-         *  Igual necesitamos redondear a un multiplo de 5,
-         *  debido a que el rango minimo de diferencia es de 5 minutos
+         * Igual necesitamos redondear a un multiplo de 5,
+         * debido a que el rango minimo de diferencia es de 5 minutos
          */
         $clase_hour = $this->roundMinutesToMultipleOfFive(
             now()->startOfMinute()->addMinutes($settings->minutes_to_remove_users)

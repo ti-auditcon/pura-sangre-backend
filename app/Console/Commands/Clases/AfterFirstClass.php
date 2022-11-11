@@ -12,23 +12,23 @@ use Illuminate\Support\Facades\Mail;
 class AfterFirstClass extends Command
 {
     /**
-     *  The name and signature of the console command.
+     * The name and signature of the console command.
      *
-     *  @var string
+     * @var string
      */
     protected $signature = 'clases:first';
 
     /**
-     *  The console command description.
+     * The console command description.
      *
-     *  @var string
+     * @var string
      */
     protected $description = 'Send an email to test users after her first consumed class';
 
     /**
-     *  $subject for email
+     * $subject for email
      * 
-     *  @var string
+     * @var string
      */
     protected $subject = 'Has finalizado tu primera clase!!';
 
@@ -43,9 +43,9 @@ class AfterFirstClass extends Command
     //     Por nuestra parte queremos saber que tal fuimos contigo";
 
     /**
-     *  Create a new command instance.
+     * Create a new command instance.
      *
-     *  @return void
+     * @return void
      */
     public function __construct()
     {
@@ -53,9 +53,9 @@ class AfterFirstClass extends Command
     }
 
     /**
-     *  Execute the console command.
+     * Execute the console command.
      *
-     *  @return mixed
+     * @return mixed
      */
     public function handle()
     {
@@ -90,12 +90,12 @@ class AfterFirstClass extends Command
     }
 
     /**
-     *  Get the rounded minute from an specific time,
-     *  useful in case of server trigger after the specific hour and minute
+     * Get the rounded minute from an specific time,
+     * useful in case of server trigger after the specific hour and minute
      * 
-     *  @param  Carbon\Carbon $time
-     *  
-     *  @return Carbon\Carbon
+     * @param  Carbon\Carbon $time
+     * 
+     * @return Carbon\Carbon
      */
     public function roundToQuarterHour($time) {
         $minutes = date('i', strtotime($time));

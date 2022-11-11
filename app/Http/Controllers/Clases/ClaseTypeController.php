@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Clases;
 
-use App\Http\Controllers\Controller;
-use App\Models\Clases\ClaseType;
-use App\Models\Wods\StageType;
 use Illuminate\Http\Request;
+use App\Models\Clases\ClaseType;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Clases\ClaseTypeStoreRequest;
 
 class ClaseTypeController extends Controller
 {
@@ -18,26 +18,60 @@ class ClaseTypeController extends Controller
     {
         $clases_types = ClaseType::all();
 
-        return response()->json($clases_types, 200);
+        return view('clases-types.index', compact('clases_types'));
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('clases-types.create');
+    }
+
+    /**
+     * Get json of all claseType available in the system
+     *
+     * @return  \Illuminate\Http\Response
+     */
+    public function allClaseTypes()
+    {
+        $clases_types = ClaseType::all();
+
+        return response()->json(['data' => $clases_types]);
+    }
+
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  ClaseTypeStoreRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ClaseTypeStoreRequest $request)
     {
-        $clase_type = ClaseType::create([
+        ClaseType::create([
             'clase_type' => $request->clase_type,
-            'clase_color' => '#27b0b6'
+            'clase_color' => $request->clase_color ?? '#27b0b6',
+            'icon_type' => $request->icon_type,
+            'icon' => "{$request->icon_type}.svg",
+            'icon_white' => "{$request->icon_type}-white.svg",
+            'active' => $request->active ?? true,
         ]);
-        
-        return response()->json([
-            'success' => 'Tipo de clase creada correctamente', 
-            'data' => $clase_type->id
-        ], 200);
+
+        return redirect('clases-types')->with('success', 'Tipo de clase creada correctamente');
+    }
+
+    /**
+     * methodDescription
+     *
+     * @return  returnType
+     */
+    public function edit(ClaseType $clasesType)
+    {
+        return view('clases-types.edit', compact('clasesType'));
     }
 
     /**
@@ -55,52 +89,42 @@ class ClaseTypeController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Clases\ClaseType  $claseType
+     *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ClaseType $clases_type)
+    public function update(ClaseType $clases_type, Request $request)
     {
-        // dd($request->all());
+        $request->validate(
+            ['clase_type' => 'required', 'icon_type' => 'required'],
+            [],
+            ['clase_type' => 'Nombre', 'icon' => 'icono para tipo de clase']
+        );
+
         $clases_type->update([
-            'clase_type' => $request->clase_type_name
+            'clase_type' => $request->clase_type,
+            'icon_type'  => $request->icon_type,
+            'icon'       => "{$request->icon_type}.svg",
+            'icon_white' => "{$request->icon_type}-white.svg"
         ]);
 
-        // Get all the stage type of an specific Clase Type
-        $stage_type_ids = StageType::where('clase_type_id', $clases_type->id)
-                                ->pluck('id')
-                                ->toArray();
-
-        foreach ($request->stage_type as $key => $stage) {
-            // dd($key, $stage);
-            if (in_array($key, $stage_type_ids)) {
-                StageType::where('id', $key)->update([
-                    'stage_type' => $stage,
-                ]);
-            } else {
-                StageType::create([
-                    'stage_type' => $stage,
-                    'clase_type_id' => $clases_type->id
-                ]);
-            }
-        }
-
-        return back()->with('success', 'Actualizado correctamente');
+        return redirect('clases-types')->with('success', 'Tipo de Clase actualizada correctamente');
     }
-
-    // public function updateClaseTypeStage(Request $request)
-    // {
-    //     dd($request->all());
-    // }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Clases\ClaseType  $claseType
-     * @return \Illuminate\Http\Response
+     * @param   \App\Models\Clases\ClaseType  $claseType
+     *
+     * @return  \Illuminate\Http\Response
      */
     public function destroy(ClaseType $clases_type)
     {
+        $clases_type->stageTypes->each(function ($stage) {
+            $stage->delete();
+        });
+
         $clases_type->delete();
-        
+
         return response()->json('Tipo de clase eliminada correctamente', 201);
     }
 }

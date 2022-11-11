@@ -12,22 +12,22 @@ use App\Models\Invoicing\Haulmer\TaxDocumentStatus;
 class TaxDocument
 {
     /**
-     *  Haulmer invoicing number
+     * Haulmer invoicing number
      *
-     *  @var  int
+     * @var  int
      */
     const HAULMER = 1;
 
     /**
-     *  Value for receipts or invoices which are not issued
+     * Value for receipts or invoices which are not issued
      *
-     *  @var  string
+     * @var  string
      */
     const NOT_ISSUED = 'sin emision';
 
     /**
-     *  En el Rut Receptor se permite el uso de RUT genérico en caso de Boletas de Ventas y Servicios
-     *  (no periódicos ni domiciliarios): valor: 66.666.666-6
+     * En el Rut Receptor se permite el uso de RUT genérico en caso de Boletas de Ventas y Servicios
+     * (no periódicos ni domiciliarios): valor: 66.666.666-6
      */
     const GENERIC_RUT = "66666666-6";
     const GENERIC_RAZON_SOCIAL = "NACIONALES SIN RUT";
@@ -72,28 +72,28 @@ class TaxDocument
     ];
 
     /**
-     *  Base url as for developing, as for production
+     * Base url as for developing, as for production
      *
-     *  @var  string
+     * @var  string
      */
     private $baseUrl;
 
     /**
-     *  Api key as for developing as for production
+     * Api key as for developing as for production
      *
-     *  @var  string
+     * @var  string
      */
     private $apiKey;
 
     /**
-     *  To ckech if the requests are goin to be through SSL
+     * To ckech if the requests are goin to be through SSL
      *
-     *  @var  boolean
+     * @var  boolean
      */
     protected $verifiedSSL;
 
     /**
-     *  Tax data
+     * Tax data
      */
     protected $token;
 
@@ -135,36 +135,36 @@ class TaxDocument
 
 
     /**
-     *  La parte que va a emitir la boleta por el servicio o producto (ejemplo, PuraSangre, KatsuCrossFit)
-     *  Contiene los siguientes datos del emisor
-     *      apiKey:               haulmer_api_key
-     *      rut:                  rut
-     *      razon_social:         razon_social
-     *      giro_emisor:          giro
-     *      address:              address
-     *      comuna:               comuna
-     *      ciudad:               ciudad
-     *      telefono:             phone
-     *      email:                email
-     *      codigo_sii_sucursal:  codigo_sii_sucursal
-     *      acteco:               codigo_actividades_economicas  código de actividades economicas  // actividades economicas
+     * La parte que va a emitir la boleta por el servicio o producto (ejemplo, PuraSangre, KatsuCrossFit)
+     * Contiene los siguientes datos del emisor
+     *     apiKey:               haulmer_api_key
+     *     rut:                  rut
+     *     razon_social:         razon_social
+     *     giro_emisor:          giro
+     *     address:              address
+     *     comuna:               comuna
+     *     ciudad:               ciudad
+     *     telefono:             phone
+     *     email:                email
+     *     codigo_sii_sucursal:  codigo_sii_sucursal
+     *     acteco:               codigo_actividades_economicas  código de actividades economicas  // actividades economicas
      *
-     *  @var  object
+     * @var  object
      */
     public $sender;
 
     /**
-     *  Instance of the Guzzle Client to make requests to Openfactura
+     * Instance of the Guzzle Client to make requests to Openfactura
      *
-     *  @var  Client
+     * @var  Client
      */
     protected $httpRequest;
 
     /**
-     *  At start class fill values for Haulmer API
+     * At start class fill values for Haulmer API
      *
-     *  note: fillDataForInvoiceAPI must be before than the initialization of Guzzle Client,
-     *        because we need to fill the baseUrl first in order to fill the base_uri of the Guzzle Client
+     * note: fillDataForInvoiceAPI must be before than the initialization of Guzzle Client,
+     *       because we need to fill the baseUrl first in order to fill the base_uri of the Guzzle Client
      *
      */
     public function __construct($token = null)
@@ -180,8 +180,8 @@ class TaxDocument
     /**
      * [setTaxIssuerData description]
      *
-     *  @param   [type]   $environment  [$environment description]
-     *  @param   string    sandbox                [ description]
+     * @param   [type]   $environment  [$environment description]
+     * @param   string    sandbox                [ description]
      */
     public function setTaxIssuerData($environment = 'sandbox')
     {
@@ -195,9 +195,9 @@ class TaxDocument
     }
 
     /**
-     *  Set baseUrl and apiKey for Guzzle requests
+     * Set baseUrl and apiKey for Guzzle requests
      *
-     *  @return  void
+     * @return  void
      */
     public function initializeGuzzleClient()
     {
@@ -211,9 +211,9 @@ class TaxDocument
     }
 
     /**
-     *  Get the base url
+     * Get the base url
      *
-     *  @return  string
+     * @return  string
      */
     public function getBaseUri()
     {
@@ -221,10 +221,10 @@ class TaxDocument
     }
 
     /**
-     *  Transform all the fillable value into an object,
-     *  and fill them all with the tax document fetched
+     * Transform all the fillable value into an object,
+     * and fill them all with the tax document fetched
      *
-     *  @return  object
+     * @return  object
      */
     public function getData()
     {
@@ -237,9 +237,9 @@ class TaxDocument
     }
 
     /**
-     *  To check if the requests are going to be through ssl
+     * To check if the requests are going to be through ssl
      *
-     *  @return bool
+     * @return bool
      */
     public function getVerifiedSsl()
     {
@@ -247,9 +247,9 @@ class TaxDocument
     }
 
     /**
-     *  Check if this class has setted the apiKey
+     * Check if this class has setted the apiKey
      *
-     *  @return  boolean
+     * @return  boolean
      */
     public function hasApiKey() :bool
     {
@@ -267,9 +267,9 @@ class TaxDocument
     }
 
     /**
-     *  Fill url and apis for requests
+     * Fill url and apis for requests
      *
-     *  @return  void
+     * @return  void
      */
     public function fillUrlAndKeys($environment = 'sandbox')
     {
@@ -281,9 +281,9 @@ class TaxDocument
     }
 
     /**
-     *  [fillEmisor description]
+     * [fillEmisor description]
      *
-     *  @param   [type]  $environment  [$environment description]
+     * @param   [type]  $environment  [$environment description]
      *
      */
     public function fillEmisor($environment)
@@ -293,9 +293,9 @@ class TaxDocument
 
 
     /**
-     *  Get the protected token of this tax document
+     * Get the protected token of this tax document
      *
-     *  @return  string
+     * @return  string
      */
     public function getToken()
     {
@@ -303,11 +303,11 @@ class TaxDocument
     }
 
     /**
-     *  Set token value
+     * Set token value
      *
-     *  @param   string  $token
+     * @param   string  $token
      *
-     *  @return  void
+     * @return  void
      */
     public function setToken($token)
     {
@@ -315,9 +315,9 @@ class TaxDocument
     }
 
     /**
-     *  Check if there is a token
+     * Check if there is a token
 
-     *  @return  boolean
+     * @return  boolean
      */
     public function tokenIsSetted()
     {
@@ -325,9 +325,9 @@ class TaxDocument
     }
 
     /**
-     *  The opposite of tokenIsSetted method
+     * The opposite of tokenIsSetted method
      *
-     *  @return boolean
+     * @return boolean
      */
     public function tokenIsNotSetted()
     {
@@ -335,9 +335,9 @@ class TaxDocument
     }
 
     /**
-     *  Check if this tax document has IVA, it means affected to taxes (19%)
+     * Check if this tax document has IVA, it means affected to taxes (19%)
      *
-     *  @return  boolean
+     * @return  boolean
      */
     public function hasIVA()
     {
@@ -345,9 +345,9 @@ class TaxDocument
     }
 
     /**
-     *  Get the status of this tax document and check if has an cancellable status
+     * Get the status of this tax document and check if has an cancellable status
      *
-     *  @return  boolean
+     * @return  boolean
      */
     public function canBeCancelled() :bool
     {
@@ -357,11 +357,11 @@ class TaxDocument
     }
 
     /**
-     *  Get the data of a tax document an fill it into $tax property
+     * Get the data of a tax document an fill it into $tax property
      *
-     *  @param   string|null  $token
+     * @param   string|null  $token
      *
-     *  @return  void|null
+     * @return  void|null
      */
     public function create()
     {
@@ -377,11 +377,11 @@ class TaxDocument
     }
 
     /**
-     *  [setTax description]
+     * [setTax description]
      *
-     *  @param   [type]  $data  [$data description]
+     * @param   [type]  $data  [$data description]
      *
-     *  @return  void
+     * @return  void
      */
     public function setTax($data)
     {
@@ -407,9 +407,9 @@ class TaxDocument
     }
 
     /**
-     *  [removeUnusedValues description]
+     * [removeUnusedValues description]
      *
-     *  @return  [type]  [return description]
+     * @return  [type]  [return description]
      */
     public function removeUnusedValues()
     {
@@ -430,9 +430,9 @@ class TaxDocument
     }
 
     /**
-     *  Changes adding or modifyng data if there is a empty receptor
+     * Changes adding or modifyng data if there is a empty receptor
      *
-     *  @return  void
+     * @return  void
      */
     public function manageAnonymousReceptor()
     {
@@ -447,11 +447,11 @@ class TaxDocument
     }
 
     /**
-     *  [issueReceipt description]
+     * [issueReceipt description]
      *
-     *  @param   [type]  $order  [$order description]
+     * @param   [type]  $order  [$order description]
      *
-     *  @return  json
+     * @return  json
      */
     public function issueReceipt($order)
     {
@@ -461,11 +461,11 @@ class TaxDocument
     }
 
     /**
-     *  Calculate values and return the tax document
+     * Calculate values and return the tax document
      *
-     *  @param  object   $receipt
+     * @param  object   $receipt
      *
-     *  @return  TaxDocument
+     * @return  TaxDocument
      */
     public function fillReceiptData($receipt)
     {
@@ -488,11 +488,11 @@ class TaxDocument
     }
 
     /**
-     *  [calculateValues description]
+     * [calculateValues description]
      *
-     *  @param   object  $request
+     * @param   object  $request
      *
-     *  @return  array
+     * @return  array
      */
     public function calculateValues(object $request)
     {
@@ -504,12 +504,12 @@ class TaxDocument
     }
 
     /**
-     *  Issue invoice to SII
+     * Issue invoice to SII
      *
-     *  todo: the sended dte should be $this instead
-     *  @param TaxDocument $taxDocument
+     * todo: the sended dte should be $this instead
+     * @param TaxDocument $taxDocument
      *
-     *  @return  json
+     * @return  json
      */
     public function issue(TaxDocument $taxDocument)
     {
@@ -527,11 +527,11 @@ class TaxDocument
     }
 
     /**
-     *  Fetch invoice data from SII according the given $token
+     * Fetch invoice data from SII according the given $token
      *
-     *  @param   string         $token
+     * @param   string         $token
      *
-     *  @return  object|string
+     * @return  object|string
      */
     public function get($token)
     {
@@ -547,9 +547,9 @@ class TaxDocument
     }
 
     /**
-     *  Issue a credit note to cancel a specific invoice
+     * Issue a credit note to cancel a specific invoice
      *
-     *  @return  json
+     * @return  json
      */
     public function cancel()
     {
@@ -574,11 +574,11 @@ class TaxDocument
 
 
     /**
-     *  Check the status of a tax document
+     * Check the status of a tax document
      *
-     *  @param string $token  Has to be a valid token by Openfactura
+     * @param string $token  Has to be a valid token by Openfactura
      *
-     *  @return  ?json
+     * @return  ?json
      */
     public function status(string $token)
     {
@@ -609,9 +609,9 @@ class TaxDocument
     }
 
     /**
-     *  We iterate over all the nmbitem for the tax document details
+     * We iterate over all the nmbitem for the tax document details
      *
-     *  @return  [type]      [return description]
+     * @return  [type]      [return description]
      */
     public function getAllDetails()
     {

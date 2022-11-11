@@ -21,7 +21,7 @@ class PlanUserRepository
     protected $verifiedSSL;
 
     /**
-     *  @param   PlanUser  $planUser
+     * @param   PlanUser  $planUser
      */
     public function __construct(PlanUser $planUser)
     {
@@ -32,9 +32,9 @@ class PlanUserRepository
     }
 
     /**
-     *  @param   PlanUser  $planUser
+     * @param   PlanUser  $planUser
      *
-     *  @return  bool
+     * @return  bool
      */
     public function store($data, $user)
     {
@@ -58,11 +58,11 @@ class PlanUserRepository
     }
 
     /**
-     *  [shouldCreateABill description]
+     * [shouldCreateABill description]
      *
-     *  @param   [type]  $planData  [$planData description]
+     * @param   [type]  $planData  [$planData description]
      *
-     *  @return  bool               [return description]
+     * @return  bool               [return description]
      */
     public function shouldCreateABill($planData) :bool
     {
@@ -74,11 +74,11 @@ class PlanUserRepository
     }
 
     /**
-     *  [emiteReceiptToSII description]
+     * [emiteReceiptToSII description]
      *
-     *  @param   PlanUserFlow  $planUserflow
+     * @param   PlanUserFlow  $planUserflow
      *
-     *  @return  null|bool|void
+     * @return  null|bool|void
      */
     public function emiteReceiptToSII(PlanUserFlow $planUserflow)
     {
@@ -101,11 +101,11 @@ class PlanUserRepository
     }
 
     /**
-     *  [getPDF description]
+     * [getPDF description]
      *
-     *  @param   PlanUserFlow  $plan_user_flow  [$plan_user_flow description]
+     * @param   PlanUserFlow  $plan_user_flow  [$plan_user_flow description]
      *
-     *  @return  [type]                         [return description]
+     * @return  [type]                         [return description]
      */
     public function getPDF(PlanUserFlow $plan_user_flow)
     {
@@ -129,12 +129,12 @@ class PlanUserRepository
     }
     
     /**
-     *  [savePDFThroughAPI description]
+     * [savePDFThroughAPI description]
      *
-     *  @param   [type]  $response      [$response description]
-     *  @param   [type]  $planUserFlow  [$planUserFlow description]
+     * @param   [type]  $response      [$response description]
+     * @param   [type]  $planUserFlow  [$planUserFlow description]
      *
-     *  @return  [type]                 [return description]
+     * @return  [type]                 [return description]
      */
     public function savePDFThroughAPI($response, $planUserFlow)
     {

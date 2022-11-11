@@ -15,9 +15,9 @@ class Block extends Model
     // ];
 
     /**
-     *  Name of the table in the database
+     * Name of the table in the database
      *
-     *  @var  string
+     * @var  string
      */
     protected $table = 'blocks';
 
@@ -43,9 +43,9 @@ class Block extends Model
     /**
      * [getEndAttribute description]
      *
-     *  @param  [type] $value [description]
+     * @param  [type] $value [description]
      *
-     *  @return [type]        [description]
+     * @return [type]        [description]
      */
     public function getEndAttribute($value)
     {
@@ -126,7 +126,7 @@ class Block extends Model
     /**
      * Get the User of this Model
      *
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
@@ -136,7 +136,7 @@ class Block extends Model
     /**
      * Get the clase type of this Model
      *
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function claseType()
     {
@@ -144,9 +144,9 @@ class Block extends Model
     }
 
     // /**
-    //  *  Day of the week of this block
+    //  * Day of the week of this block
     //  *
-    //  *  @return  string
+    //  * @return  string
     //  */
     // public function getDayWeekAttribute()
     // {
@@ -154,9 +154,9 @@ class Block extends Model
     // }
 
     /**
-     *  claseTypesInSession
+     * claseTypesInSession
      *
-     *  @return  collection
+     * @return  collection
      */
     public function claseTypesInSession()
     {

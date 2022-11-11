@@ -22,7 +22,7 @@ class Wod extends Model
      *
      * @var array
      */
-    protected $fillable = ['date','clase_type_id'];
+    protected $fillable = ['date', 'clase_type_id'];
 
     /**
      * [$appends description]

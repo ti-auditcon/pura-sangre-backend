@@ -40,7 +40,7 @@ class CloseClass extends Command
      */
     public function handle()
     {
-        /**  Adjust hour */
+        /** Adjust hour */
         $clase_hour = $this->roundToMultipleOfFive(
             now()->subMinutes(self::MINUTES_TO_PASS_LIST)
         );
@@ -66,13 +66,13 @@ class CloseClass extends Command
     }
 
     /**
-     *  Get the rounded minute from an specific time,
-     *  useful in case of server trigger after the specific hour and minute
-     *  Also add the 0
+     * Get the rounded minute from an specific time,
+     * useful in case of server trigger after the specific hour and minute
+     * Also add the 0
      *
-     *  @param   Carbon\Carbon|string  $time
+     * @param   Carbon\Carbon|string  $time
      *
-     *  @return  Carbon\Carbon
+     * @return  Carbon\Carbon
      */
     public function roundToMultipleOfFive($time)
     {

@@ -9,18 +9,18 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     /**
-     *  List of roles into system
+     * List of roles into system
      *
-     *  @var  int
+     * @var  int
      */
 	const ADMIN = 1;
 	const COACH = 2;
 	const STUDENT = 3;
 
     /**
-     *  The users that belong to the Role
+     * The users that belong to the Role
      *
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
 	public function users()
 	{
@@ -28,9 +28,9 @@ class Role extends Model
 	}
 
     /**
-     *  The coaches that belong to the Role
+     * The coaches that belong to the Role
      *
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
 	public function coaches()
 	{

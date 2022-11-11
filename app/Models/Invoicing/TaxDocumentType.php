@@ -6,7 +6,7 @@ class TaxDocumentType
 {
 
     /**
-     *  All the tax documents types by SII
+     * All the tax documents types by SII
      */
 
     public const FACTURA = 30;
@@ -34,9 +34,9 @@ class TaxDocumentType
     public const NOTA_DE_CREDITO_DE_EXPORTACION_ELECTRONICA = 112;
 
     /**
-     *  Get the list of all types of taxes
+     * Get the list of all types of taxes
      *
-     *  @return  array
+     * @return  array
      */
     public static function list()
     {

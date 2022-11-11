@@ -21,14 +21,14 @@ class PlanUserControllerTest extends TestCase
     use RefreshDatabase, DatabaseMigrations;
 
     /**
-     *  A created admin for tests
+     * A created admin for tests
      *
      * @var  User
      */
     protected $admin;
 
     /**
-     *  Before the tests are executed
+     * Before the tests are executed
      *
      * @return  void
      */
@@ -52,9 +52,9 @@ class PlanUserControllerTest extends TestCase
     }
 
     /**
-     *  Manage all the requirements to create a Admin for tests
+     * Manage all the requirements to create a Admin for tests
      *
-     *  @return  void
+     * @return  void
      */
     public function createAnAdminUser(): void
     {
@@ -65,7 +65,7 @@ class PlanUserControllerTest extends TestCase
     }
 
     /**
-     *  @return  void
+     * @return  void
      */
     public function createAdminRole(): void
     {
@@ -73,7 +73,7 @@ class PlanUserControllerTest extends TestCase
     }
 
     /**
-     *  @param   User  $user
+     * @param   User  $user
      */
     protected function makeUserAnAdmin($user)
     {
@@ -133,7 +133,7 @@ class PlanUserControllerTest extends TestCase
                 'plan_status_id' => PlanStatus::ACTIVO
             ]);
 
-            /**  Cancel plan to assign other in the next iteration */
+            /** Cancel plan to assign other in the next iteration */
             $studentUser->actual_plan()->update(['plan_status_id' => PlanStatus::CANCELADO]);
         }
     }

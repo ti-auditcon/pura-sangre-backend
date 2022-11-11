@@ -1,5 +1,5 @@
 @component('mail::message')
-#Hola {{$user->first_name }}, @if ($user->gender == 'mujer') **Bienvenida** @else **Bienvenido** @endif **  a la comunidad PuraSangre CrossFit!**
+#Hola {{$user->first_name }}, @if ($user->gender == 'mujer') **Bienvenida** @else **Bienvenido** @endif ** a la comunidad PuraSangre CrossFit!**
 
 Estamos felices de que te unas a nuestra familia, estamos para apoyarte y para que cumplas tus objetivos.
 

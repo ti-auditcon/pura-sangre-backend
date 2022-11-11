@@ -16,7 +16,7 @@ class PostponeController extends Controller
     /**
      * [index description]
      *
-     *  @return  [type]  [return description]
+     * @return  [type]  [return description]
      */
     public function index()
     {
@@ -24,9 +24,9 @@ class PostponeController extends Controller
     }
 
     /**
-     *  Postpone all plan by certains time
+     * Postpone all plan by certains time
      *
-     *  @return  view
+     * @return  view
      */
     public function postponeAll(Request $request)
     {
@@ -42,9 +42,9 @@ class PostponeController extends Controller
     }
 
     /**
-     *  methodDescription
+     * methodDescription
      *
-     *  @return  returnType
+     * @return  returnType
      */
     public function postpone($request, $plan_user)
     {

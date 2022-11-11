@@ -17,18 +17,18 @@ class CloseClassTest extends TestCase
     use DatabaseMigrations;
 
     /**
-     *  The minutes of difference between the start of the class,
-     *  and the moment that the list has to be pass
+     * The minutes of difference between the start of the class,
+     * and the moment that the list has to be pass
      *
-     *  @var  integer
+     * @var  integer
      */
     const MINUTES_TO_PASS_LIST = CloseClass::MINUTES_TO_PASS_LIST;
 
     /**
-     *  Because we round to five minutes the list, that means if the current minute is in 15 to 20,
-     *  it should pass list, but any other don't
+     * Because we round to five minutes the list, that means if the current minute is in 15 to 20,
+     * it should pass list, but any other don't
      *
-     *  @var  array
+     * @var  array
      */
     const MINUTES_NOT_PASS_LIST = [14, 20];
 
@@ -40,13 +40,13 @@ class CloseClassTest extends TestCase
     protected $signature = 'clases:close';
 
     /**
-     *  Get the rounded minute from an specific time,
-     *  useful in case of server trigger after the specific hour and minute
-     *  Also add the 0
+     * Get the rounded minute from an specific time,
+     * useful in case of server trigger after the specific hour and minute
+     * Also add the 0
      *
-     *  @param   Carbon\Carbon|string  $time
+     * @param   Carbon\Carbon|string  $time
      *
-     *  @return  Carbon\Carbon
+     * @return  Carbon\Carbon
      */
     public function roundMinutesToMultipleOfFive($time) {
         $minutes = date('i', strtotime($time));
@@ -63,8 +63,8 @@ class CloseClassTest extends TestCase
         $current_dateTime = now()->copy();
 
         /**
-         *  Igual necesitamos redondear a un multiplo de 5,
-         *  debido a que el rango minimo de diferencia es de 5 minutos
+         * Igual necesitamos redondear a un multiplo de 5,
+         * debido a que el rango minimo de diferencia es de 5 minutos
          */
         $clase_hour = $this->roundMinutesToMultipleOfFive(
             $current_dateTime->copy()->subMinutes(self::MINUTES_TO_PASS_LIST)

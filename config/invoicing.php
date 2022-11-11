@@ -14,7 +14,7 @@ return [
     'haulmer' => [
         
         /**
-         *  HAULMER DATA AND KEYS
+         * HAULMER DATA AND KEYS
          */
         'sandbox' => [
             'api_key' => '928e15a2d14d4a6292345f04960f4bd3',
@@ -34,7 +34,7 @@ return [
         ],
         
         /**
-         *  PURASANGRE DATA AND KEYS
+         * PURASANGRE DATA AND KEYS
          */
         'production' => [
             'api_key' => '1784ea7f088c4d7b915e727d691a8453',

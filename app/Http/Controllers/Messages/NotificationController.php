@@ -61,9 +61,9 @@ class NotificationController extends Controller
     }
 
     /**
-     *  sendOnePush
+     * sendOnePush
      *
-     *  @return  returnType
+     * @return  returnType
      */
     public function sendOnePush($userId)
     {

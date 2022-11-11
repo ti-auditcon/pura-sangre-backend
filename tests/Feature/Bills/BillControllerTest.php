@@ -18,14 +18,14 @@ class BillControllerTest extends TestCase
     use RefreshDatabase, DatabaseMigrations;
 
     /**
-     *  A created admin for tests
+     * A created admin for tests
      *
      * @var  User
      */
     protected $admin;
 
     /**
-     *  Before the tests are executed
+     * Before the tests are executed
      *
      * @return  void
      */
@@ -49,9 +49,9 @@ class BillControllerTest extends TestCase
     }
 
     /**
-     *  Manage all the requirements to create a Admin for tests
+     * Manage all the requirements to create a Admin for tests
      *
-     *  @return  void
+     * @return  void
      */
     public function createAnAdminUser(): void
     {
@@ -62,7 +62,7 @@ class BillControllerTest extends TestCase
     }
 
     /**
-     *  @return  void
+     * @return  void
      */
     public function createAdminRole(): void
     {
@@ -70,7 +70,7 @@ class BillControllerTest extends TestCase
     }
 
     /**
-     *  @param   User  $user
+     * @param   User  $user
      */
     protected function makeUserAnAdmin($user)
     {

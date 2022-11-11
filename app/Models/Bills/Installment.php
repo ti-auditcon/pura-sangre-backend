@@ -35,7 +35,7 @@ class Installment extends Model
   /**
    * [bill description]
    * @return [type] [description]
-   *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+   * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
    */
   public function bill()
   {
@@ -55,7 +55,7 @@ class Installment extends Model
   /**
    * [plan_cliente description]
    * @method plan_cliente
-   *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+   * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
    */
   public function plan_user()
   {

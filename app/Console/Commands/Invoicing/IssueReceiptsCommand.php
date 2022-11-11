@@ -14,45 +14,45 @@ use Illuminate\Support\Facades\Mail;
 class IssueReceiptsCommand extends Command
 {
     /**
-     *  The name and signature of the console command.
+     * The name and signature of the console command.
      *
-     *  @var  string
+     * @var  string
      */
     protected $signature = 'purasangre:invoicing:issue-receipts';
 
     /**
-     *  The console command description.
+     * The console command description.
      *
-     *  @var  string
+     * @var  string
      */
     protected $description = 'Send TaxDocuments to SII through Haulmer API';
 
     /**
-     *  Check if the requests are with ssl connection
+     * Check if the requests are with ssl connection
      *
-     *  @var  boolean
+     * @var  boolean
      */
     protected $verifiedSSL;
     
     /**
-     *  url of the Purasangre API 
+     * url of the Purasangre API 
      *
-     *  @var  string
+     * @var  string
      */
     protected $purasangreApiUrl;
 
     /**
-     *  Create a new command instance.
+     * Create a new command instance.
      *
-     *  @return  void
+     * @return  void
      */
     public function __construct()
     {
         parent::__construct();
 
         /**
-         *  For production we need to send the requests through SSL connections,
-         *  but not in development environment
+         * For production we need to send the requests through SSL connections,
+         * but not in development environment
          */
         $this->verifiedSSL = boolval(config('app.sll'));
 
@@ -60,17 +60,17 @@ class IssueReceiptsCommand extends Command
     }
 
     /**
-     *  We make two complete processes
+     * We make two complete processes
      * 
-     *  -  The first is to issue the receipt to SII,
-     *     get the document in pdf, and send a email to the user,
-     *     with the receipt and the information of the contracted plan
+     * -  The first is to issue the receipt to SII,
+     *    get the document in pdf, and send a email to the user,
+     *    with the receipt and the information of the contracted plan
      * 
-     *  -  The second one is in order FIRST FAILS,
-     *     this, with the token, request the pdf one more time, save it to API
-     *     and  
+     * -  The second one is in order FIRST FAILS,
+     *    this, with the token, request the pdf one more time, save it to API
+     *    and  
      *
-     *  @return  mixed
+     * @return  mixed
      */
     public function handle()
     {
@@ -82,9 +82,9 @@ class IssueReceiptsCommand extends Command
     }
 
     /**
-     *  [issueAllReceiptsWithoutToken description]
+     * [issueAllReceiptsWithoutToken description]
      *
-     *  @return  void
+     * @return  void
      */
     public function issueAllReceiptsWithoutToken()
     {
@@ -123,9 +123,9 @@ class IssueReceiptsCommand extends Command
     }
 
     /**
-     *  Request to Haulmer the bills in pdf of the PlanUserFlows with a previous token requested
+     * Request to Haulmer the bills in pdf of the PlanUserFlows with a previous token requested
      *
-     *  @return  void
+     * @return  void
      */
     public function sendReceiptsThatHaveNotPDFYet()
     {
@@ -146,11 +146,11 @@ class IssueReceiptsCommand extends Command
     }
 
     /**
-     *  [getPDF description]
+     * [getPDF description]
      *
-     *  @param   PlanUserFlow  $plan_user_flow  [$plan_user_flow description]
+     * @param   PlanUserFlow  $plan_user_flow  [$plan_user_flow description]
      *
-     *  @return  object|void
+     * @return  object|void
      */
     public function getPDF(PlanUserFlow $plan_user_flow)
     {
@@ -169,12 +169,12 @@ class IssueReceiptsCommand extends Command
     }
 
     /**
-     *  Save bill into database through API part
+     * Save bill into database through API part
      *
-     *  @param   object        $response
-     *  @param   PlanUserFlow  $planUserFlow
+     * @param   object        $response
+     * @param   PlanUserFlow  $planUserFlow
      *
-     *  @return  object|string
+     * @return  object|string
      */
     public function savePDFThroughAPI($response, $planUserFlow)
     {

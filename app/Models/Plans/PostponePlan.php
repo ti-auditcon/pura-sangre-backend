@@ -8,21 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class PostponePlan extends Model
 {
     /**
-     *  Name of the table in the database
+     * Name of the table in the database
      *
-     *  @var  string
+     * @var  string
      */
 	protected $table = 'freeze_plans';
 
 	/**
      * 
-     *  plan_user_id   integer
-     *  start_date     date
-     *  finish_date    date
-     *  days           integer  Should this be the resting days
-     *  revoked        bool
+     * plan_user_id   integer
+     * start_date     date
+     * finish_date    date
+     * days           integer  Should this be the resting days
+     * revoked        bool
      * 
-     *  @var  array
+     * @var  array
 	 */
 	protected $fillable = [
         'plan_user_id',
@@ -33,14 +33,14 @@ class PostponePlan extends Model
     ];
 
 	/**
-     *  @var  array
+     * @var  array
 	 */
 	protected $dates = ['start_date', 'finish_date'];
 
     /**
-     *  Get the PlanUser that owns the PostponePlan
+     * Get the PlanUser that owns the PostponePlan
      *
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
 	public function plan_user()
 	{
@@ -48,9 +48,9 @@ class PostponePlan extends Model
 	}
 
     /**
-     *  Finish the freezing of the plan
+     * Finish the freezing of the plan
      *
-     *  @return  bool
+     * @return  bool
      */
     public function revoke()
     {

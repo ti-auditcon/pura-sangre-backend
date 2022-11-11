@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 class PaymentsExcel implements FromCollection, WithHeadings
 {
     /**
-     *  @return  \Illuminate\Support\Collection
+     * @return  \Illuminate\Support\Collection
      */
     public function collection()
     {

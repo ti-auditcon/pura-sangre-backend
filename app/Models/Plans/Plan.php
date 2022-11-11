@@ -15,16 +15,16 @@ use Illuminate\Database\Eloquent\Model;
 class Plan extends Model
 {
     /**
-     *  First plan in the system [MUST ALWAYS BE "PRUEBA"]
+     * First plan in the system [MUST ALWAYS BE "PRUEBA"]
      *
-     *  @var  int
+     * @var  int
      */
     const PRUEBA = 1;
 
     /**
-     *  For massive assignment
+     * For massive assignment
      *
-     *  @var  array
+     * @var  array
      */
     protected $fillable = [
         'plan', 'description', 'plan_period_id', 'schedule_hours', 'schedule_days',
@@ -43,7 +43,7 @@ class Plan extends Model
 
     /**
      * [plan_period relation to this model]
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function plan_period()
     {
@@ -90,9 +90,9 @@ class Plan extends Model
     }
 
     /**
-     *  Check if this is plan is "PRUEBA"
+     * Check if this is plan is "PRUEBA"
      *
-     *  @return  bool
+     * @return  bool
      */
     public function isPrueba(): bool
     {
@@ -100,9 +100,9 @@ class Plan extends Model
     }
     
     /**
-     *  Check if this is plan is custom
+     * Check if this is plan is custom
      *
-     *  @return  bool
+     * @return  bool
      */
     public function isCustom(): bool
     {
@@ -110,9 +110,9 @@ class Plan extends Model
     }
     
     /**
-     *  Deny the custom function
+     * Deny the custom function
      *
-     *  @return  bool
+     * @return  bool
      */
     public function isNotCustom(): bool
     {

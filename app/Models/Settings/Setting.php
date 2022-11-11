@@ -12,9 +12,9 @@ class Setting extends Model
     ];
 
     /**
-     *  Return an array list with the available minutes
+     * Return an array list with the available minutes
      *
-     *  @return  array
+     * @return  array
      */
     public static function listOfAvailableMinutesToSendPushes()
     {
@@ -24,9 +24,9 @@ class Setting extends Model
     }
 
     /**
-     *  The time to remove users from a class should always be after the time of push notification
+     * The time to remove users from a class should always be after the time of push notification
      *
-     *  @return  array
+     * @return  array
      */
     public static function listOfAvailableMinutesToRemoveUsersFromClases()
     {

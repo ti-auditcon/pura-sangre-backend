@@ -29,9 +29,9 @@ class Country
     }
 
     /**
-     *  Order all the codes by prefixes and return it as array
+     * Order all the codes by prefixes and return it as array
      *
-     *  @return  array
+     * @return  array
      */
     public static function orderedByPrefix()
     {
@@ -41,9 +41,9 @@ class Country
     }
 
     /**
-     *  @param   string  by default gonna be Chile $
+     * @param   string  by default gonna be Chile $
      *
-     *  @return  string  example: $
+     * @return  string  example: $
      */
     public static function getCurrencySymbolByCode($code = 'CL')
     {
@@ -55,11 +55,11 @@ class Country
     }
 
     /**
-     *  [getCountryBycode description]
+     * [getCountryBycode description]
      *
-     *  @param   [type]  $code  [$code description]
+     * @param   [type]  $code  [$code description]
      *
-     *  @return  array          [return description]
+     * @return  array          [return description]
      */
     public static function getCountryBycode($code): array
     {

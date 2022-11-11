@@ -10,18 +10,18 @@ use Illuminate\Support\ServiceProvider;
 class BirthdateUsersProvider extends ServiceProvider
 {
     /**
-     *  Register services.
+     * Register services.
      *
-     *  @return  void
+     * @return  void
      */
     public function register()
     {
     }
 
     /**
-     *  Bootstrap services.
+     * Bootstrap services.
      *
-     *  @return  void
+     * @return  void
      */
     public function boot()
     {

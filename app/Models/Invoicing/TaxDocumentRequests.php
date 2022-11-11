@@ -8,7 +8,7 @@ use App\Models\Invoicing\TaxDocument;
 class TaxDocumentRequests extends TaxDocument
 {
     /**
-     *  url for developing and testing
+     * url for developing and testing
      */
     private $urlDev;
 
@@ -24,9 +24,9 @@ class TaxDocumentRequests extends TaxDocument
     }
 
     // /**
-    //  *  Fill url and apis for requests
+    //  * Fill url and apis for requests
     //  *
-    //  *  @return  void
+    //  * @return  void
     //  */
     // protected function fillProperties(): void
     // {

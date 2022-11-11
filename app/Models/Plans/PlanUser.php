@@ -19,32 +19,32 @@ class PlanUser extends Model
     use SoftDeletes;
 
     /**
-     *  Name of the table in the database
+     * Name of the table in the database
      *
-     *  @var  string
+     * @var  string
      */
     protected $table = 'plan_user';
 
     /**
-     *  All values that are treated as dates
+     * All values that are treated as dates
      *
-     *  @var  array
+     * @var  array
      */
     protected $dates = ['start_date', 'finish_date', 'deleted_at'];
 
     /**
-     *  Castable values
+     * Castable values
      *
-     *  @var  array
+     * @var  array
      */
     protected $casts = [
         'history' => 'collection',
     ];
 
     /**
-     *  [$fillable description]
+     * [$fillable description]
      *
-     *  @var  [type]
+     * @var  [type]
      */
     protected $fillable = [
         'start_date',
@@ -58,9 +58,9 @@ class PlanUser extends Model
     ];
 
     /**
-     *  Appended values to queries
+     * Appended values to queries
      *
-     *  @var  array
+     * @var  array
      */
     protected $appends = ['human_start_date', 'human_finish_date'];
 
@@ -76,10 +76,10 @@ class PlanUser extends Model
     }
 
     /**
-     *  [getFinishDateAttribute description]
+     * [getFinishDateAttribute description]
      *
-     *  @param  [type] $value [description]
-     *  @return [type]        [description]
+     * @param  [type] $value [description]
+     * @return [type]        [description]
      */
     public function getFinishDateAttribute($value)
     {
@@ -87,9 +87,9 @@ class PlanUser extends Model
     }
 
     /**
-     *  Undocumented function
+     * Undocumented function
      *
-     *  @return  Carbon
+     * @return  Carbon
      */
     public function getHumanStartDateAttribute()
     {
@@ -98,9 +98,9 @@ class PlanUser extends Model
     }
 
     /**
-     *  Undocumented function
+     * Undocumented function
      *
-     *  @return  Carbon
+     * @return  Carbon
      */
     public function getHumanFinishDateAttribute()
     {
@@ -108,9 +108,9 @@ class PlanUser extends Model
     }
 
     /**
-     *  If the plan has the status freezed return true
+     * If the plan has the status freezed return true
      *
-     *  @return  bool
+     * @return  bool
      */
     public function isFreezed() :bool
     {
@@ -118,9 +118,9 @@ class PlanUser extends Model
     }
 
     /**
-     *  [bill description]
+     * [bill description]
      *
-     *  @return [model] [description]
+     * @return [model] [description]
      */
     public function bill()
     {
@@ -128,10 +128,10 @@ class PlanUser extends Model
     }
 
     /**
-     *  [plan description]
+     * [plan description]
      *
-     *  @method plan
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @method plan
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function plan()
     {
@@ -139,9 +139,9 @@ class PlanUser extends Model
     }
 
     /**
-     *  [plan_status description]
+     * [plan_status description]
      *
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function plan_status()
     {
@@ -149,9 +149,9 @@ class PlanUser extends Model
     }
 
     /**
-     *  status plan
+     * status plan
      *
-     *  @return  string
+     * @return  string
      */
     public function getStatusAttribute()
     {
@@ -159,9 +159,9 @@ class PlanUser extends Model
     }
 
     /**
-     *  Status Plan Color
+     * Status Plan Color
      *
-     *  @return  string
+     * @return  string
      */
     public function getStatusColorAttribute()
     {
@@ -179,10 +179,10 @@ class PlanUser extends Model
     }
 
     /**
-     *  Get the freezed log of this plan
-     *  taking just the one which is available
+     * Get the freezed log of this plan
+     * taking just the one which is available
      *
-     *  @return  App\Models\Plans\PostponePlan
+     * @return  App\Models\Plans\PostponePlan
      */
     public function postpone()
     {
@@ -212,12 +212,12 @@ class PlanUser extends Model
     }
 
     /**
-     *  Store a new PlanUser
+     * Store a new PlanUser
      *
-     *  @param   Flow   $data  [$data description]
-     *  @param   User   $user  [$user description]
+     * @param   Flow   $data  [$data description]
+     * @param   User   $user  [$user description]
      *
-     *  @return  $this
+     * @return  $this
      */
     public static function makePlanUser($data, $user)
     {
@@ -241,9 +241,9 @@ class PlanUser extends Model
     }
 
     /**
-     *  methodDescription
+     * methodDescription
      *
-     *  @return  returnType
+     * @return  returnType
      */
     public function asignPlanToUser($request, Plan $plan, $user)
     {
@@ -259,11 +259,11 @@ class PlanUser extends Model
     }
     
     /**
-     *  Update the planUser substracting quotas of it
+     * Update the planUser substracting quotas of it
      *
-     *  @param   int  $quotas_number
+     * @param   int  $quotas_number
      *
-     *  @return  void
+     * @return  void
      */
     public function subQuotas(int $quotas_number)
     {

@@ -27,16 +27,16 @@ class PlanStatus extends Model
 	const CANCELADO = 5;
 
     /**
-     *  Name of the table in the database
+     * Name of the table in the database
      *
-     *  @var  string
+     * @var  string
      */
     protected $table = 'plan_status';
 
     /**
-     *  list All Plan Status
+     * list All Plan Status
      *
-     *  @return  array
+     * @return  array
      */
     public function listAllPlanStatus()
     {
@@ -50,9 +50,9 @@ class PlanStatus extends Model
     }
 
     /**
-     *  Get ids of all reactivable Plans
+     * Get ids of all reactivable Plans
      *
-     *  @return  array
+     * @return  array
      */
     public function reactivablePlans()
     {
@@ -60,9 +60,9 @@ class PlanStatus extends Model
     }
 
     /**
-     *  Return all ReservationStatusColors
+     * Return all ReservationStatusColors
      *
-     *  @return  array
+     * @return  array
      */
     public function listPlanStatusColors()
     {
@@ -76,11 +76,11 @@ class PlanStatus extends Model
     }
 
     /**
-     *  Return a Plan Status by an specific Id
+     * Return a Plan Status by an specific Id
      *
-     *  @param   integer   Id for a status
+     * @param   integer   Id for a status
      *
-     *  @return  string    A Plan Status
+     * @return  string    A Plan Status
      */
     public function getPlanStatus($planStatusId)
     {
@@ -90,11 +90,11 @@ class PlanStatus extends Model
     }
 
     /**
-     *  Return a Plan Status by an specific Id
+     * Return a Plan Status by an specific Id
      *
-     *  @param   integer   Id for a status
+     * @param   integer   Id for a status
      *
-     *  @return  string    A Plan Status
+     * @return  string    A Plan Status
      */
     public function getPlanStatusColor($planStatusId)
     {

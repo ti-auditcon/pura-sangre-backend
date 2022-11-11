@@ -30,11 +30,11 @@ class UnfreezePlansTest extends TestCase
     protected $description = 'Unfreeze all the plans who has today the unfreeze date';
 
     /**
-     *  Change the actual time to another one
+     * Change the actual time to another one
      *
-     *  @param   Carbon|string
+     * @param   Carbon|string
      *
-     *  @return  void
+     * @return  void
      */
     public function travelTo($date) :void
     {
@@ -42,10 +42,10 @@ class UnfreezePlansTest extends TestCase
     }
 
     /** 
-     *  Si el próximo plan comienza antes de que termine el actual,
-     *  las fechas de los siguientes planes se deben mover hacia adelante
+     * Si el próximo plan comienza antes de que termine el actual,
+     * las fechas de los siguientes planes se deben mover hacia adelante
      * 
-     *  @test
+     * @test
      */
     public function it_move_next_plans_dates_forward_if_the_closest_next_plan_start_before_the_current_active_plan_ends()
     {
@@ -92,10 +92,10 @@ class UnfreezePlansTest extends TestCase
     }
 
     /** 
-     *  Si el próximo plan comienza después de que termine el actual,
-     *  las fechas de los siguientes planes se deben mover hacia atrás
+     * Si el próximo plan comienza después de que termine el actual,
+     * las fechas de los siguientes planes se deben mover hacia atrás
      * 
-     *  @test
+     * @test
      */
     public function it_move_next_plans_dates_backward_if_the_closest_next_plan_start_after_the_current_active_plan_ends()
     {

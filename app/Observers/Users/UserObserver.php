@@ -19,11 +19,11 @@ use Illuminate\Support\Facades\Mail;
 class UserObserver
 {
     /**
-     *  [creating description]
+     * [creating description]
      * 
-     *  @param  User   $user [description]
+     * @param  User   $user [description]
      * 
-     *  @return [type]       [description]
+     * @return [type]       [description]
      */
     public function creating(User $user)
     {
@@ -35,11 +35,11 @@ class UserObserver
     }
 
     /**
-     *  Handle the user "created" event.
+     * Handle the user "created" event.
      *
-     *  @param   \App\Models\Users\User  $user
+     * @param   \App\Models\Users\User  $user
      *
-     *  @return  void
+     * @return  void
      */
     public function created(User $user)
     {
@@ -61,11 +61,11 @@ class UserObserver
     }
 
     /**
-     *  Handle the user "deleted" event.
+     * Handle the user "deleted" event.
      *
-     *  @param   \App\Models\Users\User  $user
+     * @param   \App\Models\Users\User  $user
      * 
-     *  @return  void
+     * @return  void
      */
     public function deleted(User $user)
     {

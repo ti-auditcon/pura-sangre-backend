@@ -13,23 +13,23 @@ class VerifyExternalUser extends Mailable
     use Queueable, SerializesModels;
 
     /**
-     *  User
+     * User
      *
-     *  @var  User
+     * @var  User
      */
     public $user;
 
     /**
-     *  Token
+     * Token
      *
-     *  @var  string
+     * @var  string
      */
     public $token;
     
     /**
-     *  Token
+     * Token
      *
-     *  @var  string
+     * @var  string
      */
     public $plan_id;
 

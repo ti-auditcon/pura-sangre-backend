@@ -18,9 +18,9 @@ class NewUserRequest extends FormRequest
     }
 
     /**
-     *  Get the validation rules that apply to the request.
+     * Get the validation rules that apply to the request.
      *
-     *  @return  array
+     * @return  array
      */
     public function rules()
     {
@@ -39,7 +39,7 @@ class NewUserRequest extends FormRequest
     }
 
     /**
-     *  @return  boolean
+     * @return  boolean
      */
     public function emailIsAlreadyRegistered($email)
     {

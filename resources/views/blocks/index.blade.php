@@ -538,8 +538,8 @@
 
 		$('#calendar-type-clase-select').append($('<option>Eliga un tipo de clase...</option>').val(null));
 
-		$.get("/clases-types/").done( function (response) {
-			response.forEach( function (el) {
+		$.get("/clases-types-all").done( function (response) {
+			response.data.forEach( function (el) {
 				$('#type-clase-select').append(
 			        $('<option></option>').val(el.id).html(el.clase_type)
 			    );

@@ -116,11 +116,11 @@ class PlanUserObserver
     }
 
     /**
-     *  Check if the plan to be update is actually being cancelled
+     * Check if the plan to be update is actually being cancelled
      *
-     *  @param   int   $planStatusId 
+     * @param   int   $planStatusId 
      *
-     *  @return  bool  
+     * @return  bool  
      */
     public function planUserIsBeingCancelled($planStatusId)
     {
@@ -170,11 +170,11 @@ class PlanUserObserver
     }
 
     /**
-     *  Undocumented function
+     * Undocumented function
      *
-     *  @param  PlanUser  $planUser
-     *  
-     *  @return  void
+     * @param  PlanUser  $planUser
+     * 
+     * @return  void
      */
     public function checkActualPlan(PlanUser $planUser)
     {
@@ -194,9 +194,9 @@ class PlanUserObserver
     }
 
     /**
-     *  planUserIsFreeze
+     * planUserIsFreeze
      *
-     *  @return  returnType
+     * @return  returnType
      */
     public function planUserIsFreeze($planUser)
     {

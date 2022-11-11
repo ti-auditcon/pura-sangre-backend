@@ -13,9 +13,9 @@ use Illuminate\Foundation\Http\FormRequest;
 class PlanUserRequest extends FormRequest
 {
     /**
-     *  Determine if the user is authorized to make this request.
+     * Determine if the user is authorized to make this request.
      *
-     *  @return  bool
+     * @return  bool
      */
     public function authorize()
     {
@@ -63,12 +63,12 @@ class PlanUserRequest extends FormRequest
     }
 
     /**
-     *  Calculate when would finish the plan User.
+     * Calculate when would finish the plan User.
      *
-     *  @param   [type]  $plan     [$plan description]
-     *  @param   [type]  $request  [$request description]
+     * @param   [type]  $plan     [$plan description]
+     * @param   [type]  $request  [$request description]
      *
-     *  @return  Carbon instance
+     * @return  Carbon instance
      */
     public function calculateFinishDate($plan, $request)
     {
@@ -87,13 +87,13 @@ class PlanUserRequest extends FormRequest
     }
 
     /**
-     *  Check if plan dates overlapping.
+     * Check if plan dates overlapping.
      *
-     *  @param   [type]  $fecha_inicio        of the plan that will be created
-     *  @param   [type]  $fecha_termino       of the plan that will be created
-     *  @param   [type]  $actualOrFuturePlan  of the requested plan
+     * @param   [type]  $fecha_inicio        of the plan that will be created
+     * @param   [type]  $fecha_termino       of the plan that will be created
+     * @param   [type]  $actualOrFuturePlan  of the requested plan
      *
-     *  @return  array|void
+     * @return  array|void
      */
     private function planDatesOverlap($fecha_inicio, $fecha_termino, $actualOrFuturePlan)
     {
@@ -123,13 +123,13 @@ class PlanUserRequest extends FormRequest
     }
 
     /**
-     *  Check if the start and / or end date of the plan that will be created
-     *  is within the date of the plan.
+     * Check if the start and / or end date of the plan that will be created
+     * is within the date of the plan.
      *
-     *  @param   [type]  $fecha_inicio        of the plan that will be created
-     *  @param   [type]  $fecha_termino       of the plan that will be created
+     * @param   [type]  $fecha_inicio        of the plan that will be created
+     * @param   [type]  $fecha_termino       of the plan that will be created
      *
-     *  @return  array|void
+     * @return  array|void
      */
     private function planDatesInBetween($fecha_inicio, $fecha_termino, $requestedPlan)
     {
@@ -149,10 +149,10 @@ class PlanUserRequest extends FormRequest
     /**
      * [planDatesBeforeRequestPlan description].
      *
-     *  @param   [type]  $fecha_inicio        of the plan that will be created
-     *  @param   [type]  $fecha_termino       of the plan that will be created
+     * @param   [type]  $fecha_inicio        of the plan that will be created
+     * @param   [type]  $fecha_termino       of the plan that will be created
      *
-     *  @return  array|void
+     * @return  array|void
      */
     private function planDatesBeforeRequestPlan($fecha_inicio, $fecha_termino, $requestedPlan)
     {
@@ -172,10 +172,10 @@ class PlanUserRequest extends FormRequest
     /**
      * [planDatesAfterRequestPlan description].
      *
-     *  @param   [type]  $fecha_inicio        of the plan that will be created
-     *  @param   [type]  $fecha_termino       of the plan that will be created
+     * @param   [type]  $fecha_inicio        of the plan that will be created
+     * @param   [type]  $fecha_termino       of the plan that will be created
      *
-     *  @return  array|void
+     * @return  array|void
      */
     private function planDatesAfterRequestPlan($fecha_inicio, $fecha_termino, $requestedPlan)
     {

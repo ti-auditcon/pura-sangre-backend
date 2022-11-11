@@ -13,9 +13,9 @@ use Session;
 class BlockController extends Controller
 {
     /**
-     *  Display a listing of the resource.
+     * Display a listing of the resource.
      *
-     *  @return  \Illuminate\Http\Response
+     * @return  \Illuminate\Http\Response
      */
     public function index()
     {
@@ -27,11 +27,11 @@ class BlockController extends Controller
     }
 
     /**
-     *  Store a newly created resource in storage.
+     * Store a newly created resource in storage.
      *
-     *  @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request  $request
      *
-     *  @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
     public function store(BlockRequest $request)
     {

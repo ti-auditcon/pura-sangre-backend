@@ -103,11 +103,11 @@ function issue(token) {
 }
 
 /** 
- *  the first one is the button itself
- *  the second is the text inside the button
- *  the last is the status of the button (true means is disabled) 
- *  
- *  @return  void
+ * the first one is the button itself
+ * the second is the text inside the button
+ * the last is the status of the button (true means is disabled) 
+ * 
+ * @return  void
  */
 function changeTextAndStatusToButton(button, text, isDisabled) {
     button.text(text);

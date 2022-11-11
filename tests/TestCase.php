@@ -12,7 +12,7 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
 
     /**
-     *  Admin User
+     * Admin User
      */
     protected $admim;
 
@@ -41,9 +41,9 @@ abstract class TestCase extends BaseTestCase
     }
 
         /**
-     *  [manageSharedViewData description]
+     * [manageSharedViewData description]
 
-     *  @return  void
+     * @return  void
      */
     public function manageSharedViewData()
     {

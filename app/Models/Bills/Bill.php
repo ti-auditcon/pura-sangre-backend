@@ -13,25 +13,25 @@ class Bill extends Model
     use SoftDeletes;
 
     /**
-     *  The attributes that should be mutated to dates.
+     * The attributes that should be mutated to dates.
      *
-     *  @var array
+     * @var array
      */
     protected $dates = ['date', 'deleted_at'];
 
     /**
-     *  The attributes that should be cast to native types. Like a getter Method
+     * The attributes that should be cast to native types. Like a getter Method
      *
-     *  @var  array
+     * @var  array
      */
     protected $casts = [
         'date' => 'datetime:d-m-Y'
     ];
 
     /**
-     *  The attributes that are mass assignable.
+     * The attributes that are mass assignable.
      *
-     *  @var array
+     * @var array
      */
     protected $fillable = [
         'payment_type_id', 'plan_user_id', 'date',
@@ -39,11 +39,11 @@ class Bill extends Model
     ];
 
     /**
-     *  [setDateAttribute description]
+     * [setDateAttribute description]
      *
-     *  @param   [type]  $value  [$value description]
+     * @param   [type]  $value  [$value description]
      *
-     *  @return  [type]          [return description]
+     * @return  [type]          [return description]
      */
     public function setDateAttribute($value)
     {
@@ -75,11 +75,11 @@ class Bill extends Model
     }
 
     /**
-     *  [payment_type description]
+     * [payment_type description]
      *
-     *  @method payment_type
+     * @method payment_type
      *
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function payment_type()
     {
@@ -87,9 +87,9 @@ class Bill extends Model
     }
 
     /**
-     *  [plan_user description]
+     * [plan_user description]
      *
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function plan_user()
     {
@@ -97,11 +97,11 @@ class Bill extends Model
     }
 
     /**
-     *  Upate a registered payment
+     * Upate a registered payment
      *
-     *  @param   Request  $request
+     * @param   Request  $request
      *
-     *  @return  $this  
+     * @return  $this  
      */
     public function updateBill($request)
     {
@@ -116,12 +116,12 @@ class Bill extends Model
     }
 
     /**
-     *  Generaate a bill for a plan_user
+     * Generaate a bill for a plan_user
      *
-     *  @param   PlanUser  $plan_user    [$plan_user description]
-     *  @param   Flow      $paymentData  [$paymentData description]
+     * @param   PlanUser  $plan_user    [$plan_user description]
+     * @param   Flow      $paymentData  [$paymentData description]
      *
-     *  @return  $this
+     * @return  $this
      */
     public function makeFlowBill($plan_user, $paymentData)
     {
@@ -138,12 +138,12 @@ class Bill extends Model
     }
 
     /**
-     *  [storeBill description]
+     * [storeBill description]
      *
-     *  @param   [type]  $request   [$request description]
-     *  @param   [type]  $planuser  [$planuser description]
+     * @param   [type]  $request   [$request description]
+     * @param   [type]  $planuser  [$planuser description]
      *
-     *  @return  $this
+     * @return  $this
      */
     public function storeBill($request, $plan_user)
     {

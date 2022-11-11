@@ -11,23 +11,23 @@ use App\Models\Clases\ReservationStatus;
 class ClasesSendPushes extends Command
 {
     /**
-     *  The name and signature of the console command.
+     * The name and signature of the console command.
      *
-     *  @var  string
+     * @var  string
      */
     protected $signature = 'purasangre:clases:send-notifications';
 
     /**
-     *  The console command description.
+     * The console command description.
      *
-     *  @var  string
+     * @var  string
      */
     protected $description = 'Command description';
 
     /**
-     *  Create a new command instance.
+     * Create a new command instance.
      *
-     *  @return  void
+     * @return  void
      */
     public function __construct()
     {
@@ -35,9 +35,9 @@ class ClasesSendPushes extends Command
     }
 
     /**
-     *  Execute the console command.
+     * Execute the console command.
      *
-     *  @return  mixed
+     * @return  mixed
      */
     public function handle()
     {
@@ -77,9 +77,9 @@ class ClasesSendPushes extends Command
 
 
     /**
-     *  @param   Setting|collection  $settings
+     * @param   Setting|collection  $settings
      *
-     *  @return  int
+     * @return  int
      */
     public function minutesOfDifferenceBetweenPushesAndRemove($settings)
     {
@@ -89,13 +89,13 @@ class ClasesSendPushes extends Command
     }
 
     /**
-     *  Get the rounded minute from an specific time,
-     *  useful in case of server trigger after the specific hour and minute
-     *  Also add the 0
+     * Get the rounded minute from an specific time,
+     * useful in case of server trigger after the specific hour and minute
+     * Also add the 0
      *
-     *  @param   Carbon\Carbon|string  $time
+     * @param   Carbon\Carbon|string  $time
      *
-     *  @return  Carbon\Carbon
+     * @return  Carbon\Carbon
      */
     public function roundToMultipleOfFive($time) {
         $minutes = date('i', strtotime($time));
@@ -104,11 +104,11 @@ class ClasesSendPushes extends Command
     }
 
     /**
-     *  We need to tell the user the correct start class hour, it depends of the user timezone
+     * We need to tell the user the correct start class hour, it depends of the user timezone
      *
-     *  @param   Reservation  $reservation
+     * @param   Reservation  $reservation
      *
-     *  @return  Carbon
+     * @return  Carbon
      */
     public function claseTimeForTimezonedUser($reservation, $sport_center_timezone)
     {
@@ -123,10 +123,10 @@ class ClasesSendPushes extends Command
     }
 
     /**
-     *  @param   string  $sport_center_timezone
-     *  @param   string  $other_timezone
+     * @param   string  $sport_center_timezone
+     * @param   string  $other_timezone
      *
-     *  @return  int                             Could be a possitive or negative value
+     * @return  int                             Could be a possitive or negative value
      */
     public function hoursOfDifferenceBetweenSportCenterTimezoneAndOtherTimezone($sport_center_timezone, $other_timezone)
     {
@@ -134,12 +134,12 @@ class ClasesSendPushes extends Command
     }
 
     /**
-     *  Get the rounded minute from an specific time,
-     *  useful in case of server trigger after the specific hour and minute
+     * Get the rounded minute from an specific time,
+     * useful in case of server trigger after the specific hour and minute
      * 
-     *  @param  Carbon\Carbon|string  $time
+     * @param  Carbon\Carbon|string  $time
      *
-     *  @return Carbon\Carbon
+     * @return Carbon\Carbon
      */
     public function roundToQuarterfHour($time) {
         $minutes = date('i', strtotime($time));

@@ -20,14 +20,14 @@ class PlanUserPostponesControllerTest extends TestCase
     // if the plan is freezed, it can't be updated until is unfreezed
 
     /**
-     *  A created admin for tests
+     * A created admin for tests
      *
      * @var  User
      */
     protected $admin;
 
     /**
-     *  Before the tests are executed
+     * Before the tests are executed
      *
      * @return  void
      */
@@ -42,9 +42,9 @@ class PlanUserPostponesControllerTest extends TestCase
     }
 
     /**
-     *  Manage all the requirements to create a Admin for tests
+     * Manage all the requirements to create a Admin for tests
      *
-     *  @return  void
+     * @return  void
      */
     public function createAnAdmin(): void
     {
@@ -55,7 +55,7 @@ class PlanUserPostponesControllerTest extends TestCase
     }
 
     /**
-     *  @return  void
+     * @return  void
      */
     public function createAdminRole(): void
     {
@@ -63,7 +63,7 @@ class PlanUserPostponesControllerTest extends TestCase
     }
 
     /**
-     *  @param   User  $user
+     * @param   User  $user
      */
     protected function makeUserAnAdmin($user)
     {
@@ -72,17 +72,17 @@ class PlanUserPostponesControllerTest extends TestCase
 
 
     /** 
-     *  Validations are:
-     *    -  start and end dates are required
-     *    -  end date must be equals or after start date 
+     * Validations are:
+     *   -  start and end dates are required
+     *   -  end date must be equals or after start date 
      * 
-     *  @test
+     * @test
      */
     public function at_freezing_plan_user_it_must_have_validations()
     {
         $plan_user = factory(PlanUser::class)->create();
 
-        /**    -  start and end dates are required  */
+        /**  -  start and end dates are required  */
         $this->actingAs($this->admin)
             ->post("/plan-user/{$plan_user->id}/postpones", [])
             ->assertSessionHasErrors([
@@ -91,7 +91,7 @@ class PlanUserPostponesControllerTest extends TestCase
             ]);
             
 
-        /**    -  end date must be equals or after start date   */
+        /**  -  end date must be equals or after start date   */
         $this->actingAs($this->admin)
             ->post("/plan-user/{$plan_user->id}/postpones", [
                 'start_freeze_date' => today(),
@@ -126,7 +126,7 @@ class PlanUserPostponesControllerTest extends TestCase
         ]);
     }
 
-    /**  @test  */
+    /** @test  */
     public function at_unfreeze_a_plan_the_postpone_record_is_revoked_correctly()
     {
         $plan_user = factory(PlanUser::class)->create();
@@ -206,9 +206,9 @@ class PlanUserPostponesControllerTest extends TestCase
     }
 
     /** 
-     *  Being freezed the plan can't be edited until the admin unfreezed 
+     * Being freezed the plan can't be edited until the admin unfreezed 
      * 
-     *  @test
+     * @test
      */
     public function plan_user_with_status_freezed_can_not_be_edited()
     {

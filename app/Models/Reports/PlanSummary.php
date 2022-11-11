@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class PlanSummary extends Model
 {
     /**
-     *  Name of the table in the database
+     * Name of the table in the database
      *
-     *  @var  string
+     * @var  string
      */
 	protected $table = 'plans_summaries';
 

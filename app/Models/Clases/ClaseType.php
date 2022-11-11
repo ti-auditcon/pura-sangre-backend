@@ -2,7 +2,9 @@
 
 namespace App\Models\Clases;
 
+use App\Models\Wods\StageType;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
 class ClaseType extends Model
@@ -42,12 +44,12 @@ class ClaseType extends Model
 	}
 
     /**
-     * [stage_types description]
+     * Get all of the stageTypes for the ClaseType
      *
-     * @return  [type]  [return description]
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-	public function stage_types()
-	{
-		return $this->hasMany('App\Models\Wods\StageType');
-	}
+    public function stageTypes(): HasMany
+    {
+        return $this->hasMany(StageType::class);
+    }
 }

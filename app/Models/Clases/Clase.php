@@ -14,23 +14,23 @@ class Clase extends Model
     use SoftDeletes;
 
     /**
-     *  Name of the table in the database
+     * Name of the table in the database
      *
-     *  @var  string
+     * @var  string
      */
     protected $table = 'clases';
 
     /**
-     *  The attributes that should be mutated to dates.
+     * The attributes that should be mutated to dates.
      *
-     *  @var  array
+     * @var  array
      */
     protected $dates = [ 'date', 'deleted_at' ];
 
     /**
-     *  The attributes that are mass assignable.
+     * The attributes that are mass assignable.
      *
-     *  @var  array
+     * @var  array
      */
     protected $fillable = [
         'date',
@@ -45,16 +45,16 @@ class Clase extends Model
     ];
 
     /**
-     *  [$appends description]
+     * [$appends description]
      *
-     *  @var  array
+     * @var  array
      */
     protected $appends = ['start', 'end', 'url', 'color'];
 
     /**
-     *  Get all of the getReservationCountAttribute for the Clase
+     * Get all of the getReservationCountAttribute for the Clase
      *
-     *  @return  \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return  \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function getReservationCountAttribute()
     {
@@ -62,9 +62,9 @@ class Clase extends Model
     }
 
     /**
-     *  [getStartAttribute description]
+     * [getStartAttribute description]
      * 
-     *  @return  string|Carbon
+     * @return  string|Carbon
      */
     public function getStartAttribute()
     {
@@ -76,9 +76,9 @@ class Clase extends Model
     }
 
     /**
-     *  Get the end of the clase, date/date-time format
+     * Get the end of the clase, date/date-time format
      * 
-     *  @return  string
+     * @return  string
      */
     public function getEndAttribute()
     {
@@ -90,9 +90,9 @@ class Clase extends Model
     }
 
     /**
-     *  [getUrlAttribute description]
+     * [getUrlAttribute description]
      * 
-     *  @return  string
+     * @return  string
      */
     public function getUrlAttribute()
     {
@@ -100,9 +100,9 @@ class Clase extends Model
     }
 
     /**
-     *  [getColorAttribute description]
+     * [getColorAttribute description]
      * 
-     *  @return  string
+     * @return  string
      */
     public function getColorAttribute()
     {
@@ -120,9 +120,9 @@ class Clase extends Model
     }
 
     /**
-     *  Get the wod that owns the Clase
+     * Get the wod that owns the Clase
      *
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function wod()
     {
@@ -130,9 +130,9 @@ class Clase extends Model
     }
 
     /**
-     *  The users that belong to the Clase
+     * The users that belong to the Clase
      *
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function users()
     {
@@ -140,9 +140,9 @@ class Clase extends Model
     }
 
     /**
-     *  Get the user that owns the Clase
+     * Get the user that owns the Clase
      *
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function claseType()
     {
@@ -150,9 +150,9 @@ class Clase extends Model
     }
 
     /**
-     *  [profresor description]
+     * [profresor description]
      *
-     *  @return  \App\Models\Users\User
+     * @return  \App\Models\Users\User
      */
     public function profresor()
     {
@@ -160,9 +160,9 @@ class Clase extends Model
     }
 
     /**
-     *  The profesor that belong to the Clase
+     * The profesor that belong to the Clase
      *
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function profesor()
     {
@@ -170,9 +170,9 @@ class Clase extends Model
     }
 
     /**
-     *  Get the block that owns the Clase
+     * Get the block that owns the Clase
      *
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function block()
     {
@@ -180,9 +180,9 @@ class Clase extends Model
     }
 
     /**
-     *  Corroborate date and time of this class to check if can check attendance 
+     * Corroborate date and time of this class to check if can check attendance 
      *
-     *  @return  bool
+     * @return  bool
      */
     public function canCheckAttendance() :bool
     {
@@ -190,11 +190,11 @@ class Clase extends Model
     }
 
     /**
-     *  Check if the start_at hour is before than now
+     * Check if the start_at hour is before than now
      * 
-     *  Ex. If now= 18:00 and $this->start_at= 17:00, then return true
+     * Ex. If now= 18:00 and $this->start_at= 17:00, then return true
      *
-     *  @return  bool
+     * @return  bool
      */
     public function startIsBeforeThanNow() :bool
     {
@@ -202,9 +202,9 @@ class Clase extends Model
     }
 
     /**
-     *  Return true if the class date is today
+     * Return true if the class date is today
      *
-     *  @return  bool
+     * @return  bool
      */
     public function isToday() :bool
     {
@@ -212,9 +212,9 @@ class Clase extends Model
     }
 
     /**
-     *  Check if the class is full or overload
+     * Check if the class is full or overload
      *
-     *  @return  bool
+     * @return  bool
      */
     public function isFull(): bool
     {

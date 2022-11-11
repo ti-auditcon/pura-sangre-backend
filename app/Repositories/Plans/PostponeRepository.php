@@ -13,7 +13,7 @@ class PostponeRepository
     protected $postpone;
 
     /**
-     *  @param   PostponePlan  $postpone
+     * @param   PostponePlan  $postpone
      */
     public function __construct(PostponePlan $postpone)
     {
@@ -58,13 +58,13 @@ class PostponeRepository
 
 
     /**
-     *  Delete all the future reservations of the plan,
-     *  from the freezing start date
+     * Delete all the future reservations of the plan,
+     * from the freezing start date
      *
-     *  @param   PlanUser  $planUser
-     *  @param   Carbon    $fromDate  date of start of the freezing
+     * @param   PlanUser  $planUser
+     * @param   Carbon    $fromDate  date of start of the freezing
      *
-     *  @return  void
+     * @return  void
      */
     public function deleteAllPlanReservationsSince($planUser, $fromDate)
     {
@@ -76,9 +76,9 @@ class PostponeRepository
     }
 
     /**
-     *  @param   PostponePlan  $postpone
+     * @param   PostponePlan  $postpone
      *
-     *  @return  bool
+     * @return  bool
      */
     public function delete(PostponePlan $postpone)
     {

@@ -12,37 +12,37 @@ use Illuminate\Database\Eloquent\Model;
 class ReservationStatus extends Model implements StatusInterface
 {
     /**
-     *  For assign a pending reservation status
+     * For assign a pending reservation status
      */
     const PENDING = 1;
 
     /**
-     *  For assign a confirmed reservation status
+     * For assign a confirmed reservation status
      */
     const CONFIRMED = 2;
 
     /**
-     *  For assign a consumed reservation status
+     * For assign a consumed reservation status
      */
     const CONSUMED = 3;
 
     /**
-     *  Lost class reservation status
+     * Lost class reservation status
      */
     const LOST = 4;
 
     /**
-     *  Massive assignment for this Model
+     * Massive assignment for this Model
      *
-     *  @var  array
+     * @var  array
      */
     protected $fillable = ['reservation_status', 'type'];
 
 
     /**
-     *  Return all ReservationsStatus
+     * Return all ReservationsStatus
      *
-     *  @return  array
+     * @return  array
      */
     public static function list() :array
     {
@@ -71,9 +71,9 @@ class ReservationStatus extends Model implements StatusInterface
     }
 
     /**
-     *  Return all ReservationStatusColors
+     * Return all ReservationStatusColors
      *
-     *  @return  array
+     * @return  array
      */
     public static function listColors()
     {
@@ -86,11 +86,11 @@ class ReservationStatus extends Model implements StatusInterface
     }
 
     /**
-     *  Return a ReservationStatus by Identifier
+     * Return a ReservationStatus by Identifier
      *
-     *  @param   integer   $id  Id of the reservation status
+     * @param   integer   $id  Id of the reservation status
      *
-     *  @return  string
+     * @return  string
      */
     public static function getReservationStatus($id)
     {
@@ -102,11 +102,11 @@ class ReservationStatus extends Model implements StatusInterface
     }
 
     /**
-     *  Return a Css type color by an specific Status Id
+     * Return a Css type color by an specific Status Id
      *
-     *  @param   integer   $reservationStatusId  Id for a status
+     * @param   integer   $reservationStatusId  Id for a status
      *
-     *  @return  string                          A Reservation Status Color (CSS)
+     * @return  string                          A Reservation Status Color (CSS)
      */
     public function color($reservationStatusId = null)
     {
@@ -116,9 +116,9 @@ class ReservationStatus extends Model implements StatusInterface
     }
     
     /**
-     *  Get all of the reservations for the ReservationStatus
+     * Get all of the reservations for the ReservationStatus
      *
-     *  @return  \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return  \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function reservations()
     {

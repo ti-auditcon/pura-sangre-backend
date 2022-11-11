@@ -1,31 +1,18 @@
 <?php
 
-use Carbon\Carbon;
-use App\Mail\SendEmail;
-use App\Models\Users\User;
-use App\Mail\SendEmailQueue;
-use App\Mail\NewPlanUserEmail;
-use App\Models\Plans\PlanStatus;
-use App\Models\Clases\Reservation;
-use App\Models\Plans\PlanUserFlow;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use App\Models\Invoicing\TaxDocument;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Schema;
-use App\Models\Clases\ReservationStatus;
-use Illuminate\Database\Schema\Blueprint;
 
 /**
- *  Auth Route lists
+ * Auth Route lists
  */
 Auth::routes();
 
 include __DIR__ . '/super.php';
 
 /**
- *  General routes
+ * General routes
  */
 Route::get('/', 'HomeController@index');
 Route::get('/withoutrenewal', 'HomeController@withoutrenewal');
@@ -39,38 +26,6 @@ Route::get('/success-reset-password', function () {
 Route::post('expired-plans', 'HomeController@ExpiredPlan')->name('expiredplans');
 
 Route::middleware(['auth'])->prefix('/')->group(function () {
-//     Route::get('send-emails', function() {
-//         $lineas = file(__DIR__ . '/emails.txt');
-
-//         foreach ($lineas as $linea) {
-//             $errors = null;
-//             $users = User::whereIn('email', explode(",", trim($lineas[0], "\n\,")))
-//                         ->get(['id', 'first_name', 'email']);
-
-//             foreach ($users as $user) {
-//                 $mail = collect();
-//                 $mail->subject = "Encuesta Evaluación Cierre de año 2021 💪";
-//                 $mail->text = "ESTA ENCUESTA ES 100% ANÓNIMA, Y CERRANDO EL AÑO 2021 QUEREMOS EVALUAR EL TRABAJO REALIZADO DURANTE EL 2DO SEMESTRE, PARA SEGUIR MEJORANDO NUESTROS SERVICIOS A LA COMUNIDAD. TU OPINIÓN ES FUNDAMENTAL, ES  NUESTRO ALIENTO!!.  3...2...1..GO!!
-// PARA RESPONDER LA ENCUESTA, DEBES HACER CLICK EN EL SIGUIENTE ENLACE:
-// https://forms.gle/Vw2GKRizaav13N1f6";
-//                 $mail->user = $user->first_name;
-
-//                 try{
-//                     Mail::to($user->email)->send(new SendEmailQueue($mail, $user));
-//                 } catch(\Exception $e) {
-//                     DB::table('errors')->insert([
-//                         'error'      => $e,
-//                         'where'      => 'email',
-//                         'created_at' => now(),
-//                     ]);
-//                     $errors += 1;
-//                 }
-//             }
-//         }
-//     });
-
-
-
     // Calibrate plan_income_summaries
     Route::post('plan-incomes-summaries/calibrate', 'Reports\ReportController@incomesCalibrate')
         ->name('incomes.calibrate');
@@ -92,7 +47,11 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     /**
      * Clases types routes
      */
-    Route::resource('clases-types', 'Clases\ClaseTypeController')->except('create', 'edit');
+    Route::get('/clases-types-all', 'Clases\ClaseTypeController@allClaseTypes')->name('tenant.admin.clases-types-all');
+    Route::post('/clases-types/{clase_type}', 'Wods\StageTypeController@addStage');
+    Route::get('/clases-types/{clase_type}/stages-types', 'Clases\ClaseTypeStageTypeController@index');
+    Route::resource('clases-types', 'Clases\ClaseTypeController');
+    Route::resource('stages-types', 'Wods\StageTypeController')->only('show', 'update', 'destroy');
 
     /**
      * CALENDAR CLASES ROUTES
@@ -101,7 +60,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
          ->name('admin.calendar.clasesday.destroy');
 
     /**
-     *  POSTPONE PLANS ROUTE
+     * POSTPONE PLANS ROUTE
      */
     Route::get('postpones', 'Plans\PostponeController@index')->middleware('role:1')->name('postpones.index');
     
@@ -157,7 +116,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
             ->name('notifications.destroy');
 
     /*
-     *  Settings Routes
+     * Settings Routes
      */
     Route::get('json-density-parameters', 'Settings\DensityParameterController@clasesDensities');
     Route::resource('density-parameters', 'Settings\DensityParameterController')
@@ -203,28 +162,26 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::resource('role-user', 'Users\RoleUserController')->only('edit', 'store', 'destroy');
 
     /*
-     *  WODS Routes
+     * WODS Routes
      */
     Route::resource('wods', 'Wods\WodController')->except('index', 'show')->middleware('role:1');
 
     /*
-     *  Notifications TESTS
+     * Notifications TESTS
      */
     Route::get('notifications-send-push/{user_id}', 'Messages\NotificationController@sendOnePush')->middleware('role:1');
 });
 
-/*  *****************************************************
-
- *  *********         EXTERNAL ROUTES        ************
-
- *  ************************************************** */
+/** *****************************************************
+ * *********        EXTERNAL ROUTES        ************
+ * ************************************************** */
 Route::post('new-user/request-instructions', 'Web\NewUserController@requestInstructions');
 Route::get('/new-user/{plan}/create', 'Web\NewUserController@create');
 Route::resource('/new-user', 'Web\NewUserController')->except('index', 'update', 'destroy', 'create', 'show');
 
- /**   *****************************************************
-  *    *******         EXTERNAL ROUTES        **************
-  *   ******************************************************   */
+ /** *****************************************************
+  *   *******        EXTERNAL ROUTES        **************
+  *  ******************************************************  */
 Route::post('/flow/return-from-payment', 'Web\NewUserController@finishFlowPayment');
 Route::post('/flow/confirm-payment', 'Web\NewUserController@finishFlowPayment');
 
@@ -246,16 +203,3 @@ Route::get('maila', function() {
 Route::get('cancel-dte', function() {
     app(TaxDocument::class)->cancel(109444);
 });
-
-// Route::get('/test-mail', function() {
-//     $demo = (object) [
-//         'subject' => 'Prueba',
-//         'user'    => 'Raul',
-//         'text'    => 'Raul',
-//         'image_url' => 'https://via.placeholder.com/1200',
-//     ];
-
-//     // Mail::to('raulberrios8@gmail.com')->send(new SendEmail($demo));
-//     // return true;
-//     return new SendEmail($demo);
-// });

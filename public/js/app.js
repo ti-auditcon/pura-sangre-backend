@@ -267,13 +267,13 @@ function trim(str) {
  * Both environments support XMLHttpRequest, but not fully standard globals.
  *
  * web workers:
- *  typeof window -> undefined
- *  typeof document -> undefined
+ * typeof window -> undefined
+ * typeof document -> undefined
  *
  * react-native:
- *  navigator.product -> 'ReactNative'
+ * navigator.product -> 'ReactNative'
  * nativescript
- *  navigator.product -> 'NativeScript' or 'NS'
+ * navigator.product -> 'NativeScript' or 'NS'
  */
 function isStandardBrowserEnv() {
   if (typeof navigator !== 'undefined' && (navigator.product === 'ReactNative' ||
@@ -3032,9 +3032,9 @@ var modifiers = {
  * structure of the `options` object, as the 3rd argument. For example:
  * ```
  * new Popper(ref, pop, {
- *   modifiers: {
- *     preventOverflow: { enabled: false }
- *   }
+ *  modifiers: {
+ *    preventOverflow: { enabled: false }
+ *  }
  * })
  * ```
  * @type {Object}
@@ -6098,9 +6098,9 @@ compile = Sizzle.compile = function( selector, match /* Internal Use Only */ ) {
 
 /**
  * A low-level selection function that works with Sizzle's compiled
- *  selector functions
+ * selector functions
  * @param {String|Function} selector A selector or a pre-compiled
- *  selector function built with Sizzle.compile
+ * selector function built with Sizzle.compile
  * @param {Element} context
  * @param {Array} [results]
  * @param {Array} [seed] A set of elements to match against
@@ -12289,8 +12289,8 @@ var
 	/* Prefilters
 	 * 1) They are useful to introduce custom dataTypes (see ajax/jsonp.js for an example)
 	 * 2) These are called:
-	 *    - BEFORE asking for a transport
-	 *    - AFTER param serialization (s.data is a string if s.processData is true)
+	 *   - BEFORE asking for a transport
+	 *   - AFTER param serialization (s.data is a string if s.processData is true)
 	 * 3) key is the dataType
 	 * 4) the catchall symbol "*" can be used
 	 * 5) execution will start with transport dataType and THEN continue down to "*" if needed
@@ -14867,7 +14867,7 @@ if (false) {
  */
 
 
-/*  */
+/* */
 
 var emptyObject = Object.freeze({});
 
@@ -15234,7 +15234,7 @@ var LIFECYCLE_HOOKS = [
   'serverPrefetch'
 ];
 
-/*  */
+/* */
 
 
 
@@ -15332,7 +15332,7 @@ var config = ({
   _lifecycleHooks: LIFECYCLE_HOOKS
 });
 
-/*  */
+/* */
 
 /**
  * unicode letters used for parsing html tags, component names and property paths.
@@ -15379,7 +15379,7 @@ function parsePath (path) {
   }
 }
 
-/*  */
+/* */
 
 // can we use __proto__?
 var hasProto = '__proto__' in {};
@@ -15469,7 +15469,7 @@ if (typeof Set !== 'undefined' && isNative(Set)) {
   }());
 }
 
-/*  */
+/* */
 
 var warn = noop;
 var tip = noop;
@@ -15563,7 +15563,7 @@ var formatComponentName = (noop);
   };
 }
 
-/*  */
+/* */
 
 var uid = 0;
 
@@ -15620,7 +15620,7 @@ function popTarget () {
   Dep.target = targetStack[targetStack.length - 1];
 }
 
-/*  */
+/* */
 
 var VNode = function VNode (
   tag,
@@ -15757,7 +15757,7 @@ methodsToPatch.forEach(function (method) {
   });
 });
 
-/*  */
+/* */
 
 var arrayKeys = Object.getOwnPropertyNames(arrayMethods);
 
@@ -16010,7 +16010,7 @@ function dependArray (value) {
   }
 }
 
-/*  */
+/* */
 
 /**
  * Option overwriting strategies are functions that handle
@@ -16458,7 +16458,7 @@ function resolveAsset (
   return res
 }
 
-/*  */
+/* */
 
 
 
@@ -16689,7 +16689,7 @@ function isBoolean () {
   return args.some(function (elem) { return elem.toLowerCase() === 'boolean'; })
 }
 
-/*  */
+/* */
 
 function handleError (err, vm, info) {
   // Deactivate deps tracking while processing error handler to avoid possible infinite rendering.
@@ -16767,7 +16767,7 @@ function logError (err, vm, info) {
   }
 }
 
-/*  */
+/* */
 
 var isUsingMicroTask = false;
 
@@ -16873,7 +16873,7 @@ function nextTick (cb, ctx) {
   }
 }
 
-/*  */
+/* */
 
 var mark;
 var measure;
@@ -16986,7 +16986,7 @@ var initProxy;
   };
 }
 
-/*  */
+/* */
 
 var seenObjects = new _Set();
 
@@ -17023,7 +17023,7 @@ function _traverse (val, seen) {
   }
 }
 
-/*  */
+/* */
 
 var normalizeEvent = cached(function (name) {
   var passive = name.charAt(0) === '&';
@@ -17098,7 +17098,7 @@ function updateListeners (
   }
 }
 
-/*  */
+/* */
 
 function mergeVNodeHook (def, hookKey, hook) {
   if (def instanceof VNode) {
@@ -17133,7 +17133,7 @@ function mergeVNodeHook (def, hookKey, hook) {
   def[hookKey] = invoker;
 }
 
-/*  */
+/* */
 
 function extractPropsFromVNodeData (
   data,
@@ -17201,7 +17201,7 @@ function checkProp (
   return false
 }
 
-/*  */
+/* */
 
 // The template compiler attempts to minimize the need for normalization by
 // statically analyzing the template at compile time.
@@ -17288,7 +17288,7 @@ function normalizeArrayChildren (children, nestedIndex) {
   return res
 }
 
-/*  */
+/* */
 
 function initProvide (vm) {
   var provide = vm.$options.provide;
@@ -17356,7 +17356,7 @@ function resolveInject (inject, vm) {
   }
 }
 
-/*  */
+/* */
 
 
 
@@ -17407,13 +17407,13 @@ function isWhitespace (node) {
   return (node.isComment && !node.asyncFactory) || node.text === ' '
 }
 
-/*  */
+/* */
 
 function isAsyncPlaceholder (node) {
   return node.isComment && node.asyncFactory
 }
 
-/*  */
+/* */
 
 function normalizeScopedSlots (
   slots,
@@ -17495,7 +17495,7 @@ function proxyNormalSlot(slots, key) {
   return function () { return slots[key]; }
 }
 
-/*  */
+/* */
 
 /**
  * Runtime helper for rendering v-for lists.
@@ -17540,7 +17540,7 @@ function renderList (
   return ret
 }
 
-/*  */
+/* */
 
 /**
  * Runtime helper for rendering <slot>
@@ -17579,7 +17579,7 @@ function renderSlot (
   }
 }
 
-/*  */
+/* */
 
 /**
  * Runtime helper for resolving filters
@@ -17588,7 +17588,7 @@ function resolveFilter (id) {
   return resolveAsset(this.$options, 'filters', id, true) || identity
 }
 
-/*  */
+/* */
 
 function isKeyNotMatch (expect, actual) {
   if (Array.isArray(expect)) {
@@ -17621,7 +17621,7 @@ function checkKeyCodes (
   return eventKeyCode === undefined
 }
 
-/*  */
+/* */
 
 /**
  * Runtime helper for merging v-bind="object" into a VNode's data.
@@ -17677,7 +17677,7 @@ function bindObjectProps (
   return data
 }
 
-/*  */
+/* */
 
 /**
  * Runtime helper for rendering static trees.
@@ -17738,7 +17738,7 @@ function markStaticNode (node, key, isOnce) {
   node.isOnce = isOnce;
 }
 
-/*  */
+/* */
 
 function bindObjectListeners (data, value) {
   if (value) {
@@ -17759,7 +17759,7 @@ function bindObjectListeners (data, value) {
   return data
 }
 
-/*  */
+/* */
 
 function resolveScopedSlots (
   fns, // see flow/vnode
@@ -17787,7 +17787,7 @@ function resolveScopedSlots (
   return res
 }
 
-/*  */
+/* */
 
 function bindDynamicKeys (baseObj, values) {
   for (var i = 0; i < values.length; i += 2) {
@@ -17812,7 +17812,7 @@ function prependModifier (value, symbol) {
   return typeof value === 'string' ? symbol + value : value
 }
 
-/*  */
+/* */
 
 function installRenderHelpers (target) {
   target._o = markOnce;
@@ -17834,7 +17834,7 @@ function installRenderHelpers (target) {
   target._p = prependModifier;
 }
 
-/*  */
+/* */
 
 function FunctionalRenderContext (
   data,
@@ -17975,13 +17975,13 @@ function mergeProps (to, from) {
   }
 }
 
-/*  */
+/* */
 
-/*  */
+/* */
 
-/*  */
+/* */
 
-/*  */
+/* */
 
 // inline hooks to be invoked on component VNodes during patch
 var componentVNodeHooks = {
@@ -18213,7 +18213,7 @@ function transformModel (options, data) {
   }
 }
 
-/*  */
+/* */
 
 var SIMPLE_NORMALIZE = 1;
 var ALWAYS_NORMALIZE = 2;
@@ -18359,7 +18359,7 @@ function registerDeepBindings (data) {
   }
 }
 
-/*  */
+/* */
 
 function initRender (vm) {
   vm._vnode = null; // the root of the child tree
@@ -18467,7 +18467,7 @@ function renderMixin (Vue) {
   };
 }
 
-/*  */
+/* */
 
 function ensureCtor (comp, base) {
   if (
@@ -18616,7 +18616,7 @@ function resolveAsyncComponent (
   }
 }
 
-/*  */
+/* */
 
 function getFirstComponentChild (children) {
   if (Array.isArray(children)) {
@@ -18629,9 +18629,9 @@ function getFirstComponentChild (children) {
   }
 }
 
-/*  */
+/* */
 
-/*  */
+/* */
 
 function initEvents (vm) {
   vm._events = Object.create(null);
@@ -18766,7 +18766,7 @@ function eventsMixin (Vue) {
   };
 }
 
-/*  */
+/* */
 
 var activeInstance = null;
 var isUpdatingChildComponent = false;
@@ -19100,7 +19100,7 @@ function callHook (vm, hook) {
   popTarget();
 }
 
-/*  */
+/* */
 
 var MAX_UPDATE_COUNT = 100;
 
@@ -19279,7 +19279,7 @@ function queueWatcher (watcher) {
   }
 }
 
-/*  */
+/* */
 
 
 
@@ -19484,7 +19484,7 @@ Watcher.prototype.teardown = function teardown () {
   }
 };
 
-/*  */
+/* */
 
 var sharedPropertyDefinition = {
   enumerable: true,
@@ -19825,7 +19825,7 @@ function stateMixin (Vue) {
   };
 }
 
-/*  */
+/* */
 
 var uid$3 = 0;
 
@@ -19956,7 +19956,7 @@ eventsMixin(Vue);
 lifecycleMixin(Vue);
 renderMixin(Vue);
 
-/*  */
+/* */
 
 function initUse (Vue) {
   Vue.use = function (plugin) {
@@ -19978,7 +19978,7 @@ function initUse (Vue) {
   };
 }
 
-/*  */
+/* */
 
 function initMixin$1 (Vue) {
   Vue.mixin = function (mixin) {
@@ -19987,7 +19987,7 @@ function initMixin$1 (Vue) {
   };
 }
 
-/*  */
+/* */
 
 function initExtend (Vue) {
   /**
@@ -20079,7 +20079,7 @@ function initComputed$1 (Comp) {
   }
 }
 
-/*  */
+/* */
 
 function initAssetRegisters (Vue) {
   /**
@@ -20111,7 +20111,7 @@ function initAssetRegisters (Vue) {
   });
 }
 
-/*  */
+/* */
 
 
 
@@ -20275,7 +20275,7 @@ var builtInComponents = {
   KeepAlive: KeepAlive
 };
 
-/*  */
+/* */
 
 function initGlobalAPI (Vue) {
   // config
@@ -20347,7 +20347,7 @@ Object.defineProperty(Vue, 'FunctionalRenderContext', {
 
 Vue.version = '2.6.14';
 
-/*  */
+/* */
 
 // these are reserved for web because they are directly compiled away
 // during template compilation
@@ -20400,7 +20400,7 @@ var isFalsyAttrValue = function (val) {
   return val == null || val === false
 };
 
-/*  */
+/* */
 
 function genClassForVnode (vnode) {
   var data = vnode.data;
@@ -20481,7 +20481,7 @@ function stringifyObject (value) {
   return res
 }
 
-/*  */
+/* */
 
 var namespaceMap = {
   svg: 'http://www.w3.org/2000/svg',
@@ -20556,7 +20556,7 @@ function isUnknownElement (tag) {
 
 var isTextInputType = makeMap('text,number,password,search,email,tel,url');
 
-/*  */
+/* */
 
 /**
  * Query an element selector if it's not an element already.
@@ -20576,7 +20576,7 @@ function query (el) {
   }
 }
 
-/*  */
+/* */
 
 function createElement$1 (tagName, vnode) {
   var elm = document.createElement(tagName);
@@ -20649,7 +20649,7 @@ var nodeOps = /*#__PURE__*/Object.freeze({
   setStyleScope: setStyleScope
 });
 
-/*  */
+/* */
 
 var ref = {
   create: function create (_, vnode) {
@@ -21462,7 +21462,7 @@ function createPatchFunction (backend) {
   }
 }
 
-/*  */
+/* */
 
 var directives = {
   create: updateDirectives,
@@ -21584,7 +21584,7 @@ var baseModules = [
   directives
 ];
 
-/*  */
+/* */
 
 function updateAttrs (oldVnode, vnode) {
   var opts = vnode.componentOptions;
@@ -21686,7 +21686,7 @@ var attrs = {
   update: updateAttrs
 };
 
-/*  */
+/* */
 
 function updateClass (oldVnode, vnode) {
   var el = vnode.elm;
@@ -21724,7 +21724,7 @@ var klass = {
   update: updateClass
 };
 
-/*  */
+/* */
 
 var validDivisionCharRE = /[\w).+\-_$\]]/;
 
@@ -21822,7 +21822,7 @@ function wrapFilter (exp, filter) {
   }
 }
 
-/*  */
+/* */
 
 
 
@@ -22051,7 +22051,7 @@ function rangeSetItem (
   return item
 }
 
-/*  */
+/* */
 
 /**
  * Cross-platform code generation for component v-model
@@ -22199,7 +22199,7 @@ function parseString (chr) {
   }
 }
 
-/*  */
+/* */
 
 var warn$1;
 
@@ -22374,7 +22374,7 @@ function genDefaultModel (
   }
 }
 
-/*  */
+/* */
 
 // normalize v-model event tokens that can only be determined at runtime.
 // it's important to place the event as the first in the array because
@@ -22489,7 +22489,7 @@ var events = {
   update: updateDOMListeners
 };
 
-/*  */
+/* */
 
 var svgContainer;
 
@@ -22603,7 +22603,7 @@ var domProps = {
   update: updateDOMProps
 };
 
-/*  */
+/* */
 
 var parseStyleText = cached(function (cssText) {
   var res = {};
@@ -22673,7 +22673,7 @@ function getStyle (vnode, checkChild) {
   return res
 }
 
-/*  */
+/* */
 
 var cssVarRE = /^--/;
 var importantRE = /\s*!important$/;
@@ -22764,7 +22764,7 @@ var style = {
   update: updateStyle
 };
 
-/*  */
+/* */
 
 var whitespaceRE = /\s+/;
 
@@ -22828,7 +22828,7 @@ function removeClass (el, cls) {
   }
 }
 
-/*  */
+/* */
 
 function resolveTransition (def$$1) {
   if (!def$$1) {
@@ -23013,7 +23013,7 @@ function toMs (s) {
   return Number(s.slice(0, -1).replace(',', '.')) * 1000
 }
 
-/*  */
+/* */
 
 function enter (vnode, toggleDisplay) {
   var el = vnode.elm;
@@ -23342,7 +23342,7 @@ var platformModules = [
   transition
 ];
 
-/*  */
+/* */
 
 // the directive module should be applied last, after all
 // built-in modules have been applied.
@@ -23489,7 +23489,7 @@ function trigger (el, type) {
   el.dispatchEvent(e);
 }
 
-/*  */
+/* */
 
 // recursively search for possible transition defined inside the component root
 function locateNode (vnode) {
@@ -23558,7 +23558,7 @@ var platformDirectives = {
   show: show
 };
 
-/*  */
+/* */
 
 var transitionProps = {
   name: String,
@@ -23747,7 +23747,7 @@ var Transition = {
   }
 };
 
-/*  */
+/* */
 
 var props = extend({
   tag: String,
@@ -23921,7 +23921,7 @@ var platformComponents = {
   TransitionGroup: TransitionGroup
 };
 
-/*  */
+/* */
 
 // install platform specific utils
 Vue.config.mustUseProp = mustUseProp;
@@ -23972,7 +23972,7 @@ if (inBrowser) {
   }, 0);
 }
 
-/*  */
+/* */
 
 var defaultTagRE = /\{\{((?:.|\r?\n)+?)\}\}/g;
 var regexEscapeRE = /[-.*+?^${}()|[\]\/\\]/g;
@@ -24020,7 +24020,7 @@ function parseText (
   }
 }
 
-/*  */
+/* */
 
 function transformNode (el, options) {
   var warn = options.warn || baseWarn;
@@ -24063,7 +24063,7 @@ var klass$1 = {
   genData: genData
 };
 
-/*  */
+/* */
 
 function transformNode$1 (el, options) {
   var warn = options.warn || baseWarn;
@@ -24108,7 +24108,7 @@ var style$1 = {
   genData: genData$1
 };
 
-/*  */
+/* */
 
 var decoder;
 
@@ -24120,7 +24120,7 @@ var he = {
   }
 };
 
-/*  */
+/* */
 
 var isUnaryTag = makeMap(
   'area,base,br,col,embed,frame,hr,img,input,isindex,keygen,' +
@@ -24438,7 +24438,7 @@ function parseHTML (html, options) {
   }
 }
 
-/*  */
+/* */
 
 var onRE = /^@|^v-on:/;
 var dirRE = /^v-|^@|^:|^#/;
@@ -25388,7 +25388,7 @@ function checkForAliasModel (el, value) {
   }
 }
 
-/*  */
+/* */
 
 function preTransformNode (el, options) {
   if (el.tag === 'input') {
@@ -25466,7 +25466,7 @@ var modules$1 = [
   model$1
 ];
 
-/*  */
+/* */
 
 function text (el, dir) {
   if (dir.value) {
@@ -25474,7 +25474,7 @@ function text (el, dir) {
   }
 }
 
-/*  */
+/* */
 
 function html (el, dir) {
   if (dir.value) {
@@ -25488,7 +25488,7 @@ var directives$1 = {
   html: html
 };
 
-/*  */
+/* */
 
 var baseOptions = {
   expectHTML: true,
@@ -25503,7 +25503,7 @@ var baseOptions = {
   staticKeys: genStaticKeys(modules$1)
 };
 
-/*  */
+/* */
 
 var isStaticKey;
 var isPlatformReservedTag;
@@ -25518,7 +25518,7 @@ var genStaticKeysCached = cached(genStaticKeys$1);
  * Once we detect these sub-trees, we can:
  *
  * 1. Hoist them into constants, so that we no longer need to
- *    create fresh nodes for them on each re-render;
+ *   create fresh nodes for them on each re-render;
  * 2. Completely skip them in the patching process.
  */
 function optimize (root, options) {
@@ -25630,7 +25630,7 @@ function isDirectChildOfTemplateFor (node) {
   return false
 }
 
-/*  */
+/* */
 
 var fnExpRE = /^([\w$_]+|\([^)]*?\))\s*=>|^function(?:\s+[\w$]+)?\s*\(/;
 var fnInvokeRE = /\([^)]*?\);*$/;
@@ -25793,7 +25793,7 @@ function genFilterCode (key) {
   )
 }
 
-/*  */
+/* */
 
 function on (el, dir) {
   if (dir.modifiers) {
@@ -25802,7 +25802,7 @@ function on (el, dir) {
   el.wrapListeners = function (code) { return ("_g(" + code + "," + (dir.value) + ")"); };
 }
 
-/*  */
+/* */
 
 function bind$1 (el, dir) {
   el.wrapData = function (code) {
@@ -25810,7 +25810,7 @@ function bind$1 (el, dir) {
   };
 }
 
-/*  */
+/* */
 
 var baseDirectives = {
   on: on,
@@ -25818,7 +25818,7 @@ var baseDirectives = {
   cloak: noop
 };
 
-/*  */
+/* */
 
 
 
@@ -26366,7 +26366,7 @@ function transformSpecialNewlines (text) {
     .replace(/\u2029/g, '\\u2029')
 }
 
-/*  */
+/* */
 
 
 
@@ -26493,7 +26493,7 @@ function checkFunctionParameterExpression (exp, text, warn, range) {
   }
 }
 
-/*  */
+/* */
 
 var range = 2;
 
@@ -26547,7 +26547,7 @@ function repeat$1 (str, n) {
   return result
 }
 
-/*  */
+/* */
 
 
 
@@ -26660,7 +26660,7 @@ function createCompileToFunctionFn (compile) {
   }
 }
 
-/*  */
+/* */
 
 function createCompilerCreator (baseCompile) {
   return function createCompiler (baseOptions) {
@@ -26732,7 +26732,7 @@ function createCompilerCreator (baseCompile) {
   }
 }
 
-/*  */
+/* */
 
 // `createCompilerCreator` allows creating compilers that use alternative
 // parser/optimizer/codegen, e.g the SSR optimizing compiler.
@@ -26753,13 +26753,13 @@ var createCompiler = createCompilerCreator(function baseCompile (
   }
 });
 
-/*  */
+/* */
 
 var ref$1 = createCompiler(baseOptions);
 var compile = ref$1.compile;
 var compileToFunctions = ref$1.compileToFunctions;
 
-/*  */
+/* */
 
 // check whether current browser encodes a char inside attribute values
 var div;
@@ -26774,7 +26774,7 @@ var shouldDecodeNewlines = inBrowser ? getShouldDecode(false) : false;
 // #6828: chrome encodes content in a[href]
 var shouldDecodeNewlinesForHref = inBrowser ? getShouldDecode(true) : false;
 
-/*  */
+/* */
 
 var idToTemplate = cached(function (id) {
   var el = query(id);
@@ -27763,7 +27763,7 @@ if (token) {
    * @param {Array} [array] The array to iterate over.
    * @param {Function} predicate The function invoked per iteration.
    * @returns {boolean} Returns `true` if all elements pass the predicate check,
-   *  else `false`.
+   * else `false`.
    */
   function arrayEvery(array, predicate) {
     var index = -1,
@@ -27884,7 +27884,7 @@ if (token) {
    * @param {Function} iteratee The function invoked per iteration.
    * @param {*} [accumulator] The initial value.
    * @param {boolean} [initAccum] Specify using the first element of `array` as
-   *  the initial value.
+   * the initial value.
    * @returns {*} Returns the accumulated value.
    */
   function arrayReduce(array, iteratee, accumulator, initAccum) {
@@ -27909,7 +27909,7 @@ if (token) {
    * @param {Function} iteratee The function invoked per iteration.
    * @param {*} [accumulator] The initial value.
    * @param {boolean} [initAccum] Specify using the last element of `array` as
-   *  the initial value.
+   * the initial value.
    * @returns {*} Returns the accumulated value.
    */
   function arrayReduceRight(array, iteratee, accumulator, initAccum) {
@@ -27931,7 +27931,7 @@ if (token) {
    * @param {Array} [array] The array to iterate over.
    * @param {Function} predicate The function invoked per iteration.
    * @returns {boolean} Returns `true` if any element passes the predicate check,
-   *  else `false`.
+   * else `false`.
    */
   function arraySome(array, predicate) {
     var index = -1,
@@ -28118,7 +28118,7 @@ if (token) {
    * @param {Function} iteratee The function invoked per iteration.
    * @param {*} accumulator The initial value.
    * @param {boolean} initAccum Specify using the first or last element of
-   *  `collection` as the initial value.
+   * `collection` as the initial value.
    * @param {Function} eachFunc The function to iterate over `collection`.
    * @returns {*} Returns the accumulated value.
    */
@@ -28870,7 +28870,7 @@ if (token) {
      * @example
      *
      * function square(n) {
-     *   return n * n;
+     *  return n * n;
      * }
      *
      * var wrapped = _([1, 2, 3]);
@@ -29851,9 +29851,9 @@ if (token) {
      * @private
      * @param {*} value The value to clone.
      * @param {boolean} bitmask The bitmask flags.
-     *  1 - Deep clone
-     *  2 - Flatten inherited properties
-     *  4 - Clone symbols
+     * 1 - Deep clone
+     * 2 - Flatten inherited properties
+     * 4 - Clone symbols
      * @param {Function} [customizer] The function to customize cloning.
      * @param {string} [key] The key of `value`.
      * @param {Object} [object] The parent object of `value`.
@@ -30076,7 +30076,7 @@ if (token) {
      * @param {Array|Object} collection The collection to iterate over.
      * @param {Function} predicate The function invoked per iteration.
      * @returns {boolean} Returns `true` if all elements pass the predicate check,
-     *  else `false`
+     * else `false`
      */
     function baseEvery(collection, predicate) {
       var result = true;
@@ -30319,7 +30319,7 @@ if (token) {
      * @param {*} value The value to compare.
      * @param {*} other The other value to compare.
      * @returns {boolean} Returns `true` if `value` is greater than `other`,
-     *  else `false`.
+     * else `false`.
      */
     function baseGt(value, other) {
       return value > other;
@@ -30501,8 +30501,8 @@ if (token) {
      * @param {*} value The value to compare.
      * @param {*} other The other value to compare.
      * @param {boolean} bitmask The bitmask flags.
-     *  1 - Unordered comparison
-     *  2 - Partial comparison
+     * 1 - Unordered comparison
+     * 2 - Partial comparison
      * @param {Function} [customizer] The function to customize comparisons.
      * @param {Object} [stack] Tracks traversed `value` and `other` objects.
      * @returns {boolean} Returns `true` if the values are equivalent, else `false`.
@@ -30647,7 +30647,7 @@ if (token) {
      * @private
      * @param {*} value The value to check.
      * @returns {boolean} Returns `true` if `value` is a native function,
-     *  else `false`.
+     * else `false`.
      */
     function baseIsNative(value) {
       if (!isObject(value) || isMasked(value)) {
@@ -30764,7 +30764,7 @@ if (token) {
      * @param {*} value The value to compare.
      * @param {*} other The other value to compare.
      * @returns {boolean} Returns `true` if `value` is less than `other`,
-     *  else `false`.
+     * else `false`.
      */
     function baseLt(value, other) {
       return value < other;
@@ -30834,7 +30834,7 @@ if (token) {
      * @param {number} srcIndex The index of `source`.
      * @param {Function} [customizer] The function to customize merged values.
      * @param {Object} [stack] Tracks traversed source values and their merged
-     *  counterparts.
+     * counterparts.
      */
     function baseMerge(object, source, srcIndex, customizer, stack) {
       if (object === source) {
@@ -30871,7 +30871,7 @@ if (token) {
      * @param {Function} mergeFunc The function to merge values.
      * @param {Function} [customizer] The function to customize assigned values.
      * @param {Object} [stack] Tracks traversed source values and their merged
-     *  counterparts.
+     * counterparts.
      */
     function baseMergeDeep(object, source, key, srcIndex, mergeFunc, customizer, stack) {
       var objValue = safeGet(object, key),
@@ -31330,7 +31330,7 @@ if (token) {
      * @param {Array|Object} collection The collection to iterate over.
      * @param {Function} predicate The function invoked per iteration.
      * @returns {boolean} Returns `true` if any element passes the predicate check,
-     *  else `false`.
+     * else `false`.
      */
     function baseSome(collection, predicate) {
       var result;
@@ -31352,7 +31352,7 @@ if (token) {
      * @param {*} value The value to evaluate.
      * @param {boolean} [retHighest] Specify returning the highest qualified index.
      * @returns {number} Returns the index at which `value` should be inserted
-     *  into `array`.
+     * into `array`.
      */
     function baseSortedIndex(array, value, retHighest) {
       var low = 0,
@@ -31386,7 +31386,7 @@ if (token) {
      * @param {Function} iteratee The iteratee invoked per element.
      * @param {boolean} [retHighest] Specify returning the highest qualified index.
      * @returns {number} Returns the index at which `value` should be inserted
-     *  into `array`.
+     * into `array`.
      */
     function baseSortedIndexBy(array, value, iteratee, retHighest) {
       var low = 0,
@@ -32394,10 +32394,10 @@ if (token) {
      * @param {number} bitmask The bitmask flags. See `createWrap` for more details.
      * @param {*} [thisArg] The `this` binding of `func`.
      * @param {Array} [partials] The arguments to prepend to those provided to
-     *  the new function.
+     * the new function.
      * @param {Array} [holders] The `partials` placeholder indexes.
      * @param {Array} [partialsRight] The arguments to append to those provided
-     *  to the new function.
+     * to the new function.
      * @param {Array} [holdersRight] The `partialsRight` placeholder indexes.
      * @param {Array} [argPos] The argument positions of the new function.
      * @param {number} [ary] The arity cap of `func`.
@@ -32556,7 +32556,7 @@ if (token) {
      * @param {number} bitmask The bitmask flags. See `createWrap` for more details.
      * @param {*} thisArg The `this` binding of `func`.
      * @param {Array} partials The arguments to prepend to those provided to
-     *  the new function.
+     * the new function.
      * @returns {Function} Returns the new wrapped function.
      */
     function createPartial(func, bitmask, thisArg, partials) {
@@ -32634,7 +32634,7 @@ if (token) {
      * @param {*} placeholder The placeholder value.
      * @param {*} [thisArg] The `this` binding of `func`.
      * @param {Array} [partials] The arguments to prepend to those provided to
-     *  the new function.
+     * the new function.
      * @param {Array} [holders] The `partials` placeholder indexes.
      * @param {Array} [argPos] The argument positions of the new function.
      * @param {number} [ary] The arity cap of `func`.
@@ -32730,16 +32730,16 @@ if (token) {
      * @private
      * @param {Function|string} func The function or method name to wrap.
      * @param {number} bitmask The bitmask flags.
-     *    1 - `_.bind`
-     *    2 - `_.bindKey`
-     *    4 - `_.curry` or `_.curryRight` of a bound function
-     *    8 - `_.curry`
-     *   16 - `_.curryRight`
-     *   32 - `_.partial`
-     *   64 - `_.partialRight`
-     *  128 - `_.rearg`
-     *  256 - `_.ary`
-     *  512 - `_.flip`
+     *   1 - `_.bind`
+     *   2 - `_.bindKey`
+     *   4 - `_.curry` or `_.curryRight` of a bound function
+     *   8 - `_.curry`
+     *  16 - `_.curryRight`
+     *  32 - `_.partial`
+     *  64 - `_.partialRight`
+     * 128 - `_.rearg`
+     * 256 - `_.ary`
+     * 512 - `_.flip`
      * @param {*} [thisArg] The `this` binding of `func`.
      * @param {Array} [partials] The arguments to be partially applied.
      * @param {Array} [holders] The `partials` placeholder indexes.
@@ -32834,7 +32834,7 @@ if (token) {
      * @param {Object} object The parent object of `objValue`.
      * @param {Object} source The parent object of `srcValue`.
      * @param {Object} [stack] Tracks traversed source values and their merged
-     *  counterparts.
+     * counterparts.
      * @returns {*} Returns the value to assign.
      */
     function customDefaultsMerge(objValue, srcValue, key, object, source, stack) {
@@ -33340,7 +33340,7 @@ if (token) {
      * @param {number} end The end of the view.
      * @param {Array} transforms The transformations to apply to the view.
      * @returns {Object} Returns an object containing the `start` and `end`
-     *  positions of the view.
+     * positions of the view.
      */
     function getView(start, end, transforms) {
       var index = -1,
@@ -33540,7 +33540,7 @@ if (token) {
      * @param {*} index The potential iteratee index or key argument.
      * @param {*} object The potential iteratee object argument.
      * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
-     *  else `false`.
+     * else `false`.
      */
     function isIterateeCall(value, index, object) {
       if (!isObject(object)) {
@@ -33597,7 +33597,7 @@ if (token) {
      * @private
      * @param {Function} func The function to check.
      * @returns {boolean} Returns `true` if `func` has a lazy counterpart,
-     *  else `false`.
+     * else `false`.
      */
     function isLaziable(func) {
       var funcName = getFuncName(func),
@@ -33653,7 +33653,7 @@ if (token) {
      * @private
      * @param {*} value The value to check.
      * @returns {boolean} Returns `true` if `value` if suitable for strict
-     *  equality comparisons, else `false`.
+     * equality comparisons, else `false`.
      */
     function isStrictComparable(value) {
       return value === value && !isObject(value);
@@ -34368,9 +34368,9 @@ if (token) {
      * @example
      *
      * var users = [
-     *   { 'user': 'barney',  'active': true },
-     *   { 'user': 'fred',    'active': false },
-     *   { 'user': 'pebbles', 'active': false }
+     *  { 'user': 'barney',  'active': true },
+     *  { 'user': 'fred',    'active': false },
+     *  { 'user': 'pebbles', 'active': false }
      * ];
      *
      * _.dropRightWhile(users, function(o) { return !o.active; });
@@ -34409,9 +34409,9 @@ if (token) {
      * @example
      *
      * var users = [
-     *   { 'user': 'barney',  'active': false },
-     *   { 'user': 'fred',    'active': false },
-     *   { 'user': 'pebbles', 'active': true }
+     *  { 'user': 'barney',  'active': false },
+     *  { 'user': 'fred',    'active': false },
+     *  { 'user': 'pebbles', 'active': true }
      * ];
      *
      * _.dropWhile(users, function(o) { return !o.active; });
@@ -34491,9 +34491,9 @@ if (token) {
      * @example
      *
      * var users = [
-     *   { 'user': 'barney',  'active': false },
-     *   { 'user': 'fred',    'active': false },
-     *   { 'user': 'pebbles', 'active': true }
+     *  { 'user': 'barney',  'active': false },
+     *  { 'user': 'fred',    'active': false },
+     *  { 'user': 'pebbles', 'active': true }
      * ];
      *
      * _.findIndex(users, function(o) { return o.user == 'barney'; });
@@ -34538,9 +34538,9 @@ if (token) {
      * @example
      *
      * var users = [
-     *   { 'user': 'barney',  'active': true },
-     *   { 'user': 'fred',    'active': false },
-     *   { 'user': 'pebbles', 'active': false }
+     *  { 'user': 'barney',  'active': true },
+     *  { 'user': 'fred',    'active': false },
+     *  { 'user': 'pebbles', 'active': false }
      * ];
      *
      * _.findLastIndex(users, function(o) { return o.user == 'pebbles'; });
@@ -35100,7 +35100,7 @@ if (token) {
      *
      * var array = [1, 2, 3, 4];
      * var evens = _.remove(array, function(n) {
-     *   return n % 2 == 0;
+     *  return n % 2 == 0;
      * });
      *
      * console.log(array);
@@ -35200,7 +35200,7 @@ if (token) {
      * @param {Array} array The sorted array to inspect.
      * @param {*} value The value to evaluate.
      * @returns {number} Returns the index at which `value` should be inserted
-     *  into `array`.
+     * into `array`.
      * @example
      *
      * _.sortedIndex([30, 50], 40);
@@ -35223,7 +35223,7 @@ if (token) {
      * @param {*} value The value to evaluate.
      * @param {Function} [iteratee=_.identity] The iteratee invoked per element.
      * @returns {number} Returns the index at which `value` should be inserted
-     *  into `array`.
+     * into `array`.
      * @example
      *
      * var objects = [{ 'x': 4 }, { 'x': 5 }];
@@ -35278,7 +35278,7 @@ if (token) {
      * @param {Array} array The sorted array to inspect.
      * @param {*} value The value to evaluate.
      * @returns {number} Returns the index at which `value` should be inserted
-     *  into `array`.
+     * into `array`.
      * @example
      *
      * _.sortedLastIndex([4, 5, 5, 5, 6], 5);
@@ -35301,7 +35301,7 @@ if (token) {
      * @param {*} value The value to evaluate.
      * @param {Function} [iteratee=_.identity] The iteratee invoked per element.
      * @returns {number} Returns the index at which `value` should be inserted
-     *  into `array`.
+     * into `array`.
      * @example
      *
      * var objects = [{ 'x': 4 }, { 'x': 5 }];
@@ -35489,9 +35489,9 @@ if (token) {
      * @example
      *
      * var users = [
-     *   { 'user': 'barney',  'active': true },
-     *   { 'user': 'fred',    'active': false },
-     *   { 'user': 'pebbles', 'active': false }
+     *  { 'user': 'barney',  'active': true },
+     *  { 'user': 'fred',    'active': false },
+     *  { 'user': 'pebbles', 'active': false }
      * ];
      *
      * _.takeRightWhile(users, function(o) { return !o.active; });
@@ -35530,9 +35530,9 @@ if (token) {
      * @example
      *
      * var users = [
-     *   { 'user': 'barney',  'active': false },
-     *   { 'user': 'fred',    'active': false },
-     *   { 'user': 'pebbles', 'active': true }
+     *  { 'user': 'barney',  'active': false },
+     *  { 'user': 'fred',    'active': false },
+     *  { 'user': 'pebbles', 'active': true }
      * ];
      *
      * _.takeWhile(users, function(o) { return !o.active; });
@@ -35754,7 +35754,7 @@ if (token) {
      * @category Array
      * @param {Array} array The array of grouped elements to process.
      * @param {Function} [iteratee=_.identity] The function to combine
-     *  regrouped values.
+     * regrouped values.
      * @returns {Array} Returns the new array of regrouped elements.
      * @example
      *
@@ -35951,12 +35951,12 @@ if (token) {
      * @category Array
      * @param {...Array} [arrays] The arrays to process.
      * @param {Function} [iteratee=_.identity] The function to combine
-     *  grouped values.
+     * grouped values.
      * @returns {Array} Returns the new array of grouped elements.
      * @example
      *
      * _.zipWith([1, 2], [10, 20], [100, 200], function(a, b, c) {
-     *   return a + b + c;
+     *  return a + b + c;
      * });
      * // => [111, 222]
      */
@@ -35984,19 +35984,19 @@ if (token) {
      * @example
      *
      * var users = [
-     *   { 'user': 'barney',  'age': 36 },
-     *   { 'user': 'fred',    'age': 40 },
-     *   { 'user': 'pebbles', 'age': 1 }
+     *  { 'user': 'barney',  'age': 36 },
+     *  { 'user': 'fred',    'age': 40 },
+     *  { 'user': 'pebbles', 'age': 1 }
      * ];
      *
      * var youngest = _
-     *   .chain(users)
-     *   .sortBy('age')
-     *   .map(function(o) {
-     *     return o.user + ' is ' + o.age;
-     *   })
-     *   .head()
-     *   .value();
+     *  .chain(users)
+     *  .sortBy('age')
+     *  .map(function(o) {
+     *    return o.user + ' is ' + o.age;
+     *  })
+     *  .head()
+     *  .value();
      * // => 'pebbles is 1'
      */
     function chain(value) {
@@ -36020,12 +36020,12 @@ if (token) {
      * @example
      *
      * _([1, 2, 3])
-     *  .tap(function(array) {
-     *    // Mutate input array.
-     *    array.pop();
-     *  })
-     *  .reverse()
-     *  .value();
+     * .tap(function(array) {
+     *   // Mutate input array.
+     *   array.pop();
+     * })
+     * .reverse()
+     * .value();
      * // => [2, 1]
      */
     function tap(value, interceptor) {
@@ -36048,12 +36048,12 @@ if (token) {
      * @example
      *
      * _('  abc  ')
-     *  .chain()
-     *  .trim()
-     *  .thru(function(value) {
-     *    return [value];
-     *  })
-     *  .value();
+     * .chain()
+     * .trim()
+     * .thru(function(value) {
+     *   return [value];
+     * })
+     * .value();
      * // => ['abc']
      */
     function thru(value, interceptor) {
@@ -36111,8 +36111,8 @@ if (token) {
      * @example
      *
      * var users = [
-     *   { 'user': 'barney', 'age': 36 },
-     *   { 'user': 'fred',   'age': 40 }
+     *  { 'user': 'barney', 'age': 36 },
+     *  { 'user': 'fred',   'age': 40 }
      * ];
      *
      * // A sequence without explicit chaining.
@@ -36121,10 +36121,10 @@ if (token) {
      *
      * // A sequence with explicit chaining.
      * _(users)
-     *   .chain()
-     *   .head()
-     *   .pick('user')
-     *   .value();
+     *  .chain()
+     *  .head()
+     *  .pick('user')
+     *  .value();
      * // => { 'user': 'barney' }
      */
     function wrapperChain() {
@@ -36227,7 +36227,7 @@ if (token) {
      * @example
      *
      * function square(n) {
-     *   return n * n;
+     *  return n * n;
      * }
      *
      * var wrapped = _([1, 2]).map(square);
@@ -36365,15 +36365,15 @@ if (token) {
      * @param {Function} [predicate=_.identity] The function invoked per iteration.
      * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
      * @returns {boolean} Returns `true` if all elements pass the predicate check,
-     *  else `false`.
+     * else `false`.
      * @example
      *
      * _.every([true, 1, null, 'yes'], Boolean);
      * // => false
      *
      * var users = [
-     *   { 'user': 'barney', 'age': 36, 'active': false },
-     *   { 'user': 'fred',   'age': 40, 'active': false }
+     *  { 'user': 'barney', 'age': 36, 'active': false },
+     *  { 'user': 'fred',   'age': 40, 'active': false }
      * ];
      *
      * // The `_.matches` iteratee shorthand.
@@ -36414,8 +36414,8 @@ if (token) {
      * @example
      *
      * var users = [
-     *   { 'user': 'barney', 'age': 36, 'active': true },
-     *   { 'user': 'fred',   'age': 40, 'active': false }
+     *  { 'user': 'barney', 'age': 36, 'active': true },
+     *  { 'user': 'fred',   'age': 40, 'active': false }
      * ];
      *
      * _.filter(users, function(o) { return !o.active; });
@@ -36458,9 +36458,9 @@ if (token) {
      * @example
      *
      * var users = [
-     *   { 'user': 'barney',  'age': 36, 'active': true },
-     *   { 'user': 'fred',    'age': 40, 'active': false },
-     *   { 'user': 'pebbles', 'age': 1,  'active': true }
+     *  { 'user': 'barney',  'age': 36, 'active': true },
+     *  { 'user': 'fred',    'age': 40, 'active': false },
+     *  { 'user': 'pebbles', 'age': 1,  'active': true }
      * ];
      *
      * _.find(users, function(o) { return o.age < 40; });
@@ -36495,7 +36495,7 @@ if (token) {
      * @example
      *
      * _.findLast([1, 2, 3, 4], function(n) {
-     *   return n % 2 == 1;
+     *  return n % 2 == 1;
      * });
      * // => 3
      */
@@ -36516,7 +36516,7 @@ if (token) {
      * @example
      *
      * function duplicate(n) {
-     *   return [n, n];
+     *  return [n, n];
      * }
      *
      * _.flatMap([1, 2], duplicate);
@@ -36540,7 +36540,7 @@ if (token) {
      * @example
      *
      * function duplicate(n) {
-     *   return [[[n, n]]];
+     *  return [[[n, n]]];
      * }
      *
      * _.flatMapDeep([1, 2], duplicate);
@@ -36565,7 +36565,7 @@ if (token) {
      * @example
      *
      * function duplicate(n) {
-     *   return [[[n, n]]];
+     *  return [[[n, n]]];
      * }
      *
      * _.flatMapDepth([1, 2], duplicate, 2);
@@ -36597,12 +36597,12 @@ if (token) {
      * @example
      *
      * _.forEach([1, 2], function(value) {
-     *   console.log(value);
+     *  console.log(value);
      * });
      * // => Logs `1` then `2`.
      *
      * _.forEach({ 'a': 1, 'b': 2 }, function(value, key) {
-     *   console.log(key);
+     *  console.log(key);
      * });
      * // => Logs 'a' then 'b' (iteration order is not guaranteed).
      */
@@ -36627,7 +36627,7 @@ if (token) {
      * @example
      *
      * _.forEachRight([1, 2], function(value) {
-     *   console.log(value);
+     *  console.log(value);
      * });
      * // => Logs `2` then `1`.
      */
@@ -36722,7 +36722,7 @@ if (token) {
      * @category Collection
      * @param {Array|Object} collection The collection to iterate over.
      * @param {Array|Function|string} path The path of the method to invoke or
-     *  the function invoked per iteration.
+     * the function invoked per iteration.
      * @param {...*} [args] The arguments to invoke each method with.
      * @returns {Array} Returns the array of results.
      * @example
@@ -36760,12 +36760,12 @@ if (token) {
      * @example
      *
      * var array = [
-     *   { 'dir': 'left', 'code': 97 },
-     *   { 'dir': 'right', 'code': 100 }
+     *  { 'dir': 'left', 'code': 97 },
+     *  { 'dir': 'right', 'code': 100 }
      * ];
      *
      * _.keyBy(array, function(o) {
-     *   return String.fromCharCode(o.code);
+     *  return String.fromCharCode(o.code);
      * });
      * // => { 'a': { 'dir': 'left', 'code': 97 }, 'd': { 'dir': 'right', 'code': 100 } }
      *
@@ -36800,7 +36800,7 @@ if (token) {
      * @example
      *
      * function square(n) {
-     *   return n * n;
+     *  return n * n;
      * }
      *
      * _.map([4, 8], square);
@@ -36810,8 +36810,8 @@ if (token) {
      * // => [16, 64] (iteration order is not guaranteed)
      *
      * var users = [
-     *   { 'user': 'barney' },
-     *   { 'user': 'fred' }
+     *  { 'user': 'barney' },
+     *  { 'user': 'fred' }
      * ];
      *
      * // The `_.property` iteratee shorthand.
@@ -36835,17 +36835,17 @@ if (token) {
      * @category Collection
      * @param {Array|Object} collection The collection to iterate over.
      * @param {Array[]|Function[]|Object[]|string[]} [iteratees=[_.identity]]
-     *  The iteratees to sort by.
+     * The iteratees to sort by.
      * @param {string[]} [orders] The sort orders of `iteratees`.
      * @param- {Object} [guard] Enables use as an iteratee for methods like `_.reduce`.
      * @returns {Array} Returns the new sorted array.
      * @example
      *
      * var users = [
-     *   { 'user': 'fred',   'age': 48 },
-     *   { 'user': 'barney', 'age': 34 },
-     *   { 'user': 'fred',   'age': 40 },
-     *   { 'user': 'barney', 'age': 36 }
+     *  { 'user': 'fred',   'age': 48 },
+     *  { 'user': 'barney', 'age': 34 },
+     *  { 'user': 'fred',   'age': 40 },
+     *  { 'user': 'barney', 'age': 36 }
      * ];
      *
      * // Sort by `user` in ascending order and by `age` in descending order.
@@ -36882,9 +36882,9 @@ if (token) {
      * @example
      *
      * var users = [
-     *   { 'user': 'barney',  'age': 36, 'active': false },
-     *   { 'user': 'fred',    'age': 40, 'active': true },
-     *   { 'user': 'pebbles', 'age': 1,  'active': false }
+     *  { 'user': 'barney',  'age': 36, 'active': false },
+     *  { 'user': 'fred',    'age': 40, 'active': true },
+     *  { 'user': 'pebbles', 'age': 1,  'active': false }
      * ];
      *
      * _.partition(users, function(o) { return o.active; });
@@ -36933,13 +36933,13 @@ if (token) {
      * @example
      *
      * _.reduce([1, 2], function(sum, n) {
-     *   return sum + n;
+     *  return sum + n;
      * }, 0);
      * // => 3
      *
      * _.reduce({ 'a': 1, 'b': 2, 'c': 1 }, function(result, value, key) {
-     *   (result[value] || (result[value] = [])).push(key);
-     *   return result;
+     *  (result[value] || (result[value] = [])).push(key);
+     *  return result;
      * }, {});
      * // => { '1': ['a', 'c'], '2': ['b'] } (iteration order is not guaranteed)
      */
@@ -36968,7 +36968,7 @@ if (token) {
      * var array = [[0, 1], [2, 3], [4, 5]];
      *
      * _.reduceRight(array, function(flattened, other) {
-     *   return flattened.concat(other);
+     *  return flattened.concat(other);
      * }, []);
      * // => [4, 5, 2, 3, 0, 1]
      */
@@ -36994,8 +36994,8 @@ if (token) {
      * @example
      *
      * var users = [
-     *   { 'user': 'barney', 'age': 36, 'active': false },
-     *   { 'user': 'fred',   'age': 40, 'active': true }
+     *  { 'user': 'barney', 'age': 36, 'active': false },
+     *  { 'user': 'fred',   'age': 40, 'active': true }
      * ];
      *
      * _.reject(users, function(o) { return !o.active; });
@@ -37135,15 +37135,15 @@ if (token) {
      * @param {Function} [predicate=_.identity] The function invoked per iteration.
      * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
      * @returns {boolean} Returns `true` if any element passes the predicate check,
-     *  else `false`.
+     * else `false`.
      * @example
      *
      * _.some([null, 0, 'yes', false], Boolean);
      * // => true
      *
      * var users = [
-     *   { 'user': 'barney', 'active': true },
-     *   { 'user': 'fred',   'active': false }
+     *  { 'user': 'barney', 'active': true },
+     *  { 'user': 'fred',   'active': false }
      * ];
      *
      * // The `_.matches` iteratee shorthand.
@@ -37178,15 +37178,15 @@ if (token) {
      * @category Collection
      * @param {Array|Object} collection The collection to iterate over.
      * @param {...(Function|Function[])} [iteratees=[_.identity]]
-     *  The iteratees to sort by.
+     * The iteratees to sort by.
      * @returns {Array} Returns the new sorted array.
      * @example
      *
      * var users = [
-     *   { 'user': 'fred',   'age': 48 },
-     *   { 'user': 'barney', 'age': 36 },
-     *   { 'user': 'fred',   'age': 30 },
-     *   { 'user': 'barney', 'age': 34 }
+     *  { 'user': 'fred',   'age': 48 },
+     *  { 'user': 'barney', 'age': 36 },
+     *  { 'user': 'fred',   'age': 30 },
+     *  { 'user': 'barney', 'age': 34 }
      * ];
      *
      * _.sortBy(users, [function(o) { return o.user; }]);
@@ -37222,7 +37222,7 @@ if (token) {
      * @example
      *
      * _.defer(function(stamp) {
-     *   console.log(_.now() - stamp);
+     *  console.log(_.now() - stamp);
      * }, _.now());
      * // => Logs the number of milliseconds it took for the deferred invocation.
      */
@@ -37248,11 +37248,11 @@ if (token) {
      * var saves = ['profile', 'settings'];
      *
      * var done = _.after(saves.length, function() {
-     *   console.log('done saving!');
+     *  console.log('done saving!');
      * });
      *
      * _.forEach(saves, function(type) {
-     *   asyncSave({ 'type': type, 'complete': done });
+     *  asyncSave({ 'type': type, 'complete': done });
      * });
      * // => Logs 'done saving!' after the two async saves have completed.
      */
@@ -37346,7 +37346,7 @@ if (token) {
      * @example
      *
      * function greet(greeting, punctuation) {
-     *   return greeting + ' ' + this.user + punctuation;
+     *  return greeting + ' ' + this.user + punctuation;
      * }
      *
      * var object = { 'user': 'fred' };
@@ -37392,10 +37392,10 @@ if (token) {
      * @example
      *
      * var object = {
-     *   'user': 'fred',
-     *   'greet': function(greeting, punctuation) {
-     *     return greeting + ' ' + this.user + punctuation;
-     *   }
+     *  'user': 'fred',
+     *  'greet': function(greeting, punctuation) {
+     *    return greeting + ' ' + this.user + punctuation;
+     *  }
      * };
      *
      * var bound = _.bindKey(object, 'greet', 'hi');
@@ -37403,7 +37403,7 @@ if (token) {
      * // => 'hi fred!'
      *
      * object.greet = function(greeting, punctuation) {
-     *   return greeting + 'ya ' + this.user + punctuation;
+     *  return greeting + 'ya ' + this.user + punctuation;
      * };
      *
      * bound('!');
@@ -37446,7 +37446,7 @@ if (token) {
      * @example
      *
      * var abc = function(a, b, c) {
-     *   return [a, b, c];
+     *  return [a, b, c];
      * };
      *
      * var curried = _.curry(abc);
@@ -37491,7 +37491,7 @@ if (token) {
      * @example
      *
      * var abc = function(a, b, c) {
-     *   return [a, b, c];
+     *  return [a, b, c];
      * };
      *
      * var curried = _.curryRight(abc);
@@ -37545,11 +37545,11 @@ if (token) {
      * @param {number} [wait=0] The number of milliseconds to delay.
      * @param {Object} [options={}] The options object.
      * @param {boolean} [options.leading=false]
-     *  Specify invoking on the leading edge of the timeout.
+     * Specify invoking on the leading edge of the timeout.
      * @param {number} [options.maxWait]
-     *  The maximum time `func` is allowed to be delayed before it's invoked.
+     * The maximum time `func` is allowed to be delayed before it's invoked.
      * @param {boolean} [options.trailing=true]
-     *  Specify invoking on the trailing edge of the timeout.
+     * Specify invoking on the trailing edge of the timeout.
      * @returns {Function} Returns the new debounced function.
      * @example
      *
@@ -37558,8 +37558,8 @@ if (token) {
      *
      * // Invoke `sendMail` when clicked, debouncing subsequent calls.
      * jQuery(element).on('click', _.debounce(sendMail, 300, {
-     *   'leading': true,
-     *   'trailing': false
+     *  'leading': true,
+     *  'trailing': false
      * }));
      *
      * // Ensure `batchLog` is invoked once after 1 second of debounced calls.
@@ -37709,7 +37709,7 @@ if (token) {
      * @example
      *
      * _.defer(function(text) {
-     *   console.log(text);
+     *  console.log(text);
      * }, 'deferred');
      * // => Logs 'deferred' after one millisecond.
      */
@@ -37732,7 +37732,7 @@ if (token) {
      * @example
      *
      * _.delay(function(text) {
-     *   console.log(text);
+     *  console.log(text);
      * }, 1000, 'later');
      * // => Logs 'later' after one second.
      */
@@ -37752,7 +37752,7 @@ if (token) {
      * @example
      *
      * var flipped = _.flip(function() {
-     *   return _.toArray(arguments);
+     *  return _.toArray(arguments);
      * });
      *
      * flipped('a', 'b', 'c', 'd');
@@ -37843,7 +37843,7 @@ if (token) {
      * @example
      *
      * function isEven(n) {
-     *   return n % 2 == 0;
+     *  return n % 2 == 0;
      * }
      *
      * _.filter([1, 2, 3, 4, 5, 6], _.negate(isEven));
@@ -37896,20 +37896,20 @@ if (token) {
      * @category Function
      * @param {Function} func The function to wrap.
      * @param {...(Function|Function[])} [transforms=[_.identity]]
-     *  The argument transforms.
+     * The argument transforms.
      * @returns {Function} Returns the new function.
      * @example
      *
      * function doubled(n) {
-     *   return n * 2;
+     *  return n * 2;
      * }
      *
      * function square(n) {
-     *   return n * n;
+     *  return n * n;
      * }
      *
      * var func = _.overArgs(function(x, y) {
-     *   return [x, y];
+     *  return [x, y];
      * }, [square, doubled]);
      *
      * func(9, 3);
@@ -37956,7 +37956,7 @@ if (token) {
      * @example
      *
      * function greet(greeting, name) {
-     *   return greeting + ' ' + name;
+     *  return greeting + ' ' + name;
      * }
      *
      * var sayHelloTo = _.partial(greet, 'hello');
@@ -37993,7 +37993,7 @@ if (token) {
      * @example
      *
      * function greet(greeting, name) {
-     *   return greeting + ' ' + name;
+     *  return greeting + ' ' + name;
      * }
      *
      * var greetFred = _.partialRight(greet, 'fred');
@@ -38026,7 +38026,7 @@ if (token) {
      * @example
      *
      * var rearged = _.rearg(function(a, b, c) {
-     *   return [a, b, c];
+     *  return [a, b, c];
      * }, [2, 0, 1]);
      *
      * rearged('b', 'c', 'a')
@@ -38054,8 +38054,8 @@ if (token) {
      * @example
      *
      * var say = _.rest(function(what, names) {
-     *   return what + ' ' + _.initial(names).join(', ') +
-     *     (_.size(names) > 1 ? ', & ' : '') + _.last(names);
+     *  return what + ' ' + _.initial(names).join(', ') +
+     *    (_.size(names) > 1 ? ', & ' : '') + _.last(names);
      * });
      *
      * say('hello', 'fred', 'barney', 'pebbles');
@@ -38087,19 +38087,19 @@ if (token) {
      * @example
      *
      * var say = _.spread(function(who, what) {
-     *   return who + ' says ' + what;
+     *  return who + ' says ' + what;
      * });
      *
      * say(['fred', 'hello']);
      * // => 'fred says hello'
      *
      * var numbers = Promise.all([
-     *   Promise.resolve(40),
-     *   Promise.resolve(36)
+     *  Promise.resolve(40),
+     *  Promise.resolve(36)
      * ]);
      *
      * numbers.then(_.spread(function(x, y) {
-     *   return x + y;
+     *  return x + y;
      * }));
      * // => a Promise of 76
      */
@@ -38147,9 +38147,9 @@ if (token) {
      * @param {number} [wait=0] The number of milliseconds to throttle invocations to.
      * @param {Object} [options={}] The options object.
      * @param {boolean} [options.leading=true]
-     *  Specify invoking on the leading edge of the timeout.
+     * Specify invoking on the leading edge of the timeout.
      * @param {boolean} [options.trailing=true]
-     *  Specify invoking on the trailing edge of the timeout.
+     * Specify invoking on the trailing edge of the timeout.
      * @returns {Function} Returns the new throttled function.
      * @example
      *
@@ -38216,7 +38216,7 @@ if (token) {
      * @example
      *
      * var p = _.wrap(_.escape, function(func, text) {
-     *   return '<p>' + func(text) + '</p>';
+     *  return '<p>' + func(text) + '</p>';
      * });
      *
      * p('fred, barney, & pebbles');
@@ -38316,9 +38316,9 @@ if (token) {
      * @example
      *
      * function customizer(value) {
-     *   if (_.isElement(value)) {
-     *     return value.cloneNode(false);
-     *   }
+     *  if (_.isElement(value)) {
+     *    return value.cloneNode(false);
+     *  }
      * }
      *
      * var el = _.cloneWith(document.body, customizer);
@@ -38371,9 +38371,9 @@ if (token) {
      * @example
      *
      * function customizer(value) {
-     *   if (_.isElement(value)) {
-     *     return value.cloneNode(true);
-     *   }
+     *  if (_.isElement(value)) {
+     *    return value.cloneNode(true);
+     *  }
      * }
      *
      * var el = _.cloneDeepWith(document.body, customizer);
@@ -38464,7 +38464,7 @@ if (token) {
      * @param {*} value The value to compare.
      * @param {*} other The other value to compare.
      * @returns {boolean} Returns `true` if `value` is greater than `other`,
-     *  else `false`.
+     * else `false`.
      * @see _.lt
      * @example
      *
@@ -38489,7 +38489,7 @@ if (token) {
      * @param {*} value The value to compare.
      * @param {*} other The other value to compare.
      * @returns {boolean} Returns `true` if `value` is greater than or equal to
-     *  `other`, else `false`.
+     * `other`, else `false`.
      * @see _.lte
      * @example
      *
@@ -38515,7 +38515,7 @@ if (token) {
      * @category Lang
      * @param {*} value The value to check.
      * @returns {boolean} Returns `true` if `value` is an `arguments` object,
-     *  else `false`.
+     * else `false`.
      * @example
      *
      * _.isArguments(function() { return arguments; }());
@@ -38612,7 +38612,7 @@ if (token) {
      * @category Lang
      * @param {*} value The value to check.
      * @returns {boolean} Returns `true` if `value` is an array-like object,
-     *  else `false`.
+     * else `false`.
      * @example
      *
      * _.isArrayLikeObject([1, 2, 3]);
@@ -38818,13 +38818,13 @@ if (token) {
      * @example
      *
      * function isGreeting(value) {
-     *   return /^h(?:i|ello)$/.test(value);
+     *  return /^h(?:i|ello)$/.test(value);
      * }
      *
      * function customizer(objValue, othValue) {
-     *   if (isGreeting(objValue) && isGreeting(othValue)) {
-     *     return true;
-     *   }
+     *  if (isGreeting(objValue) && isGreeting(othValue)) {
+     *    return true;
+     *  }
      * }
      *
      * var array = ['hello', 'goodbye'];
@@ -39110,13 +39110,13 @@ if (token) {
      * @example
      *
      * function isGreeting(value) {
-     *   return /^h(?:i|ello)$/.test(value);
+     *  return /^h(?:i|ello)$/.test(value);
      * }
      *
      * function customizer(objValue, srcValue) {
-     *   if (isGreeting(objValue) && isGreeting(srcValue)) {
-     *     return true;
-     *   }
+     *  if (isGreeting(objValue) && isGreeting(srcValue)) {
+     *    return true;
+     *  }
      * }
      *
      * var object = { 'greeting': 'hello' };
@@ -39182,7 +39182,7 @@ if (token) {
      * @category Lang
      * @param {*} value The value to check.
      * @returns {boolean} Returns `true` if `value` is a native function,
-     *  else `false`.
+     * else `false`.
      * @example
      *
      * _.isNative(Array.prototype.push);
@@ -39287,7 +39287,7 @@ if (token) {
      * @example
      *
      * function Foo() {
-     *   this.a = 1;
+     *  this.a = 1;
      * }
      *
      * _.isPlainObject(new Foo);
@@ -39520,7 +39520,7 @@ if (token) {
      * @param {*} value The value to compare.
      * @param {*} other The other value to compare.
      * @returns {boolean} Returns `true` if `value` is less than `other`,
-     *  else `false`.
+     * else `false`.
      * @see _.gt
      * @example
      *
@@ -39545,7 +39545,7 @@ if (token) {
      * @param {*} value The value to compare.
      * @param {*} other The other value to compare.
      * @returns {boolean} Returns `true` if `value` is less than or equal to
-     *  `other`, else `false`.
+     * `other`, else `false`.
      * @see _.gte
      * @example
      *
@@ -39757,7 +39757,7 @@ if (token) {
      * @example
      *
      * function Foo() {
-     *   this.b = 2;
+     *  this.b = 2;
      * }
      *
      * Foo.prototype.c = 3;
@@ -39848,11 +39848,11 @@ if (token) {
      * @example
      *
      * function Foo() {
-     *   this.a = 1;
+     *  this.a = 1;
      * }
      *
      * function Bar() {
-     *   this.c = 3;
+     *  this.c = 3;
      * }
      *
      * Foo.prototype.b = 2;
@@ -39891,11 +39891,11 @@ if (token) {
      * @example
      *
      * function Foo() {
-     *   this.a = 1;
+     *  this.a = 1;
      * }
      *
      * function Bar() {
-     *   this.c = 3;
+     *  this.c = 3;
      * }
      *
      * Foo.prototype.b = 2;
@@ -39929,7 +39929,7 @@ if (token) {
      * @example
      *
      * function customizer(objValue, srcValue) {
-     *   return _.isUndefined(objValue) ? srcValue : objValue;
+     *  return _.isUndefined(objValue) ? srcValue : objValue;
      * }
      *
      * var defaults = _.partialRight(_.assignInWith, customizer);
@@ -39961,7 +39961,7 @@ if (token) {
      * @example
      *
      * function customizer(objValue, srcValue) {
-     *   return _.isUndefined(objValue) ? srcValue : objValue;
+     *  return _.isUndefined(objValue) ? srcValue : objValue;
      * }
      *
      * var defaults = _.partialRight(_.assignWith, customizer);
@@ -40007,16 +40007,16 @@ if (token) {
      * @example
      *
      * function Shape() {
-     *   this.x = 0;
-     *   this.y = 0;
+     *  this.x = 0;
+     *  this.y = 0;
      * }
      *
      * function Circle() {
-     *   Shape.call(this);
+     *  Shape.call(this);
      * }
      *
      * Circle.prototype = _.create(Shape.prototype, {
-     *   'constructor': Circle
+     *  'constructor': Circle
      * });
      *
      * var circle = new Circle;
@@ -40118,13 +40118,13 @@ if (token) {
      * @param {Object} object The object to inspect.
      * @param {Function} [predicate=_.identity] The function invoked per iteration.
      * @returns {string|undefined} Returns the key of the matched element,
-     *  else `undefined`.
+     * else `undefined`.
      * @example
      *
      * var users = {
-     *   'barney':  { 'age': 36, 'active': true },
-     *   'fred':    { 'age': 40, 'active': false },
-     *   'pebbles': { 'age': 1,  'active': true }
+     *  'barney':  { 'age': 36, 'active': true },
+     *  'fred':    { 'age': 40, 'active': false },
+     *  'pebbles': { 'age': 1,  'active': true }
      * };
      *
      * _.findKey(users, function(o) { return o.age < 40; });
@@ -40157,13 +40157,13 @@ if (token) {
      * @param {Object} object The object to inspect.
      * @param {Function} [predicate=_.identity] The function invoked per iteration.
      * @returns {string|undefined} Returns the key of the matched element,
-     *  else `undefined`.
+     * else `undefined`.
      * @example
      *
      * var users = {
-     *   'barney':  { 'age': 36, 'active': true },
-     *   'fred':    { 'age': 40, 'active': false },
-     *   'pebbles': { 'age': 1,  'active': true }
+     *  'barney':  { 'age': 36, 'active': true },
+     *  'fred':    { 'age': 40, 'active': false },
+     *  'pebbles': { 'age': 1,  'active': true }
      * };
      *
      * _.findLastKey(users, function(o) { return o.age < 40; });
@@ -40202,14 +40202,14 @@ if (token) {
      * @example
      *
      * function Foo() {
-     *   this.a = 1;
-     *   this.b = 2;
+     *  this.a = 1;
+     *  this.b = 2;
      * }
      *
      * Foo.prototype.c = 3;
      *
      * _.forIn(new Foo, function(value, key) {
-     *   console.log(key);
+     *  console.log(key);
      * });
      * // => Logs 'a', 'b', then 'c' (iteration order is not guaranteed).
      */
@@ -40234,14 +40234,14 @@ if (token) {
      * @example
      *
      * function Foo() {
-     *   this.a = 1;
-     *   this.b = 2;
+     *  this.a = 1;
+     *  this.b = 2;
      * }
      *
      * Foo.prototype.c = 3;
      *
      * _.forInRight(new Foo, function(value, key) {
-     *   console.log(key);
+     *  console.log(key);
      * });
      * // => Logs 'c', 'b', then 'a' assuming `_.forIn` logs 'a', 'b', then 'c'.
      */
@@ -40268,14 +40268,14 @@ if (token) {
      * @example
      *
      * function Foo() {
-     *   this.a = 1;
-     *   this.b = 2;
+     *  this.a = 1;
+     *  this.b = 2;
      * }
      *
      * Foo.prototype.c = 3;
      *
      * _.forOwn(new Foo, function(value, key) {
-     *   console.log(key);
+     *  console.log(key);
      * });
      * // => Logs 'a' then 'b' (iteration order is not guaranteed).
      */
@@ -40298,14 +40298,14 @@ if (token) {
      * @example
      *
      * function Foo() {
-     *   this.a = 1;
-     *   this.b = 2;
+     *  this.a = 1;
+     *  this.b = 2;
      * }
      *
      * Foo.prototype.c = 3;
      *
      * _.forOwnRight(new Foo, function(value, key) {
-     *   console.log(key);
+     *  console.log(key);
      * });
      * // => Logs 'b' then 'a' assuming `_.forOwn` logs 'a' then 'b'.
      */
@@ -40327,8 +40327,8 @@ if (token) {
      * @example
      *
      * function Foo() {
-     *   this.a = _.constant('a');
-     *   this.b = _.constant('b');
+     *  this.a = _.constant('a');
+     *  this.b = _.constant('b');
      * }
      *
      * Foo.prototype.c = _.constant('c');
@@ -40354,8 +40354,8 @@ if (token) {
      * @example
      *
      * function Foo() {
-     *   this.a = _.constant('a');
-     *   this.b = _.constant('b');
+     *  this.a = _.constant('a');
+     *  this.b = _.constant('b');
      * }
      *
      * Foo.prototype.c = _.constant('c');
@@ -40507,7 +40507,7 @@ if (token) {
      * // => { '1': ['a', 'c'], '2': ['b'] }
      *
      * _.invertBy(object, function(value) {
-     *   return 'group' + value;
+     *  return 'group' + value;
      * });
      * // => { 'group1': ['a', 'c'], 'group2': ['b'] }
      */
@@ -40560,8 +40560,8 @@ if (token) {
      * @example
      *
      * function Foo() {
-     *   this.a = 1;
-     *   this.b = 2;
+     *  this.a = 1;
+     *  this.b = 2;
      * }
      *
      * Foo.prototype.c = 3;
@@ -40590,8 +40590,8 @@ if (token) {
      * @example
      *
      * function Foo() {
-     *   this.a = 1;
-     *   this.b = 2;
+     *  this.a = 1;
+     *  this.b = 2;
      * }
      *
      * Foo.prototype.c = 3;
@@ -40620,7 +40620,7 @@ if (token) {
      * @example
      *
      * _.mapKeys({ 'a': 1, 'b': 2 }, function(value, key) {
-     *   return key + value;
+     *  return key + value;
      * });
      * // => { 'a1': 1, 'b2': 2 }
      */
@@ -40651,8 +40651,8 @@ if (token) {
      * @example
      *
      * var users = {
-     *   'fred':    { 'user': 'fred',    'age': 40 },
-     *   'pebbles': { 'user': 'pebbles', 'age': 1 }
+     *  'fred':    { 'user': 'fred',    'age': 40 },
+     *  'pebbles': { 'user': 'pebbles', 'age': 1 }
      * };
      *
      * _.mapValues(users, function(o) { return o.age; });
@@ -40693,11 +40693,11 @@ if (token) {
      * @example
      *
      * var object = {
-     *   'a': [{ 'b': 2 }, { 'd': 4 }]
+     *  'a': [{ 'b': 2 }, { 'd': 4 }]
      * };
      *
      * var other = {
-     *   'a': [{ 'c': 3 }, { 'e': 5 }]
+     *  'a': [{ 'c': 3 }, { 'e': 5 }]
      * };
      *
      * _.merge(object, other);
@@ -40727,9 +40727,9 @@ if (token) {
      * @example
      *
      * function customizer(objValue, srcValue) {
-     *   if (_.isArray(objValue)) {
-     *     return objValue.concat(srcValue);
-     *   }
+     *  if (_.isArray(objValue)) {
+     *    return objValue.concat(srcValue);
+     *  }
      * }
      *
      * var object = { 'a': [1], 'b': [2] };
@@ -40987,8 +40987,8 @@ if (token) {
      * @example
      *
      * function Foo() {
-     *   this.a = 1;
-     *   this.b = 2;
+     *  this.a = 1;
+     *  this.b = 2;
      * }
      *
      * Foo.prototype.c = 3;
@@ -41013,8 +41013,8 @@ if (token) {
      * @example
      *
      * function Foo() {
-     *   this.a = 1;
-     *   this.b = 2;
+     *  this.a = 1;
+     *  this.b = 2;
      * }
      *
      * Foo.prototype.c = 3;
@@ -41044,13 +41044,13 @@ if (token) {
      * @example
      *
      * _.transform([2, 3, 4], function(result, n) {
-     *   result.push(n *= n);
-     *   return n % 2 == 0;
+     *  result.push(n *= n);
+     *  return n % 2 == 0;
      * }, []);
      * // => [4, 9]
      *
      * _.transform({ 'a': 1, 'b': 2, 'c': 1 }, function(result, value, key) {
-     *   (result[value] || (result[value] = [])).push(key);
+     *  (result[value] || (result[value] = [])).push(key);
      * }, {});
      * // => { '1': ['a', 'c'], '2': ['b'] }
      */
@@ -41182,8 +41182,8 @@ if (token) {
      * @example
      *
      * function Foo() {
-     *   this.a = 1;
-     *   this.b = 2;
+     *  this.a = 1;
+     *  this.b = 2;
      * }
      *
      * Foo.prototype.c = 3;
@@ -41213,8 +41213,8 @@ if (token) {
      * @example
      *
      * function Foo() {
-     *   this.a = 1;
-     *   this.b = 2;
+     *  this.a = 1;
+     *  this.b = 2;
      * }
      *
      * Foo.prototype.c = 3;
@@ -41463,7 +41463,7 @@ if (token) {
      * @param {string} [target] The string to search for.
      * @param {number} [position=string.length] The position to search up to.
      * @returns {boolean} Returns `true` if `string` ends with `target`,
-     *  else `false`.
+     * else `false`.
      * @example
      *
      * _.endsWith('abc', 'c');
@@ -41910,7 +41910,7 @@ if (token) {
      * @param {string} [target] The string to search for.
      * @param {number} [position=0] The position to search from.
      * @returns {boolean} Returns `true` if `string` starts with `target`,
-     *  else `false`.
+     * else `false`.
      * @example
      *
      * _.startsWith('abc', 'a');
@@ -41956,17 +41956,17 @@ if (token) {
      * @param {string} [string=''] The template string.
      * @param {Object} [options={}] The options object.
      * @param {RegExp} [options.escape=_.templateSettings.escape]
-     *  The HTML "escape" delimiter.
+     * The HTML "escape" delimiter.
      * @param {RegExp} [options.evaluate=_.templateSettings.evaluate]
-     *  The "evaluate" delimiter.
+     * The "evaluate" delimiter.
      * @param {Object} [options.imports=_.templateSettings.imports]
-     *  An object to import into the template as free variables.
+     * An object to import into the template as free variables.
      * @param {RegExp} [options.interpolate=_.templateSettings.interpolate]
-     *  The "interpolate" delimiter.
+     * The "interpolate" delimiter.
      * @param {string} [options.sourceURL='lodash.templateSources[n]']
-     *  The sourceURL of the compiled template.
+     * The sourceURL of the compiled template.
      * @param {string} [options.variable='obj']
-     *  The data object variable name.
+     * The data object variable name.
      * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
      * @returns {Function} Returns the compiled template function.
      * @example
@@ -42031,9 +42031,9 @@ if (token) {
      * // Use the `source` property to inline compiled templates for meaningful
      * // line numbers in error messages and stack traces.
      * fs.writeFileSync(path.join(process.cwd(), 'jst.js'), '\
-     *   var JST = {\
-     *     "main": ' + _.template(mainText).source + '\
-     *   };\
+     *  var JST = {\
+     *    "main": ' + _.template(mainText).source + '\
+     *  };\
      * ');
      */
     function template(string, options, guard) {
@@ -42328,19 +42328,19 @@ if (token) {
      * // => 'hi-diddly-ho there, neighbo...'
      *
      * _.truncate('hi-diddly-ho there, neighborino', {
-     *   'length': 24,
-     *   'separator': ' '
+     *  'length': 24,
+     *  'separator': ' '
      * });
      * // => 'hi-diddly-ho there,...'
      *
      * _.truncate('hi-diddly-ho there, neighborino', {
-     *   'length': 24,
-     *   'separator': /,? +/
+     *  'length': 24,
+     *  'separator': /,? +/
      * });
      * // => 'hi-diddly-ho there...'
      *
      * _.truncate('hi-diddly-ho there, neighborino', {
-     *   'omission': ' [...]'
+     *  'omission': ' [...]'
      * });
      * // => 'hi-diddly-ho there, neig [...]'
      */
@@ -42515,11 +42515,11 @@ if (token) {
      *
      * // Avoid throwing errors for invalid selectors.
      * var elements = _.attempt(function(selector) {
-     *   return document.querySelectorAll(selector);
+     *  return document.querySelectorAll(selector);
      * }, '>_>');
      *
      * if (_.isError(elements)) {
-     *   elements = [];
+     *  elements = [];
      * }
      */
     var attempt = baseRest(function(func, args) {
@@ -42546,10 +42546,10 @@ if (token) {
      * @example
      *
      * var view = {
-     *   'label': 'docs',
-     *   'click': function() {
-     *     console.log('clicked ' + this.label);
-     *   }
+     *  'label': 'docs',
+     *  'click': function() {
+     *    console.log('clicked ' + this.label);
+     *  }
      * };
      *
      * _.bindAll(view, ['click']);
@@ -42579,9 +42579,9 @@ if (token) {
      * @example
      *
      * var func = _.cond([
-     *   [_.matches({ 'a': 1 }),           _.constant('matches A')],
-     *   [_.conforms({ 'b': _.isNumber }), _.constant('matches B')],
-     *   [_.stubTrue,                      _.constant('no match')]
+     *  [_.matches({ 'a': 1 }),           _.constant('matches A')],
+     *  [_.conforms({ 'b': _.isNumber }), _.constant('matches B')],
+     *  [_.stubTrue,                      _.constant('no match')]
      * ]);
      *
      * func({ 'a': 1, 'b': 2 });
@@ -42632,8 +42632,8 @@ if (token) {
      * @example
      *
      * var objects = [
-     *   { 'a': 2, 'b': 1 },
-     *   { 'a': 1, 'b': 2 }
+     *  { 'a': 2, 'b': 1 },
+     *  { 'a': 1, 'b': 2 }
      * ];
      *
      * _.filter(objects, _.conforms({ 'b': function(n) { return n > 1; } }));
@@ -42707,7 +42707,7 @@ if (token) {
      * @example
      *
      * function square(n) {
-     *   return n * n;
+     *  return n * n;
      * }
      *
      * var addSquare = _.flow([_.add, square]);
@@ -42730,7 +42730,7 @@ if (token) {
      * @example
      *
      * function square(n) {
-     *   return n * n;
+     *  return n * n;
      * }
      *
      * var addSquare = _.flowRight([square, _.add]);
@@ -42775,8 +42775,8 @@ if (token) {
      * @example
      *
      * var users = [
-     *   { 'user': 'barney', 'age': 36, 'active': true },
-     *   { 'user': 'fred',   'age': 40, 'active': false }
+     *  { 'user': 'barney', 'age': 36, 'active': true },
+     *  { 'user': 'fred',   'age': 40, 'active': false }
      * ];
      *
      * // The `_.matches` iteratee shorthand.
@@ -42793,9 +42793,9 @@ if (token) {
      *
      * // Create custom iteratee shorthands.
      * _.iteratee = _.wrap(_.iteratee, function(iteratee, func) {
-     *   return !_.isRegExp(func) ? iteratee(func) : function(string) {
-     *     return func.test(string);
-     *   };
+     *  return !_.isRegExp(func) ? iteratee(func) : function(string) {
+     *    return func.test(string);
+     *  };
      * });
      *
      * _.filter(['abc', 'def'], /ef/);
@@ -42829,8 +42829,8 @@ if (token) {
      * @example
      *
      * var objects = [
-     *   { 'a': 1, 'b': 2, 'c': 3 },
-     *   { 'a': 4, 'b': 5, 'c': 6 }
+     *  { 'a': 1, 'b': 2, 'c': 3 },
+     *  { 'a': 4, 'b': 5, 'c': 6 }
      * ];
      *
      * _.filter(objects, _.matches({ 'a': 4, 'c': 6 }));
@@ -42866,8 +42866,8 @@ if (token) {
      * @example
      *
      * var objects = [
-     *   { 'a': 1, 'b': 2, 'c': 3 },
-     *   { 'a': 4, 'b': 5, 'c': 6 }
+     *  { 'a': 1, 'b': 2, 'c': 3 },
+     *  { 'a': 4, 'b': 5, 'c': 6 }
      * ];
      *
      * _.find(objects, _.matchesProperty('a', 4));
@@ -42895,8 +42895,8 @@ if (token) {
      * @example
      *
      * var objects = [
-     *   { 'a': { 'b': _.constant(2) } },
-     *   { 'a': { 'b': _.constant(1) } }
+     *  { 'a': { 'b': _.constant(2) } },
+     *  { 'a': { 'b': _.constant(1) } }
      * ];
      *
      * _.map(objects, _.method('a.b'));
@@ -42926,7 +42926,7 @@ if (token) {
      * @example
      *
      * var array = _.times(3, _.constant),
-     *     object = { 'a': array, 'b': array, 'c': array };
+     *    object = { 'a': array, 'b': array, 'c': array };
      *
      * _.map(['a[2]', 'c[0]'], _.methodOf(object));
      * // => [2, 0]
@@ -42960,9 +42960,9 @@ if (token) {
      * @example
      *
      * function vowels(string) {
-     *   return _.filter(string, function(v) {
-     *     return /[aeiou]/i.test(v);
-     *   });
+     *  return _.filter(string, function(v) {
+     *    return /[aeiou]/i.test(v);
+     *  });
      * }
      *
      * _.mixin({ 'vowels': vowels });
@@ -43084,7 +43084,7 @@ if (token) {
      * @since 4.0.0
      * @category Util
      * @param {...(Function|Function[])} [iteratees=[_.identity]]
-     *  The iteratees to invoke.
+     * The iteratees to invoke.
      * @returns {Function} Returns the new function.
      * @example
      *
@@ -43108,7 +43108,7 @@ if (token) {
      * @since 4.0.0
      * @category Util
      * @param {...(Function|Function[])} [predicates=[_.identity]]
-     *  The predicates to check.
+     * The predicates to check.
      * @returns {Function} Returns the new function.
      * @example
      *
@@ -43138,7 +43138,7 @@ if (token) {
      * @since 4.0.0
      * @category Util
      * @param {...(Function|Function[])} [predicates=[_.identity]]
-     *  The predicates to check.
+     * The predicates to check.
      * @returns {Function} Returns the new function.
      * @example
      *
@@ -43170,8 +43170,8 @@ if (token) {
      * @example
      *
      * var objects = [
-     *   { 'a': { 'b': 2 } },
-     *   { 'a': { 'b': 1 } }
+     *  { 'a': { 'b': 2 } },
+     *  { 'a': { 'b': 1 } }
      * ];
      *
      * _.map(objects, _.property('a.b'));
@@ -43197,7 +43197,7 @@ if (token) {
      * @example
      *
      * var array = [0, 1, 2],
-     *     object = { 'a': array, 'b': array, 'c': array };
+     *    object = { 'a': array, 'b': array, 'c': array };
      *
      * _.map(['a[2]', 'c[0]'], _.propertyOf(object));
      * // => [2, 0]
@@ -43403,7 +43403,7 @@ if (token) {
      * _.times(3, String);
      * // => ['0', '1', '2']
      *
-     *  _.times(4, _.constant(0));
+     * _.times(4, _.constant(0));
      * // => [0, 0, 0, 0]
      */
     function times(n, iteratee) {
@@ -49661,17 +49661,17 @@ module.exports = CancelToken;
  *
  * Common use case would be to use `Function.prototype.apply`.
  *
- *  ```js
- *  function f(x, y, z) {}
- *  var args = [1, 2, 3];
- *  f.apply(null, args);
- *  ```
+ * ```js
+ * function f(x, y, z) {}
+ * var args = [1, 2, 3];
+ * f.apply(null, args);
+ * ```
  *
  * With `spread` this example can be re-written.
  *
- *  ```js
- *  spread(function(x, y, z) {})([1, 2, 3]);
- *  ```
+ * ```js
+ * spread(function(x, y, z) {})([1, 2, 3]);
+ * ```
  *
  * @param {Function} callback
  * @returns {Function}

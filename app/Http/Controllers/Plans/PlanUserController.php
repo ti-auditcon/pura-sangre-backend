@@ -62,9 +62,9 @@ class PlanUserController extends Controller
     }
 
     /**
-     *  @param   PlanUser  $planUser
+     * @param   PlanUser  $planUser
      *
-     *  @return  bool
+     * @return  bool
      */
     public function store(PlanUserRequest $request, User $user)
     {
@@ -81,11 +81,11 @@ class PlanUserController extends Controller
     }
 
     /**
-     *  [shouldCreateABill description]
+     * [shouldCreateABill description]
      *
-     *  @param   [type]  $planData  [$planData description]
+     * @param   [type]  $planData  [$planData description]
      *
-     *  @return  bool               [return description]
+     * @return  bool               [return description]
      */
     public function shouldCreateABill($planData) :bool
     {
@@ -97,12 +97,12 @@ class PlanUserController extends Controller
     }
 
     /**
-     *  [show description]
+     * [show description]
      * 
-     *  @param   User     $user [description]
-     *  @param   PlanUser $plan [description]
-     *  
-     *  @return  [type]         [description]
+     * @param   User     $user [description]
+     * @param   PlanUser $plan [description]
+     * 
+     * @return  [type]         [description]
      */
     public function show(User $user, PlanUser $plan)
     {
@@ -110,12 +110,12 @@ class PlanUserController extends Controller
     }
 
     /**
-     *  [edit description]
+     * [edit description]
      *
-     *  @param  User      $user [description]
-     *  @param  planuser  $plan [description]
+     * @param  User      $user [description]
+     * @param  planuser  $plan [description]
      *
-     *  @return  View
+     * @return  View
      */
     public function edit(User $user, PlanUser $plan)
     {
@@ -130,13 +130,13 @@ class PlanUserController extends Controller
     }
 
     /**
-     *  [update description]
+     * [update description]
      *
-     *  @param   Request   $request
-     *  @param   User      $user
-     *  @param   planuser  $plan
+     * @param   Request   $request
+     * @param   User      $user
+     * @param   planuser  $plan
      *
-     *  @return  \Illuminate\Http\RedirectResponse
+     * @return  \Illuminate\Http\RedirectResponse
      */
     public function update(PlanUserRequest $request, User $user, PlanUser $plan)
     {
@@ -156,13 +156,13 @@ class PlanUserController extends Controller
     }
 
     /**
-     *  Change the status of the plan to CANCELADO,
-     *  if it's associated to a feezed plan, delete it
-     *  
-     *  @param   User      $user
-     *  @param   planuser  $plan
+     * Change the status of the plan to CANCELADO,
+     * if it's associated to a feezed plan, delete it
+     * 
+     * @param   User      $user
+     * @param   planuser  $plan
 
-     *  @return  \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     * @return  \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
     public function annul(User $user, planuser $plan)
     {
@@ -177,12 +177,12 @@ class PlanUserController extends Controller
     }
 
     /**
-     *  [destroy description]
+     * [destroy description]
      *
-     *  @param  User     $user [description]
-     *  @param  planuser $plan [description]
+     * @param  User     $user [description]
+     * @param  planuser $plan [description]
      *
-     *  @return [type]         [description]
+     * @return [type]         [description]
      */
     public function destroy(User $user, planuser $plan)
     {

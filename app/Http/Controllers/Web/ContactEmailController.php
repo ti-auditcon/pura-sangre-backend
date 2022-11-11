@@ -12,7 +12,7 @@ use App\Http\Requests\Web\ContactEmailRequest;
 class ContactEmailController extends Controller
 {
     /**
-     *   
+     *  
      */
     public function sendEmail(Request $request)
     {
@@ -46,9 +46,9 @@ class ContactEmailController extends Controller
     }
 
     /**
-     *  methodDescription
+     * methodDescription
      *
-     *  @return  returnType
+     * @return  returnType
      */
     public function reCaptchaFails($captcha)
     {

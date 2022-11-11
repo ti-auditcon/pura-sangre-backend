@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 class UsersExport implements FromCollection, WithHeadings
 {
     /**
-     *  @return  \Illuminate\Support\Collection
+     * @return  \Illuminate\Support\Collection
      */
     public function collection()
     {
@@ -64,9 +64,9 @@ class UsersExport implements FromCollection, WithHeadings
     }
 
     /**
-     *  Headers indexes for the exported excel
+     * Headers indexes for the exported excel
      *
-     *  @return  array
+     * @return  array
      */
     public function headings(): array
     {

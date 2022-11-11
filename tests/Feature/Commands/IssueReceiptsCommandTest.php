@@ -14,35 +14,35 @@ class IssueReceiptsCommandTest extends TestCase
     use RefreshDatabase, DatabaseMigrations;
 
     /**
-     *  The name and signature of the console command.
+     * The name and signature of the console command.
      *
-     *  @var  string
+     * @var  string
      */
     protected $signature = 'purasangre:invoicing:issue-receipts';
 
     /**
-     *  The console command description.
+     * The console command description.
      *
-     *  @var  string
+     * @var  string
      */
     protected $description = 'Send TaxDocuments to SII through Haulmer API';
 
     /**
-     *  Check if the requests are with ssl connection
+     * Check if the requests are with ssl connection
      *
-     *  @var  boolean
+     * @var  boolean
      */
     protected $verifiedSSL;
     
     /**
-     *  url of the Purasangre API 
+     * url of the Purasangre API 
      *
-     *  @var  string
+     * @var  string
      */
     protected $purasangreApiUrl;
 
     /**
-     *  [setUp description]
+     * [setUp description]
      *
      * @return  void    [return description]
      */
@@ -65,7 +65,7 @@ class IssueReceiptsCommandTest extends TestCase
 
     // }
 
-    // /**  @test  */
+    // /** @test  */
     // public function it_issues_tax_documents_created_last_twelve_hours()
     // {
     //     $this->artisan($this->signature)->assertExitCode(0);
@@ -73,7 +73,7 @@ class IssueReceiptsCommandTest extends TestCase
     //     $this->assertFalse($this->expectOutputString('foo'));
     // }
     
-    // /**  @test  */
+    // /** @test  */
     // public function it_doenst_issues_tax_documents_created_before_twelve_hours()
     // {
 
@@ -83,7 +83,7 @@ class IssueReceiptsCommandTest extends TestCase
     // }
 
     /**
-     *  @test
+     * @test
      */
     public function it_generate_tax_docuemnt_to_all_paid_plan_user_flows()
     {

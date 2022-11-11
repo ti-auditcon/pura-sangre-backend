@@ -36,9 +36,9 @@ class User extends Authenticatable
 
     /**
      *
-     *  The attributes that are mass assignable.
+     * The attributes that are mass assignable.
      *
-     *  @var  array
+     * @var  array
      */
     protected $fillable = [
         'rut', 'first_name', 'last_name', 'email',
@@ -48,23 +48,23 @@ class User extends Authenticatable
     ];
 
     /**
-     *  [$hidden description]
+     * [$hidden description]
      *
-     *  @var  array
+     * @var  array
      */
     protected $hidden = ['password', 'remember_token'];
 
     /**
-     *  [$appends description]
+     * [$appends description]
      *
-     *  @var  array
+     * @var  array
      */
     protected $appends = ['full_name', 'rut_formated', 'status', 'status_color'];
 
     /**
      * [setBirthdateAttribute description]
      *
-     *  @param [type] $value [description]
+     * @param [type] $value [description]
      */
     public function setBirthdateAttribute($value)
     {
@@ -93,11 +93,11 @@ class User extends Authenticatable
     }
 
     /**
-     *  Verified if auth user has an specific Role
+     * Verified if auth user has an specific Role
      *
-     *  @param   integer
+     * @param   integer
      *
-     *  @return  boolean
+     * @return  boolean
      */
     public function hasRole($roleId)
     {
@@ -107,11 +107,11 @@ class User extends Authenticatable
     }
 
     /**
-     *  Check if user has ADMIN Role
+     * Check if user has ADMIN Role
      *
-     *  @param   integer
+     * @param   integer
      *
-     *  @return  boolean
+     * @return  boolean
      */
     public function isAdmin()
     {
@@ -149,11 +149,11 @@ class User extends Authenticatable
     }
 
     /**
-     *  Scope a query to get all the users.
+     * Scope a query to get all the users.
      *
-     *  @param   \Illuminate\Database\Eloquent\Builder   $query
+     * @param   \Illuminate\Database\Eloquent\Builder   $query
      *
-     *  @return  \Illuminate\Database\Eloquent\Builder
+     * @return  \Illuminate\Database\Eloquent\Builder
      */
     public function scopeAllUsers($query)
     {
@@ -165,9 +165,9 @@ class User extends Authenticatable
     }
 
     /**
-     *  Get the Status User
+     * Get the Status User
      *
-     *  @return  string
+     * @return  string
      */
     public function getStatusAttribute()
     {
@@ -175,9 +175,9 @@ class User extends Authenticatable
     }
 
     /**
-     *  Get the Status User
+     * Get the Status User
      *
-     *  @return  string
+     * @return  string
      */
     public function getStatusColorAttribute()
     {
@@ -228,9 +228,9 @@ class User extends Authenticatable
     }
 
     /**
-     *  Get the active current plan of this User
+     * Get the active current plan of this User
      *
-     *  @return  \App\Models\Plans\PlanUser
+     * @return  \App\Models\Plans\PlanUser
      */
     public function actual_plan()
     {
@@ -253,9 +253,9 @@ class User extends Authenticatable
     }
 
     /**
-     *  Return the 10 first next reservations of this User
+     * Return the 10 first next reservations of this User
      *
-     *  @return  App\Models\Clases\Reservation
+     * @return  App\Models\Clases\Reservation
      */
     public function futureReservations()
     {
@@ -267,8 +267,8 @@ class User extends Authenticatable
     }
 
     /**
-     *  Return all the plans of the user,
-     *   with plan status: 'activo' and 'precompra'
+     * Return all the plans of the user,
+     *  with plan status: 'activo' and 'precompra'
      *
      * @return App\Models\Plans\PlanUser
      */
@@ -279,9 +279,9 @@ class User extends Authenticatable
     }
 
     /**
-     *  Check if the user is currently inactive into the system
+     * Check if the user is currently inactive into the system
      *
-     *  @return  bool
+     * @return  bool
      */
     public function isInactive(): bool
     {
@@ -289,9 +289,9 @@ class User extends Authenticatable
     }
 
     /**
-     *  Check if the user is "Test user" into the system
+     * Check if the user is "Test user" into the system
      *
-     *  @return  bool
+     * @return  bool
      */
     public function isTest(): bool
     {
@@ -299,9 +299,9 @@ class User extends Authenticatable
     }
 
     /**
-     *  [listStudents description]
+     * [listStudents description]
      *
-     *  @return  collection
+     * @return  collection
      */
     public function listStudents()
     {
@@ -326,12 +326,12 @@ class User extends Authenticatable
     }
 
     /**
-     *  Get a plan that:
-     *    -  Be active or freezed
-     *    -  Start be before or equals today
-     *    -  End be after or equals today
+     * Get a plan that:
+     *   -  Be active or freezed
+     *   -  Start be before or equals today
+     *   -  End be after or equals today
      *
-     *  @return  \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return  \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function todayPlan()
     {
@@ -442,9 +442,9 @@ class User extends Authenticatable
     }
 
     /**
-     *  Get all Roles Ids of the User
+     * Get all Roles Ids of the User
      *
-     *  @return  array
+     * @return  array
      */
     public function rolesId()
     {
@@ -467,9 +467,9 @@ class User extends Authenticatable
     }
 
     /**
-     *  [birthdate_users description]
+     * [birthdate_users description]
      *
-     *  @return
+     * @return
      */
     public function birthdate_users()
     {
@@ -513,11 +513,11 @@ class User extends Authenticatable
     }
 
     /**
-     *  Assign test plan to the user
+     * Assign test plan to the user
      *
-     *  @param   Plan  $plan
+     * @param   Plan  $plan
      *
-     *  @return void
+     * @return void
      */
     public function assignTestPlan(Plan $plan)
     {

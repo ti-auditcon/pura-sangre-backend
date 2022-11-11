@@ -499,7 +499,7 @@
     }
 
     /**
-     *  Calculate plan amount and put into the input field
+     * Calculate plan amount and put into the input field
      */
     function calculateAmountPlan()
     {

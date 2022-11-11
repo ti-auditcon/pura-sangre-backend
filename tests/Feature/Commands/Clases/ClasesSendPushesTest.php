@@ -13,10 +13,10 @@ class ClasesSendPushesTest extends TestCase
     use RefreshDatabase, DatabaseMigrations;
 
     /**
-     *  Create a user with role = admin in database with factory
-     *  and return it
+     * Create a user with role = admin in database with factory
+     * and return it
      *
-     *  @return  \App\Models\Tenant\Users\User
+     * @return  \App\Models\Tenant\Users\User
      */
     public function createAdminAndBringIt()
     {
@@ -24,10 +24,10 @@ class ClasesSendPushesTest extends TestCase
     }
 
     /**
-     *  Create a user with factory with role = user,
-     *  and return it
+     * Create a user with factory with role = user,
+     * and return it
      *
-     *  @return  \App\Models\Tenant\Users\User
+     * @return  \App\Models\Tenant\Users\User
      */
     public function createAUserAndBringIt()
     {

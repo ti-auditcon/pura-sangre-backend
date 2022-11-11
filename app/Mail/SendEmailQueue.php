@@ -38,9 +38,9 @@ class SendEmailQueue extends Mailable implements ShouldQueue
     public $retryAfter = 60;
 
     /**
-     *  Mail data.
+     * Mail data.
      * 
-     *  @var  Collection
+     * @var  Collection
      */
     public $mail_data;
 
@@ -55,9 +55,9 @@ class SendEmailQueue extends Mailable implements ShouldQueue
     }
 
     /**
-     *  Build the message.
+     * Build the message.
      *
-     *  @return  View
+     * @return  View
      */
     public function build()
     {

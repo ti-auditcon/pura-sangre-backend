@@ -64,12 +64,12 @@ class ReservationObserver
     }
 
     /**
-     *  Check if user had reserve
+     * Check if user had reserve
      *
-     *  @param   Clase  $clase   Class to check
-     *  @param   int    $userId  The user who make the reservation
+     * @param   Clase  $clase   Class to check
+     * @param   int    $userId  The user who make the reservation
      *
-     *  @return  boolean|string
+     * @return  boolean|string
      */
     public function hasReserve($clase, $userId)
     {
@@ -113,8 +113,8 @@ class ReservationObserver
         }
 
         /**
-         *  we discount a quota of the plan only if the user has a valid plan
-         *  and if the class type is not special class
+         * we discount a quota of the plan only if the user has a valid plan
+         * and if the class type is not special class
          */
         if ($period_plan && !$clase->claseType->special) {
             $reservation->update(['plan_user_id' => $period_plan->id]);
@@ -132,9 +132,9 @@ class ReservationObserver
     }
 
     /**
-     *  @param   Reservation  $reservation
+     * @param   Reservation  $reservation
      *
-     *  @return  bool
+     * @return  bool
      */
     public function deleted(Reservation $reservation)
     {

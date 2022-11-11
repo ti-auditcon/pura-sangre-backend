@@ -8,16 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentStatus extends Model
 {
         /**
-     *  The payment is done
+     * The payment is done
      *
-     *  @var  int
+     * @var  int
      */
     const PAID = 1;
 
     /**
-     *  The payment canceled status
+     * The payment canceled status
      *
-     *  @var  int
+     * @var  int
      */
     const CANCELLED = 3;
 

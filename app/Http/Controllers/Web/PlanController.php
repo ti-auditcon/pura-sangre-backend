@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 class PlanController extends Controller
 {
     /**
-     *  Get just the contractable plans
+     * Get just the contractable plans
      *
      * @return  [type]  [return description]
      */

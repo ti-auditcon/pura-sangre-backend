@@ -27,9 +27,9 @@ class SendPushNotification implements ShouldQueue
     public $timeout = 120;
 
     /**
-     *  FCM token from Firebase
+     * FCM token from Firebase
      * 
-     *  @var string
+     * @var string
     */
     protected $token;
 
@@ -58,9 +58,9 @@ class SendPushNotification implements ShouldQueue
     }
 
         /**
-     *  The fcm_token runs as address to know to who send the PUSH notification
+     * The fcm_token runs as address to know to who send the PUSH notification
      *
-     *  @return  string
+     * @return  string
      */
     public function getToken()
     {

@@ -122,9 +122,9 @@ class CreatePlansTable extends Migration
     }
 
     /**
-     *  Reverse the migrations.
+     * Reverse the migrations.
      *
-     *  @return  void
+     * @return  void
      */
     public function down()
     {

@@ -46,9 +46,9 @@ class UserObserverTest extends TestCase
     }
 
     /**
-     *  todo: this need to be refactored 
+     * todo: this need to be refactored 
      * @test
-     *  */
+     * */
     public function it_assign_test_user_plan_correctly()
     {
         $user = User::withoutEvents(function () {

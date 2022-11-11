@@ -8,16 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Alert extends Model
 {
     /**
-     *  The attributes that should be mutated to dates.
+     * The attributes that should be mutated to dates.
      *
-     *  @var  array
+     * @var  array
      */
     protected $dates = ['from', 'to'];
 
     // /**
-    //  *  The attributes that should be cast to native types. Like a getter Method
+    //  * The attributes that should be cast to native types. Like a getter Method
     //  *
-    //  *  @var  array
+    //  * @var  array
     //  */
     // protected $casts = [
     //     'from' => 'datetime:d-m-Y',
@@ -32,11 +32,11 @@ class Alert extends Model
     protected $fillable = ['from', 'to', 'message'];
 
     /**
-     *  [setFromAttribute description]
+     * [setFromAttribute description]
      *
-     *  @param   [type]  $value  [$value description]
+     * @param   [type]  $value  [$value description]
      *
-     *  @return  [type]          [return description]
+     * @return  [type]          [return description]
      */
     public function setFromAttribute($value)
     {
@@ -44,11 +44,11 @@ class Alert extends Model
     }
 
     /**
-     *  [setToAttribute description]
+     * [setToAttribute description]
      *
-     *  @param   [type]  $value  [$value description]
+     * @param   [type]  $value  [$value description]
      *
-     *  @return  [type]          [return description]
+     * @return  [type]          [return description]
      */
     public function setToAttribute($value)
     {

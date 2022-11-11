@@ -58,12 +58,12 @@ class LoginController extends Controller
     }
 
     /**
-     *  Overrride the failed login response instance,
-     *  for a own response instance on Failed Login.
+     * Overrride the failed login response instance,
+     * for a own response instance on Failed Login.
      *
-     *  @param  \Illuminate\Http\Request  $request
-     *  @return \Symfony\Component\HttpFoundation\Response
-     *  @throws \Illuminate\Validation\ValidationException
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Illuminate\Validation\ValidationException
      */
     protected function sendFailedLoginResponse(Request $request)
     {

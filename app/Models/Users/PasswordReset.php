@@ -8,26 +8,26 @@ use Illuminate\Database\Eloquent\Model;
 class PasswordReset extends Model
 {
     /**
-     *  Name of the table in the database
+     * Name of the table in the database
      *
-     *  @var  string
+     * @var  string
      */
     protected $table = 'password_resets';
 
     /**
-     *  Mass assignable
+     * Mass assignable
      *
-     *  @var  array
+     * @var  array
      */
     protected $fillable = ['email', 'token', 'expired'];
 
 
     /**
-     *  Remove olds tokens and return a new one
+     * Remove olds tokens and return a new one
      *
-     *  @param   string  $email
+     * @param   string  $email
      *
-     *  @return  string
+     * @return  string
      */
     public static function getNewToken(string $email)
     {
@@ -37,11 +37,11 @@ class PasswordReset extends Model
     }
 
     /**
-     *  Crate a new token for an specific email
+     * Crate a new token for an specific email
      *
-     *  @param   string  $email  [$email description]
+     * @param   string  $email  [$email description]
      *
-     *  @return  string  token
+     * @return  string  token
      */
     public static function generateNewToken(string $email): string
     {
@@ -53,11 +53,11 @@ class PasswordReset extends Model
     }
 
     /**
-     *  Expires all old tokens of an specific user by email
+     * Expires all old tokens of an specific user by email
      *
-     *  @param   string  $email
+     * @param   string  $email
      *
-     *  @return  void
+     * @return  void
      */
     public static function expireOldsTokens(string $email): void
     {
@@ -65,11 +65,11 @@ class PasswordReset extends Model
     }
 
     /**
-     *  [tokenDoesntExists description]
+     * [tokenDoesntExists description]
      *
-     *  @param   string  $token  [$token description]
+     * @param   string  $token  [$token description]
      *
-     *  @return  bool            [return description]
+     * @return  bool            [return description]
      */
     public static function tokenDoesntExists(string $token): bool
     {
@@ -77,11 +77,11 @@ class PasswordReset extends Model
     }
     
     /**
-     *  [tokenExists description]
+     * [tokenExists description]
      *
-     *  @param   [type]  $token  [$token description]
+     * @param   [type]  $token  [$token description]
      *
-     *  @return  bool            [return description]
+     * @return  bool            [return description]
      */
     public static function tokenExists($token): bool
     {
@@ -89,11 +89,11 @@ class PasswordReset extends Model
     }
 
     /**
-     *  Expire an specific token
+     * Expire an specific token
      *
-     *  @param   string  $token
+     * @param   string  $token
      *
-     *  @return  void
+     * @return  void
      */
     public static function spendToken(string $token): void
     {

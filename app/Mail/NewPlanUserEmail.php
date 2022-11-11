@@ -12,21 +12,21 @@ class NewPlanUserEmail extends Mailable
     use Queueable, SerializesModels;
 
     /**
-     *  The user who made the purchase of the plan
+     * The user who made the purchase of the plan
      *
-     *  @var  User
+     * @var  User
      */
     protected $user;
 
     /**
-     *  The bill of the purchase
+     * The bill of the purchase
      *
-     *  @var  PlanUserFlow
+     * @var  PlanUserFlow
      */
     protected $planUserFlow;
 
     /**
-     *  At the start of creating the email get the data of the user and the bill
+     * At the start of creating the email get the data of the user and the bill
      */
     public function __construct($planUserFlow, $bill_pdf = null)
     {
@@ -38,9 +38,9 @@ class NewPlanUserEmail extends Mailable
     }
 
     /**
-     *  Build the message.
+     * Build the message.
      *
-     *  @return  $this
+     * @return  $this
      */
     public function build()
     {

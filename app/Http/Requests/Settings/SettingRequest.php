@@ -19,9 +19,9 @@ class SettingRequest extends FormRequest
     }
 
     /**
-     *  Get the validation rules that apply to the request.
+     * Get the validation rules that apply to the request.
      *
-     *  @return  array
+     * @return  array
      */
     public function rules()
     {
@@ -32,9 +32,9 @@ class SettingRequest extends FormRequest
     }
 
     /**
-     *  [attributes description]
+     * [attributes description]
      *
-     *  @return  array
+     * @return  array
      */
     public function attributes(): array
     {

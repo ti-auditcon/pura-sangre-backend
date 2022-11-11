@@ -82,11 +82,11 @@ class Handler extends ExceptionHandler
     }
 
     /**
-     *  [isFrontend description]
+     * [isFrontend description]
      *
-     *  @param   [type]  $request  [$request description]
+     * @param   [type]  $request  [$request description]
      *
-     *  @return  [type]            [return description]
+     * @return  [type]            [return description]
      */
     private function isFrontend($request)
     {

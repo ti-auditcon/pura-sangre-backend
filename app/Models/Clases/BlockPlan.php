@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class BlockPlan extends Model
 {
 	/**
-	 *  [block description]
-	 *  
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 * [block description]
+	 * 
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
     public function block()
 	{
@@ -20,7 +20,7 @@ class BlockPlan extends Model
 
 	/**
 	 * [plan description]
-	 *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
 	public function plan()
 	{

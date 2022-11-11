@@ -39,7 +39,7 @@
                     </div>
 
                     <div class="ibox">
-                       <div class="ibox-header">
+                       <div class="ibox-header inline-flex">
                             <div class="ibox-tittle">
                                 <label class="mt-3">Etapas</label>
                             </div>

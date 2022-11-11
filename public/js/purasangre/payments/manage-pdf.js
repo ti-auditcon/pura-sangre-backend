@@ -27,7 +27,7 @@ function changeButtonToNormalState(button) {
 }
 
 /**
- *  @argument 
+ * @argument 
  */
 function changeButtonToCorrectFinishState(button) {
     button.text('Listo');
@@ -36,7 +36,7 @@ function changeButtonToCorrectFinishState(button) {
 }
 
 /**
- *  
+ * 
  */
 function transformDataParameters(field) {
     return {

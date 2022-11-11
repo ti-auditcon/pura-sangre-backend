@@ -15,9 +15,9 @@ class PlanUserPostponesController extends Controller
     protected $postponeRepository;
 
     /**
-     *  [__construct description]
+     * [__construct description]
      *
-     *  @param   PostponeRepository  $postpone  [$postpone description]
+     * @param   PostponeRepository  $postpone  [$postpone description]
      */
     public function __construct(PostponeRepository $postpone)
     {
@@ -26,11 +26,11 @@ class PlanUserPostponesController extends Controller
 
 
     /**
-     *  Freeze a PlanUser resource in storage.
+     * Freeze a PlanUser resource in storage.
      *
-     *  @param   \Illuminate\Http\Request  $request
+     * @param   \Illuminate\Http\Request  $request
      *
-     *  @return  \Illuminate\Http\Response
+     * @return  \Illuminate\Http\Response
      */
     public function store(PostponePlanRequest $request, PlanUser $plan_user)
     {
@@ -41,11 +41,11 @@ class PlanUserPostponesController extends Controller
 
 
     /**
-     *  Unfreeze a PlanUser resource from storage.
+     * Unfreeze a PlanUser resource from storage.
      *
-     *  @param   \App\Models\Plans\PostponePlan     $postpone
+     * @param   \App\Models\Plans\PostponePlan     $postpone
      *
-     *  @return  \Illuminate\Http\RedirectResponse
+     * @return  \Illuminate\Http\RedirectResponse
      */
     public function destroy(PostponePlan $postpone)
     {

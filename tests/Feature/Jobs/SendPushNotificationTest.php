@@ -17,10 +17,10 @@ class SendPushNotificationTest extends TestCase
     use RefreshDatabase, DatabaseMigrations;
 
     /**
-     *  Create a user with role = admin in database with factory
-     *  and return it
+     * Create a user with role = admin in database with factory
+     * and return it
      *
-     *  @return  \App\Models\Tenant\Users\User
+     * @return  \App\Models\Tenant\Users\User
      */
     public function createAdminAndBringIt()
     {
@@ -28,10 +28,10 @@ class SendPushNotificationTest extends TestCase
     }
 
     /**
-     *  Create a user with factory with role = user,
-     *  and return it
+     * Create a user with factory with role = user,
+     * and return it
      *
-     *  @return  \App\Models\Tenant\Users\User
+     * @return  \App\Models\Tenant\Users\User
      */
     public function createAUserAndBringIt()
     {
@@ -62,9 +62,9 @@ class SendPushNotificationTest extends TestCase
     }
 
     /**
-     *  IT'S NEED TO BE TESTED HARDCODE
+     * IT'S NEED TO BE TESTED HARDCODE
      *
-     *  @test
+     * @test
      */
     public function it_user_receive_push_notification()
     {
@@ -80,13 +80,13 @@ class SendPushNotificationTest extends TestCase
 
 
         /**
-     *  Get the rounded minute from an specific time,
-     *  useful in case of server trigger after the specific hour and minute
-     *  Also add the 0
+     * Get the rounded minute from an specific time,
+     * useful in case of server trigger after the specific hour and minute
+     * Also add the 0
      *
-     *  @param   Carbon\Carbon|string  $time
+     * @param   Carbon\Carbon|string  $time
      *
-     *  @return  Carbon\Carbon
+     * @return  Carbon\Carbon
      */
     public function roundMinutesToMultipleOfFive($time) {
         $minutes = date('i', strtotime($time));

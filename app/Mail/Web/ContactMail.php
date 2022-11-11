@@ -24,9 +24,9 @@ class ContactMail extends Mailable
     }
 
     /**
-     *  Build the message.
+     * Build the message.
      *
-     *  @return  $this
+     * @return  $this
      */
     public function build()
     {

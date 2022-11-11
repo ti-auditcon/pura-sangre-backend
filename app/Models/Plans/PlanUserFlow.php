@@ -17,23 +17,23 @@ class PlanUserFlow extends Model
     use SoftDeletes;
     
     /**
-     *  Name of the table in the database
+     * Name of the table in the database
      *
-     *  @var  string
+     * @var  string
      */
     protected $table = 'plan_user_flows';
     
     /**
-     *  Values to be treated like date formar
+     * Values to be treated like date formar
      *
      * @var  array
      */
     protected $dates = ['deleted_at', 'start_date', 'finish_date'];
     
     /**
-     *  Massive assignment
+     * Massive assignment
      *
-     *  @var  array
+     * @var  array
      */
     protected $fillable = [
         'start_date',
@@ -51,9 +51,9 @@ class PlanUserFlow extends Model
     ];
 
     /**
-     *  Relationship with the user model (who belongs the plan)
+     * Relationship with the user model (who belongs the plan)
      *
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
@@ -61,9 +61,9 @@ class PlanUserFlow extends Model
     }
 
     /**
-     *  Undocumented function
+     * Undocumented function
      *
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function plan()
     {
@@ -71,9 +71,9 @@ class PlanUserFlow extends Model
     }
 
     /**
-     *  methodDescription
+     * methodDescription
      *
-     *  @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function planUser()
     {
@@ -81,12 +81,12 @@ class PlanUserFlow extends Model
     }
 
     /**
-     *  Generate an order
+     * Generate an order
      *
-     *  @param   Plan     $plan
-     *  @param   integer  $userId
+     * @param   Plan     $plan
+     * @param   integer  $userId
      *
-     *  @return  $this
+     * @return  $this
      */
     public function makeOrder($plan, $userId)
     {
@@ -107,9 +107,9 @@ class PlanUserFlow extends Model
     }
 
     /**
-     *  Checks if the Plan user flow is paid
+     * Checks if the Plan user flow is paid
      *
-     *  @return  boolean
+     * @return  boolean
      */
     public function isPaid()
     {
@@ -117,11 +117,11 @@ class PlanUserFlow extends Model
     }
 
     /**
-     *  [annul description]
+     * [annul description]
      *
-     *  @param   [type]$observations  [$observations description]
+     * @param   [type]$observations  [$observations description]
      *
-     *  @return  [type]               [return description]
+     * @return  [type]               [return description]
      */
     public function annul($observations = null)
     {
@@ -134,9 +134,9 @@ class PlanUserFlow extends Model
     /**
      * [pay description]
      *
-     *  @param   [type]$observations  [$observations description]
+     * @param   [type]$observations  [$observations description]
      *
-     *  @return  [type]               [return description]
+     * @return  [type]               [return description]
      */
     public function changeStatusToPaid($observations = null)
     {
@@ -147,9 +147,9 @@ class PlanUserFlow extends Model
     }
 
     /**
-     *  The plan has been paid
+     * The plan has been paid
      *
-     *  @return  bool
+     * @return  bool
      */
     public function isAlreadyPaid(): bool
     {
@@ -157,9 +157,9 @@ class PlanUserFlow extends Model
     }
 
     /**
-     *  The plan has been cancelled
+     * The plan has been cancelled
      *
-     *  @return  bool
+     * @return  bool
      */
     public function isCancelled(): bool
     {
@@ -167,9 +167,9 @@ class PlanUserFlow extends Model
     }
 
     /**
-     *  The plan has already a receipt generated to SII
+     * The plan has already a receipt generated to SII
      *
-     *  @return  bool
+     * @return  bool
      */
     public function isAlreadyIssuedToSII()
     {
@@ -177,10 +177,10 @@ class PlanUserFlow extends Model
     }
 
     /**
-     *  If the PlanUserFlow has been paid or has been cancelled,
-     *  return false
+     * If the PlanUserFlow has been paid or has been cancelled,
+     * return false
      *
-     *  @return  bool
+     * @return  bool
      */
     public function isNotAvailableToBePaid(): bool
     {
@@ -188,9 +188,9 @@ class PlanUserFlow extends Model
     }
 
     /**
-     *  Check if the Bill has the sii_token
+     * Check if the Bill has the sii_token
      *
-     *  @return  bool
+     * @return  bool
      */
     public function hasNotSiiToken(): bool
     {
@@ -198,9 +198,9 @@ class PlanUserFlow extends Model
     }
 
     /**
-     *  Check if the bill has the pdf generated
+     * Check if the bill has the pdf generated
      *
-     *  @return  bool
+     * @return  bool
      */
     public function hasPDFGeneratedAlready(): bool
     {
@@ -208,9 +208,9 @@ class PlanUserFlow extends Model
     }
 
     /**
-     *  The opposite of hasPDFGeneratedAlready
+     * The opposite of hasPDFGeneratedAlready
      *
-     *  @return  bool
+     * @return  bool
      */
     public function hasntPDFGenerated(): bool
     {
@@ -218,9 +218,9 @@ class PlanUserFlow extends Model
     }
 
     /**
-     *  Create a PlanUserFlow into database
+     * Create a PlanUserFlow into database
      *
-     *  @return  $this
+     * @return  $this
      */
     public function createOne($request, $plan_user)
     {

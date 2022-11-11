@@ -23,11 +23,11 @@ class AlertController extends Controller
     }
 
     /**
-     *  Store a newly created resource in storage.
+     * Store a newly created resource in storage.
      *
-     *  @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request  $request
      *
-     *  @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
     public function store(AlertRequest $request)
     {
@@ -37,9 +37,9 @@ class AlertController extends Controller
     }
 
     /**
-     *  Get JSON of All alerts
+     * Get JSON of All alerts
      *
-     *  @return  json
+     * @return  json
      */
     public function alerts()
     {
@@ -49,11 +49,11 @@ class AlertController extends Controller
     }
 
     /**
-     *  [destroy description]
+     * [destroy description]
      *
-     *  @param   [type]  $id  [$id description]
+     * @param   [type]  $id  [$id description]
      *
-     *  @return  [type]       [return description]
+     * @return  [type]       [return description]
      */
     public function destroy($id)
     {

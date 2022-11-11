@@ -28,7 +28,7 @@ class IssueReceiptsTest extends TestCase
     // public function bill_pdf_is_stored_through_api_correctly()
     // {
     //     $planUserFlow = factory(PlanUserFlow::class)->create([
-    //         /**  this dte token is just for haulmer developer environment, does not works with purasangre credentials  */
+    //         /** this dte token is just for haulmer developer environment, does not works with purasangre credentials  */
     //         'sii_token' => '7ee8a1bf916af5255bc2e23f5e06b499360ae10384bfb1d36085593fbea5dcf1' 
     //     ]);
 
@@ -67,8 +67,8 @@ class IssueReceiptsTest extends TestCase
     //     Mail::assertSent(NewPlanUserEmail::class, 1);
 
     //     /**
-    //      *  We request the plan user flow again, to get the most recent copy of the model in database
-    //      *  Then we check if the model retrieved has bill_pdf and token
+    //      * We request the plan user flow again, to get the most recent copy of the model in database
+    //      * Then we check if the model retrieved has bill_pdf and token
     //      */
 
     //     $planUserFlow = PlanUserFlow::find($plan->id);

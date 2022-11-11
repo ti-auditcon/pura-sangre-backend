@@ -15,14 +15,14 @@ class FlowPaymentController extends Controller
     }
 
     /**
-     *  Make an instance of Flow on Production.
+     * Make an instance of Flow on Production.
      *
-     *  @param  $environment  ('production', 'sandbox')
+     * @param  $environment  ('production', 'sandbox')
      */
     private function instanciateFlow($environment)
     {
         $this->flow = Flow::make($environment, [
-            /*  Credentials for FLOW platform */
+            /* Credentials for FLOW platform */
             'apiKey' => config('flow.sandbox.apiKey'),
             'secret' => config('flow.sandbox.secret'),
         ]);

@@ -47,10 +47,10 @@ class UserController extends Controller
     // }
 
     /**
-     *  Through ajax, get all users who meet certain requirements,
-     *   indicated in the table of all users
+     * Through ajax, get all users who meet certain requirements,
+     *  indicated in the table of all users
      *
-     *  @return  json
+     * @return  json
      */
     public function usersJson()
     {
@@ -60,9 +60,9 @@ class UserController extends Controller
     }
 
     /**
-     *  [export description]
+     * [export description]
      *
-     *  @return  Maatwebsite\Excel\Facades\Excel
+     * @return  Maatwebsite\Excel\Facades\Excel
      */
     public function export()
     {
@@ -72,9 +72,9 @@ class UserController extends Controller
     }
 
     /** 
-     *  Show the form for creating a new resource.
+     * Show the form for creating a new resource.
      *
-     *  @return  \Illuminate\Http\Response
+     * @return  \Illuminate\Http\Response
      */
     public function create()
     {
@@ -172,11 +172,11 @@ class UserController extends Controller
     }
 
     /**
-     *  Reset to default value the specific user's password
+     * Reset to default value the specific user's password
      *
-     *  @param   User  $user
+     * @param   User  $user
      *
-     *  @return  \Illuminate\Http\RedirectResponse
+     * @return  \Illuminate\Http\RedirectResponse
      */
     public function resetPassword(User $user)
     {
@@ -195,12 +195,12 @@ class UserController extends Controller
     }
 
     /**
-     *  [image description]
+     * [image description]
      *
-     *  @param  Request $request [description]
-     *  @param  User    $user    [description]
+     * @param  Request $request [description]
+     * @param  User    $user    [description]
      *
-     *  @return [type]           [description]
+     * @return [type]           [description]
      */
     public function image(Request $request, User $user)
     {

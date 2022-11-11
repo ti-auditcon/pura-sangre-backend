@@ -458,7 +458,7 @@
 
     let createBillId = 1;
     /**
-     *  Show modal to make sure that user want to delete the associated payment
+     * Show modal to make sure that user want to delete the associated payment
      */
     $(document).on('click', '.add-payment-modal', function() {
         // get the date of start and end from plan and pass to the fields to the bill modal

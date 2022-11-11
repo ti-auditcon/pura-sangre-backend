@@ -46,11 +46,11 @@ class BlockObserver
     }
 
     /**
-     *  Update quota from block to clases
-     *  
-     *  @param  App\Models\Blocks\Block  $block
-     *  
-     *  @return  void
+     * Update quota from block to clases
+     * 
+     * @param  App\Models\Blocks\Block  $block
+     * 
+     * @return  void
      */
     public function updated(Block $block)
     {

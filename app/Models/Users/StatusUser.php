@@ -11,29 +11,29 @@ use Illuminate\Database\Eloquent\Model;
 class StatusUser extends Model
 {
     /**
-     *  Id of an Status User
+     * Id of an Status User
      *
-     *  @param  integer
+     * @param  integer
      */
     const ACTIVE = 1;
 
     /**
-     *  Id of an Status User
+     * Id of an Status User
      *
-     *  @param  integer
+     * @param  integer
      */
     const INACTIVE = 2;
 
     /**
-     *  Id of an Status User
+     * Id of an Status User
      *
-     *  @param  integer
+     * @param  integer
      */
     const TEST = 3;
 
 	/**
-	 *  [users description]
-	 *  @return [type] [description]
+	 * [users description]
+	 * @return [type] [description]
 	 */
 	public function users()
 	{
@@ -41,9 +41,9 @@ class StatusUser extends Model
     }
 
     /**
-     *  listAllStatuses
+     * listAllStatuses
      *
-     *  @return  array
+     * @return  array
      */
     public static function listAllStatuses()
     {
@@ -55,9 +55,9 @@ class StatusUser extends Model
     }
 
     /**
-     *  methodDescription
+     * methodDescription
      *
-     *  @return  returnType
+     * @return  returnType
      */
     public static function getStatus($statusId)
     {
@@ -67,9 +67,9 @@ class StatusUser extends Model
     }
 
         /**
-     *  listAllStatuses
+     * listAllStatuses
      *
-     *  @return  array
+     * @return  array
      */
     public static function listAllStatusesColors()
     {
@@ -81,9 +81,9 @@ class StatusUser extends Model
     }
 
     /**
-     *  methodDescription
+     * methodDescription
      *
-     *  @return  returnType
+     * @return  returnType
      */
     public static function getStatusColor($statusId)
     {

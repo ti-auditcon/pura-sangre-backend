@@ -8,11 +8,11 @@ use App\Models\Invoicing\TaxIssuerInterface;
 class ExemptElectronicInvoice extends TaxDocument implements TaxIssuerInterface
 {
     /**
-     *  Give form the receipt to be issue to SII
+     * Give form the receipt to be issue to SII
      *
-     *  @param   object  $receipt
+     * @param   object  $receipt
      *
-     *  @return  object
+     * @return  object
      */
     public function get($receipt)
     {

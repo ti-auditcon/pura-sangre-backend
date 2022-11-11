@@ -29,28 +29,28 @@ use Illuminate\Support\Facades\Validator;
 class NewUserController extends Controller
 {
     /**
-     *  Plan instance.
+     * Plan instance.
      *
-     *  @var  App\Models\Plans\Plan
+     * @var  App\Models\Plans\Plan
      */
     protected $plan;
 
     /**
-     *  Instance of FlowOrder.
+     * Instance of FlowOrder.
      */
     protected $PlanUserFlow;
 
     /**
-     *  Flow instance for purchases.
+     * Flow instance for purchases.
      *
-     *  @var  App\Models\Flow\Flow
+     * @var  App\Models\Flow\Flow
      */
     private $flow;
 
     /**
-     *  Bill instance.
+     * Bill instance.
      *
-     *  @var  App\Models\Bills\Bill
+     * @var  App\Models\Bills\Bill
      */
     private $bill;
 
@@ -59,9 +59,9 @@ class NewUserController extends Controller
     protected $verifiedSSL;
 
     /**
-     *  Instanciate Flow, PlanUserFlow, Plan, PlanUser.
+     * Instanciate Flow, PlanUserFlow, Plan, PlanUser.
      *
-     *  @return  void
+     * @return  void
      */
     public function __construct()
     {
@@ -77,11 +77,11 @@ class NewUserController extends Controller
     }
 
     /**
-     *  Make an instance of Flow with PuraSangre credentials
+     * Make an instance of Flow with PuraSangre credentials
      *
-     *  @param   string  $environment  ('production', 'sandbox')
+     * @param   string  $environment  ('production', 'sandbox')
      * 
-     *  @return  void
+     * @return  void
      */
     private function instanciateFlow($environment = 'sandbox'): void
     {
@@ -92,12 +92,12 @@ class NewUserController extends Controller
     }
 
     /**
-     *  Show the form for creating a new resource.
+     * Show the form for creating a new resource.
      *
-     *  @param   Plan     $plan   
-     *  @param   Request  $request
+     * @param   Plan     $plan   
+     * @param   Request  $request
      *
-     *  @return  \Illuminate\Http\Response
+     * @return  \Illuminate\Http\Response
      */
     public function create(Plan $plan, Request $request)
     {
@@ -105,11 +105,11 @@ class NewUserController extends Controller
     }
 
     /**
-     *  Store a newly created resource in storage.
+     * Store a newly created resource in storage.
      *
-     *  @param   \Illuminate\Http\Request  $request
+     * @param   \Illuminate\Http\Request  $request
      *
-     *  @return  \Illuminate\Http\Response
+     * @return  \Illuminate\Http\Response
      */
     public function store(NewUserRequest $request)
     {
@@ -135,11 +135,11 @@ class NewUserController extends Controller
     }
 
     /**
-     *  [disableObservers description].
+     * [disableObservers description].
      *
-     *  @param   [type]  $class  [$class description]
+     * @param   [type]  $class  [$class description]
      *
-     *  @return  [type]          [return description]
+     * @return  [type]          [return description]
      */
     public function disableObservers($class)
     {
@@ -154,10 +154,10 @@ class NewUserController extends Controller
     /**
      * [enableObservers description].
      *
-     *  @param   [type]  $class       [$class description]
-     *  @param   [type]  $dispatcher  [$dispatcher description]
+     * @param   [type]  $class       [$class description]
+     * @param   [type]  $dispatcher  [$dispatcher description]
      *
-     *  @return  void
+     * @return  void
      */
     public function enableObservers($class, $dispatcher)
     {
@@ -166,9 +166,9 @@ class NewUserController extends Controller
     }
 
     /**
-     *  Show the form for editing the specified resource.
+     * Show the form for editing the specified resource.
      *
-     *  @return  \Illuminate\Http\Response
+     * @return  \Illuminate\Http\Response
      */
     public function edit($userId, Request $request)
     {
@@ -209,12 +209,12 @@ class NewUserController extends Controller
     }
 
     /**
-     *  [validateUserData description].
+     * [validateUserData description].
      *
-     *  @param   [type]  $userId   [$userId description]
-     *  @param   [type]  $request  [$request description]
+     * @param   [type]  $userId   [$userId description]
+     * @param   [type]  $request  [$request description]
      *
-     *  @return  [type]            [return description]
+     * @return  [type]            [return description]
      */
     public function validateUserData($userId, $request)
     {
@@ -254,11 +254,11 @@ class NewUserController extends Controller
     }
 
     /**
-     *  [verifyToken description].
+     * [verifyToken description].
      *
-     *  @param   [type]  $token  [$token description]
+     * @param   [type]  $token  [$token description]
      *
-     *  @return  string|boolean
+     * @return  string|boolean
      */
     public function verifyToken(string $token)
     {
@@ -274,11 +274,11 @@ class NewUserController extends Controller
     }
 
     /**
-     *  desc.
+     * desc.
      *
-     *  @param   Request  $request  [$request description]
+     * @param   Request  $request  [$request description]
      *
-     *  @return  [type]             [return description]
+     * @return  [type]             [return description]
      */
     public function finishFlowPayment(Request $request)
     {
@@ -290,9 +290,9 @@ class NewUserController extends Controller
     }
 
     /**
-     *  Confirm payment.
+     * Confirm payment.
      *
-     *  @return  view
+     * @return  view
      */
     public function confirmFlowPayment(Request $request)
     {
@@ -305,11 +305,11 @@ class NewUserController extends Controller
     }
 
     /**
-     *  [makeFlowPayment description].
+     * [makeFlowPayment description].
      *
-     *  @param Request $request [$request description]
+     * @param Request $request [$request description]
      *
-     *  @return [type] [return description]
+     * @return [type] [return description]
      */
     public function makeFlowPayment(Request $request)
     {
@@ -328,7 +328,7 @@ class NewUserController extends Controller
             return false;
         }
 
-        /*  Chage status plan user flow to paid  */
+        /* Chage status plan user flow to paid  */
         $planUserFlow->changeStatusToPaid('Pago realizado desde web');
         $user = User::find($planUserFlow->user_id);
 
@@ -347,11 +347,11 @@ class NewUserController extends Controller
     }
 
     /**
-     *  [emiteReceiptToSII description]
+     * [emiteReceiptToSII description]
      *
-     *  @param   [type]  $planUserflow  [$planUserflow description]
+     * @param   [type]  $planUserflow  [$planUserflow description]
      *
-     *  @return  null|bool|void
+     * @return  null|bool|void
      */
     public function emiteReceiptToSII(PlanUserFlow $planUserflow)
     {
@@ -393,7 +393,7 @@ class NewUserController extends Controller
         }
 
         /**
-         *  todo: Pass the next two lines to the User class.
+         * todo: Pass the next two lines to the User class.
          */
         $user = User::where('email', $request->email)->first(['id', 'email_verified_at']);
         if (! $user->email_verified_at) {
@@ -404,12 +404,12 @@ class NewUserController extends Controller
     }
 
     /**
-     *  Create a token for a valid email and send a email with instructions
-     *  It needs a valid email that belongs to a user.
+     * Create a token for a valid email and send a email with instructions
+     * It needs a valid email that belongs to a user.
      *
-     *  @param   Request  $request  [$request description]
+     * @param   Request  $request  [$request description]
      *
-     *  @return  json
+     * @return  json
      */
     public function requestInstructions(Request $request)
     {
@@ -427,13 +427,13 @@ class NewUserController extends Controller
     }
 
     /**
-     *  [validateEmail description].
+     * [validateEmail description].
      *
-     *  @param   [type]  $request  [$request description]
+     * @param   [type]  $request  [$request description]
      *
-     *  @return  [type]            [return description]
+     * @return  [type]            [return description]
      *
-     *  todo: maybe refactor to a Request
+     * todo: maybe refactor to a Request
      */
     public function validateEmail($request)
     {
@@ -469,11 +469,11 @@ class NewUserController extends Controller
     }
 
     /**
-     *  [getPDF description]
+     * [getPDF description]
      *
-     *  @param   PlanUserFlow  $plan_user_flow  [$plan_user_flow description]
+     * @param   PlanUserFlow  $plan_user_flow  [$plan_user_flow description]
      *
-     *  @return  [type]                         [return description]
+     * @return  [type]                         [return description]
      */
     public function getPDF(PlanUserFlow $plan_user_flow)
     {

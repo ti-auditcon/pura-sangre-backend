@@ -37,11 +37,11 @@ class ClaseController extends Controller
     }
 
     /**
-     *  Get all the classes for a given class type
+     * Get all the classes for a given class type
      *
-     *  @param   Request  $request
+     * @param   Request  $request
      *
-     *  @return  JsonResponse
+     * @return  JsonResponse
      */
     public function clases(Request $request)
     {

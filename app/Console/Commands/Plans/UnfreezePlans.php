@@ -11,23 +11,23 @@ use App\Models\Plans\PostponePlan;
 class UnfreezePlans extends Command
 {
     /**
-     *  The name and signature of the console command.
+     * The name and signature of the console command.
      *
-     *  @var  string
+     * @var  string
      */
     protected $signature = 'purasangre:plans:unfreeze';
 
     /**
-     *  The console command description.
+     * The console command description.
      *
-     *  @var  string
+     * @var  string
      */
     protected $description = 'Unfreeze all the plans who has today the unfreeze date';
 
     /**
-     *  Create a new command instance.
+     * Create a new command instance.
      *
-     *  @return  void
+     * @return  void
      */
     public function __construct()
     {
@@ -35,9 +35,9 @@ class UnfreezePlans extends Command
     }
 
     /**
-     *  Execute the console command.
+     * Execute the console command.
      *
-     *  @return  mixed
+     * @return  mixed
      */
     public function handle()
     {
@@ -72,9 +72,9 @@ class UnfreezePlans extends Command
                                             ->get(['id', 'start_date', 'finish_date', 'user_id']);
 
             /**
-             *  
-             *  si el próximo plan comienza despues del actual, las fechas se mueven hacia atras,
-             *  si el próximo plan comienza antes de que termine el actual, las fechas se mueven hacia adelante
+             * 
+             * si el próximo plan comienza despues del actual, las fechas se mueven hacia atras,
+             * si el próximo plan comienza antes de que termine el actual, las fechas se mueven hacia adelante
              * 
              */
 
@@ -98,12 +98,12 @@ class UnfreezePlans extends Command
     }
 
     /**
-     *  Get the difference, in days, between the current active plan and the new closest plan.
+     * Get the difference, in days, between the current active plan and the new closest plan.
      *
-     *  @param   Carbon      $finishDateUnfreezedPlan
-     *  @param   Collection  $planes_posteriores     
+     * @param   Carbon      $finishDateUnfreezedPlan
+     * @param   Collection  $planes_posteriores     
      *
-     *  @return  int
+     * @return  int
      */
     public function getDiffInDays($finishDateUnfreezedPlan, $planes_posteriores): int
     {

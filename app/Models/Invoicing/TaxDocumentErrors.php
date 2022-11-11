@@ -7,16 +7,16 @@ use Illuminate\Support\Facades\DB;
 class TaxDocumentErrors
 {
     /**
-     *  Errors for TaxDocuments
+     * Errors for TaxDocuments
      *
-     *  @var  stdClass|string
+     * @var  stdClass|string
      */
     protected $error;
 
     /**
-     *  Instanciate with the errors passed and manage them
+     * Instanciate with the errors passed and manage them
      *
-     *  @param   stdClass|string|null  $errors  Errors for TaxDocuments
+     * @param   stdClass|string|null  $errors  Errors for TaxDocuments
      */
     public function __construct($response)
     {
@@ -34,9 +34,9 @@ class TaxDocumentErrors
         }
     }
     /**
-     *  Create record into the DB to save the errors
+     * Create record into the DB to save the errors
      *
-     *  @return  void
+     * @return  void
      */
     public function manageErrors(): void
     {
@@ -52,11 +52,11 @@ class TaxDocumentErrors
     }
 
     /**
-     *  [insertErrorIntoDB description]
+     * [insertErrorIntoDB description]
      *
-     *  @param   [type]  $errorName  [$errorName description]
+     * @param   [type]  $errorName  [$errorName description]
      *
-     *  @return  [type]              [return description]
+     * @return  [type]              [return description]
      */
     public function insertErrorIntoDB($error)
     {

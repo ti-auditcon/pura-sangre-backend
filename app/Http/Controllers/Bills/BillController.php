@@ -23,12 +23,12 @@ class BillController extends Controller
     }
 
     /**
-     *  Store a new bill into the system associated a PlanUser
+     * Store a new bill into the system associated a PlanUser
      *
-     *  @param   PlanUser     $plan_user
-     *  @param   BillRequest  $request
-     *  
-     *  @return  \Illuminate\Http\RedirectResponse
+     * @param   PlanUser     $plan_user
+     * @param   BillRequest  $request
+     * 
+     * @return  \Illuminate\Http\RedirectResponse
      */     
     public function store(BillRequest $request)
     {
@@ -38,9 +38,9 @@ class BillController extends Controller
     }
 
     /**
-     *  Update data for a registered payment
+     * Update data for a registered payment
      *
-     *  @return  \Illuminate\Http\RedirectResponse
+     * @return  \Illuminate\Http\RedirectResponse
      */
     public function update(Bill $payment, BillRequest $request)
     {
@@ -50,11 +50,11 @@ class BillController extends Controller
     }
 
     /**
-     *  [getPagos description]
+     * [getPagos description]
      * 
-     *  @param   Request $request [description]
-     *  
-     *  @return  [type]           [description]
+     * @param   Request $request [description]
+     * 
+     * @return  [type]           [description]
      */
     public function getPagos(Request $request)
     {
@@ -143,11 +143,11 @@ class BillController extends Controller
     }
 
     /**
-     *  Display the specified resource.
+     * Display the specified resource.
      *
-     *  @param  \App\Models\Bills\Bill  $bill
+     * @param  \App\Models\Bills\Bill  $bill
      * 
-     *  @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
     public function show(Bill $bill)
     {
@@ -155,9 +155,9 @@ class BillController extends Controller
     }
 
     /**
-     *  Export Excel of System bills
+     * Export Excel of System bills
      *
-     *  @return  Maatwebsite\Excel\Facades\Excel
+     * @return  Maatwebsite\Excel\Facades\Excel
      */
     public function export()
     {
@@ -165,11 +165,11 @@ class BillController extends Controller
     }
 
     /**
-     *  Delete an payment associated to a PlanUser
+     * Delete an payment associated to a PlanUser
      *
-     *  @param   Bill   $payment
+     * @param   Bill   $payment
      *
-     *  @return  \Illuminate\Http\RedirectResponse
+     * @return  \Illuminate\Http\RedirectResponse
      */
     public function destroy(Bill $payment)
     {

@@ -15,32 +15,32 @@ use Symfony\Component\HttpFoundation\Response;
 class InvoicingController extends Controller
 {
     /**
-     *  Base url for developing as for production
+     * Base url for developing as for production
      *
-     *  @var  string
+     * @var  string
      */
     private $baseUrl;
 
     /**
-     *  Api key for developing as for production
+     * Api key for developing as for production
      *
-     *  @var  string
+     * @var  string
      */
     private $apiKey;
 
     /**
-     *  Check if the requests are with ssl connection
+     * Check if the requests are with ssl connection
      *
-     *  @var  boolean
+     * @var  boolean
      */
     protected $verifiedSSL;
 
     protected $document;
 
     /**
-     *  [$fakeTaxDocument description]
+     * [$fakeTaxDocument description]
      *
-     *  @var  object
+     * @var  object
      */
     public $data_response = array(
         "current_page"    => 1,
@@ -132,7 +132,7 @@ class InvoicingController extends Controller
     );
 
     /**
-     *  Instanciate urls for this class
+     * Instanciate urls for this class
      */
     public function __construct()
     {
@@ -140,10 +140,10 @@ class InvoicingController extends Controller
     }
 
     /**
-     *  [setTaxIssuerData description]
+     * [setTaxIssuerData description]
      *
-     *  @param   [type]   $environment  [$environment description]
-     *  @param   sandbox                [ description]
+     * @param   [type]   $environment  [$environment description]
+     * @param   sandbox                [ description]
      */
     public function setTaxIssuerData($environment = 'sandbox')
     {
@@ -155,9 +155,9 @@ class InvoicingController extends Controller
     }
 
     /**
-     *  Fill url and apis for requests
+     * Fill url and apis for requests
      *
-     *  @return  void
+     * @return  void
      */
     public function fillUrlAndKeys($environment = 'sandbox')
     {
@@ -169,9 +169,9 @@ class InvoicingController extends Controller
     }
 
     /**
-     *  Display a listing of the resource.
+     * Display a listing of the resource.
      *
-     *  @return  \Illuminate\Http\Response
+     * @return  \Illuminate\Http\Response
      */
     public function issued()
     {
@@ -179,9 +179,9 @@ class InvoicingController extends Controller
     }
 
     /**
-     *  Display a listing of the resource.
+     * Display a listing of the resource.
      *
-     *  @return  \Illuminate\Http\Response
+     * @return  \Illuminate\Http\Response
      */
     public function recevied()
     {
@@ -238,11 +238,11 @@ class InvoicingController extends Controller
 
 
     /**
-     *  [getTaxDocuments description]
+     * [getTaxDocuments description]
      *
-     *  @param   Request  $request  [$request description]
+     * @param   Request  $request  [$request description]
      *
-     *  @return  json
+     * @return  json
      */
     public function issuedJson(Request $request)
     {
@@ -287,9 +287,9 @@ class InvoicingController extends Controller
     }
 
     /**
-     *  Simulate a void datatable response
+     * Simulate a void datatable response
      *
-     *  @return  array
+     * @return  array
      */
     public function voidDataTableResponse(): array
     {
@@ -304,11 +304,11 @@ class InvoicingController extends Controller
     }
 
     /**
-     *  Add name of the client receipt to the data
+     * Add name of the client receipt to the data
      *
-     *  @param   \stdClass
+     * @param   \stdClass
      *
-     *  @return  \stdClass
+     * @return  \stdClass
      */
     public function addClientAndServiceToReceipts($response)
     {
