@@ -29,9 +29,10 @@
                                     <div class="form-group mb-4">
                                         <label>{{ $st->stage_type->stage_type }}</label>
                                         
-                                        <textarea name="{{ $st->id }}" class="form-control form-control-solid" rows="12">
-                                            {{ $st->description ?? 'sin registro' }}
-                                        </textarea>
+                                        <textarea name="{{ $st->id }}" 
+                                          class="form-control form-control-solid" 
+                                          rows="12"
+                                        >{{ $st->description ?? 'sin registro' }}</textarea>
                                     </div>
                                 </div>
                             @endforeach
