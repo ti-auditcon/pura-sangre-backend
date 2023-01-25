@@ -8,7 +8,7 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 class Kernel extends ConsoleKernel
 {
     /**
-     * The Artisan commands provided by your application.
+     * We define a list of commands that should be available to the CLI by default.
      *
      * @var array
      */
@@ -62,6 +62,8 @@ class Kernel extends ConsoleKernel
 
         /** Issue to SII receipts and send bill receipt to student  */
         $schedule->command('purasangre:invoicing:issue-receipts')->everyFifteenMinutes();
+
+        $schedule->command('purasangre:plans:finish')->hourlyAt(16);
     }
 
     /**

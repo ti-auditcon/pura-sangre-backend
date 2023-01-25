@@ -271,4 +271,48 @@ class PlanUser extends Model
             'counter' => $this->counter - $quotas_number
         ]);
     }
+
+    /**
+     * Finish the planUser passing to status "Completado"
+     *
+     * @return  void
+     */
+    public function finish()
+    {
+        $diff_in_days = Carbon::parse($this->finish_date)->diffInDays(today());
+
+        $this->update([
+            'plan_status_id' => PlanStatus::COMPLETADO,
+            'finish_date'    => now()->startOfMinute()
+        ]);
+
+        app(self::class)->moveBackDatesOfFuturePlans($this->user_id, $diff_in_days);
+    }
+
+    /**
+     * Move back the dates (start_date and finish_date) of the future plans,
+     * for now just the plans with the prePurchase status
+     *
+     * @param   int  $userId
+     * @param   int  $diff_in_days
+     *
+     * @return  void
+     */
+    public function moveBackDatesOfFuturePlans($userId, $diff_in_days)
+    {
+        $future_plans = Planuser::where('user_id', $userId)
+                                ->where('start_date', '>', today())
+                                ->where('plan_status_id', PlanStatus::PRECOMPRA)
+                                ->orderBy('finish_date')
+                                ->get([
+                                    'id', 'start_date', 'finish_date', 'user_id'
+                                ]);
+
+        foreach ($future_plans as $planUser) {
+            $planUser->update([
+                'start_date' => $planUser->start_date->subDays($diff_in_days),
+                'finish_date' => $planUser->finish_date->subDays($diff_in_days)
+            ]);
+        }
+    }
 }
