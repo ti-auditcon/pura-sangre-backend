@@ -36,6 +36,7 @@ class CreatePlansTable extends Migration
             $table->boolean('contractable')->default(true);
             $table->integer('daily_clases')->default(true);
             $table->integer('plan_status_id')->default(true);
+            $table->string('image_path')->nullable();
             
             $table->timestamps();
         });

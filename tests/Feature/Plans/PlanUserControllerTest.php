@@ -2,17 +2,13 @@
 
 namespace Tests\Feature\Plans;
 
-use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Plans\Plan;
-use App\Models\Users\Role;
 use App\Models\Users\User;
 use App\Models\Plans\PlanUser;
-use App\Models\Users\RoleUser;
 use App\Models\Clases\ClaseType;
 use App\Models\Plans\PlanStatus;
 use App\Models\Bills\PaymentType;
-use App\Models\Plans\FlowOrderStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 

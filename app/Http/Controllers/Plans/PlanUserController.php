@@ -6,13 +6,13 @@ use Carbon\Carbon;
 use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
-use Illuminate\Http\Request;
 use App\Models\Plans\PlanUser;
 use App\Models\Plans\PlanStatus;
 use App\Models\Bills\PaymentType;
 use App\Models\Plans\PlanUserFlow;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Plans\PlanUserRequest;
+use App\Http\Requests\Plans\PlanUserStoreRequest;
 
 class PlanUserController extends Controller
 {
@@ -66,7 +66,7 @@ class PlanUserController extends Controller
      *
      * @return  bool
      */
-    public function store(PlanUserRequest $request, User $user)
+    public function store(PlanUserStoreRequest $request, User $user, Plan $plan)
     {
         $plan = Plan::find($request->plan_id);
         $planUser = (new PlanUser)->asignPlanToUser($request, $plan, $user);
