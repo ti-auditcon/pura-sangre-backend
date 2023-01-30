@@ -30,9 +30,9 @@ class IconClaseType
 
     /**
      * List all icons data for clases types, this includes:
-     *     - name:       To store in the database and be compared at the edit select icon
-     *     - human_name: To be displayed to a friendly way for the user can understand
-     *     - url_path:   The name say it
+     *    - name:       To store in the database and be compared at the edit select icon
+     *    - human_name: To be displayed to a friendly way for the user can understand
+     *    - url_path:   The name say it
      *
      * @return  array
      */

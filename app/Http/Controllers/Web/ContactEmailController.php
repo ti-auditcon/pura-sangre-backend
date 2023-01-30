@@ -12,7 +12,7 @@ use App\Http\Requests\Web\ContactEmailRequest;
 class ContactEmailController extends Controller
 {
     /**
-     *  
+     * 
      */
     public function sendEmail(Request $request)
     {
