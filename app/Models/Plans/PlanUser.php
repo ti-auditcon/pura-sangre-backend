@@ -108,13 +108,43 @@ class PlanUser extends Model
     }
 
     /**
-     * If the plan has the status freezed return true
+     * Check if the plan is freezed
      *
      * @return  bool
      */
     public function isFreezed() :bool
     {
         return (int) $this->plan_status_id === PlanStatus::CONGELADO;
+    }
+
+    /**
+     * Check if the plan is active
+     *
+     * @return  bool
+     */
+    public function isActive() :bool
+    {
+        return (int) $this->plan_status_id === PlanStatus::ACTIVE;
+    }
+
+    /**
+     * Check if the plan is in pre purchase
+     *
+     * @return  bool
+     */
+    public function isPrePurchase() :bool
+    {
+        return (int) $this->plan_status_id === PlanStatus::PRE_PURCHASE;
+    }
+
+    /**
+     * Check if the plan is finished
+     *
+     * @return  bool
+     */
+    public function isFinished() :bool
+    {
+        return (int) $this->plan_status_id === PlanStatus::FINISHED;
     }
 
     /**
@@ -136,6 +166,16 @@ class PlanUser extends Model
     public function plan()
     {
         return $this->belongsTo(Plan::class);
+    }
+
+    /**
+     *  Check if this PlanUser is a test plan
+     *
+     *  @return  bool
+     */
+    public function isATestPlan(): bool
+    {
+        return $this->plan->id === Plan::PRUEBA;
     }
 
     /**
@@ -279,14 +319,14 @@ class PlanUser extends Model
      */
     public function finish()
     {
-        $diff_in_days = Carbon::parse($this->finish_date)->diffInDays(today());
+        $diffInDays = Carbon::parse($this->finish_date)->diffInDays(today());
 
         $this->update([
-            'plan_status_id' => PlanStatus::COMPLETADO,
-            'finish_date'    => now()->startOfMinute()
+            'plan_status_id' => PlanStatus::FINISHED,
+            'finish_date' => now()->startOfMinute()->subMinutes(2)
         ]);
 
-        app(self::class)->moveBackDatesOfFuturePlans($this->user_id, $diff_in_days);
+        app(self::class)->moveBackDatesOfFuturePlans($this->user_id, $diffInDays); 
     }
 
     /**
@@ -294,11 +334,11 @@ class PlanUser extends Model
      * for now just the plans with the prePurchase status
      *
      * @param   int  $userId
-     * @param   int  $diff_in_days
+     * @param   int  $diffInDays
      *
      * @return  void
      */
-    public function moveBackDatesOfFuturePlans($userId, $diff_in_days)
+    public function moveBackDatesOfFuturePlans($userId, $diffInDays)
     {
         $future_plans = Planuser::where('user_id', $userId)
                                 ->where('start_date', '>', today())
@@ -310,9 +350,108 @@ class PlanUser extends Model
 
         foreach ($future_plans as $planUser) {
             $planUser->update([
-                'start_date' => $planUser->start_date->subDays($diff_in_days),
-                'finish_date' => $planUser->finish_date->subDays($diff_in_days)
+                'start_date' => $planUser->start_date->subDays($diffInDays),
+                'finish_date' => $planUser->finish_date->subDays($diffInDays)
             ]);
         }
+    }
+
+    public function activate()
+    {
+        return $this->update(['plan_status_id' => PlanStatus::ACTIVE]);
+    }
+
+    /**
+     * To check if the planUser is current or not,
+     * we check if the start_date is today or before and
+     * if the finish_date is today or after
+     *
+     * @return  boolean
+     */
+    public function isCurrent(): bool
+    {
+        return $this->startsTodayOrBefore() && $this->finishesTodayOrAfter();
+    }
+
+    /**
+     * Check if the planUser starts today or before
+     *
+     * @return  boolean
+     */
+    public function startsTodayOrBefore(): bool
+    {
+        return $this->start_date <= today();
+    }
+
+    /**
+     * Check if the planUser finishes today or after
+     *
+     * @return  boolean
+     */
+    public function finishesTodayOrAfter(): bool
+    {
+        return $this->finish_date >= today();
+    }
+
+    /**
+     * Check if the planUser is finished or not
+     *
+     * @return  boolean
+     */
+    public function finishesBeforeToday(): bool
+    {
+        return $this->finish_date < today();
+    }
+
+    /**
+     * Check if there is a planUser that overlaps with the dates
+     * 
+     * @param   Carbon  $startDate
+     * @param   Carbon  $endDate
+     * @param   User  $user
+     * 
+     * @return  boolean
+     */
+    public function hasOverlappedDates($user, $startDate, $endDate)
+    {
+        return $this->where('user_id', $user->id)
+            ->whereIn('plan_status_id', [PlanStatus::PRECOMPRA, PlanStatus::ACTIVE])
+            ->where('start_date', '<=', $endDate)
+            ->where('finish_date', '>=', $startDate)
+            ->exists('id');
+    }
+
+    /**
+     * Check if the plan dates are in between to some other plan
+     *
+     * @param   Carbon  $startDate
+     * @param   Carbon  $endDate
+     * @param   PlanUser  $planUser
+     *
+     * @return  boolean
+     */
+    public function checkPlanDatesInBetween($startDate, $endDate, $planUser)
+    {
+        return $this->where('start_date', '<=', $startDate)
+                    ->where('finish_date', '>=', $endDate)
+                    ->exists();
+    }
+
+    /**
+     * Check if the plan dates are before to some other plan
+     *
+     * @param   Carbon  $startDate
+     * @param   Carbon  $endDate
+     * @param   PlanUser  $planUser
+     *
+     * @return  boolean
+     */
+    public function planDatesBeforeRequestPlan($startDate, $endDate, $planUser)
+    {
+        return $this->where('user_id', $planUser->user_id)
+                    ->where('id', '!=', $planUser->id)
+                    ->where('start_date', '<=', $startDate)
+                    ->where('finish_date', '>=', $startDate)
+                    ->exists();
     }
 }

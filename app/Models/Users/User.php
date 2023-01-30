@@ -240,6 +240,11 @@ class User extends Authenticatable
                     ->where('finish_date', '>=', today());
     }
 
+    public function currentPlan()
+    {
+        return $this->actual_plan()->first();
+    }
+
     /**
      * Return all the plans of this User
      *
@@ -268,7 +273,7 @@ class User extends Authenticatable
 
     /**
      * Return all the plans of the user,
-     *  with plan status: 'activo' and 'precompra'
+     * with plan status: 'activo' and 'precompra'
      *
      * @return App\Models\Plans\PlanUser
      */
@@ -327,9 +332,9 @@ class User extends Authenticatable
 
     /**
      * Get a plan that:
-     *   -  Be active or freezed
-     *   -  Start be before or equals today
-     *   -  End be after or equals today
+     *  -  Be active or freezed
+     *  -  Start be before or equals today
+     *  -  End be after or equals today
      *
      * @return  \Illuminate\Database\Eloquent\Relations\HasOne
      */

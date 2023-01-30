@@ -137,17 +137,17 @@ class TaxDocument
     /**
      * La parte que va a emitir la boleta por el servicio o producto (ejemplo, PuraSangre, KatsuCrossFit)
      * Contiene los siguientes datos del emisor
-     *     apiKey:               haulmer_api_key
-     *     rut:                  rut
-     *     razon_social:         razon_social
-     *     giro_emisor:          giro
-     *     address:              address
-     *     comuna:               comuna
-     *     ciudad:               ciudad
-     *     telefono:             phone
-     *     email:                email
-     *     codigo_sii_sucursal:  codigo_sii_sucursal
-     *     acteco:               codigo_actividades_economicas  código de actividades economicas  // actividades economicas
+     *    apiKey:               haulmer_api_key
+     *    rut:                  rut
+     *    razon_social:         razon_social
+     *    giro_emisor:          giro
+     *    address:              address
+     *    comuna:               comuna
+     *    ciudad:               ciudad
+     *    telefono:             phone
+     *    email:                email
+     *    codigo_sii_sucursal:  codigo_sii_sucursal
+     *    acteco:               codigo_actividades_economicas  código de actividades economicas  // actividades economicas
      *
      * @var  object
      */
@@ -164,7 +164,7 @@ class TaxDocument
      * At start class fill values for Haulmer API
      *
      * note: fillDataForInvoiceAPI must be before than the initialization of Guzzle Client,
-     *       because we need to fill the baseUrl first in order to fill the base_uri of the Guzzle Client
+     *      because we need to fill the baseUrl first in order to fill the base_uri of the Guzzle Client
      *
      */
     public function __construct($token = null)
