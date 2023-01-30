@@ -402,4 +402,56 @@ class PlanUser extends Model
     {
         return $this->finish_date < today();
     }
+
+    /**
+     * Check if there is a planUser that overlaps with the dates
+     * 
+     * @param   Carbon  $startDate
+     * @param   Carbon  $endDate
+     * @param   User  $user
+     * 
+     * @return  boolean
+     */
+    public function hasOverlappedDates($user, $startDate, $endDate)
+    {
+        return $this->where('user_id', $user->id)
+            ->whereIn('plan_status_id', [PlanStatus::PRECOMPRA, PlanStatus::ACTIVE])
+            ->where('start_date', '<=', $endDate)
+            ->where('finish_date', '>=', $startDate)
+            ->exists('id');
+    }
+
+    /**
+     * Check if the plan dates are in between to some other plan
+     *
+     * @param   Carbon  $startDate
+     * @param   Carbon  $endDate
+     * @param   PlanUser  $planUser
+     *
+     * @return  boolean
+     */
+    public function checkPlanDatesInBetween($startDate, $endDate, $planUser)
+    {
+        return $this->where('start_date', '<=', $startDate)
+                    ->where('finish_date', '>=', $endDate)
+                    ->exists();
+    }
+
+    /**
+     * Check if the plan dates are before to some other plan
+     *
+     * @param   Carbon  $startDate
+     * @param   Carbon  $endDate
+     * @param   PlanUser  $planUser
+     *
+     * @return  boolean
+     */
+    public function planDatesBeforeRequestPlan($startDate, $endDate, $planUser)
+    {
+        return $this->where('user_id', $planUser->user_id)
+                    ->where('id', '!=', $planUser->id)
+                    ->where('start_date', '<=', $startDate)
+                    ->where('finish_date', '>=', $startDate)
+                    ->exists();
+    }
 }

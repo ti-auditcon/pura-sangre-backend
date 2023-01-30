@@ -45,8 +45,6 @@ trait PlanFactoryTrait
                 'custom'         => false,
                 'image_path'     => 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png',
                 'contractable'   => true,
-                'vod'            => false,
-                'discontinued'   => false,
             ], $extra_data));
         });
     }
