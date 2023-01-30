@@ -5,9 +5,7 @@ namespace Tests\Feature\Bills;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Bills\Bill;
-use App\Models\Users\Role;
 use App\Models\Users\User;
-use App\Models\Users\RoleUser;
 use App\Models\Clases\ClaseType;
 use App\Models\Bills\PaymentType;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,14 +13,8 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class BillControllerTest extends TestCase
 {
-    use RefreshDatabase, DatabaseMigrations;
-
-    /**
-     * A created admin for tests
-     *
-     * @var  User
-     */
-    protected $admin;
+    use RefreshDatabase;
+    use DatabaseMigrations;
 
     /**
      * Before the tests are executed
@@ -32,8 +24,6 @@ class BillControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-
-        $this->createAnAdminUser();
 
         $birthdate_users = app(User::class)->birthdate_users();
 
@@ -47,38 +37,9 @@ class BillControllerTest extends TestCase
             'active' => true,
         ]);
     }
-
-    /**
-     * Manage all the requirements to create a Admin for tests
-     *
-     * @return  void
-     */
-    public function createAnAdminUser(): void
-    {
-        $user = factory(User::class)->create();
-        $this->createAdminRole();
-        $this->makeUserAnAdmin($user);
-        $this->admin = $user;
-    }
-
-    /**
-     * @return  void
-     */
-    public function createAdminRole(): void
-    {
-        factory(Role::class)->create(['role' => 'admin']);
-    }
-
-    /**
-     * @param   User  $user
-     */
-    protected function makeUserAnAdmin($user)
-    {
-        factory(RoleUser::class)->create(['user_id' => $user->id, 'role_id' => Role::ADMIN]);
-    }
     
     /** @test */
-    public function store_bill_has_validations()
+    public function it_store_bill_has_validations()
     {
         $this->actingAs($this->admin)
                 ->post(route('payments.store'), [])

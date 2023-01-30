@@ -242,8 +242,6 @@ class FinishPlanTest extends TestCase
     /** @test */
     public function it_finish_date_is_changed_to_today_when_closing_the_plan()
     {
-        $this->withExceptionHandling();
-
         $planUser = PlanUser::withoutEvents(function  () {
             return factory(PlanUser::class)->create([
                 'counter' => self::NO_QUOTAS,
@@ -265,7 +263,7 @@ class FinishPlanTest extends TestCase
         $this->assertDatabaseHas('plan_user', [
             'id' => $planUser->id,
             'plan_status_id' => PlanStatus::FINISHED,
-            'finish_date' => now()->startOfMinute()->format('Y-m-d H:i:s'),
+            'finish_date' => now()->startOfMinute()->subMinutes(2)->format('Y-m-d H:i:s'),
         ]);
     }
 

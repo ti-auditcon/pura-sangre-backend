@@ -58,8 +58,8 @@ class CreatePlansTable extends Migration
 
         Schema::create('plan_user', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('start_date');
-            $table->date('finish_date');
+            $table->dateTime('start_date');
+            $table->dateTime('finish_date');
             $table->integer('counter')->nullable();
             $table->text('observations')->nullable();
             $table->json('history')->nullable();

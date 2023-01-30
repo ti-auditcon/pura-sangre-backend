@@ -2,10 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
-use App\Models\Users\User;
 use App\Models\Plans\PlanUser;
 use Illuminate\Console\Command;
+use App\Models\Plans\PlanStatus;
 
 class RefreshPlans extends Command
 {
@@ -14,7 +13,7 @@ class RefreshPlans extends Command
      *
      * @var string
      */
-    protected $signature = 'plans:refresh';
+    protected $signature = 'purasangre:plans:refresh';
 
     /**
      * The console command description.
@@ -40,33 +39,20 @@ class RefreshPlans extends Command
      */
     public function handle()
     {
-        $users = User::all();
-        foreach ($users as $user) {
-            $plans = PlanUser::where('user_id', $user->id)->whereIn('plan_status_id', [1,3])->get();
+        $plans = PlanUser::whereIn('plan_status_id', [PlanStatus::ACTIVE, PlanStatus::PRE_PURCHASE])
+                        ->with('user')
+                        ->get();
+
+        $this->info('Number of plans to update: ' . $plans->count());
+
+        if (boolval($plans->count())) {
             foreach ($plans as $plan) {
-                if ($plan->plan_status_id == 1) {
-                    if (Carbon::parse($plan->finish_date) < today()) {
-                        $plan->plan_status_id = 4;
-                        $plan->save();
-                    }
-                }
-                if ($plan->plan_status_id == 3) {
-                    if (Carbon::parse($plan->start_date) <= today() && Carbon::parse($plan->finish_date) >= today()) {
-                        $plan->plan_status_id = 1;
-                        $plan->save();
-                    }
+                if ($plan->isActive() && $plan->finishesBeforeToday()) {
+                    $plan->finish();
+                } elseif ($plan->isCurrent()) {
+                    $plan->activate();
                 }
             }
-            if ($user->actual_plan) {
-                if ($user->actual_plan->plan->id == 1) {
-                    $user->status_user_id = 3;
-                }else{
-                    $user->status_user_id = 1;
-                }
-            }else{
-                $user->status_user_id = 2;
-            }
-            $user->save();
         }
     }
 }
