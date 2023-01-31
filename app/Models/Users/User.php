@@ -8,6 +8,7 @@ use App\Models\Plans\Plan;
 use App\Models\Users\Role;
 use App\Models\Clases\Block;
 use App\Models\Clases\Clase;
+use App\Models\Users\Session;
 use App\Models\Plans\PlanUser;
 use App\Models\Users\RoleUser;
 use App\Models\Users\Emergency;
@@ -15,11 +16,12 @@ use App\Models\Plans\PlanStatus;
 use App\Models\Users\StatusUser;
 use Freshwork\ChileanBundle\Rut;
 use App\Models\Clases\Reservation;
-use App\Models\Clases\ReservationStatus;
 use Laravel\Passport\HasApiTokens;
 use App\Notifications\MyResetPassword;
+use App\Models\Clases\ReservationStatus;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -269,6 +271,16 @@ class User extends Authenticatable
                         ReservationStatus::PENDING,
                         ReservationStatus::CONFIRMED
                     ]);
+    }
+
+    /**
+     * Get all of the sessions for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(Session::class);
     }
 
     /**

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Models\Clases\Clase;
 use App\Models\Users\User;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Lang;
-use Session;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
+use App\Models\Users\Session as UserSession;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 
 class LoginController extends Controller
@@ -40,10 +40,14 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-
         $this->middleware('guest')->except('logout');
     }
 
+    /**
+     * redirectTo method
+     *
+     * @return string
+     */
     public function redirectTo()
     {
         $authenticatedUser = auth()->user();
