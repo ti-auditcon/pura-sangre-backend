@@ -22,11 +22,9 @@ class PlanStatus extends Model
 	/** ID status Plan */
 	const COMPLETADO = 4;
 	const COMPLETED = 4;
-	const FINISHED = 4;
 
 	/** ID status Plan */
 	const CANCELADO = 5;
-    const CANCELED = 5;
 
     /**
      * Name of the table in the database

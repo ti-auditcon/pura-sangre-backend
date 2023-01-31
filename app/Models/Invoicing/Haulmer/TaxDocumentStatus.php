@@ -28,10 +28,10 @@ class TaxDocumentStatus
      * @url  https://docsapi-openfactura.haulmer.com/#02d546b8-e424-4533-9a5d-4c53b8912798
      * 
      * Can have the next statuses:
-     *  - Aceptado : Documento Emitido correctamente en el SII.
-     *  - Pendiente : Esperando Respuesta del SII.
-     *  - Rechazado : Documento Rechazado por el SII
-     *  - Aceptado con Reparo : Documento válido para el SII, pero con reparos.
+     *   - Aceptado : Documento Emitido correctamente en el SII.
+     *   - Pendiente : Esperando Respuesta del SII.
+     *   - Rechazado : Documento Rechazado por el SII
+     *   - Aceptado con Reparo : Documento válido para el SII, pero con reparos.
      *
      * @return  array
      */

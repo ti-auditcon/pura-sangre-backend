@@ -123,6 +123,7 @@ class FinishPlan extends Command
         return Reservation::where('plan_user_id', $planUser->id)
                             ->join('clases', 'clases.id', '=', 'reservations.clase_id')
                             ->where('clases.date', '>=', today())
+                            // ->whereNull('reservations.deleted_at')
                             ->whereIn(
                                 'reservation_status_id',
                                 [ReservationStatus::PENDING, ReservationStatus::CONFIRMED]

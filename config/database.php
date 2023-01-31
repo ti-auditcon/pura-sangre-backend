@@ -78,12 +78,6 @@ return [
             'prefix' => '',
         ],
 
-        'memory_testing' => [
-            'driver' => 'sqlite',
-            'database' => ':memory:',
-            'prefix' => '',
-        ],
-
     ],
 
     /*

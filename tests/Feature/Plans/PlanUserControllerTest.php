@@ -2,20 +2,30 @@
 
 namespace Tests\Feature\Plans;
 
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Plans\Plan;
+use App\Models\Users\Role;
 use App\Models\Users\User;
 use App\Models\Plans\PlanUser;
+use App\Models\Users\RoleUser;
 use App\Models\Clases\ClaseType;
 use App\Models\Plans\PlanStatus;
 use App\Models\Bills\PaymentType;
+use App\Models\Plans\FlowOrderStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class PlanUserControllerTest extends TestCase
 {
-    use RefreshDatabase;
-    use DatabaseMigrations;
+    use RefreshDatabase, DatabaseMigrations;
+
+    /**
+     * A created admin for tests
+     *
+     * @var  User
+     */
+    protected $admin;
 
     /**
      * Before the tests are executed
@@ -26,6 +36,12 @@ class PlanUserControllerTest extends TestCase
     {
         parent::setUp();
 
+        $this->createAnAdminUser();
+
+        $birthdate_users = app(User::class)->birthdate_users();
+
+        view()->share(compact('birthdate_users'));
+
         ClaseType::create([
             'clase_type' => 'CrossFit',
             'clase_color' => 'CrossFit',
@@ -35,16 +51,59 @@ class PlanUserControllerTest extends TestCase
         ]);
     }
 
+    /**
+     * Manage all the requirements to create a Admin for tests
+     *
+     * @return  void
+     */
+    public function createAnAdminUser(): void
+    {
+        $user = factory(User::class)->create();
+        $this->createAdminRole();
+        $this->makeUserAnAdmin($user);
+        $this->admin = $user;
+    }
+
+    /**
+     * @return  void
+     */
+    public function createAdminRole(): void
+    {
+        factory(Role::class)->create(['role' => 'admin']);
+    }
+
+    /**
+     * @param   User  $user
+     */
+    protected function makeUserAnAdmin($user)
+    {
+        factory(RoleUser::class)->create(['user_id' => $user->id, 'role_id' => Role::ADMIN]);
+    }
+
+    // /** @test */
+    // public function view_assign_user_plan_just_has_the_available_plans()
+    // {
+    //     $this->withoutExceptionHandling();
+    //     $admin = $this->createAdminAndBringIt();
+    //     $user = $this->createAUserAndBringIt();
+    //     factory(Parameter::class)->create();
+
+    //     $data = $this->actingAs($admin)->get("/admin/users/{$user->id}/plans/create")
+    //                                     ->assertOk();
+
+    //     // foreach($data['plans'] as $plan) {
+    //     //     $this->
+    //     // }
+    // }
+
     //  deberia separar en dos tests el hecho que el admin no puede agregar un plan que esta descontinuado?
 
     /** @test */
-    public function it_admin_can_assign_any_plan_to_a_client()
+    public function admin_can_assign_any_plan_to_a_client()
     {
-        $this->withoutExceptionHandling();
-        $studentUser = factory(
-        User::class)->create();
+        $studentUser = factory(User::class)->create();
         factory(Plan::class, 3)->create();
-
+        
         foreach (Plan::all() as $plan) {
             $plan_user = factory(PlanUser::class)->make([
                 'plan_id'      => $plan->id,
@@ -59,10 +118,9 @@ class PlanUserControllerTest extends TestCase
                 'class_numbers' => $plan->class_numbers,
                 'clases_by_day' => $plan->daily_clases
             ]);
-            
-            
+
             $this->actingAs($this->admin)->post("/users/{$studentUser->id}/plans", $data);
-            
+
             $this->assertDatabaseHas('plan_user', [
                 'plan_id'        => $plan_user->plan_id,
                 'user_id'        => $studentUser->id,

@@ -73,8 +73,8 @@ class PlanUserPostponesControllerTest extends TestCase
 
     /** 
      * Validations are:
-     *  -  start and end dates are required
-     *  -  end date must be equals or after start date 
+     *   -  start and end dates are required
+     *   -  end date must be equals or after start date 
      * 
      * @test
      */
@@ -82,7 +82,7 @@ class PlanUserPostponesControllerTest extends TestCase
     {
         $plan_user = factory(PlanUser::class)->create();
 
-        /** -  start and end dates are required  */
+        /**  -  start and end dates are required  */
         $this->actingAs($this->admin)
             ->post("/plan-user/{$plan_user->id}/postpones", [])
             ->assertSessionHasErrors([
@@ -91,7 +91,7 @@ class PlanUserPostponesControllerTest extends TestCase
             ]);
             
 
-        /** -  end date must be equals or after start date   */
+        /**  -  end date must be equals or after start date   */
         $this->actingAs($this->admin)
             ->post("/plan-user/{$plan_user->id}/postpones", [
                 'start_freeze_date' => today(),

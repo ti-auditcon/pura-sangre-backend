@@ -2,24 +2,19 @@
 
 namespace Tests;
 
-use App\Models\Users\Role;
 use App\Models\Users\User;
 use App\Models\Users\RoleUser;
-use Tests\Traits\FactoriesCrud;
 use App\Models\Settings\Setting;
-use Tests\Traits\PlanFactoryTrait;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
-    use PlanFactoryTrait;
-    use FactoriesCrud;
 
     /**
      * Admin User
      */
-    protected $admin;
+    protected $admim;
 
     public function setUp() :void
     {
@@ -36,13 +31,7 @@ abstract class TestCase extends BaseTestCase
             return factory(User::class)->create();
         });
 
-        factory(Role::class)->create(['role' => 'admin']);
-
-        RoleUser::create([
-            'user_id' => $this->admin->id, 
-            'role_id' => Role::ADMIN
-        ]);
-
+        RoleUser::create(['user_id' => $this->admin->id, 'role_id' => 1]);
 
         $setting = new Setting;
         $setting->id = 1;

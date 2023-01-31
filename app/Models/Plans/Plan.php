@@ -20,7 +20,6 @@ class Plan extends Model
      * @var  int
      */
     const PRUEBA = 1;
-    const TRIAL = 1;
 
     /**
      * For massive assignment

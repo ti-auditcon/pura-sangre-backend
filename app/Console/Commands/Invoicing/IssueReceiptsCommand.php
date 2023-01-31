@@ -63,12 +63,12 @@ class IssueReceiptsCommand extends Command
      * We make two complete processes
      * 
      * -  The first is to issue the receipt to SII,
-     *   get the document in pdf, and send a email to the user,
-     *   with the receipt and the information of the contracted plan
+     *    get the document in pdf, and send a email to the user,
+     *    with the receipt and the information of the contracted plan
      * 
      * -  The second one is in order FIRST FAILS,
-     *   this, with the token, request the pdf one more time, save it to API
-     *   and  
+     *    this, with the token, request the pdf one more time, save it to API
+     *    and  
      *
      * @return  mixed
      */

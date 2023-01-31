@@ -98,7 +98,7 @@ class UnfreezePlans extends Command
     }
 
     /**
-     *  Get the difference, in days between the current active plan and the new nearest plan.
+     * Get the difference, in days, between the current active plan and the new closest plan.
      *
      * @param   Carbon      $finishDateUnfreezedPlan
      * @param   Collection  $planes_posteriores     
@@ -107,16 +107,15 @@ class UnfreezePlans extends Command
      */
     public function getDiffInDays($finishDateUnfreezedPlan, $planes_posteriores): int
     {
-        if ($nextPlan = $planes_posteriores->first()) {
-            $startDateNextPlan = $nextPlan->start_date;
-
-            if ($finishDateUnfreezedPlan >= $startDateNextPlan) {
-                return $finishDateUnfreezedPlan->diffInDays($startDateNextPlan) + 1;
+        if ($planes_posteriores->first()) {
+            $startDateNexPlan = $planes_posteriores->first()->start_date;
+            if ($finishDateUnfreezedPlan >= $startDateNexPlan) {
+                return $finishDateUnfreezedPlan->diffInDays($startDateNexPlan) + 1;
             }
 
-            if ($finishDateUnfreezedPlan <= $startDateNextPlan) {
+            if ($finishDateUnfreezedPlan <= $startDateNexPlan) {
                 // return a negative number
-                return ($finishDateUnfreezedPlan->diffInDays($startDateNextPlan) -1) * -1;
+                return ($finishDateUnfreezedPlan->diffInDays($startDateNexPlan ) -1) * -1;
             }
         }
     }

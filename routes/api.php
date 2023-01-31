@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 /** *****************************************************
-*  *******       EXTERNAL ROUTES        ************** 
-* ****************************************************** */
+*   *******        EXTERNAL ROUTES        ************** 
+*  ******************************************************  */
 Route::post('/external/contact-form', 'Web\ContactEmailController@sendEmail');
 
 Route::get('/planes/contractables', 'Web\PlanController@index');

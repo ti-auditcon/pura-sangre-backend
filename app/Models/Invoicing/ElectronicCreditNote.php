@@ -8,22 +8,22 @@ use App\Models\Invoicing\TaxIssuerInterface;
 
 class ElectronicCreditNote implements TaxIssuerInterface
 {
-    /** Código utilizado para los siguientes
-     *   casos:
-     *    a) Nota de Crédito que elimina
-     *    documento de referencia en forma
-     *    completa (Factura de venta, Nota
-     *    de débito, o Factura de compra
-     *    b) Nota de crédito que corrige un
-     *    texto del documento de referencia
-     *    (ver campo Corrección Factura)
-     *    c) Nota de Débito que elimina una
-     *    Nota de Crédito en la referencia en
-     *    forma completa
-     *    d) Notas de crédito o débito que
-     *    corrigen montos de otro
-     *    documento
-     *   CASOS a) b) y c) DEBEN TENER UN ÚNICO DOCUME
+    /**  Código utilizado para los siguientes
+     *    casos:
+     *     a) Nota de Crédito que elimina
+     *     documento de referencia en forma
+     *     completa (Factura de venta, Nota
+     *     de débito, o Factura de compra
+     *     b) Nota de crédito que corrige un
+     *     texto del documento de referencia
+     *     (ver campo Corrección Factura)
+     *     c) Nota de Débito que elimina una
+     *     Nota de Crédito en la referencia en
+     *     forma completa
+     *     d) Notas de crédito o débito que
+     *     corrigen montos de otro
+     *     documento
+     *    CASOS a) b) y c) DEBEN TENER UN ÚNICO DOCUME
      */
 
     /**

@@ -36,7 +36,6 @@ class CreatePlansTable extends Migration
             $table->boolean('contractable')->default(true);
             $table->integer('daily_clases')->default(true);
             $table->integer('plan_status_id')->default(true);
-            $table->string('image_path')->nullable();
             
             $table->timestamps();
         });
@@ -59,8 +58,8 @@ class CreatePlansTable extends Migration
 
         Schema::create('plan_user', function (Blueprint $table) {
             $table->increments('id');
-            $table->dateTime('start_date');
-            $table->dateTime('finish_date');
+            $table->date('start_date');
+            $table->date('finish_date');
             $table->integer('counter')->nullable();
             $table->text('observations')->nullable();
             $table->json('history')->nullable();
