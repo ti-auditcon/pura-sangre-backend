@@ -82,7 +82,7 @@ class ClasesClearTest extends TestCase
         return factory(PlanUser::class)->create([
             'start_date'     => today()->startOfMonth()->format('Y-m-d'),
             'finish_date'    => today()->endOfMonth()->format('Y-m-d'),
-            'plan_status_id' => PlanStatus::ACTIVO,
+            'plan_status_id' => PlanStatus::ACTIVE,
             'user_id'        => $userId
         ]);
     }
@@ -107,7 +107,7 @@ class ClasesClearTest extends TestCase
         Bus::fake();
 
         $planuser = factory(Planuser::class)->create([
-            'plan_status_id' => Planstatus::ACTIVO
+            'plan_status_id' => Planstatus::ACTIVE
         ]);
 
         $settings = Setting::first(['id', 'minutes_to_remove_users']);
@@ -156,7 +156,7 @@ class ClasesClearTest extends TestCase
     {
         Bus::fake();
 
-        $planUser = factory(PlanUser::class)->create(['plan_status_id' => PlanStatus::ACTIVO]);
+        $planUser = factory(PlanUser::class)->create(['plan_status_id' => PlanStatus::ACTIVE]);
 
         $settings = Setting::first(['id', 'minutes_to_remove_users']);
 
@@ -192,7 +192,7 @@ class ClasesClearTest extends TestCase
 
         $settings = Setting::first(['id', 'minutes_to_remove_users']);
 
-        $planUser = factory(PlanUser::class)->create(['plan_status_id' => PlanStatus::ACTIVO]);
+        $planUser = factory(PlanUser::class)->create(['plan_status_id' => PlanStatus::ACTIVE]);
 
         /**
          * Igual necesitamos redondear a un multiplo de 5,

@@ -38,7 +38,7 @@ class PlanUserRequest extends FormRequest
         // Get the finish date of the actual Plan
         $finish_date = Carbon::parse($request->start_date);
 
-        $user_plans = PlanUser::whereIn('plan_status_id', [PlanStatus::ACTIVO, PlanStatus::PRECOMPRA])
+        $user_plans = PlanUser::whereIn('plan_status_id', [PlanStatus::ACTIVE, PlanStatus::PRE_PURCHASE])
                             ->where('user_id', (int) $request->user_id)
                             ->when($this->method() === 'PUT', function ($query) use ($request) {
                                 $plan_user = PlanUser::find((int) $request->plan_user_id, ['id']);

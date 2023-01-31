@@ -50,7 +50,7 @@ class PostponeRepository
         $this->deleteAllPlanReservationsSince($plan_user, $freezeStarts);
 
         $plan_user->update([
-            'plan_status_id' => $freezeStarts->isToday() ? PlanStatus::CONGELADO : $plan_user->plan_status_id,
+            'plan_status_id' => $freezeStarts->isToday() ? PlanStatus::FROZEN : $plan_user->plan_status_id,
         ]);
 
         return true;
@@ -85,7 +85,7 @@ class PostponeRepository
         // update finish_date of the planUser with today date adding resting days to plan to be unfreezed
         $postpone->plan_user->update([
             'finish_date'    => today()->addDays($postpone->days),
-            'plan_status_id' => PlanStatus::ACTIVO
+            'plan_status_id' => PlanStatus::ACTIVE
         ]);
 
         // calculate difference days from new finish date of unfreezed plan to start_date of the next plan
@@ -129,7 +129,7 @@ class PostponeRepository
     //     $restingDays = Carbon::parse($postpone->finish_date)->diffInDays(today());
 
     //    $postpone->plan_user->update([
-    //         'plan_status_id' => PlanStatus::ACTIVO,
+    //         'plan_status_id' => PlanStatus::ACTIVE,
     //         'finish_date'    => Carbon::parse($postpone->plan_user->finish_date)->subDays($restingDays + 1)
     //     ]);
         

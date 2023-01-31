@@ -91,7 +91,7 @@ class FinishPlanTest extends TestCase
             
             factory(PlanUser::class)->create([
                 'counter' => self::NO_QUOTAS,
-                'plan_status_id' => PlanStatus::FREEZED,
+                'plan_status_id' => PlanStatus::FROZEN,
                 'plan_id' => $plan->id,
                 'user_id' => $this->admin->id,
             ]);

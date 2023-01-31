@@ -52,7 +52,7 @@ class UnfreezePlansTest extends TestCase
         $this->withoutExceptionHandling();
 
         $planToUnfreeze = factory(PlanUser::class)->create([
-            'plan_status_id' => PlanStatus::FREEZED,
+            'plan_status_id' => PlanStatus::FROZEN,
             'start_date'     => today()->startOfMonth(),
             'finish_date'    => today()->endOfMonth(),
             'user_id'        => $this->admin->id     
@@ -102,7 +102,7 @@ class UnfreezePlansTest extends TestCase
     {
         $planToUnfreeze = PlanUser::withoutEvents(function () {
             return factory(PlanUser::class)->create([
-                'plan_status_id' => PlanStatus::FREEZED,
+                'plan_status_id' => PlanStatus::FROZEN,
                 'start_date'     => today()->startOfMonth(),
                 'finish_date'    => today()->endOfMonth(),
                 'user_id'        => $this->admin->id     

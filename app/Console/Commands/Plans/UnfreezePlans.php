@@ -60,7 +60,7 @@ class UnfreezePlans extends Command
             $previous = $freezedPlan->plan_user->history;
 
             $freezedPlan->plan_user->update([
-                'plan_status_id' => PlanStatus::ACTIVO,
+                'plan_status_id' => PlanStatus::ACTIVE,
                 'finish_date'    => today()->addDays($freezedPlan->days - 1), // restamos un día que es today()
                 'history'        => $previous ? $previous->add($collection) : [$collection]
             ]);

@@ -8,12 +8,12 @@ class PlanStatus extends Model
 {
 	/** ID status Plan */
 	const ACTIVO = 1;
-
 	const ACTIVE = 1;
 
 	/** ID status Plan */
 	const CONGELADO = 2;
 	const FREEZED = 2;
+	const FROZEN = 2;
 
 	/** ID status Plan */
 	const PRECOMPRA = 3;
@@ -43,11 +43,11 @@ class PlanStatus extends Model
     public function listAllPlanStatus()
     {
         return [
-            self::ACTIVO     =>  'ACTIVO',
-            self::CONGELADO   =>  'CONGELADO',
-            self::PRECOMPRA  =>  'PRECOMPRA',
-            self::COMPLETADO =>  'COMPLETADO',
-            self::CANCELADO  =>  'CANCELADO',
+            self::ACTIVE => 'ACTIVO',
+            self::FROZEN => 'CONGELADO',
+            self::PRE_PURCHASE => 'PRECOMPRA',
+            self::FINISHED => 'COMPLETADO',
+            self::CANCELED => 'CANCELADO',
         ];
     }
 
@@ -58,7 +58,7 @@ class PlanStatus extends Model
      */
     public function reactivablePlans()
     {
-        return [ self::COMPLETADO, self::CANCELADO ];
+        return [ self::FINISHED, self::CANCELED ];
     }
 
     /**
@@ -69,11 +69,11 @@ class PlanStatus extends Model
     public function listPlanStatusColors()
     {
         return [
-            self::ACTIVO     =>  'success',
-            self::CONGELADO   =>  'info',
-            self::PRECOMPRA  =>  'info',
-            self::COMPLETADO =>  'primary',
-            self::CANCELADO  =>  'danger',
+            self::ACTIVE => 'success',
+            self::FROZEN  => 'info',
+            self::PRE_PURCHASE => 'info',
+            self::FINISHED => 'primary',
+            self::CANCELED => 'danger',
         ];
     }
 

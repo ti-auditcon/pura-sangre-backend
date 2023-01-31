@@ -72,11 +72,11 @@ class PlanUserControllerTest extends TestCase
                 //                     now()->copy()->addMonths($plan->plan_period_id)->format('Y-m-d H:i:s') :
                 //                     now()->addDays(7)->format('Y-m-d H:i:s'),
                 'observations'   => $plan_user->observations,
-                'plan_status_id' => PlanStatus::ACTIVO
+                'plan_status_id' => PlanStatus::ACTIVE
             ]);
 
             /** Cancel plan to assign other in the next iteration */
-            $studentUser->actual_plan()->update(['plan_status_id' => PlanStatus::CANCELADO]);
+            $studentUser->actual_plan()->update(['plan_status_id' => PlanStatus::CANCELED]);
         }
     }
 

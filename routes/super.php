@@ -12,9 +12,9 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('users/{user}/calibrate-reservations-plans', function(App\Models\Users\User $user) {
         $user_plans = App\Models\Plans\PlanUser::where('plan_user.user_id', $user->id)
                                 ->whereIn('plan_user.plan_status_id', [
-                                    App\Models\Plans\PlanStatus::ACTIVO,
-                                    App\Models\Plans\PlanStatus::PRECOMPRA,
-                                    App\Models\Plans\PlanStatus::COMPLETADO
+                                    App\Models\Plans\PlanStatus::ACTIVE,
+                                    App\Models\Plans\PlanStatus::PRE_PURCHASE,
+                                    App\Models\Plans\PlanStatus::FINISHED
                                 ])
                                 ->join('plans', 'plan_user.plan_id', 'plans.id')
                                 ->get([

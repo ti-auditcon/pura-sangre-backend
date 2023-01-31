@@ -81,7 +81,7 @@
                 $billStart < $startFreezing &&
                 $billFinish > $finishFreezing) {
                 // if the plan associated to this freezing is currently not freezed, this record should be revoked
-                if ($freeze_plan->plan_status_id !== PlanStatus::FREEZED) {
+                if ($freeze_plan->plan_status_id !== PlanStatus::FROZEN) {
                     $freeze_plan->update(['revoked' => true]);
                 } else {
                     $restingDays = Carbon::parse($freeze_plan->startFreeze)->diffInDays(Carbon::parse($freeze_plan->billFinishDate));
@@ -108,7 +108,7 @@
                                                         ]);
         
         foreach ($freezed_plans as $freezed) {
-            if ($freezed->plan_status_id !== PlanStatus::FREEZED) {
+            if ($freezed->plan_status_id !== PlanStatus::FROZEN) {
                 $freezed->update(['revoked' => true]);
             }
         }

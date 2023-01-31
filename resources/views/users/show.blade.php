@@ -198,7 +198,7 @@
                             @foreach($user->planes_del_usuario() as $plan_user)
                             <tr>
                                 <td>
-                                    @if ($plan_user->plan_status_id === App\Models\Plans\PlanStatus::CONGELADO)
+                                    @if ($plan_user->plan_status_id === App\Models\Plans\PlanStatus::FROZEN)
                                         {{ optional($plan_user->plan)->plan }}
                                     @else
                                         <a href="{{ url("/users/{$user->id}/plans/{$plan_user->id}/edit") }}"
@@ -279,7 +279,7 @@
                                                 </div>
                                             @endif
 
-                                            @if($plan_user->isFreezed() && $plan_user->postpone)
+                                            @if($plan_user->isFrozen() && $plan_user->postpone)
                                                 <form method="POST" class="user-plan-unfreeze"
                                                         action="{{ route('postpones.destroy', ['postpone' => $plan_user->postpone->id]) }}"
                                                 >

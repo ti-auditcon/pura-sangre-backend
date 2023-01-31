@@ -42,7 +42,7 @@ class ToExpiredPlan extends Command
     public function handle()
     {
         $plans_to_expire = PlanUser::whereFinishDate(toDay()->addDays(3))
-                                    ->wherePlanStatusId(PlanStatus::ACTIVO)
+                                    ->wherePlanStatusId(PlanStatus::ACTIVE)
                                     ->get();
 
         foreach ($plans_to_expire as $planuser) {

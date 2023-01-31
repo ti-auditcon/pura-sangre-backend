@@ -30,7 +30,7 @@ class PostponeController extends Controller
      */
     public function postponeAll(Request $request)
     {
-        $plans_to_postpone = PlanUser::where('plan_status_id', PlanStatus::ACTIVO)
+        $plans_to_postpone = PlanUser::where('plan_status_id', PlanStatus::ACTIVE)
                                         ->with('plan:id')
                                         ->get(['id', 'start_date', 'finish_date', 'user_id', 'plan_status_id', 'plan_id']);
 
@@ -58,7 +58,7 @@ class PostponeController extends Controller
         $start = Carbon::parse($request->start_date); 
         $finish = Carbon::parse($request->finish_date);
 
-        if ($plan_user->plan_status_id === PlanStatus::ACTIVO) {
+        if ($plan_user->plan_status_id === PlanStatus::ACTIVE) {
             PostponePlan::create([
                 'plan_user_id' => $plan_user->id,
                 'start_date'   => $start,
@@ -84,7 +84,7 @@ class PostponeController extends Controller
         }
 
         $plan_user->update([
-            'plan_status_id' => PlanStatus::CONGELADO,
+            'plan_status_id' => PlanStatus::FROZEN,
             'finish_date'    => $plan_user->finish_date->addDays($diff_in_days)
         ]);
 

@@ -36,7 +36,7 @@ $factory->define(Plan::class, function (Faker $faker) {
         'convenio'       => false,
         'contractable'   => true,
         'daily_clases'   => 1,
-        'plan_status_id' => PlanStatus::ACTIVO
+        'plan_status_id' => PlanStatus::ACTIVE
     ];
 });
 

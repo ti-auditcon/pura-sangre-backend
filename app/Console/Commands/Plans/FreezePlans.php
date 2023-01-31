@@ -47,7 +47,7 @@ class FreezePlans extends Command
         $plans_to_freeze = PlanUser::whereIn('id', array_values($today_plans))->get();
 
         foreach ($plans_to_freeze as $plan) {
-            $plan->update(['plan_status_id' => PlanStatus::CONGELADO]);
+            $plan->update(['plan_status_id' => PlanStatus::FROZEN]);
         }
     }
 }

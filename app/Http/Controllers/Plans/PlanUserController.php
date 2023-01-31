@@ -66,10 +66,11 @@ class PlanUserController extends Controller
      *
      * @return  bool
      */
-    public function store(PlanUserStoreRequest $request, User $user, Plan $plan)
+    public function store(User $user, PlanUserStoreRequest $request)
     {
         $plan = Plan::find($request->plan_id);
-        $planUser = (new PlanUser)->asignPlanToUser($request, $plan, $user);
+        
+        $planUser = (new PlanUser)->asignPlanToUser($user, $plan, $request);
 
         if ($plan->isNotcustom() && $this->shouldCreateABill($request)) {
             (new Bill)->storeBill($request, $planUser);
@@ -140,7 +141,7 @@ class PlanUserController extends Controller
      */
     public function update(PlanUserRequest $request, User $user, PlanUser $plan)
     {
-        if ($plan->isFreezed()) {
+        if ($plan->isFrozen()) {
             return redirect("users/{$user->id}")->with('warning', 'El plan no puede ser editado estando congelado.');
         }
 
@@ -149,7 +150,7 @@ class PlanUserController extends Controller
             'finish_date'    => Carbon::parse($request->finish_date),
             'observations'   => $request->observations,
             'counter'        => $request->counter,
-            'plan_status_id' => $request->reactivate ? PlanStatus::ACTIVO : $plan->plan_status_id
+            'plan_status_id' => $request->reactivate ? PlanStatus::ACTIVE : $plan->plan_status_id
         ]);
 
         return redirect("users/{$user->id}")->with('success', 'El plan se actualizó correctamente');
@@ -166,7 +167,7 @@ class PlanUserController extends Controller
      */
     public function annul(User $user, planuser $plan)
     {
-        $plan->update(['plan_status_id' => PlanStatus::CANCELADO]);
+        $plan->update(['plan_status_id' => PlanStatus::CANCELED]);
 
         if ($plan->postpone) {
             $plan->postpone->delete();
