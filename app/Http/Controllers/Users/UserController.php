@@ -48,7 +48,7 @@ class UserController extends Controller
 
     /**
      * Through ajax, get all users who meet certain requirements,
-     *  indicated in the table of all users
+     * indicated in the table of all users
      *
      * @return  json
      */

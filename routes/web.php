@@ -174,15 +174,15 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 });
 
 /** *****************************************************
- * *********        EXTERNAL ROUTES        ************
+ * *********       EXTERNAL ROUTES        ************
  * ************************************************** */
 Route::post('new-user/request-instructions', 'Web\NewUserController@requestInstructions');
 Route::get('/new-user/{plan}/create', 'Web\NewUserController@create');
 Route::resource('/new-user', 'Web\NewUserController')->except('index', 'update', 'destroy', 'create', 'show');
 
  /** *****************************************************
-  *   *******        EXTERNAL ROUTES        **************
-  *  ******************************************************  */
+  *  *******       EXTERNAL ROUTES        **************
+  * ****************************************************** */
 Route::post('/flow/return-from-payment', 'Web\NewUserController@finishFlowPayment');
 Route::post('/flow/confirm-payment', 'Web\NewUserController@finishFlowPayment');
 

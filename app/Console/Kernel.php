@@ -45,7 +45,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('clases:close')->hourlyAt(15);
         /** Close all the clases, changing status of the users */
         $schedule->command('clases:close')->everyFiveMinutes();
-        $schedule->command('plans:refresh')->daily();
+        $schedule->command('purasangre:plans:refresh')->daily();
         $schedule->command('clases:create')->weekly();
         $schedule->command('plans:toexpire')->dailyAt('9:10');
 

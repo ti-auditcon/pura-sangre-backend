@@ -9,7 +9,6 @@ use App\Models\Clases\Clase;
 use App\Models\Plans\PlanUser;
 use App\Models\Plans\PlanStatus;
 use App\Models\Settings\Setting;
-use App\Jobs\SendPushNotification;
 use App\Models\Clases\Reservation;
 use Illuminate\Support\Facades\Bus;
 use App\Models\Clases\ReservationStatus;
