@@ -22,24 +22,25 @@ class PlanUserObserver
      */
     public function creating(PlanUser $planUser)
     {
-        $user = User::findOrFail($planUser->user_id);
-        $fecha_inicio = Carbon::parse($planUser->start_date);
-        $fecha_termino = Carbon::parse($planUser->finish_date);
-        $plan_users = PlanUser::whereIn('plan_status_id', [1, 3])->where('user_id', $user->id)->get();
-        foreach ($plan_users as $plan_user) {
-            if (($fecha_inicio->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date))) || ($fecha_termino->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date)))) {
+        // $user = User::findOrFail($planUser->user_id);
+        // $fecha_inicio = Carbon::parse($planUser->start_date);
+        // $fecha_termino = Carbon::parse($planUser->finish_date);
+        // $plan_users = PlanUser::whereIn('plan_status_id', [1, 3])->where('user_id', $user->id)->get();
+        // foreach ($plan_users as $plan_user) {
+        //     if (($fecha_inicio->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date))) || ($fecha_termino->between(Carbon::parse($plan_user->start_date), Carbon::parse($plan_user->finish_date)))) {
 
-                Session::flash('error', 'El usuario tiene un plan que choca con la fecha de inicio y período seleccionados');
-                return false;
-            } elseif (($fecha_inicio->lt(Carbon::parse($plan_user->start_date))) && ($fecha_termino->gt(Carbon::parse($plan_user->finish_date)))) {
+        //         Session::flash('error', 'El usuario tiene un plan que choca con la fecha de inicio y período seleccionados');
+        //         return false;
+        //     } elseif (($fecha_inicio->lt(Carbon::parse($plan_user->start_date))) && ($fecha_termino->gt(Carbon::parse($plan_user->finish_date)))) {
 
-                Session::flash('error', 'El usuario tiene un plan activo que choca con la fecha de inicio y período seleccionados');
-                return false;
-            } elseif (($fecha_inicio->gt(Carbon::parse($plan_user->start_date))) && ($fecha_termino->lt(Carbon::parse($plan_user->finish_date)))) {
-                Session::flash('error', 'El usuario tiene un plan activo que choca con la fecha de inicio y período seleccionados');
-                return false;
-            }
-        }
+        //         Session::flash('error', 'El usuario tiene un plan activo que choca con la fecha de inicio y período seleccionados');
+        //         return false;
+        //     } elseif (($fecha_inicio->gt(Carbon::parse($plan_user->start_date))) && ($fecha_termino->lt(Carbon::parse($plan_user->finish_date)))) {
+        //         Session::flash('error', 'El usuario tiene un plan activo que choca con la fecha de inicio y período seleccionados');
+        //         return false;
+        //     }
+        // }
+
         $planUser->plan_status_id = $this->checkActualPlan($planUser);
     }
 
@@ -66,6 +67,10 @@ class PlanUserObserver
     {
         // Skip "updating" observer if plan is cancelled
         if ($this->planUserIsBeingCancelled($planUser->plan_status_id)) {
+            return;
+        }
+
+        if ($planUser->isFrozen()) {
             return;
         }
 
@@ -110,7 +115,7 @@ class PlanUserObserver
             }
         }
 
-        if ($planUser->plan_status_id != PlanStatus::CANCELADO) {
+        if ($planUser->plan_status_id != PlanStatus::CANCELED) {
             $planUser->plan_status_id = $this->checkActualPlan($planUser);
         }
     }
@@ -124,13 +129,13 @@ class PlanUserObserver
      */
     public function planUserIsBeingCancelled($planStatusId)
     {
-        return $planStatusId === PlanStatus::CANCELADO;
+        return $planStatusId === PlanStatus::CANCELED;
     }
 
     //UPDATE PARA CANCELAR EL PLAN
     public function updated(PlanUser $planUser)
     {
-        if ($planUser->plan_status_id === PlanStatus::CANCELADO) {
+        if ($planUser->plan_status_id === PlanStatus::CANCELED) {
             foreach ($planUser->reservations as $reserv) {
                 if ($reserv->reservation_status_id == ReservationStatus::PENDING ||
                     $reserv->reservation_status_id == ReservationStatus::CONFIRMED) {
@@ -178,19 +183,17 @@ class PlanUserObserver
      */
     public function checkActualPlan(PlanUser $planUser)
     {
-        if ($planUser->start_date > today()) {
-            $planUser->plan_status_id = PlanStatus::PRECOMPRA;
-        } elseif ($planUser->finish_date < today()) {
-            $planUser->plan_status_id = PlanStatus::COMPLETADO;
+        $planStatus = $planUser->getStatusByDates();
+
+        if (
+            $planUser->user->hasNotACurrentPlan() 
+            && $planStatus === PlanStatus::ACTIVE 
+            && $planUser->isNotFrozen() 
+        ) {
+            $planStatus = PlanStatus::ACTIVE;
         }
 
-        if (!$planUser->user->actual_plan &&
-            $planUser->start_date <= today() && $planUser->finish_date >= today() &&
-            !$this->planUserIsFreeze($planUser)) {
-            $planUser->plan_status_id = PlanStatus::ACTIVO;
-        }
-
-        return $planUser->plan_status_id;
+        return $planStatus;
     }
 
     /**
@@ -252,15 +255,18 @@ class PlanUserObserver
     {
         $user = $planUser->user;
 
-        if (today()->between(Carbon::parse($planUser->start_date), Carbon::parse($planUser->finish_date)) &&
-            $planUser->plan_status_id === PlanStatus::ACTIVO) {
-            $user->status_user_id = ($planUser->plan->id === 1) ?
-                                                     StatusUser::TEST :
-                                                     StatusUser::ACTIVE;
+        if ($planUser->isCurrent() && $planUser->plan_status_id === PlanStatus::ACTIVE) {
+
+            $user->status_user_id = $planUser->isTrial()
+                                    ? StatusUser::TEST 
+                                    : StatusUser::ACTIVE;
+
         } elseif ($user->actual_plan && $user->actual_plan->id != $planUser->id) {
-            $user->status_user_id = $user->actual_plan->plan->id === 1 ?
-                                                           StatusUser::TEST :
-                                                           StatusUser::ACTIVE;
+
+            $user->status_user_id = $user->actual_plan->isTrial()
+                                    ? StatusUser::TEST 
+                                    : StatusUser::ACTIVE;
+                                    
         } else {
             $user->status_user_id = StatusUser::INACTIVE;
         }

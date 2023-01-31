@@ -49,7 +49,7 @@ class RefreshPlansTest extends TestCase
         $prePurchasePlan = PlanUser::withoutEvents(function () {
             return factory(PlanUser::class)->create([
                 'start_date' => today()->format('Y-m-d'),
-                'finish_date' => today()->format('Y-m-d'),
+                'finish_date' => today()->endOfDay()->format('Y-m-d H:i:s'),
                 'plan_status_id' => PlanStatus::PRE_PURCHASE
             ]);
         });

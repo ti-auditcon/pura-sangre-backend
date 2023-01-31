@@ -119,4 +119,14 @@ class Plan extends Model
     {
         return !$this->isCustom();
     }
+
+    /**
+     * Check if this is plan is "TRIAL"
+     *
+     * @return  bool
+     */
+    public function isTrial(): bool
+    {
+        return (int) $this->id === self::TRIAL;
+    }
 }

@@ -164,21 +164,28 @@ class PlanUserPostponesControllerTest extends TestCase
     }
 
     /** @test */
-    public function once_plan_is_freezed_it_has_freezed_status()
+    public function it_once_plan_is_freezed_it_has_freezed_status()
     {
-        $plan_user = factory(PlanUser::class)->create([
-            'plan_status_id' => PlanStatus::ACTIVE,
+        $plan_user = PlanUser::withoutEvents(function() {
+            return factory(PlanUser::class)->create([
+                'plan_status_id' => PlanStatus::ACTIVE,
+            ]);  
+        });
+
+        $this->assertDatabaseHas('plan_user', [
+            'id'             => $plan_user->id,
+            'plan_status_id' => PlanStatus::ACTIVE
         ]);
 
         $this->actingAs($this->admin)
             ->post("/plan-user/{$plan_user->id}/postpones", [
                 "start_freeze_date" => today()->format('d-m-Y'),
-                "end_freeze_date"   => today()->format('d-m-Y')
+                "end_freeze_date"   => today()->endOfDay()
             ]);
 
         $this->assertDatabaseHas('plan_user', [
             'id'             => $plan_user->id,
-            'plan_status_id' => PlanStatus::CONGELADO
+            'plan_status_id' => PlanStatus::FROZEN
         ]);
     }
 
@@ -215,7 +222,7 @@ class PlanUserPostponesControllerTest extends TestCase
         $this->withoutExceptionHandling();
         $plan_user = Model::withoutEvents(function () {
             return factory(PlanUser::class)->create([
-                'plan_status_id' => PlanStatus::CONGELADO,
+                'plan_status_id' => PlanStatus::FROZEN,
             ]);
         });
 

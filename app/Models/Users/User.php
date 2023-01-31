@@ -229,6 +229,16 @@ class User extends Authenticatable
                     ->using(PlanUser::class);
     }
 
+    public function hasNotACurrentPlan()
+    {
+        return $this->actual_plan()->doesntExist();
+    }
+
+    public function currentPlan()
+    {
+        return $this->actual_plan()->first();
+    }
+
     /**
      * Get the active current plan of this User
      *
@@ -237,14 +247,9 @@ class User extends Authenticatable
     public function actual_plan()
     {
         return $this->hasOne(PlanUser::class)
-                    ->where('plan_status_id', PlanStatus::ACTIVO)
+                    ->where('plan_status_id', PlanStatus::ACTIVE)
                     ->where('start_date', '<=', today())
                     ->where('finish_date', '>=', today());
-    }
-
-    public function currentPlan()
-    {
-        return $this->actual_plan()->first();
     }
 
     /**
@@ -353,7 +358,7 @@ class User extends Authenticatable
     public function todayPlan()
     {
         return $this->hasOne(PlanUser::class)
-                    ->whereIn('plan_status_id', [PlanStatus::ACTIVO, PlanStatus::CONGELADO])
+                    ->whereIn('plan_status_id', [PlanStatus::ACTIVE, PlanStatus::FROZEN])
                     ->where('start_date', '<=', today())
                     ->where('finish_date', '>=', today());
     }
@@ -546,7 +551,7 @@ class User extends Authenticatable
             'plan_id'        => $plan->id,
             'start_date'     => $start_date,
             'finish_date'    => $start_date->copy()->addDays(7),
-            'plan_status_id' => PlanStatus::ACTIVO,
+            'plan_status_id' => PlanStatus::ACTIVE,
             'counter'        => $plan->class_numbers
         ]);
     }

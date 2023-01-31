@@ -34,10 +34,9 @@ class PlanUserStoreRequest extends FormRequest
         /** Get the finish date of the actual Plan  */
         $endDate = Carbon::parse($request->finish_date);
 
-        $user = User::find((int) $request->user_id);
         $withBilling = (bool) $request->billed;
 
-        $hasOverlappedDates = app(PlanUser::class)->hasOverlappedDates($user, $startDate, $endDate);
+        $hasOverlappedDates = app(PlanUser::class)->hasOverlappedDates($this->user, $startDate, $endDate);
         
         return [
             'start_date' => ['required', function($attribute, $value, $fail) use ($hasOverlappedDates) {
@@ -62,6 +61,7 @@ class PlanUserStoreRequest extends FormRequest
     {
         return [
             'plan_id'         => 'plan',
+            'user_id'         => 'usuario',
             'counter'         => 'número de clases',
             'clases_by_day'   => 'número de clases por día',
             'class_numbers'   => 'número de clases del plan',
