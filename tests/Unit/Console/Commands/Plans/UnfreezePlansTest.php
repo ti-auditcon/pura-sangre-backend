@@ -41,45 +41,71 @@ class UnfreezePlansTest extends TestCase
         Carbon::setTestNow($date);
     }
 
+
+    /** @test */
+    public function it_revokes_the_postpone_register()
+    {
+        $freezedPlan = $this->fakeActivePlanUser([
+            'plan_status_id' => PlanStatus::FROZEN,
+        ]);
+
+        $postponeRegister = factory(PostponePlan::class)->create([
+            'plan_user_id' => $freezedPlan->id,
+            'days'         => 10,
+            'finish_date'  => today()->endOfDay()->subDay()
+        ]);
+
+        $this->assertDatabaseHas('freeze_plans', [
+            'id' => $postponeRegister->id,
+            'revoked' => false
+        ]);
+
+        $this->artisan($this->signature)->assertExitCode(0);
+
+        $this->assertDatabaseHas('freeze_plans', [
+            'id' => $postponeRegister->id,
+            'revoked' => true
+        ]);
+    }
+
     /** 
-     * Si el próximo plan comienza antes de que termine el actual,
-     * las fechas de los siguientes planes se deben mover hacia adelante
+     * [-- current plan (just unfrozen) --]
+     *                                                   [-- next plan (not yet active) --]
+     * 
+     * move forward means to move it close to you.
+     *  Ex. the start of the next plan is after the end of the current plan, so we need to move it forward (closer to the current plan)
      * 
      * @test
      */
-    public function it_move_next_plans_dates_forward_if_the_closest_next_plan_start_before_the_current_active_plan_ends()
+    public function it_move_next_plans_dates_forward_if_the_closest_next_plan_starts_after_the_current_active_plan_ends()
     {
-        $this->withoutExceptionHandling();
-
-        $planToUnfreeze = factory(PlanUser::class)->create([
+        $planToUnfreeze = $this->fakeActivePlanUser([
             'plan_status_id' => PlanStatus::FROZEN,
             'start_date'     => today()->startOfMonth(),
             'finish_date'    => today()->endOfMonth(),
-            'user_id'        => $this->admin->id     
+            'user_id'        => $this->admin->id
         ]);
 
-        $nextClosestPlan = factory(PlanUser::class)->create([
+
+        $nextClosestPlan = $this->fakeActivePlanUser([
             'plan_status_id' => PlanStatus::PRE_PURCHASE,
             'start_date'     => today()->addMonth()->startOfMonth(),
             'finish_date'    => today()->addMonth()->endOfMonth(),
             'user_id'        => $this->admin->id     
         ]);
-
-        // travelTo day 25 of this month
-        $this->travelTo(Carbon::createFromDate(today()->year, today()->month, 25));
-
+        
         $freezeRegister = factory(PostponePlan::class)->create([
             'plan_user_id' => $planToUnfreeze->id,
-            'days'         => 10,
+            'days'         => 5,
             'finish_date'  => today()->subDay()
         ]);
 
-        $this->artisan($this->signature)->expectsOutput(0);
+        $this->artisan($this->signature)->assertExitCode(0);
 
         $this->assertDatabaseHas('plan_user', [
             'id'             => $planToUnfreeze->id,
             'plan_status_id' => PlanStatus::ACTIVE,
-            'finish_date'    => today()->addDays(10 - 1)->format('Y-m-d H:i:s'), // we substract 1 day from the today()
+            'finish_date'    => today()->addDays(5 - 1)->endOfDay()->format('Y-m-d H:i:s'),
         ]);
 
         //  we fetch the plan again to get the new data from database
@@ -88,60 +114,58 @@ class UnfreezePlansTest extends TestCase
         $this->assertDatabaseHas('plan_user', [
             'id'             => $nextClosestPlan->id,
             'plan_status_id' => PlanStatus::PRE_PURCHASE,
-            'start_date'     => $nowActivePlan->finish_date->addDay()->format('Y-m-d H:i:s'),
+            'start_date'     => $nowActivePlan->finish_date->startOfDay()->addDay()->format('Y-m-d H:i:s'),
         ]);
     }
 
     /** 
-     * Si el próximo plan comienza después de que termine el actual,
-     * las fechas de los siguientes planes se deben mover hacia atrás
+     * [-- current plan (just unfrozen) --]
+     *                         [-- next plan (not yet active) --]                          
      * 
+     * move backwards means to move it far from you.
+     * Ex. the start of the next plan is before the end of the current plan, so we need to move it backwards (far from the current plan)
      * @test
      */
-    public function it_move_next_plans_dates_backward_if_the_closest_next_plan_start_after_the_current_active_plan_ends()
+    public function it_move_next_plans_dates_backward_if_the_closest_next_plan_start_before_the_current_active_plan_ends()
     {
-        $planToUnfreeze = PlanUser::withoutEvents(function () {
-            return factory(PlanUser::class)->create([
-                'plan_status_id' => PlanStatus::FROZEN,
-                'start_date'     => today()->startOfMonth(),
-                'finish_date'    => today()->endOfMonth(),
-                'user_id'        => $this->admin->id     
-            ]);
-        });
+        $planToUnfreeze = $this->fakeActivePlanUser([
+            'plan_status_id' => PlanStatus::FROZEN,
+            'start_date'     => today()->startOfMonth(),
+            'finish_date'    => today()->endOfMonth(),
+            'user_id'        => $this->admin->id
+        ]);
 
-        $nextClosestPlan =  PlanUser::withoutEvents(function () {
-            return factory(PlanUser::class)->create([
-                'plan_status_id' => PlanStatus::PRE_PURCHASE,
-                'start_date'     => today()->addMonth()->startOfMonth(),
-                'finish_date'    => today()->addMonth()->endOfMonth(),
-                'user_id'        => $this->admin->id     
-            ]);
-        });
+        $nextClosestPlan = $this->fakeActivePlanUser([
+            'plan_status_id' => PlanStatus::PRE_PURCHASE,
+            'start_date'     => today()->addMonth()->startOfMonth(),
+            'finish_date'    => today()->addMonth()->endOfMonth(),
+            'user_id'        => $this->admin->id     
+        ]);
 
-        // travelTo day 20 of this month
-        $this->travelTo(Carbon::createFromDate(today()->year, today()->month, 20));
+        $this->travelTo(today()->endOfMonth()->subDays(5));
 
-        $restingDays = 5;
-
-        factory(PostponePlan::class)->create([
+        $freezeRegister = factory(PostponePlan::class)->create([
             'plan_user_id' => $planToUnfreeze->id,
-            'days'         => $restingDays,
+            'days'         => 10,
             'finish_date'  => today()->subDay()
         ]);
 
-        $this->artisan($this->signature)->expectsOutput(0);
+
+        $this->artisan($this->signature)->assertExitCode(0);
 
         $this->assertDatabaseHas('plan_user', [
             'id'             => $planToUnfreeze->id,
             'plan_status_id' => PlanStatus::ACTIVE,
-            'finish_date'    => today()->addDays($restingDays - 1)->format('Y-m-d H:i:s'), // we substract 1 day for the today()
+            'finish_date'    => today()->addDays(10 - 1)->endOfDay()->format('Y-m-d H:i:s'),
         ]);
+
+        //  we fetch the plan again to get the new data from database
+        $nowActivePlan = PlanUser::find($planToUnfreeze->id);
 
         $this->assertDatabaseHas('plan_user', [
             'id'             => $nextClosestPlan->id,
             'plan_status_id' => PlanStatus::PRE_PURCHASE,
-            'start_date'     => today()->addDays($restingDays)->format('Y-m-d H:i:s')
-        //     'finish_date'    => $nextClosestPlan->finish_date->addDays( -4 )->format('Y-m-d H:i:s'),
+            'start_date'     => $nowActivePlan->finish_date->startOfDay()->addDay()->format('Y-m-d H:i:s'),
         ]);
     }
 }

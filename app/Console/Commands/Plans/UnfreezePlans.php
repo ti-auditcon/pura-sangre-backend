@@ -41,16 +41,18 @@ class UnfreezePlans extends Command
      */
     public function handle()
     {
-        $freezedPlansFinishedYesterday = PostponePlan::whereFinishDate(today()->subDay())
-                                                        ->where('revoked', false)
-                                                        ->get();
+        $freezedPlansFinishedYesterday = PostponePlan::whereBetween('finish_date', [
+                today()->startOfDay()->subDay(),
+                today()->endOfDay()->subDay()
+            ])->where('revoked', false)
+            ->get();
+
 
         // getting the dispatcher instance (needed to enable again the event observer later on)
         $dispatcher = PlanUser::getEventDispatcher();
         PlanUser::unsetEventDispatcher();
 
         foreach ($freezedPlansFinishedYesterday as  $freezedPlan) {
-
             $this->info('Iterando plan: ' . $freezedPlan->plan_user_id);
 
             $collection = collect($freezedPlan->plan_user->only(
@@ -61,13 +63,14 @@ class UnfreezePlans extends Command
 
             $freezedPlan->plan_user->update([
                 'plan_status_id' => PlanStatus::ACTIVE,
-                'finish_date'    => today()->addDays($freezedPlan->days - 1), // restamos un día que es today()
+                'finish_date'    => today()->endOfDay()->addDays($freezedPlan->days - 1), // restamos un día que es today()
                 'history'        => $previous ? $previous->add($collection) : [$collection]
             ]);
 
             $planes_posteriores = PlanUser::where('user_id', $freezedPlan->plan_user->user_id)
                                             ->where('start_date', '>', $freezedPlan->plan_user->start_date)
                                             ->where('id', '!=', $freezedPlan->plan_user->id)
+                                            ->where('plan_status_id', PlanStatus::PRE_PURCHASE)
                                             ->orderBy('finish_date')
                                             ->get(['id', 'start_date', 'finish_date', 'user_id']);
 
@@ -80,14 +83,14 @@ class UnfreezePlans extends Command
 
             //  Calcula los días de diferencia entre el término del unfreezed plan y el más cercano
             //  el -1 es por el today() que cuenta el día de hoy como uno
-            $diff_in_days = $this->getDiffInDays(today()->addDays($freezedPlan->days - 1), $planes_posteriores);
+            $diffInDays = $this->getDiffInDays(today()->addDays($freezedPlan->days - 1), $planes_posteriores);
 
-            $this->info("The difference in days is: {$diff_in_days}");
+            $this->info("The difference in days is: {$diffInDays}");
 
             foreach ($planes_posteriores as $plan) {
                 $plan->update([
-                    'start_date'  => $plan->start_date->addDays($diff_in_days),
-                    'finish_date' => $plan->finish_date->addDays($diff_in_days)
+                    'start_date'  => $plan->start_date->addDays($diffInDays),
+                    'finish_date' => $plan->finish_date->addDays($diffInDays)
                 ]);
             }
 
@@ -119,5 +122,7 @@ class UnfreezePlans extends Command
                 return ($finishDateUnfreezedPlan->diffInDays($startDateNextPlan) -1) * -1;
             }
         }
+
+        return 0;
     }
 }
