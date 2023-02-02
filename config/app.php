@@ -19,7 +19,7 @@ return [
 
     'timezone' => 'America/Santiago',
 
-    'locale' => 'es_ES',
+    'locale' => 'es',
 
     // setlocale(LC_ALL, 'es_ES');
 
