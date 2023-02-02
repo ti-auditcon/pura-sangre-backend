@@ -6,7 +6,6 @@ use App\Models\Users\User;
 use App\Models\Clases\Block;
 use App\Models\Plans\PlanUser;
 use App\Models\Plans\PlanPeriod;
-use App\Models\Plans\PlanStatus;
 use Illuminate\Database\Eloquent\Model;
 
 /**

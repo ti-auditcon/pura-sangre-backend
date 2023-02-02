@@ -248,8 +248,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(PlanUser::class)
                     ->where('plan_status_id', PlanStatus::ACTIVE)
-                    ->where('start_date', '<=', today())
-                    ->where('finish_date', '>=', today());
+                    ->where('start_date', '<=', now())
+                    ->where('finish_date', '>=', now());
     }
 
     /**

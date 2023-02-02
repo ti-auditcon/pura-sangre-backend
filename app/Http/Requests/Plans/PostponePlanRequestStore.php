@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests\Plans;
 
-use App\Models\Plans\PostponePlan;
 use Illuminate\Foundation\Http\FormRequest;
 
-class PostponePlanRequest extends FormRequest
+class PostponePlanRequestStore extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +13,7 @@ class PostponePlanRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return request()->user()->isAdmin();
     }
 
     /**
@@ -25,8 +24,16 @@ class PostponePlanRequest extends FormRequest
     public function rules()
     {
         return [
-            'start_freeze_date' => 'required',
-            'end_freeze_date' => 'required | after_or_equal:start_freeze_date'
+            'start_freeze_date' => 'required|date:d-m-Y',
+            'end_freeze_date' => 'required|date:d-m-Y|after_or_equal:start_freeze_date',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'start_freeze_date' => 'fecha de inicio',
+            'end_freeze_date' => 'fecha de término',
         ];
     }
 

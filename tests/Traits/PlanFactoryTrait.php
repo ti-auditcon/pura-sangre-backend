@@ -11,7 +11,7 @@ trait PlanFactoryTrait
 {
     public function fakeActivePlanUser($extra_data = [])
     {
-        $planId = $planId ?? factory(Plan::class)->create()->id;
+        $planId = factory(Plan::class)->create()->id;
 
         return PlanUser::withoutEvents(function () use ($planId, $extra_data) {
             return factory(PlanUser::class)->create(array_merge([

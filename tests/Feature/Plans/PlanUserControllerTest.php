@@ -40,12 +40,11 @@ class PlanUserControllerTest extends TestCase
     /** @test */
     public function it_admin_can_assign_any_plan_to_a_client()
     {
-        $this->withoutExceptionHandling();
-        $studentUser = factory(
-        User::class)->create();
+        $studentUser = factory(User::class)->create();
+
         factory(Plan::class, 3)->create();
 
-        foreach (Plan::all() as $plan) {
+        foreach (Plan::all() as $key => $plan) {
             $plan_user = factory(PlanUser::class)->make([
                 'plan_id'      => $plan->id,
                 'start_date'   => now()->format('Y-m-d'),
@@ -60,23 +59,28 @@ class PlanUserControllerTest extends TestCase
                 'clases_by_day' => $plan->daily_clases
             ]);
             
-            
-            $this->actingAs($this->admin)->post("/users/{$studentUser->id}/plans", $data);
+            $response = $this->actingAs($this->admin)->post("/users/{$studentUser->id}/plans", $data);
             
             $this->assertDatabaseHas('plan_user', [
-                'plan_id'        => $plan_user->plan_id,
+                'plan_id'        => $plan->id,
                 'user_id'        => $studentUser->id,
                 'counter'        => $plan_user->counter,
-                'start_date'     => $plan_user->start_date->format('Y-m-d H:i:s'),
-                // 'finish_date'    => $plan->plan_period_id ?
-                //                     now()->copy()->addMonths($plan->plan_period_id)->format('Y-m-d H:i:s') :
-                //                     now()->addDays(7)->format('Y-m-d H:i:s'),
+                'start_date'     => now()->startOfMinute()->format('Y-m-d H:i:s'),
                 'observations'   => $plan_user->observations,
                 'plan_status_id' => PlanStatus::ACTIVE
             ]);
 
             /** Cancel plan to assign other in the next iteration */
             $studentUser->actual_plan()->update(['plan_status_id' => PlanStatus::CANCELED]);
+
+            $this->assertDatabaseHas('plan_user', [
+                'plan_id'        => $plan->id,
+                'user_id'        => $studentUser->id,
+                'counter'        => $plan_user->counter,
+                'start_date'     => now()->startOfMinute()->format('Y-m-d H:i:s'),
+                'observations'   => $plan_user->observations,
+                'plan_status_id' => PlanStatus::CANCELED
+            ]);
         }
     }
 
@@ -84,10 +88,13 @@ class PlanUserControllerTest extends TestCase
     public function when_admin_choose_to_create_a_bill_a_plan_user_flow_is_associated_to_plan_user()
     {
         $studentUser = factory(User::class)->create();
-        factory(Plan::class, 3)->create();
+        factory(Plan::class)->create();
 
         $plan = factory(Plan::class)->create();
-        $plan_user = factory(PlanUser::class)->make(['user_id' => $studentUser->id, 'plan_id' => $plan->id]);
+        $plan_user = factory(PlanUser::class)->make([
+            'user_id' => $studentUser->id, 'plan_id' => $plan->id,
+            'start_date'   => now()->format('Y-m-d'),
+        ]);
 
         $plan_user_array = $plan_user->only(
             'start_date', 'finish_date', 'counter',
@@ -107,8 +114,8 @@ class PlanUserControllerTest extends TestCase
         )->assertRedirect("/users/{$studentUser->id}");
 
         $this->assertDatabaseHas('plan_user_flows', [
-            'start_date'      => $plan_user->start_date->format('Y-m-d H:i:s'),
-            'finish_date'     => $plan_user->finish_date->format('Y-m-d H:i:s'),
+            'start_date'      => now()->startOfMinute()->format('Y-m-d H:i:s'),
+            'finish_date'     => $plan_user->finish_date->endOfDay()->format('Y-m-d H:i:s'),
             // 'date'            => date('Y-m-d'),
             'amount'          => 30000,
             'counter'         => $plan_user->counter,

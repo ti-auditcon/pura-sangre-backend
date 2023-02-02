@@ -50,7 +50,7 @@ class CreateClasesTable extends Migration
 
         Schema::create('clases', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('date');
+            $table->dateTime('date');
             $table->time('start_at')->nullable();
             $table->time('finish_at')->nullable();
             $table->unsignedInteger('block_id')->nullable();

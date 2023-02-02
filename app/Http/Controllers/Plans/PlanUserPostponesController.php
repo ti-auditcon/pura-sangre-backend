@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Plans;
 
-use Carbon\Carbon;
 use App\Models\Plans\PlanUser;
-use App\Models\Plans\PlanStatus;
 use App\Models\Plans\PostponePlan;
 use App\Http\Controllers\Controller;
 use App\Repositories\Plans\PostponeRepository;
-use App\Http\Requests\Plans\PostponePlanRequest;
+use App\Http\Requests\Plans\PostponePlanRequestStore;
 
 class PlanUserPostponesController extends Controller
 {
@@ -32,7 +30,7 @@ class PlanUserPostponesController extends Controller
      *
      * @return  \Illuminate\Http\Response
      */
-    public function store(PostponePlanRequest $request, PlanUser $plan_user)
+    public function store(PostponePlanRequestStore $request, PlanUser $plan_user)
     {
         $this->postponeRepository->store($request, $plan_user);
 

@@ -15,12 +15,11 @@ class PostponePlan extends Model
 	protected $table = 'freeze_plans';
 
 	/**
-     * 
      * plan_user_id   integer
      * start_date     date
      * finish_date    date
-     * days           integer  Should this be the resting days
-     * revoked        bool
+     * days           integer  Remaining days of frozen plan
+     * revoked        bool     If its active or not
      * 
      * @var  array
 	 */
@@ -46,6 +45,16 @@ class PostponePlan extends Model
 	{
 		return $this->belongsTo(PlanUser::class, 'plan_user_id');
 	}
+    
+    /**
+     * Get the PlanUser that owns the PostponePlan
+     *
+     * @return  \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+	public function planUser()
+	{
+		return $this->belongsTo(PlanUser::class, 'plan_user_id');
+	}
 
     /**
      * Finish the freezing of the plan
@@ -55,5 +64,10 @@ class PostponePlan extends Model
     public function revoke()
     {
         $this->update(['revoked' => true]);
+
+        // $this->planUser->update([
+        //     'plan_status_id' => PlanStatus::ACTIVE,
+        //     'finish_date' => today()->endOfDay()->addDays($this->days)
+        // ]);
     }
 }

@@ -80,8 +80,8 @@ class CreatePlansTable extends Migration
 
         Schema::create('plan_user_flows', function (Blueprint $table) {
             $table->increments('id');
-            $table->date('start_date');
-            $table->date('finish_date');
+            $table->dateTime('start_date');
+            $table->dateTime('finish_date');
             $table->integer('counter')->nullable();
             $table->unsignedInteger('plan_status_id')->nullable();
             $table->unsignedInteger('plan_id')->nullable();

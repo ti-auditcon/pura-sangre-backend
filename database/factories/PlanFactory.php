@@ -1,16 +1,12 @@
 <?php
 
 use Carbon\Carbon;
-use App\Models\Bills\Bill;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
 use Faker\Generator as Faker;
 use App\Models\Plans\PlanUser;
-use App\Models\Plans\PlanPeriod;
 use App\Models\Plans\PlanStatus;
-use App\Models\Bills\Installment;
 use App\Models\Plans\PlanUserFlow;
-use App\Models\Bills\PaymentStatus;
 use App\Models\Plans\PostponePlan;
 
 $factory->define(PlanUser::class, function (Faker $faker) {

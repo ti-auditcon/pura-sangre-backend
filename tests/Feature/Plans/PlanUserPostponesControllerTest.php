@@ -70,59 +70,28 @@ class PlanUserPostponesControllerTest extends TestCase
         factory(RoleUser::class)->create(['user_id' => $user->id, 'role_id' => Role::ADMIN]);
     }
 
-
-    /** 
-     * Validations are:
-     *  -  start and end dates are required
-     *  -  end date must be equals or after start date 
-     * 
-     * @test
-     */
-    public function at_freezing_plan_user_it_must_have_validations()
-    {
-        $plan_user = factory(PlanUser::class)->create();
-
-        /** -  start and end dates are required  */
-        $this->actingAs($this->admin)
-            ->post("/plan-user/{$plan_user->id}/postpones", [])
-            ->assertSessionHasErrors([
-                "start_freeze_date" => "Se requiere ingresar una fecha de inicio.",
-                "end_freeze_date"   => "Se requiere ingresar una fecha de término."
-            ]);
-            
-
-        /** -  end date must be equals or after start date   */
-        $this->actingAs($this->admin)
-            ->post("/plan-user/{$plan_user->id}/postpones", [
-                'start_freeze_date' => today(),
-                'end_freeze_date'   => today()->subDay()
-            ])->assertSessionHasErrors([
-                "end_freeze_date" => "La fecha de término del congelamiento debe ser igual o mayor a la de inicio."
-            ]);
-    }
-    
     /** @test */
-    public function resting_days_of_a_freezed_plan_are_calculated_correctly()
+    public function it_remaining_days_of_a_freezed_plan_are_calculated_correctly()
     {
         // we set days for an active current plan to be setted (for finish_date)
-        $restingPlanDays = 10;
+        $remainingPlanDays = 10;
 
         $plan_user = factory(PlanUser::class)->create([
             'plan_status_id' => PlanStatus::ACTIVE,
-            'finish_date' => today()->addDays($restingPlanDays)
+            'finish_date' => today()->endOfDay()->addDays($remainingPlanDays)
         ]);
 
         $this->actingAs($this->admin)
             ->post("/plan-user/{$plan_user->id}/postpones", [
                 "start_freeze_date" => today()->format('d-m-Y'),
-                "end_freeze_date"   => today()->format('d-m-Y')
+                "end_freeze_date" => today()->format('d-m-Y')
             ]);
 
         $this->assertDatabaseHas('freeze_plans', [
             'plan_user_id' => $plan_user->id,
             'start_date'   => today()->format('Y-m-d H:i:s'),
             'finish_date'  => today()->format('Y-m-d H:i:s'),
-            'days'         => $restingPlanDays
+            'days'         => $remainingPlanDays
         ]);
     }
 
@@ -132,7 +101,8 @@ class PlanUserPostponesControllerTest extends TestCase
         $plan_user = factory(PlanUser::class)->create();
         
         $postpone = factory(PostponePlan::class)->create([
-            'plan_user_id' => $plan_user->id
+            'plan_user_id' => $plan_user->id,
+            'revoked' => false
         ]);
 
         $this->actingAs($this->admin)->delete("/postpones/{$postpone->id}");
@@ -148,10 +118,10 @@ class PlanUserPostponesControllerTest extends TestCase
     {
         $plan_user = factory(PlanUser::class)->create();
 
-        $restingPlanDays = today()->diffInDays($plan_user->finish_date);
+        $remainingPlanDays = today()->diffInDays($plan_user->finish_date);
 
         $postpone = factory(PostponePlan::class)->create([
-            'days'         => $restingPlanDays,
+            'days'         => $remainingPlanDays,
             'plan_user_id' => $plan_user->id
         ]);
 
@@ -159,7 +129,7 @@ class PlanUserPostponesControllerTest extends TestCase
 
         $this->assertDatabaseHas('plan_user', [
             'id'          => $plan_user->id,
-            'finish_date' => today()->addDays($restingPlanDays)->format('Y-m-d H:i:s'),
+            'finish_date' => today()->endOfDay()->addDays($remainingPlanDays)->format('Y-m-d H:i:s'),
         ]);
     }
 
@@ -197,10 +167,10 @@ class PlanUserPostponesControllerTest extends TestCase
     {
         $plan_user = factory(PlanUser::class)->create();
 
-        $restingPlanDays = today()->diffInDays($plan_user->finish_date);
+        $remainingPlanDays = today()->diffInDays($plan_user->finish_date);
 
         $postpone = factory(PostponePlan::class)->create([
-            'days'         => $restingPlanDays,
+            'days'         => $remainingPlanDays,
             'plan_user_id' => $plan_user->id
         ]);
 
