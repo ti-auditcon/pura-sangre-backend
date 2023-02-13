@@ -5,6 +5,7 @@ namespace App\Models\Clases;
 use App\Models\Clases\Clase;
 use App\Models\Clases\ReservationStatisticStage;
 use App\Models\Clases\ReservationStatus;
+use App\Models\Plans\PlanStatus;
 use App\Models\Plans\PlanUser;
 use App\Models\Users\User;
 use Illuminate\Database\Eloquent\Model;
@@ -81,5 +82,25 @@ class Reservation extends Model
     public function plan_user()
     {
       return $this->belongsTo(PlanUser::class);
+    }
+
+    public function isPending(): bool
+    {
+      return (int) $this->reservation_status_id === ReservationStatus::PENDING;
+    }
+    
+    public function isConfirmed(): bool
+    {
+      return (int) $this->reservation_status_id === ReservationStatus::CONFIRMED;
+    }
+    
+    public function isConsumed(): bool
+    {
+      return (int) $this->reservation_status_id === ReservationStatus::CONSUMED;
+    }
+
+    public function isLost(): bool
+    {
+      return (int) $this->reservation_status_id === ReservationStatus::LOST;
     }
 }

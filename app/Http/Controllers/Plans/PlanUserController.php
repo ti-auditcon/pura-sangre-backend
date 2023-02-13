@@ -13,6 +13,7 @@ use App\Models\Plans\PlanUserFlow;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Plans\PlanUserRequest;
 use App\Http\Requests\Plans\PlanUserStoreRequest;
+use App\Http\Requests\Plans\PlanUserUpdateRequest;
 
 class PlanUserController extends Controller
 {
@@ -139,15 +140,15 @@ class PlanUserController extends Controller
      *
      * @return  \Illuminate\Http\RedirectResponse
      */
-    public function update(PlanUserRequest $request, User $user, PlanUser $plan)
+    public function update(PlanUserUpdateRequest $request, User $user, PlanUser $plan)
     {
         if ($plan->isFrozen()) {
-            return redirect("users/{$user->id}")->with('warning', 'El plan no puede ser editado estando congelado.');
+            return redirect("users/{$user->id}")->with('warning', 'El plan no puede ser actualizado porque está congelado.');
         }
 
         $plan->update([
-            'start_date'     => Carbon::parse($request->start_date),
-            'finish_date'    => Carbon::parse($request->finish_date),
+            'start_date'     => Carbon::parse($request->start_date)->format('Y-m-d H:i:s'),
+            'finish_date'    => Carbon::parse($request->finish_date)->endOfDay()->format('Y-m-d H:i:s'),
             'observations'   => $request->observations,
             'counter'        => $request->counter,
             'plan_status_id' => $request->reactivate ? PlanStatus::ACTIVE : $plan->plan_status_id

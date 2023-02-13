@@ -17,6 +17,8 @@ class PlanUserPostponesControllerTest extends TestCase
 {
     use RefreshDatabase, DatabaseMigrations;
 
+    public const PLAN_IS_FREEZED_MESSAGE = 'El plan no puede ser actualizado porque está congelado.';
+
     // if the plan is freezed, it can't be updated until is unfreezed
 
     /**
@@ -89,8 +91,8 @@ class PlanUserPostponesControllerTest extends TestCase
 
         $this->assertDatabaseHas('freeze_plans', [
             'plan_user_id' => $plan_user->id,
-            'start_date'   => today()->format('Y-m-d H:i:s'),
-            'finish_date'  => today()->format('Y-m-d H:i:s'),
+            'start_date'   => today()->format('Y-m-d'),
+            'finish_date'  => today()->format('Y-m-d'),
             'days'         => $remainingPlanDays
         ]);
     }
@@ -189,21 +191,22 @@ class PlanUserPostponesControllerTest extends TestCase
      */
     public function plan_user_with_status_freezed_can_not_be_edited()
     {
-        $this->withoutExceptionHandling();
         $plan_user = Model::withoutEvents(function () {
             return factory(PlanUser::class)->create([
                 'plan_status_id' => PlanStatus::FROZEN,
             ]);
         });
 
-
-        $this->actingAs($this->admin)
-                ->patch("users/{$plan_user->user_id}/plans/{$plan_user->id}" , [
-                    'class_numbers' => 1,
-                    'clases_by_day' => 1,
-                ])->assertSessionHas([
-                    'warning' => 'El plan no puede ser editado estando congelado.'
-                ]);
+        $response = $this->actingAs($this->admin)
+            ->patch("users/{$plan_user->user_id}/plans/{$plan_user->id}" , [
+                'class_numbers' => 1,
+                'clases_by_day' => 1,
+                'plan_user_id'  => $plan_user->id,
+            ]);
+                
+        $response->assertSessionHasErrors([
+            'plan_user_id' => self::PLAN_IS_FREEZED_MESSAGE
+        ]);
     }
 
 }

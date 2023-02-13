@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers\Clases;
 
-use Auth;
-use Session;
-use Redirect;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Clases\Reservation;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
 
 class ReservationController extends Controller
 {
@@ -28,6 +25,7 @@ class ReservationController extends Controller
         ]);
 
         Session::flash('success','Agregado correctamente a la clase');
+
         return back();
     }
 

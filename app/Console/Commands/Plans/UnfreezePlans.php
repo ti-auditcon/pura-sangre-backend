@@ -41,12 +41,9 @@ class UnfreezePlans extends Command
      */
     public function handle()
     {
-        $freezedPlansFinishedYesterday = PostponePlan::whereBetween('finish_date', [
-                today()->startOfDay()->subDay(),
-                today()->endOfDay()->subDay()
-            ])->where('revoked', false)
+        $freezedPlansFinishedYesterday = PostponePlan::where('revoked', false)
+            ->where('finish_date', today()->subDay()->format('Y-m-d'))
             ->get();
-
 
         // getting the dispatcher instance (needed to enable again the event observer later on)
         $dispatcher = PlanUser::getEventDispatcher();
@@ -67,7 +64,9 @@ class UnfreezePlans extends Command
                 'history'        => $previous ? $previous->add($collection) : [$collection]
             ]);
 
-            $planes_posteriores = PlanUser::where('user_id', $freezedPlan->plan_user->user_id)
+            $freezedPlan->plan_user->user->updateStatus();
+
+            $subsequentPlans = PlanUser::where('user_id', $freezedPlan->plan_user->user_id)
                                             ->where('start_date', '>', $freezedPlan->plan_user->start_date)
                                             ->where('id', '!=', $freezedPlan->plan_user->id)
                                             ->where('plan_status_id', PlanStatus::PRE_PURCHASE)
@@ -83,11 +82,11 @@ class UnfreezePlans extends Command
 
             //  Calcula los días de diferencia entre el término del unfreezed plan y el más cercano
             //  el -1 es por el today() que cuenta el día de hoy como uno
-            $diffInDays = $this->getDiffInDays(today()->addDays($freezedPlan->days - 1), $planes_posteriores);
+            $diffInDays = $this->getDiffInDays(today()->addDays($freezedPlan->days - 1), $subsequentPlans);
 
             $this->info("The difference in days is: {$diffInDays}");
 
-            foreach ($planes_posteriores as $plan) {
+            foreach ($subsequentPlans as $plan) {
                 $plan->update([
                     'start_date'  => $plan->start_date->addDays($diffInDays),
                     'finish_date' => $plan->finish_date->addDays($diffInDays)
@@ -104,13 +103,13 @@ class UnfreezePlans extends Command
      *  Get the difference, in days between the current active plan and the new nearest plan.
      *
      * @param   Carbon      $finishDateUnfreezedPlan
-     * @param   Collection  $planes_posteriores     
+     * @param   Collection  $subsequentPlans     
      *
      * @return  int
      */
-    public function getDiffInDays($finishDateUnfreezedPlan, $planes_posteriores): int
+    public function getDiffInDays($finishDateUnfreezedPlan, $subsequentPlans): int
     {
-        if ($nextPlan = $planes_posteriores->first()) {
+        if ($nextPlan = $subsequentPlans->first()) {
             $startDateNextPlan = $nextPlan->start_date;
 
             if ($finishDateUnfreezedPlan >= $startDateNextPlan) {

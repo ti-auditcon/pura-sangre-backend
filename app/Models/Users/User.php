@@ -555,4 +555,17 @@ class User extends Authenticatable
             'counter'        => $plan->class_numbers
         ]);
     }
+
+    public function updateStatus()
+    {
+        if ($plan = $this->currentPlan()) {
+            $this->status_user_id = $plan->isATestPlan()
+                                    ? StatusUser::TEST
+                                    : StatusUser::ACTIVE;
+        } else {
+            $this->status_user_id = StatusUser::INACTIVE;
+        }
+
+        $this->save();
+    }    
 }

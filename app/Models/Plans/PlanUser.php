@@ -149,6 +149,16 @@ class PlanUser extends Model
     }
 
     /**
+     * Check if the plan has "canceled" status
+     *
+     * @return  bool
+     */
+    public function isCanceled() :bool
+    {
+        return (int) $this->plan_status_id === PlanStatus::CANCELED;
+    }
+
+    /**
      * Check if the plan is finished
      *
      * @return  bool
@@ -453,15 +463,21 @@ class PlanUser extends Model
      * @param   Carbon  $startDate
      * @param   Carbon  $endDate
      * @param   User  $user
+     * @param   boolean  $updatingPlanId  When we are updating a PlanUser
+     *                                    we need to exclude the current PlanUser
      * 
      * @return  boolean
      */
-    public function hasOverlappedDates($user, $startDate, $endDate)
+    public function hasOverlappedDates($user, $startDate, $endDate, $updatingPlanId = null)
     {
+
         return $this->where('user_id', $user->id)
             ->whereIn('plan_status_id', [PlanStatus::PRE_PURCHASE, PlanStatus::ACTIVE])
             ->where('start_date', '<=', $endDate)
             ->where('finish_date', '>=', $startDate)
+            ->when($updatingPlanId, function ($query) use($updatingPlanId) {
+                $query->where('id', '!=', $updatingPlanId);
+            })
             ->exists('id');
     }
 
@@ -507,5 +523,52 @@ class PlanUser extends Model
     public function isTrial(): bool
     {
         return $this->plan->isTrial();
+    }
+
+    /**
+     * For all the reservations, that are in between the start_date and finish_date of the plan,
+     * we assign them to the PlanUser
+     * 
+     *  @return  this
+     */
+    public function fixReservations()
+    {
+        $reservations = Reservation::join('clases', 'reservations.clase_id', '=', 'clases.id')
+            ->where('reservations.user_id', $this->user_id)
+            ->where('date', '>=', Carbon::parse($this->start_date)->format('Y-m-d H:i:s'))
+            ->where('date', '<=', Carbon::parse($this->finish_date)->format('Y-m-d H:i:s'))
+            ->get('reservations.id');
+            
+        $outOfDateBookings = Reservation::join('clases', 'reservations.clase_id', '=', 'clases.id')
+            ->where('reservations.user_id', $this->user_id)
+            ->whereNotBetween('date', [
+                Carbon::parse($this->start_date)->format('Y-m-d H:i:s'),
+                Carbon::parse($this->finish_date)->format('Y-m-d H:i:s')
+            ])
+            ->get('reservations.id');
+                                    
+        PlanUser::withoutEvents(function () use ($reservations, $outOfDateBookings) {
+            foreach ($reservations as $reserv) {
+                $reservation = Reservation::find($reserv->id, ['id', 'plan_user_id']);
+                
+                if ($reservation->plan_user_id !== $this->id) {
+                    $reservation->update(['plan_user_id' => $this->id]);
+                    $this->counter -= 1;
+                    $this->save();
+                }
+            }
+
+            foreach ($outOfDateBookings as $reserv) {
+                $reservation = Reservation::find($reserv->id, ['id', 'plan_user_id']);
+
+                if ($reservation->plan_user_id === $this->id) {
+                    $reservation->update(['plan_user_id' => null]);
+                    $this->counter += 1;
+                    $this->save();
+                }
+            }
+        });
+
+        return $this;
     }
 }

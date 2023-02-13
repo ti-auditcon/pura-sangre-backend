@@ -2,11 +2,19 @@
 
 namespace App\Models\Plans;
 
+use Carbon\Carbon;
 use App\Models\Plans\PlanUser;
 use Illuminate\Database\Eloquent\Model;
 
 class PostponePlan extends Model
 {
+    public const ACTIVE = 0;
+    public const REVOKED = 1;
+
+    public const FROZEN_PLAN_MESSAGE = 'El plan se ha congelado correctamente.';
+
+    public const UNFROZEN_PLAN_MESSAGE = 'El plan se ha descongelado correctamente.';
+
     /**
      * Name of the table in the database
      *
@@ -55,6 +63,16 @@ class PostponePlan extends Model
 	{
 		return $this->belongsTo(PlanUser::class, 'plan_user_id');
 	}
+
+    public function setStartDateAttribute($value)
+    {
+        $this->attributes['start_date'] = Carbon::parse($value)->format('Y-m-d');
+    }
+
+    public function setFinishDateAttribute($value)
+    {
+        $this->attributes['finish_date'] = Carbon::parse($value)->format('Y-m-d');
+    }
 
     /**
      * Finish the freezing of the plan
