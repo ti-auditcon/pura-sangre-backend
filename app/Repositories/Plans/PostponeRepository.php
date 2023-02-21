@@ -42,8 +42,16 @@ class PostponeRepository
     {
         $freezeStarts = Carbon::parse($request->start_freeze_date);
         $freezeEnds = Carbon::parse($request->end_freeze_date);
+
+        if (
+            PostponePlan::where('plan_user_id', $plan_user->id)
+                ->where('revoked', false)
+                ->exists('id')
+        ) {
+            return 'El plan ya se encuentra congelado.';
+        }
         
-        $remainingDays = $freezeStarts->diffInDays($plan_user->finish_date);
+        $remainingDays = $freezeStarts->diffInDays($plan_user->finish_date) + 1;
         
         PostponePlan::create([
             'plan_user_id' => $plan_user->id,

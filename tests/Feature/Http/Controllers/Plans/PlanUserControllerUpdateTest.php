@@ -5,6 +5,7 @@ namespace Tests\Unit\Http\Controllers\Plans;
 use Tests\TestCase;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
+use App\Models\Plans\PlanUser;
 use App\Models\Plans\PlanStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -62,8 +63,6 @@ class PlanUserControllerUpdateTest extends TestCase
                 'plan_id' => $this->plan->id,
                 'plan_user_id' => $planUser->id,
             ]);
-
-            // dd(request()->session()->all());
 
             $response->assertSessionHas([
                 'success' => 'El plan se actualizó correctamente',
@@ -154,6 +153,46 @@ class PlanUserControllerUpdateTest extends TestCase
         $this->assertDatabaseHas('plan_user', [
             'id' => $planUser->id,
             'plan_status_id' => PlanStatus::ACTIVE
+        ]);
+    }
+
+    /** @test */
+    public function it_cannot_update_an_active_plan_if_the_dates_overlap_with_an_active_frozen_plan()
+    {
+        $frozenPlan = PlanUser::withoutEvents(function () {
+            return factory('App\Models\Plans\PlanUser')->create([
+                'plan_status_id' => PlanStatus::FROZEN,
+                'start_date' => today()->subDays(5),
+                'finish_date' => today(),
+            ]);
+        });
+
+        $activePlan = PlanUser::withoutEvents(function () use($frozenPlan) {
+            return factory('App\Models\Plans\PlanUser')->create([
+                'plan_status_id' => PlanStatus::PRE_PURCHASE,
+                'start_date' => today()->addDays(1),
+                'finish_date' => today()->addDays(6),
+                'user_id' => $frozenPlan->user_id,
+                'observations' => 'active plan'
+            ]);
+        });
+
+        // try to update the active plan with dates that overlap with the frozen plan
+        $response = $this->actingAs($this->admin)
+            ->put(route('users.plans.update', [
+                'user' => $activePlan->user_id,
+                'plan' => $activePlan->id,
+                'plan_user_id' => $activePlan->id,
+                'user_id' => $activePlan->user_id,
+            ]), [
+                'start_date' => today()->subDays(5)->format('Y-m-d'),
+                'finish_date' => today()->format('Y-m-d'),
+            ]);
+
+        $this->assertDatabaseHas('plan_user', [
+            'id' => $activePlan->id,
+            'start_date' => $activePlan->start_date->format('Y-m-d H:i:s'),
+            'finish_date' => $activePlan->finish_date->format('Y-m-d H:i:s'),
         ]);
     }
 }

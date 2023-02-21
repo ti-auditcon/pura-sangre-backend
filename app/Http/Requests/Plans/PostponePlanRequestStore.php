@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Plans;
 
+use App\Models\Plans\PlanUser;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PostponePlanRequestStore extends FormRequest

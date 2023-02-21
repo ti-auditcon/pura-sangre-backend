@@ -32,9 +32,13 @@ class PlanUserPostponesController extends Controller
      */
     public function store(PostponePlanRequestStore $request, PlanUser $plan_user)
     {
-        $this->postponeRepository->store($request, $plan_user);
+        $resopnse = $this->postponeRepository->store($request, $plan_user);
 
-        return back()->with('success', 'Plan Congelado Correctamente');
+        if ($resopnse !== true) {
+            return back()->with('error', $resopnse);
+        }
+        
+        return back()->with('success', PostponePlan::FROZEN_PLAN_MESSAGE);
     }
 
 
