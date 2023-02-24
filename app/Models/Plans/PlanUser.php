@@ -472,7 +472,7 @@ class PlanUser extends Model
     {
 
         return $this->where('user_id', $user->id)
-            ->whereIn('plan_status_id', [PlanStatus::PRE_PURCHASE, PlanStatus::ACTIVE])
+            ->whereIn('plan_status_id', [PlanStatus::PRE_PURCHASE, PlanStatus::ACTIVE, PlanStatus::FROZEN])
             ->where('start_date', '<=', $endDate)
             ->where('finish_date', '>=', $startDate)
             ->when($updatingPlanId, function ($query) use($updatingPlanId) {

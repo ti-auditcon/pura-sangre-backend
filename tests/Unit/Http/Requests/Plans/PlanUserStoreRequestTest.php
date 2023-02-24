@@ -75,14 +75,14 @@ class PlanUserStoreRequestTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $active_plan_user = $this->fakeActivePlanUser([
+        $activePlanUser = $this->fakeActivePlanUser([
             'start_date'     => now()->subDays(1)->format('Y-m-d H:i:s'),
             'finish_date'    => now()->addDays(10)->format('Y-m-d H:i:s'),
             'user_id'     => $user->id,
         ]);
 
         $this->assertDatabaseHas('plan_user', [
-            'id'             => $active_plan_user->id,
+            'id'             => $activePlanUser->id,
             'plan_status_id' => PlanStatus::ACTIVE,
         ]);
 
@@ -117,14 +117,14 @@ class PlanUserStoreRequestTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $active_plan_user = $this->fakeActivePlanUser([
+        $activePlanUser = $this->fakeActivePlanUser([
             'start_date'     => now()->subDays(10)->format('Y-m-d H:i:s'),
             'finish_date'    => now()->addDays(10)->format('Y-m-d H:i:s'),
             'user_id'     => $user->id,
         ]);
 
         $this->assertDatabaseHas('plan_user', [
-            'id'             => $active_plan_user->id,
+            'id'             => $activePlanUser->id,
             'plan_status_id' => PlanStatus::ACTIVE,
         ]);
 
@@ -159,14 +159,14 @@ class PlanUserStoreRequestTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $active_plan_user = $this->fakeActivePlanUser([
+        $activePlanUser = $this->fakeActivePlanUser([
             'start_date'     => now()->format('Y-m-d H:i:s'),
             'finish_date'    => now()->addMinute()->format('Y-m-d H:i:s'),
             'user_id'     => $user->id,
         ]);
 
         $this->assertDatabaseHas('plan_user', [
-            'id'             => $active_plan_user->id,
+            'id'             => $activePlanUser->id,
             'plan_status_id' => PlanStatus::ACTIVE,
         ]);
 
@@ -200,21 +200,21 @@ class PlanUserStoreRequestTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $active_plan_user = $this->fakeActivePlanUser([
+        $activePlanUser = $this->fakeActivePlanUser([
             'start_date'     => now()->subDays(10)->format('Y-m-d H:i:s'),
             'finish_date'    => now()->subMinute()->format('Y-m-d H:i:s'),
             'user_id'     => $user->id,
         ]);
 
         $this->assertDatabaseHas('plan_user', [
-            'id'             => $active_plan_user->id,
+            'id'             => $activePlanUser->id,
             'plan_status_id' => PlanStatus::ACTIVE,
             'start_date'     => now()->subDays(10)->format('Y-m-d H:i:s'),
             'finish_date'    => now()->subMinute()->format('Y-m-d H:i:s'),
         ]);
 
         $this->assertDatabaseHas('plan_user', [
-            'id'             => $active_plan_user->id,
+            'id'             => $activePlanUser->id,
             'plan_status_id' => PlanStatus::ACTIVE,
         ]);
 
@@ -245,21 +245,21 @@ class PlanUserStoreRequestTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $active_plan_user = $this->fakeActivePlanUser([
-            'start_date'     => now()->addDays(10)->format('Y-m-d H:i:s'),
-            'finish_date'    => now()->addDays(20)->format('Y-m-d H:i:s'),
+        $activePlanUser = $this->fakeActivePlanUser([
+            'start_date'     => now()->addDays(10)->format('Y-m-d 00:00:00'),
+            'finish_date'    => now()->addDays(20)->format('Y-m-d 23:59:59'),
             'user_id'     => $user->id,
         ]);
 
         $this->assertDatabaseHas('plan_user', [
-            'id'             => $active_plan_user->id,
+            'id'             => $activePlanUser->id,
             'plan_status_id' => PlanStatus::ACTIVE,
-            'start_date'     => now()->addDays(10)->format('Y-m-d H:i:s'),
-            'finish_date'    => now()->addDays(20)->format('Y-m-d H:i:s'),
+            'start_date'     => $activePlanUser->start_date,
+            'finish_date'    => $activePlanUser->finish_date,
         ]);
 
         $this->assertDatabaseHas('plan_user', [
-            'id'             => $active_plan_user->id,
+            'id'             => $activePlanUser->id,
             'plan_status_id' => PlanStatus::ACTIVE,
         ]);
 
@@ -290,7 +290,7 @@ class PlanUserStoreRequestTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $active_plan_user = $this->fakeActivePlanUser([
+        $activePlanUser = $this->fakeActivePlanUser([
             'start_date'     => now()->subDays(10)->format('Y-m-d H:i:s'),
             'finish_date'    => now()->subMinute()->format('Y-m-d H:i:s'),
             'plan_status_id' => PlanStatus::PRE_PURCHASE,
@@ -298,14 +298,14 @@ class PlanUserStoreRequestTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('plan_user', [
-            'id'             => $active_plan_user->id,
+            'id'             => $activePlanUser->id,
             'plan_status_id' => PlanStatus::PRE_PURCHASE,
             'start_date'     => now()->subDays(10)->format('Y-m-d H:i:s'),
             'finish_date'    => now()->subMinute()->format('Y-m-d H:i:s'),
         ]);
 
         $this->assertDatabaseHas('plan_user', [
-            'id'             => $active_plan_user->id,
+            'id'             => $activePlanUser->id,
             'plan_status_id' => PlanStatus::PRE_PURCHASE,
         ]);
 
@@ -336,7 +336,7 @@ class PlanUserStoreRequestTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $active_plan_user = $this->fakeActivePlanUser([
+        $activePlanUser = $this->fakeActivePlanUser([
             'start_date'     => now()->addDays(10)->format('Y-m-d H:i:s'),
             'finish_date'    => now()->addDays(20)->format('Y-m-d H:i:s'),
             'plan_status_id' => PlanStatus::PRE_PURCHASE,
@@ -344,14 +344,14 @@ class PlanUserStoreRequestTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('plan_user', [
-            'id'             => $active_plan_user->id,
+            'id'             => $activePlanUser->id,
             'plan_status_id' => PlanStatus::PRE_PURCHASE,
             'start_date'     => now()->addDays(10)->format('Y-m-d H:i:s'),
             'finish_date'    => now()->addDays(20)->format('Y-m-d H:i:s'),
         ]);
 
         $this->assertDatabaseHas('plan_user', [
-            'id'             => $active_plan_user->id,
+            'id'             => $activePlanUser->id,
             'plan_status_id' => PlanStatus::PRE_PURCHASE,
         ]);
 

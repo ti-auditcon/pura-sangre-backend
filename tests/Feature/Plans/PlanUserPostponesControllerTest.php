@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Plans;
 
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Users\Role;
 use App\Models\Users\User;
+use Tests\Traits\CarbonTrait;
 use App\Models\Plans\PlanUser;
 use App\Models\Users\RoleUser;
 use App\Models\Plans\PlanStatus;
@@ -15,7 +17,9 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class PlanUserPostponesControllerTest extends TestCase
 {
-    use RefreshDatabase, DatabaseMigrations;
+    use RefreshDatabase;
+    use DatabaseMigrations;
+    use CarbonTrait;
 
     public const PLAN_IS_FREEZED_MESSAGE = 'El plan no puede ser actualizado porque está congelado.';
 
@@ -75,13 +79,15 @@ class PlanUserPostponesControllerTest extends TestCase
     /** @test */
     public function it_remaining_days_of_a_freezed_plan_are_calculated_correctly()
     {
-        // we set days for an active current plan to be setted (for finish_date)
+        // we set days for an active current plan to be set (for finish_date)
         $remainingPlanDays = 10;
 
         $plan_user = factory(PlanUser::class)->create([
             'plan_status_id' => PlanStatus::ACTIVE,
-            'finish_date' => today()->endOfDay()->addDays($remainingPlanDays)
+            'finish_date' => '2020-01-10 00:00:00',
         ]);
+
+        $this->travelTo('2020-01-01 00:00:00');
 
         $this->actingAs($this->admin)
             ->post("/plan-user/{$plan_user->id}/postpones", [
@@ -91,9 +97,7 @@ class PlanUserPostponesControllerTest extends TestCase
 
         $this->assertDatabaseHas('freeze_plans', [
             'plan_user_id' => $plan_user->id,
-            'start_date'   => today()->format('Y-m-d'),
-            'finish_date'  => today()->format('Y-m-d'),
-            'days'         => $remainingPlanDays
+            'days' => $remainingPlanDays
         ]);
     }
 

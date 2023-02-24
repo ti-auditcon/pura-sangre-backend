@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Http\Controllers\Plans;
+namespace Tests\Feature\Http\Controllers\Plans;
 
 use Tests\TestCase;
 use App\Models\Plans\Plan;
@@ -162,31 +162,30 @@ class PlanUserControllerUpdateTest extends TestCase
         $frozenPlan = PlanUser::withoutEvents(function () {
             return factory('App\Models\Plans\PlanUser')->create([
                 'plan_status_id' => PlanStatus::FROZEN,
-                'start_date' => today()->subDays(5),
-                'finish_date' => today(),
+                'start_date' => '2019-01-01 00:00:00',
+                'finish_date' => '2019-01-31 23:59:59',
             ]);
         });
 
         $activePlan = PlanUser::withoutEvents(function () use($frozenPlan) {
             return factory('App\Models\Plans\PlanUser')->create([
                 'plan_status_id' => PlanStatus::PRE_PURCHASE,
-                'start_date' => today()->addDays(1),
-                'finish_date' => today()->addDays(6),
+                'start_date' => '2019-02-01 00:00:00',
+                'finish_date' => '2019-02-28 23:59:59',
                 'user_id' => $frozenPlan->user_id,
                 'observations' => 'active plan'
             ]);
         });
 
-        // try to update the active plan with dates that overlap with the frozen plan
-        $response = $this->actingAs($this->admin)
+        $this->actingAs($this->admin)
             ->put(route('users.plans.update', [
                 'user' => $activePlan->user_id,
                 'plan' => $activePlan->id,
                 'plan_user_id' => $activePlan->id,
                 'user_id' => $activePlan->user_id,
             ]), [
-                'start_date' => today()->subDays(5)->format('Y-m-d'),
-                'finish_date' => today()->format('Y-m-d'),
+                'start_date' => '2019-01-31', // this date overlaps with the frozen plan
+                'finish_date' => '2019-02-28',
             ]);
 
         $this->assertDatabaseHas('plan_user', [

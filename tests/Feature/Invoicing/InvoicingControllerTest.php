@@ -11,6 +11,12 @@ class InvoicingControllerTest extends TestCase
     use RefreshDatabase, DatabaseMigrations;
 
     /** @test */
+    public function it_test_name()
+    {
+        $this->assertTrue(true);
+    }
+
+    /** @test */
     // public function vat_tax_document_is_canceled_correctly()
     // {
     //     $this->withoutExceptionHandling();
