@@ -26,6 +26,49 @@ Route::get('/success-reset-password', function () {
 Route::post('expired-plans', 'HomeController@ExpiredPlan')->name('expiredplans');
 
 Route::middleware(['auth'])->prefix('/')->group(function () {
+    Route::get('update-plan-user-date', function () {
+        $planUsers = \App\Models\Plans\PlanUser::where('finish_date', '>=' , now()->format('Y-m-d'))
+            ->get();
+
+            \App\Models\Plans\PlanUser::withoutEvents(function () use ($planUsers) {
+                foreach ($planUsers as $planUser) {
+                    $planUser->finish_date = Carbon\Carbon::parse($planUser->start_date)->format('Y-m-d') 
+                        . ' 23:59:59';
+
+                    $planUser->save();
+                }
+            });
+    });
+
+    Route::get('update-clase-date', function () {
+        $clases = \App\Models\Clases\Clase::where('date', '>=' , now()->format('Y-m-d'))
+            ->get();
+
+            \App\Models\Clases\Clase::withoutEvents(function () use ($clases) {
+                foreach ($clases as $clase) {
+                    $clase->date = Carbon\Carbon::parse($clase->date)->format('Y-m-d') 
+                        . Carbon\Carbon::parse($clase->start_at)->format(' H:i:s');
+
+                    $clase->save();
+                }
+            });
+    });
+
+    // update finisH_date in plan_user_flows
+    Route::get('update-plan-user-flows', function () {
+        $planUserFlows = \App\Models\Plans\PlanUserFlow::where('finish_date', '>=' , now()->format('Y-m-d'))
+            ->get();
+
+            \App\Models\Plans\PlanUserFlow::withoutEvents(function () use ($planUserFlows) {
+                foreach ($planUserFlows as $planUserFlow) {
+                    $planUserFlow->finish_date = Carbon\Carbon::parse($planUserFlow->start_date)->format('Y-m-d') 
+                        . ' 23:59:59';
+
+                    $planUserFlow->save();
+                }
+            });
+    });
+
     // Calibrate plan_income_summaries
     Route::post('plan-incomes-summaries/calibrate', 'Reports\ReportController@incomesCalibrate')
         ->name('incomes.calibrate');
