@@ -32,7 +32,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 
             \App\Models\Plans\PlanUser::withoutEvents(function () use ($planUsers) {
                 foreach ($planUsers as $planUser) {
-                    $planUser->finish_date = Carbon\Carbon::parse($planUser->start_date)->format('Y-m-d') 
+                    $planUser->finish_date = Carbon\Carbon::parse($planUser->finish_date)->format('Y-m-d') 
                         . ' 23:59:59';
 
                     $planUser->save();
@@ -61,7 +61,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 
             \App\Models\Plans\PlanUserFlow::withoutEvents(function () use ($planUserFlows) {
                 foreach ($planUserFlows as $planUserFlow) {
-                    $planUserFlow->finish_date = Carbon\Carbon::parse($planUserFlow->start_date)->format('Y-m-d') 
+                    $planUserFlow->finish_date = Carbon\Carbon::parse($planUserFlow->finish_date)->format('Y-m-d') 
                         . ' 23:59:59';
 
                     $planUserFlow->save();
