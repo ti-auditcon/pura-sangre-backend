@@ -74,7 +74,7 @@
                             <div
                                 id="porcentaje"
                                 class="easypie col"
-                                data-percent="{{ ($reservation_count * 100) / $clase->quota }}"
+                                data-percent="{{ ($reservation_count * 100) ?? 1 / $clase->quota }}"
                                 data-bar-color="#5c6bc0"
                                 data-size="70"
                                 data-line-width="8"

@@ -68,11 +68,11 @@ class Clase extends Model
      */
     public function getStartAttribute()
     {
-        if ( $this->block->date == null ) {
-            return $this->date->format('Y-m-d') . " " . $this->block->start;
+        if (optional($this->block)->date === null) {
+            return "{$this->date->format('Y-m-d')} {$this->start_at}";
         }
 
-        return $this->block->start;
+        return $this->start_at;
     }
 
     /**
@@ -82,11 +82,7 @@ class Clase extends Model
      */
     public function getEndAttribute()
     {
-        if ($this->block->date == null) {
-            return $this->date->format('Y-m-d') . " " . $this->block->end;
-        }
-
-        return $this->block->end;
+        return $this->date->format('Y-m-d') . ' ' . $this->finish_at;
     }
 
     /**

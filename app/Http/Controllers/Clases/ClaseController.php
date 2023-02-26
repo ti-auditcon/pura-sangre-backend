@@ -45,11 +45,10 @@ class ClaseController extends Controller
      */
     public function clases(Request $request)
     {
-        $clases = DB::table('clases')
-                        ->leftJoin('reservations', 'clases.id', '=', 'reservations.clase_id')
+        $clases = Clase::leftJoin('reservations', 'clases.id', '=', 'reservations.clase_id')
                         ->where('clases.clase_type_id', Session::get('clases-type-id'))
-                        ->where('clases.date', '>=', Carbon::parse($request->datestart)->format('Y-m-d'))
-                        ->where('clases.date', '<=', Carbon::parse($request->dateend)->format('Y-m-d'))
+                        ->where('clases.date', '>=', Carbon::parse($request->datestart)->format('Y-m-d 00:00:00'))
+                        ->where('clases.date', '<=', Carbon::parse($request->dateend)->format('Y-m-d 23:59:59'))
                         ->select(
                             'clases.id as id',
                             'clases.quota', 'clases.room', 
@@ -58,7 +57,9 @@ class ClaseController extends Controller
                             DB::raw("CONCAT_WS(' ', clases.date, clases.start_at) as start"),
                             DB::raw("CONCAT_WS(' ', clases.date, clases.finish_at) as end"),
                             DB::raw("CONCAT('', '". url('/clases') ."', '/', clases.id) as url"),
-                            DB::raw('CONCAT("#DCDCDC") as color')
+                            DB::raw('CONCAT("#DCDCDC") as color'),
+                            'clases.clase_type_id',
+                            'clases.start_at', 'clases.finish_at',
                         )
                         ->groupBy('clases.id')
                         ->get();
