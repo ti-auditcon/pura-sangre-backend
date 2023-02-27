@@ -6,8 +6,6 @@ use Tests\TestCase;
 use App\Models\Clases\Clase;
 use App\Models\Clases\Reservation;
 use App\Models\Clases\ReservationStatus;
-use App\Console\Commands\Clases\CloseClass;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -22,7 +20,7 @@ class CloseClassTest extends TestCase
      *
      * @var  integer
      */
-    const MINUTES_TO_PASS_LIST = CloseClass::MINUTES_TO_PASS_LIST;
+    const MINUTES_TO_PASS_LIST = 15;
 
     /**
      * Because we round to five minutes the list, that means if the current minute is in 15 to 20,
@@ -58,28 +56,22 @@ class CloseClassTest extends TestCase
     //   start and the moment of the passing list
 
     /** @test */
-    public function classes_that_started_fifteen_minutes_ago_are_iterated()
+    public function it_classes_that_started_fifteen_minutes_ago_are_iterated()
     {
-        $current_dateTime = now()->copy();
-
         /**
          * Igual necesitamos redondear a un multiplo de 5,
          * debido a que el rango minimo de diferencia es de 5 minutos
          */
-        $clase_hour = $this->roundMinutesToMultipleOfFive(
-            $current_dateTime->copy()->subMinutes(self::MINUTES_TO_PASS_LIST)
+        $claseDateTime = $this->roundMinutesToMultipleOfFive(
+            now()->subMinutes(self::MINUTES_TO_PASS_LIST)
         );
 
-        // create a class for today
-        $clase = factory(Clase::class)->create([
-            'date' => today()->format('Y-m-d'),
-            'start_at' => $clase_hour,
-        ]);
-
-        $reservation = Reservation::withoutEvents(function () use ($clase) {
+        $reservation = Reservation::withoutEvents(function () use ($claseDateTime) {
             return factory(Reservation::class)->create([
                 'reservation_status_id' => ReservationStatus::CONFIRMED,
-                'clase_id'              => $clase->id
+                'clase_id' => factory(Clase::class)->create([
+                    'date' => $claseDateTime,
+                ])->id
             ]);
         });
 
@@ -99,15 +91,12 @@ class CloseClassTest extends TestCase
     /** @test */
     public function it_reservations_with_classes_that_started_less_than_fifteen_minutes_ago_are_not_iterated()
     {
-        $current_dateTime = now()->copy();
-
-        $clase_hour = $this->roundMinutesToMultipleOfFive(
-            $current_dateTime->copy()->subMinutes(self::MINUTES_TO_PASS_LIST)
+        $claseDateTime = $this->roundMinutesToMultipleOfFive(
+            now()->subMinutes(self::MINUTES_TO_PASS_LIST)
         );
 
         $clase = factory(Clase::class)->create([
-            'date'      => today()->format('Y-m-d'),
-            'start_at'  => $clase_hour->copy()->addMinutes(1)->format('H:i:s'),
+            'date' => $claseDateTime->copy()->addMinutes(1)
         ]);
 
         $reservation = Reservation::withoutEvents(function () use ($clase) {
@@ -122,8 +111,7 @@ class CloseClassTest extends TestCase
             'reservation_status_id' => ReservationStatus::CONFIRMED,
         ]);
 
-        $this->artisan($this->signature)
-                ->assertExitCode(0);
+        $this->artisan($this->signature)->assertExitCode(0);
 
         $this->assertDatabaseHas('reservations', [
             'id' => $reservation->id,

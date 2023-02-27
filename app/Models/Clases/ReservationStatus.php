@@ -47,25 +47,25 @@ class ReservationStatus extends Model implements StatusInterface
     public static function list() :array
     {
         return [
-            self::PENDING   => [
+            self::PENDING => [
                 'status' => 'PENDIENTE',
-                'color'  => 'warning',
+                'color' => 'warning',
                 'class' => 'reserved'
             ],
             self::CONFIRMED => [
                 'status' => 'CONFIRMADA',
-                'color'  => 'success',
+                'color' => 'success',
                 'class' => 'confirmed'
             ],
-            self::CONSUMED  => [
+            self::CONSUMED => [
                 'status' => 'CONSUMIDA',
-                'color'  => 'info',
-                 'class' => 'attended'
+                'color' => 'info',
+                'class' => 'attended'
             ],
-            self::LOST      => [
+            self::LOST => [
                 'status' => 'PERDIDA',
-                'color'  => 'danger',
-                'class'  => 'missed'
+                'color' => 'danger',
+                'class' => 'missed'
             ]
         ];
     }
