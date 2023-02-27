@@ -2,6 +2,7 @@
 
 namespace App\Observers\Clases;
 
+use Carbon\Carbon;
 use App\Models\Clases\Block;
 use App\Models\Clases\Clase;
 
@@ -18,12 +19,14 @@ class BlockObserver
         //Creamos las 12 clases siguientes por cada bloque
         if (is_null($block->date)) {
             $first_date = now()->startOfWeek()->addDays($block->dow[0] - 1);
-            // dd($first_date);
+
             $date = $first_date;
             for ($i = 0; $i < 12; $i++) {
                 Clase::create([
                     'block_id' => $block->id,
-                    'date' => $date,
+                    'date' => $date->format('Y-m-d')
+                        . ' '
+                        . Carbon::parse($block->start)->format('H:i:s'),
                     'start_at' => $block->start,
                     'finish_at' => $block->end,
                     'profesor_id' => $block->profesor_id,
@@ -35,7 +38,9 @@ class BlockObserver
         } else {
             Clase::create([
                 'block_id' => $block->id,
-                'date' => $block->date,
+                'date' => $block->date
+                        . ' '
+                        . Carbon::parse($block->start)->format('H:i:s'),
                 'start_at' => $block->start,
                 'finish_at' => $block->end,
                 'profesor_id' => 1,
