@@ -14,10 +14,13 @@ use Illuminate\Support\Facades\Bus;
 use App\Models\Clases\ReservationStatus;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\Traits\CarbonTrait;
 
 class ClasesClearTest extends TestCase
 {
-    use RefreshDatabase, DatabaseMigrations;
+    use RefreshDatabase;
+    use DatabaseMigrations;
+    use CarbonTrait;
 
     /**
      * The name and signature of the console command.
@@ -104,38 +107,16 @@ class ClasesClearTest extends TestCase
      */
     public function clase_hour_corresponds_to_hour_by_minutes_to_remove_users_from_settings_table()
     {
-        Bus::fake();
+        $minuteToRemoveUsers = 30;
 
-        $planuser = factory(Planuser::class)->create([
-            'plan_status_id' => Planstatus::ACTIVE
+        Setting::first(['id', 'minutes_to_remove_users'])->update([
+            'minutes_to_remove_users' => $minuteToRemoveUsers
         ]);
 
-        $settings = Setting::first(['id', 'minutes_to_remove_users']);
-
-        /**
-         * igual necesitamos redondear a un multiplo de 5,
-         * debido a que el rango minimo de diferencia es de 5 minutos
-         */
-        $clase_hour = $this->roundMinutesToMultipleOfFive(
-            now()->startofminute()->addminutes($settings->minutes_to_remove_users)
-        )->format('H:i');
-
-        // create a class for today
-        $clase = factory(Clase::class)->create([
-            'date'      => today(),
-            'start_at'  => Carbon::parse($clase_hour)->format('H:i:s'),
-            'finish_at' => Carbon::parse($clase_hour)->copy()->startofhour()->addhours(1)->format('h:i:s')
-        ]);
-
-        factory(Reservation::class)->create([
-            'reservation_status_id' => ReservationStatus::PENDING,
-            'plan_user_id'          => $planuser->id,
-            'user_id'               => $planuser->user_id,
-            'clase_id'              => $clase->id
-        ]);
+        $this->travelTo('2020-01-01 00:00:00');
 
         $this->artisan($this->signature)
-                ->expectsOutput("The class hour being iterated is: {$clase_hour}")
+                ->expectsOutput("The dateTime being iterated is: 2020-01-01 00:30:00")
                 ->assertExitCode(0);
     }
 
@@ -144,15 +125,31 @@ class ClasesClearTest extends TestCase
         $clase_hour = Carbon::parse($clase_hour);
 
         return factory(Clase::class)->create([
-            'date'      => today(),
+            'date'      => today()->format('Y-m-d' . ' ' . $clase_hour->format('H:i:s')),
             'start_at'  => $clase_hour->copy()->format('H:i:s'),
             'finish_at' => $clase_hour->copy()->addHour()->format('H:i:s')
         ]);
 
     }
 
+    // it iterate over all clases that are in the range of minutes_to_remove_users
     /** @test */
-    public function pending_reservations_are_deleted()
+    public function it_iterate_over_all_clases_that_are_in_the_range_of_minute_to_remove_users()
+    {
+        $settings = Setting::first(['id', 'minutes_to_remove_users']);
+
+        $this->travelTo(now()->startOfHour());
+
+        $dateTimeToIterate = now()->addMinutes($settings->minutes_to_remove_users)->format('Y-m-d H:i:s');
+
+        $this->artisan($this->signature)
+                ->expectsOutput("The dateTime being iterated is: $dateTimeToIterate")
+                ->assertExitCode(0);
+    }
+
+
+    /** @test */
+    public function it_pending_reservations_are_deleted()
     {
         Bus::fake();
 
@@ -179,17 +176,14 @@ class ClasesClearTest extends TestCase
         ]);
 
         $this->artisan($this->signature)
-                ->expectsOutput("The class hour being iterated is: {$clase_hour}")
                 ->assertExitCode(0);
 
         $this->assertDatabaseMissing('reservations', ['id' => $pending_reservation->id]);
     }
 
     /** @test */
-    public function confirmed_resevations_arent_deleted()
+    public function it_confirmed_resevations_arent_deleted()
     {
-        Bus::fake();
-
         $settings = Setting::first(['id', 'minutes_to_remove_users']);
 
         $planUser = factory(PlanUser::class)->create(['plan_status_id' => PlanStatus::ACTIVE]);
@@ -217,14 +211,12 @@ class ClasesClearTest extends TestCase
         ]);
 
         $this->artisan($this->signature)
-                ->expectsOutput("The class hour being iterated is: {$clase_hour}")
                 ->assertExitCode(0);
 
         $this->assertDatabaseHas('reservations', [
             'id'         => $confirmed_reservation->id,
         ]);
     }
-
 
     /** @test */
     public function it_return_quota_to_plan_user_when_is_removed()
