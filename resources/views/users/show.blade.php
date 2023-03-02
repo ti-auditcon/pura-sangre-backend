@@ -81,10 +81,10 @@
     {{-- ///////////////////////////////////////////////////////////////// --}}
     <div class="col-12 col-xl-3">
         <div class="ibox">
-            <div class="ibox-head d-flex">
-                <div class="ibox-title">Datos</div>
+            <div class="ibox-head d-flex flex-wrap">
+                <div class="ibox-title pt-md-0 pt-xl-2 ml-xl-2">Datos</div>
 
-                <div class="ibox-tools">
+                <div class="ibox-tools pb-xl-2 pt-xl-1">
                     @if (in_array(1, auth()->user()->rolesId()))
                         <a href="{{ route('role-user.edit', ['role_user' => $user->id]) }}"
                            class="btn btn-warning"
@@ -93,28 +93,27 @@
                         </a>
                     @endif
 
-                    <a
-                        class="btn btn-success text-white mr-1" style="display: inline-block;"
-                        href="{{ route('users.edit', $user->id) }}"
-                    >
-                        Editar
-                    </a>
-
-                    @if (in_array(1, $auth_roles))
-
-                        <button
-                            class="btn btn-info btn-danger sweet-user-delete"
-                            style="display: inline-block;"
-                            data-id="{{ $user->id }}"
-                            data-name="{{ $user->first_name }} {{ $user->last_name }}"
-                        >
-                            <i class="la la-trash"></i>
-                        </button>
-
-                        {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'delete', 'class' => 'user-delete']) !!}
-                        {!! Form::close() !!}
-
-                    @endif
+                      <a
+                          class="btn btn-success text-white"
+                          href="{{ route('users.edit', $user->id) }}"
+                      >
+                          Editar
+                      </a>
+  
+                      @if (in_array(1, $auth_roles))
+  
+                          <button
+                              class="btn btn-danger ml-2 sweet-user-delete"
+                              data-id="{{ $user->id }}"
+                              data-name="{{ $user->first_name }} {{ $user->last_name }}"
+                          >
+                              <i class="la la-trash"></i>
+                          </button>
+  
+                          {!! Form::open(['route' => ['users.destroy', $user->id], 'method' => 'delete', 'class' => 'user-delete']) !!}
+                          {!! Form::close() !!}
+  
+                      @endif
                 </div>
             </div>
 
