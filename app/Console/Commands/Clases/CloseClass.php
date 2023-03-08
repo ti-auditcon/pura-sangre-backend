@@ -61,7 +61,7 @@ class CloseClass extends Command
             ->select([
                 'reservations.id', 'reservations.reservation_status_id',
                 'clases.id', 'clases.date'
-                ])->get();
+            ])->get();
 
         foreach ($reservations as $reservation) {
             switch ($reservation->reservation_status_id) {

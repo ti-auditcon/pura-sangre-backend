@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use App\Models\Clases\Reservation;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use App\Models\Clases\ReservationStatus;
 
@@ -49,5 +50,19 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 
             $plan_user->update(['counter' => $plan_user->class_numbers - count($reservations)]);
         }
+    });
+
+    Route::get('update-past-reservations', function() {
+        DB::table('reservations')
+            ->where('reservations.reservation_status_id', ReservationStatus::CONFIRMED)
+            ->join('clases', 'reservations.clase_id', '=', 'clases.id')
+            ->where('clases.date', '<', now()->format('Y-m-d H:i:s'))
+            ->update(['reservations.reservation_status_id' => ReservationStatus::CONSUMED]);
+
+        DB::table('reservations')
+            ->where('reservations.reservation_status_id', ReservationStatus::PENDING)
+            ->join('clases', 'reservations.clase_id', '=', 'clases.id')
+            ->where('clases.date', '<', now()->format('Y-m-d H:i:s'))
+            ->update(['reservations.reservation_status_id' => ReservationStatus::LOST]);
     });
 });
