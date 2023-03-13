@@ -43,25 +43,25 @@ class ClasesSendPushes extends Command
     {
         $settings = Setting::first(['id', 'minutes_to_send_notifications', 'minutes_to_remove_users']);
 
-        $current_dateTime = now()->copy();
-
-        $clase_hour = $this->roundToMultipleOfFive(
-            $current_dateTime->copy()->addMinutes($settings->minutes_to_send_notifications)
+        $claseDateTime = $this->roundToMultipleOfFive(
+            now()->copy()->addMinutes($settings->minutes_to_send_notifications)
         );
+
+        $this->info('Clase date and time: ' . $claseDateTime->copy()->format('Y-m-d H:i:s'));
 
         $reservations = Reservation::join('users', 'users.id', '=', 'reservations.user_id')
                                     ->join('clases', 'clases.id', '=', 'reservations.clase_id')
                                     ->join('clase_types', 'clase_types.id', '=', 'clases.clase_type_id')
                                     ->where('reservation_status_id', ReservationStatus::PENDING)
-                                    ->where('clases.start_at', Carbon::parse($clase_hour)->copy()->format('H:i:s'))
-                                    /** Keep the timezone day all the time */
-                                    ->where('clases.date', $current_dateTime->copy()->format('Y-m-d'))
+                                    ->where('clases.date', $claseDateTime->copy()->format('Y-m-d H:i:s'))
                                     ->get([
                                         'reservations.id', 'reservation_status_id',
                                         'users.first_name', 'users.fcm_token',
                                         'clase_types.clase_type',
                                         'clases.start_at', 'clases.date'
                                     ]);
+
+        $this->info('Reservations: ' . $reservations->count());
 
         foreach ($reservations as $reservation) {
             $title = $reservation->first_name . ' recuerda confirmar ahora';
@@ -71,7 +71,7 @@ class ClasesSendPushes extends Command
                     'hrs. No te olvides confirmar o tu reserva será eliminada en ' .
                     $this->minutesOfDifferenceBetweenPushesAndRemove($settings) . ' minutos.';
 
-            $this->notification($reservation->fcm_token, $title, $body);
+            $this->notify($reservation->fcm_token, $title, $body);
         }
     }
 
@@ -147,7 +147,16 @@ class ClasesSendPushes extends Command
         return $time->setTime($time->format('H'), $minutes - ($minutes % 15));
     }
 
-    public function notification($token, $title, $body)
+    /**
+     * Send a PUSH notification to the user, through FCM (Firebase Cloud Messaging)
+     * 
+     * @param   string  $token
+     * @param   string  $title
+     * @param   string  $body
+     *
+     * @return  void
+     */
+    public function notify($token, $title, $body)
     {
         $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
         $token = $token;
