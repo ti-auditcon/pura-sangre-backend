@@ -41,10 +41,9 @@ class Kernel extends ConsoleKernel
         $schedule->command('purasangre:clases:send-notifications')->everyFifteenMinutes();
         /** Remove users who don't confirm assistance to clases  */
         $schedule->command('purasangre:clases:clear')->everyFifteenMinutes();
+        /** Close all the clases, changing the status of the users */
+        $schedule->command('purasangre:clases:close')->everyFiveMinutes();
 
-        // $schedule->command('clases:close')->hourlyAt(15);
-        /** Close all the clases, changing status of the users */
-        $schedule->command('clases:close')->everyFiveMinutes();
         $schedule->command('purasangre:plans:refresh')->daily();
         $schedule->command('clases:create')->weekly();
         $schedule->command('plans:toexpire')->dailyAt('9:10');

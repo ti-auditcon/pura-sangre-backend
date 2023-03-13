@@ -35,7 +35,7 @@ class CloseClassTest extends TestCase
      *
      * @var string
      */
-    protected $signature = 'clases:close';
+    protected $signature = 'purasangre:clases:close';
 
     /**
      * Get the rounded minute from an specific time,
@@ -80,7 +80,7 @@ class CloseClassTest extends TestCase
             'reservation_status_id' => ReservationStatus::CONFIRMED
         ]);
 
-        $this->artisan('clases:close');
+        $this->artisan($this->signature)->assertExitCode(0);
 
         $this->assertDatabaseHas('reservations', [
             'id'                    => $reservation->id,
@@ -116,6 +116,64 @@ class CloseClassTest extends TestCase
         $this->assertDatabaseHas('reservations', [
             'id' => $reservation->id,
             'reservation_status_id' => ReservationStatus::CONFIRMED,
+        ]);
+    }
+
+    /** @test */
+    public function it_reservations_with_pending_status_change_to_lost()
+    {
+        $claseDateTime = $this->roundMinutesToMultipleOfFive(
+            now()->subMinutes(self::MINUTES_TO_PASS_LIST)
+        );
+
+        $reservation = Reservation::withoutEvents(function () use ($claseDateTime) {
+            return factory(Reservation::class)->create([
+                'reservation_status_id' => ReservationStatus::PENDING,
+                'clase_id' => factory(Clase::class)->create([
+                    'date' => $claseDateTime,
+                ])->id
+            ]);
+        });
+
+        $this->assertDatabaseHas('reservations', [
+            'id' => $reservation->id,
+            'reservation_status_id' => ReservationStatus::PENDING,
+        ]);
+
+        $this->artisan($this->signature)->assertExitCode(0);
+
+        $this->assertDatabaseHas('reservations', [
+            'id' => $reservation->id,
+            'reservation_status_id' => ReservationStatus::LOST,
+        ]);
+    }
+
+    /** @test */
+    public function it_reservations_with_confirmed_status_change_to_consumed()
+    {
+        $claseDateTime = $this->roundMinutesToMultipleOfFive(
+            now()->subMinutes(self::MINUTES_TO_PASS_LIST)
+        );
+
+        $reservation = Reservation::withoutEvents(function () use ($claseDateTime) {
+            return factory(Reservation::class)->create([
+                'reservation_status_id' => ReservationStatus::CONFIRMED,
+                'clase_id' => factory(Clase::class)->create([
+                    'date' => $claseDateTime,
+                ])->id
+            ]);
+        });
+
+        $this->assertDatabaseHas('reservations', [
+            'id' => $reservation->id,
+            'reservation_status_id' => ReservationStatus::CONFIRMED,
+        ]);
+
+        $this->artisan($this->signature)->assertExitCode(0);
+
+        $this->assertDatabaseHas('reservations', [
+            'id' => $reservation->id,
+            'reservation_status_id' => ReservationStatus::CONSUMED,
         ]);
     }
 }

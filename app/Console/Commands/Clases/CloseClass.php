@@ -13,7 +13,7 @@ class CloseClass extends Command
      *
      * @var string
      */
-    protected $signature = 'clases:close';
+    protected $signature = 'purasangre:clases:close';
 
     /**
      * The minutes of difference between the start of the class, and the moment that the list has to be pass
