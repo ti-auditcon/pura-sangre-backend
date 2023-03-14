@@ -52,17 +52,17 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
         }
     });
 
-    Route::get('update-past-reservations', function() {
-        DB::table('reservations')
-            ->where('reservations.reservation_status_id', ReservationStatus::CONFIRMED)
-            ->join('clases', 'reservations.clase_id', '=', 'clases.id')
-            ->where('clases.date', '<', now()->format('Y-m-d H:i:s'))
-            ->update(['reservations.reservation_status_id' => ReservationStatus::CONSUMED]);
+    // Route::get('update-past-reservations', function() {
+    //     DB::table('reservations')
+    //         ->where('reservations.reservation_status_id', ReservationStatus::CONFIRMED)
+    //         ->join('clases', 'reservations.clase_id', '=', 'clases.id')
+    //         ->where('clases.date', '<', now()->format('Y-m-d H:i:s'))
+    //         ->update(['reservations.reservation_status_id' => ReservationStatus::CONSUMED]);
 
-        DB::table('reservations')
-            ->where('reservations.reservation_status_id', ReservationStatus::PENDING)
-            ->join('clases', 'reservations.clase_id', '=', 'clases.id')
-            ->where('clases.date', '<', now()->format('Y-m-d H:i:s'))
-            ->update(['reservations.reservation_status_id' => ReservationStatus::LOST]);
-    });
+    //     DB::table('reservations')
+    //         ->where('reservations.reservation_status_id', ReservationStatus::PENDING)
+    //         ->join('clases', 'reservations.clase_id', '=', 'clases.id')
+    //         ->where('clases.date', '<', now()->format('Y-m-d H:i:s'))
+    //         ->update(['reservations.reservation_status_id' => ReservationStatus::LOST]);
+    // });
 });
