@@ -37,6 +37,8 @@ class CloseClass extends Command
     public function __construct()
     {
         parent::__construct();
+
+        // $this->output = new \Symfony\Component\Console\Output\ConsoleOutput();
     }
 
     /**
@@ -60,18 +62,20 @@ class CloseClass extends Command
             ->where('clases.date', $claseDateTime->format('Y-m-d H:i:s'))
             ->select([
                 'reservations.id', 'reservations.reservation_status_id',
-                'clases.id', 'clases.date'
+                'clases.id as claseId', 'clases.date'
             ])->get();
+
+        $this->info('Reservations: ' . $reservations->count());
 
         foreach ($reservations as $reservation) {
             switch ($reservation->reservation_status_id) {
-                case ReservationStatus::PENDING:
-                    $reservation->reservation_status_id = ReservationStatus::LOST;
+                case 1:
+                    $reservation->reservation_status_id = 4;
                     $reservation->save();
                     break;
 
-                case ReservationStatus::CONFIRMED:
-                    $reservation->reservation_status_id = ReservationStatus::CONSUMED;
+                case 2:
+                    $reservation->reservation_status_id = 3;
                     $reservation->save();
                     break;                
             }

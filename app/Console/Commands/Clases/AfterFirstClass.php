@@ -79,7 +79,7 @@ class AfterFirstClass extends Command
             if ($count_reservs == 1) {
                 $email = collect([
                     'subject' => $this->subject,
-                    'first_name' => $this->first_name,
+                    'first_name' => $user->first_name,
                 ]);
 
                 Mail::to($user->email)->send(new SendFirstClassEmail($email));

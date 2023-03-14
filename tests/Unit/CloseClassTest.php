@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\Clases\Clase;
 use App\Models\Clases\Reservation;
 use App\Models\Clases\ReservationStatus;
+use App\Console\Commands\Clases\CloseClass;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -76,14 +77,14 @@ class CloseClassTest extends TestCase
         });
 
         $this->assertDatabaseHas('reservations', [
-            'id'                    => $reservation->id,
+            'id' => $reservation->id,
             'reservation_status_id' => ReservationStatus::CONFIRMED
         ]);
 
         $this->artisan($this->signature)->assertExitCode(0);
 
         $this->assertDatabaseHas('reservations', [
-            'id'                    => $reservation->id,
+            'id' => $reservation->id,
             'reservation_status_id' => ReservationStatus::CONSUMED
         ]);
     }
@@ -126,18 +127,26 @@ class CloseClassTest extends TestCase
             now()->subMinutes(self::MINUTES_TO_PASS_LIST)
         );
 
-        $reservation = Reservation::withoutEvents(function () use ($claseDateTime) {
+        $clase = factory(Clase::class)->create([
+            'date' => $claseDateTime->copy()
+        ]);
+
+        $this->assertDatabaseHas('clases', [
+            'id' => $clase->id,
+            'date' => $claseDateTime->copy()->format('Y-m-d H:i:s'),
+        ]);
+
+        $reservation = Reservation::withoutEvents(function () use ($clase) {
             return factory(Reservation::class)->create([
                 'reservation_status_id' => ReservationStatus::PENDING,
-                'clase_id' => factory(Clase::class)->create([
-                    'date' => $claseDateTime,
-                ])->id
+                'clase_id' => $clase->id
             ]);
         });
 
         $this->assertDatabaseHas('reservations', [
             'id' => $reservation->id,
             'reservation_status_id' => ReservationStatus::PENDING,
+            'clase_id' => $clase->id,
         ]);
 
         $this->artisan($this->signature)->assertExitCode(0);
@@ -175,5 +184,42 @@ class CloseClassTest extends TestCase
             'id' => $reservation->id,
             'reservation_status_id' => ReservationStatus::CONSUMED,
         ]);
+    }
+
+    public function testReservationUpdatesAfterJoin()
+    {        
+        $claseDateTime = $this->roundMinutesToMultipleOfFive(
+            now()->subMinutes(self::MINUTES_TO_PASS_LIST)
+        );
+
+        // Create a test class and a reservation for that class
+        $clase = factory(Clase::class)->create([
+            'date' => $claseDateTime
+        ]);
+
+        $this->assertDatabaseHas('clases', [
+            'id' => $clase->id,
+            'date' => $clase->date,
+        ]);
+        
+        $reservation = Reservation::withoutEvents(function () use ($clase) {
+            return factory(Reservation::class)->create([
+                'clase_id' => $clase->id,
+                'reservation_status_id' => ReservationStatus::CONFIRMED,
+            ]);
+        });
+
+        $this->assertDatabaseHas('reservations', [
+            'id' => $reservation->id,
+            'reservation_status_id' => ReservationStatus::CONFIRMED,
+        ]);
+
+        $this->artisan($this->signature)->assertExitCode(0);
+
+        // Reload the reservation from the database to get the updated status
+        $reservation = $reservation->fresh();
+
+        // Verify that the reservation status was updated to `CONSUMED`
+        $this->assertEquals(ReservationStatus::CONSUMED, $reservation->reservation_status_id);
     }
 }
