@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\Plans\UnfreezePlans',
         'App\Console\Commands\Reports\PlanSummaryCommand',
         'App\Console\Commands\RefreshPlans',
-        'App\Console\Commands\ToExpiredPlan',
+        'App\Console\Commands\ToExpirePlanMail',
         'App\Console\Commands\Users\UsersGoneAway',
     ];
 
@@ -46,7 +46,7 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('purasangre:plans:refresh')->daily();
         $schedule->command('clases:create')->weekly();
-        $schedule->command('plans:toexpire')->dailyAt('9:10');
+        $schedule->command('purasangre:mails:plans-to-expire')->dailyAt('9:10');
 
         $schedule->command('reports:daily')->dailyAt('23:50');
 

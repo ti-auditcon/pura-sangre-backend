@@ -8,14 +8,14 @@ use Illuminate\Console\Command;
 use App\Models\Plans\PlanStatus;
 use Illuminate\Support\Facades\Mail;
 
-class ToExpiredPlan extends Command
+class ToExpirePlanMail extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'plans:toexpire';
+    protected $signature = 'purasangre:mails:plans-to-expire';
 
     /**
      * The console command description.
@@ -41,11 +41,12 @@ class ToExpiredPlan extends Command
      */
     public function handle()
     {
-        $plans_to_expire = PlanUser::whereFinishDate(toDay()->addDays(3))
-                                    ->wherePlanStatusId(PlanStatus::ACTIVE)
+        $plansCloseToExpire = PlanUser::where('finish_date', '>=', now()->addDays(3)->startOfDay())
+                                    ->where('finish_date', '<=', now()->addDays(3)->endOfDay())
+                                    ->where('plan_status_id', PlanStatus::ACTIVE)
                                     ->get();
 
-        foreach ($plans_to_expire as $planuser) {
+        foreach ($plansCloseToExpire as $planuser) {
             $user = $planuser->user;
 
             Mail::to($user->email)->send(new ToExpireEmail($user, $planuser));
