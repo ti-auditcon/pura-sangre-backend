@@ -48,9 +48,10 @@ class MyResetPassword extends Notification
         if (static::$toMailCallback) {
             return call_user_func(static::$toMailCallback, $notifiable, $this->token);
         }
+
         return (new MailMessage)
             ->subject(Lang::getFromJson('Cambio de Contraseña!'))
-            ->markdown('mail.passresets.resetpass', ['token' => $this->token]);
+            ->markdown('mail.reset-password', ['token' => $this->token]);
     }
 
     /**
