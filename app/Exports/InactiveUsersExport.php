@@ -66,4 +66,4 @@ class InactiveUsersExport implements FromCollection, WithHeadings
             ];
         });
     }
-}k
+}
