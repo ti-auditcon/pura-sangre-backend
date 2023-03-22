@@ -32,7 +32,7 @@ class ToExpireEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('messages.plan_vencimiento_template')
+        return $this->markdown('mail.plan_expiration_reminder')
                     ->subject('Tu plan esta a punto de vencer');
     }
 }

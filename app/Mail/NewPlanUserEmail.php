@@ -26,6 +26,13 @@ class NewPlanUserEmail extends Mailable
     protected $planUserFlow;
 
     /**
+     * The bill in pdf format
+     *
+     * @var  string
+     */
+    protected $bill_pdf;
+
+    /**
      * At the start of creating the email get the data of the user and the bill
      */
     public function __construct($planUserFlow, $bill_pdf = null)

@@ -1,8 +1,11 @@
 <?php
 
+use App\Models\Plans\PlanUser;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Lang;
 use App\Models\Invoicing\TaxDocument;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Notifications\Messages\MailMessage;
 
 /**
  * Auth Route lists
@@ -236,13 +239,13 @@ Route::get('/flow/error', function () { return view('web.flow.error'); });
 
 Route::get('finish-registration', 'Web\NewUserController@finishing');
 
-Route::get('maila', function() {
-    return new App\Mail\SendNewUserEmail(App\Models\Users\User::find(1), 123);
-    $planuserFlow = App\Models\Plans\PlanUserFlow::find(2110);
+// Route::get('maila', function() {
+//     return new App\Mail\SendNewUserEmail(App\Models\Users\User::find(1), 123);
+//     $planuserFlow = App\Models\Plans\PlanUserFlow::find(2110);
 
-    return new App\Mail\NewPlanUserEmail($planuserFlow);
-    // return Mail::to('raulberrios8@gmail.com')->send(new App\Mail\NewPlanUserEmail($planuserFlow));
-});
+//     return new App\Mail\NewPlanUserEmail($planuserFlow);
+//     // return Mail::to('raulberrios8@gmail.com')->send(new App\Mail\NewPlanUserEmail($planuserFlow));
+// });
 
 Route::get('cancel-dte', function() {
     app(TaxDocument::class)->cancel(109444);
