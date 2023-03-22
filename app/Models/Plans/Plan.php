@@ -21,6 +21,9 @@ class Plan extends Model
     const PRUEBA = 1;
     const TRIAL = 1;
 
+    const ACTIVE = 1;
+    const DISCONTINUED = 2;
+
     /**
      * For massive assignment
      *

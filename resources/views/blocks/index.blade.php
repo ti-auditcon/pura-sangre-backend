@@ -11,31 +11,11 @@
 		<div class="col-12">
 			<div class="ibox">
 				<div class="ibox-head">
-
 					<div class="ibox-title">
-
 						<h3 class="font-strong">
-
-                    		<i class="fa fa-calendar" aria-hidden="true"></i>
-
-                    		Horarios de {{ Session::get('clases-type-name') }}
-
-                		</h3>
-
-					</div>
-
-					<div class="ibox-tools">
-
-		                {{-- <button
-		                    id="clases-type-button-modal"
-		                    class="btn btn-info"
-		                    data-toggle="modal"
-		                    data-target="#clases-types-modal"
-		                >
-		                    <i class="la la-calendar-o"></i>
-		                    Tipos de clases
-		                </button> --}}
-
+							<i class="fa fa-calendar" aria-hidden="true"></i>
+								Horarios de {{ Session::get('clases-type-name') }}
+            </h3>
 					</div>
 				</div>
 				<div class="ibox-body">
@@ -62,9 +42,7 @@
 
 	{{-- ////// MODAL PARA AGREGAR HORARIO  //////// --}}
 	<div class="modal fade" id="blockadd" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-
 		<div class="modal-dialog ">
-
 			{{ Form::open(['route'=>'blocks.store']) }}
 
 			<input type="text" hidden class="form-control" value="" name="date">
@@ -72,136 +50,90 @@
 			<input type="text" hidden class="form-control" value="{{ Session::get('clases-type-id') }}" name="clase_type_id">
 
 			<div class="modal-content">
-
 				<div class="modal-header">
-
 					<h5 class="modal-title">Nuevo horario de {{ Session::get('clases-type-name') }}</h5>
 
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-
 						<span aria-hidden="true">&times;</span>
-
 					</button>
-
 				</div>
 
 				<div class="modal-body">
-
 					<div class="form-group">
-
 						<div class="input-group clockpicker">
-
 							<label class="col-sm-2 col-form-label mr-1 pl-0">Inicio:</label>
 
 							<input type="text" class="form-control" value="" name="start">
 
 							<span class="input-group-addon">
-
 								<span class="la la-clock-o"></span>
-
 							</span>
-
 						</div>
-
 					</div>
 
-
 					<div class="form-group mb-4">
-
 						<div class="input-group clockpicker">
-
 							<label class="col-sm-2 col-form-label mr-1 pl-0">Termino:</label>
 
 							<input type="text" class="form-control" value="" name="end">
 
 							<span class="input-group-addon">
-
 								<span class="la la-clock-o"></span>
-
 							</span>
-
 						</div>
-
 					</div>
 
 					<div class="form-group mb-4">
-
 						<select multiple="multiple" id="plan-select-add" name="plans[]">
-
-							@foreach (App\Models\Plans\Plan::all() as $plan)
-
+							@foreach ($plans as $plan)
 								<option value="{{ $plan->id }}">
-
 									{{ $plan->plan }} {{ $plan->plan_period->period ?? "no aplica" }}
-
 								</option>
-
 							@endforeach
-
 						</select>
-
 					</div>
 
 					<div class="form-group mb-12">
-
 						<label class="col-form-label">Profesor:</label>
 
 						<select name="profesor_id" class="form-control" required>
-
 							<option value="">Elegir un Profesor</option>
-
 							@foreach (App\Models\Users\Role::find(2)->users as $coach)
-
 								<option value="{{$coach->id}}">{{$coach->first_name}} {{$coach->last_name}}</option>
-
 							@endforeach
-
 						</select>
 
 						<span class="input-group-addon"></span>
-
 					</div>
 
 					<div class="form-group mb-4">
-
 						<label class="col-form-label">N° de Cupos</label>
 
 						<input type="number" class="form-control" value="" name="quota" required>
-
 					</div>
 
 					<div class="form-group mb-4">
-
 						<label class="radio radio-grey radio-primary">
-
 							<input id="recurrent" type="radio" name="repetition" value="multiple" checked>
 
 							<span class="input-span"></span>
 
 							Recurrente
-
 						</label>
 
 						<label class="radio radio-grey radio-primary">
-
 							<input id="unique" type="radio" name="repetition" value="unique">
 
 							<span class="input-span"></span>
 
 							Unico
-
 						</label>
-
 					</div>
 
 					<div class="tab-content">
-
 						<div id="recurrent-tab" >
-
 							<div class="form-group" id="daycheckbox">
-
 								<div class="mb-2">
-
 									<label class="checkbox checkbox-inline mb-2">
 										<input type="checkbox" name="day[]" value="1">
 
@@ -249,39 +181,25 @@
 
 										<span class="input-span"></span>Domingo
 									</label>
-
 								</div>
-
 							</div>
-
 						</div>
 
 						<div id="unique-tab">
-
 							<div class="form-group mb-12">
-
 								<div class="input-group date">
-
 									<input type="text" class="form-control" value="" name="date">
 
 									<span class="input-group-addon">
-
 										<span class="la la-clock-o"></span>
-
 									</span>
-
 								</div>
-
 							</div>
-
 						</div>
-
 					</div>
-
 				</div>
 
 				<div class="modal-footer">
-
 					<button
 						type="submit"
 						class="btn btn-primary"
@@ -379,12 +297,10 @@
 <!-- Modal de confirmacion de clase-->
 @include('blocks.modals.clases-types')
 <!-- END Modal de confirmacion de clase-->
-
 @endsection
 
 
 @section('css') {{-- stylesheet para esta vista --}}
-
 	<link href="{{ asset('css/bootstrap-datepicker.min.css')}}" rel="stylesheet"/>
 
 	<link href="{{ asset('css/fullcalendar.min.css') }}" rel="stylesheet"/>
@@ -403,7 +319,6 @@
 	</style>
 
 @endsection
-
 
 
 @section('scripts') {{-- scripts para esta vista --}}
@@ -558,6 +473,4 @@
 		});
 	});
 </script>
-
-
 @endsection

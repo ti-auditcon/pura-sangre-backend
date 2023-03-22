@@ -21,9 +21,14 @@ class BlockController extends Controller
     {
         $blocks = app(Block::class)->claseTypesInSession();
 
-        $plans = Plan::with('plan_period:id,period')->where('plan_status_id', 1)->get(['id', 'plan', 'plan_period_id']);
+        $plans = Plan::with('plan_period:id,period')
+            ->where('plan_status_id', Plan::ACTIVE)
+            ->get(['id', 'plan', 'plan_period_id']);
 
-        return view('blocks.index', ['blocks' => json_encode($blocks), 'plans' => $plans]);
+        return view('blocks.index', [
+            'blocks' => json_encode($blocks), 
+            'plans' => $plans
+        ]);
     }
 
     /**
