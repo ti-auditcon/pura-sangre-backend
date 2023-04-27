@@ -243,6 +243,10 @@ class UserController extends Controller
      */
     public function destroy(Request $request, User $user)
     {
+        $user->update([
+            'email' => $user->email . '-deleted-' . time(),
+        ]);
+
         $user->delete();
 
         return redirect('/users')->with('success', 'El usuario ha sido borrado correctamente');
