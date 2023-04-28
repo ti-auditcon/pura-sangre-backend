@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Plans;
 
+use App\Jobs\SendPushNotification;
 use Illuminate\Support\Arr;
 use App\Models\Plans\PlanUser;
 use Illuminate\Console\Command;
@@ -98,7 +99,7 @@ class FinishPlan extends Command
 
                     $planUser->finish();
 
-                    // $this->addFcmTokenToStack($planUser->fcm_token);
+                    $this->addFcmTokenToStack($planUser->fcm_token);
                 } else {
                     $this->line("Plan with id: {$planUser->id} can't be closed yet");
                 }
@@ -109,6 +110,20 @@ class FinishPlan extends Command
         }
 
         $this->sendPushNotifications();
+    }
+
+    /**
+     * Add the given fcm token to the stack
+     *
+     * @param   string  $fcmToken
+     *
+     * @return  void
+     */
+    public function addFcmTokenToStack($fcmToken)
+    {
+        if (!in_array($fcmToken, $this->fcmTokens)) {
+            $this->fcmTokens[] = $fcmToken;
+        }
     }
     
     /**

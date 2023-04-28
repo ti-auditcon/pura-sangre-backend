@@ -37,6 +37,11 @@ class FinishPlanTest extends TestCase
      */
     protected $signature = "purasangre:plans:finish";
 
+    /**
+     * For the test we need a plan
+     *
+     * @var Plan
+     */
     protected $plan;
 
     public function SetUp(): void
@@ -48,7 +53,6 @@ class FinishPlanTest extends TestCase
         ]);
     }
 
-    // select only plans with 0 or less counter
     /** @test */
     public function it_iterates_just_plans_with_zero_or_less_quotas()
     {
@@ -193,8 +197,6 @@ class FinishPlanTest extends TestCase
         ]);
     }
 
-
-    // plan is not closed if has confirmed reservations
     /** @test */
     public function it_plan_is_not_closed_if_it_has_confirmed_reservations()
     {
@@ -326,5 +328,4 @@ class FinishPlanTest extends TestCase
             'plan_status_id' => PlanStatus::ACTIVE,
         ]);
     }
-
 }
