@@ -413,7 +413,6 @@
                         <table id="past-classes-table" class="table table-hover">
                             <thead class="thead-default thead-lg">
                                 <tr>
-
                                     <th width="10%">ID Clase</th>
 
                                     <th width="20%">Fecha Clase</th>
@@ -425,7 +424,6 @@
                                     <th width="10%">N° Plan</th>
 
                                     <th width="20%">Plan</th>
-
                                 </tr>
                             </thead>
                             <tbody>
@@ -442,9 +440,9 @@
 
                                     <td>{{ \App\Models\Clases\ReservationStatus::getReservationStatus($reservation->reservation_status_id) }}</td>
 
-                                    <td>{{ $reservation->plan_user_id }}</td>
+                                    <td>{{ $reservation->plan_user_id ?? '-'}}</td>
 
-                                    <td>{{ $reservation->plan }}</td>
+                                    <td>{{ $reservation->plan ?? 'sin plan'}}</td>
 
                                 </tr>
                                 @endforeach

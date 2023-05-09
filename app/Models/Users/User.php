@@ -523,7 +523,7 @@ class User extends Authenticatable
     {
         return Reservation::leftJoin('clases', 'clases.id', '=', 'reservations.clase_id')
                             ->leftJoin('plan_user', 'reservations.plan_user_id', '=', 'plan_user.id')
-                            ->join('plans', 'plan_user.plan_id', '=', 'plans.id')
+                            ->leftJoin('plans', 'plan_user.plan_id', '=', 'plans.id')
                             ->where('reservations.user_id', $this->id)
                             ->whereIn('reservations.reservation_status_id', [ReservationStatus::CONSUMED, ReservationStatus::LOST])
                         ->get([
