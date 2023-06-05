@@ -2,10 +2,11 @@
 
 namespace App\Console\Commands\Reports;
 
-use Carbon\CarbonPeriod;
 use App\Models\Bills\Bill;
+use App\Models\Plans\Plan;
 use App\Models\Plans\PlanUser;
 use Illuminate\Console\Command;
+use App\Models\Plans\PlanStatus;
 use App\Models\Clases\Reservation;
 use App\Models\Reports\PlanSummary;
 
@@ -23,7 +24,7 @@ class PlanSummaryCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Close data about the plans sold today';
+    protected $description = 'Close data about the plans sold yesterday';
 
     /**
      * Create a new command instance.
@@ -42,19 +43,26 @@ class PlanSummaryCommand extends Command
      */
     public function handle()
     {
-        $date = today();
+        $date = today()->subDay();
 
-        $active_users_day = PlanUser::where('plan_id', '!=', 1)
-                                    ->where('start_date', '<=', $date)
-                                    ->where('finish_date', '>=', $date)
+        $usersActiveOnDate = PlanUser::where('plan_id', '!=', Plan::TRIAL)
+                                    ->where('plan_status_id', '!=', PlanStatus::CANCELED)
+                                    ->where('start_date', '<=', $date->copy()->format('Y-m-d 23:59:59'))
+                                    ->where('finish_date', '>=', $date->copy()->format('Y-m-d 00:00:00'))
                                     ->count('id');
         
-        $reservations_day = Reservation::join('clases', 'clases.id', '=', 'reservations.clase_id')
-                                       ->where('clases.date', $date->copy()->format('Y-m-d'))
+        $reservationsForDate = Reservation::join('clases', 'clases.id', '=', 'reservations.clase_id')
+                                       ->whereBetween(
+                                            'clases.date', 
+                                            [$date->copy()->format('Y-m-d 00:00:00'), $date->copy()->format('Y-m-d 23:59:59')]
+                                        )
                                        ->count('reservations.id');
         
         $cumulative_reservations = Reservation::join('clases', 'clases.id', '=', 'reservations.clase_id')
-                                              ->whereBetween('clases.date', [$date->copy()->startOfMonth(), $date])
+                                              ->whereBetween(
+                                                'clases.date', 
+                                                [$date->copy()->startOfMonth(), $date->copy()->format('Y-m-d 23:59:59')]
+                                            )
                                               ->count('reservations.id');
         
         $day_incomes = Bill::where('date', $date->copy()->format('Y-m-d'))->sum('amount');
@@ -68,14 +76,14 @@ class PlanSummaryCommand extends Command
                                      ->count('id');
 
         PlanSummary::create([
-            'date' => $date->format('Y-m-d'),
-            'active_users_day' => $active_users_day,
-            'reservations_day' => $reservations_day,
+            'date'                    => $date->format('Y-m-d'),
+            'active_users_day'        => $usersActiveOnDate,
+            'reservations_day'        => $reservationsForDate,
             'cumulative_reservations' => $cumulative_reservations,
-            'day_incomes' => $day_incomes,
-            'cumulative_incomes' => $cumulative_incomes,
-            'day_plans_sold' => $day_plans_sold,
-            'cumulative_plans_sold' => $cumulative_plans_sold
+            'day_incomes'             => $day_incomes,
+            'cumulative_incomes'      => $cumulative_incomes,
+            'day_plans_sold'          => $day_plans_sold,
+            'cumulative_plans_sold'   => $cumulative_plans_sold
         ]);
     }
 }
