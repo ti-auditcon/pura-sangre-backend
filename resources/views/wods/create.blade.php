@@ -43,7 +43,6 @@
           <div class="contaner">
             <div class="row" id="div-fields"></div>
           </div>
-
           <br>
 
           <button class="btn btn-primary btn-air mr-2" type="submit">Crear WOD</button>
@@ -125,9 +124,7 @@
       $("#div-fields").append(
         `<div class="col">
           <div class="form-group mb-4">
-            <label>${stage.stage_type}</label>
-            <textarea name="${stage.id}" class="form-control form-control-solid" rows="12"></textarea>
-          </div>
+            <label>${stage.stage_type}</label><textarea name="${stage.id}" class="form-control form-control-solid" rows="12"></textarea></div>
         </div>`
       );
     });

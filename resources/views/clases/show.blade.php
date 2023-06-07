@@ -130,21 +130,18 @@
 
             </div>
             
-            <div class="ibox-body">
+            {{-- <div class="ibox-body">
                 <div class="row">
                     @forelse($stages as $st)
                         <div class="col-12 col-md-4 col-xl-12 mb-4">
                             <h5 class="font-strong">{{ $st->stage_type->stage_type }}</h5>
 
                             <div class="py-2">
-                                <textarea
-                                    name="{{ $st->id }}"
-                                    class="form-control form-control-solid p-4"
-                                    rows="10"
-                                    disabled
-                                >
-                                    {{ $st->description }}
-                                </textarea>
+                                <textarea name="{{ $st->id }}"
+                                  class="form-control form-control-solid p-4"
+                                  rows="10"
+                                  disabled
+                                >{{ $st->description }}</textarea>
                             </div>
                         </div>
                     @empty
@@ -153,7 +150,39 @@
                         </div>
                     @endforelse
                 </div>
+            </div> --}}
+            <div class="ibox-body">
+    <div class="row">
+        @forelse($stages as $st)
+            <div class="col-12 col-md-4 col-xl-12 mb-4">
+                <div class="card">
+                    <div class="card-header" 
+                      id="heading-{{ $st->id }}"
+                      data-toggle="collapse" 
+                      data-target="#collapse-{{ $st->id }}" 
+                      aria-expanded="true" 
+                      aria-controls="collapse-{{ $st->id }}"
+                      style="cursor: pointer;"
+                    >
+                        <h5 class="mb-0 text-uppercase border-0">
+                          {{ $st->stage_type->stage_type }}
+                        </h5>
+                    </div>
+
+                    <div id="collapse-{{ $st->id }}" class="collapse show" aria-labelledby="heading-{{ $st->id }}" data-parent="#accordion">
+                        <div class="card-body bg-light">
+                            {!! nl2br(e($st->description)) !!}
+                        </div>
+                    </div>
+                </div>
             </div>
+        @empty
+            <div class="col-12 col-md-4 col-xl-12 mb-4">
+                Esta clase aún no tiene una rutina agregada
+            </div>
+        @endforelse
+    </div>
+</div>
         </div>
     </div>
 

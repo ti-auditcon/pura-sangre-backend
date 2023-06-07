@@ -6,6 +6,7 @@ use Session;
 use Carbon\Carbon;
 use App\Models\Wods\Wod;
 use App\Models\Wods\Stage;
+use App\Models\Clases\Clase;
 use Illuminate\Http\Request;
 use App\Models\Wods\StageType;
 use App\Http\Controllers\Controller;
@@ -30,35 +31,53 @@ class WodController extends Controller
      */
     public function store(Request $request)
     {
-        $haywod = $this->hayWod($request);
-        
-        if (! $haywod) {
-            $wod = Wod::create([
-                'date' => $request->date,
-                'clase_type_id' => $request->clase_type_id
-            ]);
-    
-            foreach (StageType::all() as $stage_type) {
-                if (request($stage_type->id)) {
-                    Stage::create([
-                        'wod_id' =>  $wod->id,
-                        'stage_type_id' => $stage_type->id,
-                        'description' => request($stage_type->id)
-                    ]);
-                }
-            }
-            return redirect('/clases');
+        if ($this->existsWod($request)) {
+            return back()->with('warning', 'Ya ha sido asignado un Wod para la fecha seleccionada.');
         }
-        return back()->with('warning', 'Ya ha sido asignado un Wod para la fecha seleccionada');
+        
+        $wod = Wod::create([
+            'date' => $request->date,
+            'clase_type_id' => $request->clase_type_id
+        ]);
+
+        foreach (StageType::all() as $stage_type) {
+            if ($request->has($stage_type->id)) {
+                Stage::create([
+                    'wod_id' => $wod->id,
+                    'stage_type_id' => $stage_type->id,
+                    'description' => $request[$stage_type->id]
+                ]);
+            }
+        }
+
+        $this->assignWodToClases($wod);
+
+        return redirect('/clases')->with('success', 'El entrenamiento ha sido creado correctamente.');
     }
 
-    protected function hayWod($request)
+    /**
+     * Check if exists a wod for the date and clase_type_id.
+     *
+     * @param   Illuminate\Http\Request  $request
+     *
+     * @return  boolean
+     */
+    protected function existsWod(Request $request)
     {
-        $wod = Wod::where('date', date('Y-m-d', strtotime($request->date)))
+        return Wod::where('date', date('Y-m-d', strtotime($request->date)))
                   ->where('clase_type_id', $request->clase_type_id)
-                  ->count();
- 
-        return $wod ?? null;
+                  ->exists('id');
+    }
+
+    public function assignWodToClases(Wod $wod)
+    {
+        $clases = Clase::whereDate('date', $wod->date)
+                       ->where('clase_type_id', $wod->clase_type_id)
+                       ->get();
+
+        foreach ($clases as $clase) {
+            $clase->update(['wod_id' => $wod->id]);
+        }
     }
 
     /**
@@ -86,14 +105,11 @@ class WodController extends Controller
     public function update(Request $request, Wod $wod)
     {
         $wod->stages->map(function ($stage) {
-
             $stage->update([
-
                 'description' => request($stage->id)
-            
             ]);
-
         });
+
         return redirect('/clases')->with('success', 'Rutina actualizada correctamente');
     }
 
