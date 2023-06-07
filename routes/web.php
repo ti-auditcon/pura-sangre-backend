@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Users\Role;
 use App\Models\Plans\PlanUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
@@ -212,7 +213,8 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     /*
      * WODS Routes
      */
-    Route::resource('wods', 'Wods\WodController')->except('index', 'show')->middleware('role:1');
+    Route::resource('wods', 'Wods\WodController')->except('index', 'show')
+        ->middleware('role:' . Role::ADMIN . '|' . Role::COACH);
 
     /*
      * Notifications TESTS

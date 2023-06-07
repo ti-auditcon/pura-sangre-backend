@@ -15,10 +15,12 @@
                     Rutina de {{ $wod->clase_type->clase_type }} del día {{ Carbon\Carbon::parse($wod->date)->format('d-m-Y') }}
                 </div>
 
-                {!! Form::open(['route' => ['wods.destroy', $wod->id], 'method' => 'delete', 'class' => 'wod-delete']) !!}
-                {!! Form::close() !!}
+                @if (auth()->user()->isAdmin())
+                  {!! Form::open(['route' => ['wods.destroy', $wod->id], 'method' => 'delete', 'class' => 'wod-delete']) !!}
+                  {!! Form::close() !!}
 
-                <button class="btn btn-danger sweet-wod-delete" data-id="{{ $wod->id }}"><i></i>Eliminar WOD!</button>
+                  <button class="btn btn-danger sweet-wod-delete" data-id="{{ $wod->id }}"><i></i>Eliminar WOD!</button>
+                @endif
             </div>
             <div class="ibox-body">
                 {!! Form::open(['route' => ['wods.update', $wod->id],'method' => 'PUT']) !!}

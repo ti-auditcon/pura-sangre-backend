@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use Auth;
 use Closure;
-use Session;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CheckRole
 {
@@ -17,11 +17,14 @@ class CheckRole
      */
     public function handle($request, Closure $next, $role)
     {
-        // dd($request->all());
-         if (!Auth::user()->hasRole($role)) {
-            Session::flash('error', 'No tiene los permisos para realizar esta acción');
-            return redirect('/');
+        // $role is a string that could be 1, 1|2, 1|2|3, etc.
+        $roles = explode('|', $role);
+
+        // user has not one of the roles
+        if ($request->user()->hasNotRole($roles)) {
+            return redirect('/')->with('error', 'No tiene los permisos para realizar esta acción');
         }
+
         return $next($request);
     }
 }

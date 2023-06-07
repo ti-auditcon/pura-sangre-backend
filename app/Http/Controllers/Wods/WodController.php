@@ -10,6 +10,7 @@ use App\Models\Clases\Clase;
 use Illuminate\Http\Request;
 use App\Models\Wods\StageType;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Wods\WodDestroyRequest;
 
 class WodController extends Controller
 {
@@ -119,7 +120,7 @@ class WodController extends Controller
      * @param  \App\Models\Wods\Wod  $wod
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Wod $wod)
+    public function destroy(WodDestroyRequest $wod)
     {
         $wod->stages->map(function ($stage) {
             $stage->delete();

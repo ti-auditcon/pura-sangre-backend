@@ -95,6 +95,20 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if the user has the given or one of the given roles
+     *
+     * @param   array $roles
+     *
+     * @return  bool
+     */
+    public function hasNotRole(array $roles)
+    {
+        return RoleUser::whereIn('role_id', $roles)
+            ->where('user_id', $this->id)
+            ->doesntExist('id');
+    }
+
+    /**
      * Verified if auth user has an specific Role
      *
      * @param   integer
