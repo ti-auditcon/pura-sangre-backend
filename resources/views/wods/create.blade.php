@@ -8,8 +8,8 @@
 
 @section('content')
 <div class="row justify-content-center">
-  <div class="col-10">
-    <div class="ibox form-control-air">
+  <div class="col-12">
+    <div class="ibox">
       <div class="ibox-head">
         <div class="ibox-title">Crear Rutina {{ Session::get('clase-type-id') }}</div>
       </div>
@@ -18,19 +18,19 @@
         @csrf
         <div class="ibox-body">
           <div class="row">
-            <div class="col-sm-4 form-group mb-4">
+            <div class="col-md-6 form-group">
               <div class="form-group" id="start_date">
                 <label class="font-normal">Elegir Fecha</label>
 
                 <div class="input-group date">
                   <span class="input-group-addon bg-white"><i class="la la-calendar"></i></span>
 
-                  <input class="form-control form-control-air" name="date" type="text" value="{{ date('d-m-Y') }}">
+                  <input class="form-control" name="date" type="text" value="{{ date('d-m-Y') }}">
                 </div>
               </div>
             </div>
 
-            <div class="col-sm-4 form-group mb-4">
+            <div class="col-md-6 form-group">
               <div class="form-group">
                 <label class="font-normal">Elegir Tipo de Clase</label>
 
@@ -40,15 +40,11 @@
               </div>
             </div>
           </div>
-          <div class="contaner">
             <div class="row" id="div-fields"></div>
-          </div>
-          <br>
 
-          <button class="btn btn-primary btn-air mr-2" type="submit">Crear WOD</button>
+          <button class="btn btn-primary btn-air mr-2" type="submit">Guardar</button>
 
           <a class="btn btn-secondary" href="{{ route('clases.index') }}">Volver</a>
-
         </div>
       </form>
     </div>
@@ -120,14 +116,24 @@
       '<input type="hidden" value="' + clase_type_id + '" name="clase_type_id" hidden/>'
     );
 
-    $.each(response, function (index, stage) {
+    if (response.length == 0) {
       $("#div-fields").append(
         `<div class="col">
-          <div class="form-group mb-4">
-            <label>${stage.stage_type}</label><textarea name="${stage.id}" class="form-control form-control-solid" rows="12"></textarea></div>
+          <div class="form-group mb-1 text-center">
+            <label>No hay etapas para este tipo de clase</label>
+          </div>
         </div>`
       );
-    });
+    } else {
+      $.each(response, function (index, stage) {
+        $("#div-fields").append(
+          `<div class="col">
+            <div class="form-group">
+              <label>${stage.stage_type}</label><textarea name="${stage.id}" class="form-control form-control-solid" rows="12"></textarea></div>
+          </div>`
+        );
+      });
+    }
   }
 </script>
 @endsection

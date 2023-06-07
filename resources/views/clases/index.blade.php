@@ -12,22 +12,24 @@
                 <div class="ibox-title">Clases</div>
 
                 @if (Auth::user()->hasRole(1))
-                    <div class="ibox-tools">
-                        <button
-                            id="button-modal"
-                            class="btn btn-danger"
-                            data-toggle="modal"
-                            data-target="#delete-entire-day-modal"
-                        >
-                            <i class="la la-trash-o"></i>
-                            Eliminar un día
-                        </button>
+                  <div class="ibox-tools">
+                      <button
+                          id="button-modal"
+                          class="btn btn-danger"
+                          data-toggle="modal"
+                          data-target="#delete-entire-day-modal"
+                      >
+                          <i class="la la-trash-o"></i>
+                          Eliminar un día
+                      </button>
 
-                        <a class="btn btn-primary" href="{{ route('wods.create') }}">Asignar Workout</a>
-
-                        <a class="btn btn-primary" href="{{ route('blocks.index') }}">Ir a Horarios</a>
+                      
+                      <a class="btn btn-primary" href="{{ route('blocks.index') }}">Ir a Horarios</a>
                     </div>
-                @endif
+                    @endif
+                    @if (Auth::user()->hasRole(1) || Auth::user()->hasRole(2))
+                    <a class="btn btn-primary" href="{{ route('wods.create') }}">Asignar Rutina</a>
+                    @endif
             </div>
             <div class="ibox-body">
                 {{ Form::open(['route' => 'clases.type']) }}
