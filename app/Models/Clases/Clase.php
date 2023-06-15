@@ -8,6 +8,7 @@ use App\Models\Clases\ClaseType;
 use App\Models\Clases\Reservation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Clase extends Model
 {
@@ -37,7 +38,7 @@ class Clase extends Model
         'start_at',
         'finish_at',
         'room',
-        'profesor_id',
+        'coach_id',
         'quota',
         'wod_id',
         'block_id',
@@ -215,5 +216,15 @@ class Clase extends Model
     public function isFull(): bool
     {
         return $this->reservations()->count('id') >= $this->quota;
+    }
+
+    /**
+     * Get the coach that owns the Clase
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function coach(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'coach_id');
     }
 }

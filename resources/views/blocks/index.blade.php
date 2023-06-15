@@ -96,7 +96,7 @@
 					<div class="form-group mb-12">
 						<label class="col-form-label">Profesor:</label>
 
-						<select name="profesor_id" class="form-control" required>
+						<select name="coach_id" class="form-control" required>
 							<option value="">Elegir un Profesor</option>
 							@foreach (App\Models\Users\Role::find(2)->users as $coach)
 								<option value="{{$coach->id}}">{{$coach->first_name}} {{$coach->last_name}}</option>
@@ -255,7 +255,7 @@
 
 							<label class="col-form-label">Profesor:</label>
 
-							<select id="select-coach" name="profesor_id" class="form-control" required>
+							<select id="select-coach" name="coach_id" class="form-control" required>
 
 								<option value="">Elegir un Profesor</option>
 
@@ -390,8 +390,8 @@
 				//traer todos los ids de los planes que pueden tomar clase de la hora que se seleccionó
 				$('#block-quota-input').val(calEvent.quota);
 
-				// $('#select-coach option[value="'+ calEvent.profesor_id +'"]').attr('selected', 'selected');
-				$('#select-coach').val(calEvent.profesor_id);
+				// $('#select-coach option[value="'+ calEvent.coach_id +'"]').attr('selected', 'selected');
+				$('#select-coach').val(calEvent.coach_id);
 
 				$('#edit-block-title').empty();
                 console.log(calEvent);

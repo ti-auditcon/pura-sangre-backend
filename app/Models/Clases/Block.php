@@ -28,7 +28,7 @@ class Block extends Model
      */
     protected $fillable = [
         'start', 'end', 'dow', 'title', 'date',
-        'profesor_id', 'quota', 'clase_type_id'
+        'coach_id', 'quota', 'clase_type_id'
     ];
 
     /**
@@ -130,7 +130,7 @@ class Block extends Model
      */
     public function user()
     {
-        return $this->belongsTo(User::class, 'profesor_id');
+        return $this->belongsTo(User::class, 'coach_id');
     }
 
     /**
@@ -164,7 +164,7 @@ class Block extends Model
                     ->with(['plans' => function ($plan) {
                         $plan->select('plans.id')->withPivot('block_id', 'plan_id');
                     }])
-                    ->get(['id', 'start', 'end', 'title', 'date', 'profesor_id', 'quota', 'clase_type_id', 'dow'])
+                    ->get(['id', 'start', 'end', 'title', 'date', 'coach_id', 'quota', 'clase_type_id', 'dow'])
                     ->toArray();
     }
 }

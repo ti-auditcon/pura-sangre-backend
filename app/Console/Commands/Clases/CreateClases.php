@@ -51,7 +51,7 @@ class CreateClases extends Command
                        'date' => $fecha,
                        'start_at' => $block->start,
                        'finish_at' => $block->end,
-                       'profesor_id' => $block->profesor_id,
+                       'coach_id' => $block->coach_id,
                        'clase_type_id' => $block->clase_type_id,
                        'quota' => $block->quota,
                     ]);

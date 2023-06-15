@@ -4,6 +4,7 @@ use App\Models\Users\Role;
 use App\Models\Plans\PlanUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Invoicing\TaxDocument;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -82,7 +83,7 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
      * Clases routes (clases, clases-alumnos, bloques)
      */
     Route::resource('blocks', 'Clases\BlockController')->middleware('role:1');
-    Route::resource('clases', 'Clases\ClaseController')->except('create', 'edit', 'update');
+    Route::resource('clases', 'Clases\ClaseController')->except('create');
     Route::post('clases/{clase}/confirm', 'Clases\ClaseController@confirm')->name('clase.confirm');
     Route::resource('reservation', 'Clases\ReservationController')->only('store', 'update', 'destroy');
     Route::post('/reservation/{reservation}/confirm', 'Clases\ReservationController@confirm');
@@ -252,4 +253,17 @@ Route::get('finish-registration', 'Web\NewUserController@finishing');
 
 Route::get('cancel-dte', function() {
     app(TaxDocument::class)->cancel(109444);
+});
+
+// Create a test route to test the email
+Route::get('test-email', function() {
+    $user = App\Models\Users\User::where('email', 'raulberrios8@gmail.com')->first();
+
+    $emailData = (object) [
+        'subject' => 'Your email subject',
+        'user' => 'Hello user',
+        'message' => 'This is a test message',
+    ];
+
+    return Mail::to($user->email)->send(new App\Mail\SendEmail($emailData));
 });

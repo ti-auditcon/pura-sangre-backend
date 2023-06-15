@@ -26,7 +26,7 @@ class BlockRequest extends FormRequest
         switch ($this->method()){
            case 'POST': {
              return [
-               'profesor_id' => 'required',
+               'coach_id' => 'required',
                'day' => 'required',
                'start' => 'required',
                'end' => 'required',
@@ -57,7 +57,7 @@ class BlockRequest extends FormRequest
     public function messages()
     {
         return [
-           'profesor_id.required' => 'Debe seleccionar un profesor.',
+           'coach_id.required' => 'Debe seleccionar un profesor.',
            'day.required' => 'Debe elegir al menos un día.',
            'start.required' => 'Seleccione una hora de inicio.',
            'end.required' => 'Seleccione una hora de término.',

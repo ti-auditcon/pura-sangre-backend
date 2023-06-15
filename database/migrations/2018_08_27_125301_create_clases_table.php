@@ -38,13 +38,13 @@ class CreateClasesTable extends Migration
             $table->time('end');
             $table->string('title')->nullable();
             $table->date('date')->nullable();
-            $table->unsignedInteger('profesor_id')->nullable();
+            $table->unsignedInteger('coach_id')->nullable();
             $table->Integer('quota')->nullable();
             $table->unsignedInteger('clase_type_id')->nullable();
             $table->unsignedInteger('dow')->nullable();
             $table->timestamps();
 
-          // $table->foreign('profesor_id')->references('id')->on('users')->onDelete('cascade');
+          // $table->foreign('coach_id')->references('id')->on('users')->onDelete('cascade');
           // $table->foreign('clase_type_id')->references('id')->on('clase_types')->onDelete('cascade');
         });
 
@@ -55,14 +55,14 @@ class CreateClasesTable extends Migration
             $table->time('finish_at')->nullable();
             $table->unsignedInteger('block_id')->nullable();
             $table->integer('room')->nullable();
-            $table->integer('profesor_id')->nullable();
+            $table->integer('coach_id')->nullable();
             $table->integer('wod_id')->nullable();
             $table->integer('quota')->nullable();
             $table->unsignedInteger('clase_type_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-          // $table->foreign('profesor_id')->references('id')->on('users')->onDelete('cascade');
+          // $table->foreign('coach_id')->references('id')->on('users')->onDelete('cascade');
           // $table->foreign('block_id')->references('id')->on('blocks')->onDelete('cascade');
         });
 

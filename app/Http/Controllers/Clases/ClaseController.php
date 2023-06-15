@@ -5,16 +5,19 @@ namespace App\Http\Controllers\Clases;
 use Redirect;
 use Carbon\Carbon;
 use App\Models\Wods\Wod;
+use App\Models\Users\Role;
 use App\Models\Users\User;
 use App\Models\Wods\Stage;
 use App\Models\Clases\Clase;
 use Illuminate\Http\Request;
+use App\Models\Users\RoleUser;
 use App\Models\Clases\ClaseType;
 use App\Models\Clases\Reservation;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
 use App\Models\Settings\DensityParameter;
+use App\Http\Requests\Clases\ClaseControllerUpdateRequest;
 
 /** [ClaseController description] */
 class ClaseController extends Controller
@@ -34,6 +37,28 @@ class ClaseController extends Controller
         $densities = DensityParameter::orderBy('from')->get(['id', 'level', 'from', 'to', 'color']);
 
         return view('clases.index', ['densities' => $densities]);
+    }
+
+    /**
+     * 
+     *
+     * @param   Clase  $clase
+     *
+     * @return  View
+     */
+    public function edit(Clase $clase)
+    {
+        $clase_types = ClaseType::orderBy('clase_type')->get(['id', 'clase_type']);
+
+        $coaches = RoleUser::where('role_id', Role::COACH)
+            ->join('users', 'users.id', 'role_user.user_id')
+            ->get(['users.id', DB::raw("CONCAT(users.first_name, ' ', users.last_name) as full_name")]);
+
+        return view('clases.edit', [
+            'clase' => $clase,
+            'clase_types' => $clase_types,
+            'coaches' => $coaches,
+        ]);
     }
 
     /**
@@ -123,6 +148,22 @@ class ClaseController extends Controller
 
         // return redirect()->route('clases.index', $plan->id)
         //                  ->with('success', 'El plan ha sido creado correctamente');
+    }
+
+        /**
+     *  Update class data
+     *
+     *  @param   Clase                         $clase
+     *  @param   ClaseControllerUpdateRequest  $request
+     *
+     *  @return  view
+     */
+    public function update(Clase $clase, ClaseControllerUpdateRequest $request)
+    {
+        $clase->update($request->all());
+
+        return redirect("/clases/{$clase->id}/edit")
+                ->with('success', 'Clase actualizada correctamente');
     }
 
     /**

@@ -94,7 +94,7 @@
 
 						<label class="col-form-label">Profesor:</label>
 
-						<select name="profesor_id" class="form-control" required>
+						<select name="coach_id" class="form-control" required>
 
 							<option value="">Elegir un Profesor</option>
 

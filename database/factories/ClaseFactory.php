@@ -13,7 +13,7 @@ $factory->define(Clase::class, function (Faker $faker) {
         'finish_at'     => $faker->time(),
         'block_id'      => factory(Block::class)->create()->id,
         'room'          => 1,
-        'profesor_id'   => factory(User::class)->create()->id,
+        'coach_id'   => factory(User::class)->create()->id,
         'wod_id'        => 1,
         'quota'         => 20,
         'clase_type_id' => factory(ClaseType::class)->create()->id,

@@ -48,7 +48,7 @@ class BlockController extends Controller
                     'end' => $request->end,
                     'dow' => $day,
                     'clase_type_id' => $request->clase_type_id,
-                    'profesor_id' => $request->profesor_id,
+                    'coach_id' => $request->coach_id,
                     'quota' => $request->quota,
                 ]);
                 $block->plans()->sync($request->plans);
@@ -60,7 +60,7 @@ class BlockController extends Controller
                 'end' => $request->end,
                 'date' => date("Y-m-d", strtotime($request->date)), //falta local
                 'clase_type_id' => $request->clase_type_id,
-                'profesor_id' => $request->profesor_id,
+                'coach_id' => $request->coach_id,
                 'quota' => $request->quota,
             ]);
             $block->plans()->sync($request->plans);
@@ -79,7 +79,7 @@ class BlockController extends Controller
     {
         $block->update([
             'quota' => $request->quota,
-            'profesor_id' => $request->profesor_id
+            'coach_id' => $request->coach_id
         ]);
 
         $block->plans()->sync($request->plans);

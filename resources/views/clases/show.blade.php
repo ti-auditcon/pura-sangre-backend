@@ -6,359 +6,361 @@
 
 @section('content')
 <div class="row justify-content-center">
-    <div class="col-12 col-xl-4">
-        {{-- //////////////////////////////////////////////////////// --}}
-        {{--                                                          --}}
-        {{-- /////////////////     Clase details   ////////////////// --}}
-        {{--                                                          --}}
-        {{-- //////////////////////////////////////////////////////// --}}
-        <div class="ibox">
-            <div class="ibox-head">
-                <div class="ibox-title">
-                    <h4>
-                        Clase de {{ $clase->claseType->clase_type }}
-                    </h4>
-                </div>
-            
-                <div class="ibox-tools">
-                    @if (Carbon\Carbon::parse($clase->date)->gte(today()) && in_array(1, $auth_roles))
-                        {!! Form::open([
-                            'route' => ['clases.destroy', $clase->id],
-                            'method' => 'delete', 'class' => 'clase-delete'
-                        ]) !!}
-                        {!! Form::close() !!}
-                        
-                        <button
-                            class="btn btn-danger sweet-clase-delete"
-                            data-id="{{ $clase->id }}"
-                            data-name="{{ Carbon\Carbon::parse($clase->date)->format('d-m-Y') }}">
-                            <i></i>
-                            Eliminar Clase
-                        </button>
-                    @endif
-                </div>
-            </div>
-            <div class="ibox-body">
-                <div class="clase">
-                    <div class="card">
-                        <div class="row mb-2">
-                            
-                            <div class="col-12 text-muted">Fecha:</div>
-                            
-                            <div class="col-12">{{ Carbon\Carbon::parse($clase->date)->format('d-m-Y') }}</div>
-                        
-                        </div>
-                    
-                        <div class="row mb-2">
-                            <div class="col-12 text-muted">Horario:</div>
-                            
-                            <div class="col-12">
-                                {{ Carbon\Carbon::parse($clase->start_at)->format('H:i') }} - {{ Carbon\Carbon::parse($clase->finish_at)->format('H:i') }}
-                            </div>
-                        
-                        </div>
-
-                        <div class="row">
-                         
-                            <div class="col-12 text-muted">Coach:</div>
-                         
-                            <div class="col-12">{{ $clase->block->user->first_name }} {{ $clase->block->user->last_name }}</div>
-                      
-                        </div>
-                      
-                        <br/>
-                    </div>
-                    <div class="clase-graphics pt-2">
-                        <div class="canvas-item">
-                            
-                            <div
-                                id="porcentaje"
-                                class="easypie col"
-                                data-percent="{{ ($reservation_count * 100) ?? 1 / $clase->quota }}"
-                                data-bar-color="#5c6bc0"
-                                data-size="70"
-                                data-line-width="8"
-                            >
-                            </div>
-                        
-                        </div>
-                        
-                        <div class="data-item">
-                            <div class="row m-0">
-                                
-                                <div class="col-12 p-0 m-0">
-                                   
-                                   <span class="easypie-data font-26 text-primary icon-people"><i class="ti-user"></i></span>
-                                   
-                                   <h3 id="total" class="font-strong text-primary">{{ $reservation_count }}</h3>
-
-                                   <h3 class="font-strong text-primary">/{{ $clase->quota }}</h3>
-                                
-                                </div>
-                                
-                                <div class="col-12 p-0 m-0">
-                                   
-                                   <div class="text-muted">Cupos tomados</div>
-                                
-                                </div>
-                            
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="col-12 col-xl-4">
+    {{-- //////////////////////////////////////////////////////// --}}
+    {{--                                                          --}}
+    {{-- -- ////////////////   Clase details   ////////////////// --}} 
+    {{--                                                          --}}
+    {{-- //////////////////////////////////////////////////////// --}}
+    <div class="ibox">
+      <div class="ibox-head">
+        <div class="ibox-title">
+          <h4>
+            Clase de {{ $clase->claseType->clase_type }}
+          </h4>
         </div>
-        
-        {{-- //////////////////////////////////////////////////////// --}}
-        {{--                                                          --}}
-        {{-- /////////////////     Clase Stages    ////////////////// --}}
-        {{--                                                          --}}
-        {{-- //////////////////////////////////////////////////////// --}}
-        <div class="ibox">
-            <div class="ibox-head">
 
-                <div class="ibox-title">Rutina de la Clase</div>
-          
-                <div class="ibox-tools">
+        <div class="ibox-tools">
+          @if (Carbon\Carbon::parse($clase->date)->gte(today()) && in_array(1, $auth_roles))
+          <div class="row px-2">
+            <div class="px-1">
+              <a href="{{ route('clases.edit', ['clase' => $clase->id]) }}" class="btn btn-icon-only btn-warning">
+                <i class="la la-edit"></i>
+              </a>
+            </div>
+            <div class="px-1">
+              <form action="{{ route('clases.destroy', $clase->id) }}" method="POST" class="clase-delete">
+                @csrf @method('DELETE')
+              </form>
+              <button class="btn btn-info btn-icon-only btn-danger sweet-clase-delete" data-id="{{ $clase->id }}"
+                data-name="{{ Carbon\Carbon::parse($clase->date)->format('d-m-Y') }}">
+                <i class="la la-trash"></i>
+              </button>
+            </div>
+          </div>
+          {{-- {!! Form::open([9
+                          'route' => ['clases.destroy', $clase->id],
+                          'method' => 'delete', 'class' => 'clase-delete'
+                      ]) !!}
+                      {!! Form::close() !!}
+                      
+                      <button
+                          class="btn btn-danger sweet-clase-delete"
+                          data-id="{{ $clase->id }}"
+          data-name="{{ Carbon\Carbon::parse($clase->date)->format('d-m-Y') }}">
+          <i></i>
+          Eliminar Clase
+          </button> --}}
+          @endif
+        </div>
+      </div>
+      <div class="ibox-body">
+        <div class="clase">
+          <div class="card">
+            <div class="row mb-2">
+              <div class="col-12 text-muted">Fecha:</div>
 
-                    <a class="ibox-collapse">
+              <div class="col-12">{{ Carbon\Carbon::parse($clase->date)->format('d-m-Y') }}</div>
+            </div>
 
-                        <i class="la la-angle-down" style="color: black;"></i>
+            <div class="row mb-2">
+              <div class="col-12 text-muted">Horario:</div>
 
-                    </a>
-                </div>
+              <div class="col-12">
+                {{ Carbon\Carbon::parse($clase->start_at)->format('H:i') }} -
+                {{ Carbon\Carbon::parse($clase->finish_at)->format('H:i') }}
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12 text-muted">Coach:</div>
+
+              <div class="col-12">{{ $clase->coach->full_name }}</div>
+            </div>
+          </div>
+          <div class="clase-graphics pt-2">
+            <div class="canvas-item">
+
+              <div id="porcentaje" class="easypie col"
+                data-percent="{{ ($reservation_count * 100) ?? 1 / $clase->quota }}" data-bar-color="#5c6bc0"
+                data-size="70" data-line-width="8">
+              </div>
 
             </div>
-            
-            {{-- <div class="ibox-body">
+
+            <div class="data-item">
+              <div class="row m-0">
+                <div class="col-12 p-0 m-0">
+                  <span class="easypie-data font-26 text-primary icon-people"><i class="ti-user"></i></span>
+
+                  <h3 id="total" class="font-strong text-primary">{{ $reservation_count }}</h3>
+
+                  <h3 class="font-strong text-primary">/{{ $clase->quota }}</h3>
+                </div>
+
+                <div class="col-12 p-0 m-0">
+                  <div class="text-muted">Cupos tomados</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {{-- //////////////////////////////////////////////////////// --}}
+    {{--                                                          --}}
+    {{-- /////////////////     Clase Stages    ////////////////// --}}
+    {{--                                                          --}}
+    {{-- //////////////////////////////////////////////////////// --}}
+    <div class="ibox">
+      <div class="ibox-head">
+        <div class="ibox-title">Rutina de la Clase</div>
+        <div class="ibox-tools">
+          <a class="ibox-collapse">
+            <i class="la la-angle-down" style="color: black;"></i>
+          </a>
+        </div>
+      </div>
+
+      {{-- <div class="ibox-body">
                 <div class="row">
                     @forelse($stages as $st)
                         <div class="col-12 col-md-4 col-xl-12 mb-4">
                             <h5 class="font-strong">{{ $st->stage_type->stage_type }}</h5>
 
-                            <div class="py-2">
-                                <textarea name="{{ $st->id }}"
-                                  class="form-control form-control-solid p-4"
-                                  rows="10"
-                                  disabled
-                                >{{ $st->description }}</textarea>
-                            </div>
-                        </div>
-                    @empty
-                        <div class="col-12 col-md-4 col-xl-12 mb-4">
-                            Esta clase aún no tiene una rutina agregada
-                        </div>
-                    @endforelse
-                </div>
-            </div> --}}
-            <div class="ibox-body">
-    <div class="row">
-        @forelse($stages as $st)
-            <div class="col-12 col-md-4 col-xl-12 mb-4">
-                <div class="card">
-                    <div class="card-header" 
-                      id="heading-{{ $st->id }}"
-                      data-toggle="collapse" 
-                      data-target="#collapse-{{ $st->id }}" 
-                      aria-expanded="true" 
-                      aria-controls="collapse-{{ $st->id }}"
-                      style="cursor: pointer;"
-                    >
-                        <h5 class="mb-0 text-uppercase border-0">
-                          {{ $st->stage_type->stage_type }}
-                        </h5>
-                    </div>
-
-                    <div id="collapse-{{ $st->id }}" class="collapse show" aria-labelledby="heading-{{ $st->id }}" data-parent="#accordion">
-                        <div class="card-body bg-light">
-                            {!! nl2br(e($st->description)) !!}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @empty
-            <div class="col-12 col-md-4 col-xl-12 mb-4">
-                Esta clase aún no tiene una rutina agregada
-            </div>
-        @endforelse
+      <div class="py-2">
+        <textarea name="{{ $st->id }}" class="form-control form-control-solid p-4" rows="10"
+          disabled>{{ $st->description }}</textarea>
+      </div>
     </div>
+    @empty
+    <div class="col-12 col-md-4 col-xl-12 mb-4">
+      Esta clase aún no tiene una rutina agregada
+    </div>
+    @endforelse
+  </div>
+</div> --}}
+<div class="ibox-body">
+  <div class="row">
+    @forelse($stages as $st)
+    <div class="col-12 col-md-4 col-xl-12 mb-4">
+      <div class="card">
+        <div class="card-header" id="heading-{{ $st->id }}" data-toggle="collapse" data-target="#collapse-{{ $st->id }}"
+          aria-expanded="true" aria-controls="collapse-{{ $st->id }}" style="cursor: pointer;">
+          <h5 class="mb-0 text-uppercase border-0">
+            {{ $st->stage_type->stage_type }}
+          </h5>
+        </div>
+
+        <div id="collapse-{{ $st->id }}" class="collapse show" aria-labelledby="heading-{{ $st->id }}"
+          data-parent="#accordion">
+          <div class="card-body bg-light">
+            {!! nl2br(e($st->description)) !!}
+          </div>
+        </div>
+      </div>
+    </div>
+    @empty
+    <div class="col-12 col-md-4 col-xl-12 mb-4">
+      Esta clase aún no tiene una rutina agregada
+    </div>
+    @endforelse
+  </div>
 </div>
-        </div>
+</div>
+</div>
+
+{{-- //////////////////////////////////////////////////////// --}}
+{{--                                                          --}}
+{{-- /////////////////    Students table   ////////////////// --}}
+{{--                                                          --}}
+{{-- //////////////////////////////////////////////////////// --}}
+<div class="col-12 col-xl-8">
+  <div class="ibox">
+    <div class="ibox-head">
+
+      <div class="ibox-title">Alumnos de esta clase</div>
+
+      <div class="ibox-tools">
+        @if (in_array(\App\Models\Users\Role::ADMIN, $auth_roles) || in_array(\App\Models\Users\Role::COACH,
+        $auth_roles))
+        @if ($clase->canCheckAttendance())
+        <button id="button-modal" class="btn btn-warning btn-icon-only" data-toggle="modal"
+          data-target="#confirm-assistance-modal">
+          <i class="la la-check-square"></i>
+        </button>
+        @endif
+
+        <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">
+          Agregar un Alumno
+        </button>
+        @else
+
+        {!! Form::open(['route' => ['reservation.store'], 'method' => 'post' ,'id' => 'user-join']) !!}
+        <input type="hidden" value="{{ Auth::id() }}" name="user_id">
+
+        <input type="hidden" value="{{ $clase->id }}" name="clase_id">
+
+        <button class="btn btn-success sweet-user-join" data-id="{{ $clase->id }}" data-name="{{ $clase->date }}">
+          <i></i>Reservar esta clase
+        </button>
+        {!! Form::close() !!}
+
+        @endif
+      </div>
     </div>
 
-    {{-- //////////////////////////////////////////////////////// --}}
-    {{--                                                          --}}
-    {{-- /////////////////    Students table   ////////////////// --}}
-    {{--                                                          --}}
-    {{-- //////////////////////////////////////////////////////// --}}
-    <div class="col-12 col-xl-8">
-        <div class="ibox">
-            <div class="ibox-head">
-            
-                <div class="ibox-title">Alumnos de esta clase</div>
-                
-                <div class="ibox-tools">
-                    @if (in_array(\App\Models\Users\Role::ADMIN, $auth_roles) || in_array(\App\Models\Users\Role::COACH, $auth_roles))
-                        @if ($clase->canCheckAttendance())
-                                <button id="button-modal" 
-                                        class="btn btn-warning btn-icon-only"
-                                        data-toggle="modal"
-                                        data-target="#confirm-assistance-modal"
-                                >
-                                    <i class="la la-check-square"></i>
-                                </button>
-                        @endif
-
-                        <button id="assign-button" class="btn btn-success" data-toggle="modal" data-target="#user-assign">
-                            Agregar un Alumno
-                        </button>
-                    @else
-
-                        {!! Form::open(['route' => ['reservation.store'], 'method' => 'post' ,'id' => 'user-join']) !!}
-                            <input type="hidden" value="{{ Auth::id() }}" name="user_id">
-                            
-                            <input type="hidden" value="{{ $clase->id }}" name="clase_id">
-                            
-                            <button class="btn btn-success sweet-user-join" data-id="{{ $clase->id }}" data-name="{{ $clase->date }}">
-                                <i></i>Reservar esta clase
-                            </button>
-                        {!! Form::close() !!}
-
-                    @endif
-                </div>
-            </div>
-
-                <div class="modal fade bd-example-modal-lg show" id="modal-avatar" role="dialog">
-                    <div class="modal-dialog">
-                            <div class="modal-content" style="max-width: 400px">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body" id="dynamic-content">
-                                    <img id="avatar-img" alt="" style="width: 400px;"/>
-                                </div>
-                            </div>
-                       </div>
-                </div> 
-
-            <div class="ibox-body pb-5">
-                <div class="table-responsive">
-                
-                    <table id="students-table" class="table table-hover">
-                  
-                        <thead class="thead-default">
-                            <tr>
-                                <th width="80%">Nombre</th>
-                                <th width="10%">Estado</th>
-                                <th width="10%">Acciones</th>
-                                <th width="10%">otro</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                          @foreach ($reservations as $reservation)
-                             <tr>
-                                <td>
-                                    <div class="img-avatar div-user-avatar"
-                                        style="background-image:  @if ($reservation->user->avatar) url('{{$reservation->user->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"
-                                        data-image="{{ $reservation->user->avatar }}"
-                                    ></div>
-
-                                   <span class="badge-{{$reservation->user->status_user->type}} badge-point"></span>
-                                    <a @if (in_array(1, $auth_roles) || in_array(2, $auth_roles)) href="{{ url("/users/{$reservation->user->id}") }}" @endif>
-                                        {{$reservation->user->first_name}} {{$reservation->user->last_name}}
-                                    </a>
-
-                                    @if ($reservation->user->itsBirthDay())
-                                        <span class="badge badge-primary" style="margin-left: 4px;"><i class="la la-birthday-cake"></i>Cumpleañero</span>
-                                    @endif
-                                </td>
-                                <td>
-                                   <span id="status-user-badge-{{ $reservation->id }}" class="badge badge-{{ $reservation->reservation_status->type }} badge-pill">{{ strtoupper($reservation->reservation_status->reservation_status) }}</span>
-                                   <span id="status-user-badge-two-{{ $reservation->id }}" style="display: none" class="badge badge-success badge-pill">CONFIRMADA</span>
-                                </td>
-
-                             @if (in_array(1, $auth_roles) || in_array(2, $auth_roles))
-                                <td>
-                                   {!! Form::open(['action' => ['Clases\ReservationController@destroy', $reservation->id], 'method' => 'delete', 'id' => 'delete'.$reservation->user->id]) !!}
-
-                                      <input type="hidden" value="1" name="by_god">
-                                      <button class="btn btn-info btn-icon-only btn-danger sweet-user-delete" type="button" data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash"></i></button>
-                                   {!! Form::close() !!}
-
-                                   @if ($reservation->reservation_status_id === 1)
-                                     {!! Form::open(['action' => ['Clases\ReservationController@confirm', $reservation->id], 'method' => 'POST', 'id' => 'update'.$reservation->user->id]) !!}
-                                      <input type="hidden" value="1" name="by_god">
-                                      <button class="btn btn-info btn-icon-only btn-success sweet-user-confirm" type="button" data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-check-circle"></i></button>
-                                    {!! Form::close() !!}
-                                   @endif
-                                   
-                                </td>
-                             @elseif (in_array(3, $auth_roles) && Auth::id() == $reservation->user->id)
-                                <td>
-                                   {!! Form::open(['route' => ['reservation.destroy', $reservation->id], 'method' => 'delete', 'id'=> 'delete'.$reservation->user->id]) !!}
-                                   <input type="hidden" value="1" name="by_god">
-                                   <button class="btn btn-outline-info btn-sm btn-thick sweet-user-delete" type="button" data-id="{{$reservation->user->id}}" data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i class="la la-trash">Salir de Clase</i></button>
-                                   {!! Form::close() !!}
-                                </td>
-                             @endif
-                                <td>{{ $reservation->updated_at }}</td>
-                             </tr>
-                          @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    <div class="modal fade bd-example-modal-lg show" id="modal-avatar" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content" style="max-width: 400px">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="dynamic-content">
+            <img id="avatar-img" alt="" style="width: 400px;" />
+          </div>
         </div>
+      </div>
     </div>
+
+    <div class="ibox-body pb-5">
+      <div class="table-responsive">
+
+        <table id="students-table" class="table table-hover">
+
+          <thead class="thead-default">
+            <tr>
+              <th width="80%">Nombre</th>
+              <th width="10%">Estado</th>
+              <th width="10%">Acciones</th>
+              <th width="10%">otro</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($reservations as $reservation)
+            <tr>
+              <td>
+                <div class="img-avatar div-user-avatar"
+                  style="background-image:  @if ($reservation->user->avatar) url('{{$reservation->user->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"
+                  data-image="{{ $reservation->user->avatar }}"></div>
+
+                <span class="badge-{{$reservation->user->status_user->type}} badge-point"></span>
+                <a @if (in_array(1, $auth_roles) || in_array(2, $auth_roles))
+                  href="{{ url("/users/{$reservation->user->id}") }}" @endif>
+                  {{$reservation->user->first_name}} {{$reservation->user->last_name}}
+                </a>
+
+                @if ($reservation->user->itsBirthDay())
+                <span class="badge badge-primary" style="margin-left: 4px;"><i
+                    class="la la-birthday-cake"></i>Cumpleañero</span>
+                @endif
+              </td>
+              <td>
+                <span id="status-user-badge-{{ $reservation->id }}"
+                  class="badge badge-{{ $reservation->reservation_status->type }} badge-pill">{{ strtoupper($reservation->reservation_status->reservation_status) }}</span>
+                <span id="status-user-badge-two-{{ $reservation->id }}" style="display: none"
+                  class="badge badge-success badge-pill">CONFIRMADA</span>
+              </td>
+
+              @if (in_array(1, $auth_roles) || in_array(2, $auth_roles))
+              <td>
+                {!! Form::open(['action' => ['Clases\ReservationController@destroy', $reservation->id], 'method' =>
+                'delete', 'id' => 'delete'.$reservation->user->id]) !!}
+
+                <input type="hidden" value="1" name="by_god">
+                <button class="btn btn-info btn-icon-only btn-danger sweet-user-delete" type="button"
+                  data-id="{{$reservation->user->id}}"
+                  data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i
+                    class="la la-trash"></i></button>
+                {!! Form::close() !!}
+
+                @if ($reservation->reservation_status_id === 1)
+                {!! Form::open(['action' => ['Clases\ReservationController@confirm', $reservation->id], 'method' =>
+                'POST', 'id' => 'update'.$reservation->user->id]) !!}
+                <input type="hidden" value="1" name="by_god">
+                <button class="btn btn-info btn-icon-only btn-success sweet-user-confirm" type="button"
+                  data-id="{{$reservation->user->id}}"
+                  data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i
+                    class="la la-check-circle"></i></button>
+                {!! Form::close() !!}
+                @endif
+
+              </td>
+              @elseif (in_array(3, $auth_roles) && Auth::id() == $reservation->user->id)
+              <td>
+                {!! Form::open(['route' => ['reservation.destroy', $reservation->id], 'method' => 'delete', 'id'=>
+                'delete'.$reservation->user->id]) !!}
+                <input type="hidden" value="1" name="by_god">
+                <button class="btn btn-outline-info btn-sm btn-thick sweet-user-delete" type="button"
+                  data-id="{{$reservation->user->id}}"
+                  data-name="{{$reservation->user->first_name}} {{$reservation->user->last_name}}"><i
+                    class="la la-trash">Salir de Clase</i></button>
+                {!! Form::close() !!}
+              </td>
+              @endif
+              <td>{{ $reservation->updated_at }}</td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="user-assign" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Agregar Alumno</h5>
-                
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body pl-4 pb-5">
-                <table id="students-table-search" class="table table-hover">
-                    <thead class="thead-default">
-                        <tr>
-                            <th width="90%">Alumnos</th>
-                            <th width="10%">Accion</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($outclase as $usuario)
-                        <tr>
-                            <td>
-                                <div class="img-avatar" style="background-image:  @if ($usuario->avatar) url('{{$usuario->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif"></div>
-                                <span class="badge-{{$usuario->status_user->type}} badge-point"></span>
-                                <a href="{{url('/users/'.$usuario->id)}}">{{$usuario->first_name}} {{$usuario->last_name}}</a>
-                            </td>
-                            <td>
-                                {!! Form::open(['route' => ['reservation.store'], 'method' => 'post']) !!}
-                                    <input type="hidden" value="{{$usuario->id}}" name="user_id">
-                                    
-                                    <input type="hidden" value="{{$clase->id}}" name="clase_id">
+<div class="modal fade" id="user-assign" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar Alumno</h5>
 
-                                    {{-- <input type="hidden" value="{{ $auth_roles[0] ?? 0 }}" name="by_god"> --}}
-                                    
-                                    <button type="button" class="btn btn-primary button-little" type="submit" onClick="this.form.submit();">Agregar</button>
-                                {!! Form::close() !!}
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body pl-4 pb-5">
+        <table id="students-table-search" class="table table-hover">
+          <thead class="thead-default">
+            <tr>
+              <th width="90%">Alumnos</th>
+              <th width="10%">Accion</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($outclase as $usuario)
+            <tr>
+              <td>
+                <div class="img-avatar"
+                  style="background-image:  @if ($usuario->avatar) url('{{$usuario->avatar}}') @else url('{{ asset('/img/default_user.png') }}') @endif">
+                </div>
+                <span class="badge-{{$usuario->status_user->type}} badge-point"></span>
+                <a href="{{url('/users/'.$usuario->id)}}">{{$usuario->first_name}} {{$usuario->last_name}}</a>
+              </td>
+              <td>
+                {!! Form::open(['route' => ['reservation.store'], 'method' => 'post']) !!}
+                <input type="hidden" value="{{$usuario->id}}" name="user_id">
+
+                <input type="hidden" value="{{$clase->id}}" name="clase_id">
+
+                {{-- <input type="hidden" value="{{ $auth_roles[0] ?? 0 }}" name="by_god"> --}}
+
+                <button type="button" class="btn btn-primary button-little" type="submit"
+                  onClick="this.form.submit();">Agregar</button>
+                {!! Form::close() !!}
+              </td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- Modal de confirmacion de clase-->
