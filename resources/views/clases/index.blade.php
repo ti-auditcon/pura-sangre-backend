@@ -58,10 +58,10 @@
                 {{ Form::close() }}
 
                 <div id="calendar" style="position: relative;">
-                    <div id="calendar-spinner" class="loading-box" hidden>
+                    {{-- <div id="calendar-spinner" class="loading-box" hidden>
                         <div class="spinner"></div>
                         <h1>Cargando...</h1>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
