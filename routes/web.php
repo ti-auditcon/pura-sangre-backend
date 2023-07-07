@@ -265,5 +265,8 @@ Route::get('test-email', function() {
         'message' => 'This is a test message',
     ];
 
-    return Mail::to($user->email)->send(new App\Mail\SendEmail($emailData));
+    // we show in the page the email template
+    return new App\Mail\SendEmail($emailData);
+
+    // return Mail::to($user->email)->send(new App\Mail\SendEmail($emailData));
 });
