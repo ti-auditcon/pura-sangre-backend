@@ -75,7 +75,7 @@
             <div class="row">
               <div class="col-12 text-muted">Coach:</div>
 
-              <div class="col-12">{{ $clase->coach->full_name }}</div>
+              <div class="col-12">{{ $clase->coach ? $clase->coach->full_name : 'Sin Coach asignado' }}</div>
             </div>
           </div>
           <div class="clase-graphics pt-2">
