@@ -3,14 +3,12 @@
 namespace App\Observers\Plans;
 
 use Carbon\Carbon;
-use App\Models\Users\User;
 use App\Models\Plans\PlanUser;
 use App\Models\Plans\PlanStatus;
 use App\Models\Users\StatusUser;
 use App\Models\Clases\Reservation;
 use App\Models\Plans\PostponePlan;
 use App\Models\Plans\PlanIncomeSummary;
-use Illuminate\Support\Facades\Session;
 
 class PlanUserObserver
 {
