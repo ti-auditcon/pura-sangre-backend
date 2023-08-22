@@ -54,37 +54,37 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
         }
     });
 
-    Route::get('add-one-day-to-users-plans', function() {
-        $currentDate = now();
+    // Route::get('add-one-day-to-users-plans', function() {
+    //     $currentDate = now();
 
-        $plansToUpdate = DB::table('plan_user')
-            ->whereNull('deleted_at')
-            ->where('finish_date', '>=', $currentDate)
-            ->where('plan_status_id', '!=', App\Models\Plans\PlanStatus::FINISHED)
-            ->orderByDesc('finish_date')
-            ->get();
+    //     $plansToUpdate = DB::table('plan_user')
+    //         ->whereNull('deleted_at')
+    //         ->where('finish_date', '>=', $currentDate)
+    //         ->where('plan_status_id', '!=', App\Models\Plans\PlanStatus::FINISHED)
+    //         ->orderByDesc('finish_date')
+    //         ->get();
 
-        foreach ($plansToUpdate as $plan) {
-            $updateData = [];
-            $newFinishDate = Carbon::parse($plan->finish_date)->addDay();
+    //     foreach ($plansToUpdate as $plan) {
+    //         $updateData = [];
+    //         $newFinishDate = Carbon::parse($plan->finish_date)->addDay();
 
-            // If the plan's start date is before the current date
-            if (Carbon::parse($plan->start_date)->lt($currentDate)) {
-                $updateData['finish_date'] = $newFinishDate;
-            } else {
-                $updateData['start_date'] = Carbon::parse($plan->start_date)->addDay();
-                $updateData['finish_date'] = $newFinishDate;
-            }
+    //         // If the plan's start date is before the current date
+    //         if (Carbon::parse($plan->start_date)->lt($currentDate)) {
+    //             $updateData['finish_date'] = $newFinishDate;
+    //         } else {
+    //             $updateData['start_date'] = Carbon::parse($plan->start_date)->addDay();
+    //             $updateData['finish_date'] = $newFinishDate;
+    //         }
 
-            DB::table('plan_user')
-                ->where('id', $plan->id)
-                ->update($updateData);
-        }
+    //         DB::table('plan_user')
+    //             ->where('id', $plan->id)
+    //             ->update($updateData);
+    //     }
 
-        return response()->json([
-            'message' => 'Planes actualizados correctamente.'
-        ]);
-    });
+    //     return response()->json([
+    //         'message' => 'Planes actualizados correctamente.'
+    //     ]);
+    // });
 
     // Route::get('update-past-reservations', function() {
     //     DB::table('reservations')
