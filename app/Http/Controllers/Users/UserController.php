@@ -222,12 +222,12 @@ class UserController extends Controller
 
             return response()->json([
                 'success' => 'Imagen actualizada correctamente.',
-                'url'     => $user->avatar,
+                'url' => $user->avatar,
             ], Response::HTTP_CREATED);
         } catch (\Throwable $error) {
             return response()->json([
                 'code'  => Response::HTTP_INTERNAL_SERVER_ERROR,
-                'error' => 'No se ha podido cargar la imagen, por favor intente mas tarde.',
+                'error' => 'No se ha podido cargar la imagen, por favor intente más tarde.',
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
