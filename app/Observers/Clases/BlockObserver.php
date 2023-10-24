@@ -61,7 +61,12 @@ class BlockObserver
     {
         $block->clases()->each(function ($clase) {
             if ($clase->start >= now()) {
-                $clase->update([ 'quota' => $clase->block->quota ]);
+                $clase->update([ 
+                    'quota' => $clase->block->quota,
+                    'coach_id' => $clase->block->coach_id,
+                    'start_at' => $clase->block->start,
+                    'finish_at' => $clase->block->end,
+                ]);
             }
         });
     }
