@@ -225,7 +225,7 @@
 		<div class="modal-dialog ">
 			<div class="modal-content">
 				<div class="modal-header">
-                <h5 class="modal-title" id="edit-block-title"></h5>
+          <h5 class="modal-title" id="edit-block-title"></h5>
 
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -233,42 +233,59 @@
 				</div>
 
 				<div class="modal-body">
+					<div class="form-group">
+					{{ Form::open(['route' => ['blocks.update', 1], 'method' => 'put', 'id' => 'block-update', 'class' => 'styles-select']) }}
+						<div class="form-group">
+							<div class="input-group clockpicker">
+								<label class="col-sm-2 col-form-label mr-1 pl-0">Inicio:</label>
 
-					<div class="form-group mb-4">
+								<input id="block-edit-start" type="text" class="form-control" value="" name="start">
 
-						{{ Form::open(['route' => ['blocks.update', 1], 'method' => 'put', 'id' => 'block-update', 'class' => 'styles-select']) }}
-						<select multiple="multiple" id="plan-select-edit" name="plans[]">
+								<span class="input-group-addon">
+									<span class="la la-clock-o"></span>
+								</span>
+							</div>
+						</div>
 
-							@foreach ($plans as $plan)
-								<option value="{{ $plan->id }}">
-									{{ $plan->plan }} {{ $plan->plan_period->period ?? "(sin período)" }}
-								</option>
-							@endforeach
+						<div class="form-group">
+							<div class="input-group clockpicker">
+									<label class="col-sm-2 col-form-label mr-1 pl-0">Término:</label>
 
-						</select>
+									<input id="block-edit-end" type="text" class="form-control" value="" name="end">
 
-						<label class="col-form-label">N° de Cupos</label>
+									<span class="input-group-addon"><span class="la la-clock-o"></span></span>
+							</div>
+						</div>
 
-						<input id="block-quota-input" type="number" class="form-control" name="quota" required/>
+						<div class="form-group mt-2">
+							<select multiple="multiple" id="plan-select-edit" name="plans[]">
+								@foreach ($plans as $plan)
+									<option value="{{ $plan->id }}">
+										{{ $plan->plan }} {{ $plan->plan_period->period ?? "(sin período)" }}
+									</option>
+								@endforeach
+							</select>
 
-						<div class="form-group mb-12">
+						</div>
 
+						<div class="form-group">
+							<label class="col-form-label">N° de Cupos</label>
+
+							<input id="block-quota-input" type="number" class="form-control" name="quota" required/>
+						</div>
+
+						<div class="form-group mt-0">
 							<label class="col-form-label">Profesor:</label>
 
 							<select id="select-coach" name="coach_id" class="form-control" required>
-
 								<option value="">Elegir un Profesor</option>
 
 								@foreach (App\Models\Users\Role::find(2)->users as $coach)
-
 									<option value="{{ $coach->id }}">{{ $coach->first_name }} {{ $coach->last_name }}</option>
-
 								@endforeach
-
 							</select>
 
 							<span class="input-group-addon"></span>
-
 						</div>
 
 						<button
@@ -364,9 +381,15 @@
 	      	todayHighlight: true
 		});
 
-		$('#plan-select-add').multiSelect();
+		$('#plan-select-add').multiSelect({
+			selectableHeader: "<div style='color: #a32017;'>No pueden tomar este horario</div>",
+      selectionHeader: "<div class='text-success'>Si pueden tomar este horario</div>",
+		});
 
-		$('#plan-select-edit').multiSelect();
+		$('#plan-select-edit').multiSelect({
+			selectableHeader: "<div style='color: #a32017;'>No pueden tomar este horario</div>",
+      selectionHeader: "<div class='text-success'>Si pueden tomar este horario</div>",
+		});
 
 		$('#calendar').fullCalendar({
 			header: {
@@ -389,18 +412,18 @@
 
 				//traer todos los ids de los planes que pueden tomar clase de la hora que se seleccionó
 				$('#block-quota-input').val(calEvent.quota);
-
-				// $('#select-coach option[value="'+ calEvent.coach_id +'"]').attr('selected', 'selected');
 				$('#select-coach').val(calEvent.coach_id);
+				$('#edit-block-title').text('Editar bloque para ' + moment(calEvent.start).format('dddd') + ' de ' + moment(calEvent.start).format('LT') + ' a ' + moment(calEvent.end).format('LT'));
+				// $('#edit-block-title').empty();
+				// $('#edit-block-title').append(
+				// 	`Editar bloque para ${moment(calEvent.start).format('dddd')} de ${moment(calEvent.start).format('LT')} a ${moment(calEvent.end).format('LT')}`
+				// );
 
-				$('#edit-block-title').empty();
-                console.log(calEvent);
-				$('#edit-block-title').append(
-                    `Editar bloque para ${moment(calEvent.start).format('dddd')} de ${moment(calEvent.start).format('LT')} a ${moment(calEvent.end).format('LT')}`);
-
-				$('#plan-select-edit').multiSelect('deselect_all');
-
-				$('#plan-select-edit').multiSelect('select', ids.map(String));
+				// Set values to edit form
+				$('#block-edit-start').val(calEvent.start.format('H:mm'));     // set value to start input
+        $('#block-edit-end').val(calEvent.end.format('H:mm'));         // set value to end input	
+				$('#plan-select-edit').multiSelect('deselect_all');            // deselect all options
+				$('#plan-select-edit').multiSelect('select', ids.map(String)); // select options with ids
 
 				update_url = $('#blockedit #block-update').attr('action');
 				update_newurl = update_url.replace(/[0-9]+/g, calEvent.id);

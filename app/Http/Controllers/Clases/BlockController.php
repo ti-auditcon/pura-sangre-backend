@@ -79,12 +79,14 @@ class BlockController extends Controller
     {
         $block->update([
             'quota' => $request->quota,
-            'coach_id' => $request->coach_id
+            'coach_id' => $request->coach_id,
+            'start' => $request->start,
+            'end' => $request->end,
         ]);
 
         $block->plans()->sync($request->plans);
 
-        return Redirect::back();
+        return redirect()->route('blocks.index');
     }
 
     /**
