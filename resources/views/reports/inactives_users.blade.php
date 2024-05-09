@@ -121,7 +121,7 @@
         "serverSide": false,
         "order": [[ 5, "desc" ]],
         "ajax": {
-            "url": "/reports/inactive_users_json"
+            "url": "/reports/inactive_users_json",
             "dataType": "json",
             "type": "POST",
             "data": {"_token": "<?= csrf_token() ?>"}
