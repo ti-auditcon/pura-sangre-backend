@@ -190,13 +190,14 @@
             5: { status: 'CANCELADO', class: 'danger', 'text-color': 'text-white' }
         };
 
+    const usersJsonUrl = @json(route('users-json'));
 		$(document).ready(function() {
 			table = $('#students-table').DataTable({
-                "ajax": {
-                    "url": "<?= route('users-json') ?>",
-                    "dataType": "json",
-                    "type": "GET",
-                },
+        "ajax": {
+          "url": usersJsonUrl,
+          "dataType": "json",
+          "type": "GET",
+        },
 				"paging": true,
                 "processing": true,
 				"ordering": true,

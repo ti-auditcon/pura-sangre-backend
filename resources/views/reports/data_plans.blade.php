@@ -110,16 +110,18 @@ $.ajaxSetup({
     }
 });
 
+const dataPlansCompareUrl = @json(route('data-plans-compare'));
 $(document).ready(function () {
     $('#compare-button').click(function () {
         table.ajax.reload();
     });
 
+
     var table = $('#plans-summary-table').DataTable({
         "processing": true,
         // "serverSide": true,
         "ajax": {
-            "url": "<?= route('data-plans-compare') ?>",
+            "url": dataPlansCompareUrl,
             "dataType": "json",
             "type": "POST",
             // Data to send

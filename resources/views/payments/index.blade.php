@@ -51,12 +51,13 @@
 <script src="{{ asset('js/datatables.min.js') }}"></script>
 
 <script>
+  const dataPagosUrl = @json(route('datapagos'));
     $('#payments-table').DataTable({
         "processing": true,
         "serverSide": true,
         "order": [[ 0, "desc" ]],
         "ajax": {
-            "url": "<?= route('datapagos') ?>",
+            "url": dataPagosUrl,
             "dataType": "json",
             "type": "POST",
             "data": { "_token": "<?= csrf_token() ?>" }
