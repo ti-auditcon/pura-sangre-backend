@@ -115,14 +115,13 @@
 <script src="{{ asset('js/datatables.min.js') }}"></script>
 
 <script>
-  var inactiveUsersUrl = "{{ (route('inactiveusers', [], true)) }}";
     // {{--  datatable --}}
     var table = $('#inactives-table').DataTable({
         "processing": true,
         "serverSide": false,
         "order": [[ 5, "desc" ]],
         "ajax": {
-            "url": inactiveUsersUrl,
+            "url": "/reports/inactive_users_json"
             "dataType": "json",
             "type": "POST",
             "data": {"_token": "<?= csrf_token() ?>"}
