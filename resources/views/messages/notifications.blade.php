@@ -328,7 +328,7 @@
         $(document).ready(function() {
             var table = $('#example').DataTable({
                 "ajax": {
-                    "url": '{{ url("/messages/users_Json") }}',
+                    "url": "/messages/users_Json",
                     "dataType": "json",
                     "type": "GET",
                     "data": {"_token": "<?= csrf_token() ?>"},
