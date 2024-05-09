@@ -115,7 +115,7 @@
 <script src="{{ asset('js/datatables.min.js') }}"></script>
 
 <script>
-  const inactiveUsersUrl = @json(route('inactiveusers'));
+  const inactiveUsersUrl = @json(route('inactiveusers', [], true));
     // {{--  datatable --}}
     var table = $('#inactives-table').DataTable({
         "processing": true,
