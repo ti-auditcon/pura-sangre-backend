@@ -110,7 +110,6 @@ $.ajaxSetup({
     }
 });
 
-const dataPlansCompareUrl = @json(route('data-plans-compare'));
 $(document).ready(function () {
     $('#compare-button').click(function () {
         table.ajax.reload();
@@ -121,7 +120,7 @@ $(document).ready(function () {
         "processing": true,
         // "serverSide": true,
         "ajax": {
-            "url": dataPlansCompareUrl,
+            "url": "/reports/data-plans/compare",
             "dataType": "json",
             "type": "POST",
             // Data to send

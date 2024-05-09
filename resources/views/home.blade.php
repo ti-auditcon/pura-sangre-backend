@@ -334,14 +334,13 @@
 <script src="{{ asset('js/datatables.min.js') }}"></script>
 
 <script>
-  const expiredPlansUrl = @json(route('expiredplans'));
     $('#inactive-users-table').DataTable({
         "processing": true,
         "serverSide": false,
         "order": [[ 2, "desc" ]],
         "dom": '<"top"><"bottom"><"clear">',
         "ajax": {
-            "url": expiredPlansUrl,
+            "url": "/expired-plans",
             "dataType": "json",
             "type": "POST",
             "data": {"_token": "<?= csrf_token() ?>"}

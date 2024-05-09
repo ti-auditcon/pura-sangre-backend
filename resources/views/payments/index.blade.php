@@ -51,45 +51,44 @@
 <script src="{{ asset('js/datatables.min.js') }}"></script>
 
 <script>
-  const dataPagosUrl = @json(route('datapagos'));
-    $('#payments-table').DataTable({
-        "processing": true,
-        "serverSide": true,
-        "order": [[ 0, "desc" ]],
-        "ajax": {
-            "url": dataPagosUrl,
-            "dataType": "json",
-            "type": "POST",
-            "data": { "_token": "<?= csrf_token() ?>" }
-        },
-        "language": {
-            "loadingRecords": "Cargando datos...",
-            "processing": "Cargando datos...",
-            "lengthMenu": "Mostrar _MENU_ elementos",
-            "zeroRecords": "Sin resultados",
-            "info": "Mostrando página _PAGE_ de _PAGES_",
-            "infoEmpty": "Sin resultados",
-            "infoFiltered": "(filtrado de _MAX_ registros totales)",
-            "search": "Filtrar:",
-            "paginate": {
-                "first":      "Primero",
-                "last":       "último",
-                "next":       "Siguiente",
-                "previous":   "Anterior"
-            },
-        },
-        "columns": [
-            { "data": "fecha_registro" },
-            { "data": "alumno" },
-            { "data": "email" },
-            { "data": "plan"} , 
-            { "data": "payment_type"} , 
-            { "data": "date" },
-            { "data": "start_date" },
-            { "data": "finish_date" },
-            { "data": "amount" },
-        ]
-    });
+  $('#payments-table').DataTable({
+      "processing": true,
+      "serverSide": true,
+      "order": [[ 0, "desc" ]],
+      "ajax": {
+          "url": "payments/pagos",
+          "dataType": "json",
+          "type": "POST",
+          "data": { "_token": "<?= csrf_token() ?>" }
+      },
+      "language": {
+          "loadingRecords": "Cargando datos...",
+          "processing": "Cargando datos...",
+          "lengthMenu": "Mostrar _MENU_ elementos",
+          "zeroRecords": "Sin resultados",
+          "info": "Mostrando página _PAGE_ de _PAGES_",
+          "infoEmpty": "Sin resultados",
+          "infoFiltered": "(filtrado de _MAX_ registros totales)",
+          "search": "Filtrar:",
+          "paginate": {
+              "first":      "Primero",
+              "last":       "último",
+              "next":       "Siguiente",
+              "previous":   "Anterior"
+          },
+      },
+      "columns": [
+          { "data": "fecha_registro" },
+          { "data": "alumno" },
+          { "data": "email" },
+          { "data": "plan"} , 
+          { "data": "payment_type"} , 
+          { "data": "date" },
+          { "data": "start_date" },
+          { "data": "finish_date" },
+          { "data": "amount" },
+      ]
+  });
 </script> 
   {{--  End datatable --}}
 

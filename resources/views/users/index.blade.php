@@ -194,7 +194,7 @@
 		$(document).ready(function() {
 			table = $('#students-table').DataTable({
         "ajax": {
-          "url": usersJsonUrl,
+          "url": "/users-json",
           "dataType": "json",
           "type": "GET",
         },
