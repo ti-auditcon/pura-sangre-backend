@@ -14,6 +14,7 @@ use App\Models\Plans\PlanUser;
 use App\Models\Clases\ClaseType;
 use App\Models\Clases\Reservation;
 use App\Observers\Wods\WodObserver;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use App\Observers\Bills\BillObserver;
 use App\Observers\Plans\PlanObserver;
@@ -49,6 +50,8 @@ class AppServiceProvider extends ServiceProvider
         Wod::observe(WodObserver::class);
         /** Set language to Spanish Chile from Carbon */
         setlocale(LC_ALL, "es_CL.UTF-8");
+
+        URL::forceScheme('https');
     }
 
     /**
