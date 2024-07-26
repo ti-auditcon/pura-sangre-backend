@@ -6,6 +6,7 @@ use App\Models\Bills\Bill;
 use Illuminate\Http\Request;
 use App\Exports\PaymentsExcel;
 use App\Models\Plans\PlanUser;
+use App\Jobs\ExportPaymentsToExcel;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\Bills\BillRequest;
@@ -155,13 +156,15 @@ class BillController extends Controller
     }
 
     /**
-     * Export Excel of System bills
+     * Trigger the job to generate the Excel file.
      *
-     * @return  Maatwebsite\Excel\Facades\Excel
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function export()
+    public function export(Request $request)
     {
-        return Excel::download(new PaymentsExcel, toDay()->format('d-m-Y') . '_pagos.xlsx');
+        ExportPaymentsToExcel::dispatch();
+
+        return redirect()->back()->with('status', 'El proceso de exportación se ha iniciado. El archivo estará disponible para descargar en la sección de descargas en breve.');
     }
 
     /**

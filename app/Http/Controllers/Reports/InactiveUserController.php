@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Reports;
 
 use App\Exports\InactiveUsersExport;
 use App\Http\Controllers\Controller;
+use App\Jobs\ExportInactiveStudentsToExcel;
 use App\Traits\ExpiredPlans;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -34,6 +35,8 @@ class InactiveUserController extends Controller
      */
     public function export()
     {
-        return Excel::download(new InactiveUsersExport, toDay()->format('d-m-Y') . '_usuarios_inactivos.xlsx');
+         ExportInactiveStudentsToExcel::dispatch();
+
+        return redirect()->back()->with('success', 'El proceso de exportación se ha iniciado. El archivo estará disponible para descargar en la sección de descargas en breve.');
     }
 }

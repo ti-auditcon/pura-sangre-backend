@@ -124,7 +124,6 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::post('payments/pagos', 'Bills\BillController@getPagos')->name('datapagos');
     Route::resource('payments', 'Bills\BillController')->middleware('role:1')->only('index', 'store', 'update', 'destroy');
     Route::get('/bills', 'Bills\BillController@bills')->name('bills');
-    Route::get('bills/export', 'Bills\BillController@export')->name('bills.export');
 
     Route::resource('payments', 'Bills\BillController')->middleware('role:1')->only('index', 'update');
 
@@ -184,11 +183,17 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::get('reports/totalplanssub', 'Reports\ReportController@totalplanssub')->name('totalplanssub');
     Route::get('reports/inactive_users', 'Reports\InactiveUserController@index');
     Route::post('reports/inactive_users_json', 'Reports\InactiveUserController@inactiveUsers')->name('inactiveusers');
-    Route::get('reports/inactive_users/export', 'Reports\InactiveUserController@export')->name('inactive_users.export');
     Route::get('reports/heatmap', 'Reports\ReportController@heatMap');
     Route::get('reports/data-plans/', 'Reports\DataPlansController@index');
     Route::post('reports/data-plans/compare', 'Reports\DataPlansController@compare')->name('data-plans-compare');
     Route::post('reports/data-plans/add', 'Reports\DataPlansController@add')->name('data-plans-compare-export');
+    // Excel
+    Route::get('reports/downloads', 'Reports\ExcelUsersController@index')->name('reports.downloads');
+    Route::post('/reports/downloads/getFiles', 'Reports\ExcelUsersController@getFiles')->name('reports.downloads.getFiles');
+
+    Route::post('export-payments', 'Bills\BillController@export')->name('bills.export');
+    Route::post('export-users', 'Users\UserController@export')->name('users.export');
+    Route::post('export-inactives', 'Reports\InactiveUserController@export')->name('inactives.export');
 
     /*
      * Users Routes (ALUMNOS, PROFES, ADMINS, ALERTAS)
@@ -198,7 +203,6 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::post('users/{user}/plans/{plan}/annul', 'Plans\PlanUserController@annul')->name('users.plans.annul');
     Route::resource('users', 'Users\UserController');
     Route::get('users-json', 'Users\UserController@usersJson')->name('users-json');
-    Route::get('export', 'Users\UserController@export')->name('users.export');
     Route::get('update-avatar', 'Users\UserController@updateAvatar')->name('user.update.avatar');
     Route::resource('users.plans', 'Plans\PlanUserController');
     Route::post('users/{user}/plans/{plan}/annul', 'Plans\PlanUserController@annul')->name('users.plans.annul');
