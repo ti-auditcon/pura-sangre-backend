@@ -71,6 +71,8 @@
                             <li><a href="{{ url('/reports/inactive_users') }}">Usuarios Inactivos</a></li>
 
                             <li><a href="{{ url('/reports/data-plans') }}">Análisis Diarios</a></li>
+
+                            <li><a href="{{ url('/reports/students') }}">Análisis de Alumnos</a></li>
                         </ul>
                     </div>
 
