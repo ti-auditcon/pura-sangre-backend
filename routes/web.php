@@ -188,8 +188,8 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
     Route::post('reports/data-plans/compare', 'Reports\DataPlansController@compare')->name('data-plans-compare');
     Route::post('reports/data-plans/add', 'Reports\DataPlansController@add')->name('data-plans-compare-export');
     // Excel
-    Route::get('reports/downloads', 'Reports\ExcelUsersController@index')->name('reports.downloads');
-    Route::post('/reports/downloads/getFiles', 'Reports\ExcelUsersController@getFiles')->name('reports.downloads.getFiles');
+    Route::get('reports/downloads', 'Reports\DownloadsController@index')->name('reports.downloads');
+    Route::post('/reports/downloads/getFiles', 'Reports\DownloadsController@getFiles')->name('reports.downloads.getFiles');
 
     Route::post('export-payments', 'Bills\BillController@export')->name('bills.export');
     Route::post('export-users', 'Users\UserController@export')->name('users.export');

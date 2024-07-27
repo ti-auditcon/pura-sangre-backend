@@ -6,6 +6,7 @@ use App\Models\Bills\Bill;
 use Illuminate\Http\Request;
 use App\Exports\PaymentsExcel;
 use App\Models\Plans\PlanUser;
+use App\Models\Reports\Download;
 use App\Jobs\ExportPaymentsToExcel;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
@@ -162,9 +163,10 @@ class BillController extends Controller
      */
     public function export(Request $request)
     {
-        ExportPaymentsToExcel::dispatch();
+        $download = Download::create(['status' => 'procesando']);
+        ExportPaymentsToExcel::dispatch($download);
 
-        return redirect()->back()->with('status', 'El proceso de exportación se ha iniciado. El archivo estará disponible para descargar en la sección de descargas en breve.');
+        return redirect()->back()->with('success', 'El proceso de exportación se ha iniciado. El archivo estará disponible para descargar en la sección de descargas en breve.');
     }
 
     /**

@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="row">
-  <div class="col-12">
+    <div class="col-12">
         <div class="ibox rounded">
             <div class="ibox-head">
                 <div class="ibox-title">
@@ -43,12 +43,12 @@
 <script src="{{ asset('js/moment.min.js') }}"></script>
 <script>
 $(document).ready(function() {
-    $('#files-table').DataTable({
-        processing: true,
+    var table = $('#files-table').DataTable({
+        processing: false,
         serverSide: true,
         language: {
             processing: 'Cargando...',
-            search: 'Buscar:',
+            search: 'Buscar...',
             lengthMenu: 'Mostrar _MENU_ elementos',
             zeroRecords: 'Sin resultados',
             info: 'Mostrando página _PAGE_ de _PAGES_',
@@ -69,14 +69,16 @@ $(document).ready(function() {
             },
             dataSrc: 'data'
         },
-        order: [[2, 'desc']],
+        order: [[2, 'desc']], // Default sorting by 'created_at' column in descending order
         columns: [
             { data: 'name', name: 'name' },
             { 
                 data: 'size', 
                 name: 'size',
                 render: function(data, type, row) {
-                    return (data / 1024).toFixed(2) + ' KB';
+                    return data !== 'N/A' 
+                    ? Math.round(parseInt(data)) + ' KB'
+                    : 'N/A';
                 }
             },
             { 
@@ -90,13 +92,20 @@ $(document).ready(function() {
                 data: 'url', 
                 name: 'url',
                 render: function(data, type, row) {
-                    return `<a href="${data}" class="btn btn-primary btn-sm" download>Descargar</a>`;
+                    return row.status == 'completado' 
+                      ? `<a href="${data}" class="btn btn-primary btn-sm" download>Descargar</a>` 
+                      : 'Procesando...';
                 },
                 orderable: false,
                 searchable: false
             }
         ]
     });
+
+    // Poll the server every 5 seconds for updates
+    setInterval(function() {
+      table.ajax.reload(null, false);
+    }, 5000);
 });
 </script>
 @endsection

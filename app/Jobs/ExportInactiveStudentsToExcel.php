@@ -4,9 +4,11 @@ namespace App\Jobs;
 
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
+use App\Models\Reports\Download;
 use App\Exports\InactiveUsersExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -15,14 +17,11 @@ class ExportInactiveStudentsToExcel implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    protected $download;
+
+    public function __construct(Download $download)
     {
-        //
+        $this->download = $download;
     }
 
     /**
@@ -35,6 +34,19 @@ class ExportInactiveStudentsToExcel implements ShouldQueue
         $fileName = Carbon::now()->format('d-m-Y') . '_inactivos.xlsx';
         $filePath = 'downloads/' . $fileName;
 
-        Excel::store(new InactiveUsersExport, $filePath, 'public');
+        try {
+            Excel::store(new InactiveUsersExport, $filePath, 'public');
+
+            $this->download->update([
+                'file_name' => $fileName,
+                'status'    => 'completado',
+                'url'       => Storage::disk('public')->url($filePath),
+                'size'      => Storage::disk('public')->size($filePath),
+            ]);
+        } catch (\Throwable $th) {
+            $this->download->update([
+                'status' => 'fallido'
+            ]);
+        }
     }
 }
