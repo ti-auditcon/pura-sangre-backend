@@ -19,19 +19,20 @@ class DownloadsController extends Controller
         
         $fileDetails = $downloads->map(function ($download) {
             return [
-                'name' => $download->status === 'completado' ? $download->file_name : 'Procesando...',
-                'size' => $download->size ? ($download->size / 1024) . ' KB' : 'N/A',
-                'url' => $download->url ?? '#',
+                'id'         => $download->id,
+                'name'       => $download->status === 'completado' ? $download->file_name : 'Procesando...',
+                'size'       => $download->size ? ($download->size / 1024) . ' KB' : 'N/A',
+                'url'        => $download->url ?? '#',
+                'status'     => $download->status,
                 'created_at' => $download->created_at->format('Y-m-d H:i:s'),
-                'status' => $download->status,
             ];
         });
 
         return response()->json([
-            'draw' => intval($request->input('draw')),
-            'recordsTotal' => count($fileDetails),
+            'draw'            => intval($request->input('draw')),
+            'recordsTotal'    => count($fileDetails),
             'recordsFiltered' => count($fileDetails),
-            'data' => $fileDetails->values()->toArray(),
+            'data'            => $fileDetails->values()->toArray(),
         ]);
     }
 }

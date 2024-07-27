@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use App\Exports\UsersExport;
 use Illuminate\Bus\Queueable;
 use App\Models\Reports\Download;
+use App\Events\DownloadCompleted;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
@@ -15,7 +17,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 
 class ExportStudentsToExcel implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, PusherTrait;
 
     protected $download;
 
@@ -43,8 +45,10 @@ class ExportStudentsToExcel implements ShouldQueue
                 'url' => Storage::disk('public')->url($filePath),
                 'size' => Storage::disk('public')->size($filePath),
             ]);
-            
+
+            $this->completedPush();
         } catch (\Throwable $th) {
+            Log::error('Export failed: ' . $th->getMessage());
             $this->download->update([
                 'status' => 'fallido'
             ]);

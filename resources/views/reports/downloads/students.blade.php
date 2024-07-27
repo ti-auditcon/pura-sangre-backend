@@ -35,15 +35,31 @@
 @section('css')
 {{-- stylesheet para esta vista --}}
 <link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}">
+
+<style>
+@keyframes pulseButton {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.pulse {
+  animation: pulseButton 0.3s ease-in-out;
+  animation-iteration-count: 2;
+}
+</style>
+
 @endsection
 
 @section('scripts')
 {{-- scripts para esta vista --}}
 <script src="{{ asset('js/datatables.min.js') }}"></script>
 <script src="{{ asset('js/moment.min.js') }}"></script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script>
 $(document).ready(function() {
     var table = $('#files-table').DataTable({
+        responsive: true,
         processing: false,
         serverSide: true,
         language: {
@@ -92,8 +108,8 @@ $(document).ready(function() {
                 data: 'url', 
                 name: 'url',
                 render: function(data, type, row) {
-                    return row.status == 'completado' 
-                      ? `<a href="${data}" class="btn btn-primary btn-sm" download>Descargar</a>` 
+                    return row.status === 'completado' 
+                      ? `<a href="${data}" class="btn btn-info download-btn" id="${row.id}" download>Descargar</a>`
                       : 'Procesando...';
                 },
                 orderable: false,
@@ -102,10 +118,42 @@ $(document).ready(function() {
         ]
     });
 
-    // Poll the server every 5 seconds for updates
-    setInterval(function() {
-      table.ajax.reload(null, false);
-    }, 5000);
+    var pusher = new Pusher('fa1593e2790e5d18db8b', {
+      cluster: 'sa1',
+      forceTLS: true,
+    });
+
+var channel = pusher.subscribe('downloads');
+    channel.bind('download.completed', function(data) {
+      console.log('Received data:', data);
+
+      // Fix the format of the received data
+      const fixedData = data.replace(/([{,])\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*:/g, '$1"$2":')
+                            .replace(/'/g, '"');
+      try {
+        const response = JSON.parse(fixedData);
+        console.log(response);
+        table.ajax.reload(function() {
+          console.log('reloaded');
+          console.log('#' + response.id);
+          
+          var row = $('#' + response.id);
+          if (row.length) {
+            row.addClass('pulse');
+            setTimeout(function() {
+              row.removeClass('pulse');
+            }, 1000);
+          } else {
+            console.log('Row not found');
+          }
+        }, false);
+      } catch (e) {
+        console.error('Error parsing JSON:', e);
+      }
+    });
 });
+
+
 </script>
+
 @endsection

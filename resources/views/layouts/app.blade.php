@@ -52,7 +52,7 @@
         <link rel="dns-prefetch" href="https://fonts.gstatic.com">
         
         <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
-    </head>
+     </head>
 
     <body class="fixed-navbar">
         
@@ -98,6 +98,18 @@
 
         <!-- CORE SCRIPTS-->
         <script src="{{ asset('/js/app.min.js') }}"></script>
+
+      {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pusher/7.0.1/pusher.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/laravel-echo@1.11.3/dist/echo.iife.min.js"></script>
+      <script>
+          window.Echo = new Echo({
+            broadcaster: 'pusher',
+            key: '{{ env('MIX_PUSHER_APP_KEY') }}',
+            cluster: '{{ env('MIX_PUSHER_APP_CLUSTER') }}',
+            encrypted: true
+          });
+      </script> --}}
+
       
         <!-- PAGE LEVEL SCRIPTS-->
         <script>

@@ -5,6 +5,8 @@ namespace App\Jobs;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use App\Models\Reports\Download;
+use App\Events\DownloadCompleted;
+use Illuminate\Support\Facades\Log;
 use App\Exports\InactiveUsersExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Queue\SerializesModels;
@@ -15,7 +17,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 
 class ExportInactiveStudentsToExcel implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, PusherTrait;
 
     protected $download;
 
@@ -43,7 +45,10 @@ class ExportInactiveStudentsToExcel implements ShouldQueue
                 'url'       => Storage::disk('public')->url($filePath),
                 'size'      => Storage::disk('public')->size($filePath),
             ]);
+
+            $this->completedPush();
         } catch (\Throwable $th) {
+            Log::error('Export failed: ' . $th->getMessage());
             $this->download->update([
                 'status' => 'fallido'
             ]);
