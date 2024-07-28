@@ -7,13 +7,15 @@ use App\Exports\UsersExport;
 use Illuminate\Http\Request;
 use App\Models\Plans\PlanUser;
 use App\Models\Users\Emergency;
+use App\Models\Reports\Download;
 use App\Models\Clases\Reservation;
+use App\Jobs\ExportStudentsToExcel;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Users\UserControllerImageRequest;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\Users\UserRequest;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Requests\Users\UserControllerImageRequest;
 
 class UserController extends Controller
 {
@@ -59,16 +61,17 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * [export description]
+        /**
+     * Trigger the job to generate the Excel file.
      *
-     * @return  Maatwebsite\Excel\Facades\Excel
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function export()
     {
-        return Excel::download(
-            new UsersExport, toDay()->format('d-m-Y') . '_usuarios.xls'
-        );
+        $download = Download::create(['status' => 'procesando']);
+        ExportStudentsToExcel::dispatch($download);
+
+        return back()->with('success', 'El proceso de exportación se ha iniciado. El archivo estará disponible para descargar en la sección de descargas en breve.');
     }
 
     /** 

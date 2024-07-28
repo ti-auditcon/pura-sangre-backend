@@ -38,15 +38,15 @@ class DataPlansController extends Controller
         
         $new = $data->map(function ($data) {
             return [
-                'day' => ucfirst(Carbon::parse($data->date)->isoFormat('dddd')),
-                'date' => Carbon::parse($data->date)->format('d-m-Y'),
-                'active_users_day' => $data->active_users_day,
-                'reservations_day' => $data->reservations_day,
+                'day'                     => ucfirst(Carbon::parse($data->date)->isoFormat('dddd')),
+                'date'                    => Carbon::parse($data->date)->format('d-m-Y'),
+                'active_users_day'        => $data->active_users_day,
+                'reservations_day'        => $data->reservations_day,
                 'cumulative_reservations' => number_format($data->cumulative_reservations, $decimal = 0, '.', '.'),
-                'day_incomes' => '$ ' . number_format($data->day_incomes, $decimal = 0, '.', '.'),
-                'cumulative_incomes' => '$ ' . number_format($data->cumulative_incomes, $decimal = 0, '.', '.'),
-                'day_plans_sold' => $data->day_plans_sold,
-                'cumulative_plans_sold' => $data->cumulative_plans_sold
+                'day_incomes'             => '$ ' . number_format($data->day_incomes, $decimal = 0, '.', '.'),
+                'cumulative_incomes'      => '$ ' . number_format($data->cumulative_incomes, $decimal = 0, '.', '.'),
+                'day_plans_sold'          => $data->day_plans_sold,
+                'cumulative_plans_sold'   => $data->cumulative_plans_sold
             ];
         });
 

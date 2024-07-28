@@ -11,13 +11,13 @@
                 <div class="ibox-title">Pagos</div>
 
                 <div class="tools">
-                    <a class="btn btn-info btn-labeled btn-labeled-left btn-icon"
-                       style="display: inline-block;" href="{{ route('bills.export') }}"
-                    >
-                        <span class="btn-label"><i class="la la-cloud-download"></i></span>
-                        
-                        Exportar pagos
-                    </a>
+                      <form action="{{ route('bills.export') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-info btn-labeled btn-labeled-left btn-icon">
+                            <span class="btn-label"><i class="la la-cloud-download"></i></span>
+                            Exportar pagos
+                        </button>
+                    </form>
                 </div>
             </div>
             <div class="ibox-body pagos-body">
