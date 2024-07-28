@@ -3,11 +3,9 @@
 namespace App\Jobs;
 
 use Carbon\Carbon;
-use Pusher\Pusher;
 use Illuminate\Bus\Queueable;
 use App\Exports\PaymentsExcel;
 use App\Models\Reports\Download;
-use App\Events\DownloadCompleted;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Queue\SerializesModels;
@@ -24,6 +22,7 @@ class ExportPaymentsToExcel implements ShouldQueue
 
     public function __construct(Download $download)
     {
+        Log::info('Exporting payments to Excel job started');
         $this->download = $download;
     }
 
@@ -34,14 +33,18 @@ class ExportPaymentsToExcel implements ShouldQueue
      */
     public function handle()
     {
+        Log::info('Exporting payments to Excel job started');
         $fileName = Carbon::now()->format('d-m-Y') . '_pagos.xlsx';
         $filePath = 'downloads/' . $fileName;
 
         try {
+            Log::info('Exporting payments to Excel job started');
             $this->startPush();
 
+            Log::info('Exporting payments to Excel job started');
             Excel::store(new PaymentsExcel, $filePath, 'public');
 
+            Log::info('Exporting payments to Excel job started');
             $this->download->update([
                 'file_name' => $fileName,
                 'status'    => 'completado',
@@ -49,9 +52,10 @@ class ExportPaymentsToExcel implements ShouldQueue
                 'size'      => Storage::disk('public')->size($filePath),
             ]);
 
+            Log::info('Exporting payments to Excel job started');
             $this->completedPush();
         } catch (\Throwable $th) {
-            Log::error('Export failed: ' . $th->getMessage());
+            Log::error('Exporting payments to Excel job failed: ' . $th->getMessage());
             $this->download->update([
                 'status' => 'fallido'
             ]);
