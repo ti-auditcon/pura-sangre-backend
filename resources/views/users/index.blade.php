@@ -70,14 +70,13 @@
                                 </span>
                             </div>
                         </span>
-                        <a
-                            class="btn btn-info btn-labeled btn-labeled-left btn-icon"
-                            style="display: inline-block;" href="{{ route('users.export')}}"
-                        >
-                            <span class="btn-label"><i class="la la-cloud-download"></i></span>
-
-                            Excel alumnos
-                        </a>
+                        <form action="{{ route('users.export') }}" method="POST">
+                          @csrf
+                          <button type="submit" class="btn btn-info btn-labeled btn-labeled-left btn-icon">
+                              <span class="btn-label"><i class="la la-cloud-download"></i></span>
+                              Exportar alumnos
+                          </button>
+                      </form>
 
                     </div>
 
