@@ -38,14 +38,16 @@ class ExportPaymentsToExcel implements ShouldQueue
         $filePath = 'downloads/' . $fileName;
 
         try {
-            // Excel::store(new PaymentsExcel, $filePath, 'public');
+            $this->startPush();
 
-            // $this->download->update([
-            //     'file_name' => $fileName,
-            //     'status'    => 'completado',
-            //     'url'       => Storage::disk('public')->url($filePath),
-            //     'size'      => Storage::disk('public')->size($filePath),
-            // ]);
+            Excel::store(new PaymentsExcel, $filePath, 'public');
+
+            $this->download->update([
+                'file_name' => $fileName,
+                'status'    => 'completado',
+                'url'       => Storage::disk('public')->url($filePath),
+                'size'      => Storage::disk('public')->size($filePath),
+            ]);
 
             $this->completedPush();
         } catch (\Throwable $th) {

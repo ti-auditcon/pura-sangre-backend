@@ -37,6 +37,8 @@ class ExportStudentsToExcel implements ShouldQueue
         $filePath = 'downloads/' . $fileName;
 
         try {
+            $this->startPush();
+
             Excel::store(new UsersExport, $filePath, 'public');
 
             $this->download->update([

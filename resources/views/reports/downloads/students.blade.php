@@ -125,19 +125,9 @@ $(document).ready(function() {
 
 var channel = pusher.subscribe('downloads');
     channel.bind('download.completed', function(data) {
-      console.log('Received data:', data);
-
-      // Fix the format of the received data
-      const fixedData = data.replace(/([{,])\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*:/g, '$1"$2":')
-                            .replace(/'/g, '"');
       try {
-        const response = JSON.parse(fixedData);
-        console.log(response);
         table.ajax.reload(function() {
-          console.log('reloaded');
-          console.log('#' + response.id);
-          
-          var row = $('#' + response.id);
+          var row = $('#' + data.id);
           if (row.length) {
             row.addClass('pulse');
             setTimeout(function() {

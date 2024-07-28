@@ -6,6 +6,21 @@ use Pusher\Pusher;
 
 trait PusherTrait
 {
+	public function startPush()
+	{
+		$pusher = new Pusher(
+			config('broadcasting.connections.pusher.key'),
+        	config('broadcasting.connections.pusher.secret'),
+        	config('broadcasting.connections.pusher.app_id'),
+			[
+				'cluster' => config('broadcasting.connections.pusher.options.cluster'),
+            	'useTLS' => true
+			]
+		);
+
+		$pusher->trigger('downloads', 'download.completed', []);
+	}
+
 	public function completedPush($data = null)
 	{
         $pusher = new Pusher(
