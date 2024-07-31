@@ -73,6 +73,8 @@
                             <li><a href="{{ url('/reports/data-plans') }}">Análisis Diarios</a></li>
 
                             <li><a href="{{ url('/reports/students') }}">Análisis de Alumnos</a></li>
+
+                            <li><a href="{{ url('/reports/downloads') }}">Descargas</a></li>
                         </ul>
                     </div>
 

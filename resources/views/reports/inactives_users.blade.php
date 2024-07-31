@@ -10,19 +10,30 @@
         <div class="ibox">
             <div class="ibox-head">
                 <div class="ibox-title">
-                    <div class="row">
-                        <h3 class="ml-4 afont-strong"><i class="fa fa-user text-danger" aria-hidden="true"></i> Usuarios inactivos</h3>
-                        <a
-                            class="ml-2 btn btn-info btn-labeled btn-labeled-left btn-icon"
-                            style="display: inline-block;"
-                            href="{{ route('inactive_users.export') }}"
-                        >
-                            <span class="btn-label">
-                                <i class="la la-cloud-download"></i>
-                            </span>
-                            Exportar
-                        </a>
-                    </div>
+                  <h5 class="font-strong m-0 align-content-center">
+                    <i class="fa fa-user text-danger" aria-hidden="true"></i> Usuarios inactivos
+                  </h5>
+                </div>
+                <div class="ibox-tools">
+                  {{-- <a
+                    class="ml-2 btn btn-info btn-labeled btn-labeled-left btn-icon"
+                    style="display: inline-block;"
+                    href="{{ route('inactive_users.export') }}"
+                  >
+                      <span class="btn-label">
+                          <i class="la la-cloud-download"></i>
+                      </span>
+                      Exportar
+                  </a> --}}
+
+                    <form action="{{ route('inactives.export') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn-info btn-labeled btn-labeled-left btn-icon">
+                          <span class="btn-label"><i class="la la-cloud-download"></i></span>
+                          Exportar inactivos
+                        </button>
+                    </form>
+
                 </div>
             </div>
             <div class="ibox-body pagos-body">
@@ -63,9 +74,7 @@
                                <label class="mb-0 mr-2">&nbsp; Mostrar: </label>
                                
                                <div class="btn-group bootstrap-select show-tick form-control" style="width: 150px;">
-                               
                                    <select class="selectpicker show-tick form-control" id="length-filter" data-style="btn-solid" data-width="150px" tabindex="-98">
-                               
                                        <option value="10">10 alumnos</option>
                                
                                        <option value="25">25 alumnos</option>
@@ -73,9 +82,7 @@
                                        <option value="50">50 alumnos</option>
                                
                                        <option value="100">100 alumnos</option>
-                               
                                    </select>
-                               
                                </div>
                                 <label class="mb-0 mr-2">&nbsp;</label>
                             </div>
