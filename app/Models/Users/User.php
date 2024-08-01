@@ -22,6 +22,7 @@ use App\Models\Clases\ReservationStatus;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -574,12 +575,60 @@ class User extends Authenticatable
     {
         if ($plan = $this->currentPlan()) {
             $this->status_user_id = $plan->isATestPlan()
-                                    ? StatusUser::TEST
-                                    : StatusUser::ACTIVE;
+                ? StatusUser::TEST
+                : StatusUser::ACTIVE;
         } else {
             $this->status_user_id = StatusUser::INACTIVE;
         }
 
         $this->save();
-    }    
+    }
+
+    public function scopeActiveInDateRange(Builder $query, $start, $end)
+    {
+        return $query->join('plan_user', 'users.id', '=', 'plan_user.user_id')
+            ->whereBetween('plan_user.start_date', [$start, $end])
+            ->whereNull('plan_user.deleted_at')
+            ->distinct('users.id');
+    }
+
+    public function scopeFinishedInDateRange(Builder $query, $start, $end)
+    {
+        return $query->join('plan_user', 'users.id', '=', 'plan_user.user_id')
+            ->whereBetween('plan_user.finish_date', [$start, $end])
+            ->whereNull('plan_user.deleted_at')
+            ->distinct('users.id');
+    }
+
+    public function scopeDropouts(Builder $query, $endOfPreviousMonth)
+    {
+        return $query->join('plan_user', 'users.id', '=', 'plan_user.user_id')
+            ->join('plans', 'plan_user.plan_id', '=', 'plans.id')
+            ->where('plan_user.finish_date', '<=', $endOfPreviousMonth)
+            ->whereNotIn('users.id', function($query) use ($endOfPreviousMonth) {
+                $query->select('user_id')
+                    ->from('plan_user')
+                    ->where('start_date', '>', $endOfPreviousMonth);
+            })
+            ->where('plans.id', '!=', Plan::TRIAL)
+            ->whereNull('plan_user.deleted_at')
+            ->distinct('users.id');
+    }
+
+    public function scopeNewStudentsInDateRange(Builder $query, $start, $end)
+    {
+        return $query->join('plan_user', 'users.id', '=', 'plan_user.user_id')
+            ->whereBetween('plan_user.start_date', [$start, $end])
+            ->whereNull('plan_user.deleted_at')
+            ->distinct('users.id');
+    }
+
+    public function scopeTurnaroundInDateRange(Builder $query, $start, $end)
+    {
+        return $query->join('plan_user', 'users.id', '=', 'plan_user.user_id')
+            ->join('plans', 'plan_user.plan_id', '=', 'plans.id')
+            ->whereBetween('plan_user.start_date', [$start, $end])
+            ->whereNull('plan_user.deleted_at')
+            ->distinct('users.id');
+    }
 }

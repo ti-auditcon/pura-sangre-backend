@@ -197,8 +197,8 @@ Route::middleware(['auth'])->prefix('/')->group(function () {
 
     Route::get('/reports/students', 'Reports\MonthlyStudentReportController@index');
     Route::post('/reports/students-filter', 'Reports\MonthlyStudentReportController@filterReports')->name('reports.students.filter');
-    Route::get('/reports/trials', 'Reports\MonthlyTrialUserReportController@index');
-    Route::post('/reports/trials-filter', 'Reports\MonthlyStudentReportController@filterReports')->name('reports.trials.filter');
+    // Route::get('/reports/trials', 'Reports\MonthlyTrialUserReportController@index');
+    Route::post('/reports/trials-filter', 'Reports\MonthlyTrialUserReportController@filterReports')->name('reports.trials.filter');
 
     /*
      * Users Routes (ALUMNOS, PROFES, ADMINS, ALERTAS)
