@@ -24,6 +24,7 @@ $(document).ready(function() {
     processing: true,
     serverSide: true,
     sort: false,
+    pageLength: 12,
     ajax: {
       url: '/reports/students-filter',
       dataType: 'json',

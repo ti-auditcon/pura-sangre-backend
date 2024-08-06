@@ -23,7 +23,7 @@ class MonthlyStudentReport extends Model
      */
     protected $fillable = [
         'year', 'month', 'active_students_start', 'active_students_end', 'dropouts',
-        'new_students', 'dropout_percentage', 'new_students_percentage', 'turnaround',
+        'dropout_percentage', 'new_students', 'new_students_percentage', 'turnaround',
         'previous_month_difference', 'growth_rate', 'retention_rate', 'rotation'
     ];
 }

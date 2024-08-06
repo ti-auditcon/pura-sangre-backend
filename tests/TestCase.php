@@ -8,6 +8,7 @@ use App\Models\Users\RoleUser;
 use Tests\Traits\FactoriesCrud;
 use App\Models\Settings\Setting;
 use Tests\Traits\PlanFactoryTrait;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
@@ -42,7 +43,6 @@ abstract class TestCase extends BaseTestCase
             'user_id' => $this->admin->id, 
             'role_id' => Role::ADMIN
         ]);
-
 
         $setting = new Setting;
         $setting->id = 1;

@@ -16,13 +16,14 @@ use App\Models\Plans\PlanStatus;
 use App\Models\Users\StatusUser;
 use Freshwork\ChileanBundle\Rut;
 use App\Models\Clases\Reservation;
+use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 use App\Notifications\MyResetPassword;
 use App\Models\Clases\ReservationStatus;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -584,45 +585,98 @@ class User extends Authenticatable
         $this->save();
     }
 
+    /**
+     * Scope a query to get all the users where had a plan in the date range
+     *
+     * @param   Builder  $query
+     * @param   Carbon   $start
+     * @param   Carbon   $end  
+     *
+     * @return  Builder
+     */
     public function scopeActiveInDateRange(Builder $query, $start, $end)
     {
         return $query->join('plan_user', 'users.id', '=', 'plan_user.user_id')
             ->whereBetween('plan_user.start_date', [$start, $end])
+            ->where('plan_user.plan_status_id', '!=', PlanStatus::CANCELED)
             ->whereNull('plan_user.deleted_at')
+            ->select('users.id as id', 'users.first_name', 'users.last_name', 'users.email', 'users.avatar', 'users.phone', 'users.rut')
             ->distinct('users.id');
     }
 
-    public function scopeFinishedInDateRange(Builder $query, $start, $end)
-    {
-        return $query->join('plan_user', 'users.id', '=', 'plan_user.user_id')
-            ->whereBetween('plan_user.finish_date', [$start, $end])
-            ->whereNull('plan_user.deleted_at')
-            ->distinct('users.id');
-    }
-
-    public function scopeDropouts(Builder $query, $endOfPreviousMonth)
+    /**
+     * Scope a query to get all the users where had a plan before given date,
+     * and the plan is not a trial and the user has no other plan after the given date,
+     * only unique users
+     * 
+     * Cuantos alumnos tuvieron un plan anterior a la fecha especificada, que despues de la fecha especificada no tuvieron ningun plan
+     * y que el plan anterior no fue de prueba ni cancelado
+     *
+     * @param   Builder  $query
+     * @param   Carbon   $lastDate
+     *
+     * @return  Builder
+     */
+    public function scopeDropouts(Builder $query, $startDate, $endDate)
     {
         return $query->join('plan_user', 'users.id', '=', 'plan_user.user_id')
             ->join('plans', 'plan_user.plan_id', '=', 'plans.id')
-            ->where('plan_user.finish_date', '<=', $endOfPreviousMonth)
-            ->whereNotIn('users.id', function($query) use ($endOfPreviousMonth) {
-                $query->select('user_id')
-                    ->from('plan_user')
-                    ->where('start_date', '>', $endOfPreviousMonth);
+            ->whereBetween('plan_user.finish_date', [$startDate, $endDate])
+            ->whereNotExists(function ($subQuery) {
+                $subQuery->select(DB::raw(1))
+                    ->from('plan_user as plan_user2')
+                    ->whereColumn('plan_user2.user_id', 'plan_user.user_id')
+                    ->whereRaw('plan_user2.start_date > plan_user.finish_date')
+                    ->where('plan_user2.plan_status_id', '!=', PlanStatus::CANCELED)
+                    ->where('plan_user2.plan_id', '!=', Plan::TRIAL)
+                    ->whereNull('plan_user2.deleted_at');
             })
             ->where('plans.id', '!=', Plan::TRIAL)
+            ->where('plan_user.plan_status_id', '!=', PlanStatus::CANCELED)
             ->whereNull('plan_user.deleted_at')
             ->distinct('users.id');
     }
 
+    /**
+     * Scope a query to get all the users where hadn't a plan before given start date,
+     * except if the plan is a trial,
+     * and the current plan is not a trial, 
+     * it considers only unique users
+     *
+     * @param   Builder  $query
+     * @param   Carbon   $lastDate
+     *
+     * @return  Builder
+     */
     public function scopeNewStudentsInDateRange(Builder $query, $start, $end)
     {
         return $query->join('plan_user', 'users.id', '=', 'plan_user.user_id')
             ->whereBetween('plan_user.start_date', [$start, $end])
+            ->whereNotExists(function ($subQuery) use ($start) {
+                $subQuery->select(DB::raw(1))
+                    ->from('plan_user as previous_plan')
+                    ->whereColumn('previous_plan.user_id', 'plan_user.user_id')
+                    ->whereRaw('previous_plan.finish_date < plan_user.start_date')
+                    ->where('previous_plan.plan_status_id', '!=', PlanStatus::CANCELED)
+                    ->where('previous_plan.plan_id', '!=', Plan::TRIAL)
+                    ->whereNull('previous_plan.deleted_at');
+            })
             ->whereNull('plan_user.deleted_at')
+            ->where('plan_user.plan_status_id', '!=', PlanStatus::CANCELED)
+            ->where('plan_user.plan_id', '!=', Plan::TRIAL)
             ->distinct('users.id');
     }
 
+    /**
+     * Scope a query to get all the users where had a plan before given date,
+     * and the plan is not a trial and the user has no other plan after the given date,
+     * only unique users
+     *
+     * @param   Builder  $query
+     * @param   Carbon   $lastDate
+     *
+     * @return  Builder
+     */
     public function scopeTurnaroundInDateRange(Builder $query, $start, $end)
     {
         return $query->join('plan_user', 'users.id', '=', 'plan_user.user_id')
