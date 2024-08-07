@@ -22,8 +22,18 @@ class MonthlyStudentReport extends Model
      * rotation                    float  Rotation rate of the students
      */
     protected $fillable = [
-        'year', 'month', 'active_students_start', 'active_students_end', 'dropouts',
-        'dropout_percentage', 'new_students', 'new_students_percentage', 'turnaround',
-        'previous_month_difference', 'growth_rate', 'retention_rate', 'rotation'
+        'year',
+        'month', 
+        'active_students_start', 
+        'active_students_end', 
+        'dropouts',
+        'dropout_percentage', 
+        'new_students', 
+        'new_students_percentage', 
+        'turnaround',
+        'previous_month_difference', 
+        'growth_rate', 
+        'retention_rate', 
+        'rotation'
     ];
 }

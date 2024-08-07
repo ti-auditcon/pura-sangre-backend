@@ -20,8 +20,8 @@ class CreateMonthlyStudentReportsTable extends Migration
             $table->integer('active_students_start')->nullable();
             $table->integer('active_students_end')->nullable();
             $table->integer('dropouts')->nullable();
-            $table->integer('new_students')->nullable();
             $table->decimal('dropout_percentage', 8, 2)->nullable();
+            $table->integer('new_students')->nullable();
             $table->decimal('new_students_percentage', 8, 2)->nullable();
             $table->integer('turnaround')->nullable();
             $table->integer('previous_month_difference')->nullable();

@@ -47,7 +47,7 @@ class MonthlyStudentReport extends Command
         $activeUserStart = User::activeInDateRange($startPreviousMonth, $startPreviousMonth->copy()->endOfDay())->count('users.id');
         $activeUserFinish = User::activeInDateRange($endOfPreviousMonth->copy()->startOfDay(), $endOfPreviousMonth)->count('users.id');
 
-        $dropouts = User::dropouts($startPreviousMonth, $endOfPreviousMonth)->count('users.id');
+        $dropouts = User::getDropouts($startPreviousMonth, $endOfPreviousMonth)->count();
         $newStudents = User::newStudentsInDateRange($startPreviousMonth, $endOfPreviousMonth)->count('users.id');
         $turnaround = User::turnaroundInDateRange($startPreviousMonth, $endOfPreviousMonth)->count('users.id');
 
@@ -62,8 +62,8 @@ class MonthlyStudentReport extends Command
             'active_students_start'     => $activeUserStart,
             'active_students_end'       => $activeUserFinish,
             'dropouts'                  => $dropouts,
+            'dropout_percentage'        => $activeUserFinish != 0 ? ($dropouts / $activeUserFinish) * 100 : 0,
             'new_students'              => $newStudents,
-            'dropout_percentage'        => $activeUserStart != 0 ? ($dropouts / $activeUserStart) * 100 : 0,
             'new_students_percentage'   => $activeUserStart != 0 ? ($newStudents / $activeUserStart) * 100 : 0,
             'turnaround'                => $turnaround,
             'previous_month_difference' => $previousMonthDifference,

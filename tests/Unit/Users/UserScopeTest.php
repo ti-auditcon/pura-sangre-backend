@@ -13,14 +13,13 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class UserScopeTest extends TestCase
 {
-    use RefreshDatabase;
-    use DatabaseMigrations;
-    
+    use RefreshDatabase, DatabaseMigrations;
+
     public function setUp(): void
     {
         parent::setUp();
     }
- 
+
     /** @test */
     public function it_can_scope_users_active_in_date_range()
     {
@@ -45,9 +44,7 @@ class UserScopeTest extends TestCase
             'plan_id'        => 100,
             'start_date'     => $startPreviousMonth,
             'finish_date'    => $endOfPreviousMonth,
-            'plan_status_id' => PlanStatus::FINISHED,
         ]);
-
 
         $userOutOfRange = factory(User::class)->create();
         PlanUser::create([
@@ -68,7 +65,6 @@ class UserScopeTest extends TestCase
     /** @test */
     public function it_fetches_dropouts_between_dates()
     {
-        // Preparar datos de prueba
         $user1 = factory(User::class)->create();
         $user2 = factory(User::class)->create();
         $user3 = factory(User::class)->create();
@@ -87,8 +83,6 @@ class UserScopeTest extends TestCase
             'finish_date'    => $startDate->copy()->addDays(2),
             'plan_status_id' => PlanStatus::ACTIVE,
         ]);
-
-        $dropouts = User::dropouts($startDate, $endDate)->get();
 
         // Usuario que no se da de baja porque tiene un nuevo plan inmediatamente
         PlanUser::create([
@@ -115,13 +109,12 @@ class UserScopeTest extends TestCase
             'plan_status_id' => PlanStatus::ACTIVE,
         ]);
 
-        $dropouts = User::dropouts($startDate, $endDate)->get();
+        $dropouts = User::getDropouts($startDate, $endDate);
 
-        // Assertions
         $this->assertCount(1, $dropouts);
-        $this->assertTrue($dropouts->contains($user1));
-        $this->assertFalse($dropouts->contains($user2));
-        $this->assertFalse($dropouts->contains($user3));
+        $this->assertTrue($dropouts->contains('id', $user1->id));
+        $this->assertFalse($dropouts->contains('id', $user2->id));
+        $this->assertFalse($dropouts->contains('id', $user3->id));
     }
 
     /** @test */
@@ -235,6 +228,7 @@ class UserScopeTest extends TestCase
             'plan_id' => $planNewStudent->id,
             'start_date' => $startPreviousMonth,
             'finish_date' => $endOfPreviousMonth,
+            'plan_status_id' => PlanStatus::ACTIVE,
         ]);
 
         $notNewStudent = factory(User::class)->create();
@@ -327,5 +321,27 @@ class UserScopeTest extends TestCase
         // Assert
         $this->assertTrue($result->contains($turnaroundUser));
         $this->assertFalse($result->contains($inactiveUser));
+    }
+
+    /** @test */
+    public function it_fetches_dropouts_for_users_without_immediate_new_plan()
+    {
+        $user2 = factory(User::class)->create();
+        $plan = factory(Plan::class)->create(['id' => 100]);
+
+        PlanUser::create([
+            'user_id' => $user2->id,
+            'plan_id' => $plan->id,
+            'start_date' => Carbon::create(2024, 1, 1),
+            'finish_date' => Carbon::create(2024, 1, 20),
+            'plan_status_id' => PlanStatus::ACTIVE,
+        ]);
+
+        $startDate = Carbon::create(2024, 1, 1);
+        $endDate = Carbon::create(2024, 1, 31);
+
+        $dropouts = User::getDropouts($startDate, $endDate);
+
+        $this->assertTrue($dropouts->contains('id', $user2->id));
     }
 }

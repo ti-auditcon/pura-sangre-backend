@@ -586,7 +586,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Scope a query to get all the users where had a plan in the date range
+     * Scope a query to get all the users who had a plan in the date range
      *
      * @param   Builder  $query
      * @param   Carbon   $start
@@ -605,21 +605,18 @@ class User extends Authenticatable
     }
 
     /**
-     * Scope a query to get all the users where had a plan before given date,
-     * and the plan is not a trial and the user has no other plan after the given date,
-     * only unique users
-     * 
-     * Cuantos alumnos tuvieron un plan anterior a la fecha especificada, que despues de la fecha especificada no tuvieron ningun plan
-     * y que el plan anterior no fue de prueba ni cancelado
+     * Query to get all the users who had a plan before given date,
+     * and the plan is not a trial and the user has no other plan after the given date
      *
      * @param   Builder  $query
      * @param   Carbon   $lastDate
      *
      * @return  Builder
      */
-    public function scopeDropouts(Builder $query, $startDate, $endDate)
+    public static function getDropouts($startDate, $endDate)
     {
-        return $query->join('plan_user', 'users.id', '=', 'plan_user.user_id')
+        return self::select('users.id as id')
+            ->join('plan_user', 'users.id', '=', 'plan_user.user_id')
             ->join('plans', 'plan_user.plan_id', '=', 'plans.id')
             ->whereBetween('plan_user.finish_date', [$startDate, $endDate])
             ->whereNotExists(function ($subQuery) {
@@ -634,17 +631,17 @@ class User extends Authenticatable
             ->where('plans.id', '!=', Plan::TRIAL)
             ->where('plan_user.plan_status_id', '!=', PlanStatus::CANCELED)
             ->whereNull('plan_user.deleted_at')
-            ->distinct('users.id');
+            ->distinct()
+            ->get();
     }
 
     /**
-     * Scope a query to get all the users where hadn't a plan before given start date,
-     * except if the plan is a trial,
-     * and the current plan is not a trial, 
-     * it considers only unique users
+     * Scope a query to get all the new students in the date range who hadn't a plan before the given start,
+     * except if the plan is a trial, and the current plan is not a trial.
      *
      * @param   Builder  $query
-     * @param   Carbon   $lastDate
+     * @param   Carbon   $start
+     * @param   Carbon   $end
      *
      * @return  Builder
      */
@@ -668,12 +665,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Scope a query to get all the users where had a plan before given date,
-     * and the plan is not a trial and the user has no other plan after the given date,
-     * only unique users
+     * Scope a query to get all the users who had a plan in the date range.
      *
      * @param   Builder  $query
-     * @param   Carbon   $lastDate
+     * @param   Carbon   $start
+     * @param   Carbon   $end
      *
      * @return  Builder
      */
