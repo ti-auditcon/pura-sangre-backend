@@ -676,8 +676,8 @@ class User extends Authenticatable
     }
 
     /**
-     * Scope a query to get all the users who had a plan in the date range.
-     *
+     * 
+     * 
      * @param   Builder  $query
      * @param   Carbon   $start
      * @param   Carbon   $end
@@ -686,10 +686,6 @@ class User extends Authenticatable
      */
     public function scopeTurnaroundInDateRange(Builder $query, $start, $end)
     {
-        return $query->join('plan_user', 'users.id', '=', 'plan_user.user_id')
-            ->join('plans', 'plan_user.plan_id', '=', 'plans.id')
-            ->whereBetween('plan_user.start_date', [$start, $end])
-            ->whereNull('plan_user.deleted_at')
-            ->distinct('users.id');
+
     }
 }

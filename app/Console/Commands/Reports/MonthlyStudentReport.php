@@ -3,8 +3,10 @@
 namespace App\Console\Commands\Reports;
 
 use Carbon\Carbon;
+use App\Models\Plans\Plan;
 use App\Models\Users\User;
 use Illuminate\Console\Command;
+use App\Models\Plans\PlanStatus;
 use App\Models\Reports\MonthlyStudentReport as ReportModel;
 
 class MonthlyStudentReport extends Command
@@ -45,8 +47,10 @@ class MonthlyStudentReport extends Command
         $startPreviousMonth->copy()->startOfDay();
         $endOfPreviousMonth = $startPreviousMonth->copy()->endOfMonth();
 
-        $activeUserStart = User::activeInDateRange($startPreviousMonth, $startPreviousMonth->copy()->endOfDay())->count('users.id');
-        $activeUserFinish = User::activeInDateRange($endOfPreviousMonth->copy()->startOfDay(), $endOfPreviousMonth)->count('users.id');
+        $activeUserStart = $this->activeUsersAt($startPreviousMonth)->count('users.id');
+        // $activeUserStart = User::activeInDateRange($startPreviousMonth, $startPreviousMonth->copy()->endOfDay())->count('users.id');
+        $activeUserFinish = $this->activeUsersAt($endOfPreviousMonth)->count('users.id');
+        // $activeUserFinish = User::activeInDateRange($endOfPreviousMonth->copy()->startOfDay(), $endOfPreviousMonth)->count('users.id');
 
         $dropouts = User::getDropouts($startPreviousMonth, $endOfPreviousMonth)->count();
         $newStudents = User::newStudentsInDateRange($startPreviousMonth, $endOfPreviousMonth)->count('users.id');
@@ -55,9 +59,9 @@ class MonthlyStudentReport extends Command
         // $turnaround = User::turnaroundInDateRange($startPreviousMonth, $endOfPreviousMonth)->count('users.id');
 
         $previousMonthDifference = $activeUserStart - $activeUserFinish;
-        $growthRate = $activeUserFinish != 0 ? ($activeUserFinish - $activeUserStart) / $activeUserStart : 0;
+        $growthRate = $activeUserStart != 0 ? (($activeUserFinish - $activeUserStart) / $activeUserStart) * 100 : 0;
         
-        $retentionRate = $activeUserFinish != 0 ? (($activeUserFinish - $newStudents) / $activeUserStart) * 100 : 0;
+        $retentionRate = $activeUserStart != 0 ? (($activeUserFinish - $newStudents) / $activeUserStart) * 100 : 0;
 
         $churnRate = $activeUserStart != 0 ? ($dropouts / $activeUserStart) * 100 : 0;
 
@@ -67,14 +71,26 @@ class MonthlyStudentReport extends Command
             'active_students_start'     => $activeUserStart,
             'active_students_end'       => $activeUserFinish,
             'dropouts'                  => $dropouts,
-            'dropout_percentage'        => $activeUserFinish != 0 ? ($dropouts / $activeUserFinish) * 100 : 0,
-            'new_students'              => $newStudents,
-            'new_students_percentage'   => $activeUserStart != 0 ? ($newStudents / $activeUserStart) * 100 : 0,
-            // 'turnaround'                => $turnaround,
+            'dropout_percentage'        => $activeUserStart != 0 ? ($dropouts / $activeUserStart) * 100 : 0,
+            'new_students'              => $newStudents, 
+            'new_students_percentage' => $activeUserFinish != 0 ? ($newStudents / $activeUserFinish) * 100 : 0,
             'previous_month_difference' => $previousMonthDifference,
             'growth_rate'               => $growthRate,
             'retention_rate'            => $retentionRate,
             'churn_rate'                => $churnRate,
         ]);
+    }
+
+    public function activeUsersAt(Carbon $date)
+    {
+        return User::join('plan_user', 'users.id', '=', 'plan_user.user_id')
+            ->join('plans', 'plans.id', '=', 'plan_user.plan_id')
+            ->where('plan_user.start_date', '<=', $date)
+            ->where('plan_user.finish_date', '>=', $date)
+            ->where('plan_user.plan_status_id', '!=', PlanStatus::CANCELED)
+            ->where('plans.id', '!=', Plan::TRIAL)
+            ->whereNull('plan_user.deleted_at')
+            ->select('users.id as id', 'users.first_name', 'users.last_name', 'users.email', 'users.avatar', 'users.phone', 'users.rut')
+            ->distinct('users.id');
     }
 }
