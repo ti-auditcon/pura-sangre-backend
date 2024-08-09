@@ -23,11 +23,12 @@ class CreateMonthlyStudentReportsTable extends Migration
             $table->decimal('dropout_percentage', 8, 2)->nullable();
             $table->integer('new_students')->nullable();
             $table->decimal('new_students_percentage', 8, 2)->nullable();
-            $table->integer('turnaround')->nullable();
+            $table->integer('students_returned')->nullable();
+            $table->decimal('students_return_rate', 8, 2)->nullable();
             $table->integer('previous_month_difference')->nullable();
             $table->decimal('growth_rate', 8, 2)->nullable();
             $table->decimal('retention_rate', 8, 2)->nullable();
-            $table->decimal('rotation', 8, 2)->nullable();
+            $table->decimal('churn_rate', 8, 2)->nullable();
             $table->timestamps();
 
             $table->unique(['year', 'month']);

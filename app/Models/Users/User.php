@@ -587,6 +587,9 @@ class User extends Authenticatable
 
     /**
      * Scope a query to get all the users who had a plan in the date range
+     * 
+     * * Todos los alumnos que tuvieron un plan entre el start y end,
+     * * Sin contar planes cancelados, eliminados o planes de prueba
      *
      * @param   Builder  $query
      * @param   Carbon   $start
@@ -597,8 +600,11 @@ class User extends Authenticatable
     public function scopeActiveInDateRange(Builder $query, $start, $end)
     {
         return $query->join('plan_user', 'users.id', '=', 'plan_user.user_id')
-            ->whereBetween('plan_user.start_date', [$start, $end])
+            ->join('plans', 'plans.id', '=', 'plan_user.plan_id')
+            ->where('plan_user.start_date', '<=', $end)
+            ->where('plan_user.finish_date', '>=', $start)
             ->where('plan_user.plan_status_id', '!=', PlanStatus::CANCELED)
+            ->where('plans.id', '!=', Plan::TRIAL)
             ->whereNull('plan_user.deleted_at')
             ->select('users.id as id', 'users.first_name', 'users.last_name', 'users.email', 'users.avatar', 'users.phone', 'users.rut')
             ->distinct('users.id');
@@ -607,6 +613,9 @@ class User extends Authenticatable
     /**
      * Query to get all the users who had a plan before given date,
      * and the plan is not a trial and the user has no other plan after the given date
+     * 
+     * Todos los alumnos que su plan terminó entre el startDate y el endDate, pero no tuvieron ningun plan después de ese período
+     * y que el plan que terminó no fue de prueba, ni cancelado, ni eliminado
      *
      * @param   Builder  $query
      * @param   Carbon   $lastDate
@@ -621,23 +630,26 @@ class User extends Authenticatable
             ->whereBetween('plan_user.finish_date', [$startDate, $endDate])
             ->whereNotExists(function ($subQuery) {
                 $subQuery->select(DB::raw(1))
-                    ->from('plan_user as plan_user2')
-                    ->whereColumn('plan_user2.user_id', 'plan_user.user_id')
-                    ->whereRaw('plan_user2.start_date > plan_user.finish_date')
-                    ->where('plan_user2.plan_status_id', '!=', PlanStatus::CANCELED)
-                    ->where('plan_user2.plan_id', '!=', Plan::TRIAL)
-                    ->whereNull('plan_user2.deleted_at');
+                    ->from('plan_user as nextPlan')
+                    ->whereColumn('nextPlan.user_id', 'plan_user.user_id')
+                    ->whereRaw('nextPlan.start_date > plan_user.finish_date')
+                    ->where('nextPlan.plan_status_id', '!=', PlanStatus::CANCELED)
+                    ->whereNull('nextPlan.deleted_at');
             })
             ->where('plans.id', '!=', Plan::TRIAL)
             ->where('plan_user.plan_status_id', '!=', PlanStatus::CANCELED)
             ->whereNull('plan_user.deleted_at')
-            ->distinct()
+            ->distinct('users.id')
             ->get();
     }
 
     /**
      * Scope a query to get all the new students in the date range who hadn't a plan before the given start,
      * except if the plan is a trial, and the current plan is not a trial.
+     * 
+     * * Todos los alumnos que tengan su primer plan que haya comenzado entre el start y end,
+     * * que no sea de prueba, ni estar cancelado ni eliminado
+     * * y puede tener un plan antes solo si el plan anterior fue de prueba
      *
      * @param   Builder  $query
      * @param   Carbon   $start
@@ -645,18 +657,17 @@ class User extends Authenticatable
      *
      * @return  Builder
      */
-    public function scopeNewStudentsInDateRange(Builder $query, $start, $end)
+    public function scopeNewStudentsInDateRange(Builder $query, Carbon $start, Carbon $end)
     {
         return $query->join('plan_user', 'users.id', '=', 'plan_user.user_id')
             ->whereBetween('plan_user.start_date', [$start, $end])
             ->whereNotExists(function ($subQuery) use ($start) {
                 $subQuery->select(DB::raw(1))
-                    ->from('plan_user as previous_plan')
-                    ->whereColumn('previous_plan.user_id', 'plan_user.user_id')
-                    ->whereRaw('previous_plan.finish_date < plan_user.start_date')
-                    ->where('previous_plan.plan_status_id', '!=', PlanStatus::CANCELED)
-                    ->where('previous_plan.plan_id', '!=', Plan::TRIAL)
-                    ->whereNull('previous_plan.deleted_at');
+                    ->from('plan_user as previousPlan')
+                    ->whereColumn('previousPlan.user_id', 'plan_user.user_id')
+                    ->whereRaw('previousPlan.finish_date < plan_user.start_date')
+                    ->where('previousPlan.plan_id', '!=', Plan::TRIAL)
+                    ->whereNull('previousPlan.deleted_at');
             })
             ->whereNull('plan_user.deleted_at')
             ->where('plan_user.plan_status_id', '!=', PlanStatus::CANCELED)

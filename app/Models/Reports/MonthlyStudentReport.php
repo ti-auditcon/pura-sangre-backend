@@ -13,13 +13,14 @@ class MonthlyStudentReport extends Model
      * active_students_end         int    Number of active students at the end of the month
      * dropouts                    int    Number of students who dropped out during the month
      * new_students                int    Number of new students who joined during the month
-     * dropout_percentage          float  Percentage of students who dropped out
      * new_students_percentage     float  Percentage of new students who joined
-     * turnaround                  int    Number of students who returned or reactivated
+     * dropout_percentage          float  Percentage of students who dropped out
+     * students_returned            int   Number of students who returned or reactivated
+     * students_return_rate        float  Students who returned or reactivated
      * previous_month_difference   int    Difference in dropouts compared to the previous month
      * growth_rate                 float  Growth rate of the student population
      * retention_rate              float  Retention rate of the students
-     * rotation                    float  Rotation rate of the students
+     * churn_rate                  float  Churn rate of the students
      */
     protected $fillable = [
         'year',
@@ -30,10 +31,10 @@ class MonthlyStudentReport extends Model
         'dropout_percentage', 
         'new_students', 
         'new_students_percentage', 
-        'turnaround',
+        'students_return_rate',
         'previous_month_difference', 
         'growth_rate', 
         'retention_rate', 
-        'rotation'
+        'churn_rate'
     ];
 }

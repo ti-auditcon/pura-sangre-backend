@@ -19,7 +19,7 @@ $factory->define(MonthlyStudentReport::class, function (Faker $faker) {
         'previous_month_difference' => $faker->numberBetween(-50, 50),
         'growth_rate' => $faker->randomFloat(2, -10, 10),
         'retention_rate' => $faker->randomFloat(2, 70, 100),
-        'rotation' => $faker->randomFloat(2, 0, 30),
+        'churn_rate' => $faker->randomFloat(2, 0, 30),
     ];
 });
 

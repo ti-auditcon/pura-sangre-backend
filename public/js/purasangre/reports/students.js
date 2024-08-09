@@ -87,7 +87,7 @@ $(document).ready(function() {
         }
       },
       {
-        data: 'rotation',
+        data: 'churn_rate',
         render: function(data, type, row) {
           return data + '%';
         }
