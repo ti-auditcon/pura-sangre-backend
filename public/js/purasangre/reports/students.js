@@ -1,4 +1,3 @@
-
 const monthNames = [
   'Enero',
   'Febrero',
@@ -35,6 +34,18 @@ $(document).ready(function() {
         d.month = $('#students-month-select').val();
       }
     },
+    dataSrc: function(json) {
+      // Calculate the cumulative growth rate here
+      let cumulativeGrowthRate = 0;
+      json.data.forEach(function(row) {
+        cumulativeGrowthRate += parseFloat(row.growth_rate);
+      });
+
+      // Display the cumulative growth rate
+      $('#cumulative-growth-rate').text(cumulativeGrowthRate.toFixed(2) + '%');
+
+      return json.data;
+    },
     dom: 'rt',
     columns: [
       {
@@ -56,12 +67,6 @@ $(document).ready(function() {
         data: 'dropouts'
       },
       {
-        data: 'dropout_percentage',
-        render: function(data, type, row) {
-          return data + '%';
-        }
-      },
-      {
         data: 'new_students'
       },
       {
@@ -72,7 +77,7 @@ $(document).ready(function() {
       },
       // { "data": "turnaround"},
       {
-        data: 'previous_month_difference'
+        data: 'month_difference'
       },
       {
         data: 'growth_rate',

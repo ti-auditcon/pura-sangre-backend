@@ -33,7 +33,7 @@ class MonthlyStudentReportController extends Controller
             // ->orderBy($order, $dir)
             ->offset($start)
             ->limit($length)
-            ->get(['id', 'year', 'month', 'active_students_start', 'active_students_end', 'dropouts', 'dropout_percentage', 'new_students', 'new_students_percentage', 'turnaround', 'previous_month_difference', 'growth_rate', 'retention_rate', 'churn_rate']);
+            ->get(['id', 'year', 'month', 'active_students_start', 'active_students_end', 'dropouts', 'dropout_percentage', 'new_students', 'new_students_percentage', 'turnaround', 'month_difference', 'growth_rate', 'retention_rate', 'churn_rate']);
 
         $totalData = $studentReports->count('id');
         $totalFiltered = $totalData;

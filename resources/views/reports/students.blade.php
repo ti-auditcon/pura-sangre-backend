@@ -44,6 +44,11 @@
                   @endfor
                 </select>
               </div>
+
+                  <div class="mt-3">
+                      <strong>Tasa de Crecimiento Acumulada: </strong><span id="cumulative-growth-rate">0%</span>
+                  </div>
+
               <div class="table-responsive mt-3">
                 <table id="reports-table" class="table table-hover" style="width:100%">
                   <thead class="thead-default">
@@ -53,11 +58,10 @@
                       <th width="5%">Act inicio</th>
                       <th width="5%">Act término</th>
                       <th width="5%">Bajas</th>
-                      <th width="5%">% Bajas</th>
                       <th width="5%">Nuevos</th>
                       <th width="5%">% Nuevos</th>
                       {{-- <th>Conversiones</th> --}}
-                      <th width="5%">Dif mes ant.</th>
+                      <th width="5%">Dif.</th>
                       <th width="5%">Crecim.</th>
                       <th width="5%">Reten.</th>
                       <th width="5%">Rota.</th>
@@ -86,7 +90,7 @@
                           <p class=""><strong>% Bajas:</strong> El porcentaje de alumnos que han dejado de ser activos con respecto al total de alumnos activos al inicio del mes.</p>
                           <p class=""><strong>Nuevos:</strong> La cantidad de nuevos alumnos del mes que han comprado su primer plan en el.</p>
                           <p class=""><strong>% Nuevos:</strong> El porcentaje de alumnos nuevos con respecto al total de alumnos activos al término del mes.</p>
-                          <p class=""><strong>Dif mes ant.:</strong> La diferencia en el número de bajas en comparación con el mes anterior.</p>
+                          <p class=""><strong>Dif.:</strong> La diferencia en la cantidad de alumnos que terminaron menos los que empezaron.</p>
                           <p class=""><strong>Crecimiento:</strong> El porcentaje de crecimiento en el número de alumnos activos durante el período.</p>
                           <p class=""><strong>Retención:</strong> El porcentaje de alumnos que permanecen activos al finalizar el período.</p>
                           <p class=""><strong>Rotación:</strong> El porcentaje de rotación de alumnos durante el período.</p>
@@ -271,4 +275,7 @@
       });
     });
   </script> 
+
+
+
 @endsection

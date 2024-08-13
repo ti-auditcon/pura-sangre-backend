@@ -58,7 +58,7 @@ class MonthlyStudentReport extends Command
         // pending (soon), tal vez pueden ser los alumno que el mes pasado se les termino el plan y no contrataron, y este mes si lo hicieron
         // $turnaround = User::turnaroundInDateRange($startPreviousMonth, $endOfPreviousMonth)->count('users.id');
 
-        $previousMonthDifference = $activeUserStart - $activeUserFinish;
+        $monthDifference = $activeUserFinish - $activeUserStart;
         $growthRate = $activeUserStart != 0 ? (($activeUserFinish - $activeUserStart) / $activeUserStart) * 100 : 0;
         
         $retentionRate = $activeUserStart != 0 ? (($activeUserFinish - $newStudents) / $activeUserStart) * 100 : 0;
@@ -71,10 +71,10 @@ class MonthlyStudentReport extends Command
             'active_students_start'     => $activeUserStart,
             'active_students_end'       => $activeUserFinish,
             'dropouts'                  => $dropouts,
-            'dropout_percentage'        => $activeUserStart != 0 ? ($dropouts / $activeUserStart) * 100 : 0,
-            'new_students'              => $newStudents, 
-            'new_students_percentage' => $activeUserFinish != 0 ? ($newStudents / $activeUserFinish) * 100 : 0,
-            'previous_month_difference' => $previousMonthDifference,
+            // 'dropout_percentage'        => $activeUserStart != 0 ? ($dropouts / $activeUserStart) * 100 : 0,
+            'new_students'              => $newStudents,
+            'new_students_percentage'   => $activeUserFinish != 0 ? ($newStudents / $activeUserFinish) * 100 : 0,
+            'month_difference'          => $monthDifference,
             'growth_rate'               => $growthRate,
             'retention_rate'            => $retentionRate,
             'churn_rate'                => $churnRate,

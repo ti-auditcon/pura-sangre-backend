@@ -16,7 +16,7 @@ $factory->define(MonthlyStudentReport::class, function (Faker $faker) {
         'dropout_percentage' => $faker->randomFloat(2, 0, 25),
         'new_students_percentage' => $faker->randomFloat(2, 0, 10),
         'turnaround' => $faker->numberBetween(-10, 50),
-        'previous_month_difference' => $faker->numberBetween(-50, 50),
+        'month_difference' => $faker->numberBetween(-50, 50),
         'growth_rate' => $faker->randomFloat(2, -10, 10),
         'retention_rate' => $faker->randomFloat(2, 70, 100),
         'churn_rate' => $faker->randomFloat(2, 0, 30),
