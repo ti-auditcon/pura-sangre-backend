@@ -15,7 +15,7 @@ $factory->define(MonthlyTrialUserReport::class, function (Faker $faker) {
         'trial_classes_consumed' => $faker->numberBetween(20, 100),
         'trial_classes_taken_percentage' => $faker->randomFloat(2, 50, 100),
         'trial_conversion' => $faker->numberBetween(1, 20),
-        'trial_conversion_percentage' => $faker->randomFloat(2, 0, 100),
+        'trial_convertion_percentage' => $faker->randomFloat(2, 0, 100),
         'trial_retention_percentage' => $faker->randomFloat(2, 0, 100),
         'inactive_users' => $faker->numberBetween(0, 50),
     ];

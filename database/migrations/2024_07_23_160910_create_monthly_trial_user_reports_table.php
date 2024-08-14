@@ -17,14 +17,13 @@ class CreateMonthlyTrialUserReportsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('year');
             $table->integer('month');
-            $table->integer('plans_sold')->nullable();
-            $table->integer('trial_users')->nullable();
+            $table->integer('trial_plans')->nullable();
             $table->integer('trial_classes_consumed')->nullable();
-            $table->decimal('trial_classes_taken_percentage', 5, 2)->nullable();
+            $table->decimal('trial_classes_consumed_percentage', 8, 2)->nullable();
             $table->integer('trial_conversion')->nullable();
-            $table->decimal('trial_conversion_percentage', 5, 2)->nullable();
-            $table->decimal('trial_retention_percentage', 5, 2)->nullable();
-            $table->integer('inactive_users')->nullable();
+            $table->decimal('trial_convertion_percentage', 8, 2)->nullable();
+            // $table->decimal('trial_retention_percentage', 8, 2)->nullable();
+            // $table->integer('inactive_users')->nullable();
             $table->timestamps();
 
             $table->unique(['year', 'month']);

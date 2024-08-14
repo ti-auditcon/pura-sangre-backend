@@ -25,7 +25,11 @@ class MonthlyTrialUserReportController extends Controller
             })
             ->offset($start)
             ->limit($length)
-            ->get(['id', 'year', 'month', 'plans_sold', 'trial_users', 'trial_classes_consumed', 'trial_classes_taken_percentage', 'trial_conversion', 'trial_conversion_percentage', 'trial_retention_percentage', 'inactive_users']);
+            ->get([
+                'id', 'year', 'month', 'trial_plans', 'trial_classes_consumed', 
+                'trial_classes_consumed_percentage', 'trial_convertion',
+                'trial_convertion_percentage'
+            ]);
 
         $totalData = $studentReports->count('id');
         $totalFiltered = $totalData;

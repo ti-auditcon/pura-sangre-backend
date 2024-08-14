@@ -44,10 +44,10 @@
                   @endfor
                 </select>
               </div>
-
+{{-- 
                   <div class="mt-3">
                       <strong>Tasa de Crecimiento Acumulada: </strong><span id="cumulative-growth-rate">0%</span>
-                  </div>
+                  </div> --}}
 
               <div class="table-responsive mt-3">
                 <table id="reports-table" class="table table-hover" style="width:100%">
@@ -125,14 +125,11 @@
                     <tr>
                       <th width="5%">Año</th>
                       <th width="5%">Mes</th>
-                      <th width="5%">Planes vendidos</th>
-                      <th width="5%">Usuarios de prueba</th>
-                      <th width="5%">Clases consumidas</th>
-                      <th width="5%">Clases tomadas</th>
+                      <th width="5%">Planes</th>
+                      <th width="5%">Planes con clases consumidas</th>
+                      <th width="5%">% Clases consumidas</th>
                       <th width="5%">Conversión</th>
-                      <th width="5%">Conversión</th>
-                      <th width="5%">Retención</th>
-                      <th width="5%">Usuarios inactivos</th>
+                      <th width="5%">% Conversión</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -227,40 +224,28 @@
                 }
               },
               {
-                data: 'plans_sold'
-              },
-              {
-                data: 'trial_users'
+                data: 'trial_plans'
               },
               {
                 data: 'trial_classes_consumed'
               },
               {
-                data: 'trial_classes_taken_percentage',
+                data: 'trial_classes_consumed_percentage',
                 render: function(data, type, row) {
                   return data + '%';
                 }
               },
               {
-                data: 'trial_conversion',
+                data: 'trial_convertion',
                 render: function(data, type, row) {
                   return data + '%';
                 }
               },
               {
-                data: 'trial_conversion_percentage',
+                data: 'trial_convertion_percentage',
                 render: function(data, type, row) {
                   return data + '%';
                 }
-              },
-              {
-                data: 'trial_retention_percentage',
-                render: function(data, type, row) {
-                  return data + '%';
-                } 
-              },
-              { 
-                data: 'inactive_users'
               },
             ]
           });

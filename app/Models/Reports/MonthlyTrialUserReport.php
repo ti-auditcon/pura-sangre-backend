@@ -24,6 +24,5 @@ class MonthlyTrialUserReport extends Model
         'trial_classes_consumed_percentage',
         'trial_convertion',
         'trial_convertion_percentage',
-        'new_users_with_trial_plan',
     ];
 }

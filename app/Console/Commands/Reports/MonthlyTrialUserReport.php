@@ -4,7 +4,6 @@ namespace App\Console\Commands\Reports;
 
 use Carbon\Carbon;
 use App\Models\Plans\Plan;
-use App\Models\Users\User;
 use App\Models\Plans\PlanUser;
 use Illuminate\Console\Command;
 use App\Models\Plans\PlanStatus;
@@ -50,22 +49,36 @@ class MonthlyTrialUserReport extends Command
         $endOfPreviousMonth = $startPreviousMonth->copy()->endOfMonth();
 
         // planes de prueba acumulados (número de planes de prueba que se han entregado al mes)
-        $trialPlans = $this->trialPlansAt($startPreviousMonth, $endOfPreviousMonth);
+        $allTrialPlans = $this->trialPlansAt($startPreviousMonth, $endOfPreviousMonth);
         
         // prueba clase consumido: todos los alumnos que tienen un plan de prueba donde la clase se haya consumido en el mes
         $trialClassesConsumed = $this->trialClassesConsumedAt($startPreviousMonth, $endOfPreviousMonth);
 
         // % prueba clase consumida: De todos los alumnos que tienen un plan de prueba en el mes, cuantos de estos han consumido al menos una clase
-        $trialClassesTakenPercentage = $this->trialClassesConsumedPercentageAt($startPreviousMonth, $endOfPreviousMonth, $trialClassesConsumed);
+        $trialClassesConsumedPercentage = $trialClassesConsumed != 0 ? ($trialClassesConsumed / $allTrialPlans) * 100 : 0;
 
-        // numero de convertidos: todos los alumnos que han contradado un plan normal despues de tener un plan de prueba con al menos una clase consumida
-        $trialConvertion = $this->trialConvertionAt($startPreviousMonth, $endOfPreviousMonth, $trialClassesConsumed);
+        $trialConvertion = $this->trialConvertionAt($startPreviousMonth, $endOfPreviousMonth);
 
         // % conversión: Cuantos de los alumnos con clases de prueba con al menos una clase consumida han comprado un plan normal despues.
-        $trialConvertionPercentage = $trialConvertion != 0 ? ($trialConvertion / $trialClassesConsumed) * 100 : 0;
+        if ($trialClassesConsumed > 0) {
+            $trialConvertionPercentage = ($trialConvertion / $allTrialPlans) * 100;
+        } else {
+            $trialConvertionPercentage = 0;
+        }
 
         // % alumnos nuevos que tuvieron un plan de prueba: Cuantos de los alumnos nuevos alumnos tuvieron un plan de prueba antes
-        $newStudentsPercentage = $newStudents != 0 ? ($newStudents / $activeUserStart) * 100 : 0;
+        // $newStudentsPercentage = $newStudents != 0 ? ($newStudents / $activeUserStart) * 100 : 0;
+
+        ReportModel::create([
+            'year'                              => $startPreviousMonth->copy()->format('Y'),
+            'month'                             => $startPreviousMonth->copy()->format('m'),
+            'trial_plans'                       => $allTrialPlans,
+            'trial_classes_consumed'            => $trialClassesConsumed,
+            'trial_classes_consumed_percentage' => $trialClassesConsumedPercentage,
+            'trial_convertion'                  => $trialConvertion,
+            'trial_convertion_percentage'       => $trialConvertionPercentage,
+            // 'new_users_with_trial_plan'         => $newStudents,
+        ]);
     }
 
     public function trialPlansAt($start, $end)
@@ -86,50 +99,44 @@ class MonthlyTrialUserReport extends Command
         return PlanUser::join('plans', 'plans.id', '=', 'plan_user.plan_id')
             ->join('reservations', 'reservations.plan_user_id', '=', 'plan_user.id')
             ->whereBetween('plan_user.start_date', [$start, $end])
-            ->whereNot('plan_user.plan_status_id', PlanStatus::CANCELED)
+            ->where('plan_user.plan_status_id', '!=', PlanStatus::CANCELED)
             ->where('plans.id', Plan::TRIAL)
             ->whereNull('plan_user.deleted_at')
             ->where('reservations.reservation_status_id', ReservationStatus::CONSUMED)
             ->select('plan_user.id as id', 'plan_user.user_id', 'plans.id as plan_id')
-            ->distinct('plan_user.id')
-            ->count('plan_user.id');
+            ->distinct('plan_user.user_id')
+            ->count('plan_user.user_id');  
     }
 
-    public function trialClassesConsumedPercentageAt($start, $end, $trialClassesConsumed)
-    {
-        $total = PlanUser::join('plans', 'plans.id', '=', 'plan_user.plan_id')
-            ->whereBetween('plan_user.start_date', [$start, $end])
-            ->whereNot('plan_user.plan_status_id', PlanStatus::CANCELED)
-            ->where('plans.id', Plan::TRIAL)
-            ->whereNull('plan_user.deleted_at')
-            ->select('plan_user.id as id', 'plan_user.user_id', 'plans.id as plan_id')
-            ->distinct('plan_user.id')
-            ->count('plan_user.id');
-
-        return 100 * $trialClassesConsumed / $total;
-    }
-
-
-    // todos los alumnos que han contradado un plan normal despues de tener un plan de prueba con al menos una clase consumida
-    public function trialConvertionAt($start, $end, $trialClassesConsumed)
+    /**
+     * Gets the number of users who converted to a normal plan after having a trial plan with at least one consumed class
+     *
+     * @param   Carbon  $start
+     * @param   Carbon  $end
+     *
+     * @return  integer
+     */
+    public function trialConvertionAt(Carbon $start, Carbon $end)
     {
         return PlanUser::join('plans', 'plans.id', '=', 'plan_user.plan_id')
-            ->whereBetween('plan_user.start_date', [$start, $end])
-            ->whereNot('plan_user.plan_status_id', PlanStatus::CANCELED)
+            ->where('plan_user.plan_status_id', '!=', PlanStatus::CANCELED)
             ->where('plans.id', '!=', Plan::TRIAL)
-            ->whereNull('plan_user.deleted_at')
+            ->whereBetween('plan_user.start_date', [$start, $end])
             ->whereExists(function ($subQuery) {
                 $subQuery->select(DB::raw(1))
-                    ->from('plan_user as previousPlan')
-                    ->join('reservations', 'reservations.plan_user_id', '=', 'previousPlan.id')
-                    ->whereColumn('previousPlan.plan_status_id', '!=', PlanStatus::CANCELED)
-                    ->whereColumn('previousPlan.user_id', 'plan_user.user_id')
-                    ->whereRaw('previousPlan.finish_date < plan_user.start_date')
-                    ->where('previousPlan.plan_id', Plan::TRIAL)
+                    ->from('plan_user as trialPlan')
+                    ->join('reservations', 'reservations.plan_user_id', '=', 'trialPlan.id')
+                    ->where('trialPlan.plan_id', Plan::TRIAL)
+                    ->whereColumn('trialPlan.user_id', 'plan_user.user_id')
+                    ->where('trialPlan.plan_status_id', '!=', PlanStatus::CANCELED)
+                    ->whereRaw('trialPlan.finish_date < plan_user.start_date')
+                    // where trial.finish_date not be more than 14 days before the start date of plan_user
+                    ->whereRaw('trialPlan.finish_date > DATE_SUB(plan_user.start_date, INTERVAL 14 DAY)')
                     ->where('reservations.reservation_status_id', ReservationStatus::CONSUMED)
-                    ->whereNull('previousPlan.deleted_at');
+                    ->whereNull('trialPlan.deleted_at');
             })
-            ->distinct('plan_user.id')
-            ->count('plan_user.id', 'id');
+            ->whereNull('plan_user.deleted_at')
+            ->distinct('plan_user.user_id')
+            ->count('plan_user.user_id');
     }
 }
