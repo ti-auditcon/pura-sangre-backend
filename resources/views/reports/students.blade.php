@@ -202,6 +202,7 @@
             processing: true,
             serverSide: true,
             sort: false,
+            pageLength: 12,
             ajax: {
               url: '/reports/trials-filter',
               dataType: 'json',
