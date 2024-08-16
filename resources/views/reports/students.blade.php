@@ -237,10 +237,7 @@
                 }
               },
               {
-                data: 'trial_convertion',
-                render: function(data, type, row) {
-                  return data + '%';
-                }
+                data: 'trial_convertion'
               },
               {
                 data: 'trial_convertion_percentage',
