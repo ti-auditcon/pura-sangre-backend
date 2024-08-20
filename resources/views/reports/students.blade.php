@@ -44,10 +44,6 @@
                   @endfor
                 </select>
               </div>
-{{-- 
-                  <div class="mt-3">
-                      <strong>Tasa de Crecimiento Acumulada: </strong><span id="cumulative-growth-rate">0%</span>
-                  </div> --}}
 
               <div class="table-responsive mt-3">
                 <table id="reports-table" class="table table-hover" style="width:100%">
@@ -60,7 +56,6 @@
                       <th width="5%">Bajas</th>
                       <th width="5%">Nuevos</th>
                       <th width="5%">% Nuevos</th>
-                      {{-- <th>Conversiones</th> --}}
                       <th width="5%">Dif.</th>
                       <th width="5%">Crecim.</th>
                       <th width="5%">Reten.</th>
@@ -85,15 +80,15 @@
                       <div class="row">
                         <div class="col-12">
                           <p class="mt-1"><strong>Act inicio (Activos al inicio):</strong> Todos los alumnos que en el momento de iniciar el mes (xx-xx-xxx 00:00:00) tenían un plan activo.</p>
-                          <p class=""><strong>Act térm. (Activos al término):</strong> Todos los alumnos que en el momento de terminar el mes (xx-xx-xxx 23:59:59) tenían un plan activo.</p>
-                          <p class=""><strong>Bajas:</strong> La cantidad de alumnos que han dejado de ser activos durante el mes.</p>
-                          <p class=""><strong>% Bajas:</strong> El porcentaje de alumnos que han dejado de ser activos con respecto al total de alumnos activos al inicio del mes.</p>
-                          <p class=""><strong>Nuevos:</strong> La cantidad de nuevos alumnos del mes que han comprado su primer plan en el.</p>
-                          <p class=""><strong>% Nuevos:</strong> El porcentaje de alumnos nuevos con respecto al total de alumnos activos al término del mes.</p>
-                          <p class=""><strong>Dif.:</strong> La diferencia en la cantidad de alumnos que terminaron menos los que empezaron.</p>
-                          <p class=""><strong>Crecimiento:</strong> El porcentaje de crecimiento en el número de alumnos activos durante el período.</p>
-                          <p class=""><strong>Retención:</strong> El porcentaje de alumnos que permanecen activos al finalizar el período.</p>
-                          <p class=""><strong>Rotación:</strong> El porcentaje de rotación de alumnos durante el período.</p>
+                          <p><strong>Act térm. (Activos al término):</strong> Todos los alumnos que en el momento de terminar el mes (xx-xx-xxx 23:59:59) tenían un plan activo.</p>
+                          <p><strong>Bajas:</strong> La cantidad de alumnos que han dejado de ser activos durante el mes.</p>
+                          <p><strong>% Bajas:</strong> El porcentaje de alumnos que han dejado de ser activos con respecto al total de alumnos activos al inicio del mes.</p>
+                          <p><strong>Nuevos:</strong> La cantidad de nuevos alumnos del mes que han comprado su primer plan en el.</p>
+                          <p><strong>% Nuevos:</strong> El porcentaje de alumnos nuevos con respecto al total de alumnos activos al término del mes.</p>
+                          <p><strong>Dif.:</strong> La diferencia en la cantidad de alumnos que terminaron menos los que empezaron.</p>
+                          <p><strong>Crecimiento:</strong> El porcentaje de crecimiento en el número de alumnos activos durante el período.</p>
+                          <p><strong>Retención:</strong> El porcentaje de alumnos que permanecen activos al finalizar el período.</p>
+                          <p><strong>Rotación:</strong> El porcentaje de rotación de alumnos durante el período.</p>
                         </div>
                       </div>
                     </div>
@@ -136,6 +131,30 @@
                     <!-- Datos de la otra tabla -->
                   </tbody>
                 </table>
+              </div>
+
+              <div id="second-accordion">
+                <div class="card mt-2">
+                  <div id="headingOne">
+                    <h5 class="btn font-16 font-bold mb-0 p-2 text-secondary" data-toggle="collapse"
+                      data-target="#second-collapsableInfo" aria-expanded="false" aria-controls="second-collapsableInfo">
+                      Diccionario de datos <i class="fa fa-angle-down" aria-hidden="true" click="turnDown(this)"></i>
+                    </h5>
+                  </div>
+                  <div id="second-collapsableInfo" class="m-0 p-0 collapse" aria-labelledby="headingOne" data-parent="#second-accordion">
+                    <div class="card-body m-0 pl-2 py-0">
+                      <div class="row">
+                        <div class="col-12">
+                          <p class="mt-1"><strong>Planes:</strong> Es el número de planes de prueba que se han entregado en el mes.</p>
+                          <p><strong>Planes con clases consumidas:</strong> Son todos los alumnos que tienen un plan de prueba que tengan al menos una clase consumida en el mes.</p>
+                          <p><strong>% Clases consumidas:</strong> De todos los alumnos que tienen un plan de prueba en el mes, cuantos de esoshan consumido al menos una clase.</p>
+                          <p><strong>Conversión:</strong> El número de alumnos que han comprado un plan normal después de haber consumido una clase de prueba.</p>
+                          <p><strong>% Conversión:</strong> Cuantos de los alumnos con clases de prueba con al menos una clase consumida han comprado un plan normal después.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -187,7 +206,6 @@
 
   <script>
     $(document).ready(function() {
-
       // Initialize the second table when the tab is shown
       $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
         var target = $(e.target).attr("href"); // activated tab
@@ -242,7 +260,7 @@
               {
                 data: 'trial_convertion_percentage',
                 render: function(data, type, row) {
-                  return data + '%';
+                  return `${data}%`;
                 }
               },
             ]

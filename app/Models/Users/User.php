@@ -585,30 +585,30 @@ class User extends Authenticatable
         $this->save();
     }
 
-    /**
-     * Scope a query to get all the users who had a plan in the date range
-     * 
-     * * Todos los alumnos que tuvieron un plan entre el start y end,
-     * * Sin contar planes cancelados, eliminados o planes de prueba
-     *
-     * @param   Builder  $query
-     * @param   Carbon   $start
-     * @param   Carbon   $end  
-     *
-     * @return  Builder
-     */
-    public function scopeActiveInDateRange(Builder $query, $start, $end)
-    {
-        return $query->join('plan_user', 'users.id', '=', 'plan_user.user_id')
-            ->join('plans', 'plans.id', '=', 'plan_user.plan_id')
-            ->where('plan_user.start_date', '<=', $end)
-            ->where('plan_user.finish_date', '>=', $start)
-            ->where('plan_user.plan_status_id', '!=', PlanStatus::CANCELED)
-            ->where('plans.id', '!=', Plan::TRIAL)
-            ->whereNull('plan_user.deleted_at')
-            ->select('users.id as id', 'users.first_name', 'users.last_name', 'users.email', 'users.avatar', 'users.phone', 'users.rut')
-            ->distinct('users.id');
-    }
+    // /**
+    //  * Scope a query to get all the users who had a plan in the date range
+    //  * 
+    //  * * Todos los alumnos que tuvieron un plan entre el start y end,
+    //  * * Sin contar planes cancelados, eliminados o planes de prueba
+    //  *
+    //  * @param   Builder  $query
+    //  * @param   Carbon   $start
+    //  * @param   Carbon   $end  
+    //  *
+    //  * @return  Builder
+    //  */
+    // public function scopeActiveInDateRange(Builder $query, $start, $end)
+    // {
+    //     return $query->join('plan_user', 'users.id', '=', 'plan_user.user_id')
+    //         ->join('plans', 'plans.id', '=', 'plan_user.plan_id')
+    //         ->where('plan_user.start_date', '<=', $end)
+    //         ->where('plan_user.finish_date', '>=', $start)
+    //         ->where('plan_user.plan_status_id', '!=', PlanStatus::CANCELED)
+    //         ->where('plans.id', '!=', Plan::TRIAL)
+    //         ->whereNull('plan_user.deleted_at')
+    //         ->select('users.id as id', 'users.first_name', 'users.last_name', 'users.email', 'users.avatar', 'users.phone', 'users.rut')
+    //         ->distinct('users.id');
+    // }
 
     /**
      * Query to get all the users who had a plan before given date,
@@ -675,17 +675,17 @@ class User extends Authenticatable
             ->distinct('users.id');
     }
 
-    /**
-     * 
-     * 
-     * @param   Builder  $query
-     * @param   Carbon   $start
-     * @param   Carbon   $end
-     *
-     * @return  Builder
-     */
-    public function scopeTurnaroundInDateRange(Builder $query, $start, $end)
-    {
+    // /**
+    //  * 
+    //  * 
+    //  * @param   Builder  $query
+    //  * @param   Carbon   $start
+    //  * @param   Carbon   $end
+    //  *
+    //  * @return  Builder
+    //  */
+    // public function scopeTurnaroundInDateRange(Builder $query, $start, $end)
+    // {
 
-    }
+    // }
 }

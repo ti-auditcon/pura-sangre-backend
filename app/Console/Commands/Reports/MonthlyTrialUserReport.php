@@ -34,14 +34,7 @@ class MonthlyTrialUserReport extends Command
 
     public function handle()
     {
-        $start = Carbon::parse('2018-12-01');
-        $end = Carbon::parse('2024-07-31');
-
-        while ($start->lte($end)) {
-            $this->handleMonth($start->copy()->startOfMonth());
-
-            $start->addMonth();
-        }
+        $this->handleMonth(now()->startOfMonth()->subMonth());
     }
 
     public function handleMonth($startPreviousMonth)
@@ -76,8 +69,7 @@ class MonthlyTrialUserReport extends Command
             'trial_classes_consumed'            => $trialClassesConsumed,
             'trial_classes_consumed_percentage' => $trialClassesConsumedPercentage,
             'trial_convertion'                  => $trialConvertion,
-            'trial_convertion_percentage'       => $trialConvertionPercentage,
-            // 'new_users_with_trial_plan'         => $newStudents,
+            'trial_convertion_percentage'       => $trialConvertionPercentage
         ]);
     }
 
