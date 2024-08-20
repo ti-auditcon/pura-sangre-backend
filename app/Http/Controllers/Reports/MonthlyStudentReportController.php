@@ -130,7 +130,7 @@ class MonthlyStudentReportController extends Controller
             'new_students'              => $newStudents,
             'new_students_percentage'   => $activeUserFinish != 0 ? round($newStudents / $activeUserFinish, 2) : 0,
             'month_difference'          => $monthDifference,
-            'growth_rate'               => $growthRate,
+            'growth_rate'               => round($growthRate, 2),
             'retention_rate'            => round($retentionRate, 2),
             'churn_rate'                => round($churnRate, 2),
         ];
