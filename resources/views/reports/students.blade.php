@@ -46,7 +46,7 @@
               </div>
 
               <section class="card-container">
-                <article class="card-item span-3">
+                <article class="card-item span-2">
                   <div class="">
                     <h5 class="font-18 m-0 text-secondary text-uppercase"><i class="fa fa-users mr-2" style=""></i>Activos</h5>
                     <div class="align-items-center d-flex justify-content-between m-0 p-0">
@@ -78,6 +78,47 @@
                       Bajas
                     </h5>
                     <div class="d-flex justify-content-between align-items-center">
+                      <span class="font-40 font-bold m-0 text-danger">50</h1>
+                    </div>
+                  </div>
+                  <h5 class="d-flex font-13 m-0 text-danger">
+                    <i class="fa fa-arrow-down" aria-hidden="true"></i> 1% menos que el mes anterior
+                  </h5>
+                </article>                <article class="card-item span-3">
+                  <div class="justify-content-between">
+                    <h5 class="font-18 m-0 text-secondary text-uppercase">
+                      <i class="fa fa-user-times mr-2"></i>
+                      Bajas
+                    </h5>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span class="font-40 font-bold m-0 text-danger">50</h1>
+                    </div>
+                  </div>
+                  <h5 class="d-flex font-13 m-0 text-danger">
+                    <i class="fa fa-arrow-down" aria-hidden="true"></i> 1% menos que el mes anterior
+                  </h5>
+                </article>                
+                <article class="card-item span-8">
+                  <div class="justify-content-between">
+                    <h5 class="font-18 m-0 text-secondary text-uppercase">
+                      <i class="fa fa-user-times mr-2"></i>
+                      Bajas
+                    </h5>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span class="font-40 font-bold m-0 text-danger">50</h1>
+                      <span class="font-40 font-bold m-0 text-danger">50</h1>
+                      <span class="font-40 font-bold m-0 text-danger">50</h1>
+                    </div><div class="d-flex justify-content-between align-items-center">
+                      <span class="font-40 font-bold m-0 text-danger">50</h1>
+                      <span class="font-40 font-bold m-0 text-danger">50</h1>
+                      <span class="font-40 font-bold m-0 text-danger">50</h1>
+                    </div><div class="d-flex justify-content-between align-items-center">
+                      <span class="font-40 font-bold m-0 text-danger">50</h1>
+                      <span class="font-40 font-bold m-0 text-danger">50</h1>
+                      <span class="font-40 font-bold m-0 text-danger">50</h1>
+                    </div><div class="d-flex justify-content-between align-items-center">
+                      <span class="font-40 font-bold m-0 text-danger">50</h1>
+                      <span class="font-40 font-bold m-0 text-danger">50</h1>
                       <span class="font-40 font-bold m-0 text-danger">50</h1>
                     </div>
                   </div>
