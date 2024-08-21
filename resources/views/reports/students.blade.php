@@ -6,7 +6,7 @@
 
 @section('content')
   <div class="row justify-content-center">
-    <div class="col-12">
+    <div class="col-12" style="max-width: 1280px">
       <div class="ibox">
         <div class="ibox-head">
           <div class="ibox-title">
@@ -45,27 +45,48 @@
                 </select>
               </div>
 
-              <div class="table-responsive mt-3">
-                <table id="reports-table" class="table table-hover" style="width:100%">
-                  <thead class="thead-default">
-                    <tr>
-                      <th width="5%">Año</th>
-                      <th width="5%">Mes</th>
-                      <th width="5%">Act inicio</th>
-                      <th width="5%">Act término</th>
-                      <th width="5%">Bajas</th>
-                      <th width="5%">Nuevos</th>
-                      <th width="5%">% Nuevos</th>
-                      <th width="5%">Dif.</th>
-                      <th width="5%">Crecim.</th>
-                      <th width="5%">Reten.</th>
-                      <th width="5%">Rota.</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  </tbody>
-                </table>
-              </div>
+              <section class="card-container">
+                <article class="card-item span-3">
+                  <div class="">
+                    <h5 class="font-18 m-0 text-secondary text-uppercase"><i class="fa fa-users mr-2" style=""></i>Activos</h5>
+                    <div class="align-items-center d-flex justify-content-between m-0 p-0">
+                      <span class="font-40 font-bold m-0 text-primary">2.4k+</span>
+                      
+                    </div>
+                  </div>
+                  <h5 class="d-flex font-11 m-0 text-success">
+                    <i class="fa fa-arrow-up" aria-hidden="true"></i> 3% más que el mes anterior
+                  </h5>
+                </article>
+
+                <article class="card-item span-4">
+                  <div class="justify-content-between">
+                    <h5 class="font-18 m-0 text-secondary text-uppercase"><i class="fa fa-user-plus mr-2" style="/* font-size: 36px; */"></i>Nuevos</h5>
+                    <div class="align-items-center d-flex justify-content-between m-0 p-0">
+                      <span class="font-40 font-bold m-0 text-success">350</h1>
+                    </div>
+                  </div>
+                  <h5 class="d-flex font-13 m-0 text-success">
+                    <i class="fa fa-arrow-up" aria-hidden="true"></i> 2% más que el mes anterior
+                  </h5>
+                </article>
+
+                <article class="card-item span-3">
+                  <div class="justify-content-between">
+                    <h5 class="font-18 m-0 text-secondary text-uppercase">
+                      <i class="fa fa-user-times mr-2"></i>
+                      Bajas
+                    </h5>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span class="font-40 font-bold m-0 text-danger">50</h1>
+                    </div>
+                  </div>
+                  <h5 class="d-flex font-13 m-0 text-danger">
+                    <i class="fa fa-arrow-down" aria-hidden="true"></i> 1% menos que el mes anterior
+                  </h5>
+                </article>
+              </section>
+
               {{-- explicative text --}}
               <div id="accordion">
                 <div class="card mt-2">
@@ -192,6 +213,46 @@
       border: 1px solid #dee2e6;
       border-radius: .25rem;
     }
+
+    /* Classes for the cards */
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-gap: 15px;
+      margin-top: 15px;
+    }
+
+    .card-item {
+      min-height: 130px;
+      border-radius: 12px;
+      background-color: #e9f4fb9c !important;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    /* Utility classes for grid spans */
+    .span-12 { grid-column: span 12; }
+    .span-11 { grid-column: span 11; }
+    .span-10 { grid-column: span 10; }
+    .span-9 { grid-column: span 9; }
+    .span-8 { grid-column: span 8; }
+    .span-7 { grid-column: span 7; }
+    .span-6 { grid-column: span 6; }
+    .span-5 { grid-column: span 5; }
+    .span-4 { grid-column: span 4; }
+    .span-3 { grid-column: span 3; }
+    .span-2 { grid-column: span 2; }
+    .span-1 { grid-column: span 1; }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .card-item {
+        grid-column: span 12; /* All cards take full width on mobile */
+      }
+    }
   </style>
 @endsection
 
@@ -202,7 +263,11 @@
     const token = '{{ csrf_token() }}';
   </script>
 
-  <script src="{{ asset('/js/purasangre/reports/students.js') }}"></script>
+  {{-- <script src="{{ asset('/js/purasangre/reports/students.js') }}"></script> --}}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="{{ asset('/js/purasangre/reports/students-charts.js') }}"></script>
 
   <script>
     $(document).ready(function() {
@@ -276,7 +341,4 @@
       });
     });
   </script> 
-
-
-
 @endsection
