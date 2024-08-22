@@ -79,16 +79,52 @@
                     <div class="card-body m-0 pl-2 py-0">
                       <div class="row">
                         <div class="col-12">
-                          <p class="mt-1"><strong>Act inicio (Activos al inicio):</strong> Todos los alumnos que en el momento de iniciar el mes (xx-xx-xxx 00:00:00) tenían un plan activo.</p>
-                          <p><strong>Act térm. (Activos al término):</strong> Todos los alumnos que en el momento de terminar el mes (xx-xx-xxx 23:59:59) tenían un plan activo.</p>
-                          <p><strong>Bajas:</strong> La cantidad de alumnos que han dejado de ser activos durante el mes.</p>
-                          <p><strong>% Bajas:</strong> El porcentaje de alumnos que han dejado de ser activos con respecto al total de alumnos activos al inicio del mes.</p>
-                          <p><strong>Nuevos:</strong> La cantidad de nuevos alumnos del mes que han comprado su primer plan en el.</p>
-                          <p><strong>% Nuevos:</strong> El porcentaje de alumnos nuevos con respecto al total de alumnos activos al término del mes.</p>
-                          <p><strong>Dif.:</strong> La diferencia en la cantidad de alumnos que terminaron menos los que empezaron.</p>
-                          <p><strong>Crecimiento:</strong> El porcentaje de crecimiento en el número de alumnos activos durante el período.</p>
-                          <p><strong>Retención:</strong> El porcentaje de alumnos que permanecen activos al finalizar el período.</p>
-                          <p><strong>Rotación:</strong> El porcentaje de rotación de alumnos durante el período.</p>
+                          <p class="mt-1">
+                            <strong>Act inicio (Activos al inicio):</strong> 
+                            Cantidad de alumnos que al iniciar el mes (xx-xx-xxx 00:00:00) tenían un plan activo.
+                          </p>
+                          <p>
+                            <strong>Act término (Activos al término):</strong> 
+                            Cantidad de alumnos que al terminar el mes (xx-xx-xxx 23:59:59) tenían un plan activo.
+                          </p>
+                          <p>
+                            <strong>Bajas:</strong> 
+                            Cantidad de alumnos que terminaron un plan durante el mes, y que no tienen ningún plan a futuro.
+                          </p>
+                          <p>
+                            <strong>Nuevos:</strong> 
+                            La cantidad de nuevos alumnos del mes que han comprado su primer plan. (El alumno puede haber tenido un plan de prueba)
+                          </p>
+                          <p>
+                            <strong>% Nuevos:</strong> 
+                            Porcentaje de alumnos nuevos con respecto al total de alumnos activos al término del mes.
+                            <br>
+                            Fórmula: <code>(Nuevos / Act térm) * 100</code>
+                          </p>
+                          <p>
+                            <strong>Dif.:</strong> 
+                            La diferencia en la cantidad de alumnos que terminaron menos los que empezaron.
+                            <br>
+                            Fórmula: <code>Act térm - Act inicio</code>
+                          </p>
+                          <p>
+                            <strong>Crecim.:</strong> 
+                            El porcentaje de crecimiento en el número de alumnos activos durante el período.
+                            <br>
+                            Fórmula: <code>((Act térm - Act inicio) / Act inicio) * 100</code>
+                          </p>
+                          <p>
+                            <strong>Retención:</strong> 
+                            El porcentaje de alumnos que permanecen activos al finalizar el período.
+                            <br>
+                            Fórmula: <code>((Act térm - Nuevos) / Act inicio) * 100</code>
+                          </p>
+                          <p>
+                            <strong>Rotación:</strong> 
+                            Indica el porcentaje de alumnos que dejaron de tener un plan activo al finalizar el mes.
+                            <br>
+                            Fórmula: <code>(Bajas / Act inicio) * 100</code>
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -147,9 +183,19 @@
                         <div class="col-12">
                           <p class="mt-1"><strong>Planes:</strong> Es el número de planes de prueba que se han entregado en el mes.</p>
                           <p><strong>Planes con clases consumidas:</strong> Son todos los alumnos que tienen un plan de prueba que tengan al menos una clase consumida en el mes.</p>
-                          <p><strong>% Clases consumidas:</strong> De todos los alumnos que tienen un plan de prueba en el mes, cuantos de esoshan consumido al menos una clase.</p>
+                          <p>
+                            <strong>% Clases consumidas:</strong> 
+                            De todos los alumnos que tienen un plan de prueba en el mes, cuantos de esoshan consumido al menos una clase.
+                            <br>
+                            Fórmula: <code> (Planes con clases consumidas / Planes) * 100</code>
+                          </p>
                           <p><strong>Conversión:</strong> El número de alumnos que han comprado un plan normal después de haber consumido una clase de prueba.</p>
-                          <p><strong>% Conversión:</strong> Cuantos de los alumnos con clases de prueba con al menos una clase consumida han comprado un plan normal después.</p>
+                          <p>
+                            <strong>% Conversión:</strong> 
+                            Cuantos de los alumnos con clases de prueba con al menos una clase consumida han comprado un plan normal después.
+                            <br>
+                            Fórmula: <code>(Conversión / Planes con clases consumidas) * 100</code>
+                          </p>
                         </div>
                       </div>
                     </div>

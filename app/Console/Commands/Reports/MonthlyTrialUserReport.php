@@ -34,6 +34,15 @@ class MonthlyTrialUserReport extends Command
 
     public function handle()
     {
+        // $start = Carbon::parse('2018-12-01');
+        // $end = Carbon::parse('2024-07-31');
+
+        // while ($start->lte($end)) {
+        //     $this->handleMonth($start->copy()->startOfMonth());
+
+        //     $start->addMonth();
+        // }
+
         $this->handleMonth(now()->startOfMonth()->subMonth());
     }
 
@@ -54,13 +63,10 @@ class MonthlyTrialUserReport extends Command
 
         // % conversión: Cuantos de los alumnos con clases de prueba con al menos una clase consumida han comprado un plan normal despues.
         if ($trialClassesConsumed > 0) {
-            $trialConvertionPercentage = ($trialConvertion / $allTrialPlans) * 100;
+            $trialConvertionPercentage = ($trialConvertion / $trialClassesConsumed) * 100;
         } else {
             $trialConvertionPercentage = 0;
         }
-
-        // % alumnos nuevos que tuvieron un plan de prueba: Cuantos de los alumnos nuevos alumnos tuvieron un plan de prueba antes
-        // $newStudentsPercentage = $newStudents != 0 ? ($newStudents / $activeUserStart) * 100 : 0;
 
         ReportModel::create([
             'year'                              => $startPreviousMonth->copy()->format('Y'),

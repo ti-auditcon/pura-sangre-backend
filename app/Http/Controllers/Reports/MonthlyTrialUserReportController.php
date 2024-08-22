@@ -108,7 +108,7 @@ class MonthlyTrialUserReportController extends Controller
         $trialClassesConsumed = $this->trialClassesConsumedAt($startOfMonth, $today);
         $trialClassesConsumedPercentage = $trialClassesConsumed != 0 ? ($trialClassesConsumed / $allTrialPlans) * 100 : 0;
         $trialConvertion = $this->trialConvertionAt($startOfMonth, $today);
-        $trialConvertionPercentage = $trialClassesConsumed > 0 ? ($trialConvertion / $allTrialPlans) * 100 : 0;
+        $trialConvertionPercentage = $trialClassesConsumed > 0 ? ($trialConvertion / $trialClassesConsumed) * 100 : 0;
 
         return [
             'year'                              => $startOfMonth->year,
