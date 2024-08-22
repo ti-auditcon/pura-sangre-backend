@@ -1,104 +1,101 @@
-document.addEventListener('DOMContentLoaded', function() {
-  const ctx = document.getElementById('students-chart').getContext('2d');
+// Function to create a striped pattern
+function createStripedPattern(ctx, color1, color2, thickness) {
+  const patternCanvas = document.createElement('canvas');
+  const size = thickness * 4;
+  patternCanvas.width = size;
+  patternCanvas.height = size;
+  const patternContext = patternCanvas.getContext('2d');
 
-  // Function to update the chart with data
-  function updateChart(year, month) {
-    fetch('/reports/students-filter', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': token
+  patternContext.fillStyle = color1;
+  patternContext.fillRect(0, 0, size, size);
+
+  patternContext.strokeStyle = color2;
+  patternContext.lineWidth = thickness; // Increase this value to make stripes thicker
+
+  // Draw diagonal stripes from bottom-left to top-right
+  patternContext.beginPath();
+  patternContext.moveTo(0, size);
+  patternContext.lineTo(size, 0);
+  patternContext.stroke();
+
+  patternContext.beginPath();
+  patternContext.moveTo(-size / 2, size / 2);
+  patternContext.lineTo(size / 2, -size / 2);
+  patternContext.stroke();
+
+  patternContext.beginPath();
+  patternContext.moveTo(size / 2, size * 1.5);
+  patternContext.lineTo(size * 1.5, size / 2);
+  patternContext.stroke();
+
+  return ctx.createPattern(patternCanvas, 'repeat');
+}
+
+const ctx = document.getElementById('comparison-bar-chart').getContext('2d');
+
+// Create a striped pattern
+const stripedPattern = createStripedPattern(ctx, '#ece0ef', '#757779', 4);
+
+const comparisonBarChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: [
+      'Ene',
+      'Feb',
+      'Mar',
+      'Abr',
+      'May',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dic'
+    ],
+    datasets: [
+      {
+        label: 'Ańo Actual',
+        data: [200, 300, 400, 500, 400, 300, 200, 300, 400, 500, 600, 700],
+        backgroundColor: '#34495F'
       },
-      body: JSON.stringify({ year: year, month: month })
-    })
-      .then(response => response.json())
-      .then(data => {
-        const labels = data.data.map(item => `${item.year}-${item.month}`);
-        const activeStartData = data.data.map(
-          item => item.active_students_start
-        );
-        const activeEndData = data.data.map(item => item.active_students_end);
-        const newStudentsData = data.data.map(item => item.new_students);
-        const dropoutsData = data.data.map(item => item.dropouts);
-
-        const myChart = new Chart(ctx, {
-          type: 'line', // or 'bar', 'pie', etc.
-          data: {
-            labels: labels,
-            datasets: [
-              {
-                label: 'Activos al inicio',
-                data: activeStartData,
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                fill: false
-              },
-              {
-                label: 'Activos al término',
-                data: activeEndData,
-                borderColor: 'rgba(54, 162, 235, 1)',
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                fill: false
-              },
-              {
-                label: 'Nuevos alumnos',
-                data: newStudentsData,
-                borderColor: 'rgba(255, 206, 86, 1)',
-                backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                fill: false
-              },
-              {
-                label: 'Bajas',
-                data: dropoutsData,
-                borderColor: 'rgba(255, 99, 132, 1)',
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                fill: false
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              x: {
-                display: true,
-                title: {
-                  display: true,
-                  text: 'Mes'
-                }
-              },
-              y: {
-                display: true,
-                title: {
-                  display: true,
-                  text: 'Cantidad de Alumnos'
-                }
-              }
-            }
-          }
-        });
-      });
+      {
+        label: 'Ańo Anterior',
+        data: [100, 200, 300, 400, 300, 200, 100, 200, 300, 400, 500, 600],
+        backgroundColor: stripedPattern
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top'
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        // max: 800,
+        grid: {
+          display: false
+        }
+      },
+      x: {
+        grid: {
+          display: false
+        }
+      }
+    },
+    elements: {
+      bar: {
+        borderRadius: 3
+      }
+    }
+    // we use BorderRadius option to add rounded corners to the chart
   }
-
-  // Initial chart load
-  const initialYear = document.getElementById('students-year-select').value;
-  const initialMonth = document.getElementById('students-month-select').value;
-  updateChart(initialYear, initialMonth);
-
-  // Update chart when filters change
-  document
-    .getElementById('students-year-select')
-    .addEventListener('change', function() {
-      const year = this.value;
-      const month = document.getElementById('students-month-select').value;
-      updateChart(year, month);
-    });
-
-  document
-    .getElementById('students-month-select')
-    .addEventListener('change', function() {
-      const month = this.value;
-      const year = document.getElementById('students-year-select').value;
-      updateChart(year, month);
-    });
 });
+
+// Log to ensure the chart is created
+console.log('Chart created:', comparisonBarChart);

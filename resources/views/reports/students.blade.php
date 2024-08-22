@@ -46,85 +46,66 @@
               </div>
 
               <section class="card-container">
-                <article class="card-item span-2">
-                  <div class="">
-                    <h5 class="font-18 m-0 text-secondary text-uppercase"><i class="fa fa-users mr-2" style=""></i>Activos</h5>
-                    <div class="align-items-center d-flex justify-content-between m-0 p-0">
-                      <span class="font-40 font-bold m-0 text-primary">2.4k+</span>
-                      
-                    </div>
-                  </div>
-                  <h5 class="d-flex font-11 m-0 text-success">
-                    <i class="fa fa-arrow-up" aria-hidden="true"></i> 3% más que el mes anterior
-                  </h5>
-                </article>
-
-                <article class="card-item span-4">
+                <article class="card-item span-3">
                   <div class="justify-content-between">
-                    <h5 class="font-18 m-0 text-secondary text-uppercase"><i class="fa fa-user-plus mr-2" style="/* font-size: 36px; */"></i>Nuevos</h5>
-                    <div class="align-items-center d-flex justify-content-between m-0 p-0">
-                      <span class="font-40 font-bold m-0 text-success">350</h1>
-                    </div>
+                    <h5 class="align-items-center d-flex font-15 justify-content-between m-0">
+                      Nuevos
+                      <i class="fa fa-user-o"></i>
+                    </h5>
+                    
                   </div>
-                  <h5 class="d-flex font-13 m-0 text-success">
-                    <i class="fa fa-arrow-up" aria-hidden="true"></i> 2% más que el mes anterior
-                  </h5>
+                  <div>
+                    <h1 class="font-30 m-0">3500</h1>
+                    <h5 class="font-11 m-0 pt-1 text-success">+2% más que el mes anterior</h5>
+                  </div>
                 </article>
 
                 <article class="card-item span-3">
                   <div class="justify-content-between">
-                    <h5 class="font-18 m-0 text-secondary text-uppercase">
-                      <i class="fa fa-user-times mr-2"></i>
+                    <h5 class="align-items-center d-flex font-15 justify-content-between m-0">
                       Bajas
+                      <i class="la la-user-times font-18"></i>
                     </h5>
-                    <div class="d-flex justify-content-between align-items-center">
-                      <span class="font-40 font-bold m-0 text-danger">50</h1>
-                    </div>
+                    
                   </div>
-                  <h5 class="d-flex font-13 m-0 text-danger">
-                    <i class="fa fa-arrow-down" aria-hidden="true"></i> 1% menos que el mes anterior
-                  </h5>
-                </article>                <article class="card-item span-3">
+                  <div>
+                    <h1 class="font-30 m-0">10</h1>
+                    <h5 class="font-11 m-0 pt-1 text-danger">-2% más que el mes anterior</h5>
+                  </div>
+                </article>
+
+                <article class="card-item span-3">
                   <div class="justify-content-between">
-                    <h5 class="font-18 m-0 text-secondary text-uppercase">
-                      <i class="fa fa-user-times mr-2"></i>
-                      Bajas
+                    <h5 class="align-items-center d-flex font-15 justify-content-between m-0">
+                      Nuevos
+                      <i class="fa fa-user-o mr-2"></i>
                     </h5>
-                    <div class="d-flex justify-content-between align-items-center">
-                      <span class="font-40 font-bold m-0 text-danger">50</h1>
-                    </div>
+                    
                   </div>
-                  <h5 class="d-flex font-13 m-0 text-danger">
-                    <i class="fa fa-arrow-down" aria-hidden="true"></i> 1% menos que el mes anterior
-                  </h5>
-                </article>                
-                <article class="card-item span-8">
+                  <div>
+                    <h1 class="font-30 m-0">350</h1>
+                    <h5 class="font-11 m-0 pt-1 text-success">+2% más que el mes anterior</h5>
+                  </div>
+                </article>   
+
+                <article class="card-item span-3">
                   <div class="justify-content-between">
-                    <h5 class="font-18 m-0 text-secondary text-uppercase">
-                      <i class="fa fa-user-times mr-2"></i>
-                      Bajas
+                    <h5 class="align-items-center d-flex font-15 justify-content-between m-0">
+                      Nuevos
+                      <i class="fa fa-user-o mr-2"></i>
                     </h5>
-                    <div class="d-flex justify-content-between align-items-center">
-                      <span class="font-40 font-bold m-0 text-danger">50</h1>
-                      <span class="font-40 font-bold m-0 text-danger">50</h1>
-                      <span class="font-40 font-bold m-0 text-danger">50</h1>
-                    </div><div class="d-flex justify-content-between align-items-center">
-                      <span class="font-40 font-bold m-0 text-danger">50</h1>
-                      <span class="font-40 font-bold m-0 text-danger">50</h1>
-                      <span class="font-40 font-bold m-0 text-danger">50</h1>
-                    </div><div class="d-flex justify-content-between align-items-center">
-                      <span class="font-40 font-bold m-0 text-danger">50</h1>
-                      <span class="font-40 font-bold m-0 text-danger">50</h1>
-                      <span class="font-40 font-bold m-0 text-danger">50</h1>
-                    </div><div class="d-flex justify-content-between align-items-center">
-                      <span class="font-40 font-bold m-0 text-danger">50</h1>
-                      <span class="font-40 font-bold m-0 text-danger">50</h1>
-                      <span class="font-40 font-bold m-0 text-danger">50</h1>
-                    </div>
+                    
                   </div>
-                  <h5 class="d-flex font-13 m-0 text-danger">
-                    <i class="fa fa-arrow-down" aria-hidden="true"></i> 1% menos que el mes anterior
-                  </h5>
+                  <div>
+                    <h1 class="font-30 m-0">350</h1>
+                    <h5 class="font-11 m-0 pt-1 text-success">+2% más que el mes anterior</h5>
+                  </div>
+                </article>   
+
+                <article class="card-item span-12">
+                  <div class="chart-container">
+                    <canvas id="comparison-bar-chart"></canvas>
+                  </div>
                 </article>
               </section>
 
@@ -267,11 +248,23 @@
       min-height: 130px;
       border-radius: 12px;
       background-color: #e9f4fb9c !important;
-      padding: 15px;
+      /* text color */
+      color: #34495F;
+      padding: 25px 20px 25px 20px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       width: 100%;
+      border: 1px solid #e9ecef !important;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 40vh;  /* Adjust as needed */
+      width: 100%;
+      padding: 0;    /* Ensure no padding is causing the overflow */
+      margin: 0;     /* Ensure no margin is causing the overflow */
+      overflow: hidden; /* This will prevent content from overflowing */
     }
 
     /* Utility classes for grid spans */
@@ -293,6 +286,21 @@
       .card-item {
         grid-column: span 12; /* All cards take full width on mobile */
       }
+      .chart-container {
+        height: 50vh; /* Taller height for mobile */
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .chart-container {
+        height: 45vh; /* Medium height for tablets */
+      }
+    }
+
+    @media (min-width: 1025px) {
+      .chart-container {
+        height: 40vh; /* Standard height for desktops */
+      }
     }
   </style>
 @endsection
@@ -308,7 +316,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js" integrity="sha512-ElRFoEQdI5Ht6kZvyzXhYG9NqjtkmlkfYk0wr6wHxU9JEHakS7UJZNeml5ALk+8IKlU6jDgMabC3vkumRokgJA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-<script src="{{ asset('/js/purasangre/reports/students-charts.js') }}"></script>
+  <script src="{{ asset('/js/purasangre/reports/students-charts.js') }}"></script>
 
   <script>
     $(document).ready(function() {
