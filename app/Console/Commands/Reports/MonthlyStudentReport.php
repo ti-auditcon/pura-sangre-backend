@@ -45,6 +45,8 @@ class MonthlyStudentReport extends Command
 
             $start->addMonth();
         }
+
+        // $this->handleMonth(now()->startOfMonth()->subMonths(2));
     }
 
     public function handleMonth($startPreviousMonth)

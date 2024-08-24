@@ -34,16 +34,16 @@ class MonthlyTrialUserReport extends Command
 
     public function handle()
     {
-        // $start = Carbon::parse('2018-12-01');
-        // $end = Carbon::parse('2024-07-31');
+        $start = Carbon::parse('2018-12-01');
+        $end = Carbon::parse('2024-06-30');
 
-        // while ($start->lte($end)) {
-        //     $this->handleMonth($start->copy()->startOfMonth());
+        while ($start->lte($end)) {
+            $this->handleMonth($start->copy()->startOfMonth());
 
-        //     $start->addMonth();
-        // }
+            $start->addMonth();
+        }
 
-        $this->handleMonth(now()->startOfMonth()->subMonth());
+        $this->handleMonth(now()->startOfMonth()->subMonths(2));
     }
 
     public function handleMonth($startPreviousMonth)
@@ -119,17 +119,16 @@ class MonthlyTrialUserReport extends Command
         return PlanUser::join('plans', 'plans.id', '=', 'plan_user.plan_id')
             ->where('plan_user.plan_status_id', '!=', PlanStatus::CANCELED)
             ->where('plans.id', '!=', Plan::TRIAL)
-            ->whereBetween('plan_user.start_date', [$start, $end])
-            ->whereExists(function ($subQuery) {
+            ->whereExists(function ($subQuery) use ($start, $end) {
                 $subQuery->select(DB::raw(1))
                     ->from('plan_user as trialPlan')
                     ->join('reservations', 'reservations.plan_user_id', '=', 'trialPlan.id')
-                    ->where('trialPlan.plan_id', Plan::TRIAL)
+                    ->join('clases', 'clases.id', '=', 'reservations.clase_id')
                     ->whereColumn('trialPlan.user_id', 'plan_user.user_id')
+                    ->where('trialPlan.plan_id', Plan::TRIAL)
+                    ->whereBetween('clases.date', [$start, $end])
                     ->where('trialPlan.plan_status_id', '!=', PlanStatus::CANCELED)
-                    ->whereRaw('trialPlan.finish_date < plan_user.start_date')
-                    // where trial.finish_date not be more than 14 days before the start date of plan_user
-                    ->whereRaw('trialPlan.finish_date > DATE_SUB(plan_user.start_date, INTERVAL 14 DAY)')
+                    ->whereRaw('clases.date > DATE_SUB(plan_user.start_date, INTERVAL 14 DAY)')
                     ->where('reservations.reservation_status_id', ReservationStatus::CONSUMED)
                     ->whereNull('trialPlan.deleted_at');
             })

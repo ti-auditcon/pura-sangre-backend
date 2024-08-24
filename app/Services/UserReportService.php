@@ -5,9 +5,7 @@ namespace App\Services;
 use Carbon\Carbon;
 use App\Models\Plans\Plan;
 use App\Models\Users\User;
-use App\Models\Plans\PlanUser;
 use App\Models\Plans\PlanStatus;
-use App\Models\Clases\ReservationStatus;
 
 class UserReportService
 {
