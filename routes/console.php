@@ -1,6 +1,8 @@
 <?php
 
 use Pusher\Pusher;
+use App\Models\Users\User;
+use Illuminate\Support\Str;
 use App\Models\Reports\Download;
 use App\Events\DownloadCompleted;
 use Illuminate\Support\Facades\Log;
@@ -24,7 +26,9 @@ Artisan::command('inspire', function () {
 
 Artisan::command('test:push', function () {
     try {
-
+        if (!app()->environment('local')) {
+            return;
+        }
         $options = [
             'cluster' => config('broadcasting.connections.pusher.options.cluster'),
             'useTLS' => true
@@ -47,6 +51,31 @@ Artisan::command('test:push', function () {
 
         $pusher->trigger('downloads', 'download.completed', []);
         echo "Event triggered successfully.";
+    } catch (\Throwable $th) {
+        dd($th->getMessage());
+    }
+});
+
+Artisan::command('purasangre:new-user {--email=} {--pass=}', function ($email = null, $pass = null) {
+    if (!app()->environment('local')) {
+        $this->info('No puede realizar este comando en producción');
+
+        return;
+    }
+    
+    try {
+        $user = User::create([
+            'email' => $email ?? 'test' . rand(1, 9999) .  '@mail.com',
+            'password' => bcrypt($pass ?? '123123'),
+            'first_name' => 'Test',
+            'last_name' => 'User',
+            'birthdate' => now()->subYears(20),
+            'since' => now()->subYears(2),
+            'gender' => 'otro',
+            'address' => 'Test address',
+        ]);
+
+        $this->info('Usuario creado con correo: ' . $user->email);
     } catch (\Throwable $th) {
         dd($th->getMessage());
     }

@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Models\Users\User;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +24,10 @@ class BirthdateUsersProvider extends ServiceProvider
      */
     public function boot()
     {
+        if ($this->app->environment('testing')) {
+            return;
+        }
+
         if (Schema::hasTable('users')) { /** For instance put it here to avoid error in memory phpunits  */
             $birthdate_users = app(User::class)->birthdate_users();
 
