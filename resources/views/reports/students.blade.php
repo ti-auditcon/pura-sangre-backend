@@ -189,7 +189,7 @@
                             <br>
                             Fórmula: <code> (Planes con clases consumidas / Planes) * 100</code>
                           </p>
-                          <p><strong>Conversión:</strong> El número de alumnos que han comprado un plan normal después de haber consumido una clase de prueba.</p>
+                          <p><strong>Conversión:</strong> El número de alumnos que han comprado un plan normal, dentro de de 14 días,después de haber consumido una clase de prueba.</p>
                           <p>
                             <strong>% Conversión:</strong> 
                             Cuantos de los alumnos con clases de prueba con al menos una clase consumida han comprado un plan normal después.

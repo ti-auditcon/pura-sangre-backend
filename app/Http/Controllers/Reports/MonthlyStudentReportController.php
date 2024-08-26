@@ -89,7 +89,7 @@ class MonthlyStudentReportController extends Controller
                 "draw"            => intval($request->input('draw')),
                 "recordsTotal"    => 1, // Only one row for the specified month
                 "recordsFiltered" => 1,
-                "data"            => [$studentReport] // Wrap the data in an array
+                "data"            => [$studentReport ?? []] // Wrap the data in an array
             ];
 
             return response()->json($json_data);
@@ -125,6 +125,7 @@ class MonthlyStudentReportController extends Controller
 
     protected function calculateAccumulatedData($startOfMonth, $endDate)
     {
+        // dd($startOfMonth, $endDate);
         $activeUserStart = $this->userReportSevice->activeUsersAt($startOfMonth)->count('users.id');
         $activeUserFinish = $this->userReportSevice->activeUsersAtLastDay($endDate)->count('users.id');
 

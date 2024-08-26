@@ -51,7 +51,7 @@ class MonthlyStudentReport extends Command
 
     public function handleMonth($startPreviousMonth)
     {
-        $startPreviousMonth = $startPreviousMonth->copy()->startOfDay();
+        $startPreviousMonth = $startPreviousMonth;
         $endOfPreviousMonth = $startPreviousMonth->copy()->endOfMonth();
 
         $activeUserStart = $this->userReportSevice->activeUsersAt($startPreviousMonth)->count('users.id');

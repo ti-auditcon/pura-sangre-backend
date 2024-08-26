@@ -25,9 +25,10 @@ class MonthlyTrialUserReportController extends Controller
 
         $currentYear = Carbon::now()->year;
         $currentMonth = Carbon::now()->month;
+        $previousMonth = Carbon::now()->subMonth()->month;
 
         if ($year == $currentYear && !$month) {
-            // Get all months data from the database for the selected year
+            // Retrieve data for previous months from the database
             $studentReports = $query->where('year', $year)
                 ->get([
                     'id', 'year', 'month', 'trial_plans', 'trial_classes_consumed', 
@@ -35,14 +36,19 @@ class MonthlyTrialUserReportController extends Controller
                     'trial_convertion_percentage'
                 ]);
 
-            // Calculate the accumulated data for the current month up to today
-            $startOfMonth = Carbon::now()->startOfMonth();
+            // Calculate accumulated data for the previous month
+            $startOfPreviousMonth = Carbon::now()->subMonth()->startOfMonth();
+            $endOfPreviousMonth = Carbon::now()->subMonth()->endOfMonth();
+            $previousMonthData = $this->calculateAccumulatedData($startOfPreviousMonth, $endOfPreviousMonth);
+
+            // Calculate accumulated data for the current month up to today
+            $startOfCurrentMonth = Carbon::now()->startOfMonth();
             $today = Carbon::now();
+            $currentMonthData = $this->calculateAccumulatedData($startOfCurrentMonth, $today);
 
-            $accumulatedData = $this->calculateAccumulatedData($startOfMonth, $today);
-
-            // Append the accumulated data for the current month
-            $studentReports->push((object) $accumulatedData);
+            // Combine both months' data with existing reports
+            $studentReports->push((object) $previousMonthData);
+            $studentReports->push((object) $currentMonthData);
 
             $totalData = $studentReports->count();
             $totalFiltered = $totalData;
@@ -55,18 +61,23 @@ class MonthlyTrialUserReportController extends Controller
             ];
 
             return response()->json($json_data);
-        } elseif ($year == $currentYear && $month == $currentMonth) {
-            // Calculate the accumulated data for the current month up to today
-            $startOfMonth = Carbon::now()->startOfMonth();
-            $today = Carbon::now();
-
-            $accumulatedData = $this->calculateAccumulatedData($startOfMonth, $today);
+        } elseif ($year == $currentYear && ($month == $currentMonth || $month == $previousMonth)) {
+            // Calculate the accumulated data for the specified month
+            if ($month == $previousMonth) {
+                $startOfPreviousMonth = Carbon::now()->subMonth()->startOfMonth();
+                $endOfPreviousMonth = Carbon::now()->subMonth()->endOfMonth();
+                $studentReport = $this->calculateAccumulatedData($startOfPreviousMonth, $endOfPreviousMonth);
+            } elseif ($month == $currentMonth) {
+                $startOfCurrentMonth = Carbon::now()->startOfMonth();
+                $today = Carbon::now();
+                $studentReport = $this->calculateAccumulatedData($startOfCurrentMonth, $today);
+            }
 
             $json_data = [
                 "draw"            => intval($request->input('draw')),
-                "recordsTotal"    => 1, // Only one row for the current month
+                "recordsTotal"    => 1, // Only one row for the specified month
                 "recordsFiltered" => 1,
-                "data"            => [$accumulatedData] // Wrap the accumulated data in an array
+                "data"            => [$studentReport] // Wrap the data in an array
             ];
 
             return response()->json($json_data);
@@ -100,6 +111,7 @@ class MonthlyTrialUserReportController extends Controller
             return response()->json($json_data);
         }
     }
+ 
 
     protected function calculateAccumulatedData($startOfMonth, $today)
     {
@@ -138,7 +150,9 @@ class MonthlyTrialUserReportController extends Controller
         // todos los alumnos que tienen un plan de prueba donde la clase se haya consumido en el mes
         return PlanUser::join('plans', 'plans.id', '=', 'plan_user.plan_id')
             ->join('reservations', 'reservations.plan_user_id', '=', 'plan_user.id')
-            ->whereBetween('plan_user.start_date', [$start, $end])
+            ->join('clases', 'clases.id', '=', 'reservations.clase_id')
+            // ->whereBetween('plan_user.start_date', [$start, $end])
+            ->whereBetween('clases.date', [$start, $end])
             ->where('plan_user.plan_status_id', '!=', PlanStatus::CANCELED)
             ->where('plans.id', Plan::TRIAL)
             ->whereNull('plan_user.deleted_at')

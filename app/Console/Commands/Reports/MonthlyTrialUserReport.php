@@ -43,7 +43,7 @@ class MonthlyTrialUserReport extends Command
             $start->addMonth();
         }
 
-        $this->handleMonth(now()->startOfMonth()->subMonths(2));
+        // $this->handleMonth(now()->startOfMonth()->subMonths(2));
     }
 
     public function handleMonth($startPreviousMonth)
@@ -52,15 +52,14 @@ class MonthlyTrialUserReport extends Command
 
         // planes de prueba acumulados (número de planes de prueba que se han entregado al mes)
         $allTrialPlans = $this->trialPlansAt($startPreviousMonth, $endOfPreviousMonth);
-        
         // prueba clase consumido: todos los alumnos que tienen un plan de prueba donde la clase se haya consumido en el mes
         $trialClassesConsumed = $this->trialClassesConsumedAt($startPreviousMonth, $endOfPreviousMonth);
-
+        
         // % prueba clase consumida: De todos los alumnos que tienen un plan de prueba en el mes, cuantos de estos han consumido al menos una clase
         $trialClassesConsumedPercentage = $trialClassesConsumed != 0 ? ($trialClassesConsumed / $allTrialPlans) * 100 : 0;
-
+        
         $trialConvertion = $this->trialConvertionAt($startPreviousMonth, $endOfPreviousMonth);
-
+        
         // % conversión: Cuantos de los alumnos con clases de prueba con al menos una clase consumida han comprado un plan normal despues.
         if ($trialClassesConsumed > 0) {
             $trialConvertionPercentage = ($trialConvertion / $trialClassesConsumed) * 100;
@@ -96,7 +95,8 @@ class MonthlyTrialUserReport extends Command
         // todos los alumnos que tienen un plan de prueba donde la clase se haya consumido en el mes
         return PlanUser::join('plans', 'plans.id', '=', 'plan_user.plan_id')
             ->join('reservations', 'reservations.plan_user_id', '=', 'plan_user.id')
-            ->whereBetween('plan_user.start_date', [$start, $end])
+            ->join('clases', 'clases.id', '=', 'reservations.clase_id')
+            ->whereBetween('clases.date', [$start, $end])
             ->where('plan_user.plan_status_id', '!=', PlanStatus::CANCELED)
             ->where('plans.id', Plan::TRIAL)
             ->whereNull('plan_user.deleted_at')
