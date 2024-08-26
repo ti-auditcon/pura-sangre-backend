@@ -151,7 +151,7 @@
                 </select>
               </div>
               <div class="table-responsive mt-3">
-                <table id="trials-table" class="table table-hover" style="width:100%">
+                <table id="trials-table" class="table table-hover display" style="width:100%">
                   <thead class="thead-default">
                     <tr>
                       <th width="5%">Año</th>
@@ -182,10 +182,10 @@
                       <div class="row">
                         <div class="col-12">
                           <p class="mt-1"><strong>Planes:</strong> Es el número de planes de prueba que se han entregado en el mes.</p>
-                          <p><strong>Planes con clases consumidas:</strong> Son todos los alumnos que tienen un plan de prueba que tengan al menos una clase consumida en el mes.</p>
+                          <p><strong>Planes con clases consumidas:</strong> Son todos los alumnos que tienen un plan de prueba que tengan <strong>al menos una clase consumida en el mes</strong>.</p>
                           <p>
                             <strong>% Clases consumidas:</strong> 
-                            De todos los alumnos que tienen un plan de prueba en el mes, cuantos de esoshan consumido al menos una clase.
+                            De todos los alumnos que tienen un plan de prueba en el mes, cuantos de esos han consumido al menos una clase.
                             <br>
                             Fórmula: <code> (Planes con clases consumidas / Planes) * 100</code>
                           </p>
@@ -211,7 +211,9 @@
 @endsection
 
 @section('css')
-  {{-- <link href="{{asset('css/datatables.min.css')}}" rel="stylesheet" /> --}}
+<link href="https://cdn.datatables.net/v/dt/dt-2.1.4/datatables.min.css" rel="stylesheet">
+ 
+
   <!-- Add your custom CSS here -->
   <style>
     .table-responsive {
@@ -223,9 +225,7 @@
     }
 
     .dataTables_scrollBody {
-      overflow: auto !important;
       height: 400px;
-      /* Adjust the height as needed */
     }
 
     .dataTables_empty {
@@ -242,7 +242,8 @@
 @endsection
 
 @section('scripts')
-  <script src="{{ asset('js/datatables.min.js') }}"></script>
+  {{-- <script src="{{ asset('js/datatables.min.js') }}"></script> --}}
+  <script src="https://cdn.datatables.net/v/dt/dt-2.1.4/datatables.min.js"></script>
 
   <script>
     const token = '{{ csrf_token() }}';
@@ -250,79 +251,72 @@
 
   <script src="{{ asset('/js/purasangre/reports/students.js') }}"></script>
 
-  <script>
-    $(document).ready(function() {
-      // Initialize the second table when the tab is shown
-      $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-        var target = $(e.target).attr("href"); // activated tab
+<script>
+  $(document).ready(function() {
+    var trialsTable;
 
-        if (target === '#trial' && !$.fn.DataTable.isDataTable('#trials-table')) {
-          $('#trials-table').DataTable({
-            language: {
-              zeroRecords: 'Sin resultados',
-              infoEmpty: 'Sin resultados',
-              infoFiltered: '(filtered from _MAX_ total records)',
-            },
-            processing: true,
-            serverSide: true,
-            sort: false,
-            pageLength: 12,
-            ajax: {
-              url: '/reports/trials-filter',
-              dataType: 'json',
-              type: 'POST',
-              data: function(d) {
-                d._token = token;
-                d.year = $('#trials-year-select').val();
-                d.month = $('#trials-month-select').val();
-              },
-            },
-            dom: 'rt',
-            columns: [
-              {
-                data: 'year'
-              },
-              {
-                data: 'month',
-                render: function(data, type, row) {
-                  return monthNames[data - 1];
-                }
-              },
-              {
-                data: 'trial_plans'
-              },
-              {
-                data: 'trial_classes_consumed'
-              },
-              {
-                data: 'trial_classes_consumed_percentage',
-                render: function(data, type, row) {
-                  return data + '%';
-                }
-              },
-              {
-                data: 'trial_convertion'
-              },
-              {
-                data: 'trial_convertion_percentage',
-                render: function(data, type, row) {
-                  return `${data}%`;
-                }
-              },
-            ]
-          });
-        }
-      });
+    // Initialize the second table when the tab is shown
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+      var target = $(e.target).attr("href"); // activated tab
 
-      // Reload trials table data when year or month is changed
-      $('#trials-year-select, #trials-month-select').change(function() {
-        if ($.fn.DataTable.isDataTable('#trials-table')) {
-          $('#trials-table').DataTable().ajax.reload();
-        }
-      });
+      if (target === '#trial' && !$.fn.DataTable.isDataTable('#trials-table')) {
+        trialsTable = $('#trials-table').DataTable({
+          fixedHeader: true,
+          language: {
+            zeroRecords: 'Sin resultados',
+            infoEmpty: 'Sin resultados',
+            infoFiltered: '(filtered from _MAX_ total records)',
+          },
+          processing: true,
+          serverSide: true,
+          sort: false,
+          pageLength: 12,
+          ajax: {
+            url: '/reports/trials-filter',
+            dataType: 'json',
+            type: 'POST',
+            data: function(d) {
+              d._token = token;
+              d.year = $('#trials-year-select').val();
+              d.month = $('#trials-month-select').val();
+            },
+          },
+          dom: 'rt',
+          columns: [
+            { data: 'year' },
+            {
+              data: 'month',
+              render: function(data, type, row) {
+                return monthNames[data - 1];
+              }
+            },
+            { data: 'trial_plans' },
+            { data: 'trial_classes_consumed' },
+            {
+              data: 'trial_classes_consumed_percentage',
+              render: function(data, type, row) {
+                return data + '%';
+              }
+            },
+            { data: 'trial_convertion' },
+            {
+              data: 'trial_convertion_percentage',
+              render: function(data, type, row) {
+                return `${data}%`;
+              }
+            },
+          ],
+        });
+      }
     });
-  </script> 
 
-
+    // Reload trials table data when year or month is changed
+    $('#trials-year-select, #trials-month-select').change(function() {
+      if ($.fn.DataTable.isDataTable('#trials-table')) {
+        trialsTable.ajax.reload();
+      }
+    });
+  });
+</script>
 
 @endsection
