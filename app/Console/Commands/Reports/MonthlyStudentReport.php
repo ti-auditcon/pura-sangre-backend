@@ -38,7 +38,7 @@ class MonthlyStudentReport extends Command
     public function handle()
     {
         $start = Carbon::parse('2018-12-01');
-        $end = Carbon::parse('2024-07-31');
+        $end = Carbon::parse('2024-06-30');
 
         while ($start->lte($end)) {
             $this->handleMonth($start->copy()->startOfMonth());

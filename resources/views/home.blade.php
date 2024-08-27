@@ -216,7 +216,7 @@
 
     <script>
         var densities = [];
-        $.get( "json-density-parameters", function (response) {
+        $.get("json-density-parameters", function (response) {
             response.forEach(function (e) {
                 densities.push(e);
             });        // response.
