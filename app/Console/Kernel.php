@@ -26,6 +26,8 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\RefreshPlans',
         'App\Console\Commands\ToExpirePlanMail',
         'App\Console\Commands\Users\UsersGoneAway',
+        'App\Console\Commands\Reports\MonthlyTrialUserReport',
+        'App\Console\Commands\Reports\MonthlyStudentReport',
     ];
 
     /**
@@ -63,6 +65,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('purasangre:invoicing:issue-receipts')->everyFifteenMinutes();
 
         $schedule->command('purasangre:plans:finish')->hourlyAt(16);
+
+        $schedule->command('purasangre:reports:monthly-trial-users')->monthlyOn(1, '1');
+
+        $schedule->command('purasangre:reports:monthly-students')->monthlyOn(1, '1');
     }
 
     /**
