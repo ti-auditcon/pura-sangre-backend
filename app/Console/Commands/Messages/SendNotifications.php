@@ -5,7 +5,7 @@ namespace App\Console\Commands\Messages;
 use App\Models\Users\User;
 use Illuminate\Console\Command;
 use App\Models\Users\Notification;
-use App\Jobs\SendPushNotification;
+use App\Services\PushNotificationService;
 
 class SendNotifications extends Command
 {
@@ -23,14 +23,18 @@ class SendNotifications extends Command
      */
     protected $description = 'Send programed notifications';
 
+    protected $pushNotificationService;
+
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(PushNotificationService $pushNotificationService)
     {
         parent::__construct();
+
+        $this->pushNotificationService = $pushNotificationService;
     }
 
     /**
@@ -49,7 +53,11 @@ class SendNotifications extends Command
             $users = User::whereIn('id', $users_id)->get(['id', 'fcm_token']);
 
             foreach ($users as $user) {
-                SendPushNotification::dispatch($user->fcm_token, $notification->title, $notification->body);
+                $this->pushNotificationService->sendPushNotification(
+                    [$user->fcm_token], // Pass an array of tokens (even single)
+                    $notification->title,
+                    $notification->body
+                );
             }
 
             $notification->update(['sended' => 1]);

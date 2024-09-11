@@ -3,10 +3,12 @@
 namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use App\Services\PushNotificationService;
 
 class SendPushNotification implements ShouldQueue
 {
@@ -43,28 +45,23 @@ class SendPushNotification implements ShouldQueue
      */
     protected $body;
 
+    protected $pushNotificationService;
+
     /**
      * Create a new job instance.
      *
+     * @param string $token
+     * @param string $title
+     * @param string $body
+     * @param PushNotificationService $pushNotificationService
      * @return void
      */
-    public function __construct($token, $title, $body)
+    public function __construct($token, $title, $body, PushNotificationService $pushNotificationService)
     {
         $this->token = $token;
-        
         $this->title = $title;
-        
         $this->body = $body;
-    }
-
-        /**
-     * The fcm_token runs as address to know to who send the PUSH notification
-     *
-     * @return  string
-     */
-    public function getToken()
-    {
-        return $this->token;
+        $this->pushNotificationService = $pushNotificationService;
     }
 
     /**
@@ -74,31 +71,14 @@ class SendPushNotification implements ShouldQueue
      */
     public function handle()
     {
-        $fcmUrl = env('FIREBASE_CLOUD_MESSAGING_URL', 'https://fcm.googleapis.com/fcm/send');
-
-        $notification = ['title' => $this->title, 'body' => $this->body, 'sound' => true];
-        
-        $fcmNotification = [
-            'to'           => $this->token, //single token
-            'notification' => $notification,
-            'data'         => $notification
-        ];
-
-        $headers = [
-            'Authorization: key=' . env('FIREBASE_AUTHORIZATION_KEY', 'AAAAEWU-ai4:APA91bFCm4Yxb9Hh4m8te_RCrvk8HY_IaR9LfXUGQcuClcFs5Fy6a7d4irPoSbcIi48ei6kNnvodQCUua1Mb8h9QKEFtusbeCAcPpEAwSXxbKIjyrKDl3Ncm_tTFfnoQmqT9ZCD2hPSH'),
-            'Content-Type: application/json'
-        ];
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $fcmUrl);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmNotification));
-        $result = curl_exec($ch);
-        curl_close($ch);
-
-        return true;
+        try {
+            $this->pushNotificationService->sendPushNotification( 
+                [$this->token],
+                $this->title,
+                $this->body
+            );
+        } catch (\Exception $e) {
+            Log::error('Error sending push notification: ' . $e->getMessage());
+        }
     }
 }

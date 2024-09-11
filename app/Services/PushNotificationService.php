@@ -3,78 +3,73 @@
 namespace App\Services;
 
 use GuzzleHttp\Client;
+use Google\Auth\CredentialsLoader;
+use Illuminate\Support\Facades\Log;
 
 class PushNotificationService
 {
-	/**
-	 * The FCM API url to send the push notification.
-	 *
-	 * @var string
-	 */
-    private $fcmUrl;
+    protected $credentialsPath;
+    protected $httpClient;
+    protected $url;
 
-	/**
-	 * The FCM API key.
-	 * 
-	 * @var string
-	 */
-    private $apiKey;
-
-    /**
-     * The Guzzle HTTP client.
-     *
-     * @var Client
-     */
-    private $client;
-
-    public function __construct(Client $client = null)
+    public function __construct()
     {
-        $this->fcmUrl = config('services.firebase.url');
-        $this->apiKey = config('services.firebase.key');
-
-        $this->client = $client ?? new Client();
+        $this->url = config('services.firebase.url');
+        $this->credentialsPath = base_path(config('services.google_application_credentials'));
+        $this->httpClient = $this->authorizeHttpClient();
     }
 
-    public function sendPushNotification(array $tokens, $title, $body)
+    public function authorizeHttpClient()
     {
-        $notification = [
-            'title' => $title,
-            'body' => $body,
-            'sound' => true,
-        ];
-
-        $data = [
-            'message' => $notification,
-        ];
-
-        // Set the appropriate field based on the number of tokens
-        if (count($tokens) === 1) {
-            $fields = [
-                'to' => $tokens[0],
-                'notification' => $notification,
-                'data' => $data,
-            ];
-        } else {
-            $fields = [
-                'registration_ids' => $tokens,
-                'notification' => $notification,
-                'data' => $data,
-            ];
-        }
-
-        $headers = [
-            'Authorization' => 'key=' . $this->apiKey,
-            'Content-Type' => 'application/json',
-        ];
-
-        $response = $this->client->post(
-            $this->fcmUrl,
-            [
-                'headers' => $headers,
-                'json' => $fields
-            ]
+        $creds = CredentialsLoader::makeCredentials(
+            ['https://www.googleapis.com/auth/firebase.messaging'],
+            json_decode(file_get_contents($this->credentialsPath), true)
         );
 
-        return $response->getBody()->getContents();
+        // Fetch the token to check if it's working
+        $token = $creds->fetchAuthToken();
+        $accessToken = $token['access_token'];
+
+        return new Client([
+            'headers' => [
+                'Authorization' => 'Bearer ' . $accessToken,
+                'Content-Type' => 'application/json',
+            ]
+        ]);
+    }
+
+    /**
+     * Send push notification to multiple devices
+     *
+     * @param array $tokens
+     * @param string $title
+     * @param string $body
+     * @return void
+     */
+    public function sendPushNotification(array $tokens, string $title, string $body)
+    {
+        foreach ($tokens as $token) {
+            $payload = [
+                'message' => [
+                    'token' => $token,
+                    'notification' => [
+                        'title' => $title,
+                        'body' => $body,
+                    ],
+                    'data' => [
+                        'title' => $title,
+                        'body' => $body,
+                    ]
+                ],
+            ];
+
+            try {
+                $this->httpClient->post($this->url, [
+                    'json' => $payload,
+                ]);
+            } catch (\Exception $e) {
+                Log::error('Error sending push notification: ' . $e->getMessage());
+            }
+        }
     }
 }
