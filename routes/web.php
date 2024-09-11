@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FlowController;
 use App\Models\Users\Role;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Invoicing\TaxDocument;
@@ -20,55 +21,53 @@ Route::get('/withoutrenewal', 'HomeController@withoutrenewal');
 Route::get('/genders', 'HomeController@genders');
 Route::get('/incomes-summary', 'HomeController@incomessummary');
 
-Route::get('/success-reset-password', function () {
-    return view('guest.success-reset-password');
-});
+Route::get('/success-reset-password', 'PasswordController@succesResetPassword');
 
 Route::post('expired-plans', 'HomeController@ExpiredPlan')->name('expiredplans');
 
 Route::middleware(['auth'])->prefix('/')->group(function () {
-    Route::get('update-plan-user-date', function () {
-        $planUsers = \App\Models\Plans\PlanUser::where('finish_date', '>=' , now()->format('Y-m-d'))
-            ->get();
+    // Route::get('update-plan-user-date', function () {
+    //     $planUsers = \App\Models\Plans\PlanUser::where('finish_date', '>=' , now()->format('Y-m-d'))
+    //         ->get();
 
-            \App\Models\Plans\PlanUser::withoutEvents(function () use ($planUsers) {
-                foreach ($planUsers as $planUser) {
-                    $planUser->finish_date = Carbon\Carbon::parse($planUser->finish_date)->format('Y-m-d') 
-                        . ' 23:59:59';
+    //         \App\Models\Plans\PlanUser::withoutEvents(function () use ($planUsers) {
+    //             foreach ($planUsers as $planUser) {
+    //                 $planUser->finish_date = Carbon\Carbon::parse($planUser->finish_date)->format('Y-m-d') 
+    //                     . ' 23:59:59';
 
-                    $planUser->save();
-                }
-            });
-    });
+    //                 $planUser->save();
+    //             }
+    //         });
+    // });
 
-    Route::get('update-clase-date', function () {
-        $clases = \App\Models\Clases\Clase::where('date', '>=' , now()->format('Y-m-d'))
-            ->get();
+    // Route::get('update-clase-date', function () {
+    //     $clases = \App\Models\Clases\Clase::where('date', '>=' , now()->format('Y-m-d'))
+    //         ->get();
 
-            \App\Models\Clases\Clase::withoutEvents(function () use ($clases) {
-                foreach ($clases as $clase) {
-                    $clase->date = Carbon\Carbon::parse($clase->date)->format('Y-m-d') 
-                        . Carbon\Carbon::parse($clase->start_at)->format(' H:i:s');
+    //         \App\Models\Clases\Clase::withoutEvents(function () use ($clases) {
+    //             foreach ($clases as $clase) {
+    //                 $clase->date = Carbon\Carbon::parse($clase->date)->format('Y-m-d') 
+    //                     . Carbon\Carbon::parse($clase->start_at)->format(' H:i:s');
 
-                    $clase->save();
-                }
-            });
-    });
+    //                 $clase->save();
+    //             }
+    //         });
+    // });
 
     // update finisH_date in plan_user_flows
-    Route::get('update-plan-user-flows', function () {
-        $planUserFlows = \App\Models\Plans\PlanUserFlow::where('finish_date', '>=' , now()->format('Y-m-d'))
-            ->get();
+    // Route::get('update-plan-user-flows', function () {
+    //     $planUserFlows = \App\Models\Plans\PlanUserFlow::where('finish_date', '>=' , now()->format('Y-m-d'))
+    //         ->get();
 
-            \App\Models\Plans\PlanUserFlow::withoutEvents(function () use ($planUserFlows) {
-                foreach ($planUserFlows as $planUserFlow) {
-                    $planUserFlow->finish_date = Carbon\Carbon::parse($planUserFlow->finish_date)->format('Y-m-d') 
-                        . ' 23:59:59';
+    //         \App\Models\Plans\PlanUserFlow::withoutEvents(function () use ($planUserFlows) {
+    //             foreach ($planUserFlows as $planUserFlow) {
+    //                 $planUserFlow->finish_date = Carbon\Carbon::parse($planUserFlow->finish_date)->format('Y-m-d') 
+    //                     . ' 23:59:59';
 
-                    $planUserFlow->save();
-                }
-            });
-    });
+    //                 $planUserFlow->save();
+    //             }
+    //         });
+    // });
 
     // Calibrate plan_income_summaries
     Route::post('plan-incomes-summaries/calibrate', 'Reports\ReportController@incomesCalibrate')
@@ -243,8 +242,11 @@ Route::post('/flow/confirm-payment', 'Web\NewUserController@finishFlowPayment');
 
 Route::get('get-pdf/{plan_user_flow}', 'Web\NewUserController@getPlanUserFlowTaxDocument');
 
-Route::get('/flow/return', function () { return view('web.flow.return'); });
-Route::get('/flow/error', function () { return view('web.flow.error'); });
+// Route::get('/flow/return', function () { return view('web.flow.return'); });
+// Route::get('/flow/error', function () { return view('web.flow.error'); });
+Route::get('/flow/return', 'FlowController@showReturn');
+Route::get('/flow/error', 'FlowController@showError');
+
 
 Route::get('finish-registration', 'Web\NewUserController@finishing');
 
@@ -256,35 +258,35 @@ Route::get('finish-registration', 'Web\NewUserController@finishing');
 //     // return Mail::to('raulberrios8@gmail.com')->send(new App\Mail\NewPlanUserEmail($planuserFlow));
 // });
 
-Route::get('cancel-dte', function() {
-    app(TaxDocument::class)->cancel(109444);
-});
+// Route::get('cancel-dte', function() {
+//     app(TaxDocument::class)->cancel(109444);
+// });
 
 // Create a test route to test the email
-Route::get('test-email', function() {
-    $user = App\Models\Users\User::where('email', 'raulberrios8@gmail.com')->first();
+// Route::get('test-email', function() {
+//     $user = App\Models\Users\User::where('email', 'raulberrios8@gmail.com')->first();
 
-    $emailData = (object) [
-        'subject' => 'Your email subject',
-        'user' => 'Hello user',
-        'message' => 'This is a test message',
-    ];
+//     $emailData = (object) [
+//         'subject' => 'Your email subject',
+//         'user' => 'Hello user',
+//         'message' => 'This is a test message',
+//     ];
 
-    // we show in the page the email template
-    return new App\Mail\SendEmail($emailData);
+//     // we show in the page the email template
+//     return new App\Mail\SendEmail($emailData);
 
-    // return Mail::to($user->email)->send(new App\Mail\SendEmail($emailData));
-});
+//     // return Mail::to($user->email)->send(new App\Mail\SendEmail($emailData));
+// });
 
-Route::get('test-push', function() {
-    $pushClass = new \App\Jobs\SendPushNotification(
-        'fBqwD-OtSj-fvGcJVgk5k4:APA91bGv9v0oDAPqym-Wp7m2hLaG7SvRDH5bf-iAXiKwfGhPmUW4RrQL9y-LDg0CW0A2KMUMj2m9x_Z2w_zwoAYnwe_61jqyseg7sTyMd8uPmOgUbrk9rsbyR3jiV_UQq1sltC-2nXpk',
-        'Test title', 
-        'Test body',
-        resolve('App\Services\PushNotificationService')
-    );
+// Route::get('test-push', function() {
+//     $pushClass = new \App\Jobs\SendPushNotification(
+//         'fBqwD-OtSj-fvGcJVgk5k4:APA91bGv9v0oDAPqym-Wp7m2hLaG7SvRDH5bf-iAXiKwfGhPmUW4RrQL9y-LDg0CW0A2KMUMj2m9x_Z2w_zwoAYnwe_61jqyseg7sTyMd8uPmOgUbrk9rsbyR3jiV_UQq1sltC-2nXpk',
+//         'Test title', 
+//         'Test body',
+//         resolve('App\Services\PushNotificationService')
+//     );
 
-    $pushClass->handle();
+//     $pushClass->handle();
 
-    return 'ok';
-});
+//     return 'ok';
+// });
