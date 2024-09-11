@@ -1,13 +1,9 @@
 <?php
 
 use App\Models\Users\Role;
-use App\Models\Plans\PlanUser;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Facades\Mail;
 use App\Models\Invoicing\TaxDocument;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Notifications\Messages\MailMessage;
 
 /**
  * Auth Route lists
@@ -278,4 +274,17 @@ Route::get('test-email', function() {
     return new App\Mail\SendEmail($emailData);
 
     // return Mail::to($user->email)->send(new App\Mail\SendEmail($emailData));
+});
+
+Route::get('test-push', function() {
+    $pushClass = new \App\Jobs\SendPushNotification(
+        'fBqwD-OtSj-fvGcJVgk5k4:APA91bGv9v0oDAPqym-Wp7m2hLaG7SvRDH5bf-iAXiKwfGhPmUW4RrQL9y-LDg0CW0A2KMUMj2m9x_Z2w_zwoAYnwe_61jqyseg7sTyMd8uPmOgUbrk9rsbyR3jiV_UQq1sltC-2nXpk',
+        'Test title', 
+        'Test body',
+        resolve('App\Services\PushNotificationService')
+    );
+
+    $pushClass->handle();
+
+    return 'ok';
 });

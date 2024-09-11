@@ -36,10 +36,9 @@ return [
     ],
 
     'firebase' => [
-        'url' => env('FIREBASE_CLOUD_MESSAGING_URL', 'https://fcm.googleapis.com/fcm/send'),
-        'key' => env(
-            'FIREBASE_AUTHORIZATION_KEY',
-            'AAAAUs-oQYg:APA91bGiLo6q8N33eRFGqSDpoDIeu-ZmFRU7ZDpeHFMcy1yHHPrP3Bdrh3OyZNJUNMJOw9oSXhSgjVwCrVBnya4u0coSefqqXHk7QT0L8LdioSTxAUbek4tNhbzuWsUMNiyS2PlGJFbZ'
-        ),
+        'url' => env('FIREBASE_URL'),
+        'key' => env('FIREBASE_AUTHORIZATION_KEY'),
     ],
+
+    'google_application_credentials' => env('GOOGLE_APPLICATION_CREDENTIALS'),
 ];

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Messages;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\SendPushNotification;
 use App\Models\Users\Notification;
 use App\Models\Users\User;
 use Carbon\Carbon;
@@ -20,7 +19,7 @@ class NotificationController extends Controller
     public function index()
     {
         $notifications = Notification::orderByDesc('trigger_at')
-                                     ->get(['id', 'title', 'body', 'sended', 'trigger_at']);
+            ->get(['id', 'title', 'body', 'sended', 'trigger_at']);
 
         return view('messages.notifications', ['notifications' => $notifications]);
     }
