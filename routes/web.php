@@ -26,6 +26,10 @@ Route::get('/success-reset-password', 'PasswordController@succesResetPassword');
 Route::post('expired-plans', 'HomeController@ExpiredPlan')->name('expiredplans');
 
 Route::middleware(['auth'])->prefix('/')->group(function () {
+    Route::get('update-plan-user-date', 'UpdateController@updatePlanUserDate');
+    Route::get('update-clase-date', 'UpdateController@updateClaseDate');
+    Route::get('update-plan-user-flows', 'UpdateController@updatePlanUserFlows');
+
     // Route::get('update-plan-user-date', function () {
     //     $planUsers = \App\Models\Plans\PlanUser::where('finish_date', '>=' , now()->format('Y-m-d'))
     //         ->get();
