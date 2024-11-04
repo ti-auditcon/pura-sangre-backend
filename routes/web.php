@@ -21,7 +21,7 @@ Route::get('/withoutrenewal', 'HomeController@withoutrenewal');
 Route::get('/genders', 'HomeController@genders');
 Route::get('/incomes-summary', 'HomeController@incomessummary');
 
-Route::get('/success-reset-password', 'PasswordController@succesResetPassword');
+Route::get('/success-reset-password', 'PasswordController@successResetPassword');
 
 Route::post('expired-plans', 'HomeController@ExpiredPlan')->name('expiredplans');
 
