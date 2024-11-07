@@ -19,6 +19,8 @@ class ExportInactiveStudentsToExcel implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, PusherTrait;
 
+    public $tries = 3; 
+    
     protected $download;
 
     public function __construct(Download $download)
