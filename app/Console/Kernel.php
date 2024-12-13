@@ -28,6 +28,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\Users\UsersGoneAway',
         'App\Console\Commands\Reports\MonthlyTrialUserReport',
         'App\Console\Commands\Reports\MonthlyStudentReport',
+        'App\Console\Commands\Downloads\CleanOldDownloads',
     ];
 
     /**
@@ -69,6 +70,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('purasangre:reports:monthly-trial-users')->monthlyOn(1, '1');
 
         $schedule->command('purasangre:reports:monthly-students')->monthlyOn(1, '1');
+
+        $schedule->command('purasangre:downloads:clean')->twiceMonthly();
     }
 
     /**
