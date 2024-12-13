@@ -57,6 +57,7 @@ class ExportPaymentsToExcel implements ShouldQueue
             $this->completedPush();
         } catch (\Throwable $th) {
             Log::error('Exporting payments to Excel job failed: ' . $th->getMessage());
+
             $this->download->update([
                 'status' => 'fallido'
             ]);
