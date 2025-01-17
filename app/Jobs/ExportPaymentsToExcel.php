@@ -16,36 +16,33 @@ use Illuminate\Foundation\Bus\Dispatchable;
 
 class ExportPaymentsToExcel implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, PusherTrait;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $tries = 3; 
+    public $tries = 3;
+    public $backoff = 10; // Delay retries for 10 seconds
     protected $download;
 
     public function __construct(Download $download)
     {
-        Log::info('Exporting payments to Excel job started');
         $this->download = $download;
     }
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
     public function handle()
     {
-        Log::info('Exporting payments to Excel job started');
         $fileName = Carbon::now()->format('d-m-Y') . '_pagos.xlsx';
         $filePath = 'downloads/' . $fileName;
 
         try {
-            Log::info('Exporting payments to Excel job started');
-            $this->startPush();
+            // Start the process
+            Log::info('Exporting payments to Excel started for download ID: ' . $this->download->id);
 
-            Log::info('Exporting payments to Excel job started');
+            // Stream Excel to storage to reduce memory usage
             Excel::store(new PaymentsExcel, $filePath, 'public');
 
-            Log::info('Exporting payments to Excel job started');
+            // Update download record
             $this->download->update([
                 'file_name' => $fileName,
                 'status'    => 'completado',
@@ -53,14 +50,15 @@ class ExportPaymentsToExcel implements ShouldQueue
                 'size'      => Storage::disk('public')->size($filePath),
             ]);
 
-            Log::info('Exporting payments to Excel job started');
-            $this->completedPush();
+            Log::info('Exporting payments to Excel completed for download ID: ' . $this->download->id);
         } catch (\Throwable $th) {
-            Log::error('Exporting payments to Excel job failed: ' . $th->getMessage());
+            Log::error('Exporting payments to Excel failed for download ID: ' . $this->download->id . '. Error: ' . $th->getMessage());
 
             $this->download->update([
-                'status' => 'fallido'
+                'status' => 'fallido',
             ]);
+
+            throw $th; // Allow the job to retry
         }
     }
 }
