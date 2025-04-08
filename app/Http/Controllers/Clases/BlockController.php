@@ -78,10 +78,10 @@ class BlockController extends Controller
     public function update(Request $request, Block $block)
     {
         $block->update([
-            'quota' => $request->quota,
+            'quota'    => $request->quota,
             'coach_id' => $request->coach_id,
-            'start' => $request->start,
-            'end' => $request->end,
+            'start'    => $request->start,
+            'end'      => $request->end,
         ]);
 
         $block->plans()->sync($request->plans);

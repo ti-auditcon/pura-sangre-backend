@@ -62,9 +62,10 @@ class BlockObserver
         $block->clases()->each(function ($clase) {
             if ($clase->start >= now()) {
                 $clase->update([ 
-                    'quota' => $clase->block->quota,
-                    'coach_id' => $clase->block->coach_id,
-                    'start_at' => $clase->block->start,
+                    'quota'     => $clase->block->quota,
+                    'coach_id'  => $clase->block->coach_id,
+                    'date'      => Carbon::createFromFormat('Y-m-d H:i:s', $clase->date->format('Y-m-d') . ' ' . $clase->block->start),
+                    'start_at'  => $clase->block->start,
                     'finish_at' => $clase->block->end,
                 ]);
             }
