@@ -117,11 +117,17 @@ class User extends Authenticatable
      *
      * @return  boolean
      */
-    public function hasRole($roleId)
+    public function hasRole($role)
     {
-        return RoleUser::where('role_id', $roleId)
-                       ->where('user_id', $this->id)
-                       ->exists();
+        if (is_array($role)) {
+            return RoleUser::whereIn('role_id', $role)
+                ->where('user_id', $this->id)
+                ->exists();
+        }
+
+        return RoleUser::where('role_id', $role)
+            ->where('user_id', $this->id)
+            ->exists();
     }
 
     /**

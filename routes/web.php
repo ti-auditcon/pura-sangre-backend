@@ -25,7 +25,7 @@ Route::get('/success-reset-password', 'PasswordController@successResetPassword')
 
 Route::post('expired-plans', 'HomeController@ExpiredPlan')->name('expiredplans');
 
-Route::middleware(['auth'])->prefix('/')->group(function () {
+Route::middleware(['auth', 'has.any.role'])->prefix('/')->group(function () {
     Route::get('update-plan-user-date', 'UpdateController@updatePlanUserDate');
     Route::get('update-clase-date', 'UpdateController@updateClaseDate');
     Route::get('update-plan-user-flows', 'UpdateController@updatePlanUserFlows');
@@ -253,44 +253,3 @@ Route::get('/flow/error', 'FlowController@showError');
 
 
 Route::get('finish-registration', 'Web\NewUserController@finishing');
-
-// Route::get('maila', function() {
-//     return new App\Mail\SendNewUserEmail(App\Models\Users\User::find(1), 123);
-//     $planuserFlow = App\Models\Plans\PlanUserFlow::find(2110);
-
-//     return new App\Mail\NewPlanUserEmail($planuserFlow);
-//     // return Mail::to('raulberrios8@gmail.com')->send(new App\Mail\NewPlanUserEmail($planuserFlow));
-// });
-
-// Route::get('cancel-dte', function() {
-//     app(TaxDocument::class)->cancel(109444);
-// });
-
-// Create a test route to test the email
-// Route::get('test-email', function() {
-//     $user = App\Models\Users\User::where('email', 'raulberrios8@gmail.com')->first();
-
-//     $emailData = (object) [
-//         'subject' => 'Your email subject',
-//         'user' => 'Hello user',
-//         'message' => 'This is a test message',
-//     ];
-
-//     // we show in the page the email template
-//     return new App\Mail\SendEmail($emailData);
-
-//     // return Mail::to($user->email)->send(new App\Mail\SendEmail($emailData));
-// });
-
-// Route::get('test-push', function() {
-//     $pushClass = new \App\Jobs\SendPushNotification(
-//         'fBqwD-OtSj-fvGcJVgk5k4:APA91bGv9v0oDAPqym-Wp7m2hLaG7SvRDH5bf-iAXiKwfGhPmUW4RrQL9y-LDg0CW0A2KMUMj2m9x_Z2w_zwoAYnwe_61jqyseg7sTyMd8uPmOgUbrk9rsbyR3jiV_UQq1sltC-2nXpk',
-//         'Test title', 
-//         'Test body',
-//         resolve('App\Services\PushNotificationService')
-//     );
-
-//     $pushClass->handle();
-
-//     return 'ok';
-// });
