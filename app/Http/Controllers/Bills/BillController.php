@@ -121,6 +121,7 @@ class BillController extends Controller
                 $nestedData['alumno'] = isset($bill->plan_user) ? '<a href="'.url('/users/'.$bill->plan_user->user->id).'">'.$bill->plan_user->user->first_name.' '.$bill->plan_user->user->last_name.'</a>' : "no aplica";
                 $nestedData['email'] = isset($bill->plan_user) ? $bill->plan_user->user->email : "no aplica";
                 $nestedData['plan'] = isset($bill->plan_user) ? $bill->plan_user->plan->plan : "no aplica";
+                $nestedData['bill_id'] = isset($bill) ? $bill->id : "no aplica";
                 $nestedData['payment_type'] = isset($bill->payment_type) ? $bill->payment_type->payment_type : "no aplica";
                 $nestedData['date'] = date('d-m-Y',strtotime($bill->date));
                 $nestedData['start_date'] = date('d-m-Y',strtotime($bill->start_date));

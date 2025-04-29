@@ -25,10 +25,11 @@
                     <table id="payments-table" class="table table-hover">
                         <thead class="thead-default">
                             <tr>
-                                <th >Fecha registro</th>
-                                <th >Alumno</th>
+                                <th>Fecha registro</th>
+                                <th>Alumno</th>
                                 <th>Correo</th>
                                 <th>Plan</th>
+                                <th>N° de Boleta</th>
                                 <th>Tipo de Pago</th>
                                 <th>Fecha Boleta</th>
                                 <th>Fecha de Inicio</th>
@@ -79,9 +80,10 @@
       },
       "columns": [
           { "data": "fecha_registro" },
-          { "data": "alumno" },
-          { "data": "email" },
-          { "data": "plan"} , 
+          { "data": "alumno"},
+          { "data": "email"},
+          { "data": "plan"},
+          { "data": "bill_id"},
           { "data": "payment_type"} , 
           { "data": "date" },
           { "data": "start_date" },
