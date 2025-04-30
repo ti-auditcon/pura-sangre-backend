@@ -9,8 +9,9 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithCustomQuerySize;
 
-class PaymentsExcel implements FromQuery, WithHeadings, WithMapping, WithChunkReading
+class PaymentsExcel implements FromQuery, WithHeadings, WithMapping, WithChunkReading, WithCustomQuerySize
 {
     /**
      * Define the query for fetching data.
@@ -21,7 +22,13 @@ class PaymentsExcel implements FromQuery, WithHeadings, WithMapping, WithChunkRe
     {
         return Bill::query()
             ->select([
-                'bills.*',
+                'bills.id',
+                'bills.created_at',
+                'bills.date',
+                'bills.start_date',
+                'bills.finish_date',
+                'bills.amount',
+                'bills.total_paid',
                 'payment_types.payment_type',
                 'users.first_name',
                 'users.last_name',
@@ -46,6 +53,7 @@ class PaymentsExcel implements FromQuery, WithHeadings, WithMapping, WithChunkRe
             'Alumno',
             'Correo',
             'Plan',
+            'N° de Boleta',
             'Tipo de Pago',
             'Fecha Boleta',
             'Fecha Inicio plan',
@@ -68,6 +76,7 @@ class PaymentsExcel implements FromQuery, WithHeadings, WithMapping, WithChunkRe
             trim("{$bill->first_name} {$bill->last_name}") ?: 'sin informacion',
             $bill->email ?: 'sin informacion',
             $bill->plan_name ?: 'sin informacion',
+            $bill->id,
             $bill->payment_type ?: 'sin informacion',
             Carbon::parse($bill->date)->format('d-m-Y'),
             Carbon::parse($bill->start_date)->format('d-m-Y'),
@@ -84,6 +93,11 @@ class PaymentsExcel implements FromQuery, WithHeadings, WithMapping, WithChunkRe
      */
     public function chunkSize(): int
     {
-        return 1000; // Process 1000 rows at a time
+        return 500;
+    }
+
+    public function querySize(): int
+    {
+        return Bill::count();
     }
 }
