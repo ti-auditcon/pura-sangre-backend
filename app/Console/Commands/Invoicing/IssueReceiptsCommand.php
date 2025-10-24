@@ -109,7 +109,15 @@ class IssueReceiptsCommand extends Command
                     $response = $this->getPDF($bill);
 
                     if (isset($response->data) && isset($response->data->pdf)) {
-                        Mail::to($bill->user->email)->send(new NewPlanUserEmail($bill, $response->data->pdf));
+                        try {
+                            Mail::to($bill->user->email)->send(new NewPlanUserEmail($bill, $response->data->pdf));
+                            
+                            // Añadir un pequeño delay entre envíos
+                            sleep(1);
+                        } catch (\Throwable $emailError) {
+                            $this->error('Error sending email for bill ID ' . $bill->id . ': ' . $emailError->getMessage());
+                            new TaxDocumentErrors('Email sending error for bill ' . $bill->id . ': ' . $emailError->getMessage());
+                        }
                     }
 
                     continue;
@@ -140,9 +148,15 @@ class IssueReceiptsCommand extends Command
             $response = $this->getPDF($bill);
 
             if (isset($response->data) && isset($response->data->pdf)) {
-                Mail::to($bill->user->email)->send(new NewPlanUserEmail($bill, $response->data->pdf));
-
-                Mail::getSwiftMailer()->getTransport()->stop();
+                try {
+                    Mail::to($bill->user->email)->send(new NewPlanUserEmail($bill, $response->data->pdf));
+                    
+                    // Añadir un pequeño delay entre envíos para evitar problemas de rate limiting
+                    sleep(1);
+                } catch (\Throwable $error) {
+                    $this->error('Error sending email for bill ID ' . $bill->id . ': ' . $error->getMessage());
+                    new TaxDocumentErrors('Email sending error for bill ' . $bill->id . ': ' . $error->getMessage());
+                }
             }
         }
     }
