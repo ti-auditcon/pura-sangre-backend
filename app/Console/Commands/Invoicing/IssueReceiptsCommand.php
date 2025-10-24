@@ -110,13 +110,11 @@ class IssueReceiptsCommand extends Command
 
                     if (isset($response->data) && isset($response->data->pdf)) {
                         try {
-                            Mail::to($bill->user->email)->send(new NewPlanUserEmail($bill, $response->data->pdf));
-                            
-                            // Añadir un pequeño delay entre envíos
-                            sleep(1);
+                            Mail::to($bill->user->email)->queue(new NewPlanUserEmail($bill, $response->data->pdf));
+                            $this->info('Email queued for bill ID: ' . $bill->id);
                         } catch (\Throwable $emailError) {
-                            $this->error('Error sending email for bill ID ' . $bill->id . ': ' . $emailError->getMessage());
-                            new TaxDocumentErrors('Email sending error for bill ' . $bill->id . ': ' . $emailError->getMessage());
+                            $this->error('Error queueing email for bill ID ' . $bill->id . ': ' . $emailError->getMessage());
+                            new TaxDocumentErrors('Email queueing error for bill ' . $bill->id . ': ' . $emailError->getMessage());
                         }
                     }
 
@@ -149,13 +147,11 @@ class IssueReceiptsCommand extends Command
 
             if (isset($response->data) && isset($response->data->pdf)) {
                 try {
-                    Mail::to($bill->user->email)->send(new NewPlanUserEmail($bill, $response->data->pdf));
-                    
-                    // Añadir un pequeño delay entre envíos para evitar problemas de rate limiting
-                    sleep(1);
+                    Mail::to($bill->user->email)->queue(new NewPlanUserEmail($bill, $response->data->pdf));
+                    $this->info('Email queued for bill ID: ' . $bill->id);
                 } catch (\Throwable $error) {
-                    $this->error('Error sending email for bill ID ' . $bill->id . ': ' . $error->getMessage());
-                    new TaxDocumentErrors('Email sending error for bill ' . $bill->id . ': ' . $error->getMessage());
+                    $this->error('Error queueing email for bill ID ' . $bill->id . ': ' . $error->getMessage());
+                    new TaxDocumentErrors('Email queueing error for bill ' . $bill->id . ': ' . $error->getMessage());
                 }
             }
         }

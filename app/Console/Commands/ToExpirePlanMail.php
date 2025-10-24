@@ -46,10 +46,20 @@ class ToExpirePlanMail extends Command
                                     ->where('plan_status_id', PlanStatus::ACTIVE)
                                     ->get();
 
-        foreach ($plansCloseToExpire as $planuser) {
+        $this->info('Found ' . $plansCloseToExpire->count() . ' plans about to expire');
+
+        foreach ($plansCloseToExpire as $index => $planuser) {
             $user = $planuser->user;
 
-            Mail::to($user->email)->send(new ToExpireEmail($user, $planuser));
+            try {
+                // Usar colas - no necesita sleep() porque el worker maneja el timing
+                Mail::to($user->email)->queue(new ToExpireEmail($user, $planuser));
+                $this->info('Email queued for: ' . $user->email . ' (' . ($index + 1) . '/' . $plansCloseToExpire->count() . ')');
+            } catch (\Throwable $error) {
+                $this->error('Failed to queue email for: ' . $user->email . ' - ' . $error->getMessage());
+            }
         }
+
+        $this->info('Finished sending expiration emails');
     }
 }
