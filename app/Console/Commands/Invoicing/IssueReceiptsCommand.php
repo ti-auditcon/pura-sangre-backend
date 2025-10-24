@@ -141,6 +141,8 @@ class IssueReceiptsCommand extends Command
 
             if (isset($response->data) && isset($response->data->pdf)) {
                 Mail::to($bill->user->email)->send(new NewPlanUserEmail($bill, $response->data->pdf));
+
+                Mail::getSwiftMailer()->getTransport()->stop();
             }
         }
     }
