@@ -80,7 +80,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(145deg, #1a1a1a 0%, #3a3a3a 100%);
+  background: linear-gradient(145deg, #004d60 0%, #26c6da 100%);
   padding: 24px;
 }
 .login-box {
@@ -128,6 +128,6 @@ export default {
   transition: border-color 0.2s;
 }
 .field input:focus {
-  border-color: #e53935;
+  border-color: #00bcd4;
 }
 </style>

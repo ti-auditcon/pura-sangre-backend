@@ -1,7 +1,7 @@
 <template>
-  <div id="pwa-app">
+  <div id="pwa-app" :class="{ 'has-nav': loggedIn }">
     <router-view />
-    <BottomNav v-if="isLoggedIn" />
+    <BottomNav v-if="loggedIn" />
   </div>
 </template>
 
@@ -11,9 +11,19 @@ import BottomNav from './components/BottomNav.vue';
 export default {
   name: 'App',
   components: { BottomNav },
-  computed: {
-    isLoggedIn() {
-      return !!localStorage.getItem('pwa_token');
+  data() {
+    return {
+      loggedIn: false
+    };
+  },
+  created() {
+    this.loggedIn =
+      !!localStorage.getItem('pwa_token') && this.$route.name !== 'login';
+  },
+  watch: {
+    $route() {
+      this.loggedIn =
+        !!localStorage.getItem('pwa_token') && this.$route.name !== 'login';
     }
   }
 };
@@ -56,14 +66,15 @@ body {
   cursor: not-allowed;
 }
 .btn-primary {
-  background: #e53935;
+  background: linear-gradient(135deg, #26c6da 0%, #0097a7 100%);
   color: #fff;
   width: 100%;
+  box-shadow: 0 2px 8px rgba(0, 151, 167, 0.35);
 }
 .btn-outline {
   background: transparent;
-  border: 2px solid #e53935;
-  color: #e53935;
+  border: 2px solid #00bcd4;
+  color: #0097a7;
   width: 100%;
 }
 .card {
@@ -74,7 +85,7 @@ body {
   margin-bottom: 12px;
 }
 .error-msg {
-  color: #e53935;
+  color: #d32f2f;
   font-size: 13px;
   margin-top: 8px;
   text-align: center;

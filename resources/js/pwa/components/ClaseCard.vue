@@ -4,7 +4,7 @@
       class="clase-left"
       :style="{
         borderColor:
-          (clase.clase_type && clase.clase_type.clase_color) || '#E53935'
+          (clase.clase_type && clase.clase_type.clase_color) || '#00BCD4'
       }"
     >
       <span class="time">{{ clase.start_at | time }}</span>
@@ -68,7 +68,7 @@ export default {
   flex-direction: column;
   align-items: center;
   min-width: 48px;
-  border-left: 4px solid #e53935;
+  border-left: 4px solid #00bcd4;
   padding-left: 8px;
 }
 .time {
@@ -108,7 +108,7 @@ export default {
 }
 .quota-badge.full {
   background: #fce4e4;
-  color: #e53935;
+  color: #d32f2f;
 }
 .reserved-badge {
   font-size: 11px;

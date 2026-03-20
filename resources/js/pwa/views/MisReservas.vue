@@ -26,7 +26,7 @@
           :style="{
             background:
               (res.clase.clase_type && res.clase.clase_type.clase_color) ||
-              '#E53935'
+              '#00BCD4'
           }"
         ></div>
         <div class="res-body">
@@ -53,7 +53,6 @@
             }}
           </span>
           <button
-            v-if="res.reservation_status_id === 1"
             class="cancel-btn"
             :disabled="cancelling === res.id"
             @click.stop="cancel(res)"
@@ -132,11 +131,11 @@ export default {
   font-size: 20px;
   font-weight: 700;
   margin-bottom: 20px;
+  color: #0097a7;
 }
 .reservation-card {
   display: flex;
   align-items: stretch;
-  padding: 0;
   overflow: hidden;
   cursor: pointer;
 }
@@ -189,8 +188,8 @@ export default {
   color: #f57f17;
 }
 .status-badge.confirmed {
-  background: #e8f5e9;
-  color: #2e7d32;
+  background: #e0f7fa;
+  color: #0097a7;
 }
 .status-badge.consumed {
   background: #e3f2fd;
@@ -203,9 +202,9 @@ export default {
 .cancel-btn {
   font-size: 12px;
   font-weight: 600;
-  color: #e53935;
+  color: #d32f2f;
   background: none;
-  border: 1px solid #e53935;
+  border: 1px solid #ef9a9a;
   border-radius: 6px;
   padding: 4px 10px;
   cursor: pointer;

@@ -69,32 +69,45 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 64px;
-  background: #fff;
-  border-top: 1px solid #e0e0e0;
+  height: 62px;
+  background: linear-gradient(to right, #26c6da, #0097a7);
   display: flex;
   justify-content: space-around;
   align-items: center;
   z-index: 100;
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.08), 0 -4px 16px rgba(0, 151, 167, 0.2);
 }
 .nav-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 3px;
-  color: #999;
+  color: rgba(255, 255, 255, 0.75);
   text-decoration: none;
-  font-size: 11px;
-  font-weight: 500;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
   padding: 8px 16px;
   background: none;
   border: none;
   cursor: pointer;
   transition: color 0.15s;
   flex: 1;
+  position: relative;
 }
-.nav-item.active,
+.nav-item.active {
+  color: #fff;
+}
+.nav-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  width: 20px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+}
 .nav-item:hover {
-  color: #e53935;
+  color: #fff;
 }
 </style>

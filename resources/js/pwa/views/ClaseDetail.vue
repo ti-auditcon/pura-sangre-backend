@@ -11,7 +11,7 @@
         :style="{
           borderTop: `6px solid ${(clase.clase_type &&
             clase.clase_type.clase_color) ||
-            '#E53935'}`
+            '#00BCD4'}`
         }"
       >
         <h2 class="clase-title">
@@ -48,16 +48,6 @@
             }}</span>
           </p>
           <button
-            v-if="myReservation.reservation_status_id === 1"
-            class="btn btn-primary"
-            :disabled="confirming"
-            style="margin-bottom: 10px"
-            @click="confirmReservation"
-          >
-            {{ confirming ? 'Confirmando…' : 'Confirmar clase' }}
-          </button>
-          <button
-            v-if="myReservation.reservation_status_id === 1"
             class="btn btn-outline"
             :disabled="cancelling"
             @click="cancelReservation"
@@ -83,21 +73,36 @@
 
       <!-- Lista de alumnos inscritos -->
       <div class="students-card card" v-if="students.length > 0">
-        <h3 class="students-title">Alumnos inscritos ({{ students.length }})</h3>
+        <h3 class="students-title">
+          Alumnos inscritos ({{ students.length }})
+        </h3>
         <ul class="students-list">
-          <li v-for="(student, index) in students" :key="index" class="student-item">
+          <li
+            v-for="(student, index) in students"
+            :key="index"
+            class="student-item"
+          >
             <img
               v-if="student.avatar"
               :src="student.avatar"
               :alt="student.name"
               class="student-avatar"
+              loading="lazy"
             />
-            <span v-else class="student-avatar-placeholder">{{ initials(student.name) }}</span>
+            <span v-else class="student-avatar-placeholder">{{
+              initials(student.name)
+            }}</span>
             <span class="student-name">{{ student.name }}</span>
             <span
               class="student-status-dot"
-              :class="student.reservation_status_id === 2 ? 'confirmed' : 'pending'"
-              :title="student.reservation_status_id === 2 ? 'Confirmado' : 'Pendiente'"
+              :class="
+                student.reservation_status_id === 2 ? 'confirmed' :
+                student.reservation_status_id === 3 ? 'consumed' : 'pending'
+              "
+              :title="
+                student.reservation_status_id === 2 ? 'Confirmado' :
+                student.reservation_status_id === 3 ? 'Asistió' : 'Pendiente'
+              "
             ></span>
           </li>
         </ul>
@@ -134,12 +139,23 @@ export default {
       error: null,
       booking: false,
       cancelling: false,
-      confirming: false,
       actionError: null
     };
   },
   mounted() {
     this.load();
+  },
+  watch: {
+    '$route.params.id': function(newId, oldId) {
+      if (newId !== oldId) {
+        this.clase = null;
+        this.students = [];
+        this.myReservation = null;
+        this.isFull = false;
+        this.actionError = null;
+        this.load();
+      }
+    }
   },
   methods: {
     async load() {
@@ -161,10 +177,7 @@ export default {
       this.booking = true;
       this.actionError = null;
       try {
-        const { data } = await reservations.create(this.clase.id);
-        this.myReservation = data;
-        this.clase.reservations_count++;
-        this.isFull = this.clase.reservations_count >= this.clase.quota;
+        await reservations.create(this.clase.id);
         await this.load();
       } catch (err) {
         this.actionError =
@@ -174,25 +187,13 @@ export default {
         this.booking = false;
       }
     },
-    async confirmReservation() {
-      this.confirming = true;
-      this.actionError = null;
-      try {
-        const { data } = await reservations.confirm(this.myReservation.id);
-        this.myReservation = { ...this.myReservation, ...data };
-      } catch (err) {
-        this.actionError =
-          (err.response && err.response.data && err.response.data.error) ||
-          'No se pudo confirmar la reserva.';
-      } finally {
-        this.confirming = false;
-      }
-    },
     initials(name) {
       return name
         .split(' ')
         .slice(0, 2)
-        .map(w => w[0])
+        .map(function(w) {
+          return w[0];
+        })
         .join('')
         .toUpperCase();
     },
@@ -201,9 +202,6 @@ export default {
       this.actionError = null;
       try {
         await reservations.cancel(this.myReservation.id);
-        this.myReservation = null;
-        if (this.clase.reservations_count > 0) this.clase.reservations_count--;
-        this.isFull = false;
         await this.load();
       } catch (err) {
         this.actionError =
@@ -221,7 +219,7 @@ export default {
 .back-btn {
   background: none;
   border: none;
-  color: #e53935;
+  color: #0097a7;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
@@ -265,14 +263,14 @@ export default {
 }
 .quota-info.full {
   background: #fce4e4;
-  color: #e53935;
+  color: #d32f2f;
 }
 .action-card {
   text-align: center;
 }
 .reserved-status {
   font-size: 15px;
-  color: #2e7d32;
+  color: #0097a7;
   margin-bottom: 16px;
   display: flex;
   align-items: center;
@@ -289,7 +287,7 @@ export default {
   font-weight: 600;
 }
 .full-msg {
-  color: #e53935;
+  color: #d32f2f;
   font-size: 14px;
   margin-bottom: 8px;
 }
@@ -350,6 +348,9 @@ export default {
 }
 .student-status-dot.confirmed {
   background: #43a047;
+}
+.student-status-dot.consumed {
+  background: #1565c0;
 }
 .student-status-dot.pending {
   background: #fb8c00;

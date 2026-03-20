@@ -61,6 +61,8 @@ class ReservationObserver
             Session::flash('warning', $response);
             return false;
         }
+
+        return true;
     }
 
     /**

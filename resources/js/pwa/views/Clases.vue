@@ -2,7 +2,13 @@
   <div class="page">
     <!-- Header semana -->
     <div class="week-nav">
+      <button class="arrow-btn" @click="prevWeek" aria-label="Semana anterior">
+        &#8249;
+      </button>
       <span class="week-label">{{ weekLabel }}</span>
+      <button class="arrow-btn" @click="nextWeek" aria-label="Semana siguiente">
+        &#8250;
+      </button>
     </div>
 
     <!-- Lista de días -->
@@ -28,13 +34,21 @@
 <script>
 import { clases } from '../api';
 import ClaseCard from '../components/ClaseCard.vue';
-import { format, parseISO, isSameDay } from '../utils/date';
+import {
+  startOfWeek,
+  endOfWeek,
+  addWeeks,
+  format,
+  parseISO,
+  isSameDay
+} from '../utils/date';
 
 export default {
   name: 'Clases',
   components: { ClaseCard },
   data() {
     return {
+      weekOffset: 0,
       clasesList: [],
       loading: false,
       error: null
@@ -42,15 +56,10 @@ export default {
   },
   computed: {
     weekStart() {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      return today;
+      return startOfWeek(addWeeks(new Date(), this.weekOffset));
     },
     weekEnd() {
-      const end = new Date(this.weekStart);
-      end.setDate(end.getDate() + 6);
-      end.setHours(23, 59, 59, 999);
-      return end;
+      return endOfWeek(this.weekStart);
     },
     weekLabel() {
       const s = format(this.weekStart, 'D MMM');
@@ -76,6 +85,11 @@ export default {
       return days;
     }
   },
+  watch: {
+    weekOffset() {
+      this.load();
+    }
+  },
   mounted() {
     this.load();
   },
@@ -95,6 +109,12 @@ export default {
         this.loading = false;
       }
     },
+    prevWeek() {
+      this.weekOffset--;
+    },
+    nextWeek() {
+      this.weekOffset++;
+    },
     goToDetail(id) {
       this.$router.push(`/clases/${id}`);
     }
@@ -106,17 +126,27 @@ export default {
 .week-nav {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   margin-bottom: 20px;
-  background: #fff;
+  background: linear-gradient(135deg, #26c6da 0%, #0097a7 100%);
   border-radius: 12px;
   padding: 12px 16px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 151, 167, 0.3);
 }
 .week-label {
   font-weight: 600;
   font-size: 14px;
   text-transform: capitalize;
+  color: #fff;
+}
+.arrow-btn {
+  background: none;
+  border: none;
+  font-size: 26px;
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  padding: 0 8px;
+  line-height: 1;
 }
 .day-heading {
   font-size: 13px;

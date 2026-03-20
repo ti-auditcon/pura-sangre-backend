@@ -2483,12 +2483,12 @@ module.exports = function isAxiosError(payload) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["c"] = parseISO;
-/* harmony export (immutable) */ __webpack_exports__["a"] = format;
-/* unused harmony export startOfWeek */
-/* unused harmony export endOfWeek */
-/* unused harmony export addWeeks */
-/* harmony export (immutable) */ __webpack_exports__["b"] = isSameDay;
+/* harmony export (immutable) */ __webpack_exports__["e"] = parseISO;
+/* harmony export (immutable) */ __webpack_exports__["c"] = format;
+/* harmony export (immutable) */ __webpack_exports__["f"] = startOfWeek;
+/* harmony export (immutable) */ __webpack_exports__["b"] = endOfWeek;
+/* harmony export (immutable) */ __webpack_exports__["a"] = addWeeks;
+/* harmony export (immutable) */ __webpack_exports__["d"] = isSameDay;
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 /**
@@ -2536,7 +2536,7 @@ function format(date, template) {
   var mi = date.getMinutes();
   var s = date.getSeconds();
 
-  return template.replace(/\[([^\]]+)\]/g, '\x00$1\x00').replace(/YYYY/g, String(y)).replace(/MM/g, String(mo + 1).padStart(2, '0')).replace(/DD/g, String(d).padStart(2, '0')).replace(/D/g, String(d)).replace(/dddd/g, DAYS[dow]).replace(/ddd/g, DAYS_SHORT[dow]).replace(/MMMM/g, MONTHS[mo]).replace(/MMM/g, MONTHS[mo].substring(0, 3)).replace(/HH/g, String(h).padStart(2, '0')).replace(/mm/g, String(mi).padStart(2, '0')).replace(/ss/g, String(s).padStart(2, '0')).replace(/\x00([^\x00]+)\x00/g, '$1');
+  return template.replace(/\[([^\]]+)\]/g, '\x00$1\x00').replace(/YYYY/g, String(y)).replace(/MMMM/g, MONTHS[mo]).replace(/MMM/g, MONTHS[mo].substring(0, 3)).replace(/MM/g, String(mo + 1).padStart(2, '0')).replace(/DD/g, String(d).padStart(2, '0')).replace(/dddd/g, DAYS[dow]).replace(/ddd/g, DAYS_SHORT[dow]).replace(/D/g, String(d)).replace(/HH/g, String(h).padStart(2, '0')).replace(/mm/g, String(mi).padStart(2, '0')).replace(/ss/g, String(s).padStart(2, '0')).replace(/\x00([^\x00]+)\x00/g, '$1');
 }
 
 /** Inicio de semana (lunes) para la fecha dada */
@@ -14985,7 +14985,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n* {\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\nbody {\n  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;\n  background: #f5f5f5;\n  color: #1a1a1a;\n}\n#pwa-app {\n  min-height: 100vh;\n  padding-bottom: 64px;\n}\n.page {\n  max-width: 480px;\n  margin: 0 auto;\n  padding: 16px;\n}\n.btn {\n  display: -webkit-inline-box;\n  display: -ms-inline-flexbox;\n  display: inline-flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  padding: 10px 20px;\n  border-radius: 8px;\n  font-size: 15px;\n  font-weight: 600;\n  border: none;\n  cursor: pointer;\n  -webkit-transition: opacity 0.15s;\n  transition: opacity 0.15s;\n}\n.btn:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n.btn-primary {\n  background: #e53935;\n  color: #fff;\n  width: 100%;\n}\n.btn-outline {\n  background: transparent;\n  border: 2px solid #e53935;\n  color: #e53935;\n  width: 100%;\n}\n.card {\n  background: #fff;\n  border-radius: 12px;\n  padding: 16px;\n  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);\n          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);\n  margin-bottom: 12px;\n}\n.error-msg {\n  color: #e53935;\n  font-size: 13px;\n  margin-top: 8px;\n  text-align: center;\n}\n.loading {\n  text-align: center;\n  padding: 40px 16px;\n  color: #888;\n}\n", ""]);
+exports.push([module.i, "\n* {\n  -webkit-box-sizing: border-box;\n          box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\nbody {\n  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;\n  background: #f5f5f5;\n  color: #1a1a1a;\n}\n#pwa-app {\n  min-height: 100vh;\n  padding-bottom: 64px;\n}\n.page {\n  max-width: 480px;\n  margin: 0 auto;\n  padding: 16px;\n}\n.btn {\n  display: -webkit-inline-box;\n  display: -ms-inline-flexbox;\n  display: inline-flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  padding: 10px 20px;\n  border-radius: 8px;\n  font-size: 15px;\n  font-weight: 600;\n  border: none;\n  cursor: pointer;\n  -webkit-transition: opacity 0.15s;\n  transition: opacity 0.15s;\n}\n.btn:disabled {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n.btn-primary {\n  background: linear-gradient(135deg, #26c6da 0%, #0097a7 100%);\n  color: #fff;\n  width: 100%;\n  -webkit-box-shadow: 0 2px 8px rgba(0, 151, 167, 0.35);\n          box-shadow: 0 2px 8px rgba(0, 151, 167, 0.35);\n}\n.btn-outline {\n  background: transparent;\n  border: 2px solid #00bcd4;\n  color: #0097a7;\n  width: 100%;\n}\n.card {\n  background: #fff;\n  border-radius: 12px;\n  padding: 16px;\n  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);\n          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);\n  margin-bottom: 12px;\n}\n.error-msg {\n  color: #d32f2f;\n  font-size: 13px;\n  margin-top: 8px;\n  text-align: center;\n}\n.loading {\n  text-align: center;\n  padding: 40px 16px;\n  color: #888;\n}\n", ""]);
 
 // exports
 
@@ -15044,9 +15044,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'App',
   components: { BottomNav: __WEBPACK_IMPORTED_MODULE_0__components_BottomNav_vue___default.a },
-  computed: {
-    isLoggedIn: function isLoggedIn() {
-      return !!localStorage.getItem('pwa_token');
+  data: function data() {
+    return {
+      loggedIn: false
+    };
+  },
+  created: function created() {
+    this.loggedIn = !!localStorage.getItem('pwa_token') && this.$route.name !== 'login';
+  },
+
+  watch: {
+    $route: function $route() {
+      this.loggedIn = !!localStorage.getItem('pwa_token') && this.$route.name !== 'login';
     }
   }
 });
@@ -15137,7 +15146,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.bottom-nav[data-v-18541352] {\n  position: fixed;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  height: 64px;\n  background: #fff;\n  border-top: 1px solid #e0e0e0;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-pack: distribute;\n      justify-content: space-around;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  z-index: 100;\n}\n.nav-item[data-v-18541352] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  gap: 3px;\n  color: #999;\n  text-decoration: none;\n  font-size: 11px;\n  font-weight: 500;\n  padding: 8px 16px;\n  background: none;\n  border: none;\n  cursor: pointer;\n  -webkit-transition: color 0.15s;\n  transition: color 0.15s;\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n}\n.nav-item.active[data-v-18541352],\n.nav-item[data-v-18541352]:hover {\n  color: #e53935;\n}\n", ""]);
+exports.push([module.i, "\n.bottom-nav[data-v-18541352] {\n  position: fixed;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  height: 62px;\n  background: -webkit-gradient(linear, left top, right top, from(#26c6da), to(#0097a7));\n  background: linear-gradient(to right, #26c6da, #0097a7);\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-pack: distribute;\n      justify-content: space-around;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  z-index: 100;\n  -webkit-box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.08), 0 -4px 16px rgba(0, 151, 167, 0.2);\n          box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.08), 0 -4px 16px rgba(0, 151, 167, 0.2);\n}\n.nav-item[data-v-18541352] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  gap: 3px;\n  color: rgba(255, 255, 255, 0.75);\n  text-decoration: none;\n  font-size: 10px;\n  font-weight: 700;\n  letter-spacing: 0.2px;\n  padding: 8px 16px;\n  background: none;\n  border: none;\n  cursor: pointer;\n  -webkit-transition: color 0.15s;\n  transition: color 0.15s;\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n  position: relative;\n}\n.nav-item.active[data-v-18541352] {\n  color: #fff;\n}\n.nav-item.active[data-v-18541352]::after {\n  content: '';\n  position: absolute;\n  bottom: 6px;\n  width: 20px;\n  height: 2px;\n  background: #fff;\n  border-radius: 2px;\n}\n.nav-item[data-v-18541352]:hover {\n  color: #fff;\n}\n", ""]);
 
 // exports
 
@@ -16184,12 +16193,8 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { attrs: { id: "pwa-app" } },
-    [
-      _c("router-view"),
-      _vm._v(" "),
-      _vm.isLoggedIn ? _c("BottomNav") : _vm._e()
-    ],
+    { class: { "has-nav": _vm.loggedIn }, attrs: { id: "pwa-app" } },
+    [_c("router-view"), _vm._v(" "), _vm.loggedIn ? _c("BottomNav") : _vm._e()],
     1
   )
 }
@@ -19533,7 +19538,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.login-page[data-v-4e3390f6] {\n  min-height: 100vh;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  background: linear-gradient(145deg, #1a1a1a 0%, #3a3a3a 100%);\n  padding: 24px;\n}\n.login-box[data-v-4e3390f6] {\n  background: #fff;\n  border-radius: 16px;\n  padding: 32px 24px;\n  width: 100%;\n  max-width: 380px;\n  -webkit-box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);\n          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);\n}\n.logo[data-v-4e3390f6] {\n  text-align: center;\n  margin-bottom: 28px;\n}\n.logo img[data-v-4e3390f6] {\n  height: 64px;\n  margin-bottom: 8px;\n}\n.logo h1[data-v-4e3390f6] {\n  font-size: 22px;\n  font-weight: 700;\n  color: #1a1a1a;\n}\n.logo p[data-v-4e3390f6] {\n  color: #888;\n  font-size: 14px;\n}\n.field[data-v-4e3390f6] {\n  margin-bottom: 16px;\n}\n.field label[data-v-4e3390f6] {\n  display: block;\n  font-size: 13px;\n  font-weight: 600;\n  color: #555;\n  margin-bottom: 6px;\n}\n.field input[data-v-4e3390f6] {\n  width: 100%;\n  padding: 12px 14px;\n  border: 1.5px solid #e0e0e0;\n  border-radius: 8px;\n  font-size: 15px;\n  outline: none;\n  -webkit-transition: border-color 0.2s;\n  transition: border-color 0.2s;\n}\n.field input[data-v-4e3390f6]:focus {\n  border-color: #e53935;\n}\n", ""]);
+exports.push([module.i, "\n.login-page[data-v-4e3390f6] {\n  min-height: 100vh;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  background: linear-gradient(145deg, #004d60 0%, #26c6da 100%);\n  padding: 24px;\n}\n.login-box[data-v-4e3390f6] {\n  background: #fff;\n  border-radius: 16px;\n  padding: 32px 24px;\n  width: 100%;\n  max-width: 380px;\n  -webkit-box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);\n          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);\n}\n.logo[data-v-4e3390f6] {\n  text-align: center;\n  margin-bottom: 28px;\n}\n.logo img[data-v-4e3390f6] {\n  height: 64px;\n  margin-bottom: 8px;\n}\n.logo h1[data-v-4e3390f6] {\n  font-size: 22px;\n  font-weight: 700;\n  color: #1a1a1a;\n}\n.logo p[data-v-4e3390f6] {\n  color: #888;\n  font-size: 14px;\n}\n.field[data-v-4e3390f6] {\n  margin-bottom: 16px;\n}\n.field label[data-v-4e3390f6] {\n  display: block;\n  font-size: 13px;\n  font-weight: 600;\n  color: #555;\n  margin-bottom: 6px;\n}\n.field input[data-v-4e3390f6] {\n  width: 100%;\n  padding: 12px 14px;\n  border: 1.5px solid #e0e0e0;\n  border-radius: 8px;\n  font-size: 15px;\n  outline: none;\n  -webkit-transition: border-color 0.2s;\n  transition: border-color 0.2s;\n}\n.field input[data-v-4e3390f6]:focus {\n  border-color: #00bcd4;\n}\n", ""]);
 
 // exports
 
@@ -19883,7 +19888,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.week-nav[data-v-f2f48e46] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  margin-bottom: 20px;\n  background: #fff;\n  border-radius: 12px;\n  padding: 12px 16px;\n  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);\n          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);\n}\n.week-label[data-v-f2f48e46] {\n  font-weight: 600;\n  font-size: 14px;\n  text-transform: capitalize;\n}\n.day-heading[data-v-f2f48e46] {\n  font-size: 13px;\n  font-weight: 700;\n  color: #888;\n  text-transform: capitalize;\n  margin: 16px 0 8px;\n  letter-spacing: 0.5px;\n}\n.empty[data-v-f2f48e46] {\n  text-align: center;\n  padding: 40px 0;\n  color: #aaa;\n}\n", ""]);
+exports.push([module.i, "\n.week-nav[data-v-f2f48e46] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  margin-bottom: 20px;\n  background: linear-gradient(135deg, #26c6da 0%, #0097a7 100%);\n  border-radius: 12px;\n  padding: 12px 16px;\n  -webkit-box-shadow: 0 2px 8px rgba(0, 151, 167, 0.3);\n          box-shadow: 0 2px 8px rgba(0, 151, 167, 0.3);\n}\n.week-label[data-v-f2f48e46] {\n  font-weight: 600;\n  font-size: 14px;\n  text-transform: capitalize;\n  color: #fff;\n}\n.arrow-btn[data-v-f2f48e46] {\n  background: none;\n  border: none;\n  font-size: 26px;\n  color: rgba(255, 255, 255, 0.85);\n  cursor: pointer;\n  padding: 0 8px;\n  line-height: 1;\n}\n.day-heading[data-v-f2f48e46] {\n  font-size: 13px;\n  font-weight: 700;\n  color: #888;\n  text-transform: capitalize;\n  margin: 16px 0 8px;\n  letter-spacing: 0.5px;\n}\n.empty[data-v-f2f48e46] {\n  text-align: center;\n  padding: 40px 0;\n  color: #aaa;\n}\n", ""]);
 
 // exports
 
@@ -19931,6 +19936,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -19941,6 +19952,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   components: { ClaseCard: __WEBPACK_IMPORTED_MODULE_2__components_ClaseCard_vue___default.a },
   data: function data() {
     return {
+      weekOffset: 0,
       clasesList: [],
       loading: false,
       error: null
@@ -19949,19 +19961,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
   computed: {
     weekStart: function weekStart() {
-      var today = new Date();
-      today.setHours(0, 0, 0, 0);
-      return today;
+      return Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["f" /* startOfWeek */])(Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["a" /* addWeeks */])(new Date(), this.weekOffset));
     },
     weekEnd: function weekEnd() {
-      var end = new Date(this.weekStart);
-      end.setDate(end.getDate() + 6);
-      end.setHours(23, 59, 59, 999);
-      return end;
+      return Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["b" /* endOfWeek */])(this.weekStart);
     },
     weekLabel: function weekLabel() {
-      var s = Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["a" /* format */])(this.weekStart, 'D MMM');
-      var e = Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["a" /* format */])(this.weekEnd, 'D MMM YYYY');
+      var s = Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["c" /* format */])(this.weekStart, 'D MMM');
+      var e = Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["c" /* format */])(this.weekEnd, 'D MMM YYYY');
       return s + ' \u2013 ' + e;
     },
     groupedClases: function groupedClases() {
@@ -19969,18 +19976,23 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       var current = new Date(this.weekStart);
       while (current <= this.weekEnd) {
         var dayClases = this.clasesList.filter(function (c) {
-          return Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["b" /* isSameDay */])(Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["c" /* parseISO */])(c.date), current);
+          return Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["d" /* isSameDay */])(Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["e" /* parseISO */])(c.date), current);
         });
         if (dayClases.length) {
           days.push({
-            date: Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["a" /* format */])(current, 'YYYY-MM-DD'),
-            label: Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["a" /* format */])(current, 'dddd D [de] MMMM'),
+            date: Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["c" /* format */])(current, 'YYYY-MM-DD'),
+            label: Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["c" /* format */])(current, 'dddd D [de] MMMM'),
             clases: dayClases
           });
         }
         current.setDate(current.getDate() + 1);
       }
       return days;
+    }
+  },
+  watch: {
+    weekOffset: function weekOffset() {
+      this.load();
     }
   },
   mounted: function mounted() {
@@ -20000,7 +20012,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 this.error = null;
                 _context.prev = 2;
                 _context.next = 5;
-                return __WEBPACK_IMPORTED_MODULE_1__api__["b" /* clases */].list(Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["a" /* format */])(this.weekStart, 'YYYY-MM-DD'), Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["a" /* format */])(this.weekEnd, 'YYYY-MM-DD'));
+                return __WEBPACK_IMPORTED_MODULE_1__api__["b" /* clases */].list(Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["c" /* format */])(this.weekStart, 'YYYY-MM-DD'), Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["c" /* format */])(this.weekEnd, 'YYYY-MM-DD'));
 
               case 5:
                 _ref2 = _context.sent;
@@ -20036,6 +20048,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
       return load;
     }(),
+    prevWeek: function prevWeek() {
+      this.weekOffset--;
+    },
+    nextWeek: function nextWeek() {
+      this.weekOffset++;
+    },
     goToDetail: function goToDetail(id) {
       this.$router.push('/clases/' + id);
     }
@@ -20128,7 +20146,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.clase-card[data-v-21fce2f4] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  cursor: pointer;\n  gap: 12px;\n  -webkit-transition: -webkit-box-shadow 0.15s;\n  transition: -webkit-box-shadow 0.15s;\n  transition: box-shadow 0.15s;\n  transition: box-shadow 0.15s, -webkit-box-shadow 0.15s;\n}\n.clase-card[data-v-21fce2f4]:hover {\n  -webkit-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);\n          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);\n}\n.clase-left[data-v-21fce2f4] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  min-width: 48px;\n  border-left: 4px solid #e53935;\n  padding-left: 8px;\n}\n.time[data-v-21fce2f4] {\n  font-weight: 700;\n  font-size: 15px;\n  color: #1a1a1a;\n}\n.time-end[data-v-21fce2f4] {\n  font-size: 12px;\n  color: #999;\n}\n.clase-body[data-v-21fce2f4] {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n}\n.clase-name[data-v-21fce2f4] {\n  font-weight: 600;\n  font-size: 15px;\n  margin-bottom: 3px;\n}\n.clase-meta[data-v-21fce2f4] {\n  font-size: 12px;\n  color: #888;\n  margin-bottom: 6px;\n}\n.clase-footer[data-v-21fce2f4] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  gap: 8px;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.quota-badge[data-v-21fce2f4] {\n  font-size: 11px;\n  font-weight: 600;\n  background: #f0f0f0;\n  color: #555;\n  padding: 2px 8px;\n  border-radius: 20px;\n}\n.quota-badge.full[data-v-21fce2f4] {\n  background: #fce4e4;\n  color: #e53935;\n}\n.reserved-badge[data-v-21fce2f4] {\n  font-size: 11px;\n  font-weight: 600;\n  background: #e8f5e9;\n  color: #2e7d32;\n  padding: 2px 8px;\n  border-radius: 20px;\n}\n.clase-arrow[data-v-21fce2f4] {\n  color: #ccc;\n  font-size: 20px;\n  padding-left: 4px;\n}\n", ""]);
+exports.push([module.i, "\n.clase-card[data-v-21fce2f4] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  cursor: pointer;\n  gap: 12px;\n  -webkit-transition: -webkit-box-shadow 0.15s;\n  transition: -webkit-box-shadow 0.15s;\n  transition: box-shadow 0.15s;\n  transition: box-shadow 0.15s, -webkit-box-shadow 0.15s;\n}\n.clase-card[data-v-21fce2f4]:hover {\n  -webkit-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);\n          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);\n}\n.clase-left[data-v-21fce2f4] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  min-width: 48px;\n  border-left: 4px solid #00bcd4;\n  padding-left: 8px;\n}\n.time[data-v-21fce2f4] {\n  font-weight: 700;\n  font-size: 15px;\n  color: #1a1a1a;\n}\n.time-end[data-v-21fce2f4] {\n  font-size: 12px;\n  color: #999;\n}\n.clase-body[data-v-21fce2f4] {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n}\n.clase-name[data-v-21fce2f4] {\n  font-weight: 600;\n  font-size: 15px;\n  margin-bottom: 3px;\n}\n.clase-meta[data-v-21fce2f4] {\n  font-size: 12px;\n  color: #888;\n  margin-bottom: 6px;\n}\n.clase-footer[data-v-21fce2f4] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  gap: 8px;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.quota-badge[data-v-21fce2f4] {\n  font-size: 11px;\n  font-weight: 600;\n  background: #f0f0f0;\n  color: #555;\n  padding: 2px 8px;\n  border-radius: 20px;\n}\n.quota-badge.full[data-v-21fce2f4] {\n  background: #fce4e4;\n  color: #d32f2f;\n}\n.reserved-badge[data-v-21fce2f4] {\n  font-size: 11px;\n  font-weight: 600;\n  background: #e8f5e9;\n  color: #2e7d32;\n  padding: 2px 8px;\n  border-radius: 20px;\n}\n.clase-arrow[data-v-21fce2f4] {\n  color: #ccc;\n  font-size: 20px;\n  padding-left: 4px;\n}\n", ""]);
 
 // exports
 
@@ -20208,7 +20226,7 @@ var render = function() {
         style: {
           borderColor:
             (_vm.clase.clase_type && _vm.clase.clase_type.clase_color) ||
-            "#E53935"
+            "#00BCD4"
         }
       },
       [
@@ -20297,7 +20315,29 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "page" }, [
     _c("div", { staticClass: "week-nav" }, [
-      _c("span", { staticClass: "week-label" }, [_vm._v(_vm._s(_vm.weekLabel))])
+      _c(
+        "button",
+        {
+          staticClass: "arrow-btn",
+          attrs: { "aria-label": "Semana anterior" },
+          on: { click: _vm.prevWeek }
+        },
+        [_vm._v("\n      ‹\n    ")]
+      ),
+      _vm._v(" "),
+      _c("span", { staticClass: "week-label" }, [
+        _vm._v(_vm._s(_vm.weekLabel))
+      ]),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "arrow-btn",
+          attrs: { "aria-label": "Semana siguiente" },
+          on: { click: _vm.nextWeek }
+        },
+        [_vm._v("\n      ›\n    ")]
+      )
     ]),
     _vm._v(" "),
     _vm.loading
@@ -20438,7 +20478,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.back-btn[data-v-55c16277] {\n  background: none;\n  border: none;\n  color: #e53935;\n  font-size: 16px;\n  font-weight: 600;\n  cursor: pointer;\n  padding: 0;\n  margin-bottom: 16px;\n}\n.clase-header[data-v-55c16277] {\n  margin-bottom: 16px;\n}\n.clase-title[data-v-55c16277] {\n  font-size: 22px;\n  font-weight: 700;\n  margin-bottom: 8px;\n}\n.clase-date[data-v-55c16277] {\n  font-size: 14px;\n  color: #555;\n  text-transform: capitalize;\n  margin-bottom: 2px;\n}\n.clase-time[data-v-55c16277] {\n  font-size: 18px;\n  font-weight: 600;\n  margin-bottom: 4px;\n}\n.clase-coach[data-v-55c16277],\n.clase-room[data-v-55c16277] {\n  font-size: 13px;\n  color: #888;\n  margin-top: 4px;\n}\n.quota-info[data-v-55c16277] {\n  display: inline-block;\n  margin-top: 10px;\n  font-size: 12px;\n  font-weight: 600;\n  background: #f0f0f0;\n  color: #555;\n  padding: 3px 10px;\n  border-radius: 20px;\n}\n.quota-info.full[data-v-55c16277] {\n  background: #fce4e4;\n  color: #e53935;\n}\n.action-card[data-v-55c16277] {\n  text-align: center;\n}\n.reserved-status[data-v-55c16277] {\n  font-size: 15px;\n  color: #2e7d32;\n  margin-bottom: 16px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  gap: 8px;\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n}\n.status-badge[data-v-55c16277] {\n  font-size: 11px;\n  background: #e8f5e9;\n  color: #2e7d32;\n  padding: 2px 8px;\n  border-radius: 20px;\n  font-weight: 600;\n}\n.full-msg[data-v-55c16277] {\n  color: #e53935;\n  font-size: 14px;\n  margin-bottom: 8px;\n}\n", ""]);
+exports.push([module.i, "\n.back-btn[data-v-55c16277] {\n  background: none;\n  border: none;\n  color: #0097a7;\n  font-size: 16px;\n  font-weight: 600;\n  cursor: pointer;\n  padding: 0;\n  margin-bottom: 16px;\n}\n.clase-header[data-v-55c16277] {\n  margin-bottom: 16px;\n}\n.clase-title[data-v-55c16277] {\n  font-size: 22px;\n  font-weight: 700;\n  margin-bottom: 8px;\n}\n.clase-date[data-v-55c16277] {\n  font-size: 14px;\n  color: #555;\n  text-transform: capitalize;\n  margin-bottom: 2px;\n}\n.clase-time[data-v-55c16277] {\n  font-size: 18px;\n  font-weight: 600;\n  margin-bottom: 4px;\n}\n.clase-coach[data-v-55c16277],\n.clase-room[data-v-55c16277] {\n  font-size: 13px;\n  color: #888;\n  margin-top: 4px;\n}\n.quota-info[data-v-55c16277] {\n  display: inline-block;\n  margin-top: 10px;\n  font-size: 12px;\n  font-weight: 600;\n  background: #f0f0f0;\n  color: #555;\n  padding: 3px 10px;\n  border-radius: 20px;\n}\n.quota-info.full[data-v-55c16277] {\n  background: #fce4e4;\n  color: #d32f2f;\n}\n.action-card[data-v-55c16277] {\n  text-align: center;\n}\n.reserved-status[data-v-55c16277] {\n  font-size: 15px;\n  color: #0097a7;\n  margin-bottom: 16px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  gap: 8px;\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n}\n.status-badge[data-v-55c16277] {\n  font-size: 11px;\n  background: #e8f5e9;\n  color: #2e7d32;\n  padding: 2px 8px;\n  border-radius: 20px;\n  font-weight: 600;\n}\n.full-msg[data-v-55c16277] {\n  color: #d32f2f;\n  font-size: 14px;\n  margin-bottom: 8px;\n}\n.students-card[data-v-55c16277] {\n  margin-top: 16px;\n}\n.students-title[data-v-55c16277] {\n  font-size: 15px;\n  font-weight: 700;\n  margin-bottom: 12px;\n  color: #333;\n}\n.students-list[data-v-55c16277] {\n  list-style: none;\n  padding: 0;\n  margin: 0;\n}\n.student-item[data-v-55c16277] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  gap: 10px;\n  padding: 8px 0;\n  border-bottom: 1px solid #f0f0f0;\n}\n.student-item[data-v-55c16277]:last-child {\n  border-bottom: none;\n}\n.student-avatar[data-v-55c16277] {\n  width: 36px;\n  height: 36px;\n  border-radius: 50%;\n  -o-object-fit: cover;\n     object-fit: cover;\n  -ms-flex-negative: 0;\n      flex-shrink: 0;\n}\n.student-avatar-placeholder[data-v-55c16277] {\n  width: 36px;\n  height: 36px;\n  border-radius: 50%;\n  background: #e0e0e0;\n  color: #757575;\n  font-size: 13px;\n  font-weight: 700;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -ms-flex-negative: 0;\n      flex-shrink: 0;\n}\n.student-name[data-v-55c16277] {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n  font-size: 14px;\n  color: #333;\n}\n.student-status-dot[data-v-55c16277] {\n  width: 8px;\n  height: 8px;\n  border-radius: 50%;\n  -ms-flex-negative: 0;\n      flex-shrink: 0;\n}\n.student-status-dot.confirmed[data-v-55c16277] {\n  background: #43a047;\n}\n.student-status-dot.consumed[data-v-55c16277] {\n  background: #1565c0;\n}\n.student-status-dot.pending[data-v-55c16277] {\n  background: #fb8c00;\n}\n.no-students[data-v-55c16277] {\n  font-size: 13px;\n  color: #aaa;\n  text-align: center;\n  margin: 0;\n}\n", ""]);
 
 // exports
 
@@ -20455,10 +20495,38 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_date__ = __webpack_require__(34);
 
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -20557,7 +20625,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     },
     date: function date(val) {
       if (!val) return '';
-      return Object(__WEBPACK_IMPORTED_MODULE_2__utils_date__["a" /* format */])(Object(__WEBPACK_IMPORTED_MODULE_2__utils_date__["c" /* parseISO */])(val), 'dddd D [de] MMMM [de] YYYY');
+      return Object(__WEBPACK_IMPORTED_MODULE_2__utils_date__["c" /* format */])(Object(__WEBPACK_IMPORTED_MODULE_2__utils_date__["e" /* parseISO */])(val), 'dddd D [de] MMMM [de] YYYY');
     }
   },
   data: function data() {
@@ -20565,11 +20633,11 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       clase: null,
       isFull: false,
       myReservation: null,
+      students: [],
       loading: false,
       error: null,
       booking: false,
       cancelling: false,
-      confirming: false,
       actionError: null
     };
   },
@@ -20577,6 +20645,18 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     this.load();
   },
 
+  watch: {
+    '$route.params.id': function $routeParamsId(newId, oldId) {
+      if (newId !== oldId) {
+        this.clase = null;
+        this.students = [];
+        this.myReservation = null;
+        this.isFull = false;
+        this.actionError = null;
+        this.load();
+      }
+    }
+  },
   methods: {
     load: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
@@ -20599,27 +20679,28 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 this.clase = data.clase;
                 this.isFull = data.is_full;
                 this.myReservation = data.my_reservation;
-                _context.next = 15;
+                this.students = data.students || [];
+                _context.next = 16;
                 break;
 
-              case 12:
-                _context.prev = 12;
+              case 13:
+                _context.prev = 13;
                 _context.t0 = _context['catch'](2);
 
                 this.error = 'No se pudo cargar la clase.';
 
-              case 15:
-                _context.prev = 15;
+              case 16:
+                _context.prev = 16;
 
                 this.loading = false;
-                return _context.finish(15);
+                return _context.finish(16);
 
-              case 18:
+              case 19:
               case 'end':
                 return _context.stop();
             }
           }
-        }, _callee, this, [[2, 12, 15, 18]]);
+        }, _callee, this, [[2, 13, 16, 19]]);
       }));
 
       function load() {
@@ -20630,8 +20711,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     }(),
     makeReservation: function () {
       var _ref3 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee2() {
-        var _ref4, data;
-
         return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -20643,33 +20722,31 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 return __WEBPACK_IMPORTED_MODULE_1__api__["c" /* reservations */].create(this.clase.id);
 
               case 5:
-                _ref4 = _context2.sent;
-                data = _ref4.data;
+                _context2.next = 7;
+                return this.load();
 
-                this.myReservation = data;
-                this.clase.reservations_count++;
-                this.isFull = this.clase.reservations_count >= this.clase.quota;
-                _context2.next = 15;
+              case 7:
+                _context2.next = 12;
                 break;
 
-              case 12:
-                _context2.prev = 12;
+              case 9:
+                _context2.prev = 9;
                 _context2.t0 = _context2['catch'](2);
 
                 this.actionError = _context2.t0.response && _context2.t0.response.data && _context2.t0.response.data.error || 'No se pudo reservar.';
 
-              case 15:
-                _context2.prev = 15;
+              case 12:
+                _context2.prev = 12;
 
                 this.booking = false;
-                return _context2.finish(15);
+                return _context2.finish(12);
 
-              case 18:
+              case 15:
               case 'end':
                 return _context2.stop();
             }
           }
-        }, _callee2, this, [[2, 12, 15, 18]]);
+        }, _callee2, this, [[2, 9, 12, 15]]);
       }));
 
       function makeReservation() {
@@ -20678,95 +20755,53 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
       return makeReservation;
     }(),
-    confirmReservation: function () {
-      var _ref5 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3() {
-        var _ref6, data;
-
+    initials: function initials(name) {
+      return name.split(' ').slice(0, 2).map(function (w) {
+        return w[0];
+      }).join('').toUpperCase();
+    },
+    cancelReservation: function () {
+      var _ref4 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee3() {
         return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                this.confirming = true;
+                this.cancelling = true;
                 this.actionError = null;
                 _context3.prev = 2;
                 _context3.next = 5;
-                return __WEBPACK_IMPORTED_MODULE_1__api__["c" /* reservations */].confirm(this.myReservation.id);
+                return __WEBPACK_IMPORTED_MODULE_1__api__["c" /* reservations */].cancel(this.myReservation.id);
 
               case 5:
-                _ref6 = _context3.sent;
-                data = _ref6.data;
+                _context3.next = 7;
+                return this.load();
 
-                this.myReservation = _extends({}, this.myReservation, data);
-                _context3.next = 13;
+              case 7:
+                _context3.next = 12;
                 break;
 
-              case 10:
-                _context3.prev = 10;
+              case 9:
+                _context3.prev = 9;
                 _context3.t0 = _context3['catch'](2);
 
-                this.actionError = _context3.t0.response && _context3.t0.response.data && _context3.t0.response.data.error || 'No se pudo confirmar la reserva.';
+                this.actionError = _context3.t0.response && _context3.t0.response.data && _context3.t0.response.data.error || 'No se pudo cancelar.';
 
-              case 13:
-                _context3.prev = 13;
+              case 12:
+                _context3.prev = 12;
 
-                this.confirming = false;
-                return _context3.finish(13);
+                this.cancelling = false;
+                return _context3.finish(12);
 
-              case 16:
+              case 15:
               case 'end':
                 return _context3.stop();
             }
           }
-        }, _callee3, this, [[2, 10, 13, 16]]);
-      }));
-
-      function confirmReservation() {
-        return _ref5.apply(this, arguments);
-      }
-
-      return confirmReservation;
-    }(),
-    cancelReservation: function () {
-      var _ref7 = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee4() {
-        return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee4$(_context4) {
-          while (1) {
-            switch (_context4.prev = _context4.next) {
-              case 0:
-                this.cancelling = true;
-                this.actionError = null;
-                _context4.prev = 2;
-                _context4.next = 5;
-                return __WEBPACK_IMPORTED_MODULE_1__api__["c" /* reservations */].cancel(this.myReservation.id);
-
-              case 5:
-                this.myReservation = null;
-                if (this.clase.reservations_count > 0) this.clase.reservations_count--;
-                this.isFull = false;
-                _context4.next = 13;
-                break;
-
-              case 10:
-                _context4.prev = 10;
-                _context4.t0 = _context4['catch'](2);
-
-                this.actionError = _context4.t0.response && _context4.t0.response.data && _context4.t0.response.data.error || 'No se pudo cancelar.';
-
-              case 13:
-                _context4.prev = 13;
-
-                this.cancelling = false;
-                return _context4.finish(13);
-
-              case 16:
-              case 'end':
-                return _context4.stop();
-            }
-          }
-        }, _callee4, this, [[2, 10, 13, 16]]);
+        }, _callee3, this, [[2, 9, 12, 15]]);
       }));
 
       function cancelReservation() {
-        return _ref7.apply(this, arguments);
+        return _ref4.apply(this, arguments);
       }
 
       return cancelReservation;
@@ -20814,7 +20849,7 @@ var render = function() {
                     "6px solid " +
                     ((_vm.clase.clase_type &&
                       _vm.clase.clase_type.clase_color) ||
-                      "#E53935")
+                      "#00BCD4")
                 }
               },
               [
@@ -20903,50 +20938,25 @@ var render = function() {
                         ])
                       ]),
                       _vm._v(" "),
-                      _vm.myReservation.reservation_status_id === 1
-                        ? _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-primary",
-                              staticStyle: { "margin-bottom": "10px" },
-                              attrs: { disabled: _vm.confirming },
-                              on: { click: _vm.confirmReservation }
-                            },
-                            [
-                              _vm._v(
-                                "\n          " +
-                                  _vm._s(
-                                    _vm.confirming
-                                      ? "Confirmando…"
-                                      : "Confirmar clase"
-                                  ) +
-                                  "\n        "
-                              )
-                            ]
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-outline",
+                          attrs: { disabled: _vm.cancelling },
+                          on: { click: _vm.cancelReservation }
+                        },
+                        [
+                          _vm._v(
+                            "\n          " +
+                              _vm._s(
+                                _vm.cancelling
+                                  ? "Cancelando…"
+                                  : "Cancelar reserva"
+                              ) +
+                              "\n        "
                           )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm.myReservation.reservation_status_id === 1
-                        ? _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-outline",
-                              attrs: { disabled: _vm.cancelling },
-                              on: { click: _vm.cancelReservation }
-                            },
-                            [
-                              _vm._v(
-                                "\n          " +
-                                  _vm._s(
-                                    _vm.cancelling
-                                      ? "Cancelando…"
-                                      : "Cancelar reserva"
-                                  ) +
-                                  "\n        "
-                              )
-                            ]
-                          )
-                        : _vm._e()
+                        ]
+                      )
                     ]
                   : [
                       _vm.isFull
@@ -20983,7 +20993,75 @@ var render = function() {
                   : _vm._e()
               ],
               2
-            )
+            ),
+            _vm._v(" "),
+            _vm.students.length > 0
+              ? _c("div", { staticClass: "students-card card" }, [
+                  _c("h3", { staticClass: "students-title" }, [
+                    _vm._v(
+                      "\n        Alumnos inscritos (" +
+                        _vm._s(_vm.students.length) +
+                        ")\n      "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "ul",
+                    { staticClass: "students-list" },
+                    _vm._l(_vm.students, function(student, index) {
+                      return _c(
+                        "li",
+                        { key: index, staticClass: "student-item" },
+                        [
+                          student.avatar
+                            ? _c("img", {
+                                staticClass: "student-avatar",
+                                attrs: {
+                                  src: student.avatar,
+                                  alt: student.name,
+                                  loading: "lazy"
+                                }
+                              })
+                            : _c(
+                                "span",
+                                { staticClass: "student-avatar-placeholder" },
+                                [_vm._v(_vm._s(_vm.initials(student.name)))]
+                              ),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "student-name" }, [
+                            _vm._v(_vm._s(student.name))
+                          ]),
+                          _vm._v(" "),
+                          _c("span", {
+                            staticClass: "student-status-dot",
+                            class:
+                              student.reservation_status_id === 2
+                                ? "confirmed"
+                                : student.reservation_status_id === 3
+                                ? "consumed"
+                                : "pending",
+                            attrs: {
+                              title:
+                                student.reservation_status_id === 2
+                                  ? "Confirmado"
+                                  : student.reservation_status_id === 3
+                                  ? "Asistió"
+                                  : "Pendiente"
+                            }
+                          })
+                        ]
+                      )
+                    }),
+                    0
+                  )
+                ])
+              : !_vm.loading
+              ? _c("div", { staticClass: "students-card card" }, [
+                  _c("p", { staticClass: "no-students" }, [
+                    _vm._v("Aún no hay alumnos inscritos.")
+                  ])
+                ])
+              : _vm._e()
           ]
         : _vm._e()
     ],
@@ -21086,7 +21164,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.page-title[data-v-4d6276ce] {\n  font-size: 20px;\n  font-weight: 700;\n  margin-bottom: 20px;\n}\n.reservation-card[data-v-4d6276ce] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: stretch;\n      -ms-flex-align: stretch;\n          align-items: stretch;\n  padding: 0;\n  overflow: hidden;\n  cursor: pointer;\n}\n.res-bar[data-v-4d6276ce] {\n  width: 6px;\n  -ms-flex-negative: 0;\n      flex-shrink: 0;\n}\n.res-body[data-v-4d6276ce] {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n  padding: 14px 12px;\n}\n.res-type[data-v-4d6276ce] {\n  font-weight: 700;\n  font-size: 15px;\n  margin-bottom: 3px;\n}\n.res-date[data-v-4d6276ce] {\n  font-size: 13px;\n  color: #555;\n  text-transform: capitalize;\n}\n.res-time[data-v-4d6276ce] {\n  font-size: 14px;\n  font-weight: 600;\n  margin-top: 2px;\n}\n.res-coach[data-v-4d6276ce] {\n  font-size: 12px;\n  color: #888;\n  margin-top: 3px;\n}\n.res-right[data-v-4d6276ce] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-align: end;\n      -ms-flex-align: end;\n          align-items: flex-end;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  padding: 14px 14px 14px 0;\n  gap: 8px;\n}\n.status-badge[data-v-4d6276ce] {\n  font-size: 10px;\n  font-weight: 700;\n  padding: 3px 8px;\n  border-radius: 20px;\n  text-transform: uppercase;\n  letter-spacing: 0.5px;\n}\n.status-badge.pending[data-v-4d6276ce] {\n  background: #fff8e1;\n  color: #f57f17;\n}\n.status-badge.confirmed[data-v-4d6276ce] {\n  background: #e8f5e9;\n  color: #2e7d32;\n}\n.status-badge.consumed[data-v-4d6276ce] {\n  background: #e3f2fd;\n  color: #1565c0;\n}\n.status-badge.lost[data-v-4d6276ce] {\n  background: #fce4e4;\n  color: #b71c1c;\n}\n.cancel-btn[data-v-4d6276ce] {\n  font-size: 12px;\n  font-weight: 600;\n  color: #e53935;\n  background: none;\n  border: 1px solid #e53935;\n  border-radius: 6px;\n  padding: 4px 10px;\n  cursor: pointer;\n}\n.cancel-btn[data-v-4d6276ce]:disabled {\n  opacity: 0.5;\n}\n.empty[data-v-4d6276ce] {\n  text-align: center;\n  padding: 40px 0;\n  color: #aaa;\n}\n", ""]);
+exports.push([module.i, "\n.page-title[data-v-4d6276ce] {\n  font-size: 20px;\n  font-weight: 700;\n  margin-bottom: 20px;\n  color: #0097a7;\n}\n.reservation-card[data-v-4d6276ce] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: stretch;\n      -ms-flex-align: stretch;\n          align-items: stretch;\n  overflow: hidden;\n  cursor: pointer;\n}\n.res-bar[data-v-4d6276ce] {\n  width: 6px;\n  -ms-flex-negative: 0;\n      flex-shrink: 0;\n}\n.res-body[data-v-4d6276ce] {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n  padding: 14px 12px;\n}\n.res-type[data-v-4d6276ce] {\n  font-weight: 700;\n  font-size: 15px;\n  margin-bottom: 3px;\n}\n.res-date[data-v-4d6276ce] {\n  font-size: 13px;\n  color: #555;\n  text-transform: capitalize;\n}\n.res-time[data-v-4d6276ce] {\n  font-size: 14px;\n  font-weight: 600;\n  margin-top: 2px;\n}\n.res-coach[data-v-4d6276ce] {\n  font-size: 12px;\n  color: #888;\n  margin-top: 3px;\n}\n.res-right[data-v-4d6276ce] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-align: end;\n      -ms-flex-align: end;\n          align-items: flex-end;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  padding: 14px 14px 14px 0;\n  gap: 8px;\n}\n.status-badge[data-v-4d6276ce] {\n  font-size: 10px;\n  font-weight: 700;\n  padding: 3px 8px;\n  border-radius: 20px;\n  text-transform: uppercase;\n  letter-spacing: 0.5px;\n}\n.status-badge.pending[data-v-4d6276ce] {\n  background: #fff8e1;\n  color: #f57f17;\n}\n.status-badge.confirmed[data-v-4d6276ce] {\n  background: #e0f7fa;\n  color: #0097a7;\n}\n.status-badge.consumed[data-v-4d6276ce] {\n  background: #e3f2fd;\n  color: #1565c0;\n}\n.status-badge.lost[data-v-4d6276ce] {\n  background: #fce4e4;\n  color: #b71c1c;\n}\n.cancel-btn[data-v-4d6276ce] {\n  font-size: 12px;\n  font-weight: 600;\n  color: #d32f2f;\n  background: none;\n  border: 1px solid #ef9a9a;\n  border-radius: 6px;\n  padding: 4px 10px;\n  cursor: pointer;\n}\n.cancel-btn[data-v-4d6276ce]:disabled {\n  opacity: 0.5;\n}\n.empty[data-v-4d6276ce] {\n  text-align: center;\n  padding: 40px 0;\n  color: #aaa;\n}\n", ""]);
 
 // exports
 
@@ -21172,7 +21250,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
-//
 
 
 
@@ -21185,7 +21262,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     },
     date: function date(val) {
       if (!val) return '';
-      return Object(__WEBPACK_IMPORTED_MODULE_2__utils_date__["a" /* format */])(Object(__WEBPACK_IMPORTED_MODULE_2__utils_date__["c" /* parseISO */])(val), 'ddd D [de] MMMM');
+      return Object(__WEBPACK_IMPORTED_MODULE_2__utils_date__["c" /* format */])(Object(__WEBPACK_IMPORTED_MODULE_2__utils_date__["e" /* parseISO */])(val), 'ddd D [de] MMMM');
     }
   },
   data: function data() {
@@ -21360,7 +21437,7 @@ var render = function() {
                     background:
                       (res.clase.clase_type &&
                         res.clase.clase_type.clase_color) ||
-                      "#E53935"
+                      "#00BCD4"
                   }
                 }),
                 _vm._v(" "),
@@ -21422,30 +21499,26 @@ var render = function() {
                     ]
                   ),
                   _vm._v(" "),
-                  res.reservation_status_id === 1
-                    ? _c(
-                        "button",
-                        {
-                          staticClass: "cancel-btn",
-                          attrs: { disabled: _vm.cancelling === res.id },
-                          on: {
-                            click: function($event) {
-                              $event.stopPropagation()
-                              return _vm.cancel(res)
-                            }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n          " +
-                              _vm._s(
-                                _vm.cancelling === res.id ? "…" : "Cancelar"
-                              ) +
-                              "\n        "
-                          )
-                        ]
+                  _c(
+                    "button",
+                    {
+                      staticClass: "cancel-btn",
+                      attrs: { disabled: _vm.cancelling === res.id },
+                      on: {
+                        click: function($event) {
+                          $event.stopPropagation()
+                          return _vm.cancel(res)
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n          " +
+                          _vm._s(_vm.cancelling === res.id ? "…" : "Cancelar") +
+                          "\n        "
                       )
-                    : _vm._e()
+                    ]
+                  )
                 ])
               ]
             )

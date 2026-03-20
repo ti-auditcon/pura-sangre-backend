@@ -36,7 +36,7 @@ class ClaseController extends Controller
                 'claseType:id,clase_type,clase_color,icon_white',
                 'coach:id,first_name,last_name',
                 'reservations' => fn ($q) => $q->where('user_id', $userId)
-                                               ->select(['id', 'clase_id', 'reservation_status_id']),
+                    ->select(['id', 'clase_id', 'reservation_status_id']),
             ])
             ->withCount('reservations')
             ->whereHas('claseType')
@@ -68,10 +68,11 @@ class ClaseController extends Controller
 
         $myReservation = $clase->reservations()
             ->where('user_id', auth()->id())
+            ->with('reservation_status:id,reservation_status,type')
             ->first(['id', 'reservation_status_id']);
 
         $students = $clase->reservations()
-            ->whereIn('reservation_status_id', [1, 2])
+            ->whereIn('reservation_status_id', [1, 2, 3])
             ->with('user:id,first_name,last_name,avatar')
             ->get(['id', 'user_id', 'reservation_status_id'])
             ->map(fn ($r) => [
