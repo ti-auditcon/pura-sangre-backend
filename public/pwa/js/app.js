@@ -2483,12 +2483,12 @@ module.exports = function isAxiosError(payload) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["e"] = parseISO;
-/* harmony export (immutable) */ __webpack_exports__["c"] = format;
-/* harmony export (immutable) */ __webpack_exports__["f"] = startOfWeek;
-/* harmony export (immutable) */ __webpack_exports__["b"] = endOfWeek;
-/* harmony export (immutable) */ __webpack_exports__["a"] = addWeeks;
-/* harmony export (immutable) */ __webpack_exports__["d"] = isSameDay;
+/* harmony export (immutable) */ __webpack_exports__["c"] = parseISO;
+/* harmony export (immutable) */ __webpack_exports__["a"] = format;
+/* unused harmony export startOfWeek */
+/* unused harmony export endOfWeek */
+/* unused harmony export addWeeks */
+/* harmony export (immutable) */ __webpack_exports__["b"] = isSameDay;
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 /**
@@ -19888,7 +19888,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n.week-nav[data-v-f2f48e46] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  margin-bottom: 20px;\n  background: linear-gradient(135deg, #26c6da 0%, #0097a7 100%);\n  border-radius: 12px;\n  padding: 12px 16px;\n  -webkit-box-shadow: 0 2px 8px rgba(0, 151, 167, 0.3);\n          box-shadow: 0 2px 8px rgba(0, 151, 167, 0.3);\n}\n.week-label[data-v-f2f48e46] {\n  font-weight: 600;\n  font-size: 14px;\n  text-transform: capitalize;\n  color: #fff;\n}\n.arrow-btn[data-v-f2f48e46] {\n  background: none;\n  border: none;\n  font-size: 26px;\n  color: rgba(255, 255, 255, 0.85);\n  cursor: pointer;\n  padding: 0 8px;\n  line-height: 1;\n}\n.day-heading[data-v-f2f48e46] {\n  font-size: 13px;\n  font-weight: 700;\n  color: #888;\n  text-transform: capitalize;\n  margin: 16px 0 8px;\n  letter-spacing: 0.5px;\n}\n.empty[data-v-f2f48e46] {\n  text-align: center;\n  padding: 40px 0;\n  color: #aaa;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Reemplaza .page: mismo max-width y centrado, pero SIN padding-top */\n.clases-root[data-v-f2f48e46] {\n  max-width: 480px;\n  margin: 0 auto;\n}\n/* El wrapper sticky empieza en y=0 del contenedor, así nunca se mueve */\n.week-nav-wrap[data-v-f2f48e46] {\n  position: sticky;\n  top: 0;\n  z-index: 20;\n  background: #f5f5f5;\n  padding: 16px 16px 12px;\n}\n/* El pill flotante vive dentro del wrapper */\n.week-nav[data-v-f2f48e46] {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  background: linear-gradient(135deg, #26c6da 0%, #0097a7 100%);\n  border-radius: 12px;\n  padding: 12px 16px;\n  -webkit-box-shadow: 0 2px 8px rgba(0, 151, 167, 0.3);\n          box-shadow: 0 2px 8px rgba(0, 151, 167, 0.3);\n}\n.week-label[data-v-f2f48e46] {\n  font-weight: 600;\n  font-size: 14px;\n  text-transform: capitalize;\n  color: #fff;\n}\n/* Contenido con el padding lateral equivalente a .page */\n.clases-body[data-v-f2f48e46] {\n  padding: 0 16px 80px;\n}\n/* Sticky justo debajo del wrap: 16px(top) + 44px(nav) + 8px(bottom) = 68px */\n.day-heading[data-v-f2f48e46] {\n  position: sticky;\n  top: 63px;\n  z-index: 10;\n  font-size: 15px;\n  font-weight: 700;\n  color: #0097a7;\n  text-transform: capitalize;\n  margin: 0 -16px 8px;\n  padding: 6px 16px 4px;\n  letter-spacing: 0.3px;\n  background: #f5f5f5;\n  border-bottom: 2px solid #e0f7fa;\n}\n.empty[data-v-f2f48e46] {\n  text-align: center;\n  padding: 40px 0;\n  color: #aaa;\n}\n", ""]);
 
 // exports
 
@@ -19940,8 +19940,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
-//
-//
 
 
 
@@ -19952,7 +19950,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
   components: { ClaseCard: __WEBPACK_IMPORTED_MODULE_2__components_ClaseCard_vue___default.a },
   data: function data() {
     return {
-      weekOffset: 0,
       clasesList: [],
       loading: false,
       error: null
@@ -19961,14 +19958,19 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
   computed: {
     weekStart: function weekStart() {
-      return Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["f" /* startOfWeek */])(Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["a" /* addWeeks */])(new Date(), this.weekOffset));
+      var today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return today;
     },
     weekEnd: function weekEnd() {
-      return Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["b" /* endOfWeek */])(this.weekStart);
+      var end = new Date(this.weekStart);
+      end.setDate(end.getDate() + 6);
+      end.setHours(23, 59, 59, 999);
+      return end;
     },
     weekLabel: function weekLabel() {
-      var s = Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["c" /* format */])(this.weekStart, 'D MMM');
-      var e = Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["c" /* format */])(this.weekEnd, 'D MMM YYYY');
+      var s = Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["a" /* format */])(this.weekStart, 'D [de] MMMM');
+      var e = Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["a" /* format */])(this.weekEnd, 'D [de] MMMM [de] YYYY');
       return s + ' \u2013 ' + e;
     },
     groupedClases: function groupedClases() {
@@ -19976,23 +19978,18 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
       var current = new Date(this.weekStart);
       while (current <= this.weekEnd) {
         var dayClases = this.clasesList.filter(function (c) {
-          return Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["d" /* isSameDay */])(Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["e" /* parseISO */])(c.date), current);
+          return Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["b" /* isSameDay */])(Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["c" /* parseISO */])(c.date), current);
         });
         if (dayClases.length) {
           days.push({
-            date: Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["c" /* format */])(current, 'YYYY-MM-DD'),
-            label: Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["c" /* format */])(current, 'dddd D [de] MMMM'),
+            date: Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["a" /* format */])(current, 'YYYY-MM-DD'),
+            label: Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["a" /* format */])(current, 'dddd D [de] MMMM'),
             clases: dayClases
           });
         }
         current.setDate(current.getDate() + 1);
       }
       return days;
-    }
-  },
-  watch: {
-    weekOffset: function weekOffset() {
-      this.load();
     }
   },
   mounted: function mounted() {
@@ -20012,7 +20009,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
                 this.error = null;
                 _context.prev = 2;
                 _context.next = 5;
-                return __WEBPACK_IMPORTED_MODULE_1__api__["b" /* clases */].list(Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["c" /* format */])(this.weekStart, 'YYYY-MM-DD'), Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["c" /* format */])(this.weekEnd, 'YYYY-MM-DD'));
+                return __WEBPACK_IMPORTED_MODULE_1__api__["b" /* clases */].list(Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["a" /* format */])(this.weekStart, 'YYYY-MM-DD'), Object(__WEBPACK_IMPORTED_MODULE_3__utils_date__["a" /* format */])(this.weekEnd, 'YYYY-MM-DD'));
 
               case 5:
                 _ref2 = _context.sent;
@@ -20048,12 +20045,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
       return load;
     }(),
-    prevWeek: function prevWeek() {
-      this.weekOffset--;
-    },
-    nextWeek: function nextWeek() {
-      this.weekOffset++;
-    },
     goToDetail: function goToDetail(id) {
       this.$router.push('/clases/' + id);
     }
@@ -20313,73 +20304,57 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "page" }, [
-    _c("div", { staticClass: "week-nav" }, [
-      _c(
-        "button",
-        {
-          staticClass: "arrow-btn",
-          attrs: { "aria-label": "Semana anterior" },
-          on: { click: _vm.prevWeek }
-        },
-        [_vm._v("\n      ‹\n    ")]
-      ),
-      _vm._v(" "),
-      _c("span", { staticClass: "week-label" }, [
-        _vm._v(_vm._s(_vm.weekLabel))
-      ]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "arrow-btn",
-          attrs: { "aria-label": "Semana siguiente" },
-          on: { click: _vm.nextWeek }
-        },
-        [_vm._v("\n      ›\n    ")]
-      )
+  return _c("div", { staticClass: "clases-root" }, [
+    _c("div", { staticClass: "week-nav-wrap" }, [
+      _c("div", { staticClass: "week-nav" }, [
+        _c("span", { staticClass: "week-label" }, [
+          _vm._v(_vm._s(_vm.weekLabel))
+        ])
+      ])
     ]),
     _vm._v(" "),
-    _vm.loading
-      ? _c("div", { staticClass: "loading" }, [_vm._v("Cargando clases…")])
-      : _vm.error
-      ? _c("div", { staticClass: "error-msg" }, [_vm._v(_vm._s(_vm.error))])
-      : _c(
-          "div",
-          [
-            _vm.groupedClases.length === 0
-              ? _c("div", { staticClass: "empty" }, [
-                  _vm._v("\n      No hay clases esta semana.\n    ")
-                ])
-              : _vm._e(),
-            _vm._v(" "),
-            _vm._l(_vm.groupedClases, function(day) {
-              return _c(
-                "div",
-                { key: day.date },
-                [
-                  _c("h3", { staticClass: "day-heading" }, [
-                    _vm._v(_vm._s(day.label))
-                  ]),
-                  _vm._v(" "),
-                  _vm._l(day.clases, function(clase) {
-                    return _c("ClaseCard", {
-                      key: clase.id,
-                      attrs: { clase: clase },
-                      nativeOn: {
-                        click: function($event) {
-                          return _vm.goToDetail(clase.id)
+    _c("div", { staticClass: "clases-body" }, [
+      _vm.loading
+        ? _c("div", { staticClass: "loading" }, [_vm._v("Cargando clases…")])
+        : _vm.error
+        ? _c("div", { staticClass: "error-msg" }, [_vm._v(_vm._s(_vm.error))])
+        : _c(
+            "div",
+            [
+              _vm.groupedClases.length === 0
+                ? _c("div", { staticClass: "empty" }, [
+                    _vm._v("\n        No hay clases esta semana.\n      ")
+                  ])
+                : _vm._e(),
+              _vm._v(" "),
+              _vm._l(_vm.groupedClases, function(day) {
+                return _c(
+                  "div",
+                  { key: day.date },
+                  [
+                    _c("h3", { staticClass: "day-heading" }, [
+                      _vm._v(_vm._s(day.label))
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(day.clases, function(clase) {
+                      return _c("ClaseCard", {
+                        key: clase.id,
+                        attrs: { clase: clase },
+                        nativeOn: {
+                          click: function($event) {
+                            return _vm.goToDetail(clase.id)
+                          }
                         }
-                      }
+                      })
                     })
-                  })
-                ],
-                2
-              )
-            })
-          ],
-          2
-        )
+                  ],
+                  2
+                )
+              })
+            ],
+            2
+          )
+    ])
   ])
 }
 var staticRenderFns = []
@@ -20613,6 +20588,12 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -20625,7 +20606,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     },
     date: function date(val) {
       if (!val) return '';
-      return Object(__WEBPACK_IMPORTED_MODULE_2__utils_date__["c" /* format */])(Object(__WEBPACK_IMPORTED_MODULE_2__utils_date__["e" /* parseISO */])(val), 'dddd D [de] MMMM [de] YYYY');
+      return Object(__WEBPACK_IMPORTED_MODULE_2__utils_date__["a" /* format */])(Object(__WEBPACK_IMPORTED_MODULE_2__utils_date__["c" /* parseISO */])(val), 'dddd D [de] MMMM [de] YYYY');
     }
   },
   data: function data() {
@@ -21262,7 +21243,7 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
     },
     date: function date(val) {
       if (!val) return '';
-      return Object(__WEBPACK_IMPORTED_MODULE_2__utils_date__["c" /* format */])(Object(__WEBPACK_IMPORTED_MODULE_2__utils_date__["e" /* parseISO */])(val), 'ddd D [de] MMMM');
+      return Object(__WEBPACK_IMPORTED_MODULE_2__utils_date__["a" /* format */])(Object(__WEBPACK_IMPORTED_MODULE_2__utils_date__["c" /* parseISO */])(val), 'ddd D [de] MMMM');
     }
   },
   data: function data() {

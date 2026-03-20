@@ -1,31 +1,29 @@
 <template>
-  <div class="page">
-    <!-- Header semana -->
-    <div class="week-nav">
-      <button class="arrow-btn" @click="prevWeek" aria-label="Semana anterior">
-        &#8249;
-      </button>
-      <span class="week-label">{{ weekLabel }}</span>
-      <button class="arrow-btn" @click="nextWeek" aria-label="Semana siguiente">
-        &#8250;
-      </button>
+  <div class="clases-root">
+    <!-- Header semana: sticky wrapper con fondo gris que cubre todo -->
+    <div class="week-nav-wrap">
+      <div class="week-nav">
+        <span class="week-label">{{ weekLabel }}</span>
+      </div>
     </div>
 
     <!-- Lista de días -->
-    <div v-if="loading" class="loading">Cargando clases…</div>
-    <div v-else-if="error" class="error-msg">{{ error }}</div>
-    <div v-else>
-      <div v-if="groupedClases.length === 0" class="empty">
-        No hay clases esta semana.
-      </div>
-      <div v-for="day in groupedClases" :key="day.date">
-        <h3 class="day-heading">{{ day.label }}</h3>
-        <ClaseCard
-          v-for="clase in day.clases"
-          :key="clase.id"
-          :clase="clase"
-          @click.native="goToDetail(clase.id)"
-        />
+    <div class="clases-body">
+      <div v-if="loading" class="loading">Cargando clases…</div>
+      <div v-else-if="error" class="error-msg">{{ error }}</div>
+      <div v-else>
+        <div v-if="groupedClases.length === 0" class="empty">
+          No hay clases esta semana.
+        </div>
+        <div v-for="day in groupedClases" :key="day.date">
+          <h3 class="day-heading">{{ day.label }}</h3>
+          <ClaseCard
+            v-for="clase in day.clases"
+            :key="clase.id"
+            :clase="clase"
+            @click.native="goToDetail(clase.id)"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -34,21 +32,13 @@
 <script>
 import { clases } from '../api';
 import ClaseCard from '../components/ClaseCard.vue';
-import {
-  startOfWeek,
-  endOfWeek,
-  addWeeks,
-  format,
-  parseISO,
-  isSameDay
-} from '../utils/date';
+import { format, parseISO, isSameDay } from '../utils/date';
 
 export default {
   name: 'Clases',
   components: { ClaseCard },
   data() {
     return {
-      weekOffset: 0,
       clasesList: [],
       loading: false,
       error: null
@@ -56,14 +46,19 @@ export default {
   },
   computed: {
     weekStart() {
-      return startOfWeek(addWeeks(new Date(), this.weekOffset));
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return today;
     },
     weekEnd() {
-      return endOfWeek(this.weekStart);
+      const end = new Date(this.weekStart);
+      end.setDate(end.getDate() + 6);
+      end.setHours(23, 59, 59, 999);
+      return end;
     },
     weekLabel() {
-      const s = format(this.weekStart, 'D MMM');
-      const e = format(this.weekEnd, 'D MMM YYYY');
+      const s = format(this.weekStart, 'D [de] MMMM');
+      const e = format(this.weekEnd, 'D [de] MMMM [de] YYYY');
       return `${s} – ${e}`;
     },
     groupedClases() {
@@ -85,11 +80,6 @@ export default {
       return days;
     }
   },
-  watch: {
-    weekOffset() {
-      this.load();
-    }
-  },
   mounted() {
     this.load();
   },
@@ -109,12 +99,6 @@ export default {
         this.loading = false;
       }
     },
-    prevWeek() {
-      this.weekOffset--;
-    },
-    nextWeek() {
-      this.weekOffset++;
-    },
     goToDetail(id) {
       this.$router.push(`/clases/${id}`);
     }
@@ -123,11 +107,24 @@ export default {
 </script>
 
 <style scoped>
+/* Reemplaza .page: mismo max-width y centrado, pero SIN padding-top */
+.clases-root {
+  max-width: 480px;
+  margin: 0 auto;
+}
+/* El wrapper sticky empieza en y=0 del contenedor, así nunca se mueve */
+.week-nav-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #f5f5f5;
+  padding: 16px 16px 12px;
+}
+/* El pill flotante vive dentro del wrapper */
 .week-nav {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
+  justify-content: center;
   background: linear-gradient(135deg, #26c6da 0%, #0097a7 100%);
   border-radius: 12px;
   padding: 12px 16px;
@@ -139,22 +136,24 @@ export default {
   text-transform: capitalize;
   color: #fff;
 }
-.arrow-btn {
-  background: none;
-  border: none;
-  font-size: 26px;
-  color: rgba(255, 255, 255, 0.85);
-  cursor: pointer;
-  padding: 0 8px;
-  line-height: 1;
+/* Contenido con el padding lateral equivalente a .page */
+.clases-body {
+  padding: 0 16px 80px;
 }
+/* Sticky justo debajo del wrap: 16px(top) + 44px(nav) + 8px(bottom) = 68px */
 .day-heading {
-  font-size: 13px;
+  position: sticky;
+  top: 63px;
+  z-index: 10;
+  font-size: 15px;
   font-weight: 700;
-  color: #888;
+  color: #0097a7;
   text-transform: capitalize;
-  margin: 16px 0 8px;
-  letter-spacing: 0.5px;
+  margin: 0 -16px 8px;
+  padding: 6px 16px 4px;
+  letter-spacing: 0.3px;
+  background: #f5f5f5;
+  border-bottom: 2px solid #e0f7fa;
 }
 .empty {
   text-align: center;

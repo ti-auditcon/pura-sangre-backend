@@ -96,12 +96,18 @@
             <span
               class="student-status-dot"
               :class="
-                student.reservation_status_id === 2 ? 'confirmed' :
-                student.reservation_status_id === 3 ? 'consumed' : 'pending'
+                student.reservation_status_id === 2
+                  ? 'confirmed'
+                  : student.reservation_status_id === 3
+                  ? 'consumed'
+                  : 'pending'
               "
               :title="
-                student.reservation_status_id === 2 ? 'Confirmado' :
-                student.reservation_status_id === 3 ? 'Asistió' : 'Pendiente'
+                student.reservation_status_id === 2
+                  ? 'Confirmado'
+                  : student.reservation_status_id === 3
+                  ? 'Asistió'
+                  : 'Pendiente'
               "
             ></span>
           </li>
