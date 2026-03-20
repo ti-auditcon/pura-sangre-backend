@@ -75,7 +75,7 @@ class ReservationObserver
     {
         $has_a_reservation = Reservation::where('user_id', $userId)
                                 ->join('clases', 'reservations.clase_id', '=', 'clases.id')
-                                ->where('clases.date', $clase->date)
+                                ->whereDate('clases.date', $clase->date)
                                 ->where('clases.clase_type_id', $clase->clase_type_id)
                                 ->exists('id');
 
