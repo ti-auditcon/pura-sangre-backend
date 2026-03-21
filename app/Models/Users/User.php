@@ -169,6 +169,9 @@ class User extends Authenticatable
      */
     public function getRutFormatedAttribute()
     {
+        if (empty($this->rut)) {
+            return null;
+        }
         return Rut::set($this->rut)->fix()->format();
     }
 

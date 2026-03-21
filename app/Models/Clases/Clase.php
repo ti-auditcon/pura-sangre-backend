@@ -103,7 +103,7 @@ class Clase extends Model
      */
     public function getColorAttribute()
     {
-        return $this->claseType->clase_color;
+        return $this->claseType ? $this->claseType->clase_color : null;
     }
 
     /**

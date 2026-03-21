@@ -15,6 +15,23 @@ class UserController extends Controller
       $user = Auth::user();
       return response()->json(compact('user'), 200);
   }
+
+  /**
+   * Datos del usuario autenticado para la PWA.
+   */
+  public function me()
+  {
+      $user = Auth::user();
+
+      return response()->json([
+          'id'         => $user->id,
+          'first_name' => $user->first_name,
+          'last_name'  => $user->last_name,
+          'email'      => $user->email,
+          'avatar'     => $user->avatar,
+          'full_name'  => $user->full_name,
+      ]);
+  }
     /** [__construct description] */
     // public function __construct()
     // {

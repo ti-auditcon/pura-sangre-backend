@@ -61,5 +61,30 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->bind(
+            \Laravel\Passport\Bridge\AccessTokenRepository::class,
+            \App\Bridge\AccessTokenRepository::class
+        );
+
+        $this->app->singleton(\League\OAuth2\Server\ResourceServer::class, function () {
+            $config = $this->app->make(\Illuminate\Config\Repository::class);
+            $passport = \Laravel\Passport\Passport::class;
+
+            $keyStr = str_replace('\\n', "\n", $config->get('passport.public_key'));
+            $publicKey = $keyStr
+                ? new \League\OAuth2\Server\CryptKey($keyStr, null, false)
+                : new \League\OAuth2\Server\CryptKey('file://'.\Laravel\Passport\Passport::keyPath('oauth-public.key'), null, false);
+
+            $validator = new \App\Bridge\BearerTokenValidator(
+                $this->app->make(\App\Bridge\AccessTokenRepository::class)
+            );
+            $validator->setPublicKey($publicKey);
+
+            return new \League\OAuth2\Server\ResourceServer(
+                $this->app->make(\App\Bridge\AccessTokenRepository::class),
+                $publicKey,
+                $validator
+            );
+        });
     }
 }
