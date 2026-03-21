@@ -258,6 +258,4 @@ Route::get('finish-registration', 'Web\NewUserController@finishing');
  * PWA de reservas – sirve el shell HTML para todas las sub-rutas
  * Accesible en /clases-app y /clases-app/*
  */
-Route::get('/clases-app/{any?}', function () {
-    return response()->file(public_path('pwa/index.html'));
-})->where('any', '.*');
+Route::get('/clases-app/{any?}', 'Web\PwaController@app')->where('any', '.*');
