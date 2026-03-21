@@ -84,7 +84,7 @@ export default {
   gap: 3px;
   color: rgba(255, 255, 255, 0.75);
   text-decoration: none;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.2px;
   padding: 8px 16px;
