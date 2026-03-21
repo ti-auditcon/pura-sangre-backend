@@ -76,12 +76,14 @@ export default {
 
 <style scoped>
 .login-page {
-  min-height: 100vh;
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(145deg, #004d60 0%, #26c6da 100%);
   padding: 24px;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 .login-box {
   background: #fff;

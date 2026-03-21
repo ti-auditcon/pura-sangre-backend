@@ -42,6 +42,8 @@ body {
 }
 #pwa-app {
   min-height: 100vh;
+}
+#pwa-app.has-nav {
   padding-bottom: 64px;
 }
 .page {
