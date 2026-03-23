@@ -47,13 +47,23 @@
                 myReservation.reservation_status.reservation_status
             }}</span>
           </p>
-          <button
-            class="btn btn-outline"
-            :disabled="cancelling"
-            @click="cancelReservation"
-          >
-            {{ cancelling ? 'Cancelando…' : 'Cancelar reserva' }}
-          </button>
+          <div class="button-group">
+            <button
+              v-if="myReservation.reservation_status_id === 1"
+              class="btn btn-success"
+              :disabled="confirming"
+              @click="confirmReservation"
+            >
+              {{ confirming ? 'Confirmando…' : 'Confirmar clase' }}
+            </button>
+            <button
+              class="btn btn-outline"
+              :disabled="cancelling"
+              @click="cancelReservation"
+            >
+              {{ cancelling ? 'Cancelando…' : 'Cancelar reserva' }}
+            </button>
+          </div>
         </template>
         <template v-else>
           <p v-if="isFull" class="full-msg">
@@ -145,6 +155,7 @@ export default {
       error: null,
       booking: false,
       cancelling: false,
+      confirming: false,
       actionError: null
     };
   },
@@ -215,6 +226,20 @@ export default {
           'No se pudo cancelar.';
       } finally {
         this.cancelling = false;
+      }
+    },
+    async confirmReservation() {
+      this.confirming = true;
+      this.actionError = null;
+      try {
+        await reservations.confirm(this.myReservation.id);
+        await this.load();
+      } catch (err) {
+        this.actionError =
+          (err.response && err.response.data && err.response.data.error) ||
+          'No se pudo confirmar.';
+      } finally {
+        this.confirming = false;
       }
     }
   }
@@ -366,5 +391,14 @@ export default {
   color: #aaa;
   text-align: center;
   margin: 0;
+}
+.button-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.button-group .btn {
+  flex: 1;
+  min-width: 140px;
 }
 </style>

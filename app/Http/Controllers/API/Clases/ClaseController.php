@@ -45,7 +45,7 @@ class ClaseController extends Controller
             ->orderBy('start_at')
             ->get(['id', 'date', 'start_at', 'finish_at', 'quota', 'room', 'clase_type_id', 'coach_id'])
             ->map(function ($clase) {
-                $clase->is_full = $clase->reservations_count >= $clase->quota;
+                $clase->is_full = $clase->quota > 0 && $clase->reservations_count >= $clase->quota;
                 $myRes = $clase->reservations->first();
                 $clase->my_reservation_id = $myRes ? $myRes->id : null;
                 $clase->unsetRelation('reservations'); // no exponer la colección en el JSON

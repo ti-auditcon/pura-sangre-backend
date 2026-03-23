@@ -210,12 +210,13 @@ class Clase extends Model
 
     /**
      * Check if the class is full or overload
+     * quota = 0 means unlimited capacity
      *
      * @return  bool
      */
     public function isFull(): bool
     {
-        return $this->reservations()->count('id') >= $this->quota;
+        return $this->quota > 0 && $this->reservations()->count('id') >= $this->quota;
     }
 
     /**
