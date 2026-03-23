@@ -1,11 +1,11 @@
 {
-  "name": "Pura Sangre Clases",
+  "name": "RESERVA DE CLASES",
   "short_name": "PS Clases",
   "description": "Reserva tus clases en Pura Sangre CrossFit",
   "start_url": "/clases-app/",
   "scope": "/clases-app/",
   "display": "standalone",
-  "background_color": "#2c3335",
+  "background_color": "#ED0286",
   "theme_color": "#E53935",
   "orientation": "portrait",
   "icons": [
