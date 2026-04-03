@@ -41,7 +41,8 @@ export default {
     return {
       clasesList: [],
       loading: false,
-      error: null
+      error: null,
+      lastLoaded: null
     };
   },
   computed: {
@@ -83,6 +84,13 @@ export default {
   mounted() {
     this.load();
   },
+  activated() {
+    // keep-alive: solo recargar si han pasado más de 60 segundos desde la última carga
+    const STALE_MS = 60000;
+    if (!this.lastLoaded || Date.now() - this.lastLoaded > STALE_MS) {
+      this.load();
+    }
+  },
   methods: {
     async load() {
       this.loading = true;
@@ -93,6 +101,7 @@ export default {
           format(this.weekEnd, 'YYYY-MM-DD')
         );
         this.clasesList = data;
+        this.lastLoaded = Date.now();
       } catch (e) {
         this.error = 'No se pudieron cargar las clases.';
       } finally {

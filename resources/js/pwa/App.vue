@@ -1,6 +1,8 @@
 <template>
   <div id="pwa-app" :class="{ 'has-nav': loggedIn }">
-    <router-view />
+    <keep-alive include="Clases,MisReservas">
+      <router-view />
+    </keep-alive>
     <BottomNav v-if="loggedIn" />
   </div>
 </template>

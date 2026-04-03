@@ -33,13 +33,13 @@ class ClaseController extends Controller
         $userId = auth()->id();
 
         $clases = Clase::with([
-                'claseType:id,clase_type,clase_color,icon_white',
+                'claseType:id,clase_type,clase_color,icon_white,active',
                 'coach:id,first_name,last_name',
                 'reservations' => fn ($q) => $q->where('user_id', $userId)
                     ->select(['id', 'clase_id', 'reservation_status_id']),
             ])
             ->withCount('reservations')
-            ->whereHas('claseType')
+            ->whereHas('claseType', fn ($q) => $q->where('active', true))
             ->whereBetween('date', [$start, $end])
             ->orderBy('date')
             ->orderBy('start_at')
